@@ -33,7 +33,7 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(const std::
     nlohmann::json j;
 
     AccessAndMobilitySubscriptionData accessandmobilitysubscriptiondata;
-    const std::string query = "select * from AccessAndMobilitySubscriptionData WHERE ueid="+ueId;
+    const std::string query = "select * from AccessAndMobilitySubscriptionData WHERE ueid='"+ueId+"' and servingPlmnid='"+servingPlmnId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

@@ -34,7 +34,7 @@ void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(const std::string &ue
 
     nlohmann::json j,tmp;
 
-    const std::string query = "SELECT * from SmfRegistrations WHERE ueid="+ueId;
+    const std::string query = "SELECT * from SmfRegistrations WHERE ueid='"+ueId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

@@ -28,7 +28,6 @@ AuthenticationSubscriptionDocumentApiImpl::AuthenticationSubscriptionDocumentApi
     : AuthenticationSubscriptionDocumentApi(rtr)
     {
         mysql_WitcommUDRDB = mysql;
-
     }
 
 void AuthenticationSubscriptionDocumentApiImpl::modify_authentication_subscription(const std::string &ueId, const std::vector<PatchItem> &patchItem, const Pistache::Optional<std::string> &supportedFeatures, Pistache::Http::ResponseWriter &response) {
@@ -60,7 +59,8 @@ void AuthenticationSubscriptionDocumentApiImpl::read_authentication_subscription
     nlohmann::json j;
 
     AuthenticationSubscription authenticationsubscription;
-    const std::string query = "select * from AuthenticationSubscription WHERE ueid="+ueId;
+    const std::string query = "select * from AuthenticationSubscription WHERE ueid='"+ueId+"'";
+
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
@@ -83,9 +83,9 @@ void AuthenticationSubscriptionDocumentApiImpl::read_authentication_subscription
         {
             if(!strcmp("authenticationMethod", field->name))
             {
-                AuthMethod authenticationmethod;
-                nlohmann::json::parse(row[i]).get_to(authenticationmethod);
-                authenticationsubscription.setAuthenticationMethod(authenticationmethod);
+//                AuthMethod authenticationmethod;
+//                nlohmann::json::parse(row[i]).get_to(authenticationmethod);
+                authenticationsubscription.setAuthenticationMethod(row[i]);
             }
             else if(!strcmp("encPermanentKey", field->name) && row[i] != NULL)
             {
@@ -127,9 +127,9 @@ void AuthenticationSubscriptionDocumentApiImpl::read_authentication_subscription
             }
             else if(!strcmp("n5gcAuthMethod", field->name) && row[i] != NULL)
             {
-                AuthMethod n5gcauthmethod;
-                nlohmann::json::parse(row[i]).get_to(n5gcauthmethod);
-                authenticationsubscription.setN5gcAuthMethod(n5gcauthmethod);
+//                AuthMethod n5gcauthmethod;
+//                nlohmann::json::parse(row[i]).get_to(n5gcauthmethod);
+                authenticationsubscription.setN5gcAuthMethod(row[i]);
             }
             else if(!strcmp("rgAuthenticationInd", field->name) && row[i] != NULL)
             {

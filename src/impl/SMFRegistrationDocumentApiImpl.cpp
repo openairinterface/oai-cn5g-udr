@@ -28,7 +28,7 @@ SMFRegistrationDocumentApiImpl::SMFRegistrationDocumentApiImpl(std::shared_ptr<P
 void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(const std::string &ueId, const int32_t &pduSessionId, const SmfRegistration &smfRegistration, Pistache::Http::ResponseWriter &response) {
     MYSQL_RES *res = NULL;
     MYSQL_ROW row;
-    const std::string select_SmfRegistration = "SELECT * from SmfRegistrations WHERE ueid="+ueId+" AND subpduSessionId="+std::to_string(pduSessionId);
+    const std::string select_SmfRegistration = "SELECT * from SmfRegistrations WHERE ueid='"+ueId+"' AND subpduSessionId="+std::to_string(pduSessionId);
     std::string query;
     nlohmann::json j;
 
@@ -73,11 +73,11 @@ void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(const std::strin
         query += ",singleNssai='"+j.dump()+"'";
         to_json(j,smfRegistration.getPlmnId());
         query += ",plmnId='"+j.dump()+"'";
-        query += " where ueid="+ueId+" AND subpduSessionId="+std::to_string(pduSessionId);
+        query += " where ueid='"+ueId+"' AND subpduSessionId="+std::to_string(pduSessionId);
     }
     else
     {
-        query="insert into SmfRegistrations set ueid="+ueId+ \
+        query="insert into SmfRegistrations set ueid='"+ueId+"'"+ \
             ",subpduSessionId="+std::to_string(pduSessionId)+ \
             ",pduSessionId="+std::to_string(smfRegistration.getPduSessionId())+ \
             ",smfInstanceId='"+smfRegistration.getSmfInstanceId()+"'"+ \
@@ -120,7 +120,7 @@ void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(const std::strin
     response.send(Pistache::Http::Code::Created, j.dump());
 }
 void SMFRegistrationDocumentApiImpl::delete_smf_context(const std::string &ueId, const int32_t &pduSessionId, Pistache::Http::ResponseWriter &response) {
-    const std::string query = "DELETE from SmfRegistrations WHERE ueid="+ueId+" AND subpduSessionId="+std::to_string(pduSessionId);
+    const std::string query = "DELETE from SmfRegistrations WHERE ueid='"+ueId+"' AND subpduSessionId="+std::to_string(pduSessionId);
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
@@ -138,7 +138,7 @@ void SMFRegistrationDocumentApiImpl::query_smf_registration(const std::string &u
     nlohmann::json j;
 
     SmfRegistration smfregistration;
-    const std::string query = "SELECT * from SmfRegistrations WHERE ueid="+ueId+" AND subpduSessionId="+std::to_string(pduSessionId);
+    const std::string query = "SELECT * from SmfRegistrations WHERE ueid='"+ueId+"' AND subpduSessionId="+std::to_string(pduSessionId);
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

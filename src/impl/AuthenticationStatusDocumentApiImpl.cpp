@@ -29,7 +29,7 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(const std
     //response.send(Pistache::Http::Code::Ok, "create_authentication_status\n");
     MYSQL_RES *res = NULL;
     MYSQL_ROW row;
-    const std::string select_AuthenticationStatus = "select * from AuthenticationStatus WHERE ueid="+ueId;
+    const std::string select_AuthenticationStatus = "select * from AuthenticationStatus WHERE ueid='"+ueId+"'";
     std::string query;
     nlohmann::json j;
 
@@ -54,11 +54,11 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(const std
             (authEvent.authRemovalIndIsSet()?(authEvent.isAuthRemovalInd()?",authRemovalInd=1":",authRemovalInd=0"):"");
         to_json(j,authEvent.getAuthType());
         query += ",authType='"+j.dump()+"'";
-        query += " where ueid="+ueId;
+        query += " where ueid='"+ueId+"'";
     }
     else
     {
-        query="insert into AuthenticationStatus set ueid="+ueId+ \
+        query="insert into AuthenticationStatus set ueid='"+ueId+"'"+ \
             ",nfInstanceId='"+authEvent.getNfInstanceId()+"'"+ \
             ",success="+(authEvent.isSuccess()?"1":"0")+ \
             ",timeStamp='"+authEvent.getTimeStamp()+"'"+ \
@@ -82,7 +82,7 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(const std
 
 void AuthenticationStatusDocumentApiImpl::delete_authentication_status(const std::string &ueId, Pistache::Http::ResponseWriter &response) {
     //response.send(Pistache::Http::Code::Ok, "delete_authentication_status\n");
-    const std::string query = "DELETE from AuthenticationStatus WHERE ueid="+ueId;
+    const std::string query = "DELETE from AuthenticationStatus WHERE ueid='"+ueId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
@@ -100,7 +100,7 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(const std:
     nlohmann::json j;
 
     AuthEvent authenticationstatus;
-    const std::string query = "select * from AuthenticationStatus WHERE ueid="+ueId;
+    const std::string query = "select * from AuthenticationStatus WHERE ueid='"+ueId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

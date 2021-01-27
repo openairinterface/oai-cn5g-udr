@@ -33,7 +33,7 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(const st
     nlohmann::json j;
 
     SmfSelectionSubscriptionData smfselectionsubscriptiondata;
-    const std::string query = "select * from SmfSelectionSubscriptionData WHERE ueid="+ueId+" and servingPlmnid="+servingPlmnId;
+    const std::string query = "select * from SmfSelectionSubscriptionData WHERE ueid='"+ueId+"' and servingPlmnid='"+servingPlmnId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

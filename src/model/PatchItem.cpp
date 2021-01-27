@@ -24,6 +24,7 @@ PatchItem::PatchItem()
 {
     m_Path = "";
     m_From = "";
+    m_Value = "";
     m_FromIsSet = false;
     m_ValueIsSet = false;
 
@@ -45,13 +46,12 @@ void to_json(nlohmann::json& j, const PatchItem& o)
     j["path"] = o.m_Path;
     if(o.fromIsSet())
         j["from"] = o.m_From;
-//    if(o.valueIsSet())
-//        j["value"] = o.m_Value;
+    if(o.valueIsSet())
+        j["value"] = o.m_Value;
 }
 
 void from_json(const nlohmann::json& j, PatchItem& o)
 {
-//    cout<<"patchitem from_json "<<endl;
     j.at("op").get_to(o.m_Op);
     j.at("path").get_to(o.m_Path);
     if(j.find("from") != j.end())
@@ -61,8 +61,8 @@ void from_json(const nlohmann::json& j, PatchItem& o)
     }
     if(j.find("value") != j.end())
     {
-//        j.at("value").get_to(o.m_Value);
-//        o.m_ValueIsSet = true;
+        j.at("value").get_to(o.m_Value);
+        o.m_ValueIsSet = true;
     }
 }
 
@@ -99,15 +99,15 @@ void PatchItem::unsetFrom()
 {
     m_FromIsSet = false;
 }
-//AnyType PatchItem::getValue() const
-//{
-//    return m_Value;
-//}
-//void PatchItem::setValue(AnyType const& value)
-//{
-//    m_Value = value;
-//    m_ValueIsSet = true;
-//}
+std::string PatchItem::getValue() const
+{
+    return m_Value;
+}
+void PatchItem::setValue(std::string const& value)
+{
+    m_Value = value;
+    m_ValueIsSet = true;
+}
 bool PatchItem::valueIsSet() const
 {
     return m_ValueIsSet;

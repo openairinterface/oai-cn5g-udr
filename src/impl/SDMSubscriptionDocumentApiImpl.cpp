@@ -36,7 +36,7 @@ void SDMSubscriptionDocumentApiImpl::querysdm_subscription(const std::string &ue
     nlohmann::json j;
 
     SdmSubscription SdmSubscriptions;
-    const std::string query = "SELECT * from SdmSubscriptions WHERE ueid="+ueId+" AND subsId="+subsId;
+    const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='"+ueId+"' AND subsId="+subsId;
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
@@ -146,9 +146,9 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(const std::string &
     nlohmann::json j;
     ProblemDetails problemdetails;
 
-    const std::string select_query = "SELECT * from SdmSubscriptions WHERE ueid="+ueId+" AND subsId="+subsId;
+    const std::string select_query = "SELECT * from SdmSubscriptions WHERE ueid='"+ueId+"' AND subsId="+subsId;
 
-    const std::string query = "DELETE from SdmSubscriptions WHERE ueid="+ueId+" AND subsId="+subsId;
+    const std::string query = "DELETE from SdmSubscriptions WHERE ueid='"+ueId+"' AND subsId="+subsId;
 
     if (mysql_real_query(mysql_WitcommUDRDB,select_query.c_str(), (unsigned long)select_query.size()))
     {
@@ -189,7 +189,7 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(const std::string &
 void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(const std::string &ueId, const std::string &subsId, SdmSubscription &sdmSubscription, Pistache::Http::ResponseWriter &response) {
     MYSQL_RES *res = NULL;
     MYSQL_ROW row;
-    const std::string select_query = "SELECT * from SdmSubscriptions WHERE ueid="+ueId+" AND subsId="+subsId;
+    const std::string select_query = "SELECT * from SdmSubscriptions WHERE ueid='"+ueId+"' AND subsId="+subsId;
     std::string query;
     nlohmann::json j;
     ProblemDetails problemdetails;
@@ -247,7 +247,7 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(const std::string &u
 
         query += ",monitoredResourceUris='"+MonitoredResourceUris_json.dump()+"'";
 
-        query += " where ueid="+ueId+" AND subsId="+subsId;
+        query += " where ueid='"+ueId+"' AND subsId="+subsId;
     }
     else
     {

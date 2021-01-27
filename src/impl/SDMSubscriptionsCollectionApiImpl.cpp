@@ -32,7 +32,7 @@ void SDMSubscriptionsCollectionApiImpl::create_sdm_subscriptions(const std::stri
 
     int32_t subsId = 0;
     int32_t count = 0;
-    std::string query = "SELECT subsId from SdmSubscriptions WHERE ueid="+ueId;
+    std::string query = "SELECT subsId from SdmSubscriptions WHERE ueid='"+ueId+"'";
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
         std::cout << "mysql_real_query failure！" << std::endl;
@@ -58,7 +58,7 @@ void SDMSubscriptionsCollectionApiImpl::create_sdm_subscriptions(const std::stri
 
 //****** add query *******
 
-    query="insert into SdmSubscriptions set ueid="+ueId+ \
+    query="insert into SdmSubscriptions set ueid='"+ueId+"'"+ \
         ",nfInstanceId='"+sdmSubscription.getNfInstanceId()+"'"+ \
         (sdmSubscription.implicitUnsubscribeIsSet()?(sdmSubscription.isImplicitUnsubscribe()?",implicitUnsubscribe=1":",implicitUnsubscribe=0"):"")+ \
         (sdmSubscription.expiresIsSet()?",expires='"+sdmSubscription.getExpires()+"'":"")+ \
@@ -123,7 +123,7 @@ void SDMSubscriptionsCollectionApiImpl::querysdmsubscriptions(const std::string 
 
     nlohmann::json j,tmp;
 
-    const std::string query = "SELECT * from SdmSubscriptions WHERE ueid="+ueId;
+    const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='"+ueId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

@@ -6,7 +6,7 @@ export OPENXGUDR_DIR=${THIS_SCRIPT_PATH%/*}
 
 #echo "${THIS_SCRIPT_PATH%/*}"
 
-if [ ! -d "/myfolder" ]; then
+if [ ! -d "$OPENXGUDR_DIR/build" ]; then
   mkdir $OPENXGUDR_DIR/build
 fi
 
