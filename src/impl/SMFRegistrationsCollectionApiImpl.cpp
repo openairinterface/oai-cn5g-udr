@@ -11,6 +11,7 @@
 */
 
 #include "SMFRegistrationsCollectionApiImpl.h"
+#include "logger.hpp"
 
 namespace org {
 namespace openapitools {
@@ -38,14 +39,14 @@ void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(const std::string &ue
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",query.c_str());
         return;
     }
 
@@ -151,6 +152,9 @@ void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(const std::string &ue
     mysql_free_result(res);
 
     response.send(Pistache::Http::Code::Ok, j.dump());
+
+    std::string out = j.dump();
+    Logger::udr_server().debug("SmfRegistrations GET - json:\n\"%s\"",out.c_str());
 
 }
 

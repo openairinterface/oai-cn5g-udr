@@ -11,6 +11,7 @@
 */
 
 #include "SMFRegistrationDocumentApiImpl.h"
+#include "logger.hpp"
 
 namespace org {
 namespace openapitools {
@@ -34,14 +35,14 @@ void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(const std::strin
 
     if (mysql_real_query(mysql_WitcommUDRDB,select_SmfRegistration.c_str(), (unsigned long)select_SmfRegistration.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",select_SmfRegistration.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",select_SmfRegistration.c_str());
         return;
     }
     if (mysql_num_rows(res))
@@ -112,23 +113,27 @@ void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(const std::strin
 //    std::cout << query << std::endl;
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     to_json(j,smfRegistration);
     response.send(Pistache::Http::Code::Created, j.dump());
+
+    std::string out = j.dump();
+    Logger::udr_server().debug("SmfRegistration PUT - json:\n\"%s\"",out.c_str());
 }
 void SMFRegistrationDocumentApiImpl::delete_smf_context(const std::string &ueId, const int32_t &pduSessionId, Pistache::Http::ResponseWriter &response) {
     const std::string query = "DELETE from SmfRegistrations WHERE ueid='"+ueId+"' AND subpduSessionId="+std::to_string(pduSessionId);
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     response.send(Pistache::Http::Code::No_Content, "");
+    Logger::udr_server().debug("SmfRegistration DELETE - successful");
 }
 void SMFRegistrationDocumentApiImpl::query_smf_registration(const std::string &ueId, const int32_t &pduSessionId, const Pistache::Optional<std::vector<std::string>> &fields, const Pistache::Optional<std::string> &supportedFeatures, Pistache::Http::ResponseWriter &response) {
     MYSQL_RES *res = NULL;
@@ -142,14 +147,14 @@ void SMFRegistrationDocumentApiImpl::query_smf_registration(const std::string &u
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",query.c_str());
         return;
     }
 
@@ -241,10 +246,13 @@ void SMFRegistrationDocumentApiImpl::query_smf_registration(const std::string &u
         }
         to_json(j,smfregistration);
         response.send(Pistache::Http::Code::Ok, j.dump());
+
+        std::string out = j.dump();
+        Logger::udr_server().debug("SmfRegistration GET - json:\n\"%s\"",out.c_str());
     }
     else
     {
-        std::cout << "SmfRegistration no data！" << std::endl;
+        Logger::udr_server().error("SmfRegistration no data！SQL(%s)",query.c_str());
     }
 
     mysql_free_result(res);

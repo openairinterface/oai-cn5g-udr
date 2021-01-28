@@ -11,6 +11,7 @@
 */
 
 #include "SDMSubscriptionDocumentApiImpl.h"
+#include "logger.hpp"
 
 namespace org {
 namespace openapitools {
@@ -40,14 +41,15 @@ void SDMSubscriptionDocumentApiImpl::querysdm_subscription(const std::string &ue
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",query.c_str());
         return;
     }
 
@@ -133,10 +135,13 @@ void SDMSubscriptionDocumentApiImpl::querysdm_subscription(const std::string &ue
         }
         to_json(j,SdmSubscriptions);
         response.send(Pistache::Http::Code::Ok, j.dump());
+
+        std::string out = j.dump();
+        Logger::udr_server().debug("SdmSubscription GET - json:\n\"%s\"",out.c_str());
     }
     else
     {
-        std::cout << "SdmSubscription no data！" << std::endl;
+        Logger::udr_server().error("SdmSubscription no data！SQL(%s)",query.c_str());
     }
 
     mysql_free_result(res);
@@ -154,7 +159,7 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(const std::string &
     {
         problemdetails.setCause("USER_NOT_FOUND");
         to_json(j, problemdetails);
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         response.send(Pistache::Http::Code::Not_Found, j.dump());
         return;
     }
@@ -163,7 +168,7 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(const std::string &
     {
         problemdetails.setCause("USER_NOT_FOUND");
         to_json(j, problemdetails);
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",query.c_str());
         response.send(Pistache::Http::Code::Not_Found, j.dump());
         return;
     }
@@ -179,12 +184,14 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(const std::string &
     {
         problemdetails.setCause("USER_NOT_FOUND");
         to_json(j, problemdetails);
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         response.send(Pistache::Http::Code::Not_Found, j.dump());
         return;
     }
 
     response.send(Pistache::Http::Code::No_Content, "");
+
+    Logger::udr_server().debug("SdmSubscription DELETE - successful");
 }
 void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(const std::string &ueId, const std::string &subsId, SdmSubscription &sdmSubscription, Pistache::Http::ResponseWriter &response) {
     MYSQL_RES *res = NULL;
@@ -196,14 +203,14 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(const std::string &u
 
     if (mysql_real_query(mysql_WitcommUDRDB,select_query.c_str(), (unsigned long)select_query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",query.c_str());
         return;
     }
     if (mysql_num_rows(res))
@@ -253,6 +260,7 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(const std::string &u
     {
         to_json(j, problemdetails);
         response.send(Pistache::Http::Code::Not_Found, j.dump());
+
         mysql_free_result(res);
         return;
     }
@@ -261,11 +269,16 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(const std::string &u
 //    std::cout << query << std::endl;
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
+
         return;
     }
 
     response.send(Pistache::Http::Code::No_Content, "");
+
+    to_json(j,sdmSubscription);
+    std::string out = j.dump();
+    Logger::udr_server().debug("SdmSubscription PUT - json:\n\"%s\"",out.c_str());
 }
 
 }

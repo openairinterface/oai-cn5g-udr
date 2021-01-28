@@ -11,6 +11,7 @@
 */
 
 #include "AccessAndMobilitySubscriptionDataDocumentApiImpl.h"
+#include "logger.hpp"
 
 namespace org {
 namespace openapitools {
@@ -37,14 +38,14 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(const std::
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！");
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！");
         return;
     }
 
@@ -340,10 +341,13 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(const std::
 
         to_json(j,accessandmobilitysubscriptiondata);
         response.send(Pistache::Http::Code::Ok, j.dump());
+
+        std::string out = j.dump();
+        Logger::udr_server().debug("AccessAndMobilitySubscriptionData GET - json:\n\"%s\"",out.c_str());
     }
     else
     {
-        std::cout << "AuthenticationSubscription no data！" << std::endl;
+        Logger::udr_server().error("AccessAndMobilitySubscriptionData no data！");
     }
 
     mysql_free_result(res);

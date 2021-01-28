@@ -11,6 +11,7 @@
 */
 
 #include "SMFSelectionSubscriptionDataDocumentApiImpl.h"
+#include "logger.hpp"
 
 namespace org {
 namespace openapitools {
@@ -37,14 +38,14 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(const st
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",query.c_str());
         return;
     }
 
@@ -71,10 +72,13 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(const st
         }
          to_json(j,smfselectionsubscriptiondata);
         response.send(Pistache::Http::Code::Ok, j.dump());
+
+        std::string out = j.dump();
+        Logger::udr_server().debug("SmfSelectionSubscriptionData GET - json:\n\"%s\"",out.c_str());
     }
     else
     {
-        std::cout << "SmfSelectionSubscriptionData no data！" << std::endl;
+        Logger::udr_server().error("SmfSelectionSubscriptionData no data！SQL(%s)",query.c_str());
     }
 
     mysql_free_result(res);

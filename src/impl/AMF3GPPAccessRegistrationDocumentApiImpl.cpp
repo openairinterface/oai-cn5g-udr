@@ -11,6 +11,7 @@
 */
 
 #include "AMF3GPPAccessRegistrationDocumentApiImpl.h"
+#include "logger.hpp"
 
 namespace org {
 namespace openapitools {
@@ -47,14 +48,14 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(const std:
 
     if (mysql_real_query(mysql_WitcommUDRDB,select_AMF3GPPAccessRegistration.c_str(), (unsigned long)select_AMF3GPPAccessRegistration.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",select_AMF3GPPAccessRegistration.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",select_AMF3GPPAccessRegistration.c_str());
         return;
     }
     if (mysql_num_rows(res))
@@ -192,12 +193,15 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(const std:
 //    std::cout << query << std::endl;
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     to_json(j,amf3GppAccessRegistration);
     response.send(Pistache::Http::Code::Created, j.dump());
+
+    std::string out = j.dump();
+    Logger::udr_server().debug("Amf3GppAccessRegistration PUT - json:\n\"%s\"",out.c_str());
 
 }
 void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(const std::string &ueId, const Pistache::Optional<std::vector<std::string>> &fields, const Pistache::Optional<std::string> &supportedFeatures, Pistache::Http::ResponseWriter &response) {
@@ -212,14 +216,14 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(const std::
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
@@ -356,10 +360,13 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(const std::
         }
          to_json(j,amf3gppaccessregistration);
         response.send(Pistache::Http::Code::Ok, j.dump());
+
+        std::string out = j.dump();
+        Logger::udr_server().debug("Amf3GppAccessRegistration GET - json:\n\"%s\"",out.c_str());
     }
     else
     {
-        std::cout << "Amf3GppAccessRegistration no data！" << std::endl;
+        Logger::udr_server().error("Amf3GppAccessRegistration no data！SQL(%s)",query.c_str());
     }
 
     mysql_free_result(res);

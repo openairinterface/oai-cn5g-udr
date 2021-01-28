@@ -76,11 +76,11 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(const std
         return;
     }
 
+    response.send(Pistache::Http::Code::No_Content, "");
+
     to_json(j,authEvent);
     std::string out = j.dump();
-    Logger::udr_server().debug("AuthenticationSubscription PATCH - json:\n\"%s\"",out.c_str());
-
-    response.send(Pistache::Http::Code::No_Content, "");
+    Logger::udr_server().debug("AuthenticationStatus PUT - json:\n\"%s\"",out);
 
 }
 
@@ -90,11 +90,13 @@ void AuthenticationStatusDocumentApiImpl::delete_authentication_status(const std
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query);
         return;
     }
 
     response.send(Pistache::Http::Code::No_Content, "");
+    Logger::udr_server().debug("AuthenticationStatus DELETE - successful");
+
 }
 void AuthenticationStatusDocumentApiImpl::query_authentication_status(const std::string &ueId, const Pistache::Optional<std::vector<std::string>> &fields, const Pistache::Optional<std::string> &supportedFeatures, Pistache::Http::ResponseWriter &response) {
     MYSQL_RES *res = NULL;
@@ -108,14 +110,14 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(const std:
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql_real_query failure！");
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        std::cout << "mysql_store_result failure！" << std::endl;
+        Logger::udr_server().error("mysql_store_result failure！");
         return;
     }
 
@@ -166,7 +168,7 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(const std:
     }
     else
     {
-        std::cout << "AuthenticationStatus no data！" << std::endl;
+        Logger::udr_server().error("AuthenticationStatus no data！");
     }
 
     mysql_free_result(res);
