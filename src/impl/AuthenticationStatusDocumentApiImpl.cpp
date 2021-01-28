@@ -70,12 +70,15 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(const std
     }
 
     mysql_free_result(res);
-//    std::cout << query << std::endl;
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        std::cout << "mysql_real_query failure！" << std::endl;
+        Logger::udr_server().error("mysql create failure！");
         return;
     }
+
+    to_json(j,authEvent);
+    std::string out = j.dump();
+    Logger::udr_server().debug("AuthenticationSubscription PATCH - json:\n\"%s\"",out.c_str());
 
     response.send(Pistache::Http::Code::No_Content, "");
 
