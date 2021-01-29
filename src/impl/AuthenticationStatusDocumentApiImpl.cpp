@@ -36,14 +36,14 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(const std
 
     if (mysql_real_query(mysql_WitcommUDRDB,select_AuthenticationStatus.c_str(), (unsigned long)select_AuthenticationStatus.size()))
     {
-        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",select_AuthenticationStatus);
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",select_AuthenticationStatus.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",select_AuthenticationStatus);
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",select_AuthenticationStatus.c_str());
         return;
     }
     if (mysql_num_rows(res))
@@ -51,10 +51,11 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(const std
         query="update AuthenticationStatus set nfInstanceId='"+authEvent.getNfInstanceId()+"'"+ \
             ",success="+(authEvent.isSuccess()?"1":"0")+ \
             ",timeStamp='"+authEvent.getTimeStamp()+"'"+ \
+            ",authType='"+authEvent.getAuthType()+"'"+ \
             ",servingNetworkName='"+authEvent.getServingNetworkName()+"'"+ \
             (authEvent.authRemovalIndIsSet()?(authEvent.isAuthRemovalInd()?",authRemovalInd=1":",authRemovalInd=0"):"");
-        to_json(j,authEvent.getAuthType());
-        query += ",authType='"+j.dump()+"'";
+//        to_json(j,authEvent.getAuthType());
+//        query += ",authType='"+j.dump()+"'";
         query += " where ueid='"+ueId+"'";
     }
     else
@@ -63,24 +64,24 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(const std
             ",nfInstanceId='"+authEvent.getNfInstanceId()+"'"+ \
             ",success="+(authEvent.isSuccess()?"1":"0")+ \
             ",timeStamp='"+authEvent.getTimeStamp()+"'"+ \
+            ",authType='"+authEvent.getAuthType()+"'"+ \
             ",servingNetworkName='"+authEvent.getServingNetworkName()+"'"+ \
             (authEvent.authRemovalIndIsSet()?(authEvent.isAuthRemovalInd()?",authRemovalInd=1":",authRemovalInd=0"):"");
-        to_json(j,authEvent.getAuthType());
-        query += ",authType='"+j.dump()+"'";
+//        to_json(j,authEvent.getAuthType());
+//        query += ",authType='"+j.dump()+"'";
     }
 
     mysql_free_result(res);
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        Logger::udr_server().error("mysql create failure！");
+        Logger::udr_server().error("mysql create failure！SQL(%s)",query.c_str());
         return;
     }
 
     response.send(Pistache::Http::Code::No_Content, "");
 
     to_json(j,authEvent);
-    std::string out = j.dump();
-    Logger::udr_server().debug("AuthenticationStatus PUT - json:\n\"%s\"",out);
+    Logger::udr_server().debug("AuthenticationStatus PUT - json:\n\"%s\"",j.dump().c_str());
 
 }
 
@@ -90,7 +91,7 @@ void AuthenticationStatusDocumentApiImpl::delete_authentication_status(const std
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query);
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
@@ -110,7 +111,7 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(const std:
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        Logger::udr_server().error("mysql_real_query failure！");
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
@@ -143,9 +144,9 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(const std:
             }
             else if(!strcmp("authType", field->name))
             {
-                AuthType authtype;
-                nlohmann::json::parse(row[i]).get_to(authtype);
-                authenticationstatus.setAuthType(authtype);
+//                AuthType authtype;
+//                nlohmann::json::parse(row[i]).get_to(authtype);
+                authenticationstatus.setAuthType(row[i]);
             }
             else if(!strcmp("servingNetworkName", field->name))
             {
@@ -163,12 +164,11 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(const std:
         to_json(j,authenticationstatus);
         response.send(Pistache::Http::Code::Ok, j.dump());
 
-        std::string out = j.dump();
-        Logger::udr_server().debug("AuthenticationStatus GET - json:\n\"%s\"",out.c_str());
+        Logger::udr_server().debug("AuthenticationStatus GET - json:\n\"%s\"",j.dump().c_str());
     }
     else
     {
-        Logger::udr_server().error("AuthenticationStatus no data！");
+        Logger::udr_server().error("AuthenticationStatus no data！SQL(%s)",query.c_str());
     }
 
     mysql_free_result(res);
