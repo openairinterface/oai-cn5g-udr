@@ -55,6 +55,7 @@ function help()
 }
 function main()
 {
+	local -i install_deps=0
 	local -i debug=0
 	local -i clean=0
 	local -i jobs=0
@@ -78,14 +79,18 @@ function main()
 				echo "clean generated files ($OPENXGUDR_DIR/build/UDR)"
 				shift;
 		;;
+			-j | --jobs)
+				jobs=1
+				shift;
+		;;
+			-I | --install-deps)
+				install_deps=1
+				shift;
+		;;
 			-h | --help)
 				help
 				shift;
 				return 0
-		;;
-			-j | --jobs)
-				jobs=1
-				shift;
 		;;
 			*)
 				echo "Unknown option $1"
@@ -98,6 +103,19 @@ function main()
 	if [ ! -d "$OPENXGUDR_DIR/build" ]; then
 	  	echo "Unknown path $OPENXGUDR_DIR/build"
 	  	return 0
+	fi
+
+	if [[ $install_deps -ne 0 ]]; then
+		apt-get install cmake make libconfig++-dev mysql-server mysql-client libmysqlclient-dev -y
+		if [ ! -d "$OPENXGUDR_DIR/build/ext/json/build" ]; then
+			mkdir $OPENXGUDR_DIR/build/ext/json/build
+		fi
+		cd $OPENXGUDR_DIR/build/ext/json/build
+		cmake ..
+		make
+		make install
+		echo "install successful!"
+		return 0
 	fi
 
 	if [[ $clean -ne 0 ]]; then
