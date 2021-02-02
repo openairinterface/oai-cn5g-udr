@@ -17,14 +17,22 @@ OpenXG-UDR Arch
     └── impl:      UDR service.
     
 ## Download source code from Gitlab
+```
 git clone http://git.opensource5g.org/openxg/openxg-udr.git
 cd openxg-udr/
 git checkout master
+```
 
 ## install dependencies
+```
 cd ./build/scripts
 sudo ./build_udr -I
+```
 ## build UDR
+```
 sudo ./build_udr -c -b Debug -j
+```
 ## launch UDR
+```
 sudo ./build/UDR/udr -c etc/udr.conf -o
+```
