@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include <getopt.h>
 #include <iostream>
 #include <stdlib.h>
 #include <unistd.h>
-#include <getopt.h>
 
 #include "options.hpp"
 
@@ -29,14 +29,18 @@ bool Options::m_log_stdout;
 
 //------------------------------------------------------------------------------
 void Options::help() {
-  std::cout << std::endl << "Usage:  UDR  [OPTIONS]..." << std::endl
-      << "  -h, --help                   Print help and exit" << std::endl
-      << "  -c, --libconfigcfg filename  Read the application configuration from this file."
-      << std::endl
-      << "  -o, --stdoutlog              Send the application logs to STDOUT fd."
-      << std::endl
-      << "  -r, --rotatelog              Send the application logs to local file (in  current working directory)."
-      << std::endl;
+  std::cout << std::endl
+            << "Usage:  UDR  [OPTIONS]..." << std::endl
+            << "  -h, --help                   Print help and exit" << std::endl
+            << "  -c, --libconfigcfg filename  Read the application "
+               "configuration from this file."
+            << std::endl
+            << "  -o, --stdoutlog              Send the application logs to "
+               "STDOUT fd."
+            << std::endl
+            << "  -r, --rotatelog              Send the application logs to "
+               "local file (in  current working directory)."
+            << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -50,11 +54,7 @@ bool Options::parse(int argc, char **argv) {
 }
 
 //------------------------------------------------------------------------------
-bool Options::validateOptions() {
-
-  return ((options & libconfigcfg));
-
-}
+bool Options::validateOptions() { return ((options & libconfigcfg)); }
 
 //------------------------------------------------------------------------------
 bool Options::parseInputOptions(int argc, char **argv) {
@@ -62,72 +62,73 @@ bool Options::parseInputOptions(int argc, char **argv) {
   int option_index = 0;
   bool result = true;
 
-  struct option long_options[] = { { "help", no_argument, NULL, 'h' }, {
-      "libconfigcfg", required_argument, NULL, 'f' }, { "stdoutlog",
-      no_argument, NULL, 'o' }, { "rotatelog", no_argument, NULL, 'r' }, { NULL,
-      0, NULL, 0 } };
+  struct option long_options[] = {
+      {"help", no_argument, NULL, 'h'},
+      {"libconfigcfg", required_argument, NULL, 'f'},
+      {"stdoutlog", no_argument, NULL, 'o'},
+      {"rotatelog", no_argument, NULL, 'r'},
+      {NULL, 0, NULL, 0}};
 
   // Loop on arguments
   while (1) {
     c = getopt_long(argc, argv, "horc:", long_options, &option_index);
     if (c == -1)
-      break;  // Exit from the loop.
+      break; // Exit from the loop.
 
     switch (c) {
-      case 'h': {
-        help();
-        exit(0);
-        break;
-      }
+    case 'h': {
+      help();
+      exit(0);
+      break;
+    }
+    case 'c': {
+      m_libconfigcfg = optarg;
+      options |= libconfigcfg;
+      break;
+    }
+    case 'o': {
+      m_log_stdout = true;
+      options |= log_stdout;
+      break;
+    }
+    case 'r': {
+      m_log_rot_file_log = true;
+      options |= log_rot_file_log;
+      break;
+    }
+
+    case '?': {
+      switch (optopt) {
       case 'c': {
-        m_libconfigcfg = optarg;
-        options |= libconfigcfg;
+        std::cout << "Option -l (libconfig config) requires an argument"
+                  << std::endl;
         break;
       }
       case 'o': {
-        m_log_stdout = true;
-        options |= log_stdout;
+        std::cout << "Option -o do not requires an argument, can be also set "
+                     "with option -r."
+                  << std::endl;
         break;
       }
       case 'r': {
-        m_log_rot_file_log = true;
-        options |= log_rot_file_log;
-        break;
-      }
-
-      case '?': {
-        switch (optopt) {
-          case 'c': {
-            std::cout << "Option -l (libconfig config) requires an argument"
-                << std::endl;
-            break;
-          }
-          case 'o': {
-            std::cout
-                << "Option -o do not requires an argument, can be also set with option -r."
-                << std::endl;
-            break;
-          }
-          case 'r': {
-            std::cout
-                << "Option -r do not requires an argument, can be also set with option -o."
-                << std::endl;
-            break;
-          }
-          default: {
-            std::cout << "Unrecognized option [" << c << "]" << std::endl;
-            break;
-          }
-        }
-        result = false;
+        std::cout << "Option -r do not requires an argument, can be also set "
+                     "with option -o."
+                  << std::endl;
         break;
       }
       default: {
         std::cout << "Unrecognized option [" << c << "]" << std::endl;
-        result = false;
+        break;
       }
+      }
+      result = false;
+      break;
+    }
+    default: {
+      std::cout << "Unrecognized option [" << c << "]" << std::endl;
+      result = false;
+    }
     }
   }
   return result;
 }
-

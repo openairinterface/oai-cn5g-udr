@@ -3,9 +3,9 @@
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The OpenAirInterface Software Alliance licenses this file to You under
- * the OAI Public License, Version 1.1  (the "License"); you may not use this file
- * except in compliance with the License.
- * You may obtain a copy of the License at
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ *file except in compliance with the License. You may obtain a copy of the
+ *License at
  *
  *      http://www.openairinterface.org/?page_id=698
  *
@@ -32,25 +32,20 @@
 #include <stdexcept>
 #include <vector>
 
-#define SPDLOG_LEVEL_NAMES { "trace", "debug", "info ",  "start", "warn ", "error", "off  " };
+#define SPDLOG_LEVEL_NAMES                                                     \
+  {"trace", "debug", "info ", "start", "warn ", "error", "off  "};
 
 #define SPDLOG_ENABLE_SYSLOG
 #include "spdlog/spdlog.h"
 
 class LoggerException : public std::runtime_error {
- public:
-  explicit LoggerException(const char *m)
-      :
-      std::runtime_error(m) {
-  }
-  explicit LoggerException(const std::string &m)
-      :
-      std::runtime_error(m) {
-  }
+public:
+  explicit LoggerException(const char *m) : std::runtime_error(m) {}
+  explicit LoggerException(const std::string &m) : std::runtime_error(m) {}
 };
 
 class _Logger {
- public:
+public:
   _Logger(const char *category, std::vector<spdlog::sink_ptr> &sinks,
           const char *pattern);
 
@@ -67,24 +62,16 @@ class _Logger {
   void error(const char *format, ...);
   void error(const std::string &format, ...);
 
- private:
+private:
   _Logger();
-  enum _LogType {
-    _ltTrace,
-    _ltDebug,
-    _ltInfo,
-    _ltStartup,
-    _ltWarn,
-    _ltError
-  };
+  enum _LogType { _ltTrace, _ltDebug, _ltInfo, _ltStartup, _ltWarn, _ltError };
 
   void log(_LogType lt, const char *format, va_list &args);
   spdlog::logger m_log;
 };
 
 class Logger {
- public:
-
+public:
   static void init(const char *app, const bool log_stdout,
                    const bool log_rot_file) {
     singleton()._init(app, log_stdout, log_rot_file);
@@ -94,28 +81,20 @@ class Logger {
     init(app.c_str(), log_stdout, log_rot_file);
   }
 
-  static _Logger& udr_app() {
-    return *singleton().m_udr_app;
-  }
-  static _Logger& config() {
-    return *singleton().m_config;
-  }
-  static _Logger& udr_server() {
-    return *singleton().m_udr_server;
-  }
+  static _Logger &udr_app() { return *singleton().m_udr_app; }
+  static _Logger &config() { return *singleton().m_config; }
+  static _Logger &udr_server() { return *singleton().m_udr_server; }
 
- private:
+private:
   static Logger *m_singleton;
-  static Logger& singleton() {
+  static Logger &singleton() {
     if (!m_singleton)
       m_singleton = new Logger();
     return *m_singleton;
   }
 
-  Logger() {
-  }
-  ~Logger() {
-  }
+  Logger() {}
+  ~Logger() {}
 
   void _init(const char *app, const bool log_stdout, const bool log_rot_file);
 
@@ -126,8 +105,6 @@ class Logger {
   _Logger *m_udr_app;
   _Logger *m_config;
   _Logger *m_udr_server;
-
 };
 
 #endif
-

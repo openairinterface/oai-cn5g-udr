@@ -3,9 +3,9 @@
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The OpenAirInterface Software Alliance licenses this file to You under
- * the OAI Public License, Version 1.1  (the "License"); you may not use this file
- * except in compliance with the License.
- * You may obtain a copy of the License at
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ *file except in compliance with the License. You may obtain a copy of the
+ *License at
  *
  *      http://www.openairinterface.org/?page_id=698
  *
@@ -29,9 +29,9 @@
 #include "spdlog/sinks/syslog_sink.h"
 
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
-#include <memory>
 
 Logger *Logger::m_singleton = NULL;
 
@@ -58,9 +58,8 @@ void Logger::_init(const char *app, const bool log_stdout,
   }
   if (log_rot_file) {
     std::string filename = fmt::format("./{}.log", app);
-    m_sinks.push_back(
-        std::make_shared < spdlog::sinks::rotating_file_sink_mt
-            > (filename, 5 * 1024 * 1024, 3));
+    m_sinks.push_back(std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
+        filename, 5 * 1024 * 1024, 3));
   }
 
   std::stringstream ss;
@@ -74,15 +73,14 @@ void Logger::_init(const char *app, const bool log_stdout,
 //------------------------------------------------------------------------------
 _Logger::_Logger(const char *category, std::vector<spdlog::sink_ptr> &sinks,
                  const char *pattern)
-    :
-    m_log(category, sinks.begin(), sinks.end()) {
+    : m_log(category, sinks.begin(), sinks.end()) {
   m_log.set_pattern(pattern);
 #if TRACE_IS_ON
-  m_log.set_level( spdlog::level::trace );
+  m_log.set_level(spdlog::level::trace);
 #elif DEBUG_IS_ON
-  m_log.set_level( spdlog::level::debug );
+  m_log.set_level(spdlog::level::debug);
 #elif INFO_IS_ON
-  m_log.set_level( spdlog::level::info );
+  m_log.set_level(spdlog::level::info);
 #else
   m_log.set_level(spdlog::level::warn);
 #endif
@@ -92,9 +90,9 @@ _Logger::_Logger(const char *category, std::vector<spdlog::sink_ptr> &sinks,
 void _Logger::trace(const char *format, ...) {
 #if TRACE_IS_ON
   va_list args;
-  va_start( args, format );
-  log( _ltTrace, format, args );
-  va_end( args );
+  va_start(args, format);
+  log(_ltTrace, format, args);
+  va_end(args);
 #endif
 }
 
@@ -102,9 +100,9 @@ void _Logger::trace(const char *format, ...) {
 void _Logger::trace(const std::string &format, ...) {
 #if TRACE_IS_ON
   va_list args;
-  va_start( args, format );
-  log( _ltTrace, format.c_str(), args );
-  va_end( args );
+  va_start(args, format);
+  log(_ltTrace, format.c_str(), args);
+  va_end(args);
 #endif
 }
 
@@ -112,9 +110,9 @@ void _Logger::trace(const std::string &format, ...) {
 void _Logger::debug(const char *format, ...) {
 #if DEBUG_IS_ON
   va_list args;
-  va_start( args, format );
-  log( _ltDebug, format, args );
-  va_end( args );
+  va_start(args, format);
+  log(_ltDebug, format, args);
+  va_end(args);
 #endif
 }
 
@@ -122,9 +120,9 @@ void _Logger::debug(const char *format, ...) {
 void _Logger::debug(const std::string &format, ...) {
 #if DEBUG_IS_ON
   va_list args;
-  va_start( args, format );
-  log( _ltDebug, format.c_str(), args );
-  va_end( args );
+  va_start(args, format);
+  log(_ltDebug, format.c_str(), args);
+  va_end(args);
 #endif
 }
 
@@ -132,9 +130,9 @@ void _Logger::debug(const std::string &format, ...) {
 void _Logger::info(const char *format, ...) {
 #if INFO_IS_ON
   va_list args;
-  va_start( args, format );
-  log( _ltInfo, format, args );
-  va_end( args );
+  va_start(args, format);
+  log(_ltInfo, format, args);
+  va_end(args);
 #endif
 }
 
@@ -142,9 +140,9 @@ void _Logger::info(const char *format, ...) {
 void _Logger::info(const std::string &format, ...) {
 #if INFO_IS_ON
   va_list args;
-  va_start( args, format );
-  log( _ltInfo, format.c_str(), args );
-  va_end( args );
+  va_start(args, format);
+  log(_ltInfo, format.c_str(), args);
+  va_end(args);
 #endif
 }
 
@@ -200,27 +198,26 @@ void _Logger::error(const std::string &format, ...) {
 void _Logger::log(_LogType lt, const char *format, va_list &args) {
   char buffer[2048];
 
-  vsnprintf(buffer, sizeof(buffer)-1, format, args);
+  vsnprintf(buffer, sizeof(buffer) - 1, format, args);
 
   switch (lt) {
-    case _ltTrace:
-      m_log.trace(buffer);
-      break;
-    case _ltDebug:
-      m_log.debug(buffer);
-      break;
-    case _ltInfo:
-      m_log.info(buffer);
-      break;
-    case _ltStartup:
-      m_log.warn(buffer);
-      break;
-    case _ltWarn:
-      m_log.error(buffer);
-      break;
-    case _ltError:
-      m_log.critical(buffer);
-      break;
+  case _ltTrace:
+    m_log.trace(buffer);
+    break;
+  case _ltDebug:
+    m_log.debug(buffer);
+    break;
+  case _ltInfo:
+    m_log.info(buffer);
+    break;
+  case _ltStartup:
+    m_log.warn(buffer);
+    break;
+  case _ltWarn:
+    m_log.error(buffer);
+    break;
+  case _ltError:
+    m_log.critical(buffer);
+    break;
   }
 }
-
