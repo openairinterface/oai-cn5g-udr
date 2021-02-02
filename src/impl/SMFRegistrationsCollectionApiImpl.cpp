@@ -31,11 +31,21 @@ void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(const std::string &ue
     MYSQL_ROW row;
     MYSQL_FIELD* field = nullptr;
 
+    std::string tmp_ueId = "";
+    if(ueId.size() == 15)
+    {
+        tmp_ueId = "imsi-"+ueId;
+    }
+    else
+    {
+        tmp_ueId = ueId;
+    }
+
     std::vector<std::string> fields;
 
     nlohmann::json j,tmp;
 
-    const std::string query = "SELECT * from SmfRegistrations WHERE ueid='"+ueId+"'";
+    const std::string query = "SELECT * from SmfRegistrations WHERE ueid='"+tmp_ueId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

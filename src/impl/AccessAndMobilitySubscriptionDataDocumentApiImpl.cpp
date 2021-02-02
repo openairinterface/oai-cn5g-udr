@@ -33,8 +33,18 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(const std::
 
     nlohmann::json j;
 
+    std::string tmp_ueId = "";
+    if(ueId.size() == 15)
+    {
+        tmp_ueId = "imsi-"+ueId;
+    }
+    else
+    {
+        tmp_ueId = ueId;
+    }
+
     AccessAndMobilitySubscriptionData accessandmobilitysubscriptiondata;
-    const std::string query = "select * from AccessAndMobilitySubscriptionData WHERE ueid='"+ueId+"' and servingPlmnid='"+servingPlmnId+"'";
+    const std::string query = "select * from AccessAndMobilitySubscriptionData WHERE ueid='"+tmp_ueId+"' and servingPlmnid='"+servingPlmnId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

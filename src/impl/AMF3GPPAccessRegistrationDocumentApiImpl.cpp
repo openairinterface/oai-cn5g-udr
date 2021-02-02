@@ -41,7 +41,18 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::amf_context3gpp(const std::string
 void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(const std::string &ueId, Amf3GppAccessRegistration &amf3GppAccessRegistration, Pistache::Http::ResponseWriter &response) {
     MYSQL_RES *res = NULL;
     MYSQL_ROW row;
-    const std::string select_AMF3GPPAccessRegistration = "select * from Amf3GppAccessRegistration WHERE ueid='"+ueId+"'";
+
+    std::string tmp_ueId = "";
+    if(ueId.size() == 15)
+    {
+        tmp_ueId = "imsi-"+ueId;
+    }
+    else
+    {
+        tmp_ueId = ueId;
+    }
+
+    const std::string select_AMF3GPPAccessRegistration = "select * from Amf3GppAccessRegistration WHERE ueid='"+tmp_ueId+"'";
     std::string query;
 
     nlohmann::json j;
@@ -121,11 +132,11 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(const std:
         query += ",guami='"+j.dump()+"'";
         to_json(j,amf3GppAccessRegistration.getRatType());
         query += ",ratType='"+j.dump()+"'";
-        query += " where ueid='"+ueId+"'";
+        query += " where ueid='"+tmp_ueId+"'";
     }
     else
     {
-        query="insert into Amf3GppAccessRegistration set ueid='"+ueId+"'"+ \
+        query="insert into Amf3GppAccessRegistration set ueid='"+tmp_ueId+"'"+ \
             ",amfInstanceId='"+amf3GppAccessRegistration.getAmfInstanceId()+"'"+ \
             (amf3GppAccessRegistration.supportedFeaturesIsSet()?",supportedFeatures='"+amf3GppAccessRegistration.getSupportedFeatures()+"'":"")+ \
             (amf3GppAccessRegistration.purgeFlagIsSet()?(amf3GppAccessRegistration.isPurgeFlag()?",purgeFlag=1":",purgeFlag=0"):"")+ \
@@ -211,8 +222,18 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(const std::
 
     nlohmann::json j;
 
+    std::string tmp_ueId = "";
+    if(ueId.size() == 15)
+    {
+        tmp_ueId = "imsi-"+ueId;
+    }
+    else
+    {
+        tmp_ueId = ueId;
+    }
+
     Amf3GppAccessRegistration amf3gppaccessregistration;
-    const std::string query = "select * from Amf3GppAccessRegistration WHERE ueid='"+ueId+"'";
+    const std::string query = "select * from Amf3GppAccessRegistration WHERE ueid='"+tmp_ueId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

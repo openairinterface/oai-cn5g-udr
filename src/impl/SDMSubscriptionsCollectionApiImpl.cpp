@@ -31,9 +31,19 @@ void SDMSubscriptionsCollectionApiImpl::create_sdm_subscriptions(const std::stri
     MYSQL_ROW row;
     nlohmann::json j;
 
+    std::string tmp_ueId = "";
+    if(ueId.size() == 15)
+    {
+        tmp_ueId = "imsi-"+ueId;
+    }
+    else
+    {
+        tmp_ueId = ueId;
+    }
+
     int32_t subsId = 0;
     int32_t count = 0;
-    std::string query = "SELECT subsId from SdmSubscriptions WHERE ueid='"+ueId+"'";
+    std::string query = "SELECT subsId from SdmSubscriptions WHERE ueid='"+tmp_ueId+"'";
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
         Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
@@ -59,7 +69,7 @@ void SDMSubscriptionsCollectionApiImpl::create_sdm_subscriptions(const std::stri
 
 //****** add query *******
 
-    query="insert into SdmSubscriptions set ueid='"+ueId+"'"+ \
+    query="insert into SdmSubscriptions set ueid='"+tmp_ueId+"'"+ \
         ",nfInstanceId='"+sdmSubscription.getNfInstanceId()+"'"+ \
         (sdmSubscription.implicitUnsubscribeIsSet()?(sdmSubscription.isImplicitUnsubscribe()?",implicitUnsubscribe=1":",implicitUnsubscribe=0"):"")+ \
         (sdmSubscription.expiresIsSet()?",expires='"+sdmSubscription.getExpires()+"'":"")+ \
@@ -127,7 +137,17 @@ void SDMSubscriptionsCollectionApiImpl::querysdmsubscriptions(const std::string 
 
     nlohmann::json j,tmp;
 
-    const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='"+ueId+"'";
+    std::string tmp_ueId = "";
+    if(ueId.size() == 15)
+    {
+        tmp_ueId = "imsi-"+ueId;
+    }
+    else
+    {
+        tmp_ueId = ueId;
+    }
+
+    const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='"+tmp_ueId+"'";
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {

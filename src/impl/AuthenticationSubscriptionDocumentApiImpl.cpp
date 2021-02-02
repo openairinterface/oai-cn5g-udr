@@ -34,7 +34,16 @@ void AuthenticationSubscriptionDocumentApiImpl::modify_authentication_subscripti
 
     MYSQL_RES *res = NULL;
     MYSQL_ROW row;
-    const std::string select_Authenticationsubscription = "select * from AuthenticationSubscription WHERE ueid='"+ueId+"'";
+    std::string tmp_ueId = "";
+    if(ueId.size() == 15)
+    {
+        tmp_ueId = "imsi-"+ueId;
+    }
+    else
+    {
+        tmp_ueId = ueId;
+    }
+    const std::string select_Authenticationsubscription = "select * from AuthenticationSubscription WHERE ueid='"+tmp_ueId+"'";
     std::string query;
     nlohmann::json j,tmp_j;
 
@@ -48,14 +57,14 @@ void AuthenticationSubscriptionDocumentApiImpl::modify_authentication_subscripti
 
             if (mysql_real_query(mysql_WitcommUDRDB,select_Authenticationsubscription.c_str(), (unsigned long)select_Authenticationsubscription.size()))
             {
-                Logger::udr_server().error("mysql_real_query failure！SQL(%s)",select_Authenticationsubscription);
+                Logger::udr_server().error("mysql_real_query failure！SQL(%s)",select_Authenticationsubscription.c_str());
                 return;
             }
 
             res = mysql_store_result(mysql_WitcommUDRDB);
             if(res == NULL)
             {
-                Logger::udr_server().error("mysql_store_result failure！SQL(%s)",select_Authenticationsubscription);
+                Logger::udr_server().error("mysql_store_result failure！SQL(%s)",select_Authenticationsubscription.c_str());
                 return;
             }
             if (mysql_num_rows(res))
@@ -65,11 +74,11 @@ void AuthenticationSubscriptionDocumentApiImpl::modify_authentication_subscripti
 
                 to_json(sequencenumber_j,sequencenumber);
                 query += sequencenumber_j.dump()+"'";
-                query += " where ueid='"+ueId+"'";
+                query += " where ueid='"+tmp_ueId+"'";
             }
             else
             {
-                Logger::udr_server().error("AuthenticationSubscription no data！");
+                Logger::udr_server().error("AuthenticationSubscription no data！SQL(%s)",select_Authenticationsubscription.c_str());
             }
 
             mysql_free_result(res);
@@ -77,7 +86,7 @@ void AuthenticationSubscriptionDocumentApiImpl::modify_authentication_subscripti
 //            Logger::udr_server().debug("modify content: %s",query.c_str());
             if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
             {
-                Logger::udr_server().error("update mysql failure！");
+                Logger::udr_server().error("update mysql failure！SQL(%s)",query.c_str());
                 return;
             }
         }
@@ -100,21 +109,30 @@ void AuthenticationSubscriptionDocumentApiImpl::read_authentication_subscription
     MYSQL_FIELD* field = nullptr;
 
     nlohmann::json j;
+    std::string tmp_ueId = "s";
+    if(ueId.size() == 15)
+    {
+        tmp_ueId = "imsi-"+ueId;
+    }
+    else
+    {
+        tmp_ueId = ueId;
+    }
 
     AuthenticationSubscription authenticationsubscription;
-    const std::string query = "select * from AuthenticationSubscription WHERE ueid='"+ueId+"'";
+    const std::string query = "select * from AuthenticationSubscription WHERE ueid='"+tmp_ueId+"'";
 
 
     if (mysql_real_query(mysql_WitcommUDRDB,query.c_str(), (unsigned long)query.size()))
     {
-        Logger::udr_server().error("mysql_real_query failure！");
+        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",query.c_str());
         return;
     }
 
     res = mysql_store_result(mysql_WitcommUDRDB);
     if(res == NULL)
     {
-        Logger::udr_server().error("mysql_store_result failure！");
+        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",query.c_str());
         return;
     }
 
@@ -196,7 +214,7 @@ void AuthenticationSubscriptionDocumentApiImpl::read_authentication_subscription
     }
     else
     {
-        Logger::udr_server().error("AuthenticationSubscription no data！");
+        Logger::udr_server().error("AuthenticationSubscription no data！SQL(%s)",query.c_str());
     }
 
     mysql_free_result(res);
