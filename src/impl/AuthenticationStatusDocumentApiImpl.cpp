@@ -33,15 +33,9 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(
   // response.send(Pistache::Http::Code::Ok, "create_authentication_status\n");
   MYSQL_RES *res = NULL;
   MYSQL_ROW row;
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
 
   const std::string select_AuthenticationStatus =
-      "select * from AuthenticationStatus WHERE ueid='" + tmp_ueId + "'";
+      "select * from AuthenticationStatus WHERE ueid='" + ueId + "'";
   std::string query;
   nlohmann::json j;
 
@@ -71,9 +65,9 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(
                  : "");
     //        to_json(j,authEvent.getAuthType());
     //        query += ",authType='"+j.dump()+"'";
-    query += " where ueid='" + tmp_ueId + "'";
+    query += " where ueid='" + ueId + "'";
   } else {
-    query = "insert into AuthenticationStatus set ueid='" + tmp_ueId + "'" +
+    query = "insert into AuthenticationStatus set ueid='" + ueId + "'" +
             ",nfInstanceId='" + authEvent.getNfInstanceId() + "'" +
             ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
             authEvent.getTimeStamp() + "'" + ",authType='" +
@@ -103,15 +97,9 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(
 
 void AuthenticationStatusDocumentApiImpl::delete_authentication_status(
     const std::string &ueId, Pistache::Http::ResponseWriter &response) {
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
 
   const std::string query =
-      "DELETE from AuthenticationStatus WHERE ueid='" + tmp_ueId + "'";
+      "DELETE from AuthenticationStatus WHERE ueid='" + ueId + "'";
 
   if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
                        (unsigned long)query.size())) {
@@ -133,16 +121,10 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(
   MYSQL_FIELD *field = nullptr;
 
   nlohmann::json j;
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
 
   AuthEvent authenticationstatus;
   const std::string query =
-      "select * from AuthenticationStatus WHERE ueid='" + tmp_ueId + "'";
+      "select * from AuthenticationStatus WHERE ueid='" + ueId + "'";
 
   if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
                        (unsigned long)query.size())) {

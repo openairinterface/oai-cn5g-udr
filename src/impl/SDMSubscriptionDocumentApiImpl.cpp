@@ -41,18 +41,11 @@ void SDMSubscriptionDocumentApiImpl::querysdm_subscription(
   MYSQL_ROW row;
   MYSQL_FIELD *field = nullptr;
 
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
-
   nlohmann::json j;
 
   SdmSubscription SdmSubscriptions;
   const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='" +
-                            tmp_ueId + "' AND subsId=" + subsId;
+                            ueId + "' AND subsId=" + subsId;
 
   if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
                        (unsigned long)query.size())) {
@@ -141,19 +134,12 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(
   nlohmann::json j;
   ProblemDetails problemdetails;
 
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
-
   const std::string select_query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + tmp_ueId +
+      "SELECT * from SdmSubscriptions WHERE ueid='" + ueId +
       "' AND subsId=" + subsId;
 
   const std::string query = "DELETE from SdmSubscriptions WHERE ueid='" +
-                            tmp_ueId + "' AND subsId=" + subsId;
+                            ueId + "' AND subsId=" + subsId;
 
   if (mysql_real_query(mysql_WitcommUDRDB, select_query.c_str(),
                        (unsigned long)select_query.size())) {
@@ -201,15 +187,8 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(
   MYSQL_RES *res = NULL;
   MYSQL_ROW row;
 
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
-
   const std::string select_query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + tmp_ueId +
+      "SELECT * from SdmSubscriptions WHERE ueid='" + ueId +
       "' AND subsId=" + subsId;
   std::string query;
   nlohmann::json j;
@@ -282,7 +261,7 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(
     query +=
         ",monitoredResourceUris='" + MonitoredResourceUris_json.dump() + "'";
 
-    query += " where ueid='" + tmp_ueId + "' AND subsId=" + subsId;
+    query += " where ueid='" + ueId + "' AND subsId=" + subsId;
   } else {
     to_json(j, problemdetails);
     response.send(Pistache::Http::Code::Not_Found, j.dump());

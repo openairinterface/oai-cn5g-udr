@@ -39,14 +39,9 @@ void AuthenticationSubscriptionDocumentApiImpl::
 
   MYSQL_RES *res = NULL;
   MYSQL_ROW row;
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
+
   const std::string select_Authenticationsubscription =
-      "select * from AuthenticationSubscription WHERE ueid='" + tmp_ueId + "'";
+      "select * from AuthenticationSubscription WHERE ueid='" + ueId + "'";
   std::string query;
   nlohmann::json j, tmp_j;
 
@@ -78,7 +73,7 @@ void AuthenticationSubscriptionDocumentApiImpl::
 
         to_json(sequencenumber_j, sequencenumber);
         query += sequencenumber_j.dump() + "'";
-        query += " where ueid='" + tmp_ueId + "'";
+        query += " where ueid='" + ueId + "'";
       } else {
         Logger::udr_server().error(
             "AuthenticationSubscription no data！SQL(%s)",
@@ -118,16 +113,10 @@ void AuthenticationSubscriptionDocumentApiImpl::
   MYSQL_FIELD *field = nullptr;
 
   nlohmann::json j;
-  std::string tmp_ueId = "s";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
 
   AuthenticationSubscription authenticationsubscription;
   const std::string query =
-      "select * from AuthenticationSubscription WHERE ueid='" + tmp_ueId + "'";
+      "select * from AuthenticationSubscription WHERE ueid='" + ueId + "'";
 
   if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
                        (unsigned long)query.size())) {

@@ -41,16 +41,9 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
 
   nlohmann::json j;
 
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
-
   SmfSelectionSubscriptionData smfselectionsubscriptiondata;
   const std::string query =
-      "select * from SmfSelectionSubscriptionData WHERE ueid='" + tmp_ueId +
+      "select * from SmfSelectionSubscriptionData WHERE ueid='" + ueId +
       "' and servingPlmnid='" + servingPlmnId + "'";
 
   if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),

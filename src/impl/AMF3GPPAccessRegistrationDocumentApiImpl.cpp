@@ -49,15 +49,8 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
   MYSQL_RES *res = NULL;
   MYSQL_ROW row;
 
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
-
   const std::string select_AMF3GPPAccessRegistration =
-      "select * from Amf3GppAccessRegistration WHERE ueid='" + tmp_ueId + "'";
+      "select * from Amf3GppAccessRegistration WHERE ueid='" + ueId + "'";
   std::string query;
 
   nlohmann::json j;
@@ -171,10 +164,10 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
     query += ",guami='" + j.dump() + "'";
     to_json(j, amf3GppAccessRegistration.getRatType());
     query += ",ratType='" + j.dump() + "'";
-    query += " where ueid='" + tmp_ueId + "'";
+    query += " where ueid='" + ueId + "'";
   } else {
     query =
-        "insert into Amf3GppAccessRegistration set ueid='" + tmp_ueId + "'" +
+        "insert into Amf3GppAccessRegistration set ueid='" + ueId + "'" +
         ",amfInstanceId='" + amf3GppAccessRegistration.getAmfInstanceId() +
         "'" +
         (amf3GppAccessRegistration.supportedFeaturesIsSet()
@@ -297,16 +290,9 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
 
   nlohmann::json j;
 
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
-
   Amf3GppAccessRegistration amf3gppaccessregistration;
   const std::string query =
-      "select * from Amf3GppAccessRegistration WHERE ueid='" + tmp_ueId + "'";
+      "select * from Amf3GppAccessRegistration WHERE ueid='" + ueId + "'";
 
   if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
                        (unsigned long)query.size())) {

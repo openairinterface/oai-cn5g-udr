@@ -45,17 +45,10 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
 
   nlohmann::json j;
 
-  std::string tmp_ueId = "";
-  if (ueId.size() == 15) {
-    tmp_ueId = "imsi-" + ueId;
-  } else {
-    tmp_ueId = ueId;
-  }
-
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata;
   const std::string query =
       "select * from SessionManagementSubscriptionData WHERE ueid='" +
-      tmp_ueId + "' and servingPlmnid='" + servingPlmnId + "'";
+      ueId + "' and servingPlmnid='" + servingPlmnId + "'";
 
   if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
                        (unsigned long)query.size())) {
