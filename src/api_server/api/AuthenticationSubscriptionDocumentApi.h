@@ -31,12 +31,9 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  AuthenticationSubscriptionDocumentApi {
 public:
@@ -70,9 +67,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* AuthenticationSubscriptionDocumentApi_H_ */
 

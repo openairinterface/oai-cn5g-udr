@@ -28,12 +28,9 @@
 #include "SmsSubscriptionData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  SMSSubscriptionDataDocumentApi {
 public:
@@ -67,9 +64,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* SMSSubscriptionDataDocumentApi_H_ */
 

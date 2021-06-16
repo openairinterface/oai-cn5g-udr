@@ -27,10 +27,7 @@
 
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
 
 
@@ -63,9 +60,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* EventAMFSubscriptionInfoDocumentApi_H_ */
 

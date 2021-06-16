@@ -30,12 +30,9 @@
 #include "Snssai.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  IPTVConfigurationDataStoreApi {
 public:
@@ -69,9 +66,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* IPTVConfigurationDataStoreApi_H_ */
 

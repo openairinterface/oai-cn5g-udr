@@ -28,12 +28,9 @@
 #include "SubscriptionDataSubscriptions.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  SubsToNotifyCollectionApi {
 public:
@@ -87,9 +84,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* SubsToNotifyCollectionApi_H_ */
 

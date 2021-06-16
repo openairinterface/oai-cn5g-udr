@@ -14,12 +14,9 @@
 #include "Delete5GVnGroupApi.h"
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::helpers;
+using namespace oai::udr::helpers;
 
 Delete5GVnGroupApi::Delete5GVnGroupApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -69,7 +66,4 @@ void Delete5GVnGroupApi::delete5_g_vn_group_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

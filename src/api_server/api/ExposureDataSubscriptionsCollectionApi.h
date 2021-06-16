@@ -28,12 +28,9 @@
 #include "ExposureDataSubscription.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  ExposureDataSubscriptionsCollectionApi {
 public:
@@ -63,9 +60,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* ExposureDataSubscriptionsCollectionApi_H_ */
 

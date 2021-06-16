@@ -31,12 +31,9 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  Modify5GVnGroupApi {
 public:
@@ -68,9 +65,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* Modify5GVnGroupApi_H_ */
 

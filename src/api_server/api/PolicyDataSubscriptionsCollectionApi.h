@@ -28,12 +28,9 @@
 #include "PolicyDataSubscription.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  PolicyDataSubscriptionsCollectionApi {
 public:
@@ -63,9 +60,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* PolicyDataSubscriptionsCollectionApi_H_ */
 

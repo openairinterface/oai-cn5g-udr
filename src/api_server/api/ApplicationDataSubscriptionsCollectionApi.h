@@ -29,12 +29,9 @@
 #include "DataFilter.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  ApplicationDataSubscriptionsCollectionApi {
 public:
@@ -74,9 +71,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* ApplicationDataSubscriptionsCollectionApi_H_ */
 

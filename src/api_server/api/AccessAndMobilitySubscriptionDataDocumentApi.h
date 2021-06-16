@@ -28,12 +28,9 @@
 #include "AccessAndMobilitySubscriptionData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  AccessAndMobilitySubscriptionDataDocumentApi {
 public:
@@ -68,9 +65,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* AccessAndMobilitySubscriptionDataDocumentApi_H_ */
 

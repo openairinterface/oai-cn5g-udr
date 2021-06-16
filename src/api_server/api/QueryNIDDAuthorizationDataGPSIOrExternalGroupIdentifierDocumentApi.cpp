@@ -14,13 +14,10 @@
 #include "QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi.h"
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udr::helpers;
+using namespace oai::udr::model;
 
 QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
     QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi(
@@ -114,7 +111,4 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

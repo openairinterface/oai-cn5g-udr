@@ -14,13 +14,10 @@
 #include "Modify5GVnGroupApi.h"
 #include "Helpers.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::helpers;
-using namespace org::openapitools::server::model;
+using namespace oai::udr::helpers;
+using namespace oai::udr::model;
 
 Modify5GVnGroupApi::Modify5GVnGroupApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -85,7 +82,4 @@ void Modify5GVnGroupApi::modify5_g_vn_group_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

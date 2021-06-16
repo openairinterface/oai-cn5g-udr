@@ -29,12 +29,9 @@
 #include "UsageMonData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  UsageMonitoringInformationDocumentApi {
 public:
@@ -89,9 +86,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* UsageMonitoringInformationDocumentApi_H_ */
 

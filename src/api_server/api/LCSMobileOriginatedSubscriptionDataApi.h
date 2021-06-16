@@ -28,12 +28,9 @@
 #include "LcsMoData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  LCSMobileOriginatedSubscriptionDataApi {
 public:
@@ -67,9 +64,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* LCSMobileOriginatedSubscriptionDataApi_H_ */
 

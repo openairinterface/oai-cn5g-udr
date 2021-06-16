@@ -27,10 +27,7 @@
 
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
 
 
@@ -62,9 +59,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* Delete5GVnGroupApi_H_ */
 

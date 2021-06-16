@@ -30,12 +30,9 @@
 #include "TrafficInfluData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 class  InfluenceDataStoreApi {
 public:
@@ -70,9 +67,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 #endif /* InfluenceDataStoreApi_H_ */
 
