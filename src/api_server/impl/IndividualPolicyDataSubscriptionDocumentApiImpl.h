@@ -33,14 +33,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class IndividualPolicyDataSubscriptionDocumentApiImpl : public org::openapitools::server::api::IndividualPolicyDataSubscriptionDocumentApi {
+class IndividualPolicyDataSubscriptionDocumentApiImpl : public oai::udr::api::IndividualPolicyDataSubscriptionDocumentApi {
 public:
     IndividualPolicyDataSubscriptionDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~IndividualPolicyDataSubscriptionDocumentApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

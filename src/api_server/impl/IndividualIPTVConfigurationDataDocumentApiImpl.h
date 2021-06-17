@@ -33,14 +33,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class IndividualIPTVConfigurationDataDocumentApiImpl : public org::openapitools::server::api::IndividualIPTVConfigurationDataDocumentApi {
+class IndividualIPTVConfigurationDataDocumentApiImpl : public oai::udr::api::IndividualIPTVConfigurationDataDocumentApi {
 public:
     IndividualIPTVConfigurationDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~IndividualIPTVConfigurationDataDocumentApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

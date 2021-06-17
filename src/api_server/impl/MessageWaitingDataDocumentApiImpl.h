@@ -35,14 +35,11 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class MessageWaitingDataDocumentApiImpl : public org::openapitools::server::api::MessageWaitingDataDocumentApi {
+class MessageWaitingDataDocumentApiImpl : public oai::udr::api::MessageWaitingDataDocumentApi {
 public:
     MessageWaitingDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~MessageWaitingDataDocumentApiImpl() {}
@@ -55,9 +52,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

@@ -32,14 +32,11 @@
 #include "SmsfRegistration.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SMSFNon3GPPRegistrationDocumentApiImpl : public org::openapitools::server::api::SMSFNon3GPPRegistrationDocumentApi {
+class SMSFNon3GPPRegistrationDocumentApiImpl : public oai::udr::api::SMSFNon3GPPRegistrationDocumentApi {
 public:
     SMSFNon3GPPRegistrationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~SMSFNon3GPPRegistrationDocumentApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

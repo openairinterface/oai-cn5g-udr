@@ -34,14 +34,11 @@
 #include "Snssai.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class IPTVConfigurationDataStoreApiImpl : public org::openapitools::server::api::IPTVConfigurationDataStoreApi {
+class IPTVConfigurationDataStoreApiImpl : public oai::udr::api::IPTVConfigurationDataStoreApi {
 public:
     IPTVConfigurationDataStoreApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~IPTVConfigurationDataStoreApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

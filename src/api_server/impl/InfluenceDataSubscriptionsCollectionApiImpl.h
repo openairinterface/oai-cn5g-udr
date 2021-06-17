@@ -34,14 +34,11 @@
 #include "TrafficInfluSub.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class InfluenceDataSubscriptionsCollectionApiImpl : public org::openapitools::server::api::InfluenceDataSubscriptionsCollectionApi {
+class InfluenceDataSubscriptionsCollectionApiImpl : public oai::udr::api::InfluenceDataSubscriptionsCollectionApi {
 public:
     InfluenceDataSubscriptionsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~InfluenceDataSubscriptionsCollectionApiImpl() {}
@@ -52,9 +49,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

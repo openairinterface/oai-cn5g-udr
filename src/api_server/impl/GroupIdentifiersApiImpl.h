@@ -32,14 +32,11 @@
 #include "GroupIdentifiers.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class GroupIdentifiersApiImpl : public org::openapitools::server::api::GroupIdentifiersApi {
+class GroupIdentifiersApiImpl : public oai::udr::api::GroupIdentifiersApi {
 public:
     GroupIdentifiersApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~GroupIdentifiersApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

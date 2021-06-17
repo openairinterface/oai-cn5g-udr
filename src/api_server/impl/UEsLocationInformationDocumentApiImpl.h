@@ -32,14 +32,11 @@
 #include "LocationInfo.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class UEsLocationInformationDocumentApiImpl : public org::openapitools::server::api::UEsLocationInformationDocumentApi {
+class UEsLocationInformationDocumentApiImpl : public oai::udr::api::UEsLocationInformationDocumentApi {
 public:
     UEsLocationInformationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~UEsLocationInformationDocumentApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

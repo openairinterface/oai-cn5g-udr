@@ -36,14 +36,11 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class OperatorSpecificDataContainerDocumentApiImpl : public org::openapitools::server::api::OperatorSpecificDataContainerDocumentApi {
+class OperatorSpecificDataContainerDocumentApiImpl : public oai::udr::api::OperatorSpecificDataContainerDocumentApi {
 public:
     OperatorSpecificDataContainerDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~OperatorSpecificDataContainerDocumentApiImpl() {}
@@ -54,9 +51,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

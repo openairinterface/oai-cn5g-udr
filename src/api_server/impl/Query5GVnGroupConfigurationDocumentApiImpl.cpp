@@ -13,12 +13,9 @@
 
 #include "Query5GVnGroupConfigurationDocumentApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 Query5GVnGroupConfigurationDocumentApiImpl::
     Query5GVnGroupConfigurationDocumentApiImpl(
@@ -31,7 +28,4 @@ void Query5GVnGroupConfigurationDocumentApiImpl::get5_g_vn_group_configuration(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

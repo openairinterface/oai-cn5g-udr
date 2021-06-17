@@ -13,12 +13,9 @@
 
 #include "CAGACKDocumentApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 CAGACKDocumentApiImpl::CAGACKDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -31,7 +28,4 @@ void CAGACKDocumentApiImpl::query_cag_ack(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

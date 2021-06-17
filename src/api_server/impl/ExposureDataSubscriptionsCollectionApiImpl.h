@@ -32,14 +32,11 @@
 #include "ExposureDataSubscription.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class ExposureDataSubscriptionsCollectionApiImpl : public org::openapitools::server::api::ExposureDataSubscriptionsCollectionApi {
+class ExposureDataSubscriptionsCollectionApiImpl : public oai::udr::api::ExposureDataSubscriptionsCollectionApi {
 public:
     ExposureDataSubscriptionsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~ExposureDataSubscriptionsCollectionApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

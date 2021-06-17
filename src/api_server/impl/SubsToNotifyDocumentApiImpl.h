@@ -36,14 +36,11 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SubsToNotifyDocumentApiImpl : public org::openapitools::server::api::SubsToNotifyDocumentApi {
+class SubsToNotifyDocumentApiImpl : public oai::udr::api::SubsToNotifyDocumentApi {
 public:
     SubsToNotifyDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~SubsToNotifyDocumentApiImpl() {}
@@ -55,9 +52,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

@@ -33,14 +33,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class IndividualExposureDataSubscriptionDocumentApiImpl : public org::openapitools::server::api::IndividualExposureDataSubscriptionDocumentApi {
+class IndividualExposureDataSubscriptionDocumentApiImpl : public oai::udr::api::IndividualExposureDataSubscriptionDocumentApi {
 public:
     IndividualExposureDataSubscriptionDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~IndividualExposureDataSubscriptionDocumentApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

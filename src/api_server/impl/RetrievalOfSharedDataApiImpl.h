@@ -34,14 +34,11 @@
 #include "SharedData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class RetrievalOfSharedDataApiImpl : public org::openapitools::server::api::RetrievalOfSharedDataApi {
+class RetrievalOfSharedDataApiImpl : public oai::udr::api::RetrievalOfSharedDataApi {
 public:
     RetrievalOfSharedDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~RetrievalOfSharedDataApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

@@ -33,14 +33,11 @@
 #include "SponsorConnectivityData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SponsorConnectivityDataDocumentApiImpl : public org::openapitools::server::api::SponsorConnectivityDataDocumentApi {
+class SponsorConnectivityDataDocumentApiImpl : public oai::udr::api::SponsorConnectivityDataDocumentApi {
 public:
     SponsorConnectivityDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~SponsorConnectivityDataDocumentApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

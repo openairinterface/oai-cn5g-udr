@@ -33,14 +33,11 @@
 #include "Snssai.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl : public org::openapitools::server::api::QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
+class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl : public oai::udr::api::QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
 public:
     QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

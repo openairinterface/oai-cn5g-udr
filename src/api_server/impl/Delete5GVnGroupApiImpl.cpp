@@ -13,10 +13,7 @@
 
 #include "Delete5GVnGroupApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
 Delete5GVnGroupApiImpl::Delete5GVnGroupApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -28,7 +25,4 @@ void Delete5GVnGroupApiImpl::delete5_g_vn_group(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

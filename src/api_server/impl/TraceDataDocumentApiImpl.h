@@ -32,14 +32,11 @@
 #include "TraceData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class TraceDataDocumentApiImpl : public org::openapitools::server::api::TraceDataDocumentApi {
+class TraceDataDocumentApiImpl : public oai::udr::api::TraceDataDocumentApi {
 public:
     TraceDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~TraceDataDocumentApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

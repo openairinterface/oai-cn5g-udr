@@ -34,14 +34,11 @@
 
 #include <mysql/mysql.h>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SMFRegistrationsCollectionApiImpl : public org::openapitools::server::api::SMFRegistrationsCollectionApi {
+class SMFRegistrationsCollectionApiImpl : public oai::udr::api::SMFRegistrationsCollectionApi {
 public:
     SMFRegistrationsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>, MYSQL *mysql);
     ~SMFRegistrationsCollectionApiImpl() {}
@@ -52,9 +49,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

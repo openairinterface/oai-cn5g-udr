@@ -32,14 +32,11 @@
 #include "SubscriptionDataSubscriptions.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SubsToNotifyCollectionApiImpl : public org::openapitools::server::api::SubsToNotifyCollectionApi {
+class SubsToNotifyCollectionApiImpl : public oai::udr::api::SubsToNotifyCollectionApi {
 public:
     SubsToNotifyCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~SubsToNotifyCollectionApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

@@ -14,12 +14,9 @@
 #include "AuthenticationStatusDocumentApiImpl.h"
 #include "logger.hpp"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 AuthenticationStatusDocumentApiImpl::AuthenticationStatusDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, MYSQL *mysql)
@@ -178,7 +175,4 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(
   mysql_free_result(res);
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

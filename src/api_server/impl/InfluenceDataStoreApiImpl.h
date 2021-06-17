@@ -34,14 +34,11 @@
 #include "TrafficInfluData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class InfluenceDataStoreApiImpl : public org::openapitools::server::api::InfluenceDataStoreApi {
+class InfluenceDataStoreApiImpl : public oai::udr::api::InfluenceDataStoreApi {
 public:
     InfluenceDataStoreApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~InfluenceDataStoreApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

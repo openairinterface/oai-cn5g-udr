@@ -32,14 +32,11 @@
 #include "SmsManagementSubscriptionData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SMSManagementSubscriptionDataDocumentApiImpl : public org::openapitools::server::api::SMSManagementSubscriptionDataDocumentApi {
+class SMSManagementSubscriptionDataDocumentApiImpl : public oai::udr::api::SMSManagementSubscriptionDataDocumentApi {
 public:
     SMSManagementSubscriptionDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~SMSManagementSubscriptionDataDocumentApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

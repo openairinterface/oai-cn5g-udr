@@ -31,14 +31,11 @@
 
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
 
 
-class EventAMFSubscriptionInfoDocumentApiImpl : public org::openapitools::server::api::EventAMFSubscriptionInfoDocumentApi {
+class EventAMFSubscriptionInfoDocumentApiImpl : public oai::udr::api::EventAMFSubscriptionInfoDocumentApi {
 public:
     EventAMFSubscriptionInfoDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~EventAMFSubscriptionInfoDocumentApiImpl() {}
@@ -48,9 +45,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

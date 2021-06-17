@@ -33,14 +33,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class IndividualPFDDataDocumentApiImpl : public org::openapitools::server::api::IndividualPFDDataDocumentApi {
+class IndividualPFDDataDocumentApiImpl : public oai::udr::api::IndividualPFDDataDocumentApi {
 public:
     IndividualPFDDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~IndividualPFDDataDocumentApiImpl() {}
@@ -52,9 +49,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

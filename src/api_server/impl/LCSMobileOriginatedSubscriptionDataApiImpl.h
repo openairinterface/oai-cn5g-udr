@@ -32,14 +32,11 @@
 #include "LcsMoData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class LCSMobileOriginatedSubscriptionDataApiImpl : public org::openapitools::server::api::LCSMobileOriginatedSubscriptionDataApi {
+class LCSMobileOriginatedSubscriptionDataApiImpl : public oai::udr::api::LCSMobileOriginatedSubscriptionDataApi {
 public:
     LCSMobileOriginatedSubscriptionDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~LCSMobileOriginatedSubscriptionDataApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

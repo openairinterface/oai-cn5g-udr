@@ -37,14 +37,11 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class EventExposureGroupSubscriptionDocumentApiImpl : public org::openapitools::server::api::EventExposureGroupSubscriptionDocumentApi {
+class EventExposureGroupSubscriptionDocumentApiImpl : public oai::udr::api::EventExposureGroupSubscriptionDocumentApi {
 public:
     EventExposureGroupSubscriptionDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~EventExposureGroupSubscriptionDocumentApiImpl() {}
@@ -57,9 +54,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

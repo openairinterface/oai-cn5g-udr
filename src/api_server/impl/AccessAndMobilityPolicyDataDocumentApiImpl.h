@@ -33,14 +33,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class AccessAndMobilityPolicyDataDocumentApiImpl : public org::openapitools::server::api::AccessAndMobilityPolicyDataDocumentApi {
+class AccessAndMobilityPolicyDataDocumentApiImpl : public oai::udr::api::AccessAndMobilityPolicyDataDocumentApi {
 public:
     AccessAndMobilityPolicyDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~AccessAndMobilityPolicyDataDocumentApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

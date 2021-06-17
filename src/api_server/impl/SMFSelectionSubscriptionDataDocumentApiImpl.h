@@ -34,14 +34,11 @@
 
 #include <mysql/mysql.h>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SMFSelectionSubscriptionDataDocumentApiImpl : public org::openapitools::server::api::SMFSelectionSubscriptionDataDocumentApi {
+class SMFSelectionSubscriptionDataDocumentApiImpl : public oai::udr::api::SMFSelectionSubscriptionDataDocumentApi {
 public:
     SMFSelectionSubscriptionDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>, MYSQL *mysql);
     ~SMFSelectionSubscriptionDataDocumentApiImpl() {}
@@ -53,9 +50,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

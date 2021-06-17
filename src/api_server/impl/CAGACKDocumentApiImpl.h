@@ -32,14 +32,11 @@
 #include "CagAckData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class CAGACKDocumentApiImpl : public org::openapitools::server::api::CAGACKDocumentApi {
+class CAGACKDocumentApiImpl : public oai::udr::api::CAGACKDocumentApi {
 public:
     CAGACKDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~CAGACKDocumentApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

@@ -35,14 +35,11 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class ProvisionedParameterDataDocumentApiImpl : public org::openapitools::server::api::ProvisionedParameterDataDocumentApi {
+class ProvisionedParameterDataDocumentApiImpl : public oai::udr::api::ProvisionedParameterDataDocumentApi {
 public:
     ProvisionedParameterDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~ProvisionedParameterDataDocumentApiImpl() {}
@@ -52,9 +49,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

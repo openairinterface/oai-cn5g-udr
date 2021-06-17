@@ -32,14 +32,11 @@
 #include "OdbData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class QueryODBDataBySUPIOrGPSIDocumentApiImpl : public org::openapitools::server::api::QueryODBDataBySUPIOrGPSIDocumentApi {
+class QueryODBDataBySUPIOrGPSIDocumentApiImpl : public oai::udr::api::QueryODBDataBySUPIOrGPSIDocumentApi {
 public:
     QueryODBDataBySUPIOrGPSIDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~QueryODBDataBySUPIOrGPSIDocumentApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

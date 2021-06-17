@@ -13,12 +13,9 @@
 
 #include "IndividualApplicationDataSubscriptionDocumentApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 IndividualApplicationDataSubscriptionDocumentApiImpl::
     IndividualApplicationDataSubscriptionDocumentApiImpl(
@@ -43,7 +40,4 @@ void IndividualApplicationDataSubscriptionDocumentApiImpl::
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

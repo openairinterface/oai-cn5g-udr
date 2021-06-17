@@ -32,14 +32,11 @@
 #include "UpuData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class AuthenticationUPUDocumentApiImpl : public org::openapitools::server::api::AuthenticationUPUDocumentApi {
+class AuthenticationUPUDocumentApiImpl : public oai::udr::api::AuthenticationUPUDocumentApi {
 public:
     AuthenticationUPUDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~AuthenticationUPUDocumentApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

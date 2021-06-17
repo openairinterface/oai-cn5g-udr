@@ -13,12 +13,9 @@
 
 #include "PlmnUePolicySetDocumentApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 PlmnUePolicySetDocumentApiImpl::PlmnUePolicySetDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -29,7 +26,4 @@ void PlmnUePolicySetDocumentApiImpl::read_plmn_ue_policy_set(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

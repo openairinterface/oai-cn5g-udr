@@ -34,14 +34,11 @@
 #include "TrafficInfluDataPatch.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class IndividualInfluenceDataDocumentApiImpl : public org::openapitools::server::api::IndividualInfluenceDataDocumentApi {
+class IndividualInfluenceDataDocumentApiImpl : public oai::udr::api::IndividualInfluenceDataDocumentApi {
 public:
     IndividualInfluenceDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~IndividualInfluenceDataDocumentApiImpl() {}
@@ -53,9 +50,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

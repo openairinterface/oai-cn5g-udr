@@ -32,14 +32,11 @@
 #include "EeSubscription.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class EventExposureGroupSubscriptionsCollectionApiImpl : public org::openapitools::server::api::EventExposureGroupSubscriptionsCollectionApi {
+class EventExposureGroupSubscriptionsCollectionApiImpl : public oai::udr::api::EventExposureGroupSubscriptionsCollectionApi {
 public:
     EventExposureGroupSubscriptionsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~EventExposureGroupSubscriptionsCollectionApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

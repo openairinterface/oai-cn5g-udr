@@ -34,14 +34,11 @@
 //#include "Set.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class ContextDataDocumentApiImpl : public org::openapitools::server::api::ContextDataDocumentApi {
+class ContextDataDocumentApiImpl : public oai::udr::api::ContextDataDocumentApi {
 public:
     ContextDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~ContextDataDocumentApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

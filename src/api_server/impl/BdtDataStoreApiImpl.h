@@ -33,14 +33,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class BdtDataStoreApiImpl : public org::openapitools::server::api::BdtDataStoreApi {
+class BdtDataStoreApiImpl : public oai::udr::api::BdtDataStoreApi {
 public:
     BdtDataStoreApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~BdtDataStoreApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

@@ -32,14 +32,11 @@
 #include "NssaiAckData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class NSSAIACKDocumentApiImpl : public org::openapitools::server::api::NSSAIACKDocumentApi {
+class NSSAIACKDocumentApiImpl : public oai::udr::api::NSSAIACKDocumentApi {
 public:
     NSSAIACKDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~NSSAIACKDocumentApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

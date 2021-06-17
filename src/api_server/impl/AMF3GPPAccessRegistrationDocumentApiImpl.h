@@ -38,14 +38,11 @@
 
 #include <mysql/mysql.h>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class AMF3GPPAccessRegistrationDocumentApiImpl : public org::openapitools::server::api::AMF3GPPAccessRegistrationDocumentApi {
+class AMF3GPPAccessRegistrationDocumentApiImpl : public oai::udr::api::AMF3GPPAccessRegistrationDocumentApi {
 public:
     AMF3GPPAccessRegistrationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>, MYSQL *mysql);
     ~AMF3GPPAccessRegistrationDocumentApiImpl() {}
@@ -59,9 +56,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

@@ -34,14 +34,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class PduSessionManagementDataApiImpl : public org::openapitools::server::api::PduSessionManagementDataApi {
+class PduSessionManagementDataApiImpl : public oai::udr::api::PduSessionManagementDataApi {
 public:
     PduSessionManagementDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~PduSessionManagementDataApiImpl() {}
@@ -53,9 +50,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

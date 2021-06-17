@@ -13,12 +13,9 @@
 
 #include "EventExposureGroupSubscriptionDocumentApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 EventExposureGroupSubscriptionDocumentApiImpl::
     EventExposureGroupSubscriptionDocumentApiImpl(
@@ -52,7 +49,4 @@ void EventExposureGroupSubscriptionDocumentApiImpl::
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

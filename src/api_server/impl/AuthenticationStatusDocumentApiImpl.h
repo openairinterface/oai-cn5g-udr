@@ -34,14 +34,11 @@
 
 #include <mysql/mysql.h>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class AuthenticationStatusDocumentApiImpl : public org::openapitools::server::api::AuthenticationStatusDocumentApi {
+class AuthenticationStatusDocumentApiImpl : public oai::udr::api::AuthenticationStatusDocumentApi {
 public:
     AuthenticationStatusDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,MYSQL *mysql);
     ~AuthenticationStatusDocumentApiImpl() {}
@@ -56,9 +53,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

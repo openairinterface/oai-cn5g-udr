@@ -35,14 +35,11 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class AmfSubscriptionInfoDocumentApiImpl : public org::openapitools::server::api::AmfSubscriptionInfoDocumentApi {
+class AmfSubscriptionInfoDocumentApiImpl : public oai::udr::api::AmfSubscriptionInfoDocumentApi {
 public:
     AmfSubscriptionInfoDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~AmfSubscriptionInfoDocumentApiImpl() {}
@@ -52,9 +49,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

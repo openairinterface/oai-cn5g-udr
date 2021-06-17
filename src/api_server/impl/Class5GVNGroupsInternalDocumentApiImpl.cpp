@@ -13,12 +13,9 @@
 
 #include "Class5GVNGroupsInternalDocumentApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 Class5GVNGroupsInternalDocumentApiImpl::Class5GVNGroupsInternalDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -30,7 +27,4 @@ void Class5GVNGroupsInternalDocumentApiImpl::query5_g_vn_group_internal(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

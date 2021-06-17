@@ -37,14 +37,11 @@
 #include <string>
 #include <vector>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class AMFNon3GPPAccessRegistrationDocumentApiImpl : public org::openapitools::server::api::AMFNon3GPPAccessRegistrationDocumentApi {
+class AMFNon3GPPAccessRegistrationDocumentApiImpl : public oai::udr::api::AMFNon3GPPAccessRegistrationDocumentApi {
 public:
     AMFNon3GPPAccessRegistrationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~AMFNon3GPPAccessRegistrationDocumentApiImpl() {}
@@ -56,9 +53,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

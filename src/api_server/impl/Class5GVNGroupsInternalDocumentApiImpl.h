@@ -32,14 +32,11 @@
 #include "5GVnGroupConfiguration.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class Class5GVNGroupsInternalDocumentApiImpl : public org::openapitools::server::api::Class5GVNGroupsInternalDocumentApi {
+class Class5GVNGroupsInternalDocumentApiImpl : public oai::udr::api::Class5GVNGroupsInternalDocumentApi {
 public:
     Class5GVNGroupsInternalDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~Class5GVNGroupsInternalDocumentApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

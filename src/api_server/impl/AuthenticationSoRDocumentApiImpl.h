@@ -32,14 +32,11 @@
 #include "SorData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class AuthenticationSoRDocumentApiImpl : public org::openapitools::server::api::AuthenticationSoRDocumentApi {
+class AuthenticationSoRDocumentApiImpl : public oai::udr::api::AuthenticationSoRDocumentApi {
 public:
     AuthenticationSoRDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~AuthenticationSoRDocumentApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

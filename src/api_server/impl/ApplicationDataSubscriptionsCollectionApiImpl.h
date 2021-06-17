@@ -33,14 +33,11 @@
 #include "DataFilter.h"
 #include "ProblemDetails.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class ApplicationDataSubscriptionsCollectionApiImpl : public org::openapitools::server::api::ApplicationDataSubscriptionsCollectionApi {
+class ApplicationDataSubscriptionsCollectionApiImpl : public oai::udr::api::ApplicationDataSubscriptionsCollectionApi {
 public:
     ApplicationDataSubscriptionsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~ApplicationDataSubscriptionsCollectionApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

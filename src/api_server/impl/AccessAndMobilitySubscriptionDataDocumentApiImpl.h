@@ -34,14 +34,11 @@
 
 #include <mysql/mysql.h>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class AccessAndMobilitySubscriptionDataDocumentApiImpl : public org::openapitools::server::api::AccessAndMobilitySubscriptionDataDocumentApi {
+class AccessAndMobilitySubscriptionDataDocumentApiImpl : public oai::udr::api::AccessAndMobilitySubscriptionDataDocumentApi {
 public:
     AccessAndMobilitySubscriptionDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,MYSQL *mysql);
     ~AccessAndMobilitySubscriptionDataDocumentApiImpl() {}
@@ -54,9 +51,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

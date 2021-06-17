@@ -33,14 +33,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class ParameterProvisionDocumentApiImpl : public org::openapitools::server::api::ParameterProvisionDocumentApi {
+class ParameterProvisionDocumentApiImpl : public oai::udr::api::ParameterProvisionDocumentApi {
 public:
     ParameterProvisionDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~ParameterProvisionDocumentApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

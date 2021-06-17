@@ -32,14 +32,11 @@
 #include "V2xSubscriptionData.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class V2XSubscriptionDataApiImpl : public org::openapitools::server::api::V2XSubscriptionDataApi {
+class V2XSubscriptionDataApiImpl : public oai::udr::api::V2XSubscriptionDataApi {
 public:
     V2XSubscriptionDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~V2XSubscriptionDataApiImpl() {}
@@ -49,9 +46,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

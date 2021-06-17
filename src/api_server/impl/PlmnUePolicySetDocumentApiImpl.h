@@ -33,14 +33,11 @@
 #include "UePolicySet.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class PlmnUePolicySetDocumentApiImpl : public org::openapitools::server::api::PlmnUePolicySetDocumentApi {
+class PlmnUePolicySetDocumentApiImpl : public oai::udr::api::PlmnUePolicySetDocumentApi {
 public:
     PlmnUePolicySetDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~PlmnUePolicySetDocumentApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

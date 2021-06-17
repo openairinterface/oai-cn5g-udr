@@ -13,12 +13,9 @@
 
 #include "EnhancedCoverageRestrictionDataApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 EnhancedCoverageRestrictionDataApiImpl::EnhancedCoverageRestrictionDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr)
@@ -33,7 +30,4 @@ void EnhancedCoverageRestrictionDataApiImpl::query_coverage_restriction_data(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

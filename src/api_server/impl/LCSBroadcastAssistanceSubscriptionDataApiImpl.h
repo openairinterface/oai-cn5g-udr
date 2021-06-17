@@ -33,14 +33,11 @@
 #include "ProblemDetails.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class LCSBroadcastAssistanceSubscriptionDataApiImpl : public org::openapitools::server::api::LCSBroadcastAssistanceSubscriptionDataApi {
+class LCSBroadcastAssistanceSubscriptionDataApiImpl : public oai::udr::api::LCSBroadcastAssistanceSubscriptionDataApi {
 public:
     LCSBroadcastAssistanceSubscriptionDataApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~LCSBroadcastAssistanceSubscriptionDataApiImpl() {}
@@ -50,9 +47,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

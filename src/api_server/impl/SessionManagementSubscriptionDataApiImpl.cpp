@@ -14,12 +14,9 @@
 #include "SessionManagementSubscriptionDataApiImpl.h"
 #include "logger.hpp"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 SessionManagementSubscriptionDataApiImpl::
     SessionManagementSubscriptionDataApiImpl(
@@ -134,7 +131,4 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
   mysql_free_result(res);
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

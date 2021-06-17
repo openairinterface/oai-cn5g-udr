@@ -14,12 +14,9 @@
 #include "SDMSubscriptionsCollectionApiImpl.h"
 #include "logger.hpp"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
 SDMSubscriptionsCollectionApiImpl::SDMSubscriptionsCollectionApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, MYSQL *mysql)
@@ -240,7 +237,4 @@ void SDMSubscriptionsCollectionApiImpl::querysdmsubscriptions(
                              out.c_str());
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

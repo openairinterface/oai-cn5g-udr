@@ -34,14 +34,11 @@
 //#include "Set.h"
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class ProvisionedDataDocumentApiImpl : public org::openapitools::server::api::ProvisionedDataDocumentApi {
+class ProvisionedDataDocumentApiImpl : public oai::udr::api::ProvisionedDataDocumentApi {
 public:
     ProvisionedDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~ProvisionedDataDocumentApiImpl() {}
@@ -51,9 +48,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

@@ -31,14 +31,11 @@
 
 #include <string>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
 
 
-class Delete5GVnGroupApiImpl : public org::openapitools::server::api::Delete5GVnGroupApi {
+class Delete5GVnGroupApiImpl : public oai::udr::api::Delete5GVnGroupApi {
 public:
     Delete5GVnGroupApiImpl(std::shared_ptr<Pistache::Rest::Router>);
     ~Delete5GVnGroupApiImpl() {}
@@ -48,9 +45,9 @@ public:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

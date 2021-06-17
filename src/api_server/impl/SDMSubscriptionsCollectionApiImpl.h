@@ -34,14 +34,11 @@
 
 #include <mysql/mysql.h>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SDMSubscriptionsCollectionApiImpl : public org::openapitools::server::api::SDMSubscriptionsCollectionApi {
+class SDMSubscriptionsCollectionApiImpl : public oai::udr::api::SDMSubscriptionsCollectionApi {
 public:
     SDMSubscriptionsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>, MYSQL *mysql);
     ~SDMSubscriptionsCollectionApiImpl() {}
@@ -53,9 +50,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 

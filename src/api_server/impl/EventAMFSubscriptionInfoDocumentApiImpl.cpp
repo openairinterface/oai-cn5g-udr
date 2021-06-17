@@ -13,10 +13,7 @@
 
 #include "EventAMFSubscriptionInfoDocumentApiImpl.h"
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
 EventAMFSubscriptionInfoDocumentApiImpl::
     EventAMFSubscriptionInfoDocumentApiImpl(
@@ -29,7 +26,4 @@ void EventAMFSubscriptionInfoDocumentApiImpl::remove_amf_subscriptions_info(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace api
-} // namespace server
-} // namespace openapitools
-} // namespace org
+} // namespace oai::udr::model

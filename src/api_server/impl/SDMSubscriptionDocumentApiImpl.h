@@ -39,14 +39,11 @@
 
 #include <mysql/mysql.h>
 
-namespace org {
-namespace openapitools {
-namespace server {
-namespace api {
+namespace oai::udr::api {
 
-using namespace org::openapitools::server::model;
+using namespace oai::udr::model;
 
-class SDMSubscriptionDocumentApiImpl : public org::openapitools::server::api::SDMSubscriptionDocumentApi {
+class SDMSubscriptionDocumentApiImpl : public oai::udr::api::SDMSubscriptionDocumentApi {
 public:
     SDMSubscriptionDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>, MYSQL *mysql);
     ~SDMSubscriptionDocumentApiImpl() {}
@@ -60,9 +57,9 @@ private:
 };
 
 }
-}
-}
-}
+
+
+
 
 
 
