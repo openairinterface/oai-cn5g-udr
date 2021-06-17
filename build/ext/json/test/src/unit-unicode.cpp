@@ -32,9 +32,10 @@ SOFTWARE.
 // for some reason including this after the json header leads to linker errors with VS 2017...
 #include <locale>
 
-#define JSON_TESTS_PRIVATE
+#define private public
 #include <nlohmann/json.hpp>
 using nlohmann::json;
+#undef private
 
 #include <fstream>
 #include <sstream>
@@ -1201,8 +1202,7 @@ TEST_CASE("Unicode" * doctest::skip())
         SECTION("with an iterator")
         {
             std::string i = "\xef\xbb\xbf{\n   \"foo\": true\n}";
-            json _;
-            CHECK_NOTHROW(_ = json::parse(i.begin(), i.end()));
+            CHECK_NOTHROW(json::parse(i.begin(), i.end()));
         }
     }
 

@@ -112,13 +112,13 @@ static void to_json(BasicJsonType& j, country c)
     switch (c)
     {
         case country::china:
-            j = "中华人民共和国";
+            j = u8"中华人民共和国";
             return;
         case country::france:
             j = "France";
             return;
         case country::russia:
-            j = "Российская Федерация";
+            j = u8"Российская Федерация";
             return;
         default:
             break;
@@ -201,9 +201,9 @@ static void from_json(const BasicJsonType& j, country& c)
     const auto str = j.template get<std::string>();
     static const std::map<std::string, country> m =
     {
-        {"中华人民共和国", country::china},
+        {u8"中华人民共和国", country::china},
         {"France", country::france},
-        {"Российская Федерация", country::russia}
+        {u8"Российская Федерация", country::russia}
     };
 
     const auto it = m.find(str);
@@ -248,7 +248,7 @@ TEST_CASE("basic usage" * doctest::test_suite("udt"))
     const udt::name n{"theo"};
     const udt::country c{udt::country::france};
     const udt::person sfinae_addict{a, n, c};
-    const udt::person senior_programmer{{42}, {"王芳"}, udt::country::china};
+    const udt::person senior_programmer{{42}, {u8"王芳"}, udt::country::china};
     const udt::address addr{"Paris"};
     const udt::contact cpp_programmer{sfinae_addict, addr};
     const udt::contact_book book{{"C++"}, {cpp_programmer, {senior_programmer, addr}}};
@@ -265,14 +265,14 @@ TEST_CASE("basic usage" * doctest::test_suite("udt"))
 
         CHECK(
             json(book) ==
-            R"({"name":"C++", "contacts" : [{"person" : {"age":23, "name":"theo", "country":"France"}, "address":"Paris"}, {"person" : {"age":42, "country":"中华人民共和国", "name":"王芳"}, "address":"Paris"}]})"_json);
+            u8R"({"name":"C++", "contacts" : [{"person" : {"age":23, "name":"theo", "country":"France"}, "address":"Paris"}, {"person" : {"age":42, "country":"中华人民共和国", "name":"王芳"}, "address":"Paris"}]})"_json);
 
     }
 
     SECTION("conversion from json via free-functions")
     {
         const auto big_json =
-            R"({"name":"C++", "contacts" : [{"person" : {"age":23, "name":"theo", "country":"France"}, "address":"Paris"}, {"person" : {"age":42, "country":"中华人民共和国", "name":"王芳"}, "address":"Paris"}]})"_json;
+            u8R"({"name":"C++", "contacts" : [{"person" : {"age":23, "name":"theo", "country":"France"}, "address":"Paris"}, {"person" : {"age":42, "country":"中华人民共和国", "name":"王芳"}, "address":"Paris"}]})"_json;
         SECTION("via explicit calls to get")
         {
             const auto parsed_book = big_json.get<udt::contact_book>();

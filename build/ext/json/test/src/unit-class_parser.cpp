@@ -29,9 +29,10 @@ SOFTWARE.
 
 #include "doctest_compatibility.h"
 
-#define JSON_TESTS_PRIVATE
+#define private public
 #include <nlohmann/json.hpp>
 using nlohmann::json;
+#undef private
 
 #include <valarray>
 
@@ -509,7 +510,7 @@ TEST_CASE("parser class")
                 CHECK(parser_helper("\"€\"").get<json::string_t>() == "€");
                 CHECK(parser_helper("\"🎈\"").get<json::string_t>() == "🎈");
 
-                CHECK(parser_helper("\"\\ud80c\\udc60\"").get<json::string_t>() == "\xf0\x93\x81\xa0");
+                CHECK(parser_helper("\"\\ud80c\\udc60\"").get<json::string_t>() == u8"\U00013060");
                 CHECK(parser_helper("\"\\ud83c\\udf1e\"").get<json::string_t>() == "🌞");
             }
         }
@@ -1879,8 +1880,7 @@ TEST_CASE("parser class")
 
     SECTION("error messages for comments")
     {
-        json _;
-        CHECK_THROWS_WITH_AS(_ = json::parse("/a", nullptr, true, true), "[json.exception.parse_error.101] parse error at line 1, column 2: syntax error while parsing value - invalid comment; expecting '/' or '*' after '/'; last read: '/a'", json::parse_error);
-        CHECK_THROWS_WITH_AS(_ = json::parse("/*", nullptr, true, true), "[json.exception.parse_error.101] parse error at line 1, column 3: syntax error while parsing value - invalid comment; missing closing '*/'; last read: '/*<U+0000>'", json::parse_error);
+        CHECK_THROWS_WITH_AS(json::parse("/a", nullptr, true, true), "[json.exception.parse_error.101] parse error at line 1, column 2: syntax error while parsing value - invalid comment; expecting '/' or '*' after '/'; last read: '/a'", json::parse_error);
+        CHECK_THROWS_WITH_AS(json::parse("/*", nullptr, true, true), "[json.exception.parse_error.101] parse error at line 1, column 3: syntax error while parsing value - invalid comment; missing closing '*/'; last read: '/*<U+0000>'", json::parse_error);
     }
 }

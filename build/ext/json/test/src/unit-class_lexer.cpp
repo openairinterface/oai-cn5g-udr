@@ -29,9 +29,10 @@ SOFTWARE.
 
 #include "doctest_compatibility.h"
 
-#define JSON_TESTS_PRIVATE
+#define private public
 #include <nlohmann/json.hpp>
 using nlohmann::json;
+#undef private
 
 namespace
 {
@@ -135,7 +136,7 @@ TEST_CASE("lexer class")
             // store scan() result
             const auto res = scan_string(s.c_str());
 
-            CAPTURE(s)
+            CAPTURE(s);
 
             switch (c)
             {

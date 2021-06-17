@@ -33,9 +33,10 @@ DOCTEST_GCC_SUPPRESS_WARNING("-Wfloat-equal")
 // for some reason including this after the json header leads to linker errors with VS 2017...
 #include <locale>
 
-#define JSON_TESTS_PRIVATE
+#define private public
 #include <nlohmann/json.hpp>
 using nlohmann::json;
+#undef private
 
 #include <fstream>
 #include <sstream>
@@ -400,7 +401,7 @@ TEST_CASE("regression tests 1")
 
     SECTION("issue #146 - character following a surrogate pair is skipped")
     {
-        CHECK(json::parse("\"\\ud80c\\udc60abc\"").get<json::string_t>() == "\xf0\x93\x81\xa0\x61\x62\x63");
+        CHECK(json::parse("\"\\ud80c\\udc60abc\"").get<json::string_t>() == u8"\U00013060abc");
     }
 
     SECTION("issue #171 - Cannot index by key of type static constexpr const char*")

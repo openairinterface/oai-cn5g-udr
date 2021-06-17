@@ -33,9 +33,10 @@ DOCTEST_GCC_SUPPRESS_WARNING("-Wfloat-equal")
 // for some reason including this after the json header leads to linker errors with VS 2017...
 #include <locale>
 
-#define JSON_TESTS_PRIVATE
+#define private public
 #include <nlohmann/json.hpp>
 using nlohmann::json;
+#undef private
 
 #include <fstream>
 #include <sstream>
@@ -49,10 +50,6 @@ using nlohmann::json;
 
 #ifdef JSON_HAS_CPP_17
     #include <variant>
-#endif
-
-#ifdef JSON_HAS_CPP_20
-    #include <span>
 #endif
 
 /////////////////////////////////////////////////////////////////////
@@ -488,14 +485,4 @@ TEST_CASE("regression tests 2")
         json j = json::parse(ss, nullptr, true, true);
         CHECK(j.dump() == "{}");
     }
-
-#ifdef JSON_HAS_CPP_20
-    SECTION("issue #2546 - parsing containers of std::byte")
-    {
-        const char DATA[] = R"("Hello, world!")";
-        const auto s = std::as_bytes(std::span(DATA));
-        json j = json::parse(s);
-        CHECK(j.dump() == "\"Hello, world!\"");
-    }
-#endif
 }

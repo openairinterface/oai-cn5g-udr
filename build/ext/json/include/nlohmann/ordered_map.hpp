@@ -5,8 +5,6 @@
 #include <utility> // pair
 #include <vector> // vector
 
-#include <nlohmann/detail/macro_scope.hpp>
-
 namespace nlohmann
 {
 
@@ -66,7 +64,7 @@ template <class Key, class T, class IgnoredLess = std::less<Key>,
             }
         }
 
-        JSON_THROW(std::out_of_range("key not found"));
+        throw std::out_of_range("key not found");
     }
 
     const T& at(const Key& key) const
@@ -79,7 +77,7 @@ template <class Key, class T, class IgnoredLess = std::less<Key>,
             }
         }
 
-        JSON_THROW(std::out_of_range("key not found"));
+        throw std::out_of_range("key not found");
     }
 
     size_type erase(const Key& key)
@@ -167,19 +165,6 @@ template <class Key, class T, class IgnoredLess = std::less<Key>,
         }
         Container::push_back(value);
         return {--this->end(), true};
-    }
-
-    template<typename InputIt>
-    using require_input_iter = typename std::enable_if<std::is_convertible<typename std::iterator_traits<InputIt>::iterator_category,
-            std::input_iterator_tag>::value>::type;
-
-    template<typename InputIt, typename = require_input_iter<InputIt>>
-    void insert(InputIt first, InputIt last)
-    {
-        for (auto it = first; it != last; ++it)
-        {
-            insert(*it);
-        }
     }
 };
 

@@ -1448,11 +1448,3 @@ TEST_CASE("items()")
         }
     }
 }
-
-#ifdef JSON_HAS_CPP_17
-    #undef JSON_HAS_CPP_17
-#endif
-
-#ifdef JSON_HAS_CPP_14
-    #undef JSON_HAS_CPP_14
-#endif

@@ -375,7 +375,6 @@ class json_pointer
         return static_cast<size_type>(res);
     }
 
-  JSON_PRIVATE_UNLESS_TESTED:
     json_pointer top() const
     {
         if (JSON_HEDLEY_UNLIKELY(empty()))
@@ -388,7 +387,6 @@ class json_pointer
         return result;
     }
 
-  private:
     /*!
     @brief create and return a reference to the pointed to value
 
@@ -825,7 +823,6 @@ class json_pointer
         {}
     }
 
-  JSON_PRIVATE_UNLESS_TESTED:
     /// escape "~" to "~0" and "/" to "~1"
     static std::string escape(std::string s)
     {
@@ -841,7 +838,6 @@ class json_pointer
         replace_substring(s, "~0", "~");
     }
 
-  private:
     /*!
     @param[in] reference_string  the reference string to the current value
     @param[in] value             the value to consider

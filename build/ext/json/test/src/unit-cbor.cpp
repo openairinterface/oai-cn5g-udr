@@ -1591,16 +1591,14 @@ TEST_CASE("CBOR")
             {
                 // array with three empty byte strings
                 std::vector<std::uint8_t> input = {0x83, 0x40, 0x40, 0x40};
-                json _;
-                CHECK_NOTHROW(_ = json::from_cbor(input));
+                CHECK_NOTHROW(json::from_cbor(input));
             }
 
             SECTION("binary in object")
             {
                 // object mapping "foo" to empty byte string
                 std::vector<std::uint8_t> input = {0xA1, 0x63, 0x66, 0x6F, 0x6F, 0x40};
-                json _;
-                CHECK_NOTHROW(_ = json::from_cbor(input));
+                CHECK_NOTHROW(json::from_cbor(input));
             }
 
             SECTION("SAX callback with binary")
@@ -2553,9 +2551,8 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), b);
 
             // check that parsing fails in error mode
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
 
             // check that parsing succeeds and gets original value in ignore mode
             auto j_tagged = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore);
@@ -2573,9 +2570,8 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), 0xD8); // tag
 
             // check that parsing fails in error mode
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
 
             // check that parsing succeeds and gets original value in ignore mode
             auto j_tagged = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore);
@@ -2589,10 +2585,9 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), 0xD8); // tag
 
             // check that parsing fails in all modes
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore), json::parse_error);
         }
     }
 
@@ -2607,9 +2602,8 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), 0xD9); // tag
 
             // check that parsing fails in error mode
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
 
             // check that parsing succeeds and gets original value in ignore mode
             auto j_tagged = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore);
@@ -2624,10 +2618,9 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), 0xD9); // tag
 
             // check that parsing fails in all modes
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore), json::parse_error);
         }
     }
 
@@ -2644,9 +2637,8 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), 0xDA); // tag
 
             // check that parsing fails in error mode
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
 
             // check that parsing succeeds and gets original value in ignore mode
             auto j_tagged = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore);
@@ -2663,10 +2655,9 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), 0xDA); // tag
 
             // check that parsing fails in all modes
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore), json::parse_error);
         }
     }
 
@@ -2687,9 +2678,8 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), 0xDB); // tag
 
             // check that parsing fails in error mode
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
 
             // check that parsing succeeds and gets original value in ignore mode
             auto j_tagged = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore);
@@ -2710,10 +2700,9 @@ TEST_CASE("Tagged values")
             v_tagged.insert(v_tagged.begin(), 0xDB); // tag
 
             // check that parsing fails in all modes
-            json _;
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
-            CHECK_THROWS_AS(_ = json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::error), json::parse_error);
+            CHECK_THROWS_AS(json::from_cbor(v_tagged, true, true, json::cbor_tag_handler_t::ignore), json::parse_error);
         }
     }
 
@@ -2728,9 +2717,8 @@ TEST_CASE("Tagged values")
         CHECK(vec == std::vector<std::uint8_t> {0xA1, 0x66, 0x62, 0x69, 0x6E, 0x61, 0x72, 0x79, 0xD8, 0x2A, 0x44, 0xCA, 0xFE, 0xBA, 0xBE});
 
         // parse error when parsing tagged value
-        json _;
-        CHECK_THROWS_AS(_ = json::from_cbor(vec), json::parse_error);
-        CHECK_THROWS_WITH(_ = json::from_cbor(vec), "[json.exception.parse_error.112] parse error at byte 9: syntax error while parsing CBOR value: invalid byte: 0xD8");
+        CHECK_THROWS_AS(json::from_cbor(vec), json::parse_error);
+        CHECK_THROWS_WITH(json::from_cbor(vec), "[json.exception.parse_error.112] parse error at byte 9: syntax error while parsing CBOR value: invalid byte: 0xD8");
 
         // binary without subtype when tags are ignored
         json jb = json::from_cbor(vec, true, true, json::cbor_tag_handler_t::ignore);

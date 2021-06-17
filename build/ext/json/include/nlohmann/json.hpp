@@ -73,10 +73,6 @@ SOFTWARE.
 #include <nlohmann/json_fwd.hpp>
 #include <nlohmann/ordered_map.hpp>
 
-#if defined(JSON_HAS_CPP_17)
-    #include <string_view>
-#endif
-
 /*!
 @brief namespace for Niels Lohmann
 @see https://github.com/nlohmann
@@ -193,7 +189,6 @@ class basic_json
     /// workaround type for MSVC
     using basic_json_t = NLOHMANN_BASIC_JSON_TPL;
 
-  JSON_PRIVATE_UNLESS_TESTED:
     // convenience aliases for types residing in namespace detail;
     using lexer = ::nlohmann::detail::lexer_base<basic_json>;
 
@@ -209,7 +204,6 @@ class basic_json
                 std::move(cb), allow_exceptions, ignore_comments);
     }
 
-  private:
     using primitive_iterator_t = ::nlohmann::detail::primitive_iterator_t;
     template<typename BasicJsonType>
     using internal_iterator = ::nlohmann::detail::internal_iterator<BasicJsonType>;
@@ -226,7 +220,6 @@ class basic_json
     using binary_reader = ::nlohmann::detail::binary_reader<basic_json, InputType>;
     template<typename CharType> using binary_writer = ::nlohmann::detail::binary_writer<basic_json, CharType>;
 
-  JSON_PRIVATE_UNLESS_TESTED:
     using serializer = ::nlohmann::detail::serializer<basic_json>;
 
   public:
@@ -351,7 +344,7 @@ class basic_json
     {
         basic_json result;
 
-        result["copyright"] = "(C) 2013-2021 Niels Lohmann";
+        result["copyright"] = "(C) 2013-2020 Niels Lohmann";
         result["name"] = "JSON for Modern C++";
         result["url"] = "https://github.com/nlohmann/json";
         result["version"]["string"] =
@@ -927,21 +920,20 @@ class basic_json
         AllocatorType<T> alloc;
         using AllocatorTraits = std::allocator_traits<AllocatorType<T>>;
 
-        auto deleter = [&](T * obj)
+        auto deleter = [&](T * object)
         {
-            AllocatorTraits::deallocate(alloc, obj, 1);
+            AllocatorTraits::deallocate(alloc, object, 1);
         };
-        std::unique_ptr<T, decltype(deleter)> obj(AllocatorTraits::allocate(alloc, 1), deleter);
-        AllocatorTraits::construct(alloc, obj.get(), std::forward<Args>(args)...);
-        JSON_ASSERT(obj != nullptr);
-        return obj.release();
+        std::unique_ptr<T, decltype(deleter)> object(AllocatorTraits::allocate(alloc, 1), deleter);
+        AllocatorTraits::construct(alloc, object.get(), std::forward<Args>(args)...);
+        JSON_ASSERT(object != nullptr);
+        return object.release();
     }
 
     ////////////////////////
     // JSON value storage //
     ////////////////////////
 
-  JSON_PRIVATE_UNLESS_TESTED:
     /*!
     @brief a JSON value
 
@@ -1218,7 +1210,6 @@ class basic_json
         }
     };
 
-  private:
     /*!
     @brief checks the class invariants
 
@@ -6956,7 +6947,7 @@ class basic_json
     }
 
 
-  JSON_PRIVATE_UNLESS_TESTED:
+  private:
     //////////////////////
     // member variables //
     //////////////////////
@@ -7802,7 +7793,7 @@ class basic_json
     string          | 0x02             | string
     document        | 0x03             | object
     array           | 0x04             | array
-    binary          | 0x05             | binary
+    binary          | 0x05             | still unsupported
     undefined       | 0x06             | still unsupported
     ObjectId        | 0x07             | still unsupported
     boolean         | 0x08             | boolean

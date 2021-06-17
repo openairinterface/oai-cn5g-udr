@@ -30,9 +30,10 @@ SOFTWARE.
 #include "doctest_compatibility.h"
 DOCTEST_GCC_SUPPRESS_WARNING("-Wfloat-equal")
 
-#define JSON_TESTS_PRIVATE
+#define private public
 #include <nlohmann/json.hpp>
 using nlohmann::json;
+#undef private
 
 #include <deque>
 #include <forward_list>

@@ -29,9 +29,10 @@ SOFTWARE.
 
 #include "doctest_compatibility.h"
 
-#define JSON_TESTS_PRIVATE
+#define private public
 #include <nlohmann/json.hpp>
 using nlohmann::json;
+#undef private
 
 #include <deque>
 #include <forward_list>
@@ -46,6 +47,10 @@ using nlohmann::json;
     #define JSON_HAS_CPP_14
 #elif (defined(__cplusplus) && __cplusplus >= 201402L) || (defined(_HAS_CXX14) && _HAS_CXX14 == 1)
     #define JSON_HAS_CPP_14
+#endif
+
+#if defined(JSON_HAS_CPP_17)
+    #include <string_view>
 #endif
 
 TEST_CASE("value conversion")
@@ -1702,11 +1707,3 @@ TEST_CASE("JSON to enum mapping")
         CHECK(TS_INVALID == json("what?").get<TaskState>());
     }
 }
-
-#ifdef JSON_HAS_CPP_17
-    #undef JSON_HAS_CPP_17
-#endif
-
-#ifdef JSON_HAS_CPP_14
-    #undef JSON_HAS_CPP_14
-#endif

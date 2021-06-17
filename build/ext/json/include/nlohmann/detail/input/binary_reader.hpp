@@ -11,7 +11,6 @@
 #include <limits> // numeric_limits
 #include <string> // char_traits, string
 #include <utility> // make_pair, move
-#include <vector> // vector
 
 #include <nlohmann/detail/exceptions.hpp>
 #include <nlohmann/detail/input/input_adapters.hpp>
@@ -753,9 +752,8 @@ class binary_reader
                         return parse_cbor_internal(true, tag_handler);
                     }
 
-                    default:                 // LCOV_EXCL_LINE
+                    default:            // LCOV_EXCL_LINE
                         JSON_ASSERT(false);  // LCOV_EXCL_LINE
-                        return false;        // LCOV_EXCL_LINE
                 }
             }
 
@@ -2341,7 +2339,7 @@ class binary_reader
                 break;
             }
             result.push_back(static_cast<typename string_t::value_type>(current));
-        }
+        };
         return success;
     }
 

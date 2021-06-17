@@ -63,7 +63,7 @@ const char* end(const MyContainer& c)
     return c.data + strlen(c.data);
 }
 
-TEST_CASE("Custom container non-member begin/end")
+TEST_CASE("Custom container")
 {
 
     MyContainer data{"[1,2,3,4]"};
@@ -73,31 +73,6 @@ TEST_CASE("Custom container non-member begin/end")
     CHECK(as_json.at(2) == 3);
     CHECK(as_json.at(3) == 4);
 
-}
-
-TEST_CASE("Custom container member begin/end")
-{
-    struct MyContainer2
-    {
-        const char* data;
-
-        const char* begin() const
-        {
-            return data;
-        }
-
-        const char* end() const
-        {
-            return data + strlen(data);
-        }
-    };
-
-    MyContainer2 data{"[1,2,3,4]"};
-    json as_json = json::parse(data);
-    CHECK(as_json.at(0) == 1);
-    CHECK(as_json.at(1) == 2);
-    CHECK(as_json.at(2) == 3);
-    CHECK(as_json.at(3) == 4);
 }
 
 TEST_CASE("Custom iterator")
