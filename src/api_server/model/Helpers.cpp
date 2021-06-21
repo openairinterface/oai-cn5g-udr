@@ -12,7 +12,7 @@
  */
 #include "Helpers.h"
 
-namespace helpers {
+namespace oai::udr::helpers {
 
 std::string toStringValue(const std::string &value) {
   return std::string(value);
@@ -82,4 +82,4 @@ bool fromStringValue(const std::string &inStr, double &value) {
   return true;
 }
 
-} // namespace helpers
+}  // namespace oai::udr::helpers

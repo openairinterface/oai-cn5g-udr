@@ -13,13 +13,21 @@
 
 #include "V2XSubscriptionDataApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 V2XSubscriptionDataApiImpl::V2XSubscriptionDataApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : V2XSubscriptionDataApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : V2XSubscriptionDataApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void V2XSubscriptionDataApiImpl::query_v2x_data(
     const std::string &ueId,
@@ -30,4 +38,4 @@ void V2XSubscriptionDataApiImpl::query_v2x_data(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

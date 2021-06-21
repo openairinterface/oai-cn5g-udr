@@ -13,13 +13,19 @@
 
 #include "TraceDataDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 TraceDataDocumentApiImpl::TraceDataDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : TraceDataDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : TraceDataDocumentApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void TraceDataDocumentApiImpl::query_trace_data(
     const std::string &ueId, const std::string &servingPlmnId,
@@ -29,4 +35,4 @@ void TraceDataDocumentApiImpl::query_trace_data(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

@@ -13,13 +13,21 @@
 
 #include "IPSMGWRegistrationDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 IPSMGWRegistrationDocumentApiImpl::IPSMGWRegistrationDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : IPSMGWRegistrationDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : IPSMGWRegistrationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void IPSMGWRegistrationDocumentApiImpl::create_ip_sm_gw_context(
     const std::string &ueId, const IpSmGwRegistration &ipSmGwRegistration,
@@ -43,4 +51,4 @@ void IPSMGWRegistrationDocumentApiImpl::query_ip_sm_gw_context(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

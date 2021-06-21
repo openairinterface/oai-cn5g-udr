@@ -13,13 +13,19 @@
 
 #include "BdtDataStoreApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 BdtDataStoreApiImpl::BdtDataStoreApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : BdtDataStoreApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : BdtDataStoreApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void BdtDataStoreApiImpl::read_bdt_data(
     const Pistache::Optional<std::vector<std::string>> &bdtRefIds,
@@ -28,4 +34,4 @@ void BdtDataStoreApiImpl::read_bdt_data(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

@@ -13,14 +13,22 @@
 
 #include "SMSManagementSubscriptionDataDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 SMSManagementSubscriptionDataDocumentApiImpl::
     SMSManagementSubscriptionDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : SMSManagementSubscriptionDataDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : SMSManagementSubscriptionDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void SMSManagementSubscriptionDataDocumentApiImpl::query_sms_mng_data(
     const std::string &ueId, const std::string &servingPlmnId,
@@ -31,4 +39,4 @@ void SMSManagementSubscriptionDataDocumentApiImpl::query_sms_mng_data(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

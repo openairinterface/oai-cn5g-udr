@@ -13,14 +13,22 @@
 
 #include "IndividualIPTVConfigurationDataDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 IndividualIPTVConfigurationDataDocumentApiImpl::
     IndividualIPTVConfigurationDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : IndividualIPTVConfigurationDataDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : IndividualIPTVConfigurationDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void IndividualIPTVConfigurationDataDocumentApiImpl::
     create_or_replace_individual_iptv_configuration_data(
@@ -36,4 +44,4 @@ void IndividualIPTVConfigurationDataDocumentApiImpl::
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

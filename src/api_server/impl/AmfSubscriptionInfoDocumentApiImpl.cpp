@@ -13,13 +13,21 @@
 
 #include "AmfSubscriptionInfoDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 AmfSubscriptionInfoDocumentApiImpl::AmfSubscriptionInfoDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : AmfSubscriptionInfoDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : AmfSubscriptionInfoDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void AmfSubscriptionInfoDocumentApiImpl::modify_amf_subscription_info(
     const std::string &ueId, const std::string &subsId,
@@ -29,4 +37,4 @@ void AmfSubscriptionInfoDocumentApiImpl::modify_amf_subscription_info(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

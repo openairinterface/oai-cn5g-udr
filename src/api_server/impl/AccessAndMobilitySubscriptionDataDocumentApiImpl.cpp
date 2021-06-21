@@ -12,16 +12,24 @@
  */
 
 #include "AccessAndMobilitySubscriptionDataDocumentApiImpl.h"
-#include "logger.hpp"
+#include <nlohmann/json.hpp>
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 AccessAndMobilitySubscriptionDataDocumentApiImpl::
     AccessAndMobilitySubscriptionDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, MYSQL *mysql)
-    : AccessAndMobilitySubscriptionDataDocumentApi(rtr) {
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address, MYSQL *mysql)
+    : AccessAndMobilitySubscriptionDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {
   mysql_WitcommUDRDB = mysql;
 }
 
@@ -32,6 +40,14 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(
     const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
     const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
     Pistache::Http::ResponseWriter &response) {
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_access_mobility_subscription_data_document(
+      ueId, servingPlmnId, response_data, code);
+
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
+
   MYSQL_RES *res = NULL;
   MYSQL_ROW row;
   MYSQL_FIELD *field = nullptr;
@@ -40,8 +56,8 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(
 
   AccessAndMobilitySubscriptionData accessandmobilitysubscriptiondata;
   const std::string query =
-      "select * from AccessAndMobilitySubscriptionData WHERE ueid='" +
-      ueId + "' and servingPlmnid='" + servingPlmnId + "'";
+      "select * from AccessAndMobilitySubscriptionData WHERE ueid='" + ueId +
+      "' and servingPlmnid='" + servingPlmnId + "'";
 
   if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
                        (unsigned long)query.size())) {
@@ -296,4 +312,4 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(
   mysql_free_result(res);
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

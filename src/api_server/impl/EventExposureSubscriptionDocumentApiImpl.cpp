@@ -13,14 +13,22 @@
 
 #include "EventExposureSubscriptionDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 EventExposureSubscriptionDocumentApiImpl::
     EventExposureSubscriptionDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : EventExposureSubscriptionDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : EventExposureSubscriptionDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void EventExposureSubscriptionDocumentApiImpl::modify_eesubscription(
     const std::string &ueId, const std::string &subsId,
@@ -46,4 +54,4 @@ void EventExposureSubscriptionDocumentApiImpl::update_eesubscriptions(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

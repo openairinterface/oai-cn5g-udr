@@ -14,13 +14,21 @@
 #include "SDMSubscriptionDocumentApiImpl.h"
 #include "logger.hpp"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 SDMSubscriptionDocumentApiImpl::SDMSubscriptionDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, MYSQL *mysql)
-    : SDMSubscriptionDocumentApi(rtr) {
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address, MYSQL *mysql)
+    : SDMSubscriptionDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {
   mysql_WitcommUDRDB = mysql;
 }
 
@@ -53,7 +61,6 @@ void SDMSubscriptionDocumentApiImpl::querysdm_subscription(
 
   res = mysql_store_result(mysql_WitcommUDRDB);
   if (res == NULL) {
-
     Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
                                query.c_str());
     return;
@@ -135,8 +142,8 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(
       "SELECT * from SdmSubscriptions WHERE ueid='" + ueId +
       "' AND subsId=" + subsId;
 
-  const std::string query = "DELETE from SdmSubscriptions WHERE ueid='" +
-                            ueId + "' AND subsId=" + subsId;
+  const std::string query = "DELETE from SdmSubscriptions WHERE ueid='" + ueId +
+                            "' AND subsId=" + subsId;
 
   if (mysql_real_query(mysql_WitcommUDRDB, select_query.c_str(),
                        (unsigned long)select_query.size())) {
@@ -285,4 +292,4 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(
                              out.c_str());
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

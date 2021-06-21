@@ -1,6 +1,8 @@
 #ifndef _UDR_CONFIG_H_
 #define _UDR_CONFIG_H_
 
+#include <arpa/inet.h>
+#include <netinet/in.h>
 #include <libconfig.h++>
 #include <string>
 
@@ -37,7 +39,7 @@ typedef struct interface_cfg_s {
 } interface_cfg_t;
 
 class udr_config {
-public:
+ public:
   udr_config();
   ~udr_config();
 
@@ -50,6 +52,6 @@ public:
   interface_cfg_t nudr;
   mysql_conf_t mysql;
 };
-} // namespace config
+}  // namespace config
 
 #endif

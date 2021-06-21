@@ -13,13 +13,21 @@
 
 #include "ContextDataDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 ContextDataDocumentApiImpl::ContextDataDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : ContextDataDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
+    std::string address)
+    : ContextDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 // void ContextDataDocumentApiImpl::query_context_data(const std::string &ueId,
 // const Pistache::Optional<Set<ContextDataSetName>> &contextDatasetNames,
@@ -27,4 +35,4 @@ ContextDataDocumentApiImpl::ContextDataDocumentApiImpl(
 //    response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 //}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

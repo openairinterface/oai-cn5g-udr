@@ -14,14 +14,22 @@
 #include "SMFSelectionSubscriptionDataDocumentApiImpl.h"
 #include "logger.hpp"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 SMFSelectionSubscriptionDataDocumentApiImpl::
     SMFSelectionSubscriptionDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, MYSQL *mysql)
-    : SMFSelectionSubscriptionDataDocumentApi(rtr) {
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address, MYSQL *mysql)
+    : SMFSelectionSubscriptionDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {
   mysql_WitcommUDRDB = mysql;
 }
 
@@ -88,4 +96,4 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
   mysql_free_result(res);
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

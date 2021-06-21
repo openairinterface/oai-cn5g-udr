@@ -13,13 +13,21 @@
 
 #include "SMSF3GPPRegistrationDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 SMSF3GPPRegistrationDocumentApiImpl::SMSF3GPPRegistrationDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : SMSF3GPPRegistrationDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : SMSF3GPPRegistrationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void SMSF3GPPRegistrationDocumentApiImpl::create_smsf_context3gpp(
     const std::string &ueId, const SmsfRegistration &smsfRegistration,
@@ -38,4 +46,4 @@ void SMSF3GPPRegistrationDocumentApiImpl::query_smsf_context3gpp(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

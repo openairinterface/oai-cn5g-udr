@@ -13,13 +13,19 @@
 
 #include "NSSAIACKDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 NSSAIACKDocumentApiImpl::NSSAIACKDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : NSSAIACKDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : NSSAIACKDocumentApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void NSSAIACKDocumentApiImpl::query_nssai_ack(
     const std::string &ueId,
@@ -28,4 +34,4 @@ void NSSAIACKDocumentApiImpl::query_nssai_ack(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

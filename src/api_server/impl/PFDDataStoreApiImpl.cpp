@@ -13,13 +13,19 @@
 
 #include "PFDDataStoreApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 PFDDataStoreApiImpl::PFDDataStoreApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : PFDDataStoreApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : PFDDataStoreApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void PFDDataStoreApiImpl::read_pfd_data(
     const Pistache::Optional<std::vector<std::string>> &appId,
@@ -27,4 +33,4 @@ void PFDDataStoreApiImpl::read_pfd_data(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

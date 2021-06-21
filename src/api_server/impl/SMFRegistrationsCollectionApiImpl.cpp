@@ -14,13 +14,21 @@
 #include "SMFRegistrationsCollectionApiImpl.h"
 #include "logger.hpp"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 SMFRegistrationsCollectionApiImpl::SMFRegistrationsCollectionApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, MYSQL *mysql)
-    : SMFRegistrationsCollectionApi(rtr) {
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address, MYSQL *mysql)
+    : SMFRegistrationsCollectionApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {
   mysql_WitcommUDRDB = mysql;
 }
 
@@ -134,4 +142,4 @@ void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(
                              out.c_str());
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

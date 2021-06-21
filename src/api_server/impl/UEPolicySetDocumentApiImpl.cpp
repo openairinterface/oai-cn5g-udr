@@ -13,13 +13,21 @@
 
 #include "UEPolicySetDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 UEPolicySetDocumentApiImpl::UEPolicySetDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : UEPolicySetDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : UEPolicySetDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void UEPolicySetDocumentApiImpl::create_or_replace_ue_policy_set(
     const std::string &ueId, const UePolicySet &uePolicySet,
@@ -37,4 +45,4 @@ void UEPolicySetDocumentApiImpl::update_ue_policy_set(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

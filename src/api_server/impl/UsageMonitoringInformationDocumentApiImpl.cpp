@@ -13,14 +13,22 @@
 
 #include "UsageMonitoringInformationDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 UsageMonitoringInformationDocumentApiImpl::
     UsageMonitoringInformationDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : UsageMonitoringInformationDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : UsageMonitoringInformationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void UsageMonitoringInformationDocumentApiImpl::
     create_usage_monitoring_resource(const std::string &ueId,
@@ -43,4 +51,4 @@ void UsageMonitoringInformationDocumentApiImpl::
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

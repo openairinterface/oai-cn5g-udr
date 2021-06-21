@@ -14,14 +14,22 @@
 #include "AMF3GPPAccessRegistrationDocumentApiImpl.h"
 #include "logger.hpp"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 AMF3GPPAccessRegistrationDocumentApiImpl::
     AMF3GPPAccessRegistrationDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, MYSQL *mysql)
-    : AMF3GPPAccessRegistrationDocumentApi(rtr) {
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address, MYSQL *mysql)
+    : AMF3GPPAccessRegistrationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {
   mysql_WitcommUDRDB = mysql;
 }
 
@@ -29,7 +37,6 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::amf_context3gpp(
     const std::string &ueId, const std::vector<PatchItem> &patchItem,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-
   /************************ test ************************/
   nlohmann::json j, j1;
   for (int i = 0; i < patchItem.size(); i++) {
@@ -413,4 +420,4 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
   mysql_free_result(res);
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

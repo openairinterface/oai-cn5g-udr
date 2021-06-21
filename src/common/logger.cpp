@@ -66,8 +66,10 @@ void Logger::_init(const char *app, const bool log_stdout,
   ss << "[%Y-%m-%dT%H:%M:%S.%f] [" << app << "] [%n] [%l] %v";
 
   m_udr_app = new _Logger("udr_app", m_sinks, ss.str().c_str());
+  m_system = new _Logger("system ", m_sinks, ss.str().c_str());
   m_config = new _Logger("configurations", m_sinks, ss.str().c_str());
   m_udr_server = new _Logger("udr_server", m_sinks, ss.str().c_str());
+  m_udr_app = new _Logger("udr_app", m_sinks, ss.str().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -201,23 +203,23 @@ void _Logger::log(_LogType lt, const char *format, va_list &args) {
   vsnprintf(buffer, sizeof(buffer) - 1, format, args);
 
   switch (lt) {
-  case _ltTrace:
-    m_log.trace(buffer);
-    break;
-  case _ltDebug:
-    m_log.debug(buffer);
-    break;
-  case _ltInfo:
-    m_log.info(buffer);
-    break;
-  case _ltStartup:
-    m_log.warn(buffer);
-    break;
-  case _ltWarn:
-    m_log.error(buffer);
-    break;
-  case _ltError:
-    m_log.critical(buffer);
-    break;
+    case _ltTrace:
+      m_log.trace(buffer);
+      break;
+    case _ltDebug:
+      m_log.debug(buffer);
+      break;
+    case _ltInfo:
+      m_log.info(buffer);
+      break;
+    case _ltStartup:
+      m_log.warn(buffer);
+      break;
+    case _ltWarn:
+      m_log.error(buffer);
+      break;
+    case _ltError:
+      m_log.critical(buffer);
+      break;
   }
 }

@@ -13,13 +13,21 @@
 
 #include "IndividualBdtDataDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 IndividualBdtDataDocumentApiImpl::IndividualBdtDataDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : IndividualBdtDataDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : IndividualBdtDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void IndividualBdtDataDocumentApiImpl::create_individual_bdt_data(
     const std::string &bdtReferenceId, const BdtData &bdtData,
@@ -43,4 +51,4 @@ void IndividualBdtDataDocumentApiImpl::update_individual_bdt_data(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

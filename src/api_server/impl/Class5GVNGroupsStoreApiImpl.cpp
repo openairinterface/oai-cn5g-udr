@@ -13,13 +13,21 @@
 
 #include "Class5GVNGroupsStoreApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 Class5GVNGroupsStoreApiImpl::Class5GVNGroupsStoreApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : Class5GVNGroupsStoreApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : Class5GVNGroupsStoreApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void Class5GVNGroupsStoreApiImpl::query5_g_vn_group(
     const Pistache::Optional<std::vector<std::string>> &gpsis,
@@ -27,4 +35,4 @@ void Class5GVNGroupsStoreApiImpl::query5_g_vn_group(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

@@ -4,13 +4,13 @@
 #ifdef __linux__
 static void sigHandler [[noreturn]] (int sig) {
   switch (sig) {
-  case SIGINT:
-  case SIGQUIT:
-  case SIGTERM:
-  case SIGHUP:
-  default:
-    //                m_httpEndpoint->shutdown();
-    break;
+    case SIGINT:
+    case SIGQUIT:
+    case SIGTERM:
+    case SIGHUP:
+    default:
+      //                m_httpEndpoint->shutdown();
+      break;
   }
   exit(0);
 }
@@ -18,16 +18,14 @@ static void sigHandler [[noreturn]] (int sig) {
 static void setUpUnixSignals(std::vector<int> quitSignals) {
   sigset_t blocking_mask;
   sigemptyset(&blocking_mask);
-  for (auto sig : quitSignals)
-    sigaddset(&blocking_mask, sig);
+  for (auto sig : quitSignals) sigaddset(&blocking_mask, sig);
 
   struct sigaction sa;
   sa.sa_handler = sigHandler;
   sa.sa_mask = blocking_mask;
   sa.sa_flags = 0;
 
-  for (auto sig : quitSignals)
-    sigaction(sig, &sa, nullptr);
+  for (auto sig : quitSignals) sigaction(sig, &sa, nullptr);
 }
 #endif
 
@@ -36,6 +34,7 @@ using namespace org::openapitools::server::api;
 UDRApiServer::UDRApiServer(Pistache::Address address, MYSQL *mysql)
     : m_httpEndpoint(std::make_shared<Pistache::Http::Endpoint>(address)) {
   m_router = std::make_shared<Pistache::Rest::Router>();
+
   m_AuthenticationSubscriptionDocumentApiserver =
       std::make_shared<AuthenticationSubscriptionDocumentApiImpl>(m_router,
                                                                   mysql);

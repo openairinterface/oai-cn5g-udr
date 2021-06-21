@@ -13,14 +13,22 @@
 
 #include "IndividualInfluenceDataSubscriptionDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 IndividualInfluenceDataSubscriptionDocumentApiImpl::
     IndividualInfluenceDataSubscriptionDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : IndividualInfluenceDataSubscriptionDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : IndividualInfluenceDataSubscriptionDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void IndividualInfluenceDataSubscriptionDocumentApiImpl::
     delete_individual_influence_data_subscription(
@@ -42,4 +50,4 @@ void IndividualInfluenceDataSubscriptionDocumentApiImpl::
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

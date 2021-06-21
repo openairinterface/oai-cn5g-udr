@@ -13,14 +13,22 @@
 
 #include "SessionManagementPolicyDataDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 SessionManagementPolicyDataDocumentApiImpl::
     SessionManagementPolicyDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : SessionManagementPolicyDataDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : SessionManagementPolicyDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void SessionManagementPolicyDataDocumentApiImpl::
     read_session_management_policy_data(
@@ -38,4 +46,4 @@ void SessionManagementPolicyDataDocumentApiImpl::
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

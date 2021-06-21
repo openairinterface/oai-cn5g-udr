@@ -13,13 +13,21 @@
 
 #include "AccessAndMobilityDataApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 AccessAndMobilityDataApiImpl::AccessAndMobilityDataApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : AccessAndMobilityDataApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : AccessAndMobilityDataApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void AccessAndMobilityDataApiImpl::create_or_replace_access_and_mobility_data(
     const std::string &ueId, const AccessAndMobilityData &accessAndMobilityData,
@@ -41,4 +49,4 @@ void AccessAndMobilityDataApiImpl::update_access_and_mobility_data(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

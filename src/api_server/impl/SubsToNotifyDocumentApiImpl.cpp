@@ -13,13 +13,21 @@
 
 #include "SubsToNotifyDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 SubsToNotifyDocumentApiImpl::SubsToNotifyDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : SubsToNotifyDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : SubsToNotifyDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void SubsToNotifyDocumentApiImpl::modifysubscription_data_subscription(
     const std::string &subsId, const std::vector<PatchItem> &patchItem,
@@ -36,4 +44,4 @@ void SubsToNotifyDocumentApiImpl::removesubscription_data_subscriptions(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

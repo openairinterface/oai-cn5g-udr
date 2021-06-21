@@ -13,17 +13,25 @@
 
 #include "PlmnUePolicySetDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 PlmnUePolicySetDocumentApiImpl::PlmnUePolicySetDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr)
-    : PlmnUePolicySetDocumentApi(rtr) {}
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address)
+    : PlmnUePolicySetDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void PlmnUePolicySetDocumentApiImpl::read_plmn_ue_policy_set(
     const std::string &plmnId, Pistache::Http::ResponseWriter &response) {
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

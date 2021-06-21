@@ -13,14 +13,22 @@
 
 #include "IndividualAppliedBDTPolicyDataDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 IndividualAppliedBDTPolicyDataDocumentApiImpl::
     IndividualAppliedBDTPolicyDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : IndividualAppliedBDTPolicyDataDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : IndividualAppliedBDTPolicyDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void IndividualAppliedBDTPolicyDataDocumentApiImpl::
     delete_individual_applied_bdt_policy_data(
@@ -36,4 +44,4 @@ void IndividualAppliedBDTPolicyDataDocumentApiImpl::
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

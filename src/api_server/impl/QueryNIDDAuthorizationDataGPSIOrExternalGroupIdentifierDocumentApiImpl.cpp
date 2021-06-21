@@ -13,14 +13,22 @@
 
 #include "QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl::
     QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl::
     get_nidd_au_data(
@@ -33,4 +41,4 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl::
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

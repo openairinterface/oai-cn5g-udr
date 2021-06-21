@@ -13,14 +13,22 @@
 
 #include "Query5GVnGroupConfigurationDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 Query5GVnGroupConfigurationDocumentApiImpl::
     Query5GVnGroupConfigurationDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : Query5GVnGroupConfigurationDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : Query5GVnGroupConfigurationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void Query5GVnGroupConfigurationDocumentApiImpl::get5_g_vn_group_configuration(
     const std::string &externalGroupId,
@@ -28,4 +36,4 @@ void Query5GVnGroupConfigurationDocumentApiImpl::get5_g_vn_group_configuration(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

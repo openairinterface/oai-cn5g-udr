@@ -13,14 +13,22 @@
 
 #include "AMFNon3GPPAccessRegistrationDocumentApiImpl.h"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 AMFNon3GPPAccessRegistrationDocumentApiImpl::
     AMFNon3GPPAccessRegistrationDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr)
-    : AMFNon3GPPAccessRegistrationDocumentApi(rtr) {}
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::string address)
+    : AMFNon3GPPAccessRegistrationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void AMFNon3GPPAccessRegistrationDocumentApiImpl::amf_context_non3gpp(
     const std::string &ueId, const std::vector<PatchItem> &patchItem,
@@ -42,4 +50,4 @@ void AMFNon3GPPAccessRegistrationDocumentApiImpl::query_amf_context_non3gpp(
   response.send(Pistache::Http::Code::Ok, "Do some magic\n");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

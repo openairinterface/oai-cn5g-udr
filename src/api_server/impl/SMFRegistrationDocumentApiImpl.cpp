@@ -14,13 +14,21 @@
 #include "SMFRegistrationDocumentApiImpl.h"
 #include "logger.hpp"
 
+#include "logger.hpp"
+#include "udr_app.hpp"
+#include "udr_config.hpp"
+using namespace config;
+extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
 
 SMFRegistrationDocumentApiImpl::SMFRegistrationDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, MYSQL *mysql)
-    : SMFRegistrationDocumentApi(rtr) {
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::string address, MYSQL *mysql)
+    : SMFRegistrationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
+      m_address(address) {
   mysql_WitcommUDRDB = mysql;
 }
 
@@ -174,7 +182,6 @@ void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(
 void SMFRegistrationDocumentApiImpl::delete_smf_context(
     const std::string &ueId, const int32_t &pduSessionId,
     Pistache::Http::ResponseWriter &response) {
-
   const std::string query =
       "DELETE from SmfRegistrations WHERE ueid='" + ueId +
       "' AND subpduSessionId=" + std::to_string(pduSessionId);
@@ -288,4 +295,4 @@ void SMFRegistrationDocumentApiImpl::query_smf_registration(
   mysql_free_result(res);
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api
