@@ -20,19 +20,17 @@
 #ifndef PLMN_UE_POLICY_SET_DOCUMENT_API_IMPL_H_
 #define PLMN_UE_POLICY_SET_DOCUMENT_API_IMPL_H_
 
+#include <PlmnUePolicySetDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <PlmnUePolicySetDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "ProblemDetails.h"
 #include "UePolicySet.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

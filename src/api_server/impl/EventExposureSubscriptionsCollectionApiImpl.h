@@ -20,18 +20,16 @@
 #ifndef EVENT_EXPOSURE_SUBSCRIPTIONS_COLLECTION_API_IMPL_H_
 #define EVENT_EXPOSURE_SUBSCRIPTIONS_COLLECTION_API_IMPL_H_
 
+#include <EventExposureSubscriptionsCollectionApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <EventExposureSubscriptionsCollectionApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
-#include "EeSubscription.h"
 
+#include "EeSubscription.h"
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

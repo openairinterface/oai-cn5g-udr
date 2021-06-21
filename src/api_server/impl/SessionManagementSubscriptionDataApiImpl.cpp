@@ -12,7 +12,6 @@
  */
 
 #include "SessionManagementSubscriptionDataApiImpl.h"
-#include "logger.hpp"
 
 #include "logger.hpp"
 #include "udr_app.hpp"
@@ -26,12 +25,10 @@ using namespace oai::udr::model;
 SessionManagementSubscriptionDataApiImpl::
     SessionManagementSubscriptionDataApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
-        std::string address, MYSQL *mysql)
+        std::string address)
     : SessionManagementSubscriptionDataApi(rtr),
       m_udr_app(udr_app_inst),
-      m_address(address) {
-  mysql_WitcommUDRDB = mysql;
-}
+      m_address(address) {}
 
 void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     const std::string &ueId, const std::string &servingPlmnId,
@@ -44,99 +41,22 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     Pistache::Http::ResponseWriter &response) {
   // response.send(Pistache::Http::Code::Ok, "query_sm_data\n");
   // servingPlmnId  pattern: "^[0-9]{5,6}$"
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
-  MYSQL_FIELD *field = nullptr;
 
-  nlohmann::json j;
-
-  SessionManagementSubscriptionData sessionmanagementsubscriptiondata;
-  const std::string query =
-      "select * from SessionManagementSubscriptionData WHERE ueid='" + ueId +
-      "' and servingPlmnid='" + servingPlmnId + "'";
-
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
+  Snssai snssai = {};
+  if (!singleNssai.isEmpty()) {
+    snssai = singleNssai.get();
   }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
-    return;
+  std::string dnn_str = {};
+  if (!dnn.isEmpty()) {
+    dnn_str = dnn.get();
   }
+  // TODO: DNN and SNSSAI
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_query_sm_data(ueId, servingPlmnId, response_data, code);
 
-  row = mysql_fetch_row(res);
-
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("singleNssai", field->name)) {
-        Snssai singlenssai;
-        nlohmann::json::parse(row[i]).get_to(singlenssai);
-        sessionmanagementsubscriptiondata.setSingleNssai(singlenssai);
-      } else if (!strcmp("dnnConfigurations", field->name) && row[i] != NULL) {
-        std ::map<std ::string, DnnConfiguration> dnnconfigurations;
-        nlohmann::json::parse(row[i]).get_to(dnnconfigurations);
-        sessionmanagementsubscriptiondata.setDnnConfigurations(
-            dnnconfigurations);
-      } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
-        std ::vector<std ::string> internalgroupIds;
-        nlohmann::json::parse(row[i]).get_to(internalgroupIds);
-        sessionmanagementsubscriptiondata.setInternalGroupIds(internalgroupIds);
-      } else if (!strcmp("sharedVnGroupDataIds", field->name) &&
-                 row[i] != NULL) {
-        std ::map<std ::string, std ::string> sharedvngroupdataids;
-        nlohmann::json::parse(row[i]).get_to(sharedvngroupdataids);
-        sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(
-            sharedvngroupdataids);
-      } else if (!strcmp("sharedDnnConfigurationsId", field->name) &&
-                 row[i] != NULL) {
-        sessionmanagementsubscriptiondata.setSharedDnnConfigurationsId(row[i]);
-      } else if (!strcmp("odbPacketServices", field->name) && row[i] != NULL) {
-        OdbPacketServices odbpacketservices;
-        nlohmann::json::parse(row[i]).get_to(odbpacketservices);
-        sessionmanagementsubscriptiondata.setOdbPacketServices(
-            odbpacketservices);
-      } else if (!strcmp("traceData", field->name) && row[i] != NULL) {
-        TraceData tracedata;
-        nlohmann::json::parse(row[i]).get_to(tracedata);
-        sessionmanagementsubscriptiondata.setTraceData(tracedata);
-      } else if (!strcmp("sharedTraceDataId", field->name) && row[i] != NULL) {
-        sessionmanagementsubscriptiondata.setSharedTraceDataId(row[i]);
-      } else if (!strcmp("expectedUeBehavioursList", field->name) &&
-                 row[i] != NULL) {
-        std ::map<std ::string, ExpectedUeBehaviourData>
-            expecteduebehaviourslist;
-        nlohmann::json::parse(row[i]).get_to(expecteduebehaviourslist);
-        sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(
-            expecteduebehaviourslist);
-      } else if (!strcmp("suggestedPacketNumDlList", field->name) &&
-                 row[i] != NULL) {
-        std ::map<std ::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
-        nlohmann::json::parse(row[i]).get_to(suggestedpacketnumdllist);
-        sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(
-            suggestedpacketnumdllist);
-      } else if (!strcmp("3gppChargingCharacteristics", field->name) &&
-                 row[i] != NULL) {
-        sessionmanagementsubscriptiondata.setR3gppChargingCharacteristics(
-            row[i]);
-      }
-    }
-    to_json(j, sessionmanagementsubscriptiondata);
-    response.send(Pistache::Http::Code::Ok, j.dump());
-
-    std::string out = j.dump();
-    Logger::udr_server().debug(
-        "SessionManagementSubscriptionData GET - json:\n\"%s\"", out.c_str());
-  } else {
-    Logger::udr_server().error(
-        "SessionManagementSubscriptionData no data！SQL(%s)", query.c_str());
-  }
-
-  mysql_free_result(res);
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 }  // namespace oai::udr::api

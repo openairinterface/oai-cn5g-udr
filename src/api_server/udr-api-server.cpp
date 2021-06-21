@@ -66,8 +66,8 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 
   struct sigaction sa;
   sa.sa_handler = sigHandler;
-  sa.sa_mask    = blocking_mask;
-  sa.sa_flags   = 0;
+  sa.sa_mask = blocking_mask;
+  sa.sa_flags = 0;
 
   for (auto sig : quitSignals) sigaction(sig, &sa, nullptr);
 }
@@ -82,8 +82,8 @@ void UDRApiServer::init(size_t thr) {
   auto opts = Pistache::Http::Endpoint::options().threads(thr);
   opts.flags(Pistache::Tcp::Options::ReuseAddr);
   opts.maxRequestSize(PISTACHE_SERVER_MAX_PAYLOAD);
-// opts.maxRequestSize(PISTACHE_SERVER_MAX_REQUEST_SIZE);
-//  opts.maxResponseSize(PISTACHE_SERVER_MAX_RESPONSE_SIZE);
+  // opts.maxRequestSize(PISTACHE_SERVER_MAX_REQUEST_SIZE);
+  //  opts.maxResponseSize(PISTACHE_SERVER_MAX_RESPONSE_SIZE);
   m_httpEndpoint->init(opts);
 
   m_authenticationSubscriptionDocumentApiserver->init();
@@ -106,6 +106,4 @@ void UDRApiServer::start() {
 }
 
 //------------------------------------------------------------------------------
-void UDRApiServer::shutdown() {
-  m_httpEndpoint->shutdown();
-}
+void UDRApiServer::shutdown() { m_httpEndpoint->shutdown(); }

@@ -12,7 +12,6 @@
  */
 
 #include "AuthenticationStatusDocumentApiImpl.h"
-#include "logger.hpp"
 
 #include "logger.hpp"
 #include "udr_app.hpp"
@@ -25,161 +24,43 @@ using namespace oai::udr::model;
 
 AuthenticationStatusDocumentApiImpl::AuthenticationStatusDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
-    std::string address, MYSQL *mysql)
+    std::string address)
     : AuthenticationStatusDocumentApi(rtr),
       m_udr_app(udr_app_inst),
-      m_address(address) {
-  mysql_WitcommUDRDB = mysql;
-}
+      m_address(address) {}
 
 void AuthenticationStatusDocumentApiImpl::create_authentication_status(
     const std::string &ueId, const AuthEvent &authEvent,
     Pistache::Http::ResponseWriter &response) {
-  // response.send(Pistache::Http::Code::Ok, "create_authentication_status\n");
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_create_authentication_status(ueId, authEvent, response_data,
+                                                 code);
 
-  const std::string select_AuthenticationStatus =
-      "select * from AuthenticationStatus WHERE ueid='" + ueId + "'";
-  std::string query;
-  nlohmann::json j;
-
-  if (mysql_real_query(mysql_WitcommUDRDB, select_AuthenticationStatus.c_str(),
-                       (unsigned long)select_AuthenticationStatus.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               select_AuthenticationStatus.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               select_AuthenticationStatus.c_str());
-    return;
-  }
-  if (mysql_num_rows(res)) {
-    query = "update AuthenticationStatus set nfInstanceId='" +
-            authEvent.getNfInstanceId() + "'" +
-            ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
-            authEvent.getTimeStamp() + "'" + ",authType='" +
-            authEvent.getAuthType() + "'" + ",servingNetworkName='" +
-            authEvent.getServingNetworkName() + "'" +
-            (authEvent.authRemovalIndIsSet()
-                 ? (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1"
-                                                 : ",authRemovalInd=0")
-                 : "");
-    //        to_json(j,authEvent.getAuthType());
-    //        query += ",authType='"+j.dump()+"'";
-    query += " where ueid='" + ueId + "'";
-  } else {
-    query = "insert into AuthenticationStatus set ueid='" + ueId + "'" +
-            ",nfInstanceId='" + authEvent.getNfInstanceId() + "'" +
-            ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
-            authEvent.getTimeStamp() + "'" + ",authType='" +
-            authEvent.getAuthType() + "'" + ",servingNetworkName='" +
-            authEvent.getServingNetworkName() + "'" +
-            (authEvent.authRemovalIndIsSet()
-                 ? (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1"
-                                                 : ",authRemovalInd=0")
-                 : "");
-    //        to_json(j,authEvent.getAuthType());
-    //        query += ",authType='"+j.dump()+"'";
-  }
-
-  mysql_free_result(res);
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql create failure！SQL(%s)", query.c_str());
-    return;
-  }
-
-  response.send(Pistache::Http::Code::No_Content, "");
-
-  to_json(j, authEvent);
-  Logger::udr_server().debug("AuthenticationStatus PUT - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 void AuthenticationStatusDocumentApiImpl::delete_authentication_status(
     const std::string &ueId, Pistache::Http::ResponseWriter &response) {
-  const std::string query =
-      "DELETE from AuthenticationStatus WHERE ueid='" + ueId + "'";
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_delete_authentication_status(ueId, response_data, code);
 
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  response.send(Pistache::Http::Code::No_Content, "");
-  Logger::udr_server().debug("AuthenticationStatus DELETE - successful");
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 void AuthenticationStatusDocumentApiImpl::query_authentication_status(
     const std::string &ueId,
     const Pistache::Optional<std::vector<std::string>> &fields,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
-  MYSQL_FIELD *field = nullptr;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_query_authentication_status(ueId, response_data, code);
 
-  nlohmann::json j;
-
-  AuthEvent authenticationstatus;
-  const std::string query =
-      "select * from AuthenticationStatus WHERE ueid='" + ueId + "'";
-
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！");
-    return;
-  }
-
-  row = mysql_fetch_row(res);
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("nfInstanceId", field->name)) {
-        authenticationstatus.setNfInstanceId(row[i]);
-      } else if (!strcmp("success", field->name)) {
-        if (strcmp(row[i], "0"))
-          authenticationstatus.setSuccess(true);
-        else
-          authenticationstatus.setSuccess(false);
-      } else if (!strcmp("timeStamp", field->name)) {
-        authenticationstatus.setTimeStamp(row[i]);
-      } else if (!strcmp("authType", field->name)) {
-        //                AuthType authtype;
-        //                nlohmann::json::parse(row[i]).get_to(authtype);
-        authenticationstatus.setAuthType(row[i]);
-      } else if (!strcmp("servingNetworkName", field->name)) {
-        authenticationstatus.setServingNetworkName(row[i]);
-      } else if (!strcmp("authRemovalInd", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          authenticationstatus.setAuthRemovalInd(true);
-        else
-          authenticationstatus.setAuthRemovalInd(false);
-      }
-    }
-
-    to_json(j, authenticationstatus);
-    response.send(Pistache::Http::Code::Ok, j.dump());
-
-    Logger::udr_server().debug("AuthenticationStatus GET - json:\n\"%s\"",
-                               j.dump().c_str());
-  } else {
-    Logger::udr_server().error("AuthenticationStatus no data！SQL(%s)",
-                               query.c_str());
-  }
-
-  mysql_free_result(res);
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 }  // namespace oai::udr::api

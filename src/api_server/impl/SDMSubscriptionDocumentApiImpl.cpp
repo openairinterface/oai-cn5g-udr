@@ -12,7 +12,6 @@
  */
 
 #include "SDMSubscriptionDocumentApiImpl.h"
-#include "logger.hpp"
 
 #include "logger.hpp"
 #include "udr_app.hpp"
@@ -25,12 +24,10 @@ using namespace oai::udr::model;
 
 SDMSubscriptionDocumentApiImpl::SDMSubscriptionDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
-    std::string address, MYSQL *mysql)
+    std::string address)
     : SDMSubscriptionDocumentApi(rtr),
       m_udr_app(udr_app_inst),
-      m_address(address) {
-  mysql_WitcommUDRDB = mysql;
-}
+      m_address(address) {}
 
 void SDMSubscriptionDocumentApiImpl::modifysdm_subscription(
     const std::string &ueId, const std::string &subsId,
@@ -42,254 +39,34 @@ void SDMSubscriptionDocumentApiImpl::modifysdm_subscription(
 void SDMSubscriptionDocumentApiImpl::querysdm_subscription(
     const std::string &ueId, const std::string &subsId,
     Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
-  MYSQL_FIELD *field = nullptr;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_query_sdm_subscription(ueId, subsId, response_data, code);
 
-  nlohmann::json j;
-
-  SdmSubscription SdmSubscriptions;
-  const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='" +
-                            ueId + "' AND subsId=" + subsId;
-
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  row = mysql_fetch_row(res);
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("nfInstanceId", field->name)) {
-        SdmSubscriptions.setNfInstanceId(row[i]);
-      } else if (!strcmp("implicitUnsubscribe", field->name) &&
-                 row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          SdmSubscriptions.setImplicitUnsubscribe(true);
-        else
-          SdmSubscriptions.setImplicitUnsubscribe(false);
-      } else if (!strcmp("expires", field->name) && row[i] != NULL) {
-        SdmSubscriptions.setExpires(row[i]);
-      } else if (!strcmp("callbackReference", field->name)) {
-        SdmSubscriptions.setCallbackReference(row[i]);
-      } else if (!strcmp("amfServiceName", field->name) && row[i] != NULL) {
-        ServiceName amfservicename;
-        nlohmann::json::parse(row[i]).get_to(amfservicename);
-        SdmSubscriptions.setAmfServiceName(amfservicename);
-      } else if (!strcmp("monitoredResourceUris", field->name)) {
-        std::vector<std::string> monitoredresourceuris;
-        nlohmann::json::parse(row[i]).get_to(monitoredresourceuris);
-        SdmSubscriptions.setMonitoredResourceUris(monitoredresourceuris);
-      } else if (!strcmp("singleNssai", field->name) && row[i] != NULL) {
-        Snssai singlenssai;
-        nlohmann::json::parse(row[i]).get_to(singlenssai);
-        SdmSubscriptions.setSingleNssai(singlenssai);
-      } else if (!strcmp("dnn", field->name) && row[i] != NULL) {
-        SdmSubscriptions.setDnn(row[i]);
-      } else if (!strcmp("subscriptionId", field->name) && row[i] != NULL) {
-        SdmSubscriptions.setSubscriptionId(row[i]);
-      } else if (!strcmp("plmnId", field->name) && row[i] != NULL) {
-        PlmnId plmnid;
-        nlohmann::json::parse(row[i]).get_to(plmnid);
-        SdmSubscriptions.setPlmnId(plmnid);
-      } else if (!strcmp("immediateReport", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          SdmSubscriptions.setImmediateReport(true);
-        else
-          SdmSubscriptions.setImmediateReport(false);
-      } else if (!strcmp("report", field->name) && row[i] != NULL) {
-        SubscriptionDataSets report;
-        nlohmann::json::parse(row[i]).get_to(report);
-        SdmSubscriptions.setReport(report);
-      } else if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
-        SdmSubscriptions.setSupportedFeatures(row[i]);
-      } else if (!strcmp("contextInfo", field->name) && row[i] != NULL) {
-        ContextInfo contextinfo;
-        nlohmann::json::parse(row[i]).get_to(contextinfo);
-        SdmSubscriptions.setContextInfo(contextinfo);
-      }
-    }
-    to_json(j, SdmSubscriptions);
-    response.send(Pistache::Http::Code::Ok, j.dump());
-
-    std::string out = j.dump();
-    Logger::udr_server().debug("SdmSubscription GET - json:\n\"%s\"",
-                               out.c_str());
-  } else {
-    Logger::udr_server().error("SdmSubscription no data！SQL(%s)",
-                               query.c_str());
-  }
-
-  mysql_free_result(res);
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(
     const std::string &ueId, const std::string &subsId,
     Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  nlohmann::json j;
-  ProblemDetails problemdetails;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_remove_sdm_subscription(ueId, subsId, response_data, code);
 
-  const std::string select_query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + ueId +
-      "' AND subsId=" + subsId;
-
-  const std::string query = "DELETE from SdmSubscriptions WHERE ueid='" + ueId +
-                            "' AND subsId=" + subsId;
-
-  if (mysql_real_query(mysql_WitcommUDRDB, select_query.c_str(),
-                       (unsigned long)select_query.size())) {
-    problemdetails.setCause("USER_NOT_FOUND");
-    to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    response.send(Pistache::Http::Code::Not_Found, j.dump());
-    return;
-  }
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    problemdetails.setCause("USER_NOT_FOUND");
-    to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
-    response.send(Pistache::Http::Code::Not_Found, j.dump());
-    return;
-  }
-  if (!mysql_num_rows(res)) {
-    problemdetails.setCause("DATA_NOT_FOUND");
-    to_json(j, problemdetails);
-    response.send(Pistache::Http::Code::Not_Found, j.dump());
-    return;
-  }
-  mysql_free_result(res);
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    problemdetails.setCause("USER_NOT_FOUND");
-    to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    response.send(Pistache::Http::Code::Not_Found, j.dump());
-    return;
-  }
-
-  response.send(Pistache::Http::Code::No_Content, "");
-
-  Logger::udr_server().debug("SdmSubscription DELETE - successful");
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(
     const std::string &ueId, const std::string &subsId,
     SdmSubscription &sdmSubscription,
     Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_update_sdm_subscription(ueId, subsId, sdmSubscription,
+                                            response_data, code);
 
-  const std::string select_query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + ueId +
-      "' AND subsId=" + subsId;
-  std::string query;
-  nlohmann::json j;
-  ProblemDetails problemdetails;
-
-  if (mysql_real_query(mysql_WitcommUDRDB, select_query.c_str(),
-                       (unsigned long)select_query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-  if (mysql_num_rows(res)) {
-    nlohmann::json MonitoredResourceUris_json(
-        sdmSubscription.getMonitoredResourceUris());
-
-    query =
-        "update SdmSubscriptions set nfInstanceId='" +
-        sdmSubscription.getNfInstanceId() + "'" +
-        (sdmSubscription.implicitUnsubscribeIsSet()
-             ? (sdmSubscription.isImplicitUnsubscribe()
-                    ? ",implicitUnsubscribe=1"
-                    : ",implicitUnsubscribe=0")
-             : "") +
-        (sdmSubscription.expiresIsSet()
-             ? ",expires='" + sdmSubscription.getExpires() + "'"
-             : "") +
-        ",callbackReference='" + sdmSubscription.getCallbackReference() + "'" +
-        (sdmSubscription.dnnIsSet() ? ",dnn='" + sdmSubscription.getDnn() + "'"
-                                    : "") +
-        (sdmSubscription.subscriptionIdIsSet()
-             ? ",subscriptionId='" + sdmSubscription.getSubscriptionId() + "'"
-             : "") +
-        (sdmSubscription.immediateReportIsSet()
-             ? (sdmSubscription.isImmediateReport() ? ",immediateReport=1"
-                                                    : ",immediateReport=0")
-             : "") +
-        (sdmSubscription.supportedFeaturesIsSet()
-             ? ",supportedFeatures='" + sdmSubscription.getSupportedFeatures() +
-                   "'"
-             : "");
-
-    if (sdmSubscription.amfServiceNameIsSet()) {
-      to_json(j, sdmSubscription.getAmfServiceName());
-      query += ",amfServiceName='" + j.dump() + "'";
-    }
-    if (sdmSubscription.singleNssaiIsSet()) {
-      to_json(j, sdmSubscription.getSingleNssai());
-      query += ",singleNssai='" + j.dump() + "'";
-    }
-    if (sdmSubscription.plmnIdIsSet()) {
-      to_json(j, sdmSubscription.getPlmnId());
-      query += ",plmnId='" + j.dump() + "'";
-    }
-    if (sdmSubscription.reportIsSet()) {
-      to_json(j, sdmSubscription.getReport());
-      query += ",report='" + j.dump() + "'";
-    }
-    if (sdmSubscription.contextInfoIsSet()) {
-      to_json(j, sdmSubscription.getContextInfo());
-      query += ",contextInfo='" + j.dump() + "'";
-    }
-
-    query +=
-        ",monitoredResourceUris='" + MonitoredResourceUris_json.dump() + "'";
-
-    query += " where ueid='" + ueId + "' AND subsId=" + subsId;
-  } else {
-    to_json(j, problemdetails);
-    response.send(Pistache::Http::Code::Not_Found, j.dump());
-
-    mysql_free_result(res);
-    return;
-  }
-
-  mysql_free_result(res);
-  //    std::cout << query << std::endl;
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-
-    return;
-  }
-
-  response.send(Pistache::Http::Code::No_Content, "");
-
-  to_json(j, sdmSubscription);
-  std::string out = j.dump();
-  Logger::udr_server().debug("SdmSubscription PUT - json:\n\"%s\"",
-                             out.c_str());
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 }  // namespace oai::udr::api

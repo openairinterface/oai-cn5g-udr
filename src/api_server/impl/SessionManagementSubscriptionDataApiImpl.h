@@ -20,21 +20,17 @@
 #ifndef SESSION_MANAGEMENT_SUBSCRIPTION_DATA_API_IMPL_H_
 #define SESSION_MANAGEMENT_SUBSCRIPTION_DATA_API_IMPL_H_
 
+#include <SessionManagementSubscriptionDataApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <SessionManagementSubscriptionDataApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "SessionManagementSubscriptionData.h"
 #include "Snssai.h"
-
-#include <mysql/mysql.h>
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
@@ -50,7 +46,7 @@ class SessionManagementSubscriptionDataApiImpl
  public:
   SessionManagementSubscriptionDataApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
-      std::string address, MYSQL *mysql);
+      std::string address);
   ~SessionManagementSubscriptionDataApiImpl() {}
 
   void query_sm_data(
@@ -62,9 +58,6 @@ class SessionManagementSubscriptionDataApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
       Pistache::Http::ResponseWriter &response);
-
- private:
-  MYSQL *mysql_WitcommUDRDB;
 };
 
 }  // namespace oai::udr::api

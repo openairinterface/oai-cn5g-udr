@@ -20,19 +20,17 @@
 #ifndef QUERY_IDENTITY_DATA_BY_SUPI_OR_GPSI_DOCUMENT_API_IMPL_H_
 #define QUERY_IDENTITY_DATA_BY_SUPI_OR_GPSI_DOCUMENT_API_IMPL_H_
 
+#include <QueryIdentityDataBySUPIOrGPSIDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <QueryIdentityDataBySUPIOrGPSIDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "AppPortId.h"
 #include "IdentityData.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

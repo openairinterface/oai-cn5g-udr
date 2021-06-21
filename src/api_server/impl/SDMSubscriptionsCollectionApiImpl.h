@@ -20,20 +20,16 @@
 #ifndef SDM_SUBSCRIPTIONS_COLLECTION_API_IMPL_H_
 #define SDM_SUBSCRIPTIONS_COLLECTION_API_IMPL_H_
 
+#include <SDMSubscriptionsCollectionApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <SDMSubscriptionsCollectionApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "SdmSubscription.h"
-
-#include <mysql/mysql.h>
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
@@ -48,8 +44,7 @@ class SDMSubscriptionsCollectionApiImpl
 
  public:
   SDMSubscriptionsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                    udr_app *udr_app_inst, std::string address,
-                                    MYSQL *mysql);
+                                    udr_app *udr_app_inst, std::string address);
   ~SDMSubscriptionsCollectionApiImpl() {}
 
   void create_sdm_subscriptions(const std::string &ueId,
@@ -59,9 +54,6 @@ class SDMSubscriptionsCollectionApiImpl
       const std::string &ueId,
       const Pistache::Optional<std::string> &supportedFeatures,
       Pistache::Http::ResponseWriter &response);
-
- private:
-  MYSQL *mysql_WitcommUDRDB;
 };
 
 }  // namespace oai::udr::api

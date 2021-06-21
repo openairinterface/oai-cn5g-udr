@@ -20,20 +20,16 @@
 #ifndef SMF_REGISTRATION_DOCUMENT_API_IMPL_H_
 #define SMF_REGISTRATION_DOCUMENT_API_IMPL_H_
 
+#include <SMFRegistrationDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <SMFRegistrationDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "SmfRegistration.h"
-
-#include <mysql/mysql.h>
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
@@ -48,8 +44,7 @@ class SMFRegistrationDocumentApiImpl
 
  public:
   SMFRegistrationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                 udr_app *udr_app_inst, std::string address,
-                                 MYSQL *mysql);
+                                 udr_app *udr_app_inst, std::string address);
   ~SMFRegistrationDocumentApiImpl() {}
 
   void create_smf_context_non3gpp(const std::string &ueId,
@@ -63,9 +58,6 @@ class SMFRegistrationDocumentApiImpl
       const Pistache::Optional<std::vector<std::string>> &fields,
       const Pistache::Optional<std::string> &supportedFeatures,
       Pistache::Http::ResponseWriter &response);
-
- private:
-  MYSQL *mysql_WitcommUDRDB;
 };
 
 }  // namespace oai::udr::api

@@ -20,19 +20,17 @@
 #ifndef ACCESS_AND_MOBILITY_POLICY_DATA_DOCUMENT_API_IMPL_H_
 #define ACCESS_AND_MOBILITY_POLICY_DATA_DOCUMENT_API_IMPL_H_
 
+#include <AccessAndMobilityPolicyDataDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <AccessAndMobilityPolicyDataDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "AmPolicyData.h"
 #include "ProblemDetails.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

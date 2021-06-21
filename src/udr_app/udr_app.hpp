@@ -30,11 +30,21 @@
 #ifndef FILE_UDR_APP_HPP_SEEN
 #define FILE_UDR_APP_HPP_SEEN
 
-#include <string>
+#include <mysql/mysql.h>
 #include <pistache/http.h>
+
 #include <map>
-#include <shared_mutex>
 #include <nlohmann/json.hpp>
+#include <shared_mutex>
+#include <string>
+
+#include "Amf3GppAccessRegistration.h"
+#include "AuthEvent.h"
+#include "PatchItem.h"
+#include "SdmSubscription.h"
+#include "SmfRegistration.h"
+
+using namespace oai::udr::model;
 
 namespace oai {
 namespace udr {
@@ -50,10 +60,94 @@ class udr_app {
   virtual ~udr_app();
 
   void handle_access_mobility_subscription_data_document(
-		  const std::string &ue_id, const std::string &serving_plmn_id, nlohmann::json& response_data,
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      nlohmann::json& response_data, Pistache::Http::Code& code);
+  void handle_amf_3gpp_access_registration_document_create_amf_context(
+      const std::string& ue_id,
+      Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      nlohmann::json& response_data, Pistache::Http::Code& code);
+
+  void handle_amf_3gpp_access_registration_document_query_amf_context(
+      const std::string& ue_id, nlohmann::json& response_data,
       Pistache::Http::Code& code);
 
+  void handle_create_authentication_status(const std::string& ue_id,
+                                           const AuthEvent& authEvent,
+                                           nlohmann::json& response_data,
+                                           Pistache::Http::Code& code);
+
+  void handle_delete_authentication_status(const std::string& ue_id,
+                                           nlohmann::json& response_data,
+                                           Pistache::Http::Code& code);
+
+  void handle_query_authentication_status(const std::string& ue_id,
+                                          nlohmann::json& response_data,
+                                          Pistache::Http::Code& code);
+
+  void handle_modify_authentication_subscription(
+      const std::string& ue_id, const std::vector<PatchItem>& patchItem,
+      nlohmann::json& response_data, Pistache::Http::Code& code);
+
+  void handle_read_authentication_subscription(const std::string& ue_id,
+                                               nlohmann::json& response_data,
+                                               Pistache::Http::Code& code);
+
+  void handle_query_sdm_subscription(const std::string& ue_id,
+                                     const std::string& subs_id,
+                                     nlohmann::json& response_data,
+                                     Pistache::Http::Code& code);
+
+  void handle_remove_sdm_subscription(const std::string& ue_id,
+                                      const std::string& subs_id,
+                                      nlohmann::json& response_data,
+                                      Pistache::Http::Code& code);
+
+  void handle_update_sdm_subscription(const std::string& ue_id,
+                                      const std::string& subs_id,
+                                      SdmSubscription& sdmSubscription,
+                                      nlohmann::json& response_data,
+                                      Pistache::Http::Code& code);
+
+  void handle_create_sdm_subscriptions(const std::string& ue_id,
+                                       SdmSubscription& sdmSubscription,
+                                       nlohmann::json& response_data,
+                                       Pistache::Http::Code& code);
+
+  void handle_query_sdm_subscriptions(const std::string& ue_id,
+                                      nlohmann::json& response_data,
+                                      Pistache::Http::Code& code);
+
+  void handle_query_sm_data(const std::string& ue_id,
+                            const std::string& serving_plmn_id,
+                            nlohmann::json& response_data,
+                            Pistache::Http::Code& code);
+
+  void handle_create_smf_context_non_3gpp(
+      const std::string& ue_id, const int32_t& pdu_session_id,
+      const SmfRegistration& smfRegistration, nlohmann::json& response_data,
+      Pistache::Http::Code& code);
+
+  void handle_delete_smf_context(const std::string& ue_id,
+                                 const int32_t& pdu_session_id,
+                                 nlohmann::json& response_data,
+                                 Pistache::Http::Code& code);
+
+  void handle_query_smf_registration(const std::string& ue_id,
+                                     const int32_t& pdu_session_id,
+                                     nlohmann::json& response_data,
+                                     Pistache::Http::Code& code);
+
+  void handle_query_smf_reg_list(const std::string& ue_id,
+                                 nlohmann::json& response_data,
+                                 Pistache::Http::Code& code);
+
+  void handle_query_smf_select_data(const std::string& ue_id,
+                                    const std::string& serving_plmn_id,
+                                    nlohmann::json& response_data,
+                                    Pistache::Http::Code& code);
+
  private:
+  MYSQL mysql;
 };
 }  // namespace app
 }  // namespace udr

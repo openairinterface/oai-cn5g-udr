@@ -20,21 +20,19 @@
 #ifndef MESSAGE_WAITING_DATA_DOCUMENT_API_IMPL_H_
 #define MESSAGE_WAITING_DATA_DOCUMENT_API_IMPL_H_
 
+#include <MessageWaitingDataDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <MessageWaitingDataDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
 #include <vector>
+
 #include "MessageWaitingData.h"
 #include "PatchItem.h"
 #include "ProblemDetails.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

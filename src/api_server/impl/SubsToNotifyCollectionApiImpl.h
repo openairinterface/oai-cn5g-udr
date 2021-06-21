@@ -20,18 +20,16 @@
 #ifndef SUBS_TO_NOTIFY_COLLECTION_API_IMPL_H_
 #define SUBS_TO_NOTIFY_COLLECTION_API_IMPL_H_
 
+#include <SubsToNotifyCollectionApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <SubsToNotifyCollectionApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
-#include "SubscriptionDataSubscriptions.h"
 
+#include "SubscriptionDataSubscriptions.h"
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

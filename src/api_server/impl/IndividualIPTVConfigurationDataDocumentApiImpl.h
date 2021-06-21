@@ -20,19 +20,17 @@
 #ifndef INDIVIDUAL_IPTV_CONFIGURATION_DATA_DOCUMENT_API_IMPL_H_
 #define INDIVIDUAL_IPTV_CONFIGURATION_DATA_DOCUMENT_API_IMPL_H_
 
+#include <IndividualIPTVConfigurationDataDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <IndividualIPTVConfigurationDataDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "IptvConfigData.h"
 #include "ProblemDetails.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

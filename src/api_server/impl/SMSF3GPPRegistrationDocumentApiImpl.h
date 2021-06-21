@@ -20,18 +20,16 @@
 #ifndef SMSF3_GPP_REGISTRATION_DOCUMENT_API_IMPL_H_
 #define SMSF3_GPP_REGISTRATION_DOCUMENT_API_IMPL_H_
 
+#include <SMSF3GPPRegistrationDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <SMSF3GPPRegistrationDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
-#include "SmsfRegistration.h"
 
+#include "SmsfRegistration.h"
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

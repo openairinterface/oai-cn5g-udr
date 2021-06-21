@@ -12,7 +12,6 @@
  */
 
 #include "AMF3GPPAccessRegistrationDocumentApiImpl.h"
-#include "logger.hpp"
 
 #include "logger.hpp"
 #include "udr_app.hpp"
@@ -26,12 +25,10 @@ using namespace oai::udr::model;
 AMF3GPPAccessRegistrationDocumentApiImpl::
     AMF3GPPAccessRegistrationDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
-        std::string address, MYSQL *mysql)
+        std::string address)
     : AMF3GPPAccessRegistrationDocumentApi(rtr),
       m_udr_app(udr_app_inst),
-      m_address(address) {
-  mysql_WitcommUDRDB = mysql;
-}
+      m_address(address) {}
 
 void AMF3GPPAccessRegistrationDocumentApiImpl::amf_context3gpp(
     const std::string &ueId, const std::vector<PatchItem> &patchItem,
@@ -50,374 +47,26 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
     const std::string &ueId,
     Amf3GppAccessRegistration &amf3GppAccessRegistration,
     Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_amf_3gpp_access_registration_document_create_amf_context(
+      ueId, amf3GppAccessRegistration, response_data, code);
 
-  const std::string select_AMF3GPPAccessRegistration =
-      "select * from Amf3GppAccessRegistration WHERE ueid='" + ueId + "'";
-  std::string query;
-
-  nlohmann::json j;
-
-  if (mysql_real_query(
-          mysql_WitcommUDRDB, select_AMF3GPPAccessRegistration.c_str(),
-          (unsigned long)select_AMF3GPPAccessRegistration.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               select_AMF3GPPAccessRegistration.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               select_AMF3GPPAccessRegistration.c_str());
-    return;
-  }
-  if (mysql_num_rows(res)) {
-    query =
-        "update Amf3GppAccessRegistration set amfInstanceId='" +
-        amf3GppAccessRegistration.getAmfInstanceId() + "'" +
-        (amf3GppAccessRegistration.supportedFeaturesIsSet()
-             ? ",supportedFeatures='" +
-                   amf3GppAccessRegistration.getSupportedFeatures() + "'"
-             : "") +
-        (amf3GppAccessRegistration.purgeFlagIsSet()
-             ? (amf3GppAccessRegistration.isPurgeFlag() ? ",purgeFlag=1"
-                                                        : ",purgeFlag=0")
-             : "") +
-        (amf3GppAccessRegistration.peiIsSet()
-             ? ",pei='" + amf3GppAccessRegistration.getPei() + "'"
-             : "") +
-        ",deregCallbackUri='" +
-        amf3GppAccessRegistration.getDeregCallbackUri() + "'" +
-        (amf3GppAccessRegistration.pcscfRestorationCallbackUriIsSet()
-             ? ",pcscfRestorationCallbackUri='" +
-                   amf3GppAccessRegistration.getPcscfRestorationCallbackUri() +
-                   "'"
-             : "") +
-        (amf3GppAccessRegistration.initialRegistrationIndIsSet()
-             ? (amf3GppAccessRegistration.isInitialRegistrationInd()
-                    ? ",initialRegistrationInd=1"
-                    : ",initialRegistrationInd=0")
-             : "") +
-        (amf3GppAccessRegistration.drFlagIsSet()
-             ? (amf3GppAccessRegistration.isDrFlag() ? ",drFlag=1"
-                                                     : ",drFlag=0")
-             : "") +
-        (amf3GppAccessRegistration.urrpIndicatorIsSet()
-             ? (amf3GppAccessRegistration.isUrrpIndicator()
-                    ? ",urrpIndicator=1"
-                    : ",urrpIndicator=0")
-             : "") +
-        (amf3GppAccessRegistration.amfEeSubscriptionIdIsSet()
-             ? ",amfEeSubscriptionId='" +
-                   amf3GppAccessRegistration.getAmfEeSubscriptionId() + "'"
-             : "") +
-        (amf3GppAccessRegistration.ueSrvccCapabilityIsSet()
-             ? (amf3GppAccessRegistration.isUeSrvccCapability()
-                    ? ",ueSrvccCapability=1"
-                    : ",ueSrvccCapability=0")
-             : "") +
-        (amf3GppAccessRegistration.registrationTimeIsSet()
-             ? ",registrationTime='" +
-                   amf3GppAccessRegistration.getRegistrationTime() + "'"
-             : "") +
-        (amf3GppAccessRegistration.noEeSubscriptionIndIsSet()
-             ? (amf3GppAccessRegistration.isNoEeSubscriptionInd()
-                    ? ",noEeSubscriptionInd=1"
-                    : ",noEeSubscriptionInd=0")
-             : "");
-
-    if (amf3GppAccessRegistration.imsVoPsIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getImsVoPs());
-      query += ",imsVoPs='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.amfServiceNameDeregIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getAmfServiceNameDereg());
-      query += ",amfServiceNameDereg='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.amfServiceNamePcscfRestIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getAmfServiceNamePcscfRest());
-      query += ",amfServiceNamePcscfRest='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.backupAmfInfoIsSet()) {
-      nlohmann::json tmp;
-      j.clear();
-      std::vector<BackupAmfInfo> backupamfinfo =
-          amf3GppAccessRegistration.getBackupAmfInfo();
-      for (int i = 0; i < backupamfinfo.size(); i++) {
-        to_json(tmp, backupamfinfo[i]);
-        j += tmp;
-      }
-      query += ",backupAmfInfo='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.epsInterworkingInfoIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getEpsInterworkingInfo());
-      query += ",epsInterworkingInfo='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.vgmlcAddressIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getVgmlcAddress());
-      query += ",vgmlcAddress='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.contextInfoIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getContextInfo());
-      query += ",contextInfo='" + j.dump() + "'";
-    }
-
-    to_json(j, amf3GppAccessRegistration.getGuami());
-    query += ",guami='" + j.dump() + "'";
-    to_json(j, amf3GppAccessRegistration.getRatType());
-    query += ",ratType='" + j.dump() + "'";
-    query += " where ueid='" + ueId + "'";
-  } else {
-    query =
-        "insert into Amf3GppAccessRegistration set ueid='" + ueId + "'" +
-        ",amfInstanceId='" + amf3GppAccessRegistration.getAmfInstanceId() +
-        "'" +
-        (amf3GppAccessRegistration.supportedFeaturesIsSet()
-             ? ",supportedFeatures='" +
-                   amf3GppAccessRegistration.getSupportedFeatures() + "'"
-             : "") +
-        (amf3GppAccessRegistration.purgeFlagIsSet()
-             ? (amf3GppAccessRegistration.isPurgeFlag() ? ",purgeFlag=1"
-                                                        : ",purgeFlag=0")
-             : "") +
-        (amf3GppAccessRegistration.peiIsSet()
-             ? ",pei='" + amf3GppAccessRegistration.getPei() + "'"
-             : "") +
-        ",deregCallbackUri='" +
-        amf3GppAccessRegistration.getDeregCallbackUri() + "'" +
-        (amf3GppAccessRegistration.pcscfRestorationCallbackUriIsSet()
-             ? ",pcscfRestorationCallbackUri='" +
-                   amf3GppAccessRegistration.getPcscfRestorationCallbackUri() +
-                   "'"
-             : "") +
-        (amf3GppAccessRegistration.initialRegistrationIndIsSet()
-             ? (amf3GppAccessRegistration.isInitialRegistrationInd()
-                    ? ",initialRegistrationInd=1"
-                    : ",initialRegistrationInd=0")
-             : "") +
-        (amf3GppAccessRegistration.drFlagIsSet()
-             ? (amf3GppAccessRegistration.isDrFlag() ? ",drFlag=1"
-                                                     : ",drFlag=0")
-             : "") +
-        (amf3GppAccessRegistration.urrpIndicatorIsSet()
-             ? (amf3GppAccessRegistration.isUrrpIndicator()
-                    ? ",urrpIndicator=1"
-                    : ",urrpIndicator=0")
-             : "") +
-        (amf3GppAccessRegistration.amfEeSubscriptionIdIsSet()
-             ? ",amfEeSubscriptionId='" +
-                   amf3GppAccessRegistration.getAmfEeSubscriptionId() + "'"
-             : "") +
-        (amf3GppAccessRegistration.ueSrvccCapabilityIsSet()
-             ? (amf3GppAccessRegistration.isUeSrvccCapability()
-                    ? ",ueSrvccCapability=1"
-                    : ",ueSrvccCapability=0")
-             : "") +
-        (amf3GppAccessRegistration.registrationTimeIsSet()
-             ? ",registrationTime='" +
-                   amf3GppAccessRegistration.getRegistrationTime() + "'"
-             : "") +
-        (amf3GppAccessRegistration.noEeSubscriptionIndIsSet()
-             ? (amf3GppAccessRegistration.isNoEeSubscriptionInd()
-                    ? ",noEeSubscriptionInd=1"
-                    : ",noEeSubscriptionInd=0")
-             : "");
-
-    if (amf3GppAccessRegistration.imsVoPsIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getImsVoPs());
-      query += ",imsVoPs='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.amfServiceNameDeregIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getAmfServiceNameDereg());
-      query += ",amfServiceNameDereg='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.amfServiceNamePcscfRestIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getAmfServiceNamePcscfRest());
-      query += ",amfServiceNamePcscfRest='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.backupAmfInfoIsSet()) {
-      nlohmann::json tmp;
-      j.clear();
-      std::vector<BackupAmfInfo> backupamfinfo =
-          amf3GppAccessRegistration.getBackupAmfInfo();
-      for (int i = 0; i < backupamfinfo.size(); i++) {
-        to_json(tmp, backupamfinfo[i]);
-        j += tmp;
-      }
-      query += ",backupAmfInfo='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.epsInterworkingInfoIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getEpsInterworkingInfo());
-      query += ",epsInterworkingInfo='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.vgmlcAddressIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getVgmlcAddress());
-      query += ",vgmlcAddress='" + j.dump() + "'";
-    }
-    if (amf3GppAccessRegistration.contextInfoIsSet()) {
-      to_json(j, amf3GppAccessRegistration.getContextInfo());
-      query += ",contextInfo='" + j.dump() + "'";
-    }
-
-    to_json(j, amf3GppAccessRegistration.getGuami());
-    query += ",guami='" + j.dump() + "'";
-    to_json(j, amf3GppAccessRegistration.getRatType());
-    query += ",ratType='" + j.dump() + "'";
-  }
-
-  mysql_free_result(res);
-  //    std::cout << query << std::endl;
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  to_json(j, amf3GppAccessRegistration);
-  response.send(Pistache::Http::Code::Created, j.dump());
-
-  std::string out = j.dump();
-  Logger::udr_server().debug("Amf3GppAccessRegistration PUT - json:\n\"%s\"",
-                             out.c_str());
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
     const std::string &ueId,
     const Pistache::Optional<std::vector<std::string>> &fields,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
-  MYSQL_FIELD *field = nullptr;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_amf_3gpp_access_registration_document_query_amf_context(
+      ueId, response_data, code);
 
-  nlohmann::json j;
-
-  Amf3GppAccessRegistration amf3gppaccessregistration;
-  const std::string query =
-      "select * from Amf3GppAccessRegistration WHERE ueid='" + ueId + "'";
-
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  row = mysql_fetch_row(res);
-
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("amfInstanceId", field->name)) {
-        amf3gppaccessregistration.setAmfInstanceId(row[i]);
-      } else if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
-        amf3gppaccessregistration.setSupportedFeatures(row[i]);
-      } else if (!strcmp("purgeFlag", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          amf3gppaccessregistration.setPurgeFlag(true);
-        else
-          amf3gppaccessregistration.setPurgeFlag(false);
-      } else if (!strcmp("pei", field->name) && row[i] != NULL) {
-        amf3gppaccessregistration.setPei(row[i]);
-      } else if (!strcmp("imsVoPs", field->name) && row[i] != NULL) {
-        ImsVoPs imsvops;
-        nlohmann::json::parse(row[i]).get_to(imsvops);
-        amf3gppaccessregistration.setImsVoPs(imsvops);
-      } else if (!strcmp("deregCallbackUri", field->name)) {
-        amf3gppaccessregistration.setDeregCallbackUri(row[i]);
-      } else if (!strcmp("amfServiceNameDereg", field->name) &&
-                 row[i] != NULL) {
-        ServiceName amfservicenamedereg;
-        nlohmann::json::parse(row[i]).get_to(amfservicenamedereg);
-        amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
-      } else if (!strcmp("pcscfRestorationCallbackUri", field->name) &&
-                 row[i] != NULL) {
-        amf3gppaccessregistration.setPcscfRestorationCallbackUri(row[i]);
-      } else if (!strcmp("amfServiceNamePcscfRest", field->name) &&
-                 row[i] != NULL) {
-        ServiceName amfservicenamepcscfrest;
-        nlohmann::json::parse(row[i]).get_to(amfservicenamepcscfrest);
-        amf3gppaccessregistration.setAmfServiceNamePcscfRest(
-            amfservicenamepcscfrest);
-      } else if (!strcmp("initialRegistrationInd", field->name) &&
-                 row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          amf3gppaccessregistration.setInitialRegistrationInd(true);
-        else
-          amf3gppaccessregistration.setInitialRegistrationInd(false);
-      } else if (!strcmp("guami", field->name)) {
-        Guami guami;
-        nlohmann::json::parse(row[i]).get_to(guami);
-        amf3gppaccessregistration.setGuami(guami);
-      } else if (!strcmp("backupAmfInfo", field->name) && row[i] != NULL) {
-        std ::vector<BackupAmfInfo> backupamfinfo;
-        nlohmann::json::parse(row[i]).get_to(backupamfinfo);
-        amf3gppaccessregistration.setBackupAmfInfo(backupamfinfo);
-      } else if (!strcmp("drFlag", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          amf3gppaccessregistration.setDrFlag(true);
-        else
-          amf3gppaccessregistration.setDrFlag(false);
-      } else if (!strcmp("ratType", field->name)) {
-        RatType rattype;
-        nlohmann::json::parse(row[i]).get_to(rattype);
-        amf3gppaccessregistration.setRatType(rattype);
-      } else if (!strcmp("urrpIndicator", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          amf3gppaccessregistration.setUrrpIndicator(true);
-        else
-          amf3gppaccessregistration.setUrrpIndicator(false);
-      } else if (!strcmp("amfEeSubscriptionId", field->name) &&
-                 row[i] != NULL) {
-        amf3gppaccessregistration.setAmfEeSubscriptionId(row[i]);
-      } else if (!strcmp("epsInterworkingInfo", field->name) &&
-                 row[i] != NULL) {
-        EpsInterworkingInfo epsinterworkinginfo;
-        nlohmann::json::parse(row[i]).get_to(epsinterworkinginfo);
-        amf3gppaccessregistration.setEpsInterworkingInfo(epsinterworkinginfo);
-      } else if (!strcmp("ueSrvccCapability", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          amf3gppaccessregistration.setUeSrvccCapability(true);
-        else
-          amf3gppaccessregistration.setUeSrvccCapability(false);
-      } else if (!strcmp("registrationTime", field->name) && row[i] != NULL) {
-        amf3gppaccessregistration.setRegistrationTime(row[i]);
-      } else if (!strcmp("vgmlcAddress", field->name) && row[i] != NULL) {
-        VgmlcAddress vgmlcaddress;
-        nlohmann::json::parse(row[i]).get_to(vgmlcaddress);
-        amf3gppaccessregistration.setVgmlcAddress(vgmlcaddress);
-      } else if (!strcmp("contextInfo", field->name) && row[i] != NULL) {
-        ContextInfo contextinfo;
-        nlohmann::json::parse(row[i]).get_to(contextinfo);
-        amf3gppaccessregistration.setContextInfo(contextinfo);
-      } else if (!strcmp("noEeSubscriptionInd", field->name) &&
-                 row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          amf3gppaccessregistration.setNoEeSubscriptionInd(true);
-        else
-          amf3gppaccessregistration.setNoEeSubscriptionInd(false);
-      }
-    }
-    to_json(j, amf3gppaccessregistration);
-    response.send(Pistache::Http::Code::Ok, j.dump());
-
-    std::string out = j.dump();
-    Logger::udr_server().debug("Amf3GppAccessRegistration GET - json:\n\"%s\"",
-                               out.c_str());
-  } else {
-    Logger::udr_server().error("Amf3GppAccessRegistration no data！SQL(%s)",
-                               query.c_str());
-  }
-
-  mysql_free_result(res);
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 }  // namespace oai::udr::api

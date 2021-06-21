@@ -12,7 +12,6 @@
  */
 
 #include "SMFRegistrationsCollectionApiImpl.h"
-#include "logger.hpp"
 
 #include "logger.hpp"
 #include "udr_app.hpp"
@@ -25,121 +24,21 @@ using namespace oai::udr::model;
 
 SMFRegistrationsCollectionApiImpl::SMFRegistrationsCollectionApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
-    std::string address, MYSQL *mysql)
+    std::string address)
     : SMFRegistrationsCollectionApi(rtr),
       m_udr_app(udr_app_inst),
-      m_address(address) {
-  mysql_WitcommUDRDB = mysql;
-}
+      m_address(address) {}
 
 void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(
     const std::string &ueId,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
-  MYSQL_FIELD *field = nullptr;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_query_smf_reg_list(ueId, response_data, code);
 
-  std::vector<std::string> fields;
-
-  nlohmann::json j, tmp;
-
-  const std::string query =
-      "SELECT * from SmfRegistrations WHERE ueid='" + ueId + "'";
-
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  while (field = mysql_fetch_field(res)) {
-    fields.push_back(field->name);
-  }
-
-  j.clear();
-  while (row = mysql_fetch_row(res)) {
-    SmfRegistration smfregistration;
-
-    tmp.clear();
-
-    for (int i = 0; i < fields.size(); i++) {
-      if (!strcmp("smfInstanceId", fields[i].c_str())) {
-        smfregistration.setSmfInstanceId(row[i]);
-      } else if (!strcmp("smfSetId", fields[i].c_str()) && row[i] != NULL) {
-        smfregistration.setSmfSetId(row[i]);
-      } else if (!strcmp("supportedFeatures", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        smfregistration.setSupportedFeatures(row[i]);
-      } else if (!strcmp("pduSessionId", fields[i].c_str())) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        smfregistration.setPduSessionId(a);
-      } else if (!strcmp("singleNssai", fields[i].c_str())) {
-        Snssai singlenssai;
-        nlohmann::json::parse(row[i]).get_to(singlenssai);
-        smfregistration.setSingleNssai(singlenssai);
-      } else if (!strcmp("dnn", fields[i].c_str()) && row[i] != NULL) {
-        smfregistration.setDnn(row[i]);
-      } else if (!strcmp("emergencyServices", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          smfregistration.setEmergencyServices(true);
-        else
-          smfregistration.setEmergencyServices(false);
-      } else if (!strcmp("pcscfRestorationCallbackUri", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        smfregistration.setPcscfRestorationCallbackUri(row[i]);
-      } else if (!strcmp("plmnId", fields[i].c_str())) {
-        PlmnId plmnid;
-        nlohmann::json::parse(row[i]).get_to(plmnid);
-        smfregistration.setPlmnId(plmnid);
-      } else if (!strcmp("pgwFqdn", fields[i].c_str()) && row[i] != NULL) {
-        smfregistration.setPgwFqdn(row[i]);
-      } else if (!strcmp("epdgInd", fields[i].c_str()) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          smfregistration.setEpdgInd(true);
-        else
-          smfregistration.setEpdgInd(false);
-      } else if (!strcmp("deregCallbackUri", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        smfregistration.setDeregCallbackUri(row[i]);
-      } else if (!strcmp("registrationReason", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        RegistrationReason registrationreason;
-        nlohmann::json::parse(row[i]).get_to(registrationreason);
-        smfregistration.setRegistrationReason(registrationreason);
-      } else if (!strcmp("registrationTime", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        smfregistration.setRegistrationTime(row[i]);
-      } else if (!strcmp("contextInfo", fields[i].c_str()) && row[i] != NULL) {
-        ContextInfo contextinfo;
-        nlohmann::json::parse(row[i]).get_to(contextinfo);
-        smfregistration.setContextInfo(contextinfo);
-      }
-    }
-    to_json(tmp, smfregistration);
-    j += tmp;
-  }
-
-  mysql_free_result(res);
-
-  response.send(Pistache::Http::Code::Ok, j.dump());
-
-  std::string out = j.dump();
-  Logger::udr_server().debug("SmfRegistrations GET - json:\n\"%s\"",
-                             out.c_str());
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 }  // namespace oai::udr::api

@@ -20,18 +20,16 @@
 #ifndef LCS_MOBILE_ORIGINATED_SUBSCRIPTION_DATA_API_IMPL_H_
 #define LCS_MOBILE_ORIGINATED_SUBSCRIPTION_DATA_API_IMPL_H_
 
+#include <LCSMobileOriginatedSubscriptionDataApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <LCSMobileOriginatedSubscriptionDataApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
-#include "LcsMoData.h"
 
+#include "LcsMoData.h"
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

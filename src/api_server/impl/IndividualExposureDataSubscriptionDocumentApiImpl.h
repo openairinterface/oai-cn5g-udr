@@ -20,19 +20,17 @@
 #ifndef INDIVIDUAL_EXPOSURE_DATA_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 #define INDIVIDUAL_EXPOSURE_DATA_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 
+#include <IndividualExposureDataSubscriptionDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <IndividualExposureDataSubscriptionDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "ExposureDataSubscription.h"
 #include "ProblemDetails.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

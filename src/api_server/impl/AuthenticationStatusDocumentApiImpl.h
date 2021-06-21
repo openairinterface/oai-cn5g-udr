@@ -20,20 +20,16 @@
 #ifndef AUTHENTICATION_STATUS_DOCUMENT_API_IMPL_H_
 #define AUTHENTICATION_STATUS_DOCUMENT_API_IMPL_H_
 
+#include <AuthenticationStatusDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <AuthenticationStatusDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "AuthEvent.h"
-
-#include <mysql/mysql.h>
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
@@ -49,7 +45,7 @@ class AuthenticationStatusDocumentApiImpl
  public:
   AuthenticationStatusDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                       udr_app *udr_app_inst,
-                                      std::string address, MYSQL *mysql);
+                                      std::string address);
   ~AuthenticationStatusDocumentApiImpl() {}
 
   void create_authentication_status(const std::string &ueId,
@@ -63,9 +59,6 @@ class AuthenticationStatusDocumentApiImpl
       const Pistache::Optional<std::vector<std::string>> &fields,
       const Pistache::Optional<std::string> &supportedFeatures,
       Pistache::Http::ResponseWriter &response);
-
- private:
-  MYSQL *mysql_WitcommUDRDB;
 };
 
 }  // namespace oai::udr::api

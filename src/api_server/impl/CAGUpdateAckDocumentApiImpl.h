@@ -20,18 +20,16 @@
 #ifndef CAG_UPDATE_ACK_DOCUMENT_API_IMPL_H_
 #define CAG_UPDATE_ACK_DOCUMENT_API_IMPL_H_
 
+#include <CAGUpdateAckDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <CAGUpdateAckDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
-#include "CagAckData.h"
 
+#include "CagAckData.h"
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

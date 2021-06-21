@@ -20,19 +20,17 @@
 #ifndef INDIVIDUAL_INFLUENCE_DATA_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 #define INDIVIDUAL_INFLUENCE_DATA_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 
+#include <IndividualInfluenceDataSubscriptionDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <IndividualInfluenceDataSubscriptionDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "ProblemDetails.h"
 #include "TrafficInfluSub.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

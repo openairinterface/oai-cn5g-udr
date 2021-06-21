@@ -20,14 +20,13 @@
 #ifndef CONTEXT_DATA_DOCUMENT_API_IMPL_H_
 #define CONTEXT_DATA_DOCUMENT_API_IMPL_H_
 
+#include <ContextDataDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <ContextDataDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
+
+#include <memory>
 
 #include "ContextDataSetName.h"
 #include "ContextDataSets.h"

@@ -20,20 +20,16 @@
 #ifndef ACCESS_AND_MOBILITY_SUBSCRIPTION_DATA_DOCUMENT_API_IMPL_H_
 #define ACCESS_AND_MOBILITY_SUBSCRIPTION_DATA_DOCUMENT_API_IMPL_H_
 
+#include <AccessAndMobilitySubscriptionDataDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <AccessAndMobilitySubscriptionDataDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "AccessAndMobilitySubscriptionData.h"
-
-#include <mysql/mysql.h>
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
@@ -49,7 +45,7 @@ class AccessAndMobilitySubscriptionDataDocumentApiImpl
  public:
   AccessAndMobilitySubscriptionDataDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
-      std::string address, MYSQL *mysql);
+      std::string address);
   ~AccessAndMobilitySubscriptionDataDocumentApiImpl() {}
 
   void query_am_data(
@@ -59,9 +55,6 @@ class AccessAndMobilitySubscriptionDataDocumentApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
       Pistache::Http::ResponseWriter &response);
-
- private:
-  MYSQL *mysql_WitcommUDRDB;
 };
 
 }  // namespace oai::udr::api

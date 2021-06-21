@@ -20,22 +20,20 @@
 #ifndef OPERATOR_SPECIFIC_DATA_CONTAINER_DOCUMENT_API_IMPL_H_
 #define OPERATOR_SPECIFIC_DATA_CONTAINER_DOCUMENT_API_IMPL_H_
 
+#include <OperatorSpecificDataContainerDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <OperatorSpecificDataContainerDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
 #include <vector>
+
 #include "OperatorSpecificDataContainer.h"
 #include "PatchItem.h"
 #include "PatchResult.h"
 #include "ProblemDetails.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

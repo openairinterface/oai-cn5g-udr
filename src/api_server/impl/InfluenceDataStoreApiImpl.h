@@ -20,20 +20,18 @@
 #ifndef INFLUENCE_DATA_STORE_API_IMPL_H_
 #define INFLUENCE_DATA_STORE_API_IMPL_H_
 
+#include <InfluenceDataStoreApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <InfluenceDataStoreApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "ProblemDetails.h"
 #include "Snssai.h"
 #include "TrafficInfluData.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

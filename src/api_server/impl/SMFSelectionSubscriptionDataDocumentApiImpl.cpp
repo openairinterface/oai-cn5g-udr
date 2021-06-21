@@ -12,7 +12,6 @@
  */
 
 #include "SMFSelectionSubscriptionDataDocumentApiImpl.h"
-#include "logger.hpp"
 
 #include "logger.hpp"
 #include "udr_app.hpp"
@@ -26,12 +25,10 @@ using namespace oai::udr::model;
 SMFSelectionSubscriptionDataDocumentApiImpl::
     SMFSelectionSubscriptionDataDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
-        std::string address, MYSQL *mysql)
+        std::string address)
     : SMFSelectionSubscriptionDataDocumentApi(rtr),
       m_udr_app(udr_app_inst),
-      m_address(address) {
-  mysql_WitcommUDRDB = mysql;
-}
+      m_address(address) {}
 
 void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
     const std::string &ueId, const std::string &servingPlmnId,
@@ -40,60 +37,13 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
     const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
     const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
     Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
-  MYSQL_FIELD *field = nullptr;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_query_smf_select_data(ueId, servingPlmnId, response_data,
+                                          code);
 
-  nlohmann::json j;
-
-  SmfSelectionSubscriptionData smfselectionsubscriptiondata;
-  const std::string query =
-      "select * from SmfSelectionSubscriptionData WHERE ueid='" + ueId +
-      "' and servingPlmnid='" + servingPlmnId + "'";
-
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  row = mysql_fetch_row(res);
-
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
-        smfselectionsubscriptiondata.setSupportedFeatures(row[i]);
-      } else if (!strcmp("subscribedSnssaiInfos", field->name) &&
-                 row[i] != NULL) {
-        std ::map<std ::string, SnssaiInfo> subscribedsnssaiinfos;
-        nlohmann::json::parse(row[i]).get_to(subscribedsnssaiinfos);
-        smfselectionsubscriptiondata.setSubscribedSnssaiInfos(
-            subscribedsnssaiinfos);
-      } else if (!strcmp("sharedSnssaiInfosId", field->name) &&
-                 row[i] != NULL) {
-        smfselectionsubscriptiondata.setSharedSnssaiInfosId(row[i]);
-      }
-    }
-    to_json(j, smfselectionsubscriptiondata);
-    response.send(Pistache::Http::Code::Ok, j.dump());
-
-    std::string out = j.dump();
-    Logger::udr_server().debug(
-        "SmfSelectionSubscriptionData GET - json:\n\"%s\"", out.c_str());
-  } else {
-    Logger::udr_server().error("SmfSelectionSubscriptionData no data！SQL(%s)",
-                               query.c_str());
-  }
-
-  mysql_free_result(res);
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 }  // namespace oai::udr::api

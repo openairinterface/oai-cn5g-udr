@@ -20,18 +20,16 @@
 #ifndef QUERY_ODB_DATA_BY_SUPI_OR_GPSI_DOCUMENT_API_IMPL_H_
 #define QUERY_ODB_DATA_BY_SUPI_OR_GPSI_DOCUMENT_API_IMPL_H_
 
+#include <QueryODBDataBySUPIOrGPSIDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <QueryODBDataBySUPIOrGPSIDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
-#include "OdbData.h"
 
+#include "OdbData.h"
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

@@ -12,11 +12,10 @@
  */
 
 #include "AuthenticationSubscriptionDocumentApiImpl.h"
-#include "PatchResult.h"
-#include "logger.hpp"
 
 #include <AuthenticationSubscription.h>
 
+#include "PatchResult.h"
 #include "logger.hpp"
 #include "udr_app.hpp"
 #include "udr_config.hpp"
@@ -29,82 +28,23 @@ using namespace oai::udr::model;
 AuthenticationSubscriptionDocumentApiImpl::
     AuthenticationSubscriptionDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
-        std::string address, MYSQL *mysql)
+        std::string address)
     : AuthenticationSubscriptionDocumentApi(rtr),
       m_udr_app(udr_app_inst),
-      m_address(address) {
-  mysql_WitcommUDRDB = mysql;
-}
+      m_address(address) {}
 
 void AuthenticationSubscriptionDocumentApiImpl::
     modify_authentication_subscription(
         const std::string &ueId, const std::vector<PatchItem> &patchItem,
         const Pistache::Optional<std::string> &supportedFeatures,
         Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_modify_authentication_subscription(ueId, patchItem,
+                                                       response_data, code);
 
-  const std::string select_Authenticationsubscription =
-      "select * from AuthenticationSubscription WHERE ueid='" + ueId + "'";
-  std::string query;
-  nlohmann::json j, tmp_j;
-
-  for (int i = 0; i < patchItem.size(); i++) {
-    if ((!strcmp(patchItem[i].getOp().c_str(), PATCH_OPERATION_REPLACE)) &&
-        patchItem[i].valueIsSet()) {
-      patchItem[i].getValue();
-      SequenceNumber sequencenumber;
-      nlohmann::json::parse(patchItem[i].getValue().c_str())
-          .get_to(sequencenumber);
-
-      if (mysql_real_query(
-              mysql_WitcommUDRDB, select_Authenticationsubscription.c_str(),
-              (unsigned long)select_Authenticationsubscription.size())) {
-        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                                   select_Authenticationsubscription.c_str());
-        return;
-      }
-
-      res = mysql_store_result(mysql_WitcommUDRDB);
-      if (res == NULL) {
-        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                                   select_Authenticationsubscription.c_str());
-        return;
-      }
-      if (mysql_num_rows(res)) {
-        nlohmann::json sequencenumber_j;
-        query = "update AuthenticationSubscription set sequenceNumber='";
-
-        to_json(sequencenumber_j, sequencenumber);
-        query += sequencenumber_j.dump() + "'";
-        query += " where ueid='" + ueId + "'";
-      } else {
-        Logger::udr_server().error(
-            "AuthenticationSubscription no data！SQL(%s)",
-            select_Authenticationsubscription.c_str());
-      }
-
-      mysql_free_result(res);
-
-      //            Logger::udr_server().debug("modify content:
-      //            %s",query.c_str());
-      if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                           (unsigned long)query.size())) {
-        Logger::udr_server().error("update mysql failure！SQL(%s)",
-                                   query.c_str());
-        return;
-      }
-    }
-
-    to_json(tmp_j, patchItem[i]);
-    j += tmp_j;
-  }
-
-  std::string out = j.dump();
-  Logger::udr_server().debug("AuthenticationSubscription PATCH - json:\n\"%s\"",
-                             out.c_str());
-
-  response.send(Pistache::Http::Code::No_Content, "");
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 void AuthenticationSubscriptionDocumentApiImpl::
@@ -112,91 +52,12 @@ void AuthenticationSubscriptionDocumentApiImpl::
         const std::string &ueId,
         const Pistache::Optional<std::string> &supportedFeatures,
         Pistache::Http::ResponseWriter &response) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
-  MYSQL_FIELD *field = nullptr;
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code = {};
+  m_udr_app->handle_read_authentication_subscription(ueId, response_data, code);
 
-  nlohmann::json j;
-
-  AuthenticationSubscription authenticationsubscription;
-  const std::string query =
-      "select * from AuthenticationSubscription WHERE ueid='" + ueId + "'";
-
-  if (mysql_real_query(mysql_WitcommUDRDB, query.c_str(),
-                       (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  res = mysql_store_result(mysql_WitcommUDRDB);
-  if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
-    return;
-  }
-
-  row = mysql_fetch_row(res);
-
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("authenticationMethod", field->name)) {
-        //                AuthMethod authenticationmethod;
-        //                nlohmann::json::parse(row[i]).get_to(authenticationmethod);
-        authenticationsubscription.setAuthenticationMethod(row[i]);
-      } else if (!strcmp("encPermanentKey", field->name) && row[i] != NULL) {
-        authenticationsubscription.setEncPermanentKey(row[i]);
-      } else if (!strcmp("protectionParameterId", field->name) &&
-                 row[i] != NULL) {
-        authenticationsubscription.setProtectionParameterId(row[i]);
-      } else if (!strcmp("sequenceNumber", field->name) && row[i] != NULL) {
-        SequenceNumber sequencenumber;
-        nlohmann::json::parse(row[i]).get_to(sequencenumber);
-        authenticationsubscription.setSequenceNumber(sequencenumber);
-      } else if (!strcmp("authenticationManagementField", field->name) &&
-                 row[i] != NULL) {
-        authenticationsubscription.setAuthenticationManagementField(row[i]);
-      } else if (!strcmp("algorithmId", field->name) && row[i] != NULL) {
-        authenticationsubscription.setAlgorithmId(row[i]);
-      } else if (!strcmp("encOpcKey", field->name) && row[i] != NULL) {
-        authenticationsubscription.setEncOpcKey(row[i]);
-      } else if (!strcmp("encTopcKey", field->name) && row[i] != NULL) {
-        authenticationsubscription.setEncTopcKey(row[i]);
-      } else if (!strcmp("vectorGenerationInHss", field->name) &&
-                 row[i] != NULL) {
-        std::cout << row[i] << std::endl;
-        if (strcmp(row[i], "0"))
-          authenticationsubscription.setVectorGenerationInHss(true);
-        else
-          authenticationsubscription.setVectorGenerationInHss(false);
-      } else if (!strcmp("n5gcAuthMethod", field->name) && row[i] != NULL) {
-        //                AuthMethod n5gcauthmethod;
-        //                nlohmann::json::parse(row[i]).get_to(n5gcauthmethod);
-        authenticationsubscription.setN5gcAuthMethod(row[i]);
-      } else if (!strcmp("rgAuthenticationInd", field->name) &&
-                 row[i] != NULL) {
-        std::cout << row[i] << std::endl;
-        if (strcmp(row[i], "0"))
-          authenticationsubscription.setRgAuthenticationInd(true);
-        else
-          authenticationsubscription.setRgAuthenticationInd(false);
-      } else if (!strcmp("supi", field->name) && row[i] != NULL) {
-        authenticationsubscription.setSupi(row[i]);
-      }
-    }
-
-    to_json(j, authenticationsubscription);
-    response.send(Pistache::Http::Code::Ok, j.dump());
-
-    std::string out = j.dump();
-    Logger::udr_server().debug("AuthenticationSubscription GET - json:\n\"%s\"",
-                               out.c_str());
-  } else {
-    Logger::udr_server().error("AuthenticationSubscription no data！SQL(%s)",
-                               query.c_str());
-  }
-
-  mysql_free_result(res);
+  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
+  response.send(code, response_data.dump());
 }
 
 }  // namespace oai::udr::api

@@ -20,24 +20,20 @@
 #ifndef AMF3_GPP_ACCESS_REGISTRATION_DOCUMENT_API_IMPL_H_
 #define AMF3_GPP_ACCESS_REGISTRATION_DOCUMENT_API_IMPL_H_
 
+#include <AMF3GPPAccessRegistrationDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <AMF3GPPAccessRegistrationDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
 #include <vector>
+
 #include "Amf3GppAccessRegistration.h"
 #include "PatchItem.h"
 #include "PatchResult.h"
 #include "ProblemDetails.h"
-
-#include <mysql/mysql.h>
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
@@ -53,7 +49,7 @@ class AMF3GPPAccessRegistrationDocumentApiImpl
  public:
   AMF3GPPAccessRegistrationDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
-      std::string address, MYSQL *mysql);
+      std::string address);
   ~AMF3GPPAccessRegistrationDocumentApiImpl() {}
 
   void amf_context3gpp(const std::string &ueId,
@@ -69,9 +65,6 @@ class AMF3GPPAccessRegistrationDocumentApiImpl
       const Pistache::Optional<std::vector<std::string>> &fields,
       const Pistache::Optional<std::string> &supportedFeatures,
       Pistache::Http::ResponseWriter &response);
-
- private:
-  MYSQL *mysql_WitcommUDRDB;
 };
 
 }  // namespace oai::udr::api

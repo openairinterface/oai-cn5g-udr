@@ -20,18 +20,16 @@
 #ifndef ENHANCED_COVERAGE_RESTRICTION_DATA_API_IMPL_H_
 #define ENHANCED_COVERAGE_RESTRICTION_DATA_API_IMPL_H_
 
+#include <EnhancedCoverageRestrictionDataApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <EnhancedCoverageRestrictionDataApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
-#include "EnhancedCoverageRestrictionData.h"
 
+#include "EnhancedCoverageRestrictionData.h"
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

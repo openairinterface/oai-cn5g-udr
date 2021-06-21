@@ -20,20 +20,16 @@
 #ifndef SMF_SELECTION_SUBSCRIPTION_DATA_DOCUMENT_API_IMPL_H_
 #define SMF_SELECTION_SUBSCRIPTION_DATA_DOCUMENT_API_IMPL_H_
 
+#include <SMFSelectionSubscriptionDataDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <SMFSelectionSubscriptionDataDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
+
 #include "SmfSelectionSubscriptionData.h"
-
-#include <mysql/mysql.h>
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
@@ -49,7 +45,7 @@ class SMFSelectionSubscriptionDataDocumentApiImpl
  public:
   SMFSelectionSubscriptionDataDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
-      std::string address, MYSQL *mysql);
+      std::string address);
   ~SMFSelectionSubscriptionDataDocumentApiImpl() {}
 
   void query_smf_select_data(
@@ -59,9 +55,6 @@ class SMFSelectionSubscriptionDataDocumentApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
       Pistache::Http::ResponseWriter &response);
-
- private:
-  MYSQL *mysql_WitcommUDRDB;
 };
 
 }  // namespace oai::udr::api

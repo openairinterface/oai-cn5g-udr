@@ -66,36 +66,39 @@ class UDRApiServer {
  public:
   UDRApiServer(Pistache::Address address, udr_app* udr_app_inst)
       : m_httpEndpoint(std::make_shared<Pistache::Http::Endpoint>(address)) {
-    m_router  = std::make_shared<Pistache::Rest::Router>();
+    m_router = std::make_shared<Pistache::Rest::Router>();
     m_address = address.host() + ":" + (address.port()).toString();
 
     m_authenticationSubscriptionDocumentApiserver =
-        std::make_shared<AuthenticationSubscriptionDocumentApiImpl>(m_router, udr_app_inst, m_address);
+        std::make_shared<AuthenticationSubscriptionDocumentApiImpl>(
+            m_router, udr_app_inst, m_address);
     m_authenticationStatusDocumentApiserver =
-        std::make_shared<AuthenticationStatusDocumentApiImpl>(m_router, udr_app_inst, m_address);
+        std::make_shared<AuthenticationStatusDocumentApiImpl>(
+            m_router, udr_app_inst, m_address);
     m_accessAndMobilitySubscriptionDataDocumentApiserver =
         std::make_shared<AccessAndMobilitySubscriptionDataDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
     m_sMFSelectionSubscriptionDataDocumentApiserver =
-        std::make_shared<SMFSelectionSubscriptionDataDocumentApiImpl>(m_router,
-                                                                      udr_app_inst, m_address);
+        std::make_shared<SMFSelectionSubscriptionDataDocumentApiImpl>(
+            m_router, udr_app_inst, m_address);
     m_sessionManagementSubscriptionDataApiserver =
-        std::make_shared<SessionManagementSubscriptionDataApiImpl>(m_router,
-                                                                   udr_app_inst, m_address);
+        std::make_shared<SessionManagementSubscriptionDataApiImpl>(
+            m_router, udr_app_inst, m_address);
     m_aMF3GPPAccessRegistrationDocumentApiserver =
-        std::make_shared<AMF3GPPAccessRegistrationDocumentApiImpl>(m_router,
-                                                                   udr_app_inst, m_address);
+        std::make_shared<AMF3GPPAccessRegistrationDocumentApiImpl>(
+            m_router, udr_app_inst, m_address);
     m_sMFRegistrationDocumentApiserver =
-        std::make_shared<SMFRegistrationDocumentApiImpl>(m_router, udr_app_inst, m_address);
+        std::make_shared<SMFRegistrationDocumentApiImpl>(m_router, udr_app_inst,
+                                                         m_address);
     m_sMFRegistrationsCollectionApiserver =
-        std::make_shared<SMFRegistrationsCollectionApiImpl>(m_router, udr_app_inst, m_address);
+        std::make_shared<SMFRegistrationsCollectionApiImpl>(
+            m_router, udr_app_inst, m_address);
     m_sDMSubscriptionDocumentApiserver =
-        std::make_shared<SDMSubscriptionDocumentApiImpl>(m_router, udr_app_inst, m_address);
+        std::make_shared<SDMSubscriptionDocumentApiImpl>(m_router, udr_app_inst,
+                                                         m_address);
     m_sDMSubscriptionsCollectionApiserver =
-        std::make_shared<SDMSubscriptionsCollectionApiImpl>(m_router, udr_app_inst, m_address);
-
-
-
+        std::make_shared<SDMSubscriptionsCollectionApiImpl>(
+            m_router, udr_app_inst, m_address);
   }
   void init(size_t thr = 1);
   void start();

@@ -20,23 +20,19 @@
 #ifndef AUTHENTICATION_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 #define AUTHENTICATION_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 
+#include <AuthenticationSubscriptionDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <AuthenticationSubscriptionDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
 #include <vector>
+
 #include "PatchItem.h"
 #include "PatchResult.h"
 #include "ProblemDetails.h"
-
-#include <mysql/mysql.h>
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
@@ -52,7 +48,7 @@ class AuthenticationSubscriptionDocumentApiImpl
  public:
   AuthenticationSubscriptionDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
-      std::string address, MYSQL *mysql);
+      std::string address);
   ~AuthenticationSubscriptionDocumentApiImpl() {}
 
   void modify_authentication_subscription(
@@ -63,9 +59,6 @@ class AuthenticationSubscriptionDocumentApiImpl
       const std::string &ueId,
       const Pistache::Optional<std::string> &supportedFeatures,
       Pistache::Http::ResponseWriter &response);
-
- private:
-  MYSQL *mysql_WitcommUDRDB;
 };
 
 }  // namespace oai::udr::api

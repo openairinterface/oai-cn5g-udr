@@ -20,23 +20,21 @@
 #ifndef AMF_NON3_GPP_ACCESS_REGISTRATION_DOCUMENT_API_IMPL_H_
 #define AMF_NON3_GPP_ACCESS_REGISTRATION_DOCUMENT_API_IMPL_H_
 
+#include <AMFNon3GPPAccessRegistrationDocumentApi.h>
 #include <pistache/endpoint.h>
 #include <pistache/http.h>
-#include <pistache/router.h>
-#include <memory>
-
-#include <AMFNon3GPPAccessRegistrationDocumentApi.h>
-
 #include <pistache/optional.h>
+#include <pistache/router.h>
 
+#include <memory>
 #include <string>
 #include <vector>
+
 #include "Amf3GppAccessRegistration.h"
 #include "AmfNon3GppAccessRegistration.h"
 #include "PatchItem.h"
 #include "PatchResult.h"
 #include "ProblemDetails.h"
-
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
