@@ -59,13 +59,19 @@ extern udr_config udr_cfg;
 udr_app::udr_app(const std::string &config_file) {
   Logger::udr_app().startup("Starting...");
 
-  mysql_init(&mysql);
+  if (!mysql_init(&mysql)) {
+    Logger::udr_app().error("Cannot initialize MySQL");
+    throw std::runtime_error("Cannot initialize MySQL");
+  }
+
   if (!mysql_real_connect(&mysql, udr_cfg.mysql.mysql_server.c_str(),
                           udr_cfg.mysql.mysql_user.c_str(),
                           udr_cfg.mysql.mysql_pass.c_str(),
                           udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
-    Logger::udr_app().error("An error occurred while connecting to db: %s",
-                            mysql_error(&mysql));
+    Logger::udr_app().error(
+        "An error occurred while connecting to MySQL DB: %s",
+        mysql_error(&mysql));
+    throw std::runtime_error("Cannot connect to MySQL DB");
   }
 
   // TODO: Register to NRF
@@ -79,26 +85,30 @@ udr_app::~udr_app() { Logger::udr_app().debug("Delete UDM APP instance..."); }
 void udr_app::handle_access_mobility_subscription_data_document(
     const std::string &ue_id, const std::string &serving_plmn_id,
     nlohmann::json &response_data, Pistache::Http::Code &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_RES *res = nullptr;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
-
-  nlohmann::json j;
+  nlohmann::json j = {};
+  response_data = {};
 
   oai::udr::model::AccessAndMobilitySubscriptionData
       accessandmobilitysubscriptiondata;
+
+  // TODO: Define query template in a header file
   const std::string query =
       "select * from AccessAndMobilitySubscriptionData WHERE ueid='" + ue_id +
       "' and servingPlmnid='" + serving_plmn_id + "'";
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！");
+    code = Pistache::Http::Code::Internal_Server_Error;
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
     Logger::udr_server().error("mysql_store_result failure！");
+    code = Pistache::Http::Code::Internal_Server_Error;
     return;
   }
 
@@ -331,17 +341,14 @@ void udr_app::handle_access_mobility_subscription_data_document(
     }
 
     to_json(j, accessandmobilitysubscriptiondata);
-    // response.send(Pistache::Http::Code::Ok, j.dump());
-
-    // TODO:
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    std::string out = j.dump();
     Logger::udr_server().debug(
-        "AccessAndMobilitySubscriptionData GET - json:\n\"%s\"", out.c_str());
+        "AccessAndMobilitySubscriptionData GET - json:\n\"%s\"", j.dump().c_str());
   } else {
     Logger::udr_server().error("AccessAndMobilitySubscriptionData no data！");
+    code = Pistache::Http::Code::Internal_Server_Error;
   }
 
   mysql_free_result(res);

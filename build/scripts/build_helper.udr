@@ -381,6 +381,9 @@ check_install_udr_deps() {
       libcurl4 \
       net-tools \
       pkg-config \
+      mysql-server \
+      mysql-client \
+      libmysqlclient-dev \      
       libasan2"
   elif [[ "$OS_BASEDISTRO" == "fedora" ]]; then
     PACKAGE_LIST="\
