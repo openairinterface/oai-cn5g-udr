@@ -12,6 +12,7 @@
  */
 
 #include "PolicyDataSubscriptionsCollectionApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -46,7 +47,6 @@ void PolicyDataSubscriptionsCollectionApi::
     create_individual_policy_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
-
   // Getting the body param
 
   PolicyDataSubscription policyDataSubscription;
@@ -77,4 +77,4 @@ void PolicyDataSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

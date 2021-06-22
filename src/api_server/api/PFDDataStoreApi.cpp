@@ -12,6 +12,7 @@
  */
 
 #include "PFDDataStoreApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -39,7 +40,6 @@ void PFDDataStoreApi::setupRoutes() {
 void PFDDataStoreApi::read_pfd_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto appIdQuery = request.query().get("appId");
   Pistache::Optional<std::vector<std::string>> appId;
@@ -72,4 +72,4 @@ void PFDDataStoreApi::pfd_data_store_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

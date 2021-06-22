@@ -12,6 +12,7 @@
  */
 
 #include "Modify5GVnGroupApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -82,4 +83,4 @@ void Modify5GVnGroupApi::modify5_g_vn_group_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

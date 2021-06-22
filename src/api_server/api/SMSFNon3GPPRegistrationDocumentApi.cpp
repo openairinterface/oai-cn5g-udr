@@ -12,6 +12,7 @@
  */
 
 #include "SMSFNon3GPPRegistrationDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -29,24 +30,24 @@ void SMSFNon3GPPRegistrationDocumentApi::init() { setupRoutes(); }
 void SMSFNon3GPPRegistrationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Put(*router,
-              base +
-                  "/subscription-data/:ueId/context-data/smsf-non-3gpp-access",
-              Routes::bind(&SMSFNon3GPPRegistrationDocumentApi::
-                               create_smsf_context_non3gpp_handler,
-                           this));
+  Routes::Put(
+      *router,
+      base + "/subscription-data/:ueId/context-data/smsf-non-3gpp-access",
+      Routes::bind(&SMSFNon3GPPRegistrationDocumentApi::
+                       create_smsf_context_non3gpp_handler,
+                   this));
   Routes::Delete(
       *router,
       base + "/subscription-data/:ueId/context-data/smsf-non-3gpp-access",
       Routes::bind(&SMSFNon3GPPRegistrationDocumentApi::
                        delete_smsf_context_non3gpp_handler,
                    this));
-  Routes::Get(*router,
-              base +
-                  "/subscription-data/:ueId/context-data/smsf-non-3gpp-access",
-              Routes::bind(&SMSFNon3GPPRegistrationDocumentApi::
-                               query_smsf_context_non3gpp_handler,
-                           this));
+  Routes::Get(
+      *router,
+      base + "/subscription-data/:ueId/context-data/smsf-non-3gpp-access",
+      Routes::bind(&SMSFNon3GPPRegistrationDocumentApi::
+                       query_smsf_context_non3gpp_handler,
+                   this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(
@@ -150,4 +151,4 @@ void SMSFNon3GPPRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

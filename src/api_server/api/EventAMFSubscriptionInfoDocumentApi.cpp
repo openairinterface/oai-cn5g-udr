@@ -12,6 +12,7 @@
  */
 
 #include "EventAMFSubscriptionInfoDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -29,8 +30,9 @@ void EventAMFSubscriptionInfoDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(*router,
-                 base + "/subscription-data/:ueId/context-data/"
-                        "ee-subscriptions/:subsId/amf-subscriptions",
+                 base +
+                     "/subscription-data/:ueId/context-data/"
+                     "ee-subscriptions/:subsId/amf-subscriptions",
                  Routes::bind(&EventAMFSubscriptionInfoDocumentApi::
                                   remove_amf_subscriptions_info_handler,
                               this));
@@ -73,4 +75,4 @@ void EventAMFSubscriptionInfoDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

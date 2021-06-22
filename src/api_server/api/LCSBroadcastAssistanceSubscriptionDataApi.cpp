@@ -12,6 +12,7 @@
  */
 
 #include "LCSBroadcastAssistanceSubscriptionDataApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -31,8 +32,9 @@ void LCSBroadcastAssistanceSubscriptionDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base + "/subscription-data/:ueId/:servingPlmnId/provisioned-data/"
-                     "lcs-bca-data",
+              base +
+                  "/subscription-data/:ueId/:servingPlmnId/provisioned-data/"
+                  "lcs-bca-data",
               Routes::bind(&LCSBroadcastAssistanceSubscriptionDataApi::
                                query_lcs_bca_data_handler,
                            this));
@@ -90,4 +92,4 @@ void LCSBroadcastAssistanceSubscriptionDataApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

@@ -12,6 +12,7 @@
  */
 
 #include "EnhancedCoverageRestrictionDataApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -88,4 +89,4 @@ void EnhancedCoverageRestrictionDataApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

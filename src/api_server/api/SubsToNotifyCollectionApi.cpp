@@ -12,6 +12,7 @@
  */
 
 #include "SubsToNotifyCollectionApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -53,7 +54,6 @@ void SubsToNotifyCollectionApi::setupRoutes() {
 void SubsToNotifyCollectionApi::query_subs_to_notify_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto ueIdQuery = request.query().get("ue-id");
   Pistache::Optional<std::string> ueId;
@@ -91,7 +91,6 @@ void SubsToNotifyCollectionApi::
     remove_multiple_subscription_data_subscriptions_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto ueIdQuery = request.query().get("ue-id");
   Pistache::Optional<std::string> ueId;
@@ -148,7 +147,6 @@ void SubsToNotifyCollectionApi::
 void SubsToNotifyCollectionApi::subscription_data_subscriptions_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the body param
 
   SubscriptionDataSubscriptions subscriptionDataSubscriptions;
@@ -177,4 +175,4 @@ void SubsToNotifyCollectionApi::subs_to_notify_collection_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

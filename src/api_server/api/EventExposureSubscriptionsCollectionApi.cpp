@@ -12,6 +12,7 @@
  */
 
 #include "EventExposureSubscriptionsCollectionApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -114,4 +115,4 @@ void EventExposureSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

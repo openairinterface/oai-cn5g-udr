@@ -12,6 +12,7 @@
  */
 
 #include "GroupIdentifiersApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -41,7 +42,6 @@ void GroupIdentifiersApi::setupRoutes() {
 void GroupIdentifiersApi::get_group_identifiers_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto extGroupIdQuery = request.query().get("ext-group-id");
   Pistache::Optional<std::string> extGroupId;
@@ -99,4 +99,4 @@ void GroupIdentifiersApi::group_identifiers_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

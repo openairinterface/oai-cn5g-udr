@@ -12,6 +12,7 @@
  */
 
 #include "SDMSubscriptionsCollectionApi.h"
+
 #include "Helpers.h"
 #include "logger.hpp"
 
@@ -117,4 +118,4 @@ void SDMSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

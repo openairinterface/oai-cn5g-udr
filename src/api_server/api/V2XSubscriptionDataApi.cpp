@@ -12,6 +12,7 @@
  */
 
 #include "V2XSubscriptionDataApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -82,4 +83,4 @@ void V2XSubscriptionDataApi::v2_x_subscription_data_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

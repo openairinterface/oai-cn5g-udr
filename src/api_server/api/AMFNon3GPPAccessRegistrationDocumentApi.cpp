@@ -12,6 +12,7 @@
  */
 
 #include "AMFNon3GPPAccessRegistrationDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -36,18 +37,18 @@ void AMFNon3GPPAccessRegistrationDocumentApi::setupRoutes() {
       Routes::bind(
           &AMFNon3GPPAccessRegistrationDocumentApi::amf_context_non3gpp_handler,
           this));
-  Routes::Put(*router,
-              base +
-                  "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
-              Routes::bind(&AMFNon3GPPAccessRegistrationDocumentApi::
-                               create_amf_context_non3gpp_handler,
-                           this));
-  Routes::Get(*router,
-              base +
-                  "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
-              Routes::bind(&AMFNon3GPPAccessRegistrationDocumentApi::
-                               query_amf_context_non3gpp_handler,
-                           this));
+  Routes::Put(
+      *router,
+      base + "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
+      Routes::bind(&AMFNon3GPPAccessRegistrationDocumentApi::
+                       create_amf_context_non3gpp_handler,
+                   this));
+  Routes::Get(
+      *router,
+      base + "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
+      Routes::bind(&AMFNon3GPPAccessRegistrationDocumentApi::
+                       query_amf_context_non3gpp_handler,
+                   this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -167,4 +168,4 @@ void AMFNon3GPPAccessRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

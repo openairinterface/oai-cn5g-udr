@@ -12,6 +12,7 @@
  */
 
 #include "SDMSubscriptionDocumentApi.h"
+
 #include "Helpers.h"
 #include "logger.hpp"
 
@@ -181,4 +182,4 @@ void SDMSubscriptionDocumentApi::sdm_subscription_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

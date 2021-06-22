@@ -12,6 +12,7 @@
  */
 
 #include "UEsLocationInformationDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -81,4 +82,4 @@ void UEsLocationInformationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

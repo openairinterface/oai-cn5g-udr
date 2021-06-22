@@ -12,6 +12,7 @@
  */
 
 #include "InfluenceDataStoreApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -41,7 +42,6 @@ void InfluenceDataStoreApi::setupRoutes() {
 void InfluenceDataStoreApi::read_influence_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto influenceIdsQuery = request.query().get("influence-Ids");
   Pistache::Optional<std::vector<std::string>> influenceIds;
@@ -115,4 +115,4 @@ void InfluenceDataStoreApi::influence_data_store_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

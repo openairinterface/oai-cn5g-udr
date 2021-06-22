@@ -12,6 +12,7 @@
  */
 
 #include "RetrievalOfSharedDataApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -42,7 +43,6 @@ void RetrievalOfSharedDataApi::setupRoutes() {
 void RetrievalOfSharedDataApi::get_shared_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto sharedDataIdsQuery = request.query().get("shared-data-ids");
   Pistache::Optional<std::vector<std::string>> sharedDataIds;
@@ -83,4 +83,4 @@ void RetrievalOfSharedDataApi::retrieval_of_shared_data_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

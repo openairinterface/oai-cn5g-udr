@@ -12,6 +12,7 @@
  */
 
 #include "Class5GVNGroupsInternalDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -45,7 +46,6 @@ void Class5GVNGroupsInternalDocumentApi::setupRoutes() {
 void Class5GVNGroupsInternalDocumentApi::query5_g_vn_group_internal_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto internalGroupIdsQuery = request.query().get("internal-group-ids");
   Pistache::Optional<std::vector<std::string>> internalGroupIds;
@@ -80,4 +80,4 @@ void Class5GVNGroupsInternalDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

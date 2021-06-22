@@ -12,6 +12,7 @@
  */
 
 #include "CAGUpdateAckDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -85,4 +86,4 @@ void CAGUpdateAckDocumentApi::cag_update_ack_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

@@ -12,6 +12,7 @@
  */
 
 #include "InfluenceDataSubscriptionsCollectionApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -51,7 +52,6 @@ void InfluenceDataSubscriptionsCollectionApi::
     create_individual_influence_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
-
   // Getting the body param
 
   TrafficInfluSub trafficInfluSub;
@@ -77,7 +77,6 @@ void InfluenceDataSubscriptionsCollectionApi::
     read_influence_data_subscriptions_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto dnnQuery = request.query().get("dnn");
   Pistache::Optional<std::string> dnn;
@@ -137,4 +136,4 @@ void InfluenceDataSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

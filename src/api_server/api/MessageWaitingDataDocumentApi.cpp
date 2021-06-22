@@ -12,6 +12,7 @@
  */
 
 #include "MessageWaitingDataDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -177,4 +178,4 @@ void MessageWaitingDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

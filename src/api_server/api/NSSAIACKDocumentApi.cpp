@@ -12,6 +12,7 @@
  */
 
 #include "NSSAIACKDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -31,8 +32,9 @@ void NSSAIACKDocumentApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + "/subscription-data/:ueId/ue-update-confirmation-data/"
-             "subscribed-snssais",
+      base +
+          "/subscription-data/:ueId/ue-update-confirmation-data/"
+          "subscribed-snssais",
       Routes::bind(&NSSAIACKDocumentApi::query_nssai_ack_handler, this));
 
   // Default handler, called when a route is not found
@@ -78,4 +80,4 @@ void NSSAIACKDocumentApi::nssaiack_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

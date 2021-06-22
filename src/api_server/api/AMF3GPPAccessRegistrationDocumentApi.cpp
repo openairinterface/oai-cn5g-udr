@@ -12,6 +12,7 @@
  */
 
 #include "AMF3GPPAccessRegistrationDocumentApi.h"
+
 #include "Helpers.h"
 #include "logger.hpp"
 
@@ -165,4 +166,4 @@ void AMF3GPPAccessRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

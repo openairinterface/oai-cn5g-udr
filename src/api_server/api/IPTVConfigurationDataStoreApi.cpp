@@ -12,6 +12,7 @@
  */
 
 #include "IPTVConfigurationDataStoreApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -45,7 +46,6 @@ void IPTVConfigurationDataStoreApi::setupRoutes() {
 void IPTVConfigurationDataStoreApi::read_iptv_congifuration_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto configIdsQuery = request.query().get("config-ids");
   Pistache::Optional<std::vector<std::string>> configIds;
@@ -113,4 +113,4 @@ void IPTVConfigurationDataStoreApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

@@ -12,6 +12,7 @@
  */
 
 #include "BdtDataStoreApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -39,7 +40,6 @@ void BdtDataStoreApi::setupRoutes() {
 void BdtDataStoreApi::read_bdt_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto bdtRefIdsQuery = request.query().get("bdt-ref-ids");
   Pistache::Optional<std::vector<std::string>> bdtRefIds;
@@ -80,4 +80,4 @@ void BdtDataStoreApi::bdt_data_store_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

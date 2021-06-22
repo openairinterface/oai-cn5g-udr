@@ -12,6 +12,7 @@
  */
 
 #include "SessionManagementSubscriptionDataApi.h"
+
 #include "Helpers.h"
 #include "logger.hpp"
 
@@ -116,4 +117,4 @@ void SessionManagementSubscriptionDataApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

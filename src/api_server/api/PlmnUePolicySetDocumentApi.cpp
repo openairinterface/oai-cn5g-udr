@@ -12,6 +12,7 @@
  */
 
 #include "PlmnUePolicySetDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -71,4 +72,4 @@ void PlmnUePolicySetDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

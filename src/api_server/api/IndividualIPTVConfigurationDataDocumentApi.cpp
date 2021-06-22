@@ -12,6 +12,7 @@
  */
 
 #include "IndividualIPTVConfigurationDataDocumentApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -108,4 +109,4 @@ void IndividualIPTVConfigurationDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

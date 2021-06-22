@@ -12,6 +12,7 @@
  */
 
 #include "ExposureDataSubscriptionsCollectionApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -46,7 +47,6 @@ void ExposureDataSubscriptionsCollectionApi::
     create_individual_exposure_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
-
   // Getting the body param
 
   ExposureDataSubscription exposureDataSubscription;
@@ -77,4 +77,4 @@ void ExposureDataSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

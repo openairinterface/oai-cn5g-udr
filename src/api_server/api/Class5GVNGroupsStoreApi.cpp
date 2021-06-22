@@ -12,6 +12,7 @@
  */
 
 #include "Class5GVNGroupsStoreApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -42,7 +43,6 @@ void Class5GVNGroupsStoreApi::setupRoutes() {
 void Class5GVNGroupsStoreApi::query5_g_vn_group_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto gpsisQuery = request.query().get("gpsis");
   Pistache::Optional<std::vector<std::string>> gpsis;
@@ -75,4 +75,4 @@ void Class5GVNGroupsStoreApi::class5_gvn_groups_store_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api

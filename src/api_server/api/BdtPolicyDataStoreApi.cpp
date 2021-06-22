@@ -12,6 +12,7 @@
  */
 
 #include "BdtPolicyDataStoreApi.h"
+
 #include "Helpers.h"
 
 namespace oai::udr::api {
@@ -41,7 +42,6 @@ void BdtPolicyDataStoreApi::setupRoutes() {
 void BdtPolicyDataStoreApi::read_bdt_policy_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-
   // Getting the query params
   auto bdtPolicyIdsQuery = request.query().get("bdt-policy-ids");
   Pistache::Optional<std::vector<std::string>> bdtPolicyIds;
@@ -90,4 +90,4 @@ void BdtPolicyDataStoreApi::bdt_policy_data_store_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::api
