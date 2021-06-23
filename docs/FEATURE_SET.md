@@ -26,26 +26,18 @@
 
 | **ID** | **Interface** | **Status**         | **Comment**               |
 | ------ | ------------- | ------------------ | ------------------------- |
-| 1      | N8            | :heavy_check_mark: | Communicate with AMF      |
-| 2      | N10           | :heavy_check_mark: | Communicate with SMF      |
-| 3      | N13           | :heavy_check_mark: | Communicate with AUSF     |
-| 4      | N35           | :heavy_check_mark: | Communicate with UDR      |
+| 1      | N35           | :heavy_check_mark: | Communicate with UDM      |
+| 2      | N36           | :x:                | Communicate with PCF      |
+| 3      | N37           | :x:                | Communicate with NEF      |
 
 # 3. OAI UDR Feature List #
 
-Based on document **3GPP TS 23.501 V16.0.0 §6.2.7**.
+Based on document **3GPP TS 23.501 V16.0.0 §6.2.11**.
 
 | **ID** | **Classification**                                      | **Status**         | **Comments**  |
 | ------ | ------------------------------------------------------- | ------------------ |---------------|
-| 1      | Generation of 3GPP AKA Authentication Credentials       | :heavy_check_mark: |               |
-| 2      | User Identification Handling                            | :heavy_check_mark: |               |
-| 3      | Support of de-concealment of SUCI                       | :heavy_check_mark: |               |
-| 4      | Access authorization based on subscription data         | :x:                |               |
-| 5      | UE's Serving NF Registration Management                 | :x:                |               |
-| 6      | Support to service/session continuity                   | :x:                |               |
-| 7      | MT-SMS delivery support                                 | :x:                |               |
-| 8      | Lawful Intercept Functionality                          | :x:                |               |
-| 9      | Subscription management                                 | :x:                |               |
-| 10     | SMS management                                          | :x:                |               |
-| 11     | 5GLAN group management handling                         | :x:                |               |
-| 12     | Support of external parameter provisioning              | :x:                |               |      
+| 1      | Storage and retrieval of subscription data by the UDM   | :heavy_check_mark: |               |
+| 2      | Storage and retrieval of policy data by the PCF         | :x:                |               |
+| 3      | Storage and retrieval of structured data for exposure   | :x:                |               |
+| 4      | Application data                                        | :x:                |               |
+      
