@@ -34,9 +34,6 @@
 #include "udr-api-server.h"
 
 #include "logger.hpp"
-#include "pistache/endpoint.h"
-#include "pistache/http.h"
-#include "pistache/router.h"
 #ifdef __linux__
 #include <signal.h>
 #include <unistd.h>

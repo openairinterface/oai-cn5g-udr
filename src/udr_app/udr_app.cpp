@@ -31,15 +31,6 @@
 #include <mysql/mysql.h>
 #include <unistd.h>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
-#include <boost/date_time/posix_time/posix_time_types.hpp>
-#include <boost/date_time/posix_time/time_formatters.hpp>
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include <chrono>
-
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AuthenticationSubscription.h"
 #include "ProblemDetails.h"
@@ -49,7 +40,6 @@
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
-using namespace std::chrono;
 using namespace config;
 
 extern udr_app *udr_app_inst;
