@@ -569,7 +569,6 @@ void udr_app::handle_create_amf_context_3gpp(
   }
 
   mysql_free_result(res);
-  //    std::cout << query << std::endl;
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
@@ -577,14 +576,11 @@ void udr_app::handle_create_amf_context_3gpp(
   }
 
   to_json(j, amf3GppAccessRegistration);
-  // response.send(Pistache::Http::Code::Created, j.dump());
-  // TODO:
   response_data = j;
   code = Pistache::Http::Code::Created;
 
-  std::string out = j.dump();
   Logger::udr_server().debug("Amf3GppAccessRegistration PUT - json:\n\"%s\"",
-                             out.c_str());
+                             j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -592,10 +588,10 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
                                             nlohmann::json &response_data,
                                             Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
-  nlohmann::json j;
+  nlohmann::json j = {};
 
   Amf3GppAccessRegistration amf3gppaccessregistration;
   const std::string query =
@@ -709,13 +705,11 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
       }
     }
     to_json(j, amf3gppaccessregistration);
-    // response.send(Pistache::Http::Code::Ok, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    std::string out = j.dump();
     Logger::udr_server().debug("Amf3GppAccessRegistration GET - json:\n\"%s\"",
-                               out.c_str());
+                               j.dump().c_str());
   } else {
     Logger::udr_server().error("Amf3GppAccessRegistration no data！SQL(%s)",
                                query.c_str());
@@ -729,14 +723,13 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
                                                   const AuthEvent &authEvent,
                                                   nlohmann::json &response_data,
                                                   Pistache::Http::Code &code) {
-  // response.send(Pistache::Http::Code::Ok, "create_authentication_status\n");
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
 
   const std::string select_AuthenticationStatus =
       "select * from AuthenticationStatus WHERE ueid='" + ue_id + "'";
-  std::string query;
-  nlohmann::json j;
+  std::string query = {};
+  nlohmann::json j = {};
 
   if (mysql_real_query(&mysql, select_AuthenticationStatus.c_str(),
                        (unsigned long)select_AuthenticationStatus.size())) {
@@ -786,7 +779,6 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
     return;
   }
 
-  // response.send(Pistache::Http::Code::No_Content, "");
   response_data = {};
   code = Pistache::Http::Code::No_Content;
 
@@ -808,10 +800,8 @@ void udr_app::handle_delete_authentication_status(const std::string &ue_id,
     return;
   }
 
-  // response.send(Pistache::Http::Code::No_Content, "");
   response_data = {};
   code = Pistache::Http::Code::No_Content;
-
   Logger::udr_server().debug("AuthenticationStatus DELETE - successful");
 }
 
@@ -820,10 +810,10 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
                                                  nlohmann::json &response_data,
                                                  Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
-  nlohmann::json j;
+  nlohmann::json j = {};
 
   AuthEvent authenticationstatus;
   const std::string query =
@@ -868,7 +858,6 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
     }
 
     to_json(j, authenticationstatus);
-    // response.send(Pistache::Http::Code::Ok, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
@@ -887,12 +876,13 @@ void udr_app::handle_modify_authentication_subscription(
     const std::string &ue_id, const std::vector<PatchItem> &patchItem,
     nlohmann::json &response_data, Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
 
   const std::string select_Authenticationsubscription =
       "select * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
-  std::string query;
-  nlohmann::json j, tmp_j;
+  std::string query = {};
+  nlohmann::json j = {};
+  nlohmann::json tmp_j = {};
 
   for (int i = 0; i < patchItem.size(); i++) {
     if ((!strcmp(patchItem[i].getOp().c_str(), PATCH_OPERATION_REPLACE)) &&
@@ -931,8 +921,6 @@ void udr_app::handle_modify_authentication_subscription(
 
       mysql_free_result(res);
 
-      //            Logger::udr_server().debug("modify content:
-      //            %s",query.c_str());
       if (mysql_real_query(&mysql, query.c_str(),
                            (unsigned long)query.size())) {
         Logger::udr_server().error("update mysql failure！SQL(%s)",
@@ -945,14 +933,11 @@ void udr_app::handle_modify_authentication_subscription(
     j += tmp_j;
   }
 
-  std::string out = j.dump();
   Logger::udr_server().debug("AuthenticationSubscription PATCH - json:\n\"%s\"",
-                             out.c_str());
+                             j.dump().c_str());
 
   response_data = {};
   code = Pistache::Http::Code::No_Content;
-
-  // response.send(Pistache::Http::Code::No_Content, "");
 }
 
 //------------------------------------------------------------------------------
@@ -960,10 +945,10 @@ void udr_app::handle_read_authentication_subscription(
     const std::string &ue_id, nlohmann::json &response_data,
     Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
-  nlohmann::json j;
+  nlohmann::json j = {};
 
   AuthenticationSubscription authenticationsubscription;
   const std::string query =
@@ -1032,13 +1017,11 @@ void udr_app::handle_read_authentication_subscription(
     }
 
     to_json(j, authenticationsubscription);
-    // response.send(Pistache::Http::Code::Ok, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    std::string out = j.dump();
     Logger::udr_server().debug("AuthenticationSubscription GET - json:\n\"%s\"",
-                               out.c_str());
+                               j.dump().c_str());
   } else {
     Logger::udr_server().error("AuthenticationSubscription no data！SQL(%s)",
                                query.c_str());
@@ -1053,10 +1036,10 @@ void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
                                             nlohmann::json &response_data,
                                             Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
-  nlohmann::json j;
+  nlohmann::json j = {};
 
   SdmSubscription SdmSubscriptions;
   const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='" +
@@ -1131,11 +1114,8 @@ void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    // response.send(Pistache::Http::Code::Ok, j.dump());
-
-    std::string out = j.dump();
     Logger::udr_server().debug("SdmSubscription GET - json:\n\"%s\"",
-                               out.c_str());
+                               j.dump().c_str());
   } else {
     Logger::udr_server().error("SdmSubscription no data！SQL(%s)",
                                query.c_str());
@@ -1150,8 +1130,8 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
                                              nlohmann::json &response_data,
                                              Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  nlohmann::json j;
-  ProblemDetails problemdetails;
+  nlohmann::json j = {};
+  ProblemDetails problemdetails = {};
 
   const std::string select_query =
       "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id +
@@ -1166,7 +1146,6 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
     to_json(j, problemdetails);
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
-    // response.send(Pistache::Http::Code::Not_Found, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Not_Found;
     return;
@@ -1177,7 +1156,6 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
     to_json(j, problemdetails);
     Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
                                query.c_str());
-    // response.send(Pistache::Http::Code::Not_Found, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Not_Found;
     return;
@@ -1185,7 +1163,6 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
   if (!mysql_num_rows(res)) {
     problemdetails.setCause("DATA_NOT_FOUND");
     to_json(j, problemdetails);
-    // response.send(Pistache::Http::Code::Not_Found, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Not_Found;
     return;
@@ -1196,13 +1173,11 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
     to_json(j, problemdetails);
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
-    // response.send(Pistache::Http::Code::Not_Found, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Not_Found;
     return;
   }
 
-  // response.send(Pistache::Http::Code::No_Content, "");
   response_data = {};
   code = Pistache::Http::Code::No_Content;
 
@@ -1216,13 +1191,13 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
                                              nlohmann::json &response_data,
                                              Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
 
   const std::string select_query =
       "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id +
       "' AND subsId=" + subs_id;
-  std::string query;
-  nlohmann::json j;
+  std::string query = {};
+  nlohmann::json j = {};
   ProblemDetails problemdetails;
 
   if (mysql_real_query(&mysql, select_query.c_str(),
@@ -1295,7 +1270,6 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
     query += " where ueid='" + ue_id + "' AND subsId=" + subs_id;
   } else {
     to_json(j, problemdetails);
-    // response.send(Pistache::Http::Code::Not_Found, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Not_Found;
 
@@ -1304,22 +1278,18 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
   }
 
   mysql_free_result(res);
-  //    std::cout << query << std::endl;
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
-
     return;
   }
 
-  // response.send(Pistache::Http::Code::No_Content, "");
   response_data = {};
   code = Pistache::Http::Code::No_Content;
 
   to_json(j, sdmSubscription);
-  std::string out = j.dump();
   Logger::udr_server().debug("SdmSubscription PUT - json:\n\"%s\"",
-                             out.c_str());
+                             j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -1328,8 +1298,8 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
                                               nlohmann::json &response_data,
                                               Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
-  nlohmann::json j;
+  MYSQL_ROW row = {};
+  nlohmann::json j = {};
 
   int32_t subs_id = 0;
   int32_t count = 0;
@@ -1355,8 +1325,6 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
     }
   }
   mysql_free_result(res);
-
-  //****** add query *******
 
   query =
       "insert into SdmSubscriptions set ueid='" + ue_id + "'" +
@@ -1413,9 +1381,6 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
     query += ",subsId=" + std::to_string(subs_id);
   }
 
-  //************************
-
-  //    std::cout << query << std::endl;
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
@@ -1423,13 +1388,11 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
   }
 
   to_json(j, sdmSubscription);
-  // response.send(Pistache::Http::Code::Created, j.dump());
   response_data = j;
   code = Pistache::Http::Code::Created;
 
-  std::string out = j.dump();
   Logger::udr_server().debug("SdmSubscriptions POST - json:\n\"%s\"",
-                             out.c_str());
+                             j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -1437,11 +1400,12 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
                                              nlohmann::json &response_data,
                                              Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
   std::vector<std::string> fields;
 
-  nlohmann::json j, tmp;
+  nlohmann::json j = {};
+  nlohmann::json tmp = {};
 
   const std::string query =
       "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id + "'";
@@ -1530,13 +1494,11 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
 
   mysql_free_result(res);
 
-  // response.send(Pistache::Http::Code::Ok, j.dump());
   response_data = j;
   code = Pistache::Http::Code::Ok;
 
-  std::string out = j.dump();
   Logger::udr_server().debug("SdmSubscriptions GET - json:\n\"%s\"",
-                             out.c_str());
+                             j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -1545,10 +1507,10 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
                                    nlohmann::json &response_data,
                                    Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
-  nlohmann::json j;
+  nlohmann::json j = {};
 
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata;
   const std::string query =
@@ -1625,13 +1587,12 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
       }
     }
     to_json(j, sessionmanagementsubscriptiondata);
-    // response.send(Pistache::Http::Code::Ok, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    std::string out = j.dump();
     Logger::udr_server().debug(
-        "SessionManagementSubscriptionData GET - json:\n\"%s\"", out.c_str());
+        "SessionManagementSubscriptionData GET - json:\n\"%s\"",
+        j.dump().c_str());
   } else {
     Logger::udr_server().error(
         "SessionManagementSubscriptionData no data！SQL(%s)", query.c_str());
@@ -1646,13 +1607,13 @@ void udr_app::handle_create_smf_context_non_3gpp(
     const SmfRegistration &smfRegistration, nlohmann::json &response_data,
     Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
 
   const std::string select_SmfRegistration =
       "SELECT * from SmfRegistrations WHERE ueid='" + ue_id +
       "' AND subpduSessionId=" + std::to_string(pdu_session_id);
-  std::string query;
-  nlohmann::json j;
+  std::string query = {};
+  nlohmann::json j = {};
 
   if (mysql_real_query(&mysql, select_SmfRegistration.c_str(),
                        (unsigned long)select_SmfRegistration.size())) {
@@ -1781,13 +1742,11 @@ void udr_app::handle_create_smf_context_non_3gpp(
   }
 
   to_json(j, smfRegistration);
-  // response.send(Pistache::Http::Code::Created, j.dump());
   response_data = j;
   code = Pistache::Http::Code::Created;
 
-  std::string out = j.dump();
   Logger::udr_server().debug("SmfRegistration PUT - json:\n\"%s\"",
-                             out.c_str());
+                             j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -1805,7 +1764,6 @@ void udr_app::handle_delete_smf_context(const std::string &ue_id,
     return;
   }
 
-  // response.send(Pistache::Http::Code::No_Content, "");
   response_data = {};
   code = Pistache::Http::Code::No_Content;
   Logger::udr_server().debug("SmfRegistration DELETE - successful");
@@ -1817,10 +1775,10 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
                                             nlohmann::json &response_data,
                                             Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
-  nlohmann::json j;
+  nlohmann::json j = {};
 
   SmfRegistration smfregistration;
   const std::string query =
@@ -1896,13 +1854,11 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
       }
     }
     to_json(j, smfregistration);
-    // response.send(Pistache::Http::Code::Ok, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    std::string out = j.dump();
     Logger::udr_server().debug("SmfRegistration GET - json:\n\"%s\"",
-                               out.c_str());
+                               j.dump().c_str());
   } else {
     Logger::udr_server().error("SmfRegistration no data！SQL(%s)",
                                query.c_str());
@@ -1916,12 +1872,13 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
                                         nlohmann::json &response_data,
                                         Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
   std::vector<std::string> fields;
 
-  nlohmann::json j, tmp;
+  nlohmann::json j = {};
+  nlohmann::json tmp = {};
 
   const std::string query =
       "SELECT * from SmfRegistrations WHERE ueid='" + ue_id + "'";
@@ -2013,14 +1970,11 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
 
   mysql_free_result(res);
 
-  // response.send(Pistache::Http::Code::Ok, j.dump());
-
   response_data = j;
   code = Pistache::Http::Code::Ok;
 
-  std::string out = j.dump();
   Logger::udr_server().debug("SmfRegistrations GET - json:\n\"%s\"",
-                             out.c_str());
+                             j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -2029,10 +1983,10 @@ void udr_app::handle_query_smf_select_data(const std::string &ue_id,
                                            nlohmann::json &response_data,
                                            Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
-  MYSQL_ROW row;
+  MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
-  nlohmann::json j;
+  nlohmann::json j = {};
 
   SmfSelectionSubscriptionData smfselectionsubscriptiondata;
   const std::string query =
@@ -2070,12 +2024,10 @@ void udr_app::handle_query_smf_select_data(const std::string &ue_id,
       }
     }
     to_json(j, smfselectionsubscriptiondata);
-    // response.send(Pistache::Http::Code::Ok, j.dump());
     response_data = j;
     code = Pistache::Http::Code::Ok;
-    std::string out = j.dump();
     Logger::udr_server().debug(
-        "SmfSelectionSubscriptionData GET - json:\n\"%s\"", out.c_str());
+        "SmfSelectionSubscriptionData GET - json:\n\"%s\"", j.dump().c_str());
   } else {
     Logger::udr_server().error("SmfSelectionSubscriptionData no data！SQL(%s)",
                                query.c_str());
