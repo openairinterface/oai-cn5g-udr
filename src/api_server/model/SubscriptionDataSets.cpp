@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -39,30 +59,18 @@ void SubscriptionDataSets::validate() {
 
 void to_json(nlohmann::json &j, const SubscriptionDataSets &o) {
   j = nlohmann::json();
-  if (o.amDataIsSet())
-    j["amData"] = o.m_AmData;
-  if (o.smfSelDataIsSet())
-    j["smfSelData"] = o.m_SmfSelData;
-  if (o.uecAmfDataIsSet())
-    j["uecAmfData"] = o.m_UecAmfData;
-  if (o.uecSmfDataIsSet())
-    j["uecSmfData"] = o.m_UecSmfData;
-  if (o.uecSmsfDataIsSet())
-    j["uecSmsfData"] = o.m_UecSmsfData;
-  if (o.smsSubsDataIsSet())
-    j["smsSubsData"] = o.m_SmsSubsData;
-  if (o.smDataIsSet() || !o.m_SmData.empty())
-    j["smData"] = o.m_SmData;
-  if (o.traceDataIsSet())
-    j["traceData"] = o.m_TraceData;
-  if (o.smsMngDataIsSet())
-    j["smsMngData"] = o.m_SmsMngData;
-  if (o.lcsPrivacyDataIsSet())
-    j["lcsPrivacyData"] = o.m_LcsPrivacyData;
-  if (o.lcsMoDataIsSet())
-    j["lcsMoData"] = o.m_LcsMoData;
-  if (o.v2xDataIsSet())
-    j["v2xData"] = o.m_V2xData;
+  if (o.amDataIsSet()) j["amData"] = o.m_AmData;
+  if (o.smfSelDataIsSet()) j["smfSelData"] = o.m_SmfSelData;
+  if (o.uecAmfDataIsSet()) j["uecAmfData"] = o.m_UecAmfData;
+  if (o.uecSmfDataIsSet()) j["uecSmfData"] = o.m_UecSmfData;
+  if (o.uecSmsfDataIsSet()) j["uecSmsfData"] = o.m_UecSmsfData;
+  if (o.smsSubsDataIsSet()) j["smsSubsData"] = o.m_SmsSubsData;
+  if (o.smDataIsSet() || !o.m_SmData.empty()) j["smData"] = o.m_SmData;
+  if (o.traceDataIsSet()) j["traceData"] = o.m_TraceData;
+  if (o.smsMngDataIsSet()) j["smsMngData"] = o.m_SmsMngData;
+  if (o.lcsPrivacyDataIsSet()) j["lcsPrivacyData"] = o.m_LcsPrivacyData;
+  if (o.lcsMoDataIsSet()) j["lcsMoData"] = o.m_LcsMoData;
+  if (o.v2xDataIsSet()) j["v2xData"] = o.m_V2xData;
   if (o.lcsBroadcastAssistanceTypesDataIsSet())
     j["lcsBroadcastAssistanceTypesData"] = o.m_LcsBroadcastAssistanceTypesData;
 }
@@ -183,8 +191,8 @@ bool SubscriptionDataSets::smsSubsDataIsSet() const {
   return m_SmsSubsDataIsSet;
 }
 void SubscriptionDataSets::unsetSmsSubsData() { m_SmsSubsDataIsSet = false; }
-std::vector<SessionManagementSubscriptionData> &
-SubscriptionDataSets::getSmData() {
+std::vector<SessionManagementSubscriptionData>
+    &SubscriptionDataSets::getSmData() {
   return m_SmData;
 }
 void SubscriptionDataSets::setSmData(
@@ -256,4 +264,4 @@ void SubscriptionDataSets::unsetLcsBroadcastAssistanceTypesData() {
   m_LcsBroadcastAssistanceTypesDataIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

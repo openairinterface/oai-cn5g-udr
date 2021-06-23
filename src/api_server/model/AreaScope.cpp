@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -34,8 +54,7 @@ void to_json(nlohmann::json &j, const AreaScope &o) {
     j["eutraCellIdList"] = o.m_EutraCellIdList;
   if (o.nrCellIdListIsSet() || !o.m_NrCellIdList.empty())
     j["nrCellIdList"] = o.m_NrCellIdList;
-  if (o.tacListIsSet() || !o.m_TacList.empty())
-    j["tacList"] = o.m_TacList;
+  if (o.tacListIsSet() || !o.m_TacList.empty()) j["tacList"] = o.m_TacList;
   if (o.tacInfoPerPlmnIsSet() || !o.m_TacInfoPerPlmn.empty())
     j["tacInfoPerPlmn"] = o.m_TacInfoPerPlmn;
 }
@@ -94,4 +113,4 @@ void AreaScope::setTacInfoPerPlmn(std::map<std::string, TacInfo> const &value) {
 bool AreaScope::tacInfoPerPlmnIsSet() const { return m_TacInfoPerPlmnIsSet; }
 void AreaScope::unsetTacInfoPerPlmn() { m_TacInfoPerPlmnIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

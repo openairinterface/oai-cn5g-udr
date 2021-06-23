@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -31,12 +51,10 @@ void UpuData_2::validate() {
 
 void to_json(nlohmann::json &j, const UpuData_2 &o) {
   j = nlohmann::json();
-  if (o.secPacketIsSet())
-    j["secPacket"] = o.m_SecPacket;
+  if (o.secPacketIsSet()) j["secPacket"] = o.m_SecPacket;
   if (o.defaultConfNssaiIsSet() || !o.m_DefaultConfNssai.empty())
     j["defaultConfNssai"] = o.m_DefaultConfNssai;
-  if (o.routingIdIsSet())
-    j["routingId"] = o.m_RoutingId;
+  if (o.routingIdIsSet()) j["routingId"] = o.m_RoutingId;
 }
 
 void from_json(const nlohmann::json &j, UpuData_2 &o) {
@@ -80,4 +98,4 @@ void UpuData_2::setRoutingId(std::string const &value) {
 bool UpuData_2::routingIdIsSet() const { return m_RoutingIdIsSet; }
 void UpuData_2::unsetRoutingId() { m_RoutingIdIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

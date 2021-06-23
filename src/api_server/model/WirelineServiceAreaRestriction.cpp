@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -28,10 +48,8 @@ void WirelineServiceAreaRestriction::validate() {
 
 void to_json(nlohmann::json &j, const WirelineServiceAreaRestriction &o) {
   j = nlohmann::json();
-  if (o.restrictionTypeIsSet())
-    j["restrictionType"] = o.m_RestrictionType;
-  if (o.areasIsSet() || !o.m_Areas.empty())
-    j["areas"] = o.m_Areas;
+  if (o.restrictionTypeIsSet()) j["restrictionType"] = o.m_RestrictionType;
+  if (o.areasIsSet() || !o.m_Areas.empty()) j["areas"] = o.m_Areas;
 }
 
 void from_json(const nlohmann::json &j, WirelineServiceAreaRestriction &o) {
@@ -70,4 +88,4 @@ void WirelineServiceAreaRestriction::setAreas(
 bool WirelineServiceAreaRestriction::areasIsSet() const { return m_AreasIsSet; }
 void WirelineServiceAreaRestriction::unsetAreas() { m_AreasIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

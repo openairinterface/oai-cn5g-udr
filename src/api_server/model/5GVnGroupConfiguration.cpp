@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -36,14 +56,10 @@ void _5GVnGroupConfiguration::validate() {
 
 void to_json(nlohmann::json &j, const _5GVnGroupConfiguration &o) {
   j = nlohmann::json();
-  if (o.r5gVnGroupDataIsSet())
-    j["5gVnGroupData"] = o.m_r_5gVnGroupData;
-  if (o.membersIsSet() || !o.m_Members.empty())
-    j["members"] = o.m_Members;
-  if (o.referenceIdIsSet())
-    j["referenceId"] = o.m_ReferenceId;
-  if (o.afInstanceIdIsSet())
-    j["afInstanceId"] = o.m_AfInstanceId;
+  if (o.r5gVnGroupDataIsSet()) j["5gVnGroupData"] = o.m_r_5gVnGroupData;
+  if (o.membersIsSet() || !o.m_Members.empty()) j["members"] = o.m_Members;
+  if (o.referenceIdIsSet()) j["referenceId"] = o.m_ReferenceId;
+  if (o.afInstanceIdIsSet()) j["afInstanceId"] = o.m_AfInstanceId;
   if (o.internalGroupIdentifierIsSet())
     j["internalGroupIdentifier"] = o.m_InternalGroupIdentifier;
   if (o.mtcProviderInformationIsSet())
@@ -153,4 +169,4 @@ void _5GVnGroupConfiguration::unsetMtcProviderInformation() {
   m_MtcProviderInformationIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

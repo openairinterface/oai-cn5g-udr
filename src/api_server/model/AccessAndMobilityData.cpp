@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -58,46 +78,31 @@ void AccessAndMobilityData::validate() {
 
 void to_json(nlohmann::json &j, const AccessAndMobilityData &o) {
   j = nlohmann::json();
-  if (o.locationIsSet())
-    j["location"] = o.m_Location;
-  if (o.locationTsIsSet())
-    j["locationTs"] = o.m_LocationTs;
-  if (o.timeZoneIsSet())
-    j["timeZone"] = o.m_TimeZone;
-  if (o.timeZoneTsIsSet())
-    j["timeZoneTs"] = o.m_TimeZoneTs;
-  if (o.accessTypeIsSet())
-    j["accessType"] = o.m_AccessType;
+  if (o.locationIsSet()) j["location"] = o.m_Location;
+  if (o.locationTsIsSet()) j["locationTs"] = o.m_LocationTs;
+  if (o.timeZoneIsSet()) j["timeZone"] = o.m_TimeZone;
+  if (o.timeZoneTsIsSet()) j["timeZoneTs"] = o.m_TimeZoneTs;
+  if (o.accessTypeIsSet()) j["accessType"] = o.m_AccessType;
   if (o.regStatesIsSet() || !o.m_RegStates.empty())
     j["regStates"] = o.m_RegStates;
-  if (o.regStatesTsIsSet())
-    j["regStatesTs"] = o.m_RegStatesTs;
+  if (o.regStatesTsIsSet()) j["regStatesTs"] = o.m_RegStatesTs;
   if (o.connStatesIsSet() || !o.m_ConnStates.empty())
     j["connStates"] = o.m_ConnStates;
-  if (o.connStatesTsIsSet())
-    j["connStatesTs"] = o.m_ConnStatesTs;
+  if (o.connStatesTsIsSet()) j["connStatesTs"] = o.m_ConnStatesTs;
   if (o.reachabilityStatusIsSet())
     j["reachabilityStatus"] = o.m_ReachabilityStatus;
   if (o.reachabilityStatusTsIsSet())
     j["reachabilityStatusTs"] = o.m_ReachabilityStatusTs;
-  if (o.smsOverNasStatusIsSet())
-    j["smsOverNasStatus"] = o.m_SmsOverNasStatus;
+  if (o.smsOverNasStatusIsSet()) j["smsOverNasStatus"] = o.m_SmsOverNasStatus;
   if (o.smsOverNasStatusTsIsSet())
     j["smsOverNasStatusTs"] = o.m_SmsOverNasStatusTs;
-  if (o.roamingStatusIsSet())
-    j["roamingStatus"] = o.m_RoamingStatus;
-  if (o.roamingStatusTsIsSet())
-    j["roamingStatusTs"] = o.m_RoamingStatusTs;
-  if (o.currentPlmnIsSet())
-    j["currentPlmn"] = o.m_CurrentPlmn;
-  if (o.currentPlmnTsIsSet())
-    j["currentPlmnTs"] = o.m_CurrentPlmnTs;
-  if (o.ratTypeIsSet() || !o.m_RatType.empty())
-    j["ratType"] = o.m_RatType;
-  if (o.ratTypesTsIsSet())
-    j["ratTypesTs"] = o.m_RatTypesTs;
-  if (o.suppFeatIsSet())
-    j["suppFeat"] = o.m_SuppFeat;
+  if (o.roamingStatusIsSet()) j["roamingStatus"] = o.m_RoamingStatus;
+  if (o.roamingStatusTsIsSet()) j["roamingStatusTs"] = o.m_RoamingStatusTs;
+  if (o.currentPlmnIsSet()) j["currentPlmn"] = o.m_CurrentPlmn;
+  if (o.currentPlmnTsIsSet()) j["currentPlmnTs"] = o.m_CurrentPlmnTs;
+  if (o.ratTypeIsSet() || !o.m_RatType.empty()) j["ratType"] = o.m_RatType;
+  if (o.ratTypesTsIsSet()) j["ratTypesTs"] = o.m_RatTypesTs;
+  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, AccessAndMobilityData &o) {
@@ -394,4 +399,4 @@ void AccessAndMobilityData::setSuppFeat(std::string const &value) {
 bool AccessAndMobilityData::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void AccessAndMobilityData::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

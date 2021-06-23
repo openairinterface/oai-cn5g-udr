@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -66,38 +86,25 @@ void to_json(nlohmann::json &j, const SmPolicyDnnData &o) {
     j["allowedServices"] = o.m_AllowedServices;
   if (o.subscCatsIsSet() || !o.m_SubscCats.empty())
     j["subscCats"] = o.m_SubscCats;
-  if (o.gbrUlIsSet())
-    j["gbrUl"] = o.m_GbrUl;
-  if (o.gbrDlIsSet())
-    j["gbrDl"] = o.m_GbrDl;
-  if (o.adcSupportIsSet())
-    j["adcSupport"] = o.m_AdcSupport;
+  if (o.gbrUlIsSet()) j["gbrUl"] = o.m_GbrUl;
+  if (o.gbrDlIsSet()) j["gbrDl"] = o.m_GbrDl;
+  if (o.adcSupportIsSet()) j["adcSupport"] = o.m_AdcSupport;
   if (o.subscSpendingLimitsIsSet())
     j["subscSpendingLimits"] = o.m_SubscSpendingLimits;
-  if (o.ipv4IndexIsSet())
-    j["ipv4Index"] = o.m_Ipv4Index;
-  if (o.ipv6IndexIsSet())
-    j["ipv6Index"] = o.m_Ipv6Index;
-  if (o.offlineIsSet())
-    j["offline"] = o.m_Offline;
-  if (o.onlineIsSet())
-    j["online"] = o.m_Online;
-  if (o.chfInfoIsSet())
-    j["chfInfo"] = o.m_ChfInfo;
+  if (o.ipv4IndexIsSet()) j["ipv4Index"] = o.m_Ipv4Index;
+  if (o.ipv6IndexIsSet()) j["ipv6Index"] = o.m_Ipv6Index;
+  if (o.offlineIsSet()) j["offline"] = o.m_Offline;
+  if (o.onlineIsSet()) j["online"] = o.m_Online;
+  if (o.chfInfoIsSet()) j["chfInfo"] = o.m_ChfInfo;
   if (o.refUmDataLimitIdsIsSet() || !o.m_RefUmDataLimitIds.empty())
     j["refUmDataLimitIds"] = o.m_RefUmDataLimitIds;
-  if (o.mpsPriorityIsSet())
-    j["mpsPriority"] = o.m_MpsPriority;
-  if (o.mcsPriorityIsSet())
-    j["mcsPriority"] = o.m_McsPriority;
+  if (o.mpsPriorityIsSet()) j["mpsPriority"] = o.m_MpsPriority;
+  if (o.mcsPriorityIsSet()) j["mcsPriority"] = o.m_McsPriority;
   if (o.imsSignallingPrioIsSet())
     j["imsSignallingPrio"] = o.m_ImsSignallingPrio;
-  if (o.mpsPriorityLevelIsSet())
-    j["mpsPriorityLevel"] = o.m_MpsPriorityLevel;
-  if (o.mcsPriorityLevelIsSet())
-    j["mcsPriorityLevel"] = o.m_McsPriorityLevel;
-  if (o.praInfosIsSet() || !o.m_PraInfos.empty())
-    j["praInfos"] = o.m_PraInfos;
+  if (o.mpsPriorityLevelIsSet()) j["mpsPriorityLevel"] = o.m_MpsPriorityLevel;
+  if (o.mcsPriorityLevelIsSet()) j["mcsPriorityLevel"] = o.m_McsPriorityLevel;
+  if (o.praInfosIsSet() || !o.m_PraInfos.empty()) j["praInfos"] = o.m_PraInfos;
   if (o.bdtRefIdsIsSet() || !o.m_BdtRefIds.empty())
     j["bdtRefIds"] = o.m_BdtRefIds;
   if (o.locRoutNotAllowedIsSet())
@@ -280,8 +287,8 @@ void SmPolicyDnnData::setChfInfo(ChargingInformation const &value) {
 }
 bool SmPolicyDnnData::chfInfoIsSet() const { return m_ChfInfoIsSet; }
 void SmPolicyDnnData::unsetChfInfo() { m_ChfInfoIsSet = false; }
-std::map<std::string, LimitIdToMonitoringKey> &
-SmPolicyDnnData::getRefUmDataLimitIds() {
+std::map<std::string, LimitIdToMonitoringKey>
+    &SmPolicyDnnData::getRefUmDataLimitIds() {
   return m_RefUmDataLimitIds;
 }
 void SmPolicyDnnData::setRefUmDataLimitIds(
@@ -382,4 +389,4 @@ void SmPolicyDnnData::unsetLocRoutNotAllowed() {
   m_LocRoutNotAllowedIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -88,68 +108,37 @@ void CivicAddress::validate() {
 
 void to_json(nlohmann::json &j, const CivicAddress &o) {
   j = nlohmann::json();
-  if (o.countryIsSet())
-    j["country"] = o.m_Country;
-  if (o.a1IsSet())
-    j["A1"] = o.m_A1;
-  if (o.a2IsSet())
-    j["A2"] = o.m_A2;
-  if (o.a3IsSet())
-    j["A3"] = o.m_A3;
-  if (o.a4IsSet())
-    j["A4"] = o.m_A4;
-  if (o.a5IsSet())
-    j["A5"] = o.m_A5;
-  if (o.a6IsSet())
-    j["A6"] = o.m_A6;
-  if (o.pRDIsSet())
-    j["PRD"] = o.m_PRD;
-  if (o.pODIsSet())
-    j["POD"] = o.m_POD;
-  if (o.sTSIsSet())
-    j["STS"] = o.m_STS;
-  if (o.hNOIsSet())
-    j["HNO"] = o.m_HNO;
-  if (o.hNSIsSet())
-    j["HNS"] = o.m_HNS;
-  if (o.lMKIsSet())
-    j["LMK"] = o.m_LMK;
-  if (o.lOCIsSet())
-    j["LOC"] = o.m_LOC;
-  if (o.nAMIsSet())
-    j["NAM"] = o.m_NAM;
-  if (o.pCIsSet())
-    j["PC"] = o.m_PC;
-  if (o.bLDIsSet())
-    j["BLD"] = o.m_BLD;
-  if (o.uNITIsSet())
-    j["UNIT"] = o.m_UNIT;
-  if (o.fLRIsSet())
-    j["FLR"] = o.m_FLR;
-  if (o.rOOMIsSet())
-    j["ROOM"] = o.m_ROOM;
-  if (o.pLCIsSet())
-    j["PLC"] = o.m_PLC;
-  if (o.pCNIsSet())
-    j["PCN"] = o.m_PCN;
-  if (o.pOBOXIsSet())
-    j["POBOX"] = o.m_POBOX;
-  if (o.aDDCODEIsSet())
-    j["ADDCODE"] = o.m_ADDCODE;
-  if (o.sEATIsSet())
-    j["SEAT"] = o.m_SEAT;
-  if (o.rDIsSet())
-    j["RD"] = o.m_RD;
-  if (o.rDSECIsSet())
-    j["RDSEC"] = o.m_RDSEC;
-  if (o.rDBRIsSet())
-    j["RDBR"] = o.m_RDBR;
-  if (o.rDSUBBRIsSet())
-    j["RDSUBBR"] = o.m_RDSUBBR;
-  if (o.pRMIsSet())
-    j["PRM"] = o.m_PRM;
-  if (o.pOMIsSet())
-    j["POM"] = o.m_POM;
+  if (o.countryIsSet()) j["country"] = o.m_Country;
+  if (o.a1IsSet()) j["A1"] = o.m_A1;
+  if (o.a2IsSet()) j["A2"] = o.m_A2;
+  if (o.a3IsSet()) j["A3"] = o.m_A3;
+  if (o.a4IsSet()) j["A4"] = o.m_A4;
+  if (o.a5IsSet()) j["A5"] = o.m_A5;
+  if (o.a6IsSet()) j["A6"] = o.m_A6;
+  if (o.pRDIsSet()) j["PRD"] = o.m_PRD;
+  if (o.pODIsSet()) j["POD"] = o.m_POD;
+  if (o.sTSIsSet()) j["STS"] = o.m_STS;
+  if (o.hNOIsSet()) j["HNO"] = o.m_HNO;
+  if (o.hNSIsSet()) j["HNS"] = o.m_HNS;
+  if (o.lMKIsSet()) j["LMK"] = o.m_LMK;
+  if (o.lOCIsSet()) j["LOC"] = o.m_LOC;
+  if (o.nAMIsSet()) j["NAM"] = o.m_NAM;
+  if (o.pCIsSet()) j["PC"] = o.m_PC;
+  if (o.bLDIsSet()) j["BLD"] = o.m_BLD;
+  if (o.uNITIsSet()) j["UNIT"] = o.m_UNIT;
+  if (o.fLRIsSet()) j["FLR"] = o.m_FLR;
+  if (o.rOOMIsSet()) j["ROOM"] = o.m_ROOM;
+  if (o.pLCIsSet()) j["PLC"] = o.m_PLC;
+  if (o.pCNIsSet()) j["PCN"] = o.m_PCN;
+  if (o.pOBOXIsSet()) j["POBOX"] = o.m_POBOX;
+  if (o.aDDCODEIsSet()) j["ADDCODE"] = o.m_ADDCODE;
+  if (o.sEATIsSet()) j["SEAT"] = o.m_SEAT;
+  if (o.rDIsSet()) j["RD"] = o.m_RD;
+  if (o.rDSECIsSet()) j["RDSEC"] = o.m_RDSEC;
+  if (o.rDBRIsSet()) j["RDBR"] = o.m_RDBR;
+  if (o.rDSUBBRIsSet()) j["RDSUBBR"] = o.m_RDSUBBR;
+  if (o.pRMIsSet()) j["PRM"] = o.m_PRM;
+  if (o.pOMIsSet()) j["POM"] = o.m_POM;
 }
 
 void from_json(const nlohmann::json &j, CivicAddress &o) {
@@ -497,4 +486,4 @@ void CivicAddress::setPOM(std::string const &value) {
 bool CivicAddress::pOMIsSet() const { return m_POMIsSet; }
 void CivicAddress::unsetPOM() { m_POMIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

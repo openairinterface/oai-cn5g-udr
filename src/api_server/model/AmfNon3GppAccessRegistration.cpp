@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -50,10 +70,8 @@ void to_json(nlohmann::json &j, const AmfNon3GppAccessRegistration &o) {
   j["amfInstanceId"] = o.m_AmfInstanceId;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.purgeFlagIsSet())
-    j["purgeFlag"] = o.m_PurgeFlag;
-  if (o.peiIsSet())
-    j["pei"] = o.m_Pei;
+  if (o.purgeFlagIsSet()) j["purgeFlag"] = o.m_PurgeFlag;
+  if (o.peiIsSet()) j["pei"] = o.m_Pei;
   j["imsVoPs"] = o.m_ImsVoPs;
   j["deregCallbackUri"] = o.m_DeregCallbackUri;
   if (o.amfServiceNameDeregIsSet())
@@ -66,16 +84,12 @@ void to_json(nlohmann::json &j, const AmfNon3GppAccessRegistration &o) {
   if (o.backupAmfInfoIsSet() || !o.m_BackupAmfInfo.empty())
     j["backupAmfInfo"] = o.m_BackupAmfInfo;
   j["ratType"] = o.m_RatType;
-  if (o.urrpIndicatorIsSet())
-    j["urrpIndicator"] = o.m_UrrpIndicator;
+  if (o.urrpIndicatorIsSet()) j["urrpIndicator"] = o.m_UrrpIndicator;
   if (o.amfEeSubscriptionIdIsSet())
     j["amfEeSubscriptionId"] = o.m_AmfEeSubscriptionId;
-  if (o.registrationTimeIsSet())
-    j["registrationTime"] = o.m_RegistrationTime;
-  if (o.vgmlcAddressIsSet())
-    j["vgmlcAddress"] = o.m_VgmlcAddress;
-  if (o.contextInfoIsSet())
-    j["contextInfo"] = o.m_ContextInfo;
+  if (o.registrationTimeIsSet()) j["registrationTime"] = o.m_RegistrationTime;
+  if (o.vgmlcAddressIsSet()) j["vgmlcAddress"] = o.m_VgmlcAddress;
+  if (o.contextInfoIsSet()) j["contextInfo"] = o.m_ContextInfo;
 }
 
 void from_json(const nlohmann::json &j, AmfNon3GppAccessRegistration &o) {
@@ -197,8 +211,8 @@ bool AmfNon3GppAccessRegistration::amfServiceNameDeregIsSet() const {
 void AmfNon3GppAccessRegistration::unsetAmfServiceNameDereg() {
   m_AmfServiceNameDeregIsSet = false;
 }
-std::string
-AmfNon3GppAccessRegistration::getPcscfRestorationCallbackUri() const {
+std::string AmfNon3GppAccessRegistration::getPcscfRestorationCallbackUri()
+    const {
   return m_PcscfRestorationCallbackUri;
 }
 void AmfNon3GppAccessRegistration::setPcscfRestorationCallbackUri(
@@ -316,4 +330,4 @@ void AmfNon3GppAccessRegistration::unsetContextInfo() {
   m_ContextInfoIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -35,16 +55,13 @@ void ContextDataSets::validate() {
 
 void to_json(nlohmann::json &j, const ContextDataSets &o) {
   j = nlohmann::json();
-  if (o.amf3GppIsSet())
-    j["amf3Gpp"] = o.m_Amf3Gpp;
-  if (o.amfNon3GppIsSet())
-    j["amfNon3Gpp"] = o.m_AmfNon3Gpp;
+  if (o.amf3GppIsSet()) j["amf3Gpp"] = o.m_Amf3Gpp;
+  if (o.amfNon3GppIsSet()) j["amfNon3Gpp"] = o.m_AmfNon3Gpp;
   if (o.sdmSubscriptionsIsSet() || !o.m_SdmSubscriptions.empty())
     j["sdmSubscriptions"] = o.m_SdmSubscriptions;
   if (o.eeSubscriptionsIsSet() || !o.m_EeSubscriptions.empty())
     j["eeSubscriptions"] = o.m_EeSubscriptions;
-  if (o.smsf3GppAccessIsSet())
-    j["smsf3GppAccess"] = o.m_Smsf3GppAccess;
+  if (o.smsf3GppAccessIsSet()) j["smsf3GppAccess"] = o.m_Smsf3GppAccess;
   if (o.smsfNon3GppAccessIsSet())
     j["smsfNon3GppAccess"] = o.m_SmsfNon3GppAccess;
   if (o.subscriptionDataSubscriptionsIsSet() ||
@@ -52,8 +69,7 @@ void to_json(nlohmann::json &j, const ContextDataSets &o) {
     j["subscriptionDataSubscriptions"] = o.m_SubscriptionDataSubscriptions;
   if (o.smfRegistrationsIsSet() || !o.m_SmfRegistrations.empty())
     j["smfRegistrations"] = o.m_SmfRegistrations;
-  if (o.ipSmGwIsSet())
-    j["ipSmGw"] = o.m_IpSmGw;
+  if (o.ipSmGwIsSet()) j["ipSmGw"] = o.m_IpSmGw;
 }
 
 void from_json(const nlohmann::json &j, ContextDataSets &o) {
@@ -164,8 +180,8 @@ bool ContextDataSets::smsfNon3GppAccessIsSet() const {
 void ContextDataSets::unsetSmsfNon3GppAccess() {
   m_SmsfNon3GppAccessIsSet = false;
 }
-std::vector<SubscriptionDataSubscriptions> &
-ContextDataSets::getSubscriptionDataSubscriptions() {
+std::vector<SubscriptionDataSubscriptions>
+    &ContextDataSets::getSubscriptionDataSubscriptions() {
   return m_SubscriptionDataSubscriptions;
 }
 void ContextDataSets::setSubscriptionDataSubscriptions(
@@ -201,4 +217,4 @@ void ContextDataSets::setIpSmGw(IpSmGwRegistration const &value) {
 bool ContextDataSets::ipSmGwIsSet() const { return m_IpSmGwIsSet; }
 void ContextDataSets::unsetIpSmGw() { m_IpSmGwIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

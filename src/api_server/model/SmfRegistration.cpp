@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -49,31 +69,24 @@ void SmfRegistration::validate() {
 void to_json(nlohmann::json &j, const SmfRegistration &o) {
   j = nlohmann::json();
   j["smfInstanceId"] = o.m_SmfInstanceId;
-  if (o.smfSetIdIsSet())
-    j["smfSetId"] = o.m_SmfSetId;
+  if (o.smfSetIdIsSet()) j["smfSetId"] = o.m_SmfSetId;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
   j["pduSessionId"] = o.m_PduSessionId;
   j["singleNssai"] = o.m_SingleNssai;
-  if (o.dnnIsSet())
-    j["dnn"] = o.m_Dnn;
+  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
   if (o.emergencyServicesIsSet())
     j["emergencyServices"] = o.m_EmergencyServices;
   if (o.pcscfRestorationCallbackUriIsSet())
     j["pcscfRestorationCallbackUri"] = o.m_PcscfRestorationCallbackUri;
   j["plmnId"] = o.m_PlmnId;
-  if (o.pgwFqdnIsSet())
-    j["pgwFqdn"] = o.m_PgwFqdn;
-  if (o.epdgIndIsSet())
-    j["epdgInd"] = o.m_EpdgInd;
-  if (o.deregCallbackUriIsSet())
-    j["deregCallbackUri"] = o.m_DeregCallbackUri;
+  if (o.pgwFqdnIsSet()) j["pgwFqdn"] = o.m_PgwFqdn;
+  if (o.epdgIndIsSet()) j["epdgInd"] = o.m_EpdgInd;
+  if (o.deregCallbackUriIsSet()) j["deregCallbackUri"] = o.m_DeregCallbackUri;
   if (o.registrationReasonIsSet())
     j["registrationReason"] = o.m_RegistrationReason;
-  if (o.registrationTimeIsSet())
-    j["registrationTime"] = o.m_RegistrationTime;
-  if (o.contextInfoIsSet())
-    j["contextInfo"] = o.m_ContextInfo;
+  if (o.registrationTimeIsSet()) j["registrationTime"] = o.m_RegistrationTime;
+  if (o.contextInfoIsSet()) j["contextInfo"] = o.m_ContextInfo;
 }
 
 void from_json(const nlohmann::json &j, SmfRegistration &o) {
@@ -257,4 +270,4 @@ void SmfRegistration::setContextInfo(ContextInfo const &value) {
 bool SmfRegistration::contextInfoIsSet() const { return m_ContextInfoIsSet; }
 void SmfRegistration::unsetContextInfo() { m_ContextInfoIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

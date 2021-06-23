@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -52,40 +72,30 @@ void to_json(nlohmann::json &j, const DnnConfiguration &o) {
   j = nlohmann::json();
   j["pduSessionTypes"] = o.m_PduSessionTypes;
   j["sscModes"] = o.m_SscModes;
-  if (o.iwkEpsIndIsSet())
-    j["iwkEpsInd"] = o.m_IwkEpsInd;
-  if (o.r5gQosProfileIsSet())
-    j["5gQosProfile"] = o.m_r_5gQosProfile;
-  if (o.sessionAmbrIsSet())
-    j["sessionAmbr"] = o.m_SessionAmbr;
+  if (o.iwkEpsIndIsSet()) j["iwkEpsInd"] = o.m_IwkEpsInd;
+  if (o.r5gQosProfileIsSet()) j["5gQosProfile"] = o.m_r_5gQosProfile;
+  if (o.sessionAmbrIsSet()) j["sessionAmbr"] = o.m_SessionAmbr;
   if (o.r3gppChargingCharacteristicsIsSet())
     j["3gppChargingCharacteristics"] = o.m_r_3gppChargingCharacteristics;
   if (o.staticIpAddressIsSet() || !o.m_StaticIpAddress.empty())
     j["staticIpAddress"] = o.m_StaticIpAddress;
-  if (o.upSecurityIsSet())
-    j["upSecurity"] = o.m_UpSecurity;
+  if (o.upSecurityIsSet()) j["upSecurity"] = o.m_UpSecurity;
   if (o.pduSessionContinuityIndIsSet())
     j["pduSessionContinuityInd"] = o.m_PduSessionContinuityInd;
-  if (o.niddNefIdIsSet())
-    j["niddNefId"] = o.m_NiddNefId;
-  if (o.niddInfoIsSet())
-    j["niddInfo"] = o.m_NiddInfo;
+  if (o.niddNefIdIsSet()) j["niddNefId"] = o.m_NiddNefId;
+  if (o.niddInfoIsSet()) j["niddInfo"] = o.m_NiddInfo;
   if (o.redundantSessionAllowedIsSet())
     j["redundantSessionAllowed"] = o.m_RedundantSessionAllowed;
-  if (o.acsInfoIsSet())
-    j["acsInfo"] = o.m_AcsInfo;
+  if (o.acsInfoIsSet()) j["acsInfo"] = o.m_AcsInfo;
   if (o.ipv4FrameRouteListIsSet() || !o.m_Ipv4FrameRouteList.empty())
     j["ipv4FrameRouteList"] = o.m_Ipv4FrameRouteList;
   if (o.ipv6FrameRouteListIsSet() || !o.m_Ipv6FrameRouteList.empty())
     j["ipv6FrameRouteList"] = o.m_Ipv6FrameRouteList;
-  if (o.atsssAllowedIsSet())
-    j["atsssAllowed"] = o.m_AtsssAllowed;
-  if (o.secondaryAuthIsSet())
-    j["secondaryAuth"] = o.m_SecondaryAuth;
+  if (o.atsssAllowedIsSet()) j["atsssAllowed"] = o.m_AtsssAllowed;
+  if (o.secondaryAuthIsSet()) j["secondaryAuth"] = o.m_SecondaryAuth;
   if (o.dnAaaIpAddressAllocationIsSet())
     j["dnAaaIpAddressAllocation"] = o.m_DnAaaIpAddressAllocation;
-  if (o.dnAaaAddressIsSet())
-    j["dnAaaAddress"] = o.m_DnAaaAddress;
+  if (o.dnAaaAddressIsSet()) j["dnAaaAddress"] = o.m_DnAaaAddress;
 }
 
 void from_json(const nlohmann::json &j, DnnConfiguration &o) {
@@ -344,4 +354,4 @@ void DnnConfiguration::setDnAaaAddress(IpAddress const &value) {
 bool DnnConfiguration::dnAaaAddressIsSet() const { return m_DnAaaAddressIsSet; }
 void DnnConfiguration::unsetDnAaaAddress() { m_DnAaaAddressIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

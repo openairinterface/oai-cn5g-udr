@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -48,28 +68,19 @@ void to_json(nlohmann::json &j, const SdmSubscription &o) {
   j["nfInstanceId"] = o.m_NfInstanceId;
   if (o.implicitUnsubscribeIsSet())
     j["implicitUnsubscribe"] = o.m_ImplicitUnsubscribe;
-  if (o.expiresIsSet())
-    j["expires"] = o.m_Expires;
+  if (o.expiresIsSet()) j["expires"] = o.m_Expires;
   j["callbackReference"] = o.m_CallbackReference;
-  if (o.amfServiceNameIsSet())
-    j["amfServiceName"] = o.m_AmfServiceName;
+  if (o.amfServiceNameIsSet()) j["amfServiceName"] = o.m_AmfServiceName;
   j["monitoredResourceUris"] = o.m_MonitoredResourceUris;
-  if (o.singleNssaiIsSet())
-    j["singleNssai"] = o.m_SingleNssai;
-  if (o.dnnIsSet())
-    j["dnn"] = o.m_Dnn;
-  if (o.subscriptionIdIsSet())
-    j["subscriptionId"] = o.m_SubscriptionId;
-  if (o.plmnIdIsSet())
-    j["plmnId"] = o.m_PlmnId;
-  if (o.immediateReportIsSet())
-    j["immediateReport"] = o.m_ImmediateReport;
-  if (o.reportIsSet())
-    j["report"] = o.m_Report;
+  if (o.singleNssaiIsSet()) j["singleNssai"] = o.m_SingleNssai;
+  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
+  if (o.subscriptionIdIsSet()) j["subscriptionId"] = o.m_SubscriptionId;
+  if (o.plmnIdIsSet()) j["plmnId"] = o.m_PlmnId;
+  if (o.immediateReportIsSet()) j["immediateReport"] = o.m_ImmediateReport;
+  if (o.reportIsSet()) j["report"] = o.m_Report;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.contextInfoIsSet())
-    j["contextInfo"] = o.m_ContextInfo;
+  if (o.contextInfoIsSet()) j["contextInfo"] = o.m_ContextInfo;
 }
 
 void from_json(const nlohmann::json &j, SdmSubscription &o) {
@@ -239,4 +250,4 @@ void SdmSubscription::setContextInfo(ContextInfo const &value) {
 bool SdmSubscription::contextInfoIsSet() const { return m_ContextInfoIsSet; }
 void SdmSubscription::unsetContextInfo() { m_ContextInfoIsSet = false; }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

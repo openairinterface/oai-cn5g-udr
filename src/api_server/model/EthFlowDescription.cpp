@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -39,21 +59,14 @@ void EthFlowDescription::validate() {
 
 void to_json(nlohmann::json &j, const EthFlowDescription &o) {
   j = nlohmann::json();
-  if (o.destMacAddrIsSet())
-    j["destMacAddr"] = o.m_DestMacAddr;
+  if (o.destMacAddrIsSet()) j["destMacAddr"] = o.m_DestMacAddr;
   j["ethType"] = o.m_EthType;
-  if (o.fDescIsSet())
-    j["fDesc"] = o.m_FDesc;
-  if (o.fDirIsSet())
-    j["fDir"] = o.m_FDir;
-  if (o.sourceMacAddrIsSet())
-    j["sourceMacAddr"] = o.m_SourceMacAddr;
-  if (o.vlanTagsIsSet() || !o.m_VlanTags.empty())
-    j["vlanTags"] = o.m_VlanTags;
-  if (o.srcMacAddrEndIsSet())
-    j["srcMacAddrEnd"] = o.m_SrcMacAddrEnd;
-  if (o.destMacAddrEndIsSet())
-    j["destMacAddrEnd"] = o.m_DestMacAddrEnd;
+  if (o.fDescIsSet()) j["fDesc"] = o.m_FDesc;
+  if (o.fDirIsSet()) j["fDir"] = o.m_FDir;
+  if (o.sourceMacAddrIsSet()) j["sourceMacAddr"] = o.m_SourceMacAddr;
+  if (o.vlanTagsIsSet() || !o.m_VlanTags.empty()) j["vlanTags"] = o.m_VlanTags;
+  if (o.srcMacAddrEndIsSet()) j["srcMacAddrEnd"] = o.m_SrcMacAddrEnd;
+  if (o.destMacAddrEndIsSet()) j["destMacAddrEnd"] = o.m_DestMacAddrEnd;
 }
 
 void from_json(const nlohmann::json &j, EthFlowDescription &o) {
@@ -158,4 +171,4 @@ void EthFlowDescription::unsetDestMacAddrEnd() {
   m_DestMacAddrEndIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

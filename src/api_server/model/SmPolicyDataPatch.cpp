@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -28,8 +48,7 @@ void SmPolicyDataPatch::validate() {
 
 void to_json(nlohmann::json &j, const SmPolicyDataPatch &o) {
   j = nlohmann::json();
-  if (o.umDataIsSet() || !o.m_UmData.empty())
-    j["umData"] = o.m_UmData;
+  if (o.umDataIsSet() || !o.m_UmData.empty()) j["umData"] = o.m_UmData;
   if (o.smPolicySnssaiDataIsSet() || !o.m_SmPolicySnssaiData.empty())
     j["smPolicySnssaiData"] = o.m_SmPolicySnssaiData;
 }
@@ -55,8 +74,8 @@ void SmPolicyDataPatch::setUmData(
 }
 bool SmPolicyDataPatch::umDataIsSet() const { return m_UmDataIsSet; }
 void SmPolicyDataPatch::unsetUmData() { m_UmDataIsSet = false; }
-std::map<std::string, SmPolicySnssaiDataPatch> &
-SmPolicyDataPatch::getSmPolicySnssaiData() {
+std::map<std::string, SmPolicySnssaiDataPatch>
+    &SmPolicyDataPatch::getSmPolicySnssaiData() {
   return m_SmPolicySnssaiData;
 }
 void SmPolicyDataPatch::setSmPolicySnssaiData(
@@ -71,4 +90,4 @@ void SmPolicyDataPatch::unsetSmPolicySnssaiData() {
   m_SmPolicySnssaiDataIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

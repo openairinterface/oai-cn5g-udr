@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -32,14 +52,10 @@ void MulticastAccessControl::validate() {
 
 void to_json(nlohmann::json &j, const MulticastAccessControl &o) {
   j = nlohmann::json();
-  if (o.srcIpv4AddrIsSet())
-    j["srcIpv4Addr"] = o.m_SrcIpv4Addr;
-  if (o.srcIpv6AddrIsSet())
-    j["srcIpv6Addr"] = o.m_SrcIpv6Addr;
-  if (o.multicastV4AddrIsSet())
-    j["multicastV4Addr"] = o.m_MulticastV4Addr;
-  if (o.multicastV6AddrIsSet())
-    j["multicastV6Addr"] = o.m_MulticastV6Addr;
+  if (o.srcIpv4AddrIsSet()) j["srcIpv4Addr"] = o.m_SrcIpv4Addr;
+  if (o.srcIpv6AddrIsSet()) j["srcIpv6Addr"] = o.m_SrcIpv6Addr;
+  if (o.multicastV4AddrIsSet()) j["multicastV4Addr"] = o.m_MulticastV4Addr;
+  if (o.multicastV6AddrIsSet()) j["multicastV6Addr"] = o.m_MulticastV6Addr;
   j["accStatus"] = o.m_AccStatus;
 }
 
@@ -118,4 +134,4 @@ void MulticastAccessControl::setAccStatus(AccessRightStatus const &value) {
   m_AccStatus = value;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

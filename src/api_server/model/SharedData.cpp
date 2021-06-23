@@ -1,3 +1,23 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
 /**
  * Nudr_DataRepository API OpenAPI file
  * Unified Data Repository Service. © 2020, 3GPP Organizational Partners (ARIB,
@@ -35,16 +55,14 @@ void SharedData::validate() {
 void to_json(nlohmann::json &j, const SharedData &o) {
   j = nlohmann::json();
   j["sharedDataId"] = o.m_SharedDataId;
-  if (o.sharedAmDataIsSet())
-    j["sharedAmData"] = o.m_SharedAmData;
+  if (o.sharedAmDataIsSet()) j["sharedAmData"] = o.m_SharedAmData;
   if (o.sharedSmsSubsDataIsSet())
     j["sharedSmsSubsData"] = o.m_SharedSmsSubsData;
   if (o.sharedSmsMngSubsDataIsSet())
     j["sharedSmsMngSubsData"] = o.m_SharedSmsMngSubsData;
   if (o.sharedDnnConfigurationsIsSet() || !o.m_SharedDnnConfigurations.empty())
     j["sharedDnnConfigurations"] = o.m_SharedDnnConfigurations;
-  if (o.sharedTraceDataIsSet())
-    j["sharedTraceData"] = o.m_SharedTraceData;
+  if (o.sharedTraceDataIsSet()) j["sharedTraceData"] = o.m_SharedTraceData;
   if (o.sharedSnssaiInfosIsSet() || !o.m_SharedSnssaiInfos.empty())
     j["sharedSnssaiInfos"] = o.m_SharedSnssaiInfos;
   if (o.sharedVnGroupDatasIsSet() || !o.m_SharedVnGroupDatas.empty())
@@ -122,8 +140,8 @@ bool SharedData::sharedSmsMngSubsDataIsSet() const {
 void SharedData::unsetSharedSmsMngSubsData() {
   m_SharedSmsMngSubsDataIsSet = false;
 }
-std::map<std::string, DnnConfiguration> &
-SharedData::getSharedDnnConfigurations() {
+std::map<std::string, DnnConfiguration>
+    &SharedData::getSharedDnnConfigurations() {
   return m_SharedDnnConfigurations;
 }
 void SharedData::setSharedDnnConfigurations(
@@ -171,4 +189,4 @@ void SharedData::unsetSharedVnGroupDatas() {
   m_SharedVnGroupDatasIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
