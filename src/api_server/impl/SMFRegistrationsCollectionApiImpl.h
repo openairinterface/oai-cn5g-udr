@@ -41,13 +41,8 @@
 #define SMF_REGISTRATIONS_COLLECTION_API_IMPL_H_
 
 #include <SMFRegistrationsCollectionApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "SmfRegistration.h"
 #include "udr_app.hpp"

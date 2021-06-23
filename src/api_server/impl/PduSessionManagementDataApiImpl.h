@@ -41,13 +41,8 @@
 #define PDU_SESSION_MANAGEMENT_DATA_API_IMPL_H_
 
 #include <PduSessionManagementDataApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "Ipv6Prefix.h"
 #include "PduSessionManagementData.h"

@@ -41,13 +41,8 @@
 #define INDIVIDUAL_APPLIED_BDT_POLICY_DATA_DOCUMENT_API_IMPL_H_
 
 #include <IndividualAppliedBDTPolicyDataDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "BdtPolicyData.h"
 #include "BdtPolicyDataPatch.h"

@@ -41,13 +41,9 @@
 #define OPERATOR_SPECIFIC_DATA_CONTAINER_DOCUMENT_API_IMPL_H_
 
 #include <OperatorSpecificDataContainerDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
 
-#include <memory>
-#include <string>
 #include <vector>
 
 #include "OperatorSpecificDataContainer.h"

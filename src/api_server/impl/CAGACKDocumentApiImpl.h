@@ -41,13 +41,8 @@
 #define CAGACK_DOCUMENT_API_IMPL_H_
 
 #include <CAGACKDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "CagAckData.h"
 #include "udr_app.hpp"

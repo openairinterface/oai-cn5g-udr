@@ -41,13 +41,8 @@
 #define ACCESS_AND_MOBILITY_SUBSCRIPTION_DATA_DOCUMENT_API_IMPL_H_
 
 #include <AccessAndMobilitySubscriptionDataDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "AccessAndMobilitySubscriptionData.h"
 #include "udr_app.hpp"

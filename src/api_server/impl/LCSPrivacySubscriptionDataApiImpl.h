@@ -41,13 +41,8 @@
 #define LCS_PRIVACY_SUBSCRIPTION_DATA_API_IMPL_H_
 
 #include <LCSPrivacySubscriptionDataApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "LcsPrivacyData.h"
 #include "udr_app.hpp"

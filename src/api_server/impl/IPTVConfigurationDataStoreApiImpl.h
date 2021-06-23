@@ -41,13 +41,8 @@
 #define IPTV_CONFIGURATION_DATA_STORE_API_IMPL_H_
 
 #include <IPTVConfigurationDataStoreApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "IptvConfigData.h"
 #include "ProblemDetails.h"

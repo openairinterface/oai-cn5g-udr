@@ -41,13 +41,8 @@
 #define INDIVIDUAL_IPTV_CONFIGURATION_DATA_API_IMPL_H_
 
 #include <IndividualIPTVConfigurationDataApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "IptvConfigData.h"
 #include "IptvConfigDataPatch.h"

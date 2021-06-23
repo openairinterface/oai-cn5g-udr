@@ -41,13 +41,8 @@
 #define BDT_DATA_STORE_API_IMPL_H_
 
 #include <BdtDataStoreApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "BdtData.h"
 #include "ProblemDetails.h"

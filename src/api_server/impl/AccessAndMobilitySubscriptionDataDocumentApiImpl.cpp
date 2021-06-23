@@ -37,9 +37,6 @@
 
 #include "logger.hpp"
 #include "udr_app.hpp"
-#include "udr_config.hpp"
-using namespace config;
-extern config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

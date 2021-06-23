@@ -41,13 +41,8 @@
 #define SMF_REGISTRATION_DOCUMENT_API_IMPL_H_
 
 #include <SMFRegistrationDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "SmfRegistration.h"
 #include "udr_app.hpp"

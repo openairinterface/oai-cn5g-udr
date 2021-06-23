@@ -41,13 +41,8 @@
 #define INDIVIDUAL_INFLUENCE_DATA_DOCUMENT_API_IMPL_H_
 
 #include <IndividualInfluenceDataDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "ProblemDetails.h"
 #include "TrafficInfluData.h"

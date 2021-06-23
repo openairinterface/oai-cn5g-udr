@@ -41,17 +41,12 @@
 #define CONTEXT_DATA_DOCUMENT_API_IMPL_H_
 
 #include <ContextDataDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
 
 #include "ContextDataSetName.h"
 #include "ContextDataSets.h"
 //#include "Set.h"
-#include <string>
 
 #include "udr_app.hpp"
 namespace oai::udr::api {

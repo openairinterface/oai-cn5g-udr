@@ -41,16 +41,11 @@
 #define EVENT_EXPOSURE_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 
 #include <EventExposureSubscriptionDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
 
 #include "EeSubscription.h"
 //#include "Object.h"
-#include <string>
 #include <vector>
 
 #include "PatchItem.h"

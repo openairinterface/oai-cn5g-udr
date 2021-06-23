@@ -41,13 +41,8 @@
 #define EVENT_AMF_SUBSCRIPTION_INFO_DOCUMENT_API_IMPL_H_
 
 #include <EventAMFSubscriptionInfoDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "udr_app.hpp"
 namespace oai::udr::api {

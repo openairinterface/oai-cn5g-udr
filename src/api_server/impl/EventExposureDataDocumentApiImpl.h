@@ -41,13 +41,8 @@
 #define EVENT_EXPOSURE_DATA_DOCUMENT_API_IMPL_H_
 
 #include <EventExposureDataDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "EeProfileData.h"
 #include "udr_app.hpp"

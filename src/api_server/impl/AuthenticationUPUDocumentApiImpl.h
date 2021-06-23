@@ -41,13 +41,8 @@
 #define AUTHENTICATION_UPU_DOCUMENT_API_IMPL_H_
 
 #include <AuthenticationUPUDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "UpuData.h"
 #include "udr_app.hpp"

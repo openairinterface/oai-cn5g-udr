@@ -41,13 +41,8 @@
 #define V2_X_SUBSCRIPTION_DATA_API_IMPL_H_
 
 #include <V2XSubscriptionDataApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "V2xSubscriptionData.h"
 #include "udr_app.hpp"

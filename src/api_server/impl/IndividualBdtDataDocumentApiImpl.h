@@ -41,13 +41,8 @@
 #define INDIVIDUAL_BDT_DATA_DOCUMENT_API_IMPL_H_
 
 #include <IndividualBdtDataDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "BdtData.h"
 #include "BdtDataPatch.h"

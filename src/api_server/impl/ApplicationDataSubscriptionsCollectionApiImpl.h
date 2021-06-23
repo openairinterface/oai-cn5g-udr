@@ -41,12 +41,8 @@
 #define APPLICATION_DATA_SUBSCRIPTIONS_COLLECTION_API_IMPL_H_
 
 #include <ApplicationDataSubscriptionsCollectionApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
 
 #include "ApplicationDataSubs.h"
 #include "DataFilter.h"

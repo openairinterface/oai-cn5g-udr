@@ -41,13 +41,8 @@
 #define GROUP_IDENTIFIERS_API_IMPL_H_
 
 #include <GroupIdentifiersApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "GroupIdentifiers.h"
 #include "udr_app.hpp"

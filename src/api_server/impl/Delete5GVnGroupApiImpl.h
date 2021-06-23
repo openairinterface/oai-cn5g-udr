@@ -41,13 +41,8 @@
 #define DELETE5_G_VN_GROUP_API_IMPL_H_
 
 #include <Delete5GVnGroupApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "udr_app.hpp"
 using namespace oai::udr::app;

@@ -41,16 +41,11 @@
 #define RETRIEVAL_OF_SHARED_DATA_API_IMPL_H_
 
 #include <RetrievalOfSharedDataApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
 
 #include "ProblemDetails.h"
 //#include "Set.h"
-#include <string>
 
 #include "SharedData.h"
 #include "udr_app.hpp"

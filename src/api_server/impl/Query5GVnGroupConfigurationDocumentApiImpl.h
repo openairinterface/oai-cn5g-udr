@@ -41,13 +41,8 @@
 #define QUERY5_G_VN_GROUP_CONFIGURATION_DOCUMENT_API_IMPL_H_
 
 #include <Query5GVnGroupConfigurationDocumentApi.h>
-#include <pistache/endpoint.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include <pistache/router.h>
-
-#include <memory>
-#include <string>
 
 #include "5GVnGroupConfiguration.h"
 #include "udr_app.hpp"
