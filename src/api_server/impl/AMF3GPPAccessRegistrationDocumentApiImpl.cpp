@@ -49,8 +49,8 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_amf_3gpp_access_registration_document_create_amf_context(
-      ueId, amf3GppAccessRegistration, response_data, code);
+  m_udr_app->handle_create_amf_context_3gpp(ueId, amf3GppAccessRegistration,
+                                            response_data, code);
 
   Logger::udr_server().debug("HTTP reponse code %d.\n", code);
   response.send(code, response_data.dump());
@@ -62,8 +62,7 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_amf_3gpp_access_registration_document_query_amf_context(
-      ueId, response_data, code);
+  m_udr_app->handle_query_amf_context_3gpp(ueId, response_data, code);
 
   Logger::udr_server().debug("HTTP reponse code %d.\n", code);
   response.send(code, response_data.dump());

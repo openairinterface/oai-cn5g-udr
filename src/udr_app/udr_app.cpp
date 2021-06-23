@@ -82,9 +82,10 @@ udr_app::udr_app(const std::string &config_file) {
 udr_app::~udr_app() { Logger::udr_app().debug("Delete UDM APP instance..."); }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_access_mobility_subscription_data_document(
-    const std::string &ue_id, const std::string &serving_plmn_id,
-    nlohmann::json &response_data, Pistache::Http::Code &code) {
+void udr_app::handle_query_am_data(const std::string &ue_id,
+                                   const std::string &serving_plmn_id,
+                                   nlohmann::json &response_data,
+                                   Pistache::Http::Code &code) {
   MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
@@ -345,7 +346,8 @@ void udr_app::handle_access_mobility_subscription_data_document(
     code = Pistache::Http::Code::Ok;
 
     Logger::udr_server().debug(
-        "AccessAndMobilitySubscriptionData GET - json:\n\"%s\"", j.dump().c_str());
+        "AccessAndMobilitySubscriptionData GET - json:\n\"%s\"",
+        j.dump().c_str());
   } else {
     Logger::udr_server().error("AccessAndMobilitySubscriptionData no data！");
     code = Pistache::Http::Code::Internal_Server_Error;
@@ -355,7 +357,7 @@ void udr_app::handle_access_mobility_subscription_data_document(
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_amf_3gpp_access_registration_document_create_amf_context(
+void udr_app::handle_create_amf_context_3gpp(
     const std::string &ue_id,
     Amf3GppAccessRegistration &amf3GppAccessRegistration,
     nlohmann::json &response_data, Pistache::Http::Code &code) {
@@ -596,9 +598,9 @@ void udr_app::handle_amf_3gpp_access_registration_document_create_amf_context(
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_amf_3gpp_access_registration_document_query_amf_context(
-    const std::string &ue_id, nlohmann::json &response_data,
-    Pistache::Http::Code &code) {
+void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
+                                            nlohmann::json &response_data,
+                                            Pistache::Http::Code &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row;
   MYSQL_FIELD *field = nullptr;

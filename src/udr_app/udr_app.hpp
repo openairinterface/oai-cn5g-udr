@@ -59,17 +59,18 @@ class udr_app {
 
   virtual ~udr_app();
 
-  void handle_access_mobility_subscription_data_document(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& response_data, Pistache::Http::Code& code);
-  void handle_amf_3gpp_access_registration_document_create_amf_context(
+  void handle_query_am_data(const std::string& ue_id,
+                            const std::string& serving_plmn_id,
+                            nlohmann::json& response_data,
+                            Pistache::Http::Code& code);
+  void handle_create_amf_context_3gpp(
       const std::string& ue_id,
       Amf3GppAccessRegistration& amf3GppAccessRegistration,
       nlohmann::json& response_data, Pistache::Http::Code& code);
 
-  void handle_amf_3gpp_access_registration_document_query_amf_context(
-      const std::string& ue_id, nlohmann::json& response_data,
-      Pistache::Http::Code& code);
+  void handle_query_amf_context_3gpp(const std::string& ue_id,
+                                     nlohmann::json& response_data,
+                                     Pistache::Http::Code& code);
 
   void handle_create_authentication_status(const std::string& ue_id,
                                            const AuthEvent& authEvent,

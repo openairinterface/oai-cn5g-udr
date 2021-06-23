@@ -41,8 +41,7 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_access_mobility_subscription_data_document(
-      ueId, servingPlmnId, response_data, code);
+  m_udr_app->handle_query_am_data(ueId, servingPlmnId, response_data, code);
 
   Logger::udr_server().debug("HTTP reponse code %d.\n", code);
   response.send(code, response_data.dump());
