@@ -53,15 +53,18 @@ void SubsToNotifyDocumentApiImpl::modifysubscription_data_subscription(
     const std::string &subsId, const std::vector<PatchItem> &patchItem,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void SubsToNotifyDocumentApiImpl::query_subscription_data_subscriptions(
     const std::string &subsId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void SubsToNotifyDocumentApiImpl::removesubscription_data_subscriptions(
     const std::string &subsId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

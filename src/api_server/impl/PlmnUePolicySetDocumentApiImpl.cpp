@@ -51,7 +51,8 @@ PlmnUePolicySetDocumentApiImpl::PlmnUePolicySetDocumentApiImpl(
 
 void PlmnUePolicySetDocumentApiImpl::read_plmn_ue_policy_set(
     const std::string &plmnId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

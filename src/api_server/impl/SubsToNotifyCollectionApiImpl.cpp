@@ -53,7 +53,8 @@ void SubsToNotifyCollectionApiImpl::query_subs_to_notify(
     const Pistache::Optional<std::string> &ueId,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void SubsToNotifyCollectionApiImpl::
     remove_multiple_subscription_data_subscriptions(
@@ -62,12 +63,14 @@ void SubsToNotifyCollectionApiImpl::
         const Pistache::Optional<bool> &deleteAllNfs,
         const Pistache::Optional<bool> &implicitUnsubscribeIndication,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void SubsToNotifyCollectionApiImpl::subscription_data_subscriptions(
     const SubscriptionDataSubscriptions &subscriptionDataSubscriptions,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

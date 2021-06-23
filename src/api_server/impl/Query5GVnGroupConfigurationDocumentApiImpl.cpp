@@ -53,7 +53,8 @@ Query5GVnGroupConfigurationDocumentApiImpl::
 void Query5GVnGroupConfigurationDocumentApiImpl::get5_g_vn_group_configuration(
     const std::string &externalGroupId,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

@@ -48,7 +48,8 @@ Delete5GVnGroupApiImpl::Delete5GVnGroupApiImpl(
 void Delete5GVnGroupApiImpl::delete5_g_vn_group(
     const std::string &externalGroupId,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

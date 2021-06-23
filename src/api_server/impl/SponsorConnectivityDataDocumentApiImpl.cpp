@@ -51,7 +51,8 @@ SponsorConnectivityDataDocumentApiImpl::SponsorConnectivityDataDocumentApiImpl(
 
 void SponsorConnectivityDataDocumentApiImpl::read_sponsor_connectivity_data(
     const std::string &sponsorId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

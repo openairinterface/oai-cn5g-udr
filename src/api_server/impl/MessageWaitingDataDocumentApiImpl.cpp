@@ -52,23 +52,27 @@ MessageWaitingDataDocumentApiImpl::MessageWaitingDataDocumentApiImpl(
 void MessageWaitingDataDocumentApiImpl::create_message_waiting_data(
     const std::string &ueId, const MessageWaitingData &messageWaitingData,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void MessageWaitingDataDocumentApiImpl::delete_message_waiting_data(
     const std::string &ueId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void MessageWaitingDataDocumentApiImpl::modify_message_waiting_data(
     const std::string &ueId, const std::vector<PatchItem> &patchItem,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void MessageWaitingDataDocumentApiImpl::query_message_waiting_data(
     const std::string &ueId,
     const Pistache::Optional<std::vector<std::string>> &fields,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

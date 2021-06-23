@@ -54,20 +54,23 @@ void IndividualInfluenceDataSubscriptionDocumentApiImpl::
     delete_individual_influence_data_subscription(
         const std::string &subscriptionId,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IndividualInfluenceDataSubscriptionDocumentApiImpl::
     read_individual_influence_data_subscription(
         const std::string &subscriptionId,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IndividualInfluenceDataSubscriptionDocumentApiImpl::
     replace_individual_influence_data_subscription(
         const std::string &subscriptionId,
         const TrafficInfluSub &trafficInfluSub,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

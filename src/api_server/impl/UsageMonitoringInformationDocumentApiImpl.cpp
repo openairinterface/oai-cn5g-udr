@@ -55,20 +55,23 @@ void UsageMonitoringInformationDocumentApiImpl::
                                      const std::string &usageMonId,
                                      const UsageMonData &usageMonData,
                                      Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void UsageMonitoringInformationDocumentApiImpl::
     delete_usage_monitoring_information(
         const std::string &ueId, const std::string &usageMonId,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void UsageMonitoringInformationDocumentApiImpl::
     read_usage_monitoring_information(
         const std::string &ueId, const std::string &usageMonId,
         const Pistache::Optional<std::string> &suppFeat,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

@@ -53,13 +53,15 @@ EventExposureSubscriptionsCollectionApiImpl::
 void EventExposureSubscriptionsCollectionApiImpl::create_ee_subscriptions(
     const std::string &ueId, const EeSubscription &eeSubscription,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void EventExposureSubscriptionsCollectionApiImpl::queryeesubscriptions(
     const std::string &ueId,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

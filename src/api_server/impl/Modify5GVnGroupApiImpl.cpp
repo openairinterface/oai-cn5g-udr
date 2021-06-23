@@ -51,7 +51,8 @@ void Modify5GVnGroupApiImpl::modify5_g_vn_group(
     const std::string &externalGroupId, const std::vector<PatchItem> &patchItem,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

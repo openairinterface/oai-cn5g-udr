@@ -54,7 +54,8 @@ void NSSAIUpdateAckDocumentApiImpl::create_nssai_update_ack(
     const Pistache::Optional<std::string> &supportedFeatures,
     const NssaiAckData &nssaiAckData,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

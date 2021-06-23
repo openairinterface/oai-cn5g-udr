@@ -54,7 +54,8 @@ void PolicyDataSubscriptionsCollectionApiImpl::
     create_individual_policy_data_subscription(
         const PolicyDataSubscription &policyDataSubscription,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

@@ -53,13 +53,15 @@ void AuthenticationSoRDocumentApiImpl::create_authentication_so_r(
     const std::string &ueId,
     const Pistache::Optional<std::string> &supportedFeatures,
     const SorData &sorData, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void AuthenticationSoRDocumentApiImpl::query_auth_so_r(
     const std::string &ueId,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

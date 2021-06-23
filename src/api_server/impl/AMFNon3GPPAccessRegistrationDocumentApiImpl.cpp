@@ -54,20 +54,23 @@ void AMFNon3GPPAccessRegistrationDocumentApiImpl::amf_context_non3gpp(
     const std::string &ueId, const std::vector<PatchItem> &patchItem,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void AMFNon3GPPAccessRegistrationDocumentApiImpl::create_amf_context_non3gpp(
     const std::string &ueId,
     const AmfNon3GppAccessRegistration &amfNon3GppAccessRegistration,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void AMFNon3GPPAccessRegistrationDocumentApiImpl::query_amf_context_non3gpp(
     const std::string &ueId,
     const Pistache::Optional<std::vector<std::string>> &fields,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

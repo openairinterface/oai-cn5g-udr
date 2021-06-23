@@ -52,7 +52,8 @@ Class5GVNGroupsInternalDocumentApiImpl::Class5GVNGroupsInternalDocumentApiImpl(
 void Class5GVNGroupsInternalDocumentApiImpl::query5_g_vn_group_internal(
     const Pistache::Optional<std::vector<std::string>> &internalGroupIds,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

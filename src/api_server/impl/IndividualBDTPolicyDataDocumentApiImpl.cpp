@@ -53,7 +53,8 @@ void IndividualBDTPolicyDataDocumentApiImpl::
     create_individual_applied_bdt_policy_data(
         const std::string &bdtPolicyId, const BdtPolicyData &bdtPolicyData,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

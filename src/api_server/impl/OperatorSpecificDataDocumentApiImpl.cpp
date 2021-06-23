@@ -54,18 +54,21 @@ void OperatorSpecificDataDocumentApiImpl::read_operator_specific_data(
     const Pistache::Optional<std::vector<std::string>> &fields,
     const Pistache::Optional<std::string> &suppFeat,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void OperatorSpecificDataDocumentApiImpl::replace_operator_specific_data(
     const std::string &ueId,
     const std::map<std::string, OperatorSpecificDataContainer> &requestBody,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void OperatorSpecificDataDocumentApiImpl::update_operator_specific_data(
     const std::string &ueId, const std::vector<PatchItem> &patchItem,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

@@ -53,12 +53,14 @@ void PduSessionManagementDataApiImpl::create_or_replace_session_management_data(
     const std::string &ueId, const int32_t &pduSessionId,
     const PduSessionManagementData &pduSessionManagementData,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void PduSessionManagementDataApiImpl::delete_session_management_data(
     const std::string &ueId, const int32_t &pduSessionId,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void PduSessionManagementDataApiImpl::query_session_management_data(
     const std::string &ueId, const int32_t &pduSessionId,
@@ -68,7 +70,8 @@ void PduSessionManagementDataApiImpl::query_session_management_data(
     const Pistache::Optional<std::vector<std::string>> &fields,
     const Pistache::Optional<std::string> &suppFeat,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

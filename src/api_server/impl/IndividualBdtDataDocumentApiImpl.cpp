@@ -52,23 +52,27 @@ IndividualBdtDataDocumentApiImpl::IndividualBdtDataDocumentApiImpl(
 void IndividualBdtDataDocumentApiImpl::create_individual_bdt_data(
     const std::string &bdtReferenceId, const BdtData &bdtData,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IndividualBdtDataDocumentApiImpl::delete_individual_bdt_data(
     const std::string &bdtReferenceId,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IndividualBdtDataDocumentApiImpl::read_individual_bdt_data(
     const std::string &bdtReferenceId,
     const Pistache::Optional<std::string> &suppFeat,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IndividualBdtDataDocumentApiImpl::update_individual_bdt_data(
     const std::string &bdtReferenceId, const BdtDataPatch &bdtDataPatch,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

@@ -52,23 +52,27 @@ IPSMGWRegistrationDocumentApiImpl::IPSMGWRegistrationDocumentApiImpl(
 void IPSMGWRegistrationDocumentApiImpl::create_ip_sm_gw_context(
     const std::string &ueId, const IpSmGwRegistration &ipSmGwRegistration,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IPSMGWRegistrationDocumentApiImpl::delete_ip_sm_gw_context(
     const std::string &ueId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IPSMGWRegistrationDocumentApiImpl::modify_ip_sm_gw_context(
     const std::string &ueId, const std::vector<PatchItem> &patchItem,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IPSMGWRegistrationDocumentApiImpl::query_ip_sm_gw_context(
     const std::string &ueId,
     const Pistache::Optional<std::vector<std::string>> &fields,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

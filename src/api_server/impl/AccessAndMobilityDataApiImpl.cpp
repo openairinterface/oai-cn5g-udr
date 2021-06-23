@@ -52,21 +52,25 @@ AccessAndMobilityDataApiImpl::AccessAndMobilityDataApiImpl(
 void AccessAndMobilityDataApiImpl::create_or_replace_access_and_mobility_data(
     const std::string &ueId, const AccessAndMobilityData &accessAndMobilityData,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void AccessAndMobilityDataApiImpl::delete_access_and_mobility_data(
     const std::string &ueId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void AccessAndMobilityDataApiImpl::query_access_and_mobility_data(
     const std::string &ueId, const Pistache::Optional<std::string> &suppFeat,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void AccessAndMobilityDataApiImpl::update_access_and_mobility_data(
     const std::string &ueId, const AccessAndMobilityData &accessAndMobilityData,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

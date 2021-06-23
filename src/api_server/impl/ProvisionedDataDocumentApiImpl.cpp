@@ -53,7 +53,8 @@ ProvisionedDataDocumentApiImpl::ProvisionedDataDocumentApiImpl(
 // &ueId, const std::string &servingPlmnId, const
 // Pistache::Optional<Set<DataSetName>> &datasetNames,
 // Pistache::Http::ResponseWriter &response) {
-//    response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+//    response.send(Pistache::Http::Code::Ok, "This API has not been implemented
+//    yet!\n");
 //}
 
 }  // namespace oai::udr::api

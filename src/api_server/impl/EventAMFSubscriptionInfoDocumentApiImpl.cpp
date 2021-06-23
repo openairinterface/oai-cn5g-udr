@@ -51,7 +51,8 @@ EventAMFSubscriptionInfoDocumentApiImpl::
 void EventAMFSubscriptionInfoDocumentApiImpl::remove_amf_subscriptions_info(
     const std::string &ueId, const std::string &subsId,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

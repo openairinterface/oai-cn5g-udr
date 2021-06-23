@@ -52,15 +52,18 @@ IndividualPFDDataDocumentApiImpl::IndividualPFDDataDocumentApiImpl(
 void IndividualPFDDataDocumentApiImpl::create_or_replace_individual_pfd_data(
     const std::string &appId, const PfdDataForAppExt &pfdDataForAppExt,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IndividualPFDDataDocumentApiImpl::delete_individual_pfd_data(
     const std::string &appId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IndividualPFDDataDocumentApiImpl::read_individual_pfd_data(
     const std::string &appId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

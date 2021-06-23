@@ -53,14 +53,16 @@ IndividualExposureDataSubscriptionDocumentApiImpl::
 void IndividualExposureDataSubscriptionDocumentApiImpl::
     delete_individual_exposure_data_subscription(
         const std::string &subId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void IndividualExposureDataSubscriptionDocumentApiImpl::
     replace_individual_exposure_data_subscription(
         const std::string &subId,
         const ExposureDataSubscription &exposureDataSubscription,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

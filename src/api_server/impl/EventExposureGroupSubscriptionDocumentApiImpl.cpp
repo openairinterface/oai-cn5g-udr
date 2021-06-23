@@ -56,25 +56,29 @@ void EventExposureGroupSubscriptionDocumentApiImpl::
         const std::vector<PatchItem> &patchItem,
         const Pistache::Optional<std::string> &supportedFeatures,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void EventExposureGroupSubscriptionDocumentApiImpl::query_ee_group_subscription(
     const std::string &ueGroupId, const std::string &subsId,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void EventExposureGroupSubscriptionDocumentApiImpl::
     remove_ee_group_subscriptions(const std::string &ueGroupId,
                                   const std::string &subsId,
                                   Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void EventExposureGroupSubscriptionDocumentApiImpl::
     update_ee_group_subscriptions(const std::string &ueGroupId,
                                   const std::string &subsId,
                                   const EeSubscription &eeSubscription,
                                   Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

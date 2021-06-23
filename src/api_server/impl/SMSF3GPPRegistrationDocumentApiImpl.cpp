@@ -52,18 +52,21 @@ SMSF3GPPRegistrationDocumentApiImpl::SMSF3GPPRegistrationDocumentApiImpl(
 void SMSF3GPPRegistrationDocumentApiImpl::create_smsf_context3gpp(
     const std::string &ueId, const SmsfRegistration &smsfRegistration,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void SMSF3GPPRegistrationDocumentApiImpl::delete_smsf_context3gpp(
     const std::string &ueId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void SMSF3GPPRegistrationDocumentApiImpl::query_smsf_context3gpp(
     const std::string &ueId,
     const Pistache::Optional<std::vector<std::string>> &fields,
     const Pistache::Optional<std::string> &supportedFeatures,
     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api

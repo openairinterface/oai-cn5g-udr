@@ -54,7 +54,8 @@ void InfluenceDataSubscriptionsCollectionApiImpl::
     create_individual_influence_data_subscription(
         const TrafficInfluSub &trafficInfluSub,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 void InfluenceDataSubscriptionsCollectionApiImpl::
     read_influence_data_subscriptions(
@@ -63,7 +64,8 @@ void InfluenceDataSubscriptionsCollectionApiImpl::
         const Pistache::Optional<std::string> &internalGroupId,
         const Pistache::Optional<std::string> &supi,
         Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+  response.send(Pistache::Http::Code::Ok,
+                "This API has not been implemented yet!\n");
 }
 
 }  // namespace oai::udr::api
