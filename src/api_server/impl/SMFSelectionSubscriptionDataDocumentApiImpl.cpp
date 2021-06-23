@@ -35,6 +35,7 @@
 
 #include "logger.hpp"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
@@ -59,8 +60,8 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
   m_udr_app->handle_query_smf_select_data(ueId, servingPlmnId, response_data,
                                           code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace oai::udr::api

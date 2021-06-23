@@ -54,8 +54,8 @@ void SDMSubscriptionsCollectionApiImpl::create_sdm_subscriptions(
   m_udr_app->handle_create_sdm_subscriptions(ueId, sdmSubscription,
                                              response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 void SDMSubscriptionsCollectionApiImpl::querysdmsubscriptions(
     const std::string &ueId,
@@ -65,8 +65,8 @@ void SDMSubscriptionsCollectionApiImpl::querysdmsubscriptions(
   Pistache::Http::Code code = {};
   m_udr_app->handle_query_sdm_subscriptions(ueId, response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace oai::udr::api

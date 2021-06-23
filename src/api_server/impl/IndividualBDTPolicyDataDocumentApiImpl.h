@@ -43,10 +43,9 @@
 #include <IndividualBDTPolicyDataDocumentApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-
 #include "BdtPolicyData.h"
-#include "ProblemDetails.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

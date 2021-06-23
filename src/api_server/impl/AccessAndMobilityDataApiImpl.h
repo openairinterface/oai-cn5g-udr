@@ -45,7 +45,6 @@
 #include <pistache/optional.h>
 
 #include "AccessAndMobilityData.h"
-#include "ProblemDetails.h"
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

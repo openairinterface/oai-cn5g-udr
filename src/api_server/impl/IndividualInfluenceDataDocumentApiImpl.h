@@ -43,11 +43,10 @@
 #include <IndividualInfluenceDataDocumentApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-
-#include "ProblemDetails.h"
 #include "TrafficInfluData.h"
 #include "TrafficInfluDataPatch.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

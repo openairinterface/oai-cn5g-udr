@@ -43,15 +43,12 @@
 #include <OperatorSpecificDataDocumentApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-
 #include <map>
 #include <vector>
-
 #include "OperatorSpecificDataContainer.h"
 #include "PatchItem.h"
-#include "PatchResult.h"
-#include "ProblemDetails.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

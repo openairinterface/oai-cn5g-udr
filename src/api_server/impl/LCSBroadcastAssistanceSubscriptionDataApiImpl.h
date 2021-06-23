@@ -45,8 +45,8 @@
 #include <pistache/optional.h>
 
 #include "LcsBroadcastAssistanceTypesData.h"
-#include "ProblemDetails.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

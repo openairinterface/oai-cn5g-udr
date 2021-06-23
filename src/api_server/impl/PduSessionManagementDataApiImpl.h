@@ -46,8 +46,8 @@
 
 #include "Ipv6Prefix.h"
 #include "PduSessionManagementData.h"
-#include "ProblemDetails.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

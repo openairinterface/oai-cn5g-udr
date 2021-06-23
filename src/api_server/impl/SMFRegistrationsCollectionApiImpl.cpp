@@ -35,6 +35,7 @@
 
 #include "logger.hpp"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
@@ -54,8 +55,8 @@ void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(
   Pistache::Http::Code code = {};
   m_udr_app->handle_query_smf_reg_list(ueId, response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace oai::udr::api

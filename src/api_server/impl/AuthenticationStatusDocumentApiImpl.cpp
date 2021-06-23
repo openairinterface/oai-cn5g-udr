@@ -35,6 +35,7 @@
 
 #include "logger.hpp"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
@@ -54,8 +55,8 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(
   m_udr_app->handle_create_authentication_status(ueId, authEvent, response_data,
                                                  code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 void AuthenticationStatusDocumentApiImpl::delete_authentication_status(
@@ -64,8 +65,8 @@ void AuthenticationStatusDocumentApiImpl::delete_authentication_status(
   Pistache::Http::Code code = {};
   m_udr_app->handle_delete_authentication_status(ueId, response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 void AuthenticationStatusDocumentApiImpl::query_authentication_status(
     const std::string &ueId,
@@ -76,8 +77,8 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(
   Pistache::Http::Code code = {};
   m_udr_app->handle_query_authentication_status(ueId, response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace oai::udr::api

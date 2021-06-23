@@ -46,8 +46,8 @@
 
 #include "ApplicationDataSubs.h"
 #include "DataFilter.h"
-#include "ProblemDetails.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

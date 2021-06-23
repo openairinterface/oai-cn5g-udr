@@ -48,8 +48,7 @@
 
 #include "Amf3GppAccessRegistration.h"
 #include "PatchItem.h"
-#include "PatchResult.h"
-#include "ProblemDetails.h"
+
 #include "udr_app.hpp"
 namespace oai::udr::api {
 

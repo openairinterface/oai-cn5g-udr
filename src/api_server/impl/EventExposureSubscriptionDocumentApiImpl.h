@@ -43,15 +43,11 @@
 #include <EventExposureSubscriptionDocumentApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-
-#include "EeSubscription.h"
-//#include "Object.h"
 #include <vector>
-
+#include "EeSubscription.h"
 #include "PatchItem.h"
-#include "PatchResult.h"
-#include "ProblemDetails.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

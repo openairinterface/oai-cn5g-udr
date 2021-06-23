@@ -38,6 +38,7 @@
 #include "PatchResult.h"
 #include "logger.hpp"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
@@ -60,8 +61,8 @@ void AuthenticationSubscriptionDocumentApiImpl::
   m_udr_app->handle_modify_authentication_subscription(ueId, patchItem,
                                                        response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 void AuthenticationSubscriptionDocumentApiImpl::
@@ -73,8 +74,8 @@ void AuthenticationSubscriptionDocumentApiImpl::
   Pistache::Http::Code code = {};
   m_udr_app->handle_read_authentication_subscription(ueId, response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace oai::udr::api

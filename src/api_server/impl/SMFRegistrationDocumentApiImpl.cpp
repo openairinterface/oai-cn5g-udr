@@ -35,6 +35,7 @@
 
 #include "logger.hpp"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
@@ -55,8 +56,8 @@ void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(
   m_udr_app->handle_create_smf_context_non_3gpp(
       ueId, pduSessionId, smfRegistration, response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 void SMFRegistrationDocumentApiImpl::delete_smf_context(
     const std::string &ueId, const int32_t &pduSessionId,
@@ -65,8 +66,8 @@ void SMFRegistrationDocumentApiImpl::delete_smf_context(
   Pistache::Http::Code code = {};
   m_udr_app->handle_delete_smf_context(ueId, pduSessionId, response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 void SMFRegistrationDocumentApiImpl::query_smf_registration(
     const std::string &ueId, const int32_t &pduSessionId,
@@ -78,8 +79,8 @@ void SMFRegistrationDocumentApiImpl::query_smf_registration(
   m_udr_app->handle_query_smf_registration(ueId, pduSessionId, response_data,
                                            code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace oai::udr::api

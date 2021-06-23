@@ -69,8 +69,8 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
   m_udr_app->handle_create_amf_context_3gpp(ueId, amf3GppAccessRegistration,
                                             response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
     const std::string &ueId,
@@ -81,8 +81,8 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
   Pistache::Http::Code code = {};
   m_udr_app->handle_query_amf_context_3gpp(ueId, response_data, code);
 
-  Logger::udr_server().debug("HTTP reponse code %d.\n", code);
-  response.send(code, response_data.dump());
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace oai::udr::api

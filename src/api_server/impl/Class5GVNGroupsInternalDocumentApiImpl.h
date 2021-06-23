@@ -46,6 +46,7 @@
 
 #include "5GVnGroupConfiguration.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

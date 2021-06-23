@@ -44,11 +44,9 @@
 #include <pistache/http.h>
 #include <pistache/optional.h>
 
-#include "ProblemDetails.h"
-//#include "Set.h"
-
 #include "SharedData.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

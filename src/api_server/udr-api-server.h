@@ -44,8 +44,6 @@
 #include <vector>
 #endif
 
-#define PISTACHE_SERVER_MAX_PAYLOAD 32768
-
 #include "AMF3GPPAccessRegistrationDocumentApiImpl.h"
 #include "AccessAndMobilitySubscriptionDataDocumentApiImpl.h"
 #include "AuthenticationStatusDocumentApiImpl.h"

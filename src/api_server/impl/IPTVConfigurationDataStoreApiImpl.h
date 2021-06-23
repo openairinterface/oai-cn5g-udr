@@ -45,9 +45,9 @@
 #include <pistache/optional.h>
 
 #include "IptvConfigData.h"
-#include "ProblemDetails.h"
 #include "Snssai.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

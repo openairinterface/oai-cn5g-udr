@@ -44,13 +44,11 @@
 #include <pistache/http.h>
 #include <pistache/optional.h>
 
-//#include "Object.h"
 #include <vector>
 
 #include "PatchItem.h"
-#include "PatchResult.h"
-#include "ProblemDetails.h"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 using namespace oai::udr::model;

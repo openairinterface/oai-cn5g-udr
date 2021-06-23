@@ -35,6 +35,7 @@
 
 #include "logger.hpp"
 #include "udr_app.hpp"
+
 namespace oai::udr::api {
 
 Delete5GVnGroupApiImpl::Delete5GVnGroupApiImpl(
