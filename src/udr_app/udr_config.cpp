@@ -36,7 +36,14 @@
 using namespace libconfig;
 
 namespace config {
-udr_config::udr_config() {}
+
+//------------------------------------------------------------------------------
+udr_config::udr_config() : mysql(), instance(), pid_dir(), nudr() {
+  nudr_http2_port = 8080;
+  nudr_api_version = "v1";
+}
+
+//------------------------------------------------------------------------------
 udr_config::~udr_config() {}
 
 //------------------------------------------------------------------------------
