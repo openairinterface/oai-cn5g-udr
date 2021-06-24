@@ -36,7 +36,7 @@ using namespace std;
 using namespace config;
 
 udr_config udr_cfg;
-udr_app* udr_app_inst    = nullptr;
+udr_app* udr_app_inst = nullptr;
 UDRApiServer* api_server = nullptr;
 #include "udr_config.hpp"
 
@@ -94,23 +94,27 @@ int main(int argc, char** argv) {
   // Currently hard-coded value. TODO: add as config option.
   string pid_file_name = get_exe_absolute_path("/var/run", udr_cfg.instance);
   if (!is_pid_file_lock_success(pid_file_name.c_str())) {
-    Logger::udr_server().error(
-        "Lock PID file %s failed\n", pid_file_name.c_str());
+    Logger::udr_server().error("Lock PID file %s failed\n",
+                               pid_file_name.c_str());
     exit(-EDEADLK);
   }
 
   // UDR Pistache API server (HTTP1)
-  Pistache::Address addr(
-      std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
-      Pistache::Port(udr_cfg.nudr.port));
+  /* Pistache::Address addr(
+       std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
+       Pistache::Port(udr_cfg.nudr.port));
+   */
+  // TODO: to be updated
+  Pistache::Address addr(udr_cfg.nudr.addr4, Pistache::Port(udr_cfg.nudr.port));
+
   api_server = new UDRApiServer(addr, udr_app_inst);
   api_server->init(2);
   std::thread udr_manager(&UDRApiServer::start, api_server);
   udr_manager.join();
 
-  FILE* fp             = NULL;
+  FILE* fp = NULL;
   std::string filename = fmt::format("/tmp/udr_{}.status", getpid());
-  fp                   = fopen(filename.c_str(), "w+");
+  fp = fopen(filename.c_str(), "w+");
   fprintf(fp, "STARTED\n");
   fflush(fp);
   fclose(fp);
