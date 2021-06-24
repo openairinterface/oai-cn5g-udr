@@ -24,7 +24,14 @@
 #include <iostream>
 #include <libconfig.h++>
 
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
+
+#include "common_defs.h"
+#include "if.hpp"
 #include "logger.hpp"
+#include "string.hpp"
 
 using namespace libconfig;
 
@@ -37,6 +44,9 @@ int udr_config::load(const std ::string &config_file) {
                           config_file.c_str());
 
   Config cfg;
+  unsigned char buf_in6_addr[sizeof(struct in6_addr)];
+
+  // Read the file. If there is an error, report it and exit.
   try {
     cfg.readFile(config_file.c_str());
   } catch (const FileIOException &fioex) {
@@ -53,7 +63,7 @@ int udr_config::load(const std ::string &config_file) {
     const Setting &udr_cfg = root[UDR_CONFIG_STRING_UDR_CONFIG];
   } catch (const SettingNotFoundException &nfex) {
     Logger::udr_app().error("%s : %s", nfex.what(), nfex.getPath());
-    return -1;
+    return RETURNerror;
   }
   const Setting &udr_cfg = root[UDR_CONFIG_STRING_UDR_CONFIG];
   try {
@@ -73,11 +83,25 @@ int udr_config::load(const std ::string &config_file) {
     const Setting &new_if_cfg = udr_cfg[UDR_CONFIG_STRING_INTERFACES];
     const Setting &nudr_cfg = new_if_cfg[UDR_CONFIG_STRING_INTERFACE_NUDR];
     load_interface(nudr_cfg, nudr);
+    // HTTP2 port
+    if (!(nudr_cfg.lookupValue(UDR_CONFIG_STRING_HTTP2_PORT,
+                               nudr_http2_port))) {
+      Logger::udr_app().error(UDR_CONFIG_STRING_HTTP2_PORT "failed");
+      throw(UDR_CONFIG_STRING_HTTP2_PORT "failed");
+    }
+    // NUDR API VERSION
+    if (!(nudr_cfg.lookupValue(UDR_CONFIG_STRING_API_VERSION,
+                               nudr_api_version))) {
+      Logger::udr_app().error(UDR_CONFIG_STRING_API_VERSION "failed");
+      throw(UDR_CONFIG_STRING_API_VERSION "failed");
+    }
+
   } catch (const SettingNotFoundException &nfex) {
     Logger::udr_app().error("%s : %s, using defaults", nfex.what(),
                             nfex.getPath());
-    return -1;
+    return RETURNerror;
   }
+
   try {
     const Setting &mysql_cfg = udr_cfg[UDR_CONFIG_STRING_MYSQL];
     mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_SERVER, mysql.mysql_server);
@@ -87,15 +111,55 @@ int udr_config::load(const std ::string &config_file) {
   } catch (const SettingNotFoundException &nfex) {
     Logger::udr_app().error("%s : %s, using defaults", nfex.what(),
                             nfex.getPath());
-    return -1;
+    return RETURNerror;
   }
+
+  return RETURNok;
 }
 
 int udr_config::load_interface(const libconfig::Setting &if_cfg,
                                interface_cfg_t &cfg) {
   if_cfg.lookupValue(UDR_CONFIG_STRING_INTERFACE_NAME, cfg.if_name);
-  if_cfg.lookupValue(UDR_CONFIG_STRING_IPV4_ADDRESS, cfg.addr4);
-  if_cfg.lookupValue(UDR_CONFIG_STRING_PORT, cfg.port);
+  util::trim(cfg.if_name);
+  if (not boost::iequals(cfg.if_name, "none")) {
+    std::string address = {};
+    if_cfg.lookupValue(UDR_CONFIG_STRING_IPV4_ADDRESS, address);
+    util::trim(address);
+    if (boost::iequals(address, "read")) {
+      if (get_inet_addr_infos_from_iface(cfg.if_name, cfg.addr4, cfg.network4,
+                                         cfg.mtu)) {
+        Logger::udr_app().error(
+            "Could not read %s network interface configuration", cfg.if_name);
+        return RETURNerror;
+      }
+    } else {
+      std::vector<std::string> words = {};
+      boost::split(words, address, boost::is_any_of("/"),
+                   boost::token_compress_on);
+      if (words.size() != 2) {
+        Logger::udr_app().error("Bad value " UDR_CONFIG_STRING_IPV4_ADDRESS
+                                " = %s in config file",
+                                address.c_str());
+        return RETURNerror;
+      }
+      unsigned char buf_in_addr[sizeof(struct in6_addr)];  // you never know...
+      if (inet_pton(AF_INET, util::trim(words.at(0)).c_str(), buf_in_addr) ==
+          1) {
+        memcpy(&cfg.addr4, buf_in_addr, sizeof(struct in_addr));
+      } else {
+        Logger::udr_app().error(
+            "In conversion: Bad value " UDR_CONFIG_STRING_IPV4_ADDRESS
+            " = %s in config file",
+            util::trim(words.at(0)).c_str());
+        return RETURNerror;
+      }
+      cfg.network4.s_addr =
+          htons(ntohs(cfg.addr4.s_addr) &
+                0xFFFFFFFF << (32 - std::stoi(util::trim(words.at(1)))));
+    }
+    if_cfg.lookupValue(UDR_CONFIG_STRING_PORT, cfg.port);
+  }
+  return RETURNok;
 }
 
 void udr_config::display() {
@@ -107,6 +171,16 @@ void udr_config::display() {
   Logger::config().info(
       "- PID dir ............................................: %s",
       pid_dir.c_str());
+
+  Logger::config().info("- Nudr Networking:");
+  Logger::config().info("    Interface name ......: %s", nudr.if_name.c_str());
+  Logger::config().info("    IPv4 Addr ...........: %s", inet_ntoa(nudr.addr4));
+  Logger::config().info("    Port ................: %d", nudr.port);
+  // Logger::config().info("    HTTP2 port ..........: %d", nudr_http2_port);
+  /*  Logger::config().info(
+        "    API version..........: %s", sbi_api_version.c_str());
+  */
+
   Logger::config().info(
       "- MYSQL Server Addr...................................: %s",
       mysql.mysql_server.c_str());
@@ -119,11 +193,6 @@ void udr_config::display() {
   Logger::config().info(
       "- MYSQL db ...........................................: %s",
       mysql.mysql_db.c_str());
-
-  Logger::config().info("- Nudr Networking:");
-  Logger::config().info("    iface ................: %s", nudr.if_name.c_str());
-  Logger::config().info("    ip ...................: %s", nudr.addr4.c_str());
-  Logger::config().info("    port .................: %d", nudr.port);
 }
 
 }  // namespace config

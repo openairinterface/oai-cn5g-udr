@@ -100,12 +100,9 @@ int main(int argc, char** argv) {
   }
 
   // UDR Pistache API server (HTTP1)
-  /* Pistache::Address addr(
-       std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
-       Pistache::Port(udr_cfg.nudr.port));
-   */
-  // TODO: to be updated
-  Pistache::Address addr(udr_cfg.nudr.addr4, Pistache::Port(udr_cfg.nudr.port));
+  Pistache::Address addr(
+      std::string(inet_ntoa(*((struct in_addr*)&udr_cfg.nudr.addr4))),
+      Pistache::Port(udr_cfg.nudr.port));
 
   api_server = new UDRApiServer(addr, udr_app_inst);
   api_server->init(2);

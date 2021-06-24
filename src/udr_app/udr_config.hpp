@@ -35,6 +35,8 @@
 #define UDR_CONFIG_STRING_INTERFACE_NAME "INTERFACE_NAME"
 #define UDR_CONFIG_STRING_IPV4_ADDRESS "IPV4_ADDRESS"
 #define UDR_CONFIG_STRING_PORT "PORT"
+#define UDR_CONFIG_STRING_HTTP2_PORT "HTTP2_PORT"
+#define UDR_CONFIG_STRING_API_VERSION "API_VERSION"
 
 #define UDR_CONFIG_STRING_MYSQL "MYSQL"
 #define UDR_CONFIG_STRING_MYSQL_SERVER "MYSQL_SERVER"
@@ -55,8 +57,12 @@ typedef struct {
 
 typedef struct interface_cfg_s {
   std::string if_name;
-  std::string addr4;
+  struct in_addr addr4;
+  struct in_addr network4;
+  struct in6_addr addr6;
+  unsigned int mtu;
   unsigned int port;
+
 } interface_cfg_t;
 
 class udr_config {
@@ -71,6 +77,9 @@ class udr_config {
   unsigned int instance;
   std::string pid_dir;
   interface_cfg_t nudr;
+  unsigned int nudr_http2_port;
+  std::string nudr_api_version;
+
   mysql_conf_t mysql;
 };
 }  // namespace config
