@@ -107,227 +107,215 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
 
   if (row != NULL) {
     for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
-        accessandmobilitysubscriptiondata.setSupportedFeatures(row[i]);
-      } else if (!strcmp("gpsis", field->name) && row[i] != NULL) {
-        std::vector<std ::string> gpsis;
-        nlohmann::json::parse(row[i]).get_to(gpsis);
-        accessandmobilitysubscriptiondata.setGpsis(gpsis);
-      } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
-        std::vector<std ::string> internalgroupids;
-        nlohmann::json::parse(row[i]).get_to(internalgroupids);
-        accessandmobilitysubscriptiondata.setInternalGroupIds(internalgroupids);
-      } else if (!strcmp("sharedVnGroupDataIds", field->name) &&
-                 row[i] != NULL) {
-        std::map<std ::string, std::string> sharedvngroupdataids;
-        nlohmann::json::parse(row[i]).get_to(sharedvngroupdataids);
-        accessandmobilitysubscriptiondata.setSharedVnGroupDataIds(
-            sharedvngroupdataids);
-      } else if (!strcmp("subscribedUeAmbr", field->name) && row[i] != NULL) {
-        AmbrRm subscribedueambr;
-        nlohmann::json::parse(row[i]).get_to(subscribedueambr);
-        accessandmobilitysubscriptiondata.setSubscribedUeAmbr(subscribedueambr);
-      } else if (!strcmp("nssai", field->name) && row[i] != NULL) {
-        Nssai nssai;
-        nlohmann::json::parse(row[i]).get_to(nssai);
-        accessandmobilitysubscriptiondata.setNssai(nssai);
-      } else if (!strcmp("ratRestrictions", field->name) && row[i] != NULL) {
-        std ::vector<RatType> ratrestrictions;
-        nlohmann::json::parse(row[i]).get_to(ratrestrictions);
-        accessandmobilitysubscriptiondata.setRatRestrictions(ratrestrictions);
-      } else if (!strcmp("forbiddenAreas", field->name) && row[i] != NULL) {
-        std ::vector<Area> forbiddenareas;
-        nlohmann::json::parse(row[i]).get_to(forbiddenareas);
-        accessandmobilitysubscriptiondata.setForbiddenAreas(forbiddenareas);
-      } else if (!strcmp("serviceAreaRestriction", field->name) &&
-                 row[i] != NULL) {
-        ServiceAreaRestriction servicearearestriction;
-        nlohmann::json::parse(row[i]).get_to(servicearearestriction);
-        accessandmobilitysubscriptiondata.setServiceAreaRestriction(
-            servicearearestriction);
-      } else if (!strcmp("coreNetworkTypeRestrictions", field->name) &&
-                 row[i] != NULL) {
-        std ::vector<CoreNetworkType> corenetworktyperestrictions;
-        nlohmann::json::parse(row[i]).get_to(corenetworktyperestrictions);
-        accessandmobilitysubscriptiondata.setCoreNetworkTypeRestrictions(
-            corenetworktyperestrictions);
-      } else if (!strcmp("rfspIndex", field->name) && row[i] != NULL) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        accessandmobilitysubscriptiondata.setRfspIndex(a);
-      } else if (!strcmp("subsRegTimer", field->name) && row[i] != NULL) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        accessandmobilitysubscriptiondata.setSubsRegTimer(a);
-      } else if (!strcmp("ueUsageType", field->name) && row[i] != NULL) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        accessandmobilitysubscriptiondata.setUeUsageType(a);
-      } else if (!strcmp("mpsPriority", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          accessandmobilitysubscriptiondata.setMpsPriority(true);
-        else
-          accessandmobilitysubscriptiondata.setMpsPriority(false);
-      } else if (!strcmp("mcsPriority", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          accessandmobilitysubscriptiondata.setMcsPriority(true);
-        else
-          accessandmobilitysubscriptiondata.setMcsPriority(false);
-      } else if (!strcmp("activeTime", field->name) && row[i] != NULL) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        accessandmobilitysubscriptiondata.setActiveTime(a);
-      } else if (!strcmp("sorInfo", field->name) && row[i] != NULL) {
-        SorInfo sorinfo;
-        nlohmann::json::parse(row[i]).get_to(sorinfo);
-        accessandmobilitysubscriptiondata.setSorInfo(sorinfo);
-      } else if (!strcmp("sorInfoExpectInd", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          accessandmobilitysubscriptiondata.setSorInfoExpectInd(true);
-        else
-          accessandmobilitysubscriptiondata.setSorInfoExpectInd(false);
-      } else if (!strcmp("sorafRetrieval", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          accessandmobilitysubscriptiondata.setSorafRetrieval(true);
-        else
-          accessandmobilitysubscriptiondata.setSorafRetrieval(false);
-      } else if (!strcmp("sorUpdateIndicatorList", field->name) &&
-                 row[i] != NULL) {
-        std ::vector<SorUpdateIndicator> sorupdateindicatorlist;
-        nlohmann::json::parse(row[i]).get_to(sorupdateindicatorlist);
-        accessandmobilitysubscriptiondata.setSorUpdateIndicatorList(
-            sorupdateindicatorlist);
-      } else if (!strcmp("upuInfo", field->name) && row[i] != NULL) {
-        UpuInfo upuinfo;
-        nlohmann::json::parse(row[i]).get_to(upuinfo);
-        accessandmobilitysubscriptiondata.setUpuInfo(upuinfo);
-      } else if (!strcmp("micoAllowed", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          accessandmobilitysubscriptiondata.setMicoAllowed(true);
-        else
-          accessandmobilitysubscriptiondata.setMicoAllowed(false);
-      } else if (!strcmp("sharedAmDataIds", field->name) && row[i] != NULL) {
-        std ::vector<std ::string> sharedamdataids;
-        nlohmann::json::parse(row[i]).get_to(sharedamdataids);
-        accessandmobilitysubscriptiondata.setSharedAmDataIds(sharedamdataids);
-      } else if (!strcmp("odbPacketServices", field->name) && row[i] != NULL) {
-        OdbPacketServices odbpacketservices;
-        nlohmann::json::parse(row[i]).get_to(odbpacketservices);
-        accessandmobilitysubscriptiondata.setOdbPacketServices(
-            odbpacketservices);
-      } else if (!strcmp("serviceGapTime", field->name) && row[i] != NULL) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        accessandmobilitysubscriptiondata.setServiceGapTime(a);
-      } else if (!strcmp("mdtUserConsent", field->name) && row[i] != NULL) {
-        MdtUserConsent mdtuserconsent;
-        nlohmann::json::parse(row[i]).get_to(mdtuserconsent);
-        accessandmobilitysubscriptiondata.setMdtUserConsent(mdtuserconsent);
-      } else if (!strcmp("mdtConfiguration", field->name) && row[i] != NULL) {
-        MdtConfiguration mdtconfiguration;
-        nlohmann::json::parse(row[i]).get_to(mdtconfiguration);
-        accessandmobilitysubscriptiondata.setMdtConfiguration(mdtconfiguration);
-      } else if (!strcmp("traceData", field->name) && row[i] != NULL) {
-        TraceData tracedata;
-        nlohmann::json::parse(row[i]).get_to(tracedata);
-        accessandmobilitysubscriptiondata.setTraceData(tracedata);
-      } else if (!strcmp("cagData", field->name) && row[i] != NULL) {
-        CagData cagdata;
-        nlohmann::json::parse(row[i]).get_to(cagdata);
-        accessandmobilitysubscriptiondata.setCagData(cagdata);
-      } else if (!strcmp("stnSr", field->name) && row[i] != NULL) {
-        accessandmobilitysubscriptiondata.setStnSr(row[i]);
-      } else if (!strcmp("cMsisdn", field->name) && row[i] != NULL) {
-        accessandmobilitysubscriptiondata.setCMsisdn(row[i]);
-      } else if (!strcmp("nbIoTUePriority", field->name) && row[i] != NULL) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        accessandmobilitysubscriptiondata.setNbIoTUePriority(a);
-      } else if (!strcmp("nssaiInclusionAllowed", field->name) &&
-                 row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          accessandmobilitysubscriptiondata.setNssaiInclusionAllowed(true);
-        else
-          accessandmobilitysubscriptiondata.setNssaiInclusionAllowed(false);
-      } else if (!strcmp("rgWirelineCharacteristics", field->name) &&
-                 row[i] != NULL) {
-        accessandmobilitysubscriptiondata.setRgWirelineCharacteristics(row[i]);
-      } else if (!strcmp("ecRestrictionDataWb", field->name) &&
-                 row[i] != NULL) {
-        EcRestrictionDataWb ecrestrictiondatawb;
-        nlohmann::json::parse(row[i]).get_to(ecrestrictiondatawb);
-        accessandmobilitysubscriptiondata.setEcRestrictionDataWb(
-            ecrestrictiondatawb);
-      } else if (!strcmp("ecRestrictionDataNb", field->name) &&
-                 row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          accessandmobilitysubscriptiondata.setEcRestrictionDataNb(true);
-        else
-          accessandmobilitysubscriptiondata.setEcRestrictionDataNb(false);
-      } else if (!strcmp("expectedUeBehaviourList", field->name) &&
-                 row[i] != NULL) {
-        ExpectedUeBehaviourData expecteduebehaviourlist;
-        nlohmann::json::parse(row[i]).get_to(expecteduebehaviourlist);
-        accessandmobilitysubscriptiondata.setExpectedUeBehaviourList(
-            expecteduebehaviourlist);
-      } else if (!strcmp("primaryRatRestrictions", field->name) &&
-                 row[i] != NULL) {
-        std ::vector<RatType> primaryratrestrictions;
-        nlohmann::json::parse(row[i]).get_to(primaryratrestrictions);
-        accessandmobilitysubscriptiondata.setPrimaryRatRestrictions(
-            primaryratrestrictions);
-      } else if (!strcmp("secondaryRatRestrictions", field->name) &&
-                 row[i] != NULL) {
-        std ::vector<RatType> secondaryratrestrictions;
-        nlohmann::json::parse(row[i]).get_to(secondaryratrestrictions);
-        accessandmobilitysubscriptiondata.setSecondaryRatRestrictions(
-            secondaryratrestrictions);
-      } else if (!strcmp("edrxParametersList", field->name) && row[i] != NULL) {
-        std ::vector<EdrxParameters> edrxparameterslist;
-        nlohmann::json::parse(row[i]).get_to(edrxparameterslist);
-        accessandmobilitysubscriptiondata.setEdrxParametersList(
-            edrxparameterslist);
-      } else if (!strcmp("ptwParametersList", field->name) && row[i] != NULL) {
-        std ::vector<PtwParameters> ptwparameterslist;
-        nlohmann::json::parse(row[i]).get_to(ptwparameterslist);
-        accessandmobilitysubscriptiondata.setPtwParametersList(
-            ptwparameterslist);
-      } else if (!strcmp("iabOperationAllowed", field->name) &&
-                 row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          accessandmobilitysubscriptiondata.setIabOperationAllowed(true);
-        else
-          accessandmobilitysubscriptiondata.setIabOperationAllowed(false);
-      } else if (!strcmp("wirelineForbiddenAreas", field->name) &&
-                 row[i] != NULL) {
-        std ::vector<WirelineArea> wirelineforbiddenareas;
-        nlohmann::json::parse(row[i]).get_to(wirelineforbiddenareas);
-        accessandmobilitysubscriptiondata.setWirelineForbiddenAreas(
-            wirelineforbiddenareas);
-      } else if (!strcmp("wirelineServiceAreaRestriction", field->name) &&
-                 row[i] != NULL) {
-        WirelineServiceAreaRestriction wirelineservicearearestriction;
-        nlohmann::json::parse(row[i]).get_to(wirelineservicearearestriction);
-        accessandmobilitysubscriptiondata.setWirelineServiceAreaRestriction(
-            wirelineservicearearestriction);
+      try {
+        if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
+          accessandmobilitysubscriptiondata.setSupportedFeatures(row[i]);
+        } else if (!strcmp("gpsis", field->name) && row[i] != NULL) {
+          std::vector<std ::string> gpsis;
+          nlohmann::json::parse(row[i]).get_to(gpsis);
+          accessandmobilitysubscriptiondata.setGpsis(gpsis);
+        } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
+          std::vector<std ::string> internalgroupids;
+          nlohmann::json::parse(row[i]).get_to(internalgroupids);
+          accessandmobilitysubscriptiondata.setInternalGroupIds(
+              internalgroupids);
+        } else if (!strcmp("sharedVnGroupDataIds", field->name) &&
+                   row[i] != NULL) {
+          std::map<std ::string, std::string> sharedvngroupdataids;
+          nlohmann::json::parse(row[i]).get_to(sharedvngroupdataids);
+          accessandmobilitysubscriptiondata.setSharedVnGroupDataIds(
+              sharedvngroupdataids);
+        } else if (!strcmp("subscribedUeAmbr", field->name) && row[i] != NULL) {
+          AmbrRm subscribedueambr;
+          nlohmann::json::parse(row[i]).get_to(subscribedueambr);
+          accessandmobilitysubscriptiondata.setSubscribedUeAmbr(
+              subscribedueambr);
+        } else if (!strcmp("nssai", field->name) && row[i] != NULL) {
+          Nssai nssai;
+          nlohmann::json::parse(row[i]).get_to(nssai);
+          accessandmobilitysubscriptiondata.setNssai(nssai);
+        } else if (!strcmp("ratRestrictions", field->name) && row[i] != NULL) {
+          std ::vector<RatType> ratrestrictions;
+          nlohmann::json::parse(row[i]).get_to(ratrestrictions);
+          accessandmobilitysubscriptiondata.setRatRestrictions(ratrestrictions);
+        } else if (!strcmp("forbiddenAreas", field->name) && row[i] != NULL) {
+          std ::vector<Area> forbiddenareas;
+          nlohmann::json::parse(row[i]).get_to(forbiddenareas);
+          accessandmobilitysubscriptiondata.setForbiddenAreas(forbiddenareas);
+        } else if (!strcmp("serviceAreaRestriction", field->name) &&
+                   row[i] != NULL) {
+          ServiceAreaRestriction servicearearestriction;
+          nlohmann::json::parse(row[i]).get_to(servicearearestriction);
+          accessandmobilitysubscriptiondata.setServiceAreaRestriction(
+              servicearearestriction);
+        } else if (!strcmp("coreNetworkTypeRestrictions", field->name) &&
+                   row[i] != NULL) {
+          std ::vector<CoreNetworkType> corenetworktyperestrictions;
+          nlohmann::json::parse(row[i]).get_to(corenetworktyperestrictions);
+          accessandmobilitysubscriptiondata.setCoreNetworkTypeRestrictions(
+              corenetworktyperestrictions);
+        } else if (!strcmp("rfspIndex", field->name) && row[i] != NULL) {
+          int32_t a = std::stoi(row[i]);
+          accessandmobilitysubscriptiondata.setRfspIndex(a);
+        } else if (!strcmp("subsRegTimer", field->name) && row[i] != NULL) {
+          int32_t a = std::stoi(row[i]);
+          accessandmobilitysubscriptiondata.setSubsRegTimer(a);
+        } else if (!strcmp("ueUsageType", field->name) && row[i] != NULL) {
+          int32_t a = std::stoi(row[i]);
+          accessandmobilitysubscriptiondata.setUeUsageType(a);
+        } else if (!strcmp("mpsPriority", field->name) && row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            accessandmobilitysubscriptiondata.setMpsPriority(true);
+          else
+            accessandmobilitysubscriptiondata.setMpsPriority(false);
+        } else if (!strcmp("mcsPriority", field->name) && row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            accessandmobilitysubscriptiondata.setMcsPriority(true);
+          else
+            accessandmobilitysubscriptiondata.setMcsPriority(false);
+        } else if (!strcmp("activeTime", field->name) && row[i] != NULL) {
+          int32_t a = std::stoi(row[i]);
+          accessandmobilitysubscriptiondata.setActiveTime(a);
+        } else if (!strcmp("sorInfo", field->name) && row[i] != NULL) {
+          SorInfo sorinfo;
+          nlohmann::json::parse(row[i]).get_to(sorinfo);
+          accessandmobilitysubscriptiondata.setSorInfo(sorinfo);
+        } else if (!strcmp("sorInfoExpectInd", field->name) && row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            accessandmobilitysubscriptiondata.setSorInfoExpectInd(true);
+          else
+            accessandmobilitysubscriptiondata.setSorInfoExpectInd(false);
+        } else if (!strcmp("sorafRetrieval", field->name) && row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            accessandmobilitysubscriptiondata.setSorafRetrieval(true);
+          else
+            accessandmobilitysubscriptiondata.setSorafRetrieval(false);
+        } else if (!strcmp("sorUpdateIndicatorList", field->name) &&
+                   row[i] != NULL) {
+          std ::vector<SorUpdateIndicator> sorupdateindicatorlist;
+          nlohmann::json::parse(row[i]).get_to(sorupdateindicatorlist);
+          accessandmobilitysubscriptiondata.setSorUpdateIndicatorList(
+              sorupdateindicatorlist);
+        } else if (!strcmp("upuInfo", field->name) && row[i] != NULL) {
+          UpuInfo upuinfo;
+          nlohmann::json::parse(row[i]).get_to(upuinfo);
+          accessandmobilitysubscriptiondata.setUpuInfo(upuinfo);
+        } else if (!strcmp("micoAllowed", field->name) && row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            accessandmobilitysubscriptiondata.setMicoAllowed(true);
+          else
+            accessandmobilitysubscriptiondata.setMicoAllowed(false);
+        } else if (!strcmp("sharedAmDataIds", field->name) && row[i] != NULL) {
+          std ::vector<std ::string> sharedamdataids;
+          nlohmann::json::parse(row[i]).get_to(sharedamdataids);
+          accessandmobilitysubscriptiondata.setSharedAmDataIds(sharedamdataids);
+        } else if (!strcmp("odbPacketServices", field->name) &&
+                   row[i] != NULL) {
+          OdbPacketServices odbpacketservices;
+          nlohmann::json::parse(row[i]).get_to(odbpacketservices);
+          accessandmobilitysubscriptiondata.setOdbPacketServices(
+              odbpacketservices);
+        } else if (!strcmp("serviceGapTime", field->name) && row[i] != NULL) {
+          int32_t a = std::stoi(row[i]);
+          accessandmobilitysubscriptiondata.setServiceGapTime(a);
+        } else if (!strcmp("mdtUserConsent", field->name) && row[i] != NULL) {
+          MdtUserConsent mdtuserconsent;
+          nlohmann::json::parse(row[i]).get_to(mdtuserconsent);
+          accessandmobilitysubscriptiondata.setMdtUserConsent(mdtuserconsent);
+        } else if (!strcmp("mdtConfiguration", field->name) && row[i] != NULL) {
+          MdtConfiguration mdtconfiguration;
+          nlohmann::json::parse(row[i]).get_to(mdtconfiguration);
+          accessandmobilitysubscriptiondata.setMdtConfiguration(
+              mdtconfiguration);
+        } else if (!strcmp("traceData", field->name) && row[i] != NULL) {
+          TraceData tracedata;
+          nlohmann::json::parse(row[i]).get_to(tracedata);
+          accessandmobilitysubscriptiondata.setTraceData(tracedata);
+        } else if (!strcmp("cagData", field->name) && row[i] != NULL) {
+          CagData cagdata;
+          nlohmann::json::parse(row[i]).get_to(cagdata);
+          accessandmobilitysubscriptiondata.setCagData(cagdata);
+        } else if (!strcmp("stnSr", field->name) && row[i] != NULL) {
+          accessandmobilitysubscriptiondata.setStnSr(row[i]);
+        } else if (!strcmp("cMsisdn", field->name) && row[i] != NULL) {
+          accessandmobilitysubscriptiondata.setCMsisdn(row[i]);
+        } else if (!strcmp("nbIoTUePriority", field->name) && row[i] != NULL) {
+          int32_t a = std::stoi(row[i]);
+          accessandmobilitysubscriptiondata.setNbIoTUePriority(a);
+        } else if (!strcmp("nssaiInclusionAllowed", field->name) &&
+                   row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            accessandmobilitysubscriptiondata.setNssaiInclusionAllowed(true);
+          else
+            accessandmobilitysubscriptiondata.setNssaiInclusionAllowed(false);
+        } else if (!strcmp("rgWirelineCharacteristics", field->name) &&
+                   row[i] != NULL) {
+          accessandmobilitysubscriptiondata.setRgWirelineCharacteristics(
+              row[i]);
+        } else if (!strcmp("ecRestrictionDataWb", field->name) &&
+                   row[i] != NULL) {
+          EcRestrictionDataWb ecrestrictiondatawb;
+          nlohmann::json::parse(row[i]).get_to(ecrestrictiondatawb);
+          accessandmobilitysubscriptiondata.setEcRestrictionDataWb(
+              ecrestrictiondatawb);
+        } else if (!strcmp("ecRestrictionDataNb", field->name) &&
+                   row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            accessandmobilitysubscriptiondata.setEcRestrictionDataNb(true);
+          else
+            accessandmobilitysubscriptiondata.setEcRestrictionDataNb(false);
+        } else if (!strcmp("expectedUeBehaviourList", field->name) &&
+                   row[i] != NULL) {
+          ExpectedUeBehaviourData expecteduebehaviourlist;
+          nlohmann::json::parse(row[i]).get_to(expecteduebehaviourlist);
+          accessandmobilitysubscriptiondata.setExpectedUeBehaviourList(
+              expecteduebehaviourlist);
+        } else if (!strcmp("primaryRatRestrictions", field->name) &&
+                   row[i] != NULL) {
+          std ::vector<RatType> primaryratrestrictions;
+          nlohmann::json::parse(row[i]).get_to(primaryratrestrictions);
+          accessandmobilitysubscriptiondata.setPrimaryRatRestrictions(
+              primaryratrestrictions);
+        } else if (!strcmp("secondaryRatRestrictions", field->name) &&
+                   row[i] != NULL) {
+          std ::vector<RatType> secondaryratrestrictions;
+          nlohmann::json::parse(row[i]).get_to(secondaryratrestrictions);
+          accessandmobilitysubscriptiondata.setSecondaryRatRestrictions(
+              secondaryratrestrictions);
+        } else if (!strcmp("edrxParametersList", field->name) &&
+                   row[i] != NULL) {
+          std ::vector<EdrxParameters> edrxparameterslist;
+          nlohmann::json::parse(row[i]).get_to(edrxparameterslist);
+          accessandmobilitysubscriptiondata.setEdrxParametersList(
+              edrxparameterslist);
+        } else if (!strcmp("ptwParametersList", field->name) &&
+                   row[i] != NULL) {
+          std ::vector<PtwParameters> ptwparameterslist;
+          nlohmann::json::parse(row[i]).get_to(ptwparameterslist);
+          accessandmobilitysubscriptiondata.setPtwParametersList(
+              ptwparameterslist);
+        } else if (!strcmp("iabOperationAllowed", field->name) &&
+                   row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            accessandmobilitysubscriptiondata.setIabOperationAllowed(true);
+          else
+            accessandmobilitysubscriptiondata.setIabOperationAllowed(false);
+        } else if (!strcmp("wirelineForbiddenAreas", field->name) &&
+                   row[i] != NULL) {
+          std ::vector<WirelineArea> wirelineforbiddenareas;
+          nlohmann::json::parse(row[i]).get_to(wirelineforbiddenareas);
+          accessandmobilitysubscriptiondata.setWirelineForbiddenAreas(
+              wirelineforbiddenareas);
+        } else if (!strcmp("wirelineServiceAreaRestriction", field->name) &&
+                   row[i] != NULL) {
+          WirelineServiceAreaRestriction wirelineservicearearestriction;
+          nlohmann::json::parse(row[i]).get_to(wirelineservicearearestriction);
+          accessandmobilitysubscriptiondata.setWirelineServiceAreaRestriction(
+              wirelineservicearearestriction);
+        }
+      } catch (std::exception e) {
+        Logger::udr_server().error(
+            " Cannot set values for Subscription Data: %s", e.what());
       }
     }
 
@@ -1734,7 +1722,6 @@ void udr_app::handle_create_smf_context_non_3gpp(
   }
 
   mysql_free_result(res);
-  //    std::cout << query << std::endl;
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
@@ -1801,56 +1788,60 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
   row = mysql_fetch_row(res);
   if (row != NULL) {
     for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("smfInstanceId", field->name)) {
-        smfregistration.setSmfInstanceId(row[i]);
-      } else if (!strcmp("smfSetId", field->name) && row[i] != NULL) {
-        smfregistration.setSmfSetId(row[i]);
-      } else if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
-        smfregistration.setSupportedFeatures(row[i]);
-      } else if (!strcmp("pduSessionId", field->name)) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        smfregistration.setPduSessionId(a);
-      } else if (!strcmp("singleNssai", field->name)) {
-        Snssai singlenssai;
-        nlohmann::json::parse(row[i]).get_to(singlenssai);
-        smfregistration.setSingleNssai(singlenssai);
-      } else if (!strcmp("dnn", field->name) && row[i] != NULL) {
-        smfregistration.setDnn(row[i]);
-      } else if (!strcmp("emergencyServices", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          smfregistration.setEmergencyServices(true);
-        else
-          smfregistration.setEmergencyServices(false);
-      } else if (!strcmp("pcscfRestorationCallbackUri", field->name) &&
-                 row[i] != NULL) {
-        smfregistration.setPcscfRestorationCallbackUri(row[i]);
-      } else if (!strcmp("plmnId", field->name)) {
-        PlmnId plmnid;
-        nlohmann::json::parse(row[i]).get_to(plmnid);
-        smfregistration.setPlmnId(plmnid);
-      } else if (!strcmp("pgwFqdn", field->name) && row[i] != NULL) {
-        smfregistration.setPgwFqdn(row[i]);
-      } else if (!strcmp("epdgInd", field->name) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          smfregistration.setEpdgInd(true);
-        else
-          smfregistration.setEpdgInd(false);
-      } else if (!strcmp("deregCallbackUri", field->name) && row[i] != NULL) {
-        smfregistration.setDeregCallbackUri(row[i]);
-      } else if (!strcmp("registrationReason", field->name) && row[i] != NULL) {
-        RegistrationReason registrationreason;
-        nlohmann::json::parse(row[i]).get_to(registrationreason);
-        smfregistration.setRegistrationReason(registrationreason);
-      } else if (!strcmp("registrationTime", field->name) && row[i] != NULL) {
-        smfregistration.setRegistrationTime(row[i]);
-      } else if (!strcmp("contextInfo", field->name) && row[i] != NULL) {
-        ContextInfo contextinfo;
-        nlohmann::json::parse(row[i]).get_to(contextinfo);
-        smfregistration.setContextInfo(contextinfo);
+      try {
+        if (!strcmp("smfInstanceId", field->name)) {
+          smfregistration.setSmfInstanceId(row[i]);
+        } else if (!strcmp("smfSetId", field->name) && row[i] != NULL) {
+          smfregistration.setSmfSetId(row[i]);
+        } else if (!strcmp("supportedFeatures", field->name) &&
+                   row[i] != NULL) {
+          smfregistration.setSupportedFeatures(row[i]);
+        } else if (!strcmp("pduSessionId", field->name)) {
+          int32_t a = std::stoi(row[i]);
+          smfregistration.setPduSessionId(a);
+        } else if (!strcmp("singleNssai", field->name)) {
+          Snssai singlenssai;
+          nlohmann::json::parse(row[i]).get_to(singlenssai);
+          smfregistration.setSingleNssai(singlenssai);
+        } else if (!strcmp("dnn", field->name) && row[i] != NULL) {
+          smfregistration.setDnn(row[i]);
+        } else if (!strcmp("emergencyServices", field->name) &&
+                   row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            smfregistration.setEmergencyServices(true);
+          else
+            smfregistration.setEmergencyServices(false);
+        } else if (!strcmp("pcscfRestorationCallbackUri", field->name) &&
+                   row[i] != NULL) {
+          smfregistration.setPcscfRestorationCallbackUri(row[i]);
+        } else if (!strcmp("plmnId", field->name)) {
+          PlmnId plmnid;
+          nlohmann::json::parse(row[i]).get_to(plmnid);
+          smfregistration.setPlmnId(plmnid);
+        } else if (!strcmp("pgwFqdn", field->name) && row[i] != NULL) {
+          smfregistration.setPgwFqdn(row[i]);
+        } else if (!strcmp("epdgInd", field->name) && row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            smfregistration.setEpdgInd(true);
+          else
+            smfregistration.setEpdgInd(false);
+        } else if (!strcmp("deregCallbackUri", field->name) && row[i] != NULL) {
+          smfregistration.setDeregCallbackUri(row[i]);
+        } else if (!strcmp("registrationReason", field->name) &&
+                   row[i] != NULL) {
+          RegistrationReason registrationreason;
+          nlohmann::json::parse(row[i]).get_to(registrationreason);
+          smfregistration.setRegistrationReason(registrationreason);
+        } else if (!strcmp("registrationTime", field->name) && row[i] != NULL) {
+          smfregistration.setRegistrationTime(row[i]);
+        } else if (!strcmp("contextInfo", field->name) && row[i] != NULL) {
+          ContextInfo contextinfo;
+          nlohmann::json::parse(row[i]).get_to(contextinfo);
+          smfregistration.setContextInfo(contextinfo);
+        }
+      } catch (std::exception e) {
+        Logger::udr_server().error(
+            " Cannot set values for SMF Registration: %s", e.what());
       }
     }
     to_json(j, smfregistration);
@@ -1902,66 +1893,68 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
 
   j.clear();
   while (row = mysql_fetch_row(res)) {
-    SmfRegistration smfregistration;
+    SmfRegistration smfregistration = {};
 
     tmp.clear();
 
     for (int i = 0; i < fields.size(); i++) {
-      if (!strcmp("smfInstanceId", fields[i].c_str())) {
-        smfregistration.setSmfInstanceId(row[i]);
-      } else if (!strcmp("smfSetId", fields[i].c_str()) && row[i] != NULL) {
-        smfregistration.setSmfSetId(row[i]);
-      } else if (!strcmp("supportedFeatures", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        smfregistration.setSupportedFeatures(row[i]);
-      } else if (!strcmp("pduSessionId", fields[i].c_str())) {
-        std::string s = row[i];
-        std::stringstream ss;
-        int32_t a;
-        ss << s;
-        ss >> a;
-        smfregistration.setPduSessionId(a);
-      } else if (!strcmp("singleNssai", fields[i].c_str())) {
-        Snssai singlenssai;
-        nlohmann::json::parse(row[i]).get_to(singlenssai);
-        smfregistration.setSingleNssai(singlenssai);
-      } else if (!strcmp("dnn", fields[i].c_str()) && row[i] != NULL) {
-        smfregistration.setDnn(row[i]);
-      } else if (!strcmp("emergencyServices", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          smfregistration.setEmergencyServices(true);
-        else
-          smfregistration.setEmergencyServices(false);
-      } else if (!strcmp("pcscfRestorationCallbackUri", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        smfregistration.setPcscfRestorationCallbackUri(row[i]);
-      } else if (!strcmp("plmnId", fields[i].c_str())) {
-        PlmnId plmnid;
-        nlohmann::json::parse(row[i]).get_to(plmnid);
-        smfregistration.setPlmnId(plmnid);
-      } else if (!strcmp("pgwFqdn", fields[i].c_str()) && row[i] != NULL) {
-        smfregistration.setPgwFqdn(row[i]);
-      } else if (!strcmp("epdgInd", fields[i].c_str()) && row[i] != NULL) {
-        if (strcmp(row[i], "0"))
-          smfregistration.setEpdgInd(true);
-        else
-          smfregistration.setEpdgInd(false);
-      } else if (!strcmp("deregCallbackUri", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        smfregistration.setDeregCallbackUri(row[i]);
-      } else if (!strcmp("registrationReason", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        RegistrationReason registrationreason;
-        nlohmann::json::parse(row[i]).get_to(registrationreason);
-        smfregistration.setRegistrationReason(registrationreason);
-      } else if (!strcmp("registrationTime", fields[i].c_str()) &&
-                 row[i] != NULL) {
-        smfregistration.setRegistrationTime(row[i]);
-      } else if (!strcmp("contextInfo", fields[i].c_str()) && row[i] != NULL) {
-        ContextInfo contextinfo;
-        nlohmann::json::parse(row[i]).get_to(contextinfo);
-        smfregistration.setContextInfo(contextinfo);
+      try {
+        if (!strcmp("smfInstanceId", fields[i].c_str())) {
+          smfregistration.setSmfInstanceId(row[i]);
+        } else if (!strcmp("smfSetId", fields[i].c_str()) && row[i] != NULL) {
+          smfregistration.setSmfSetId(row[i]);
+        } else if (!strcmp("supportedFeatures", fields[i].c_str()) &&
+                   row[i] != NULL) {
+          smfregistration.setSupportedFeatures(row[i]);
+        } else if (!strcmp("pduSessionId", fields[i].c_str())) {
+          int32_t a = std::stoi(row[i]);
+          smfregistration.setPduSessionId(a);
+        } else if (!strcmp("singleNssai", fields[i].c_str())) {
+          Snssai singlenssai;
+          nlohmann::json::parse(row[i]).get_to(singlenssai);
+          smfregistration.setSingleNssai(singlenssai);
+        } else if (!strcmp("dnn", fields[i].c_str()) && row[i] != NULL) {
+          smfregistration.setDnn(row[i]);
+        } else if (!strcmp("emergencyServices", fields[i].c_str()) &&
+                   row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            smfregistration.setEmergencyServices(true);
+          else
+            smfregistration.setEmergencyServices(false);
+        } else if (!strcmp("pcscfRestorationCallbackUri", fields[i].c_str()) &&
+                   row[i] != NULL) {
+          smfregistration.setPcscfRestorationCallbackUri(row[i]);
+        } else if (!strcmp("plmnId", fields[i].c_str())) {
+          PlmnId plmnid;
+          nlohmann::json::parse(row[i]).get_to(plmnid);
+          smfregistration.setPlmnId(plmnid);
+        } else if (!strcmp("pgwFqdn", fields[i].c_str()) && row[i] != NULL) {
+          smfregistration.setPgwFqdn(row[i]);
+        } else if (!strcmp("epdgInd", fields[i].c_str()) && row[i] != NULL) {
+          if (strcmp(row[i], "0"))
+            smfregistration.setEpdgInd(true);
+          else
+            smfregistration.setEpdgInd(false);
+        } else if (!strcmp("deregCallbackUri", fields[i].c_str()) &&
+                   row[i] != NULL) {
+          smfregistration.setDeregCallbackUri(row[i]);
+        } else if (!strcmp("registrationReason", fields[i].c_str()) &&
+                   row[i] != NULL) {
+          RegistrationReason registrationreason;
+          nlohmann::json::parse(row[i]).get_to(registrationreason);
+          smfregistration.setRegistrationReason(registrationreason);
+        } else if (!strcmp("registrationTime", fields[i].c_str()) &&
+                   row[i] != NULL) {
+          smfregistration.setRegistrationTime(row[i]);
+        } else if (!strcmp("contextInfo", fields[i].c_str()) &&
+                   row[i] != NULL) {
+          ContextInfo contextinfo;
+          nlohmann::json::parse(row[i]).get_to(contextinfo);
+          smfregistration.setContextInfo(contextinfo);
+        }
+      } catch (std::exception e) {
+        Logger::udr_server().error(
+            " Cannot set values for SMF Registration: %s", e.what());
       }
     }
     to_json(tmp, smfregistration);
