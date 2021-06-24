@@ -39,6 +39,7 @@ namespace config {
 udr_config::udr_config() {}
 udr_config::~udr_config() {}
 
+//------------------------------------------------------------------------------
 int udr_config::load(const std ::string &config_file) {
   Logger::udr_app().debug("\nLoad UDR system configuration file(%s)",
                           config_file.c_str());
@@ -117,6 +118,7 @@ int udr_config::load(const std ::string &config_file) {
   return RETURNok;
 }
 
+//------------------------------------------------------------------------------
 int udr_config::load_interface(const libconfig::Setting &if_cfg,
                                interface_cfg_t &cfg) {
   if_cfg.lookupValue(UDR_CONFIG_STRING_INTERFACE_NAME, cfg.if_name);
@@ -162,6 +164,7 @@ int udr_config::load_interface(const libconfig::Setting &if_cfg,
   return RETURNok;
 }
 
+//------------------------------------------------------------------------------
 void udr_config::display() {
   Logger::config().info(
       "======================    UDR   =====================");
@@ -176,10 +179,9 @@ void udr_config::display() {
   Logger::config().info("    Interface name ......: %s", nudr.if_name.c_str());
   Logger::config().info("    IPv4 Addr ...........: %s", inet_ntoa(nudr.addr4));
   Logger::config().info("    Port ................: %d", nudr.port);
-  // Logger::config().info("    HTTP2 port ..........: %d", nudr_http2_port);
-  /*  Logger::config().info(
-        "    API version..........: %s", sbi_api_version.c_str());
-  */
+  Logger::config().info("    HTTP2 port ..........: %d", nudr_http2_port);
+  Logger::config().info("    API version..........: %s",
+                        nudr_api_version.c_str());
 
   Logger::config().info(
       "- MYSQL Server Addr...................................: %s",
