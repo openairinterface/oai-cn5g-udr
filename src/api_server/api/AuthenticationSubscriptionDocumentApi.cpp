@@ -77,7 +77,6 @@ void AuthenticationSubscriptionDocumentApi::
     modify_authentication_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("AuthenticationSubscription Method: PATCH!");
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -116,8 +115,6 @@ void AuthenticationSubscriptionDocumentApi::
     read_authentication_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("AuthenticationSubscription Method: GET!");
-
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 

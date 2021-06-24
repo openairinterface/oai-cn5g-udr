@@ -84,7 +84,6 @@ void AuthenticationStatusDocumentApi::setupRoutes() {
 void AuthenticationStatusDocumentApi::create_authentication_status_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("AuthenticationStatus Method: PUT!");
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -114,7 +113,6 @@ void AuthenticationStatusDocumentApi::create_authentication_status_handler(
 void AuthenticationStatusDocumentApi::delete_authentication_status_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("AuthenticationStatus Method: DELETE!");
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -136,7 +134,6 @@ void AuthenticationStatusDocumentApi::delete_authentication_status_handler(
 void AuthenticationStatusDocumentApi::query_authentication_status_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("AuthenticationStatus Method: GET!");
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
