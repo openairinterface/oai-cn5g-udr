@@ -74,8 +74,6 @@ void AccessAndMobilitySubscriptionDataDocumentApi::query_am_data_handler(
   auto ueId = request.param(":ueId").as<std::string>();
   auto servingPlmnId = request.param(":servingPlmnId").as<std::string>();
 
-  // std::cout<<"********* servingPlmnId ********* "<<servingPlmnId<<std::endl;
-
   // Getting the query params
   auto fieldsQuery = request.query().get("fields");
   Pistache::Optional<std::vector<std::string>> fields;

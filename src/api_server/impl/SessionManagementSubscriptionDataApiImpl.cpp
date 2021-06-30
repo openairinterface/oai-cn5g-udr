@@ -57,7 +57,6 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
     const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
     Pistache::Http::ResponseWriter &response) {
-  // response.send(Pistache::Http::Code::Ok, "query_sm_data\n");
   // servingPlmnId  pattern: "^[0-9]{5,6}$"
 
   Snssai snssai = {};

@@ -114,7 +114,7 @@ void SMFRegistrationDocumentApi::create_smf_context_non3gpp_handler(
 void SMFRegistrationDocumentApi::delete_smf_context_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("SMFRegistration Method: DELETE!");
+  Logger::udr_server().debug("Handle Delete SMF Context Request");
 
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
@@ -138,7 +138,7 @@ void SMFRegistrationDocumentApi::delete_smf_context_handler(
 void SMFRegistrationDocumentApi::query_smf_registration_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("SMFRegistration Method: GET!");
+  Logger::udr_server().debug("Handle Query SMF Registration");
 
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();

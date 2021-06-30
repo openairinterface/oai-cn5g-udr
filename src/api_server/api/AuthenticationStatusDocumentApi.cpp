@@ -91,8 +91,6 @@ void AuthenticationStatusDocumentApi::create_authentication_status_handler(
 
   AuthEvent authEvent;
 
-  // std::cout << request.body() << std::endl;
-
   try {
     nlohmann::json::parse(request.body()).get_to(authEvent);
     this->create_authentication_status(ueId, authEvent, response);

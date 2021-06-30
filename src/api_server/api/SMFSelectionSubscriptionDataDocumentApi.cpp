@@ -70,7 +70,8 @@ void SMFSelectionSubscriptionDataDocumentApi::setupRoutes() {
 void SMFSelectionSubscriptionDataDocumentApi::query_smf_select_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("SMFSelectionSubscriptionData Method: GET!");
+  Logger::udr_server().debug("Handle Query SMF Select Data");
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto servingPlmnId = request.param(":servingPlmnId").as<std::string>();
