@@ -54,9 +54,12 @@ void to_json(nlohmann::json &j, const WirelineArea &o) {
   j = nlohmann::json();
   if (o.globalLineIdsIsSet() || !o.m_GlobalLineIds.empty())
     j["globalLineIds"] = o.m_GlobalLineIds;
-  if (o.hfcNIdsIsSet() || !o.m_HfcNIds.empty()) j["hfcNIds"] = o.m_HfcNIds;
-  if (o.areaCodeBIsSet()) j["areaCodeB"] = o.m_AreaCodeB;
-  if (o.areaCodeCIsSet()) j["areaCodeC"] = o.m_AreaCodeC;
+  if (o.hfcNIdsIsSet() || !o.m_HfcNIds.empty())
+    j["hfcNIds"] = o.m_HfcNIds;
+  if (o.areaCodeBIsSet())
+    j["areaCodeB"] = o.m_AreaCodeB;
+  if (o.areaCodeCIsSet())
+    j["areaCodeC"] = o.m_AreaCodeC;
 }
 
 void from_json(const nlohmann::json &j, WirelineArea &o) {
@@ -109,4 +112,4 @@ void WirelineArea::setAreaCodeC(std::string const &value) {
 bool WirelineArea::areaCodeCIsSet() const { return m_AreaCodeCIsSet; }
 void WirelineArea::unsetAreaCodeC() { m_AreaCodeCIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

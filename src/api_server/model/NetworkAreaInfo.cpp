@@ -50,11 +50,14 @@ void NetworkAreaInfo::validate() {
 
 void to_json(nlohmann::json &j, const NetworkAreaInfo &o) {
   j = nlohmann::json();
-  if (o.ecgisIsSet() || !o.m_Ecgis.empty()) j["ecgis"] = o.m_Ecgis;
-  if (o.ncgisIsSet() || !o.m_Ncgis.empty()) j["ncgis"] = o.m_Ncgis;
+  if (o.ecgisIsSet() || !o.m_Ecgis.empty())
+    j["ecgis"] = o.m_Ecgis;
+  if (o.ncgisIsSet() || !o.m_Ncgis.empty())
+    j["ncgis"] = o.m_Ncgis;
   if (o.gRanNodeIdsIsSet() || !o.m_GRanNodeIds.empty())
     j["gRanNodeIds"] = o.m_GRanNodeIds;
-  if (o.taisIsSet() || !o.m_Tais.empty()) j["tais"] = o.m_Tais;
+  if (o.taisIsSet() || !o.m_Tais.empty())
+    j["tais"] = o.m_Tais;
 }
 
 void from_json(const nlohmann::json &j, NetworkAreaInfo &o) {
@@ -108,4 +111,4 @@ void NetworkAreaInfo::setTais(std::vector<Tai> const &value) {
 bool NetworkAreaInfo::taisIsSet() const { return m_TaisIsSet; }
 void NetworkAreaInfo::unsetTais() { m_TaisIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

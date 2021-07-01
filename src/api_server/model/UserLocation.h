@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UserLocation {
- public:
+public:
   UserLocation();
   virtual ~UserLocation();
 
@@ -64,28 +64,28 @@ class UserLocation {
   ///
   /// </summary>
   EutraLocation getEutraLocation() const;
-  void setEutraLocation(EutraLocation const& value);
+  void setEutraLocation(EutraLocation const &value);
   bool eutraLocationIsSet() const;
   void unsetEutraLocation();
   /// <summary>
   ///
   /// </summary>
   NrLocation getNrLocation() const;
-  void setNrLocation(NrLocation const& value);
+  void setNrLocation(NrLocation const &value);
   bool nrLocationIsSet() const;
   void unsetNrLocation();
   /// <summary>
   ///
   /// </summary>
   N3gaLocation getN3gaLocation() const;
-  void setN3gaLocation(N3gaLocation const& value);
+  void setN3gaLocation(N3gaLocation const &value);
   bool n3gaLocationIsSet() const;
   void unsetN3gaLocation();
 
-  friend void to_json(nlohmann::json& j, const UserLocation& o);
-  friend void from_json(const nlohmann::json& j, UserLocation& o);
+  friend void to_json(nlohmann::json &j, const UserLocation &o);
+  friend void from_json(const nlohmann::json &j, UserLocation &o);
 
- protected:
+protected:
   EutraLocation m_EutraLocation;
   bool m_EutraLocationIsSet;
   NrLocation m_NrLocation;
@@ -94,6 +94,6 @@ class UserLocation {
   bool m_N3gaLocationIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* UserLocation_H_ */

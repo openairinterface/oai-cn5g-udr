@@ -56,8 +56,10 @@ void to_json(nlohmann::json &j, const UpuInfo &o) {
   j["upuDataList"] = o.m_UpuDataList;
   j["upuRegInd"] = o.m_UpuRegInd;
   j["upuAckInd"] = o.m_UpuAckInd;
-  if (o.upuMacIausfIsSet()) j["upuMacIausf"] = o.m_UpuMacIausf;
-  if (o.counterUpuIsSet()) j["counterUpu"] = o.m_CounterUpu;
+  if (o.upuMacIausfIsSet())
+    j["upuMacIausf"] = o.m_UpuMacIausf;
+  if (o.counterUpuIsSet())
+    j["counterUpu"] = o.m_CounterUpu;
   j["provisioningTime"] = o.m_ProvisioningTime;
 }
 
@@ -103,4 +105,4 @@ void UpuInfo::setProvisioningTime(std::string const &value) {
   m_ProvisioningTime = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

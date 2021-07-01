@@ -49,8 +49,10 @@ void LcsPrivacyData::validate() {
 
 void to_json(nlohmann::json &j, const LcsPrivacyData &o) {
   j = nlohmann::json();
-  if (o.lpiIsSet()) j["lpi"] = o.m_Lpi;
-  if (o.unrelatedClassIsSet()) j["unrelatedClass"] = o.m_UnrelatedClass;
+  if (o.lpiIsSet())
+    j["lpi"] = o.m_Lpi;
+  if (o.unrelatedClassIsSet())
+    j["unrelatedClass"] = o.m_UnrelatedClass;
   if (o.plmnOperatorClassesIsSet() || !o.m_PlmnOperatorClasses.empty())
     j["plmnOperatorClasses"] = o.m_PlmnOperatorClasses;
 }
@@ -103,4 +105,4 @@ void LcsPrivacyData::unsetPlmnOperatorClasses() {
   m_PlmnOperatorClassesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

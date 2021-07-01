@@ -54,11 +54,11 @@ using namespace oai::udr::app;
 
 class V2XSubscriptionDataApiImpl
     : public oai::udr::api::V2XSubscriptionDataApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   V2XSubscriptionDataApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                              udr_app *udr_app_inst, std::string address);
   ~V2XSubscriptionDataApiImpl() {}
@@ -71,6 +71,6 @@ class V2XSubscriptionDataApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

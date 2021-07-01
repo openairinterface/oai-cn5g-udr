@@ -70,4 +70,4 @@ void SteeringInfo::setAccessTechList(std::vector<AccessTech> const &value) {
 bool SteeringInfo::accessTechListIsSet() const { return m_AccessTechListIsSet; }
 void SteeringInfo::unsetAccessTechList() { m_AccessTechListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

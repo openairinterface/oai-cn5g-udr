@@ -203,23 +203,23 @@ void _Logger::log(_LogType lt, const char *format, va_list &args) {
   vsnprintf(buffer, sizeof(buffer) - 1, format, args);
 
   switch (lt) {
-    case _ltTrace:
-      m_log.trace(buffer);
-      break;
-    case _ltDebug:
-      m_log.debug(buffer);
-      break;
-    case _ltInfo:
-      m_log.info(buffer);
-      break;
-    case _ltStartup:
-      m_log.warn(buffer);
-      break;
-    case _ltWarn:
-      m_log.error(buffer);
-      break;
-    case _ltError:
-      m_log.critical(buffer);
-      break;
+  case _ltTrace:
+    m_log.trace(buffer);
+    break;
+  case _ltDebug:
+    m_log.debug(buffer);
+    break;
+  case _ltInfo:
+    m_log.info(buffer);
+    break;
+  case _ltStartup:
+    m_log.warn(buffer);
+    break;
+  case _ltWarn:
+    m_log.error(buffer);
+    break;
+  case _ltError:
+    m_log.critical(buffer);
+    break;
   }
 }

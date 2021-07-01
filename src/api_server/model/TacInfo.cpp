@@ -57,4 +57,4 @@ void TacInfo::setTacList(std::vector<std::string> const &value) {
   m_TacList = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

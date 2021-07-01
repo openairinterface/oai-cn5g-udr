@@ -72,4 +72,4 @@ void SscModes::setAllowedSscModes(std::vector<SscMode> const &value) {
 bool SscModes::allowedSscModesIsSet() const { return m_AllowedSscModesIsSet; }
 void SscModes::unsetAllowedSscModes() { m_AllowedSscModesIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

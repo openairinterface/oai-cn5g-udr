@@ -40,11 +40,11 @@
 #ifndef INDIVIDUAL_EXPOSURE_DATA_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 #define INDIVIDUAL_EXPOSURE_DATA_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 
+#include "ExposureDataSubscription.h"
+#include "udr_app.hpp"
 #include <IndividualExposureDataSubscriptionDocumentApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include "ExposureDataSubscription.h"
-#include "udr_app.hpp"
 
 namespace oai::udr::api {
 
@@ -53,11 +53,11 @@ using namespace oai::udr::app;
 
 class IndividualExposureDataSubscriptionDocumentApiImpl
     : public oai::udr::api::IndividualExposureDataSubscriptionDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   IndividualExposureDataSubscriptionDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
@@ -71,6 +71,6 @@ class IndividualExposureDataSubscriptionDocumentApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

@@ -56,16 +56,26 @@ void ProvisionedDataSets::validate() {
 
 void to_json(nlohmann::json &j, const ProvisionedDataSets &o) {
   j = nlohmann::json();
-  if (o.amDataIsSet()) j["amData"] = o.m_AmData;
-  if (o.smfSelDataIsSet()) j["smfSelData"] = o.m_SmfSelData;
-  if (o.smsSubsDataIsSet()) j["smsSubsData"] = o.m_SmsSubsData;
-  if (o.smDataIsSet() || !o.m_SmData.empty()) j["smData"] = o.m_SmData;
-  if (o.traceDataIsSet()) j["traceData"] = o.m_TraceData;
-  if (o.smsMngDataIsSet()) j["smsMngData"] = o.m_SmsMngData;
-  if (o.lcsPrivacyDataIsSet()) j["lcsPrivacyData"] = o.m_LcsPrivacyData;
-  if (o.lcsMoDataIsSet()) j["lcsMoData"] = o.m_LcsMoData;
-  if (o.lcsBcaDataIsSet()) j["lcsBcaData"] = o.m_LcsBcaData;
-  if (o.v2xDataIsSet()) j["v2xData"] = o.m_V2xData;
+  if (o.amDataIsSet())
+    j["amData"] = o.m_AmData;
+  if (o.smfSelDataIsSet())
+    j["smfSelData"] = o.m_SmfSelData;
+  if (o.smsSubsDataIsSet())
+    j["smsSubsData"] = o.m_SmsSubsData;
+  if (o.smDataIsSet() || !o.m_SmData.empty())
+    j["smData"] = o.m_SmData;
+  if (o.traceDataIsSet())
+    j["traceData"] = o.m_TraceData;
+  if (o.smsMngDataIsSet())
+    j["smsMngData"] = o.m_SmsMngData;
+  if (o.lcsPrivacyDataIsSet())
+    j["lcsPrivacyData"] = o.m_LcsPrivacyData;
+  if (o.lcsMoDataIsSet())
+    j["lcsMoData"] = o.m_LcsMoData;
+  if (o.lcsBcaDataIsSet())
+    j["lcsBcaData"] = o.m_LcsBcaData;
+  if (o.v2xDataIsSet())
+    j["v2xData"] = o.m_V2xData;
 }
 
 void from_json(const nlohmann::json &j, ProvisionedDataSets &o) {
@@ -142,8 +152,8 @@ bool ProvisionedDataSets::smsSubsDataIsSet() const {
   return m_SmsSubsDataIsSet;
 }
 void ProvisionedDataSets::unsetSmsSubsData() { m_SmsSubsDataIsSet = false; }
-std::vector<SessionManagementSubscriptionData>
-    &ProvisionedDataSets::getSmData() {
+std::vector<SessionManagementSubscriptionData> &
+ProvisionedDataSets::getSmData() {
   return m_SmData;
 }
 void ProvisionedDataSets::setSmData(
@@ -210,4 +220,4 @@ void ProvisionedDataSets::setV2xData(V2xSubscriptionData const &value) {
 bool ProvisionedDataSets::v2xDataIsSet() const { return m_V2xDataIsSet; }
 void ProvisionedDataSets::unsetV2xData() { m_V2xDataIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -44,8 +44,7 @@ EventExposureSubscriptionsCollectionApiImpl::
     EventExposureSubscriptionsCollectionApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : EventExposureSubscriptionsCollectionApi(rtr),
-      m_udr_app(udr_app_inst),
+    : EventExposureSubscriptionsCollectionApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void EventExposureSubscriptionsCollectionApiImpl::create_ee_subscriptions(
@@ -62,4 +61,4 @@ void EventExposureSubscriptionsCollectionApiImpl::queryeesubscriptions(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

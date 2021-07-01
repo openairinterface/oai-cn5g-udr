@@ -54,22 +54,22 @@ using namespace oai::udr::app;
 
 class UEsLocationInformationDocumentApiImpl
     : public oai::udr::api::UEsLocationInformationDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   UEsLocationInformationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                         udr_app *udr_app_inst,
                                         std::string address);
   ~UEsLocationInformationDocumentApiImpl() {}
 
-  void query_ue_location(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response);
+  void
+  query_ue_location(const std::string &ueId,
+                    const Pistache::Optional<std::string> &supportedFeatures,
+                    Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

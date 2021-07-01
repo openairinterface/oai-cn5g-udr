@@ -65,7 +65,8 @@ void to_json(nlohmann::json &j, const NrLocation &o) {
     j["geographicalInformation"] = o.m_GeographicalInformation;
   if (o.geodeticInformationIsSet())
     j["geodeticInformation"] = o.m_GeodeticInformation;
-  if (o.globalGnbIdIsSet()) j["globalGnbId"] = o.m_GlobalGnbId;
+  if (o.globalGnbIdIsSet())
+    j["globalGnbId"] = o.m_GlobalGnbId;
 }
 
 void from_json(const nlohmann::json &j, NrLocation &o) {
@@ -157,4 +158,4 @@ void NrLocation::setGlobalGnbId(GlobalRanNodeId const &value) {
 bool NrLocation::globalGnbIdIsSet() const { return m_GlobalGnbIdIsSet; }
 void NrLocation::unsetGlobalGnbId() { m_GlobalGnbIdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

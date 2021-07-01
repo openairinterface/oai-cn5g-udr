@@ -67,4 +67,4 @@ void PlmnOperatorClass::setLcsClientIds(std::vector<std::string> const &value) {
   m_LcsClientIds = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

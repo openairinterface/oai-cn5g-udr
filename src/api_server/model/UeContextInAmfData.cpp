@@ -71,4 +71,4 @@ void UeContextInAmfData::unsetEpsInterworkingInfo() {
   m_EpsInterworkingInfoIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class CoreNetworkType {
- public:
+public:
   CoreNetworkType();
   virtual ~CoreNetworkType();
 
@@ -56,12 +56,12 @@ class CoreNetworkType {
   /////////////////////////////////////////////
   /// CoreNetworkType members
 
-  friend void to_json(nlohmann::json& j, const CoreNetworkType& o);
-  friend void from_json(const nlohmann::json& j, CoreNetworkType& o);
+  friend void to_json(nlohmann::json &j, const CoreNetworkType &o);
+  friend void from_json(const nlohmann::json &j, CoreNetworkType &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* CoreNetworkType_H_ */

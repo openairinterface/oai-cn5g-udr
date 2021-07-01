@@ -55,19 +55,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IPTVConfigurationDataStoreApi {
- public:
+public:
   IPTVConfigurationDataStoreApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IPTVConfigurationDataStoreApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
-  void read_iptv_congifuration_data_handler(
-      const Pistache::Rest::Request &request,
-      Pistache::Http::ResponseWriter response);
+  void
+  read_iptv_congifuration_data_handler(const Pistache::Rest::Request &request,
+                                       Pistache::Http::ResponseWriter response);
   void iptv_configuration_data_store_api_default_handler(
       const Pistache::Rest::Request &request,
       Pistache::Http::ResponseWriter response);
@@ -99,6 +99,6 @@ class IPTVConfigurationDataStoreApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* IPTVConfigurationDataStoreApi_H_ */

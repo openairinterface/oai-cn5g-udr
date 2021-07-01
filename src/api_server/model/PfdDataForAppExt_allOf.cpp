@@ -48,7 +48,8 @@ void PfdDataForAppExt_allOf::validate() {
 
 void to_json(nlohmann::json &j, const PfdDataForAppExt_allOf &o) {
   j = nlohmann::json();
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, PfdDataForAppExt_allOf &o) {
@@ -66,4 +67,4 @@ void PfdDataForAppExt_allOf::setSuppFeat(std::string const &value) {
 bool PfdDataForAppExt_allOf::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void PfdDataForAppExt_allOf::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

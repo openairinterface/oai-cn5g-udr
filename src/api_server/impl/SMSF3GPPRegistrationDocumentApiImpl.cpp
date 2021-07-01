@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 SMSF3GPPRegistrationDocumentApiImpl::SMSF3GPPRegistrationDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : SMSF3GPPRegistrationDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SMSF3GPPRegistrationDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SMSF3GPPRegistrationDocumentApiImpl::create_smsf_context3gpp(
@@ -67,4 +66,4 @@ void SMSF3GPPRegistrationDocumentApiImpl::query_smsf_context3gpp(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

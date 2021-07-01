@@ -53,9 +53,12 @@ void PfdChangeNotification::validate() {
 void to_json(nlohmann::json &j, const PfdChangeNotification &o) {
   j = nlohmann::json();
   j["applicationId"] = o.m_ApplicationId;
-  if (o.removalFlagIsSet()) j["removalFlag"] = o.m_RemovalFlag;
-  if (o.partialFlagIsSet()) j["partialFlag"] = o.m_PartialFlag;
-  if (o.pfdsIsSet() || !o.m_Pfds.empty()) j["pfds"] = o.m_Pfds;
+  if (o.removalFlagIsSet())
+    j["removalFlag"] = o.m_RemovalFlag;
+  if (o.partialFlagIsSet())
+    j["partialFlag"] = o.m_PartialFlag;
+  if (o.pfdsIsSet() || !o.m_Pfds.empty())
+    j["pfds"] = o.m_Pfds;
 }
 
 void from_json(const nlohmann::json &j, PfdChangeNotification &o) {
@@ -106,4 +109,4 @@ void PfdChangeNotification::setPfds(std::vector<PfdContent> const &value) {
 bool PfdChangeNotification::pfdsIsSet() const { return m_PfdsIsSet; }
 void PfdChangeNotification::unsetPfds() { m_PfdsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

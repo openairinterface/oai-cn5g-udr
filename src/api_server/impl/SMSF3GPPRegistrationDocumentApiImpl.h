@@ -54,11 +54,11 @@ using namespace oai::udr::app;
 
 class SMSF3GPPRegistrationDocumentApiImpl
     : public oai::udr::api::SMSF3GPPRegistrationDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   SMSF3GPPRegistrationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                       udr_app *udr_app_inst,
                                       std::string address);
@@ -76,6 +76,6 @@ class SMSF3GPPRegistrationDocumentApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

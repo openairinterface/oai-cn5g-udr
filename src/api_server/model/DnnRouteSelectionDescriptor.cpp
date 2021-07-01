@@ -52,10 +52,12 @@ void DnnRouteSelectionDescriptor::validate() {
 void to_json(nlohmann::json &j, const DnnRouteSelectionDescriptor &o) {
   j = nlohmann::json();
   j["dnn"] = o.m_Dnn;
-  if (o.sscModesIsSet() || !o.m_SscModes.empty()) j["sscModes"] = o.m_SscModes;
+  if (o.sscModesIsSet() || !o.m_SscModes.empty())
+    j["sscModes"] = o.m_SscModes;
   if (o.pduSessTypesIsSet() || !o.m_PduSessTypes.empty())
     j["pduSessTypes"] = o.m_PduSessTypes;
-  if (o.atsssInfoIsSet()) j["atsssInfo"] = o.m_AtsssInfo;
+  if (o.atsssInfoIsSet())
+    j["atsssInfo"] = o.m_AtsssInfo;
 }
 
 void from_json(const nlohmann::json &j, DnnRouteSelectionDescriptor &o) {
@@ -114,4 +116,4 @@ bool DnnRouteSelectionDescriptor::atsssInfoIsSet() const {
 }
 void DnnRouteSelectionDescriptor::unsetAtsssInfo() { m_AtsssInfoIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

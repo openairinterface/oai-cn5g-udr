@@ -51,7 +51,8 @@ void to_json(nlohmann::json &j, const PfdDataForApp &o) {
   j = nlohmann::json();
   j["applicationId"] = o.m_ApplicationId;
   j["pfds"] = o.m_Pfds;
-  if (o.cachingTimeIsSet()) j["cachingTime"] = o.m_CachingTime;
+  if (o.cachingTimeIsSet())
+    j["cachingTime"] = o.m_CachingTime;
 }
 
 void from_json(const nlohmann::json &j, PfdDataForApp &o) {
@@ -79,4 +80,4 @@ void PfdDataForApp::setCachingTime(std::string const &value) {
 bool PfdDataForApp::cachingTimeIsSet() const { return m_CachingTimeIsSet; }
 void PfdDataForApp::unsetCachingTime() { m_CachingTimeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

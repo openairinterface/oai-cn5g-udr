@@ -49,7 +49,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class NrV2xAuth {
- public:
+public:
   NrV2xAuth();
   virtual ~NrV2xAuth();
 
@@ -62,27 +62,27 @@ class NrV2xAuth {
   ///
   /// </summary>
   UeAuth getVehicleUeAuth() const;
-  void setVehicleUeAuth(UeAuth const& value);
+  void setVehicleUeAuth(UeAuth const &value);
   bool vehicleUeAuthIsSet() const;
   void unsetVehicleUeAuth();
   /// <summary>
   ///
   /// </summary>
   UeAuth getPedestrianUeAuth() const;
-  void setPedestrianUeAuth(UeAuth const& value);
+  void setPedestrianUeAuth(UeAuth const &value);
   bool pedestrianUeAuthIsSet() const;
   void unsetPedestrianUeAuth();
 
-  friend void to_json(nlohmann::json& j, const NrV2xAuth& o);
-  friend void from_json(const nlohmann::json& j, NrV2xAuth& o);
+  friend void to_json(nlohmann::json &j, const NrV2xAuth &o);
+  friend void from_json(const nlohmann::json &j, NrV2xAuth &o);
 
- protected:
+protected:
   UeAuth m_VehicleUeAuth;
   bool m_VehicleUeAuthIsSet;
   UeAuth m_PedestrianUeAuth;
   bool m_PedestrianUeAuthIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* NrV2xAuth_H_ */

@@ -52,9 +52,12 @@ void ServiceAreaRestriction::validate() {
 
 void to_json(nlohmann::json &j, const ServiceAreaRestriction &o) {
   j = nlohmann::json();
-  if (o.restrictionTypeIsSet()) j["restrictionType"] = o.m_RestrictionType;
-  if (o.areasIsSet() || !o.m_Areas.empty()) j["areas"] = o.m_Areas;
-  if (o.maxNumOfTAsIsSet()) j["maxNumOfTAs"] = o.m_MaxNumOfTAs;
+  if (o.restrictionTypeIsSet())
+    j["restrictionType"] = o.m_RestrictionType;
+  if (o.areasIsSet() || !o.m_Areas.empty())
+    j["areas"] = o.m_Areas;
+  if (o.maxNumOfTAsIsSet())
+    j["maxNumOfTAs"] = o.m_MaxNumOfTAs;
   if (o.maxNumOfTAsForNotAllowedAreasIsSet())
     j["maxNumOfTAsForNotAllowedAreas"] = o.m_MaxNumOfTAsForNotAllowedAreas;
 }
@@ -123,4 +126,4 @@ void ServiceAreaRestriction::unsetMaxNumOfTAsForNotAllowedAreas() {
   m_MaxNumOfTAsForNotAllowedAreasIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ScheduledCommunicationTypeRm {
- public:
+public:
   ScheduledCommunicationTypeRm();
   virtual ~ScheduledCommunicationTypeRm();
 
@@ -59,13 +59,13 @@ class ScheduledCommunicationTypeRm {
   /////////////////////////////////////////////
   /// ScheduledCommunicationTypeRm members
 
-  friend void to_json(nlohmann::json& j, const ScheduledCommunicationTypeRm& o);
-  friend void from_json(const nlohmann::json& j,
-                        ScheduledCommunicationTypeRm& o);
+  friend void to_json(nlohmann::json &j, const ScheduledCommunicationTypeRm &o);
+  friend void from_json(const nlohmann::json &j,
+                        ScheduledCommunicationTypeRm &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* ScheduledCommunicationTypeRm_H_ */

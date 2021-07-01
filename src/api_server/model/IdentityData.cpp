@@ -48,8 +48,10 @@ void IdentityData::validate() {
 
 void to_json(nlohmann::json &j, const IdentityData &o) {
   j = nlohmann::json();
-  if (o.supiListIsSet() || !o.m_SupiList.empty()) j["supiList"] = o.m_SupiList;
-  if (o.gpsiListIsSet() || !o.m_GpsiList.empty()) j["gpsiList"] = o.m_GpsiList;
+  if (o.supiListIsSet() || !o.m_SupiList.empty())
+    j["supiList"] = o.m_SupiList;
+  if (o.gpsiListIsSet() || !o.m_GpsiList.empty())
+    j["gpsiList"] = o.m_GpsiList;
 }
 
 void from_json(const nlohmann::json &j, IdentityData &o) {
@@ -78,4 +80,4 @@ void IdentityData::setGpsiList(std::vector<std::string> const &value) {
 bool IdentityData::gpsiListIsSet() const { return m_GpsiListIsSet; }
 void IdentityData::unsetGpsiList() { m_GpsiListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

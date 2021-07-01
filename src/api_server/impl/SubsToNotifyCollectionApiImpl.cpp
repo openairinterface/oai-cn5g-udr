@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 SubsToNotifyCollectionApiImpl::SubsToNotifyCollectionApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : SubsToNotifyCollectionApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SubsToNotifyCollectionApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SubsToNotifyCollectionApiImpl::query_subs_to_notify(
@@ -71,4 +70,4 @@ void SubsToNotifyCollectionApiImpl::subscription_data_subscriptions(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

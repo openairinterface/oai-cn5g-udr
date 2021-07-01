@@ -57,12 +57,18 @@ void UsageMonDataLimit::validate() {
 void to_json(nlohmann::json &j, const UsageMonDataLimit &o) {
   j = nlohmann::json();
   j["limitId"] = o.m_LimitId;
-  if (o.scopesIsSet() || !o.m_Scopes.empty()) j["scopes"] = o.m_Scopes;
-  if (o.umLevelIsSet()) j["umLevel"] = o.m_UmLevel;
-  if (o.startDateIsSet()) j["startDate"] = o.m_StartDate;
-  if (o.endDateIsSet()) j["endDate"] = o.m_EndDate;
-  if (o.usageLimitIsSet()) j["usageLimit"] = o.m_UsageLimit;
-  if (o.resetPeriodIsSet()) j["resetPeriod"] = o.m_ResetPeriod;
+  if (o.scopesIsSet() || !o.m_Scopes.empty())
+    j["scopes"] = o.m_Scopes;
+  if (o.umLevelIsSet())
+    j["umLevel"] = o.m_UmLevel;
+  if (o.startDateIsSet())
+    j["startDate"] = o.m_StartDate;
+  if (o.endDateIsSet())
+    j["endDate"] = o.m_EndDate;
+  if (o.usageLimitIsSet())
+    j["usageLimit"] = o.m_UsageLimit;
+  if (o.resetPeriodIsSet())
+    j["resetPeriod"] = o.m_ResetPeriod;
 }
 
 void from_json(const nlohmann::json &j, UsageMonDataLimit &o) {
@@ -143,4 +149,4 @@ void UsageMonDataLimit::setResetPeriod(std::string const &value) {
 bool UsageMonDataLimit::resetPeriodIsSet() const { return m_ResetPeriodIsSet; }
 void UsageMonDataLimit::unsetResetPeriod() { m_ResetPeriodIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

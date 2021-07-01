@@ -51,12 +51,14 @@ void AfExternal::validate() {
 
 void to_json(nlohmann::json &j, const AfExternal &o) {
   j = nlohmann::json();
-  if (o.afIdIsSet()) j["afId"] = o.m_AfId;
+  if (o.afIdIsSet())
+    j["afId"] = o.m_AfId;
   if (o.allowedGeographicAreaIsSet() || !o.m_AllowedGeographicArea.empty())
     j["allowedGeographicArea"] = o.m_AllowedGeographicArea;
   if (o.privacyCheckRelatedActionIsSet())
     j["privacyCheckRelatedAction"] = o.m_PrivacyCheckRelatedAction;
-  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.validTimePeriodIsSet())
+    j["validTimePeriod"] = o.m_ValidTimePeriod;
 }
 
 void from_json(const nlohmann::json &j, AfExternal &o) {
@@ -123,4 +125,4 @@ void AfExternal::setValidTimePeriod(ValidTimePeriod const &value) {
 bool AfExternal::validTimePeriodIsSet() const { return m_ValidTimePeriodIsSet; }
 void AfExternal::unsetValidTimePeriod() { m_ValidTimePeriodIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

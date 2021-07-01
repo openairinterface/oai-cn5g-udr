@@ -95,4 +95,4 @@ void EllipsoidArc_allOf::setConfidence(int32_t const value) {
   m_Confidence = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

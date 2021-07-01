@@ -103,4 +103,4 @@ void EcRestriction::unsetMtcProviderInformation() {
   m_MtcProviderInformationIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

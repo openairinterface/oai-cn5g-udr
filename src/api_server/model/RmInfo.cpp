@@ -59,4 +59,4 @@ void RmInfo::setRmState(RmState const &value) { m_RmState = value; }
 AccessType RmInfo::getAccessType() const { return m_AccessType; }
 void RmInfo::setAccessType(AccessType const &value) { m_AccessType = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -45,8 +45,7 @@ IndividualInfluenceDataSubscriptionDocumentApiImpl::
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
     : IndividualInfluenceDataSubscriptionDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
-      m_address(address) {}
+      m_udr_app(udr_app_inst), m_address(address) {}
 
 void IndividualInfluenceDataSubscriptionDocumentApiImpl::
     delete_individual_influence_data_subscription(
@@ -71,4 +70,4 @@ void IndividualInfluenceDataSubscriptionDocumentApiImpl::
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

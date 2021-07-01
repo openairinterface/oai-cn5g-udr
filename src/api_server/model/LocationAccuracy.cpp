@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const LocationAccuracy &o) {
 
 void from_json(const nlohmann::json &j, LocationAccuracy &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

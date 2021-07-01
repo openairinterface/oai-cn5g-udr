@@ -62,7 +62,8 @@ void to_json(nlohmann::json &j, const TraceData &o) {
     j["collectionEntityIpv4Addr"] = o.m_CollectionEntityIpv4Addr;
   if (o.collectionEntityIpv6AddrIsSet())
     j["collectionEntityIpv6Addr"] = o.m_CollectionEntityIpv6Addr;
-  if (o.interfaceListIsSet()) j["interfaceList"] = o.m_InterfaceList;
+  if (o.interfaceListIsSet())
+    j["interfaceList"] = o.m_InterfaceList;
 }
 
 void from_json(const nlohmann::json &j, TraceData &o) {
@@ -128,4 +129,4 @@ void TraceData::setInterfaceList(std::string const &value) {
 bool TraceData::interfaceListIsSet() const { return m_InterfaceListIsSet; }
 void TraceData::unsetInterfaceList() { m_InterfaceListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

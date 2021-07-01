@@ -55,4 +55,4 @@ void from_json(const nlohmann::json &j, GADShape &o) {
 SupportedGADShapes GADShape::getShape() const { return m_Shape; }
 void GADShape::setShape(SupportedGADShapes const &value) { m_Shape = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

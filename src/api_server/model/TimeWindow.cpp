@@ -62,4 +62,4 @@ void TimeWindow::setStartTime(std::string const &value) { m_StartTime = value; }
 std::string TimeWindow::getStopTime() const { return m_StopTime; }
 void TimeWindow::setStopTime(std::string const &value) { m_StopTime = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

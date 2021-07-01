@@ -49,7 +49,8 @@ void AuthorizationData::validate() {
 void to_json(nlohmann::json &j, const AuthorizationData &o) {
   j = nlohmann::json();
   //    j["authorizationData"] = o.m_AuthorizationData;
-  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
+  if (o.validityTimeIsSet())
+    j["validityTime"] = o.m_ValidityTime;
 }
 
 void from_json(const nlohmann::json &j, AuthorizationData &o) {
@@ -81,4 +82,4 @@ bool AuthorizationData::validityTimeIsSet() const {
 }
 void AuthorizationData::unsetValidityTime() { m_ValidityTimeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

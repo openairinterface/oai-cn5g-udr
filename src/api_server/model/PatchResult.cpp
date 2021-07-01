@@ -57,4 +57,4 @@ void PatchResult::setReport(std::vector<ReportItem> const &value) {
   m_Report = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

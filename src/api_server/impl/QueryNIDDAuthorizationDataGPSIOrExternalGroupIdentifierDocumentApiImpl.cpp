@@ -45,8 +45,7 @@ QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl::
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
     : QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
-      m_address(address) {}
+      m_udr_app(udr_app_inst), m_address(address) {}
 
 void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl::
     get_nidd_au_data(
@@ -60,4 +59,4 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl::
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -54,20 +54,20 @@ using namespace oai::udr::app;
 
 class QueryODBDataBySUPIOrGPSIDocumentApiImpl
     : public oai::udr::api::QueryODBDataBySUPIOrGPSIDocumentApi {
- private:
-  udr_app* m_udr_app;
+private:
+  udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   QueryODBDataBySUPIOrGPSIDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
   ~QueryODBDataBySUPIOrGPSIDocumentApiImpl() {}
 
-  void get_odb_data(const std::string& ueId,
-                    Pistache::Http::ResponseWriter& response);
+  void get_odb_data(const std::string &ueId,
+                    Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

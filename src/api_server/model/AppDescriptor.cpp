@@ -50,8 +50,10 @@ void AppDescriptor::validate() {
 
 void to_json(nlohmann::json &j, const AppDescriptor &o) {
   j = nlohmann::json();
-  if (o.osIdIsSet()) j["osId"] = o.m_OsId;
-  if (o.appIdIsSet()) j["appId"] = o.m_AppId;
+  if (o.osIdIsSet())
+    j["osId"] = o.m_OsId;
+  if (o.appIdIsSet())
+    j["appId"] = o.m_AppId;
 }
 
 void from_json(const nlohmann::json &j, AppDescriptor &o) {
@@ -80,4 +82,4 @@ void AppDescriptor::setAppId(std::string const &value) {
 bool AppDescriptor::appIdIsSet() const { return m_AppIdIsSet; }
 void AppDescriptor::unsetAppId() { m_AppIdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

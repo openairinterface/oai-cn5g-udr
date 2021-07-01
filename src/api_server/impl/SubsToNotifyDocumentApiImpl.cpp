@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 SubsToNotifyDocumentApiImpl::SubsToNotifyDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : SubsToNotifyDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SubsToNotifyDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SubsToNotifyDocumentApiImpl::modifysubscription_data_subscription(
@@ -65,4 +64,4 @@ void SubsToNotifyDocumentApiImpl::removesubscription_data_subscriptions(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

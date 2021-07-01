@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 CAGUpdateAckDocumentApiImpl::CAGUpdateAckDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : CAGUpdateAckDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : CAGUpdateAckDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void CAGUpdateAckDocumentApiImpl::create_cag_update_ack(
@@ -55,4 +54,4 @@ void CAGUpdateAckDocumentApiImpl::create_cag_update_ack(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -52,8 +52,10 @@ void UserIdentifier::validate() {
 void to_json(nlohmann::json &j, const UserIdentifier &o) {
   j = nlohmann::json();
   j["supi"] = o.m_Supi;
-  if (o.gpsiIsSet()) j["gpsi"] = o.m_Gpsi;
-  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
+  if (o.gpsiIsSet())
+    j["gpsi"] = o.m_Gpsi;
+  if (o.validityTimeIsSet())
+    j["validityTime"] = o.m_ValidityTime;
 }
 
 void from_json(const nlohmann::json &j, UserIdentifier &o) {
@@ -85,4 +87,4 @@ void UserIdentifier::setValidityTime(std::string const &value) {
 bool UserIdentifier::validityTimeIsSet() const { return m_ValidityTimeIsSet; }
 void UserIdentifier::unsetValidityTime() { m_ValidityTimeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

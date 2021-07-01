@@ -53,7 +53,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class ApplicationDataSubscriptionsCollectionApi {
- public:
+public:
   ApplicationDataSubscriptionsCollectionApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~ApplicationDataSubscriptionsCollectionApi() {}
@@ -61,7 +61,7 @@ class ApplicationDataSubscriptionsCollectionApi {
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void create_individual_application_data_subscription_handler(
@@ -100,6 +100,6 @@ class ApplicationDataSubscriptionsCollectionApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* ApplicationDataSubscriptionsCollectionApi_H_ */

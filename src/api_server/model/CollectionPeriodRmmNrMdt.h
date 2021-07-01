@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class CollectionPeriodRmmNrMdt {
- public:
+public:
   CollectionPeriodRmmNrMdt();
   virtual ~CollectionPeriodRmmNrMdt();
 
@@ -56,12 +56,12 @@ class CollectionPeriodRmmNrMdt {
   /////////////////////////////////////////////
   /// CollectionPeriodRmmNrMdt members
 
-  friend void to_json(nlohmann::json& j, const CollectionPeriodRmmNrMdt& o);
-  friend void from_json(const nlohmann::json& j, CollectionPeriodRmmNrMdt& o);
+  friend void to_json(nlohmann::json &j, const CollectionPeriodRmmNrMdt &o);
+  friend void from_json(const nlohmann::json &j, CollectionPeriodRmmNrMdt &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* CollectionPeriodRmmNrMdt_H_ */

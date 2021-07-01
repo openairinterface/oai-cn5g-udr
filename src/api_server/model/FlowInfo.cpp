@@ -73,4 +73,4 @@ void FlowInfo::setFlowDescriptions(std::vector<std::string> const &value) {
 bool FlowInfo::flowDescriptionsIsSet() const { return m_FlowDescriptionsIsSet; }
 void FlowInfo::unsetFlowDescriptions() { m_FlowDescriptionsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -62,17 +62,20 @@ void to_json(nlohmann::json &j, const ExpectedUeBehaviourData &o) {
     j["stationaryIndication"] = o.m_StationaryIndication;
   if (o.communicationDurationTimeIsSet())
     j["communicationDurationTime"] = o.m_CommunicationDurationTime;
-  if (o.periodicTimeIsSet()) j["periodicTime"] = o.m_PeriodicTime;
+  if (o.periodicTimeIsSet())
+    j["periodicTime"] = o.m_PeriodicTime;
   if (o.scheduledCommunicationTimeIsSet())
     j["scheduledCommunicationTime"] = o.m_ScheduledCommunicationTime;
   if (o.scheduledCommunicationTypeIsSet())
     j["scheduledCommunicationType"] = o.m_ScheduledCommunicationType;
   if (o.expectedUmtsIsSet() || !o.m_ExpectedUmts.empty())
     j["expectedUmts"] = o.m_ExpectedUmts;
-  if (o.trafficProfileIsSet()) j["trafficProfile"] = o.m_TrafficProfile;
+  if (o.trafficProfileIsSet())
+    j["trafficProfile"] = o.m_TrafficProfile;
   if (o.batteryIndicationIsSet())
     j["batteryIndication"] = o.m_BatteryIndication;
-  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
+  if (o.validityTimeIsSet())
+    j["validityTime"] = o.m_ValidityTime;
 }
 
 void from_json(const nlohmann::json &j, ExpectedUeBehaviourData &o) {
@@ -240,4 +243,4 @@ void ExpectedUeBehaviourData::unsetValidityTime() {
   m_ValidityTimeIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

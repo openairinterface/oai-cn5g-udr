@@ -80,9 +80,12 @@ void to_json(nlohmann::json &j, const Amf3GppAccessRegistration &o) {
   j["amfInstanceId"] = o.m_AmfInstanceId;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.purgeFlagIsSet()) j["purgeFlag"] = o.m_PurgeFlag;
-  if (o.peiIsSet()) j["pei"] = o.m_Pei;
-  if (o.imsVoPsIsSet()) j["imsVoPs"] = o.m_ImsVoPs;
+  if (o.purgeFlagIsSet())
+    j["purgeFlag"] = o.m_PurgeFlag;
+  if (o.peiIsSet())
+    j["pei"] = o.m_Pei;
+  if (o.imsVoPsIsSet())
+    j["imsVoPs"] = o.m_ImsVoPs;
   j["deregCallbackUri"] = o.m_DeregCallbackUri;
   if (o.amfServiceNameDeregIsSet())
     j["amfServiceNameDereg"] = o.m_AmfServiceNameDereg;
@@ -95,18 +98,23 @@ void to_json(nlohmann::json &j, const Amf3GppAccessRegistration &o) {
   j["guami"] = o.m_Guami;
   if (o.backupAmfInfoIsSet() || !o.m_BackupAmfInfo.empty())
     j["backupAmfInfo"] = o.m_BackupAmfInfo;
-  if (o.drFlagIsSet()) j["drFlag"] = o.m_DrFlag;
+  if (o.drFlagIsSet())
+    j["drFlag"] = o.m_DrFlag;
   j["ratType"] = o.m_RatType;
-  if (o.urrpIndicatorIsSet()) j["urrpIndicator"] = o.m_UrrpIndicator;
+  if (o.urrpIndicatorIsSet())
+    j["urrpIndicator"] = o.m_UrrpIndicator;
   if (o.amfEeSubscriptionIdIsSet())
     j["amfEeSubscriptionId"] = o.m_AmfEeSubscriptionId;
   if (o.epsInterworkingInfoIsSet())
     j["epsInterworkingInfo"] = o.m_EpsInterworkingInfo;
   if (o.ueSrvccCapabilityIsSet())
     j["ueSrvccCapability"] = o.m_UeSrvccCapability;
-  if (o.registrationTimeIsSet()) j["registrationTime"] = o.m_RegistrationTime;
-  if (o.vgmlcAddressIsSet()) j["vgmlcAddress"] = o.m_VgmlcAddress;
-  if (o.contextInfoIsSet()) j["contextInfo"] = o.m_ContextInfo;
+  if (o.registrationTimeIsSet())
+    j["registrationTime"] = o.m_RegistrationTime;
+  if (o.vgmlcAddressIsSet())
+    j["vgmlcAddress"] = o.m_VgmlcAddress;
+  if (o.contextInfoIsSet())
+    j["contextInfo"] = o.m_ContextInfo;
   if (o.noEeSubscriptionIndIsSet())
     j["noEeSubscriptionInd"] = o.m_NoEeSubscriptionInd;
 }
@@ -429,4 +437,4 @@ void Amf3GppAccessRegistration::unsetNoEeSubscriptionInd() {
   m_NoEeSubscriptionIndIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

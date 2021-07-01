@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PointUncertaintyCircle {
- public:
+public:
   PointUncertaintyCircle();
   virtual ~PointUncertaintyCircle();
 
@@ -65,22 +65,22 @@ class PointUncertaintyCircle {
   ///
   /// </summary>
   SupportedGADShapes getShape() const;
-  void setShape(SupportedGADShapes const& value);
+  void setShape(SupportedGADShapes const &value);
   /// <summary>
   ///
   /// </summary>
   GeographicalCoordinates getPoint() const;
-  void setPoint(GeographicalCoordinates const& value);
+  void setPoint(GeographicalCoordinates const &value);
   /// <summary>
   ///
   /// </summary>
   float getUncertainty() const;
   void setUncertainty(float const value);
 
-  friend void to_json(nlohmann::json& j, const PointUncertaintyCircle& o);
-  friend void from_json(const nlohmann::json& j, PointUncertaintyCircle& o);
+  friend void to_json(nlohmann::json &j, const PointUncertaintyCircle &o);
+  friend void from_json(const nlohmann::json &j, PointUncertaintyCircle &o);
 
- protected:
+protected:
   SupportedGADShapes m_Shape;
 
   GeographicalCoordinates m_Point;
@@ -88,6 +88,6 @@ class PointUncertaintyCircle {
   float m_Uncertainty;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* PointUncertaintyCircle_H_ */

@@ -53,7 +53,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PatchOperation {
- public:
+public:
   PatchOperation();
   virtual ~PatchOperation();
 
@@ -62,12 +62,12 @@ class PatchOperation {
   /////////////////////////////////////////////
   /// PatchOperation members
 
-  friend void to_json(nlohmann::json& j, const PatchOperation& o);
-  friend void from_json(const nlohmann::json& j, PatchOperation& o);
+  friend void to_json(nlohmann::json &j, const PatchOperation &o);
+  friend void from_json(const nlohmann::json &j, PatchOperation &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* PatchOperation_H_ */

@@ -54,10 +54,14 @@ void UsageThreshold::validate() {
 
 void to_json(nlohmann::json &j, const UsageThreshold &o) {
   j = nlohmann::json();
-  if (o.durationIsSet()) j["duration"] = o.m_Duration;
-  if (o.totalVolumeIsSet()) j["totalVolume"] = o.m_TotalVolume;
-  if (o.downlinkVolumeIsSet()) j["downlinkVolume"] = o.m_DownlinkVolume;
-  if (o.uplinkVolumeIsSet()) j["uplinkVolume"] = o.m_UplinkVolume;
+  if (o.durationIsSet())
+    j["duration"] = o.m_Duration;
+  if (o.totalVolumeIsSet())
+    j["totalVolume"] = o.m_TotalVolume;
+  if (o.downlinkVolumeIsSet())
+    j["downlinkVolume"] = o.m_DownlinkVolume;
+  if (o.uplinkVolumeIsSet())
+    j["uplinkVolume"] = o.m_UplinkVolume;
 }
 
 void from_json(const nlohmann::json &j, UsageThreshold &o) {
@@ -110,4 +114,4 @@ void UsageThreshold::setUplinkVolume(int64_t const value) {
 bool UsageThreshold::uplinkVolumeIsSet() const { return m_UplinkVolumeIsSet; }
 void UsageThreshold::unsetUplinkVolume() { m_UplinkVolumeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

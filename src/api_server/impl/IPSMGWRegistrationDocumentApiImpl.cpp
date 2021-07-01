@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 IPSMGWRegistrationDocumentApiImpl::IPSMGWRegistrationDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : IPSMGWRegistrationDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : IPSMGWRegistrationDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IPSMGWRegistrationDocumentApiImpl::create_ip_sm_gw_context(
@@ -73,4 +72,4 @@ void IPSMGWRegistrationDocumentApiImpl::query_ip_sm_gw_context(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

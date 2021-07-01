@@ -67,4 +67,4 @@ void NssaiAckData::setUeUpdateStatus(UeUpdateStatus const &value) {
   m_UeUpdateStatus = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

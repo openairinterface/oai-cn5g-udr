@@ -49,8 +49,10 @@ void FrameRouteInfo::validate() {
 
 void to_json(nlohmann::json &j, const FrameRouteInfo &o) {
   j = nlohmann::json();
-  if (o.ipv4MaskIsSet()) j["ipv4Mask"] = o.m_Ipv4Mask;
-  if (o.ipv6PrefixIsSet()) j["ipv6Prefix"] = o.m_Ipv6Prefix;
+  if (o.ipv4MaskIsSet())
+    j["ipv4Mask"] = o.m_Ipv4Mask;
+  if (o.ipv6PrefixIsSet())
+    j["ipv6Prefix"] = o.m_Ipv6Prefix;
 }
 
 void from_json(const nlohmann::json &j, FrameRouteInfo &o) {
@@ -79,4 +81,4 @@ void FrameRouteInfo::setIpv6Prefix(Ipv6Prefix const &value) {
 bool FrameRouteInfo::ipv6PrefixIsSet() const { return m_Ipv6PrefixIsSet; }
 void FrameRouteInfo::unsetIpv6Prefix() { m_Ipv6PrefixIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

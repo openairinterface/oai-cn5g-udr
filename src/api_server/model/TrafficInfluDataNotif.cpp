@@ -49,7 +49,8 @@ void TrafficInfluDataNotif::validate() {
 void to_json(nlohmann::json &j, const TrafficInfluDataNotif &o) {
   j = nlohmann::json();
   j["resUri"] = o.m_ResUri;
-  if (o.trafficInfluDataIsSet()) j["trafficInfluData"] = o.m_TrafficInfluData;
+  if (o.trafficInfluDataIsSet())
+    j["trafficInfluData"] = o.m_TrafficInfluData;
 }
 
 void from_json(const nlohmann::json &j, TrafficInfluDataNotif &o) {
@@ -78,4 +79,4 @@ void TrafficInfluDataNotif::unsetTrafficInfluData() {
   m_TrafficInfluDataIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

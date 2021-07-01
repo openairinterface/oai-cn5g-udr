@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class LoggingDurationNrMdt {
- public:
+public:
   LoggingDurationNrMdt();
   virtual ~LoggingDurationNrMdt();
 
@@ -56,12 +56,12 @@ class LoggingDurationNrMdt {
   /////////////////////////////////////////////
   /// LoggingDurationNrMdt members
 
-  friend void to_json(nlohmann::json& j, const LoggingDurationNrMdt& o);
-  friend void from_json(const nlohmann::json& j, LoggingDurationNrMdt& o);
+  friend void to_json(nlohmann::json &j, const LoggingDurationNrMdt &o);
+  friend void from_json(const nlohmann::json &j, LoggingDurationNrMdt &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* LoggingDurationNrMdt_H_ */

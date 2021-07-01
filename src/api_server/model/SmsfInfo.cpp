@@ -61,4 +61,4 @@ void SmsfInfo::setSmsfInstanceId(std::string const &value) {
 PlmnId SmsfInfo::getPlmnId() const { return m_PlmnId; }
 void SmsfInfo::setPlmnId(PlmnId const &value) { m_PlmnId = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

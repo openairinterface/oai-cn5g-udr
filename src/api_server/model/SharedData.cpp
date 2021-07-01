@@ -55,14 +55,16 @@ void SharedData::validate() {
 void to_json(nlohmann::json &j, const SharedData &o) {
   j = nlohmann::json();
   j["sharedDataId"] = o.m_SharedDataId;
-  if (o.sharedAmDataIsSet()) j["sharedAmData"] = o.m_SharedAmData;
+  if (o.sharedAmDataIsSet())
+    j["sharedAmData"] = o.m_SharedAmData;
   if (o.sharedSmsSubsDataIsSet())
     j["sharedSmsSubsData"] = o.m_SharedSmsSubsData;
   if (o.sharedSmsMngSubsDataIsSet())
     j["sharedSmsMngSubsData"] = o.m_SharedSmsMngSubsData;
   if (o.sharedDnnConfigurationsIsSet() || !o.m_SharedDnnConfigurations.empty())
     j["sharedDnnConfigurations"] = o.m_SharedDnnConfigurations;
-  if (o.sharedTraceDataIsSet()) j["sharedTraceData"] = o.m_SharedTraceData;
+  if (o.sharedTraceDataIsSet())
+    j["sharedTraceData"] = o.m_SharedTraceData;
   if (o.sharedSnssaiInfosIsSet() || !o.m_SharedSnssaiInfos.empty())
     j["sharedSnssaiInfos"] = o.m_SharedSnssaiInfos;
   if (o.sharedVnGroupDatasIsSet() || !o.m_SharedVnGroupDatas.empty())
@@ -140,8 +142,8 @@ bool SharedData::sharedSmsMngSubsDataIsSet() const {
 void SharedData::unsetSharedSmsMngSubsData() {
   m_SharedSmsMngSubsDataIsSet = false;
 }
-std::map<std::string, DnnConfiguration>
-    &SharedData::getSharedDnnConfigurations() {
+std::map<std::string, DnnConfiguration> &
+SharedData::getSharedDnnConfigurations() {
   return m_SharedDnnConfigurations;
 }
 void SharedData::setSharedDnnConfigurations(
@@ -189,4 +191,4 @@ void SharedData::unsetSharedVnGroupDatas() {
   m_SharedVnGroupDatasIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

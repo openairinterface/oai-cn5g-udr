@@ -54,11 +54,16 @@ void UsageMonData::validate() {
 void to_json(nlohmann::json &j, const UsageMonData &o) {
   j = nlohmann::json();
   j["limitId"] = o.m_LimitId;
-  if (o.scopesIsSet() || !o.m_Scopes.empty()) j["scopes"] = o.m_Scopes;
-  if (o.umLevelIsSet()) j["umLevel"] = o.m_UmLevel;
-  if (o.allowedUsageIsSet()) j["allowedUsage"] = o.m_AllowedUsage;
-  if (o.resetTimeIsSet()) j["resetTime"] = o.m_ResetTime;
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
+  if (o.scopesIsSet() || !o.m_Scopes.empty())
+    j["scopes"] = o.m_Scopes;
+  if (o.umLevelIsSet())
+    j["umLevel"] = o.m_UmLevel;
+  if (o.allowedUsageIsSet())
+    j["allowedUsage"] = o.m_AllowedUsage;
+  if (o.resetTimeIsSet())
+    j["resetTime"] = o.m_ResetTime;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, UsageMonData &o) {
@@ -126,4 +131,4 @@ void UsageMonData::setSuppFeat(std::string const &value) {
 bool UsageMonData::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void UsageMonData::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

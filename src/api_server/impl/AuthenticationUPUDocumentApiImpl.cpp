@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 AuthenticationUPUDocumentApiImpl::AuthenticationUPUDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : AuthenticationUPUDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : AuthenticationUPUDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AuthenticationUPUDocumentApiImpl::create_authentication_upu(
@@ -62,4 +61,4 @@ void AuthenticationUPUDocumentApiImpl::query_auth_upu(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

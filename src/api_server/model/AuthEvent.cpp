@@ -58,7 +58,8 @@ void to_json(nlohmann::json &j, const AuthEvent &o) {
   j["timeStamp"] = o.m_TimeStamp;
   j["authType"] = o.m_AuthType;
   j["servingNetworkName"] = o.m_ServingNetworkName;
-  if (o.authRemovalIndIsSet()) j["authRemovalInd"] = o.m_AuthRemovalInd;
+  if (o.authRemovalIndIsSet())
+    j["authRemovalInd"] = o.m_AuthRemovalInd;
 }
 
 void from_json(const nlohmann::json &j, AuthEvent &o) {
@@ -97,4 +98,4 @@ void AuthEvent::setAuthRemovalInd(bool const value) {
 bool AuthEvent::authRemovalIndIsSet() const { return m_AuthRemovalIndIsSet; }
 void AuthEvent::unsetAuthRemovalInd() { m_AuthRemovalIndIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -57,11 +57,11 @@ using namespace oai::udr::app;
 
 class IPSMGWRegistrationDocumentApiImpl
     : public oai::udr::api::IPSMGWRegistrationDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   IPSMGWRegistrationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                     udr_app *udr_app_inst, std::string address);
   ~IPSMGWRegistrationDocumentApiImpl() {}
@@ -81,6 +81,6 @@ class IPSMGWRegistrationDocumentApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

@@ -49,7 +49,8 @@ void CagInfo::validate() {
 void to_json(nlohmann::json &j, const CagInfo &o) {
   j = nlohmann::json();
   j["allowedCagList"] = o.m_AllowedCagList;
-  if (o.cagOnlyIndicatorIsSet()) j["cagOnlyIndicator"] = o.m_CagOnlyIndicator;
+  if (o.cagOnlyIndicatorIsSet())
+    j["cagOnlyIndicator"] = o.m_CagOnlyIndicator;
 }
 
 void from_json(const nlohmann::json &j, CagInfo &o) {
@@ -74,4 +75,4 @@ void CagInfo::setCagOnlyIndicator(bool const value) {
 bool CagInfo::cagOnlyIndicatorIsSet() const { return m_CagOnlyIndicatorIsSet; }
 void CagInfo::unsetCagOnlyIndicator() { m_CagOnlyIndicatorIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

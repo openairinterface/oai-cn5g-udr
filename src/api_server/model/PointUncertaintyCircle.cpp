@@ -71,4 +71,4 @@ void PointUncertaintyCircle::setUncertainty(float const value) {
   m_Uncertainty = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -55,4 +55,4 @@ void from_json(const nlohmann::json &j, ReportItem &o) {
 std::string ReportItem::getPath() const { return m_Path; }
 void ReportItem::setPath(std::string const &value) { m_Path = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

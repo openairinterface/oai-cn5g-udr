@@ -65,8 +65,8 @@ void PointUncertaintyEllipse_allOf::setPoint(
     GeographicalCoordinates const &value) {
   m_Point = value;
 }
-UncertaintyEllipse PointUncertaintyEllipse_allOf::getUncertaintyEllipse()
-    const {
+UncertaintyEllipse
+PointUncertaintyEllipse_allOf::getUncertaintyEllipse() const {
   return m_UncertaintyEllipse;
 }
 void PointUncertaintyEllipse_allOf::setUncertaintyEllipse(
@@ -80,4 +80,4 @@ void PointUncertaintyEllipse_allOf::setConfidence(int32_t const value) {
   m_Confidence = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

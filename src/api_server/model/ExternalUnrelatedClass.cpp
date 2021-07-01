@@ -72,8 +72,8 @@ void from_json(const nlohmann::json &j, ExternalUnrelatedClass &o) {
   }
 }
 
-std::vector<LcsClientExternal>
-    &ExternalUnrelatedClass::getLcsClientExternals() {
+std::vector<LcsClientExternal> &
+ExternalUnrelatedClass::getLcsClientExternals() {
   return m_LcsClientExternals;
 }
 void ExternalUnrelatedClass::setLcsClientExternals(
@@ -99,8 +99,8 @@ bool ExternalUnrelatedClass::afExternalsIsSet() const {
   return m_AfExternalsIsSet;
 }
 void ExternalUnrelatedClass::unsetAfExternals() { m_AfExternalsIsSet = false; }
-std::vector<LcsClientGroupExternal>
-    &ExternalUnrelatedClass::getLcsClientGroupExternals() {
+std::vector<LcsClientGroupExternal> &
+ExternalUnrelatedClass::getLcsClientGroupExternals() {
   return m_LcsClientGroupExternals;
 }
 void ExternalUnrelatedClass::setLcsClientGroupExternals(
@@ -115,4 +115,4 @@ void ExternalUnrelatedClass::unsetLcsClientGroupExternals() {
   m_LcsClientGroupExternalsIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

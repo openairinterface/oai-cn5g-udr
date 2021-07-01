@@ -58,14 +58,18 @@ void SubscriptionDataSubscriptions::validate() {
 
 void to_json(nlohmann::json &j, const SubscriptionDataSubscriptions &o) {
   j = nlohmann::json();
-  if (o.ueIdIsSet()) j["ueId"] = o.m_UeId;
+  if (o.ueIdIsSet())
+    j["ueId"] = o.m_UeId;
   j["callbackReference"] = o.m_CallbackReference;
   if (o.originalCallbackReferenceIsSet())
     j["originalCallbackReference"] = o.m_OriginalCallbackReference;
   j["monitoredResourceUris"] = o.m_MonitoredResourceUris;
-  if (o.expiryIsSet()) j["expiry"] = o.m_Expiry;
-  if (o.sdmSubscriptionIsSet()) j["sdmSubscription"] = o.m_SdmSubscription;
-  if (o.subscriptionIdIsSet()) j["subscriptionId"] = o.m_SubscriptionId;
+  if (o.expiryIsSet())
+    j["expiry"] = o.m_Expiry;
+  if (o.sdmSubscriptionIsSet())
+    j["sdmSubscription"] = o.m_SdmSubscription;
+  if (o.subscriptionIdIsSet())
+    j["subscriptionId"] = o.m_SubscriptionId;
   if (o.supportedFeaturesIsSet())
     j["supported-features"] = o.m_Supported_features;
 }
@@ -113,8 +117,8 @@ void SubscriptionDataSubscriptions::setCallbackReference(
     std::string const &value) {
   m_CallbackReference = value;
 }
-std::string SubscriptionDataSubscriptions::getOriginalCallbackReference()
-    const {
+std::string
+SubscriptionDataSubscriptions::getOriginalCallbackReference() const {
   return m_OriginalCallbackReference;
 }
 void SubscriptionDataSubscriptions::setOriginalCallbackReference(
@@ -128,8 +132,8 @@ bool SubscriptionDataSubscriptions::originalCallbackReferenceIsSet() const {
 void SubscriptionDataSubscriptions::unsetOriginalCallbackReference() {
   m_OriginalCallbackReferenceIsSet = false;
 }
-std::vector<std::string>
-    &SubscriptionDataSubscriptions::getMonitoredResourceUris() {
+std::vector<std::string> &
+SubscriptionDataSubscriptions::getMonitoredResourceUris() {
   return m_MonitoredResourceUris;
 }
 void SubscriptionDataSubscriptions::setMonitoredResourceUris(
@@ -190,4 +194,4 @@ void SubscriptionDataSubscriptions::unsetSupported_features() {
   m_Supported_featuresIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -74,4 +74,4 @@ void SmPolicyDnnDataPatch::setBdtRefIds(
 bool SmPolicyDnnDataPatch::bdtRefIdsIsSet() const { return m_BdtRefIdsIsSet; }
 void SmPolicyDnnDataPatch::unsetBdtRefIds() { m_BdtRefIdsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

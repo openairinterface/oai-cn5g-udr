@@ -41,10 +41,9 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 RetrievalOfSharedDataApiImpl::RetrievalOfSharedDataApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : RetrievalOfSharedDataApi(rtr),
-      m_udr_app(udr_app_inst),
+    : RetrievalOfSharedDataApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 // void RetrievalOfSharedDataApiImpl::get_shared_data(const
@@ -55,4 +54,4 @@ RetrievalOfSharedDataApiImpl::RetrievalOfSharedDataApiImpl(
 //    yet!\n");
 //}
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

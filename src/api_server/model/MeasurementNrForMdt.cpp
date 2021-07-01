@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const MeasurementNrForMdt &o) {
 
 void from_json(const nlohmann::json &j, MeasurementNrForMdt &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

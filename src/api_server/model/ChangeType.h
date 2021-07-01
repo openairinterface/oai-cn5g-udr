@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ChangeType {
- public:
+public:
   ChangeType();
   virtual ~ChangeType();
 
@@ -56,12 +56,12 @@ class ChangeType {
   /////////////////////////////////////////////
   /// ChangeType members
 
-  friend void to_json(nlohmann::json& j, const ChangeType& o);
-  friend void from_json(const nlohmann::json& j, ChangeType& o);
+  friend void to_json(nlohmann::json &j, const ChangeType &o);
+  friend void from_json(const nlohmann::json &j, ChangeType &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* ChangeType_H_ */

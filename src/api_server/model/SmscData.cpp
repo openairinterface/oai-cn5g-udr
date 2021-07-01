@@ -49,7 +49,8 @@ void SmscData::validate() {
 
 void to_json(nlohmann::json &j, const SmscData &o) {
   j = nlohmann::json();
-  if (o.smscMapAddressIsSet()) j["smscMapAddress"] = o.m_SmscMapAddress;
+  if (o.smscMapAddressIsSet())
+    j["smscMapAddress"] = o.m_SmscMapAddress;
   if (o.smscDiameterAddressIsSet())
     j["smscDiameterAddress"] = o.m_SmscDiameterAddress;
 }
@@ -86,4 +87,4 @@ void SmscData::unsetSmscDiameterAddress() {
   m_SmscDiameterAddressIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

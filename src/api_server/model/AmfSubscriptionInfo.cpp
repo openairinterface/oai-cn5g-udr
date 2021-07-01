@@ -93,4 +93,4 @@ void AmfSubscriptionInfo::unsetSubsChangeNotifyCorrelationId() {
   m_SubsChangeNotifyCorrelationIdIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const PositioningMethodMdt &o) {
 
 void from_json(const nlohmann::json &j, PositioningMethodMdt &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

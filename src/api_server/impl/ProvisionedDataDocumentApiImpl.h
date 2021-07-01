@@ -55,13 +55,13 @@ using namespace oai::udr::app;
 
 class ProvisionedDataDocumentApiImpl
     : public oai::udr::api::ProvisionedDataDocumentApi {
- private:
-  udr_app* m_udr_app;
+private:
+  udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   ProvisionedDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                 udr_app* udr_app_inst, std::string address);
+                                 udr_app *udr_app_inst, std::string address);
   ~ProvisionedDataDocumentApiImpl() {}
 
   //   void query_provisioned_data(const std::string &ueId, const std::string
@@ -69,6 +69,6 @@ class ProvisionedDataDocumentApiImpl
   //   Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

@@ -51,8 +51,10 @@ void to_json(nlohmann::json &j, const UeContextInSmfData &o) {
   j = nlohmann::json();
   if (o.pduSessionsIsSet() || !o.m_PduSessions.empty())
     j["pduSessions"] = o.m_PduSessions;
-  if (o.pgwInfoIsSet() || !o.m_PgwInfo.empty()) j["pgwInfo"] = o.m_PgwInfo;
-  if (o.emergencyInfoIsSet()) j["emergencyInfo"] = o.m_EmergencyInfo;
+  if (o.pgwInfoIsSet() || !o.m_PgwInfo.empty())
+    j["pgwInfo"] = o.m_PgwInfo;
+  if (o.emergencyInfoIsSet())
+    j["emergencyInfo"] = o.m_EmergencyInfo;
 }
 
 void from_json(const nlohmann::json &j, UeContextInSmfData &o) {
@@ -99,4 +101,4 @@ bool UeContextInSmfData::emergencyInfoIsSet() const {
 }
 void UeContextInSmfData::unsetEmergencyInfo() { m_EmergencyInfoIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

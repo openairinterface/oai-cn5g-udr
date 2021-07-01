@@ -73,4 +73,4 @@ void BackupAmfInfo::setGuamiList(std::vector<Guami> const &value) {
 bool BackupAmfInfo::guamiListIsSet() const { return m_GuamiListIsSet; }
 void BackupAmfInfo::unsetGuamiList() { m_GuamiListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

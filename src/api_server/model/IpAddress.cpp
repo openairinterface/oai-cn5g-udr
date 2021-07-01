@@ -50,9 +50,12 @@ void IpAddress::validate() {
 
 void to_json(nlohmann::json &j, const IpAddress &o) {
   j = nlohmann::json();
-  if (o.ipv4AddrIsSet()) j["ipv4Addr"] = o.m_Ipv4Addr;
-  if (o.ipv6AddrIsSet()) j["ipv6Addr"] = o.m_Ipv6Addr;
-  if (o.ipv6PrefixIsSet()) j["ipv6Prefix"] = o.m_Ipv6Prefix;
+  if (o.ipv4AddrIsSet())
+    j["ipv4Addr"] = o.m_Ipv4Addr;
+  if (o.ipv6AddrIsSet())
+    j["ipv6Addr"] = o.m_Ipv6Addr;
+  if (o.ipv6PrefixIsSet())
+    j["ipv6Prefix"] = o.m_Ipv6Prefix;
 }
 
 void from_json(const nlohmann::json &j, IpAddress &o) {
@@ -92,4 +95,4 @@ void IpAddress::setIpv6Prefix(Ipv6Prefix const &value) {
 bool IpAddress::ipv6PrefixIsSet() const { return m_Ipv6PrefixIsSet; }
 void IpAddress::unsetIpv6Prefix() { m_Ipv6PrefixIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

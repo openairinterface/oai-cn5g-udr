@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 SMSSubscriptionDataDocumentApiImpl::SMSSubscriptionDataDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : SMSSubscriptionDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SMSSubscriptionDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SMSSubscriptionDataDocumentApiImpl::query_sms_data(
@@ -57,4 +56,4 @@ void SMSSubscriptionDataDocumentApiImpl::query_sms_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

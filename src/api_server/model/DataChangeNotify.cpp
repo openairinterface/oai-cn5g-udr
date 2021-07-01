@@ -56,10 +56,12 @@ void to_json(nlohmann::json &j, const DataChangeNotify &o) {
   if (o.originalCallbackReferenceIsSet() ||
       !o.m_OriginalCallbackReference.empty())
     j["originalCallbackReference"] = o.m_OriginalCallbackReference;
-  if (o.ueIdIsSet()) j["ueId"] = o.m_UeId;
+  if (o.ueIdIsSet())
+    j["ueId"] = o.m_UeId;
   if (o.notifyItemsIsSet() || !o.m_NotifyItems.empty())
     j["notifyItems"] = o.m_NotifyItems;
-  if (o.sdmSubscriptionIsSet()) j["sdmSubscription"] = o.m_SdmSubscription;
+  if (o.sdmSubscriptionIsSet())
+    j["sdmSubscription"] = o.m_SdmSubscription;
   if (o.additionalSdmSubscriptionsIsSet() ||
       !o.m_AdditionalSdmSubscriptions.empty())
     j["additionalSdmSubscriptions"] = o.m_AdditionalSdmSubscriptions;
@@ -139,8 +141,8 @@ bool DataChangeNotify::sdmSubscriptionIsSet() const {
 void DataChangeNotify::unsetSdmSubscription() {
   m_SdmSubscriptionIsSet = false;
 }
-std::vector<SdmSubscription>
-    &DataChangeNotify::getAdditionalSdmSubscriptions() {
+std::vector<SdmSubscription> &
+DataChangeNotify::getAdditionalSdmSubscriptions() {
   return m_AdditionalSdmSubscriptions;
 }
 void DataChangeNotify::setAdditionalSdmSubscriptions(
@@ -154,8 +156,8 @@ bool DataChangeNotify::additionalSdmSubscriptionsIsSet() const {
 void DataChangeNotify::unsetAdditionalSdmSubscriptions() {
   m_AdditionalSdmSubscriptionsIsSet = false;
 }
-std::vector<SubscriptionDataSubscriptions>
-    &DataChangeNotify::getSubscriptionDataSubscriptions() {
+std::vector<SubscriptionDataSubscriptions> &
+DataChangeNotify::getSubscriptionDataSubscriptions() {
   return m_SubscriptionDataSubscriptions;
 }
 void DataChangeNotify::setSubscriptionDataSubscriptions(
@@ -170,4 +172,4 @@ void DataChangeNotify::unsetSubscriptionDataSubscriptions() {
   m_SubscriptionDataSubscriptionsIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

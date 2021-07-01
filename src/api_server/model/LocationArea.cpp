@@ -53,7 +53,8 @@ void to_json(nlohmann::json &j, const LocationArea &o) {
     j["geographicAreas"] = o.m_GeographicAreas;
   if (o.civicAddressesIsSet() || !o.m_CivicAddresses.empty())
     j["civicAddresses"] = o.m_CivicAddresses;
-  if (o.nwAreaInfoIsSet()) j["nwAreaInfo"] = o.m_NwAreaInfo;
+  if (o.nwAreaInfoIsSet())
+    j["nwAreaInfo"] = o.m_NwAreaInfo;
 }
 
 void from_json(const nlohmann::json &j, LocationArea &o) {
@@ -100,4 +101,4 @@ void LocationArea::setNwAreaInfo(NetworkAreaInfo const &value) {
 bool LocationArea::nwAreaInfoIsSet() const { return m_NwAreaInfoIsSet; }
 void LocationArea::unsetNwAreaInfo() { m_NwAreaInfoIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

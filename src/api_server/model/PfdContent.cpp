@@ -52,13 +52,16 @@ void PfdContent::validate() {
 
 void to_json(nlohmann::json &j, const PfdContent &o) {
   j = nlohmann::json();
-  if (o.pfdIdIsSet()) j["pfdId"] = o.m_PfdId;
+  if (o.pfdIdIsSet())
+    j["pfdId"] = o.m_PfdId;
   if (o.flowDescriptionsIsSet() || !o.m_FlowDescriptions.empty())
     j["flowDescriptions"] = o.m_FlowDescriptions;
-  if (o.urlsIsSet() || !o.m_Urls.empty()) j["urls"] = o.m_Urls;
+  if (o.urlsIsSet() || !o.m_Urls.empty())
+    j["urls"] = o.m_Urls;
   if (o.domainNamesIsSet() || !o.m_DomainNames.empty())
     j["domainNames"] = o.m_DomainNames;
-  if (o.dnProtocolIsSet()) j["dnProtocol"] = o.m_DnProtocol;
+  if (o.dnProtocolIsSet())
+    j["dnProtocol"] = o.m_DnProtocol;
 }
 
 void from_json(const nlohmann::json &j, PfdContent &o) {
@@ -124,4 +127,4 @@ void PfdContent::setDnProtocol(DomainNameProtocol const &value) {
 bool PfdContent::dnProtocolIsSet() const { return m_DnProtocolIsSet; }
 void PfdContent::unsetDnProtocol() { m_DnProtocolIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const PresenceState &o) {
 
 void from_json(const nlohmann::json &j, PresenceState &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

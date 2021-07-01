@@ -60,4 +60,4 @@ void LcsMoData::setAllowedServiceClasses(
   m_AllowedServiceClasses = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

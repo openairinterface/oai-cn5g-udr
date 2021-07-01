@@ -77,28 +77,40 @@ void to_json(nlohmann::json &j, const TrafficInfluDataPatch &o) {
   j = nlohmann::json();
   if (o.upPathChgNotifCorreIdIsSet())
     j["upPathChgNotifCorreId"] = o.m_UpPathChgNotifCorreId;
-  if (o.appReloIndIsSet()) j["appReloInd"] = o.m_AppReloInd;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
+  if (o.appReloIndIsSet())
+    j["appReloInd"] = o.m_AppReloInd;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
   if (o.ethTrafficFiltersIsSet() || !o.m_EthTrafficFilters.empty())
     j["ethTrafficFilters"] = o.m_EthTrafficFilters;
-  if (o.snssaiIsSet()) j["snssai"] = o.m_Snssai;
-  if (o.internalGroupIdIsSet()) j["internalGroupId"] = o.m_InternalGroupId;
-  if (o.supiIsSet()) j["supi"] = o.m_Supi;
+  if (o.snssaiIsSet())
+    j["snssai"] = o.m_Snssai;
+  if (o.internalGroupIdIsSet())
+    j["internalGroupId"] = o.m_InternalGroupId;
+  if (o.supiIsSet())
+    j["supi"] = o.m_Supi;
   if (o.trafficFiltersIsSet() || !o.m_TrafficFilters.empty())
     j["trafficFilters"] = o.m_TrafficFilters;
   if (o.trafficRoutesIsSet() || !o.m_TrafficRoutes.empty())
     j["trafficRoutes"] = o.m_TrafficRoutes;
-  if (o.traffCorreIndIsSet()) j["traffCorreInd"] = o.m_TraffCorreInd;
-  if (o.validStartTimeIsSet()) j["validStartTime"] = o.m_ValidStartTime;
-  if (o.validEndTimeIsSet()) j["validEndTime"] = o.m_ValidEndTime;
+  if (o.traffCorreIndIsSet())
+    j["traffCorreInd"] = o.m_TraffCorreInd;
+  if (o.validStartTimeIsSet())
+    j["validStartTime"] = o.m_ValidStartTime;
+  if (o.validEndTimeIsSet())
+    j["validEndTime"] = o.m_ValidEndTime;
   if (o.tempValiditiesIsSet() || !o.m_TempValidities.empty())
     j["tempValidities"] = o.m_TempValidities;
-  if (o.nwAreaInfoIsSet()) j["nwAreaInfo"] = o.m_NwAreaInfo;
+  if (o.nwAreaInfoIsSet())
+    j["nwAreaInfo"] = o.m_NwAreaInfo;
   if (o.upPathChgNotifUriIsSet())
     j["upPathChgNotifUri"] = o.m_UpPathChgNotifUri;
-  if (o.headersIsSet() || !o.m_Headers.empty()) j["headers"] = o.m_Headers;
-  if (o.afAckIndIsSet()) j["afAckInd"] = o.m_AfAckInd;
-  if (o.addrPreserIndIsSet()) j["addrPreserInd"] = o.m_AddrPreserInd;
+  if (o.headersIsSet() || !o.m_Headers.empty())
+    j["headers"] = o.m_Headers;
+  if (o.afAckIndIsSet())
+    j["afAckInd"] = o.m_AfAckInd;
+  if (o.addrPreserIndIsSet())
+    j["addrPreserInd"] = o.m_AddrPreserInd;
 }
 
 void from_json(const nlohmann::json &j, TrafficInfluDataPatch &o) {
@@ -375,4 +387,4 @@ void TrafficInfluDataPatch::unsetAddrPreserInd() {
   m_AddrPreserIndIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

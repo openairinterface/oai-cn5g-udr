@@ -49,7 +49,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class OdbData {
- public:
+public:
   OdbData();
   virtual ~OdbData();
 
@@ -62,18 +62,18 @@ class OdbData {
   ///
   /// </summary>
   RoamingOdb getRoamingOdb() const;
-  void setRoamingOdb(RoamingOdb const& value);
+  void setRoamingOdb(RoamingOdb const &value);
   bool roamingOdbIsSet() const;
   void unsetRoamingOdb();
 
-  friend void to_json(nlohmann::json& j, const OdbData& o);
-  friend void from_json(const nlohmann::json& j, OdbData& o);
+  friend void to_json(nlohmann::json &j, const OdbData &o);
+  friend void from_json(const nlohmann::json &j, OdbData &o);
 
- protected:
+protected:
   RoamingOdb m_RoamingOdb;
   bool m_RoamingOdbIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* OdbData_H_ */

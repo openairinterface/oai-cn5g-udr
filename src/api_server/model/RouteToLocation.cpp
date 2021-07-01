@@ -51,8 +51,10 @@ void RouteToLocation::validate() {
 void to_json(nlohmann::json &j, const RouteToLocation &o) {
   j = nlohmann::json();
   j["dnai"] = o.m_Dnai;
-  if (o.routeInfoIsSet()) j["routeInfo"] = o.m_RouteInfo;
-  if (o.routeProfIdIsSet()) j["routeProfId"] = o.m_RouteProfId;
+  if (o.routeInfoIsSet())
+    j["routeInfo"] = o.m_RouteInfo;
+  if (o.routeProfIdIsSet())
+    j["routeProfId"] = o.m_RouteProfId;
 }
 
 void from_json(const nlohmann::json &j, RouteToLocation &o) {
@@ -84,4 +86,4 @@ void RouteToLocation::setRouteProfId(std::string const &value) {
 bool RouteToLocation::routeProfIdIsSet() const { return m_RouteProfIdIsSet; }
 void RouteToLocation::unsetRouteProfId() { m_RouteProfIdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

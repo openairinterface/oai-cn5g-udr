@@ -50,4 +50,4 @@ void Delete5GVnGroupApiImpl::delete5_g_vn_group(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -52,7 +52,8 @@ void to_json(nlohmann::json &j, const PduSession &o) {
   j["dnn"] = o.m_Dnn;
   j["smfInstanceId"] = o.m_SmfInstanceId;
   j["plmnId"] = o.m_PlmnId;
-  if (o.singleNssaiIsSet()) j["singleNssai"] = o.m_SingleNssai;
+  if (o.singleNssaiIsSet())
+    j["singleNssai"] = o.m_SingleNssai;
 }
 
 void from_json(const nlohmann::json &j, PduSession &o) {
@@ -81,4 +82,4 @@ void PduSession::setSingleNssai(Snssai const &value) {
 bool PduSession::singleNssaiIsSet() const { return m_SingleNssaiIsSet; }
 void PduSession::unsetSingleNssai() { m_SingleNssaiIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

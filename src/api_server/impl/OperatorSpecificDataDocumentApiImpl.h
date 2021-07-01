@@ -40,14 +40,14 @@
 #ifndef OPERATOR_SPECIFIC_DATA_DOCUMENT_API_IMPL_H_
 #define OPERATOR_SPECIFIC_DATA_DOCUMENT_API_IMPL_H_
 
-#include <OperatorSpecificDataDocumentApi.h>
-#include <pistache/http.h>
-#include <pistache/optional.h>
-#include <map>
-#include <vector>
 #include "OperatorSpecificDataContainer.h"
 #include "PatchItem.h"
 #include "udr_app.hpp"
+#include <OperatorSpecificDataDocumentApi.h>
+#include <map>
+#include <pistache/http.h>
+#include <pistache/optional.h>
+#include <vector>
 
 namespace oai::udr::api {
 
@@ -56,11 +56,11 @@ using namespace oai::udr::app;
 
 class OperatorSpecificDataDocumentApiImpl
     : public oai::udr::api::OperatorSpecificDataDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   OperatorSpecificDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                       udr_app *udr_app_inst,
                                       std::string address);
@@ -80,6 +80,6 @@ class OperatorSpecificDataDocumentApiImpl
                                      Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

@@ -41,11 +41,10 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 ContextDataDocumentApiImpl::ContextDataDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : ContextDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
-      m_address(address) {}
+    : ContextDataDocumentApi(rtr), m_udr_app(udr_app_inst), m_address(address) {
+}
 
 // void ContextDataDocumentApiImpl::query_context_data(const std::string &ueId,
 // const Pistache::Optional<Set<ContextDataSetName>> &contextDatasetNames,
@@ -54,4 +53,4 @@ ContextDataDocumentApiImpl::ContextDataDocumentApiImpl(
 //    yet!\n");
 //}
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

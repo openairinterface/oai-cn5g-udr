@@ -65,4 +65,4 @@ void UpdatedItem::setItem(std::string const &value) { m_Item = value; }
 //    m_Value = value;
 //}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class GlobalRanNodeId {
- public:
+public:
   GlobalRanNodeId();
   virtual ~GlobalRanNodeId();
 
@@ -64,61 +64,61 @@ class GlobalRanNodeId {
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  void setPlmnId(PlmnId const &value);
   /// <summary>
   ///
   /// </summary>
   std::string getN3IwfId() const;
-  void setN3IwfId(std::string const& value);
+  void setN3IwfId(std::string const &value);
   bool n3IwfIdIsSet() const;
   void unsetN3IwfId();
   /// <summary>
   ///
   /// </summary>
   GNbId getGNbId() const;
-  void setGNbId(GNbId const& value);
+  void setGNbId(GNbId const &value);
   bool gNbIdIsSet() const;
   void unsetGNbId();
   /// <summary>
   ///
   /// </summary>
   std::string getNgeNbId() const;
-  void setNgeNbId(std::string const& value);
+  void setNgeNbId(std::string const &value);
   bool ngeNbIdIsSet() const;
   void unsetNgeNbId();
   /// <summary>
   ///
   /// </summary>
   std::string getWagfId() const;
-  void setWagfId(std::string const& value);
+  void setWagfId(std::string const &value);
   bool wagfIdIsSet() const;
   void unsetWagfId();
   /// <summary>
   ///
   /// </summary>
   std::string getTngfId() const;
-  void setTngfId(std::string const& value);
+  void setTngfId(std::string const &value);
   bool tngfIdIsSet() const;
   void unsetTngfId();
   /// <summary>
   ///
   /// </summary>
   std::string getNid() const;
-  void setNid(std::string const& value);
+  void setNid(std::string const &value);
   bool nidIsSet() const;
   void unsetNid();
   /// <summary>
   ///
   /// </summary>
   std::string getENbId() const;
-  void setENbId(std::string const& value);
+  void setENbId(std::string const &value);
   bool eNbIdIsSet() const;
   void unsetENbId();
 
-  friend void to_json(nlohmann::json& j, const GlobalRanNodeId& o);
-  friend void from_json(const nlohmann::json& j, GlobalRanNodeId& o);
+  friend void to_json(nlohmann::json &j, const GlobalRanNodeId &o);
+  friend void from_json(const nlohmann::json &j, GlobalRanNodeId &o);
 
- protected:
+protected:
   PlmnId m_PlmnId;
 
   std::string m_N3IwfId;
@@ -137,6 +137,6 @@ class GlobalRanNodeId {
   bool m_ENbIdIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* GlobalRanNodeId_H_ */

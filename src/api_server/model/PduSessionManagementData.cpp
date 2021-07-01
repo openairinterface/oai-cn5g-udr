@@ -69,25 +69,34 @@ void PduSessionManagementData::validate() {
 
 void to_json(nlohmann::json &j, const PduSessionManagementData &o) {
   j = nlohmann::json();
-  if (o.pduSessionStatusIsSet()) j["pduSessionStatus"] = o.m_PduSessionStatus;
+  if (o.pduSessionStatusIsSet())
+    j["pduSessionStatus"] = o.m_PduSessionStatus;
   if (o.pduSessionStatusTsIsSet())
     j["pduSessionStatusTs"] = o.m_PduSessionStatusTs;
-  if (o.dnaiIsSet()) j["dnai"] = o.m_Dnai;
-  if (o.dnaiTsIsSet()) j["dnaiTs"] = o.m_DnaiTs;
+  if (o.dnaiIsSet())
+    j["dnai"] = o.m_Dnai;
+  if (o.dnaiTsIsSet())
+    j["dnaiTs"] = o.m_DnaiTs;
   if (o.n6TrafficRoutingInfoIsSet() || !o.m_N6TrafficRoutingInfo.empty())
     j["n6TrafficRoutingInfo"] = o.m_N6TrafficRoutingInfo;
   if (o.n6TrafficRoutingInfoTsIsSet())
     j["n6TrafficRoutingInfoTs"] = o.m_N6TrafficRoutingInfoTs;
-  if (o.ipv4AddrIsSet()) j["ipv4Addr"] = o.m_Ipv4Addr;
+  if (o.ipv4AddrIsSet())
+    j["ipv4Addr"] = o.m_Ipv4Addr;
   if (o.ipv6PrefixIsSet() || !o.m_Ipv6Prefix.empty())
     j["ipv6Prefix"] = o.m_Ipv6Prefix;
   if (o.ipv6AddrsIsSet() || !o.m_Ipv6Addrs.empty())
     j["ipv6Addrs"] = o.m_Ipv6Addrs;
-  if (o.pduSessTypeIsSet()) j["pduSessType"] = o.m_PduSessType;
-  if (o.ipAddrTsIsSet()) j["ipAddrTs"] = o.m_IpAddrTs;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
-  if (o.pduSessionIdIsSet()) j["pduSessionId"] = o.m_PduSessionId;
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
+  if (o.pduSessTypeIsSet())
+    j["pduSessType"] = o.m_PduSessType;
+  if (o.ipAddrTsIsSet())
+    j["ipAddrTs"] = o.m_IpAddrTs;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
+  if (o.pduSessionIdIsSet())
+    j["pduSessionId"] = o.m_PduSessionId;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, PduSessionManagementData &o) {
@@ -190,8 +199,8 @@ void PduSessionManagementData::setDnaiTs(std::string const &value) {
 }
 bool PduSessionManagementData::dnaiTsIsSet() const { return m_DnaiTsIsSet; }
 void PduSessionManagementData::unsetDnaiTs() { m_DnaiTsIsSet = false; }
-std::vector<RouteToLocation>
-    &PduSessionManagementData::getN6TrafficRoutingInfo() {
+std::vector<RouteToLocation> &
+PduSessionManagementData::getN6TrafficRoutingInfo() {
   return m_N6TrafficRoutingInfo;
 }
 void PduSessionManagementData::setN6TrafficRoutingInfo(
@@ -298,4 +307,4 @@ void PduSessionManagementData::setSuppFeat(std::string const &value) {
 bool PduSessionManagementData::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void PduSessionManagementData::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

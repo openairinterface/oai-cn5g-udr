@@ -48,7 +48,8 @@ void PduSessionStatusCfg::validate() {
 
 void to_json(nlohmann::json &j, const PduSessionStatusCfg &o) {
   j = nlohmann::json();
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
 }
 
 void from_json(const nlohmann::json &j, PduSessionStatusCfg &o) {
@@ -66,4 +67,4 @@ void PduSessionStatusCfg::setDnn(std::string const &value) {
 bool PduSessionStatusCfg::dnnIsSet() const { return m_DnnIsSet; }
 void PduSessionStatusCfg::unsetDnn() { m_DnnIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

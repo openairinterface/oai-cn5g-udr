@@ -53,8 +53,10 @@ void to_json(nlohmann::json &j, const DatalinkReportingConfiguration &o) {
   j = nlohmann::json();
   if (o.dddTrafficDesIsSet() || !o.m_DddTrafficDes.empty())
     j["dddTrafficDes"] = o.m_DddTrafficDes;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
-  if (o.sliceIsSet()) j["slice"] = o.m_Slice;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
+  if (o.sliceIsSet())
+    j["slice"] = o.m_Slice;
   if (o.dddStatusListIsSet() || !o.m_DddStatusList.empty())
     j["dddStatusList"] = o.m_DddStatusList;
 }
@@ -78,8 +80,8 @@ void from_json(const nlohmann::json &j, DatalinkReportingConfiguration &o) {
   }
 }
 
-std::vector<DddTrafficDescriptor>
-    &DatalinkReportingConfiguration::getDddTrafficDes() {
+std::vector<DddTrafficDescriptor> &
+DatalinkReportingConfiguration::getDddTrafficDes() {
   return m_DddTrafficDes;
 }
 void DatalinkReportingConfiguration::setDddTrafficDes(
@@ -107,8 +109,8 @@ void DatalinkReportingConfiguration::setSlice(Snssai const &value) {
 }
 bool DatalinkReportingConfiguration::sliceIsSet() const { return m_SliceIsSet; }
 void DatalinkReportingConfiguration::unsetSlice() { m_SliceIsSet = false; }
-std::vector<DlDataDeliveryStatus>
-    &DatalinkReportingConfiguration::getDddStatusList() {
+std::vector<DlDataDeliveryStatus> &
+DatalinkReportingConfiguration::getDddStatusList() {
   return m_DddStatusList;
 }
 void DatalinkReportingConfiguration::setDddStatusList(
@@ -123,4 +125,4 @@ void DatalinkReportingConfiguration::unsetDddStatusList() {
   m_DddStatusListIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

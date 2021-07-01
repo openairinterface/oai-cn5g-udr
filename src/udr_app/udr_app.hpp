@@ -49,10 +49,10 @@ namespace udr {
 namespace app {
 
 class udr_app {
- public:
-  explicit udr_app(const std::string& config_file);
-  udr_app(udr_app const&) = delete;
-  void operator=(udr_app const&) = delete;
+public:
+  explicit udr_app(const std::string &config_file);
+  udr_app(udr_app const &) = delete;
+  void operator=(udr_app const &) = delete;
 
   virtual ~udr_app();
 
@@ -65,10 +65,10 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_am_data(const std::string& ue_id,
-                            const std::string& serving_plmn_id,
-                            nlohmann::json& response_data,
-                            Pistache::Http::Code& code);
+  void handle_query_am_data(const std::string &ue_id,
+                            const std::string &serving_plmn_id,
+                            nlohmann::json &response_data,
+                            Pistache::Http::Code &code);
 
   /*
    * Handle a request to create AMF3GPPAccessRegistration Context
@@ -81,9 +81,9 @@ class udr_app {
    * @return void
    */
   void handle_create_amf_context_3gpp(
-      const std::string& ue_id,
-      Amf3GppAccessRegistration& amf3GppAccessRegistration,
-      nlohmann::json& response_data, Pistache::Http::Code& code);
+      const std::string &ue_id,
+      Amf3GppAccessRegistration &amf3GppAccessRegistration,
+      nlohmann::json &response_data, Pistache::Http::Code &code);
 
   /*
    * Handle a query for AMF3GPPAccessRegistration
@@ -93,9 +93,9 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_amf_context_3gpp(const std::string& ue_id,
-                                     nlohmann::json& response_data,
-                                     Pistache::Http::Code& code);
+  void handle_query_amf_context_3gpp(const std::string &ue_id,
+                                     nlohmann::json &response_data,
+                                     Pistache::Http::Code &code);
 
   /*
    * Handle a request to create AuthenticationStatus
@@ -106,10 +106,10 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_create_authentication_status(const std::string& ue_id,
-                                           const AuthEvent& authEvent,
-                                           nlohmann::json& response_data,
-                                           Pistache::Http::Code& code);
+  void handle_create_authentication_status(const std::string &ue_id,
+                                           const AuthEvent &authEvent,
+                                           nlohmann::json &response_data,
+                                           Pistache::Http::Code &code);
 
   /*
    * Handle a request to delete AuthenticationStatus
@@ -119,9 +119,9 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_delete_authentication_status(const std::string& ue_id,
-                                           nlohmann::json& response_data,
-                                           Pistache::Http::Code& code);
+  void handle_delete_authentication_status(const std::string &ue_id,
+                                           nlohmann::json &response_data,
+                                           Pistache::Http::Code &code);
 
   /*
    * Handle a request to retrieve AuthenticationStatus
@@ -131,9 +131,9 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_authentication_status(const std::string& ue_id,
-                                          nlohmann::json& response_data,
-                                          Pistache::Http::Code& code);
+  void handle_query_authentication_status(const std::string &ue_id,
+                                          nlohmann::json &response_data,
+                                          Pistache::Http::Code &code);
 
   /*
    * Handle a request to modify AuthenticationSubscription
@@ -145,8 +145,8 @@ class udr_app {
    * @return void
    */
   void handle_modify_authentication_subscription(
-      const std::string& ue_id, const std::vector<PatchItem>& patchItem,
-      nlohmann::json& response_data, Pistache::Http::Code& code);
+      const std::string &ue_id, const std::vector<PatchItem> &patchItem,
+      nlohmann::json &response_data, Pistache::Http::Code &code);
 
   /*
    * Handle a request to get AuthenticationSubscription
@@ -156,9 +156,9 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_read_authentication_subscription(const std::string& ue_id,
-                                               nlohmann::json& response_data,
-                                               Pistache::Http::Code& code);
+  void handle_read_authentication_subscription(const std::string &ue_id,
+                                               nlohmann::json &response_data,
+                                               Pistache::Http::Code &code);
 
   /*
    * Handle a request to retrieve SDMSubscription
@@ -169,10 +169,10 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_sdm_subscription(const std::string& ue_id,
-                                     const std::string& subs_id,
-                                     nlohmann::json& response_data,
-                                     Pistache::Http::Code& code);
+  void handle_query_sdm_subscription(const std::string &ue_id,
+                                     const std::string &subs_id,
+                                     nlohmann::json &response_data,
+                                     Pistache::Http::Code &code);
 
   /*
    * Handle a request to remove SDMSubscription (SDMSubscriptionDocumentApiImpl)
@@ -182,10 +182,10 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_remove_sdm_subscription(const std::string& ue_id,
-                                      const std::string& subs_id,
-                                      nlohmann::json& response_data,
-                                      Pistache::Http::Code& code);
+  void handle_remove_sdm_subscription(const std::string &ue_id,
+                                      const std::string &subs_id,
+                                      nlohmann::json &response_data,
+                                      Pistache::Http::Code &code);
 
   /*
    * Handle a request to update SDMSubscription (SDMSubscriptionDocumentApiImpl)
@@ -196,11 +196,11 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_update_sdm_subscription(const std::string& ue_id,
-                                      const std::string& subs_id,
-                                      SdmSubscription& sdmSubscription,
-                                      nlohmann::json& response_data,
-                                      Pistache::Http::Code& code);
+  void handle_update_sdm_subscription(const std::string &ue_id,
+                                      const std::string &subs_id,
+                                      SdmSubscription &sdmSubscription,
+                                      nlohmann::json &response_data,
+                                      Pistache::Http::Code &code);
 
   /*
    * Handle a request to create SDMSubscriptions
@@ -211,10 +211,10 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_create_sdm_subscriptions(const std::string& ue_id,
-                                       SdmSubscription& sdmSubscription,
-                                       nlohmann::json& response_data,
-                                       Pistache::Http::Code& code);
+  void handle_create_sdm_subscriptions(const std::string &ue_id,
+                                       SdmSubscription &sdmSubscription,
+                                       nlohmann::json &response_data,
+                                       Pistache::Http::Code &code);
 
   /*
    * Handle a request to retrieve SDMSubscriptions
@@ -224,9 +224,9 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_sdm_subscriptions(const std::string& ue_id,
-                                      nlohmann::json& response_data,
-                                      Pistache::Http::Code& code);
+  void handle_query_sdm_subscriptions(const std::string &ue_id,
+                                      nlohmann::json &response_data,
+                                      Pistache::Http::Code &code);
 
   /*
    * Handle a request to retrieve SessionManagementSubscription
@@ -237,10 +237,10 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_sm_data(const std::string& ue_id,
-                            const std::string& serving_plmn_id,
-                            nlohmann::json& response_data,
-                            Pistache::Http::Code& code);
+  void handle_query_sm_data(const std::string &ue_id,
+                            const std::string &serving_plmn_id,
+                            nlohmann::json &response_data,
+                            Pistache::Http::Code &code);
 
   /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)
@@ -252,9 +252,9 @@ class udr_app {
    * @return void
    */
   void handle_create_smf_context_non_3gpp(
-      const std::string& ue_id, const int32_t& pdu_session_id,
-      const SmfRegistration& smfRegistration, nlohmann::json& response_data,
-      Pistache::Http::Code& code);
+      const std::string &ue_id, const int32_t &pdu_session_id,
+      const SmfRegistration &smfRegistration, nlohmann::json &response_data,
+      Pistache::Http::Code &code);
 
   /*
    * Handle a request to delete SMFRegistration (SMFRegistrationDocumentApiImpl)
@@ -264,10 +264,10 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_delete_smf_context(const std::string& ue_id,
-                                 const int32_t& pdu_session_id,
-                                 nlohmann::json& response_data,
-                                 Pistache::Http::Code& code);
+  void handle_delete_smf_context(const std::string &ue_id,
+                                 const int32_t &pdu_session_id,
+                                 nlohmann::json &response_data,
+                                 Pistache::Http::Code &code);
 
   /*
    * Handle a request to retrieve SMFRegistration
@@ -278,10 +278,10 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_smf_registration(const std::string& ue_id,
-                                     const int32_t& pdu_session_id,
-                                     nlohmann::json& response_data,
-                                     Pistache::Http::Code& code);
+  void handle_query_smf_registration(const std::string &ue_id,
+                                     const int32_t &pdu_session_id,
+                                     nlohmann::json &response_data,
+                                     Pistache::Http::Code &code);
 
   /*
    * Handle a request to retrieve SMFRegistrationsCollection
@@ -291,9 +291,9 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_smf_reg_list(const std::string& ue_id,
-                                 nlohmann::json& response_data,
-                                 Pistache::Http::Code& code);
+  void handle_query_smf_reg_list(const std::string &ue_id,
+                                 nlohmann::json &response_data,
+                                 Pistache::Http::Code &code);
 
   /*
    * Handle a request to retrieve SMFSelectionSubscription
@@ -304,17 +304,17 @@ class udr_app {
    * @param [Pistache::Http::Code&] code: HTTP response code
    * @return void
    */
-  void handle_query_smf_select_data(const std::string& ue_id,
-                                    const std::string& serving_plmn_id,
-                                    nlohmann::json& response_data,
-                                    Pistache::Http::Code& code);
+  void handle_query_smf_select_data(const std::string &ue_id,
+                                    const std::string &serving_plmn_id,
+                                    nlohmann::json &response_data,
+                                    Pistache::Http::Code &code);
 
- private:
+private:
   MYSQL mysql;
 };
-}  // namespace app
-}  // namespace udr
-}  // namespace oai
+} // namespace app
+} // namespace udr
+} // namespace oai
 #include "udr_config.hpp"
 
 #endif /* FILE_UDR_APP_HPP_SEEN */

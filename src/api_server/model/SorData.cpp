@@ -53,8 +53,10 @@ void to_json(nlohmann::json &j, const SorData &o) {
   j = nlohmann::json();
   j["provisioningTime"] = o.m_ProvisioningTime;
   j["ueUpdateStatus"] = o.m_UeUpdateStatus;
-  if (o.sorXmacIueIsSet()) j["sorXmacIue"] = o.m_SorXmacIue;
-  if (o.sorMacIueIsSet()) j["sorMacIue"] = o.m_SorMacIue;
+  if (o.sorXmacIueIsSet())
+    j["sorXmacIue"] = o.m_SorXmacIue;
+  if (o.sorMacIueIsSet())
+    j["sorMacIue"] = o.m_SorMacIue;
 }
 
 void from_json(const nlohmann::json &j, SorData &o) {
@@ -93,4 +95,4 @@ void SorData::setSorMacIue(std::string const &value) {
 bool SorData::sorMacIueIsSet() const { return m_SorMacIueIsSet; }
 void SorData::unsetSorMacIue() { m_SorMacIueIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

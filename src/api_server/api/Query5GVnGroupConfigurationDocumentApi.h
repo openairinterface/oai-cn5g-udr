@@ -53,7 +53,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class Query5GVnGroupConfigurationDocumentApi {
- public:
+public:
   Query5GVnGroupConfigurationDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~Query5GVnGroupConfigurationDocumentApi() {}
@@ -61,7 +61,7 @@ class Query5GVnGroupConfigurationDocumentApi {
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void get5_g_vn_group_configuration_handler(
@@ -80,11 +80,11 @@ class Query5GVnGroupConfigurationDocumentApi {
   ///
   /// </remarks>
   /// <param name="externalGroupId"></param>
-  virtual void get5_g_vn_group_configuration(
-      const std::string &externalGroupId,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  get5_g_vn_group_configuration(const std::string &externalGroupId,
+                                Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* Query5GVnGroupConfigurationDocumentApi_H_ */

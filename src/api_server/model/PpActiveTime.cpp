@@ -56,7 +56,8 @@ void to_json(nlohmann::json &j, const PpActiveTime &o) {
   j["activeTime"] = o.m_ActiveTime;
   j["afInstanceId"] = o.m_AfInstanceId;
   j["referenceId"] = o.m_ReferenceId;
-  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
+  if (o.validityTimeIsSet())
+    j["validityTime"] = o.m_ValidityTime;
   if (o.mtcProviderInformationIsSet())
     j["mtcProviderInformation"] = o.m_MtcProviderInformation;
 }
@@ -106,4 +107,4 @@ void PpActiveTime::unsetMtcProviderInformation() {
   m_MtcProviderInformationIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

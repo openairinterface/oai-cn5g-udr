@@ -44,8 +44,7 @@ ProvisionedParameterDataDocumentApiImpl::
     ProvisionedParameterDataDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : ProvisionedParameterDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : ProvisionedParameterDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void ProvisionedParameterDataDocumentApiImpl::modify_pp_data(
@@ -56,4 +55,4 @@ void ProvisionedParameterDataDocumentApiImpl::modify_pp_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

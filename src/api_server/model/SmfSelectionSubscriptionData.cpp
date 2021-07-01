@@ -88,8 +88,8 @@ bool SmfSelectionSubscriptionData::supportedFeaturesIsSet() const {
 void SmfSelectionSubscriptionData::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
-std::map<std::string, SnssaiInfo>
-    &SmfSelectionSubscriptionData::getSubscribedSnssaiInfos() {
+std::map<std::string, SnssaiInfo> &
+SmfSelectionSubscriptionData::getSubscribedSnssaiInfos() {
   return m_SubscribedSnssaiInfos;
 }
 void SmfSelectionSubscriptionData::setSubscribedSnssaiInfos(
@@ -118,4 +118,4 @@ void SmfSelectionSubscriptionData::unsetSharedSnssaiInfosId() {
   m_SharedSnssaiInfosIdIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

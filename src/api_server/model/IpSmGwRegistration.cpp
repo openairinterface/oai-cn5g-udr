@@ -51,10 +51,12 @@ void IpSmGwRegistration::validate() {
 
 void to_json(nlohmann::json &j, const IpSmGwRegistration &o) {
   j = nlohmann::json();
-  if (o.ipSmGwMapAddressIsSet()) j["ipSmGwMapAddress"] = o.m_IpSmGwMapAddress;
+  if (o.ipSmGwMapAddressIsSet())
+    j["ipSmGwMapAddress"] = o.m_IpSmGwMapAddress;
   if (o.ipSmGwDiameterAddressIsSet())
     j["ipSmGwDiameterAddress"] = o.m_IpSmGwDiameterAddress;
-  if (o.unriIndicatorIsSet()) j["unriIndicator"] = o.m_UnriIndicator;
+  if (o.unriIndicatorIsSet())
+    j["unriIndicator"] = o.m_UnriIndicator;
 }
 
 void from_json(const nlohmann::json &j, IpSmGwRegistration &o) {
@@ -85,8 +87,8 @@ bool IpSmGwRegistration::ipSmGwMapAddressIsSet() const {
 void IpSmGwRegistration::unsetIpSmGwMapAddress() {
   m_IpSmGwMapAddressIsSet = false;
 }
-NetworkNodeDiameterAddress IpSmGwRegistration::getIpSmGwDiameterAddress()
-    const {
+NetworkNodeDiameterAddress
+IpSmGwRegistration::getIpSmGwDiameterAddress() const {
   return m_IpSmGwDiameterAddress;
 }
 void IpSmGwRegistration::setIpSmGwDiameterAddress(
@@ -110,4 +112,4 @@ bool IpSmGwRegistration::unriIndicatorIsSet() const {
 }
 void IpSmGwRegistration::unsetUnriIndicator() { m_UnriIndicatorIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

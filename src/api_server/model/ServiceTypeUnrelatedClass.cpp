@@ -57,8 +57,10 @@ void to_json(nlohmann::json &j, const ServiceTypeUnrelatedClass &o) {
     j["allowedGeographicArea"] = o.m_AllowedGeographicArea;
   if (o.privacyCheckRelatedActionIsSet())
     j["privacyCheckRelatedAction"] = o.m_PrivacyCheckRelatedAction;
-  if (o.codeWordIndIsSet()) j["codeWordInd"] = o.m_CodeWordInd;
-  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.codeWordIndIsSet())
+    j["codeWordInd"] = o.m_CodeWordInd;
+  if (o.validTimePeriodIsSet())
+    j["validTimePeriod"] = o.m_ValidTimePeriod;
   if (o.codeWordListIsSet() || !o.m_CodeWordList.empty())
     j["codeWordList"] = o.m_CodeWordList;
 }
@@ -93,8 +95,8 @@ int32_t ServiceTypeUnrelatedClass::getServiceType() const {
 void ServiceTypeUnrelatedClass::setServiceType(int32_t const value) {
   m_ServiceType = value;
 }
-std::vector<GeographicArea>
-    &ServiceTypeUnrelatedClass::getAllowedGeographicArea() {
+std::vector<GeographicArea> &
+ServiceTypeUnrelatedClass::getAllowedGeographicArea() {
   return m_AllowedGeographicArea;
 }
 void ServiceTypeUnrelatedClass::setAllowedGeographicArea(
@@ -165,4 +167,4 @@ void ServiceTypeUnrelatedClass::unsetCodeWordList() {
   m_CodeWordListIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

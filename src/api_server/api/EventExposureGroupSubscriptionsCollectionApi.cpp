@@ -51,18 +51,18 @@ void EventExposureGroupSubscriptionsCollectionApi::init() { setupRoutes(); }
 void EventExposureGroupSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(
-      *router,
-      base + "/subscription-data/group-data/:ueGroupId/ee-subscriptions",
-      Routes::bind(&EventExposureGroupSubscriptionsCollectionApi::
-                       create_ee_group_subscriptions_handler,
-                   this));
-  Routes::Get(
-      *router,
-      base + "/subscription-data/group-data/:ueGroupId/ee-subscriptions",
-      Routes::bind(&EventExposureGroupSubscriptionsCollectionApi::
-                       query_ee_group_subscriptions_handler,
-                   this));
+  Routes::Post(*router,
+               base +
+                   "/subscription-data/group-data/:ueGroupId/ee-subscriptions",
+               Routes::bind(&EventExposureGroupSubscriptionsCollectionApi::
+                                create_ee_group_subscriptions_handler,
+                            this));
+  Routes::Get(*router,
+              base +
+                  "/subscription-data/group-data/:ueGroupId/ee-subscriptions",
+              Routes::bind(&EventExposureGroupSubscriptionsCollectionApi::
+                               query_ee_group_subscriptions_handler,
+                           this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -139,4 +139,4 @@ void EventExposureGroupSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -63,4 +63,4 @@ void ResourceItem::setItems(std::vector<std::string> const &value) {
   m_Items = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

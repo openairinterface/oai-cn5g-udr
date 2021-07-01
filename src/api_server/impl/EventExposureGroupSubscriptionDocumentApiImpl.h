@@ -40,13 +40,13 @@
 #ifndef EVENT_EXPOSURE_GROUP_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 #define EVENT_EXPOSURE_GROUP_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 
+#include "EeSubscription.h"
+#include "PatchItem.h"
+#include "udr_app.hpp"
 #include <EventExposureGroupSubscriptionDocumentApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
 #include <vector>
-#include "EeSubscription.h"
-#include "PatchItem.h"
-#include "udr_app.hpp"
 
 namespace oai::udr::api {
 
@@ -55,11 +55,11 @@ using namespace oai::udr::app;
 
 class EventExposureGroupSubscriptionDocumentApiImpl
     : public oai::udr::api::EventExposureGroupSubscriptionDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   EventExposureGroupSubscriptionDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
@@ -82,6 +82,6 @@ class EventExposureGroupSubscriptionDocumentApiImpl
                                      Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

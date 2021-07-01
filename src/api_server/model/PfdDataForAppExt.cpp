@@ -53,8 +53,10 @@ void to_json(nlohmann::json &j, const PfdDataForAppExt &o) {
   j = nlohmann::json();
   j["applicationId"] = o.m_ApplicationId;
   j["pfds"] = o.m_Pfds;
-  if (o.cachingTimeIsSet()) j["cachingTime"] = o.m_CachingTime;
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
+  if (o.cachingTimeIsSet())
+    j["cachingTime"] = o.m_CachingTime;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, PfdDataForAppExt &o) {
@@ -95,4 +97,4 @@ void PfdDataForAppExt::setSuppFeat(std::string const &value) {
 bool PfdDataForAppExt::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void PfdDataForAppExt::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

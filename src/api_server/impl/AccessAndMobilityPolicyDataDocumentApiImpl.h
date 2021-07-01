@@ -54,20 +54,20 @@ using namespace oai::udr::app;
 
 class AccessAndMobilityPolicyDataDocumentApiImpl
     : public oai::udr::api::AccessAndMobilityPolicyDataDocumentApi {
- private:
-  udr_app* m_udr_app;
+private:
+  udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   AccessAndMobilityPolicyDataDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
   ~AccessAndMobilityPolicyDataDocumentApiImpl() {}
 
   void read_access_and_mobility_policy_data(
-      const std::string& ueId, Pistache::Http::ResponseWriter& response);
+      const std::string &ueId, Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

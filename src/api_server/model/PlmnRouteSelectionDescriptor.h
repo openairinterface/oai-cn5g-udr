@@ -55,7 +55,7 @@ namespace oai::udr::model {
 /// the UE for a serving PLMN
 /// </summary>
 class PlmnRouteSelectionDescriptor {
- public:
+public:
   PlmnRouteSelectionDescriptor();
   virtual ~PlmnRouteSelectionDescriptor();
 
@@ -68,27 +68,27 @@ class PlmnRouteSelectionDescriptor {
   ///
   /// </summary>
   PlmnId getServingPlmn() const;
-  void setServingPlmn(PlmnId const& value);
+  void setServingPlmn(PlmnId const &value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<SnssaiRouteSelectionDescriptor>& getSnssaiRouteSelDescs();
+  std::vector<SnssaiRouteSelectionDescriptor> &getSnssaiRouteSelDescs();
   void setSnssaiRouteSelDescs(
-      std::vector<SnssaiRouteSelectionDescriptor> const& value);
+      std::vector<SnssaiRouteSelectionDescriptor> const &value);
   bool snssaiRouteSelDescsIsSet() const;
   void unsetSnssaiRouteSelDescs();
 
-  friend void to_json(nlohmann::json& j, const PlmnRouteSelectionDescriptor& o);
-  friend void from_json(const nlohmann::json& j,
-                        PlmnRouteSelectionDescriptor& o);
+  friend void to_json(nlohmann::json &j, const PlmnRouteSelectionDescriptor &o);
+  friend void from_json(const nlohmann::json &j,
+                        PlmnRouteSelectionDescriptor &o);
 
- protected:
+protected:
   PlmnId m_ServingPlmn;
 
   std::vector<SnssaiRouteSelectionDescriptor> m_SnssaiRouteSelDescs;
   bool m_SnssaiRouteSelDescsIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* PlmnRouteSelectionDescriptor_H_ */

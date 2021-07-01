@@ -50,8 +50,10 @@ void ValidTimePeriod::validate() {
 
 void to_json(nlohmann::json &j, const ValidTimePeriod &o) {
   j = nlohmann::json();
-  if (o.startTimeIsSet()) j["startTime"] = o.m_StartTime;
-  if (o.endTimeIsSet()) j["endTime"] = o.m_EndTime;
+  if (o.startTimeIsSet())
+    j["startTime"] = o.m_StartTime;
+  if (o.endTimeIsSet())
+    j["endTime"] = o.m_EndTime;
 }
 
 void from_json(const nlohmann::json &j, ValidTimePeriod &o) {
@@ -80,4 +82,4 @@ void ValidTimePeriod::setEndTime(std::string const &value) {
 bool ValidTimePeriod::endTimeIsSet() const { return m_EndTimeIsSet; }
 void ValidTimePeriod::unsetEndTime() { m_EndTimeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

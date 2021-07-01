@@ -47,4 +47,4 @@ void to_json(nlohmann::json &j, const LineType &o) { j = nlohmann::json(); }
 
 void from_json(const nlohmann::json &j, LineType &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

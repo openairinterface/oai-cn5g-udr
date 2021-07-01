@@ -53,11 +53,11 @@ using namespace oai::udr::app;
 
 class AccessAndMobilityDataApiImpl
     : public oai::udr::api::AccessAndMobilityDataApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   AccessAndMobilityDataApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                udr_app *udr_app_inst, std::string address);
   ~AccessAndMobilityDataApiImpl() {}
@@ -66,8 +66,9 @@ class AccessAndMobilityDataApiImpl
       const std::string &ueId,
       const AccessAndMobilityData &accessAndMobilityData,
       Pistache::Http::ResponseWriter &response);
-  void delete_access_and_mobility_data(
-      const std::string &ueId, Pistache::Http::ResponseWriter &response);
+  void
+  delete_access_and_mobility_data(const std::string &ueId,
+                                  Pistache::Http::ResponseWriter &response);
   void query_access_and_mobility_data(
       const std::string &ueId, const Pistache::Optional<std::string> &suppFeat,
       Pistache::Http::ResponseWriter &response);
@@ -77,6 +78,6 @@ class AccessAndMobilityDataApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

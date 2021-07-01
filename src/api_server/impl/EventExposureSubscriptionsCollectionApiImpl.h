@@ -54,11 +54,11 @@ using namespace oai::udr::app;
 
 class EventExposureSubscriptionsCollectionApiImpl
     : public oai::udr::api::EventExposureSubscriptionsCollectionApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   EventExposureSubscriptionsCollectionApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
@@ -67,12 +67,12 @@ class EventExposureSubscriptionsCollectionApiImpl
   void create_ee_subscriptions(const std::string &ueId,
                                const EeSubscription &eeSubscription,
                                Pistache::Http::ResponseWriter &response);
-  void queryeesubscriptions(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response);
+  void
+  queryeesubscriptions(const std::string &ueId,
+                       const Pistache::Optional<std::string> &supportedFeatures,
+                       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

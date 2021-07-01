@@ -42,8 +42,7 @@ using namespace oai::udr::model;
 AccessAndMobilityDataApiImpl::AccessAndMobilityDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : AccessAndMobilityDataApi(rtr),
-      m_udr_app(udr_app_inst),
+    : AccessAndMobilityDataApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AccessAndMobilityDataApiImpl::create_or_replace_access_and_mobility_data(
@@ -70,4 +69,4 @@ void AccessAndMobilityDataApiImpl::update_access_and_mobility_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

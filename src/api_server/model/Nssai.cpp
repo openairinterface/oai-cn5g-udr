@@ -57,7 +57,8 @@ void to_json(nlohmann::json &j, const Nssai &o) {
   j["defaultSingleNssais"] = o.m_DefaultSingleNssais;
   if (o.singleNssaisIsSet() || !o.m_SingleNssais.empty())
     j["singleNssais"] = o.m_SingleNssais;
-  if (o.provisioningTimeIsSet()) j["provisioningTime"] = o.m_ProvisioningTime;
+  if (o.provisioningTimeIsSet())
+    j["provisioningTime"] = o.m_ProvisioningTime;
   if (o.additionalSnssaiDataIsSet() || !o.m_AdditionalSnssaiData.empty())
     j["additionalSnssaiData"] = o.m_AdditionalSnssaiData;
 }
@@ -122,4 +123,4 @@ bool Nssai::additionalSnssaiDataIsSet() const {
 }
 void Nssai::unsetAdditionalSnssaiData() { m_AdditionalSnssaiDataIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

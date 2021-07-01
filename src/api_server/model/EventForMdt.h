@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class EventForMdt {
- public:
+public:
   EventForMdt();
   virtual ~EventForMdt();
 
@@ -56,12 +56,12 @@ class EventForMdt {
   /////////////////////////////////////////////
   /// EventForMdt members
 
-  friend void to_json(nlohmann::json& j, const EventForMdt& o);
-  friend void from_json(const nlohmann::json& j, EventForMdt& o);
+  friend void to_json(nlohmann::json &j, const EventForMdt &o);
+  friend void from_json(const nlohmann::json &j, EventForMdt &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* EventForMdt_H_ */

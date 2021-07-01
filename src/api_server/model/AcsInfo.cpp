@@ -51,9 +51,12 @@ void AcsInfo::validate() {
 
 void to_json(nlohmann::json &j, const AcsInfo &o) {
   j = nlohmann::json();
-  if (o.acsUrlIsSet()) j["acsUrl"] = o.m_AcsUrl;
-  if (o.acsIpv4AddrIsSet()) j["acsIpv4Addr"] = o.m_AcsIpv4Addr;
-  if (o.acsIpv6AddrIsSet()) j["acsIpv6Addr"] = o.m_AcsIpv6Addr;
+  if (o.acsUrlIsSet())
+    j["acsUrl"] = o.m_AcsUrl;
+  if (o.acsIpv4AddrIsSet())
+    j["acsIpv4Addr"] = o.m_AcsIpv4Addr;
+  if (o.acsIpv6AddrIsSet())
+    j["acsIpv6Addr"] = o.m_AcsIpv6Addr;
 }
 
 void from_json(const nlohmann::json &j, AcsInfo &o) {
@@ -93,4 +96,4 @@ void AcsInfo::setAcsIpv6Addr(Ipv6Addr const &value) {
 bool AcsInfo::acsIpv6AddrIsSet() const { return m_AcsIpv6AddrIsSet; }
 void AcsInfo::unsetAcsIpv6Addr() { m_AcsIpv6AddrIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

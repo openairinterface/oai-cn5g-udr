@@ -54,4 +54,4 @@ void TraceDataDocumentApiImpl::query_trace_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

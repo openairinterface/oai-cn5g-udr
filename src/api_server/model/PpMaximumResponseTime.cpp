@@ -56,7 +56,8 @@ void to_json(nlohmann::json &j, const PpMaximumResponseTime &o) {
   j["maximumResponseTime"] = o.m_MaximumResponseTime;
   j["afInstanceId"] = o.m_AfInstanceId;
   j["referenceId"] = o.m_ReferenceId;
-  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
+  if (o.validityTimeIsSet())
+    j["validityTime"] = o.m_ValidityTime;
   if (o.mtcProviderInformationIsSet())
     j["mtcProviderInformation"] = o.m_MtcProviderInformation;
 }
@@ -117,4 +118,4 @@ void PpMaximumResponseTime::unsetMtcProviderInformation() {
   m_MtcProviderInformationIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

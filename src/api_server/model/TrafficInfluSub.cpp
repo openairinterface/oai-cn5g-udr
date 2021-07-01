@@ -55,13 +55,17 @@ void TrafficInfluSub::validate() {
 
 void to_json(nlohmann::json &j, const TrafficInfluSub &o) {
   j = nlohmann::json();
-  if (o.dnnsIsSet() || !o.m_Dnns.empty()) j["dnns"] = o.m_Dnns;
-  if (o.snssaisIsSet() || !o.m_Snssais.empty()) j["snssais"] = o.m_Snssais;
+  if (o.dnnsIsSet() || !o.m_Dnns.empty())
+    j["dnns"] = o.m_Dnns;
+  if (o.snssaisIsSet() || !o.m_Snssais.empty())
+    j["snssais"] = o.m_Snssais;
   if (o.internalGroupIdsIsSet() || !o.m_InternalGroupIds.empty())
     j["internalGroupIds"] = o.m_InternalGroupIds;
-  if (o.supisIsSet() || !o.m_Supis.empty()) j["supis"] = o.m_Supis;
+  if (o.supisIsSet() || !o.m_Supis.empty())
+    j["supis"] = o.m_Supis;
   j["notificationUri"] = o.m_NotificationUri;
-  if (o.expiryIsSet()) j["expiry"] = o.m_Expiry;
+  if (o.expiryIsSet())
+    j["expiry"] = o.m_Expiry;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
 }
@@ -156,4 +160,4 @@ void TrafficInfluSub::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

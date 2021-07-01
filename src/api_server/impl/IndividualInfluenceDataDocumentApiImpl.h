@@ -40,12 +40,12 @@
 #ifndef INDIVIDUAL_INFLUENCE_DATA_DOCUMENT_API_IMPL_H_
 #define INDIVIDUAL_INFLUENCE_DATA_DOCUMENT_API_IMPL_H_
 
-#include <IndividualInfluenceDataDocumentApi.h>
-#include <pistache/http.h>
-#include <pistache/optional.h>
 #include "TrafficInfluData.h"
 #include "TrafficInfluDataPatch.h"
 #include "udr_app.hpp"
+#include <IndividualInfluenceDataDocumentApi.h>
+#include <pistache/http.h>
+#include <pistache/optional.h>
 
 namespace oai::udr::api {
 
@@ -54,11 +54,11 @@ using namespace oai::udr::app;
 
 class IndividualInfluenceDataDocumentApiImpl
     : public oai::udr::api::IndividualInfluenceDataDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   IndividualInfluenceDataDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
@@ -67,14 +67,15 @@ class IndividualInfluenceDataDocumentApiImpl
   void create_or_replace_individual_influence_data(
       const std::string &influenceId, const TrafficInfluData &trafficInfluData,
       Pistache::Http::ResponseWriter &response);
-  void delete_individual_influence_data(
-      const std::string &influenceId, Pistache::Http::ResponseWriter &response);
+  void
+  delete_individual_influence_data(const std::string &influenceId,
+                                   Pistache::Http::ResponseWriter &response);
   void update_individual_influence_data(
       const std::string &influenceId,
       const TrafficInfluDataPatch &trafficInfluDataPatch,
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

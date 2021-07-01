@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 SMFRegistrationsCollectionApiImpl::SMFRegistrationsCollectionApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : SMFRegistrationsCollectionApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SMFRegistrationsCollectionApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(
@@ -59,4 +58,4 @@ void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(
   response.send(code, response_data.dump().c_str());
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

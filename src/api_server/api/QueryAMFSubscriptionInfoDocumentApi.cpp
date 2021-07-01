@@ -51,9 +51,8 @@ void QueryAMFSubscriptionInfoDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base +
-                  "/subscription-data/:ueId/context-data/ee-subscriptions/"
-                  ":subsId/amf-subscriptions",
+              base + "/subscription-data/:ueId/context-data/ee-subscriptions/"
+                     ":subsId/amf-subscriptions",
               Routes::bind(&QueryAMFSubscriptionInfoDocumentApi::
                                get_amf_subscription_info_handler,
                            this));
@@ -96,4 +95,4 @@ void QueryAMFSubscriptionInfoDocumentApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

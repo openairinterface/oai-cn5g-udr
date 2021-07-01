@@ -56,7 +56,8 @@ void to_json(nlohmann::json &j, const PpMaximumLatency &o) {
   j["maximumLatency"] = o.m_MaximumLatency;
   j["afInstanceId"] = o.m_AfInstanceId;
   j["referenceId"] = o.m_ReferenceId;
-  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
+  if (o.validityTimeIsSet())
+    j["validityTime"] = o.m_ValidityTime;
   if (o.mtcProviderInformationIsSet())
     j["mtcProviderInformation"] = o.m_MtcProviderInformation;
 }
@@ -108,4 +109,4 @@ void PpMaximumLatency::unsetMtcProviderInformation() {
   m_MtcProviderInformationIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

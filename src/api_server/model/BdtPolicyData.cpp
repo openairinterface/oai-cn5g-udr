@@ -56,12 +56,17 @@ void BdtPolicyData::validate() {
 
 void to_json(nlohmann::json &j, const BdtPolicyData &o) {
   j = nlohmann::json();
-  if (o.interGroupIdIsSet()) j["interGroupId"] = o.m_InterGroupId;
-  if (o.supiIsSet()) j["supi"] = o.m_Supi;
+  if (o.interGroupIdIsSet())
+    j["interGroupId"] = o.m_InterGroupId;
+  if (o.supiIsSet())
+    j["supi"] = o.m_Supi;
   j["bdtRefId"] = o.m_BdtRefId;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
-  if (o.snssaiIsSet()) j["snssai"] = o.m_Snssai;
-  if (o.resUriIsSet()) j["resUri"] = o.m_ResUri;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
+  if (o.snssaiIsSet())
+    j["snssai"] = o.m_Snssai;
+  if (o.resUriIsSet())
+    j["resUri"] = o.m_ResUri;
 }
 
 void from_json(const nlohmann::json &j, BdtPolicyData &o) {
@@ -128,4 +133,4 @@ void BdtPolicyData::setResUri(std::string const &value) {
 bool BdtPolicyData::resUriIsSet() const { return m_ResUriIsSet; }
 void BdtPolicyData::unsetResUri() { m_ResUriIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

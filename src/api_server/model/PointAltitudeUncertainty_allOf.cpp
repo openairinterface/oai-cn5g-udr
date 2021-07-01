@@ -77,8 +77,8 @@ double PointAltitudeUncertainty_allOf::getAltitude() const {
 void PointAltitudeUncertainty_allOf::setAltitude(double const value) {
   m_Altitude = value;
 }
-UncertaintyEllipse PointAltitudeUncertainty_allOf::getUncertaintyEllipse()
-    const {
+UncertaintyEllipse
+PointAltitudeUncertainty_allOf::getUncertaintyEllipse() const {
   return m_UncertaintyEllipse;
 }
 void PointAltitudeUncertainty_allOf::setUncertaintyEllipse(
@@ -98,4 +98,4 @@ void PointAltitudeUncertainty_allOf::setConfidence(int32_t const value) {
   m_Confidence = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

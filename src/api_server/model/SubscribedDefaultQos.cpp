@@ -51,7 +51,8 @@ void to_json(nlohmann::json &j, const SubscribedDefaultQos &o) {
   j = nlohmann::json();
   j["5qi"] = o.m_r_5qi;
   j["arp"] = o.m_Arp;
-  if (o.priorityLevelIsSet()) j["priorityLevel"] = o.m_PriorityLevel;
+  if (o.priorityLevelIsSet())
+    j["priorityLevel"] = o.m_PriorityLevel;
 }
 
 void from_json(const nlohmann::json &j, SubscribedDefaultQos &o) {
@@ -81,4 +82,4 @@ void SubscribedDefaultQos::unsetPriorityLevel() {
   m_PriorityLevelIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

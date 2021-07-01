@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PduSessionStatusCfg {
- public:
+public:
   PduSessionStatusCfg();
   virtual ~PduSessionStatusCfg();
 
@@ -61,18 +61,18 @@ class PduSessionStatusCfg {
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const& value);
+  void setDnn(std::string const &value);
   bool dnnIsSet() const;
   void unsetDnn();
 
-  friend void to_json(nlohmann::json& j, const PduSessionStatusCfg& o);
-  friend void from_json(const nlohmann::json& j, PduSessionStatusCfg& o);
+  friend void to_json(nlohmann::json &j, const PduSessionStatusCfg &o);
+  friend void from_json(const nlohmann::json &j, PduSessionStatusCfg &o);
 
- protected:
+protected:
   std::string m_Dnn;
   bool m_DnnIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* PduSessionStatusCfg_H_ */

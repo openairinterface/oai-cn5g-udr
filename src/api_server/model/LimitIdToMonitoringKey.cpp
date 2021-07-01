@@ -49,7 +49,8 @@ void LimitIdToMonitoringKey::validate() {
 void to_json(nlohmann::json &j, const LimitIdToMonitoringKey &o) {
   j = nlohmann::json();
   j["limitId"] = o.m_LimitId;
-  if (o.monkeyIsSet() || !o.m_Monkey.empty()) j["monkey"] = o.m_Monkey;
+  if (o.monkeyIsSet() || !o.m_Monkey.empty())
+    j["monkey"] = o.m_Monkey;
 }
 
 void from_json(const nlohmann::json &j, LimitIdToMonitoringKey &o) {
@@ -74,4 +75,4 @@ void LimitIdToMonitoringKey::setMonkey(std::vector<std::string> const &value) {
 bool LimitIdToMonitoringKey::monkeyIsSet() const { return m_MonkeyIsSet; }
 void LimitIdToMonitoringKey::unsetMonkey() { m_MonkeyIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -48,7 +48,8 @@ void SmPolicyDataPatch::validate() {
 
 void to_json(nlohmann::json &j, const SmPolicyDataPatch &o) {
   j = nlohmann::json();
-  if (o.umDataIsSet() || !o.m_UmData.empty()) j["umData"] = o.m_UmData;
+  if (o.umDataIsSet() || !o.m_UmData.empty())
+    j["umData"] = o.m_UmData;
   if (o.smPolicySnssaiDataIsSet() || !o.m_SmPolicySnssaiData.empty())
     j["smPolicySnssaiData"] = o.m_SmPolicySnssaiData;
 }
@@ -74,8 +75,8 @@ void SmPolicyDataPatch::setUmData(
 }
 bool SmPolicyDataPatch::umDataIsSet() const { return m_UmDataIsSet; }
 void SmPolicyDataPatch::unsetUmData() { m_UmDataIsSet = false; }
-std::map<std::string, SmPolicySnssaiDataPatch>
-    &SmPolicyDataPatch::getSmPolicySnssaiData() {
+std::map<std::string, SmPolicySnssaiDataPatch> &
+SmPolicyDataPatch::getSmPolicySnssaiData() {
   return m_SmPolicySnssaiData;
 }
 void SmPolicyDataPatch::setSmPolicySnssaiData(
@@ -90,4 +91,4 @@ void SmPolicyDataPatch::unsetSmPolicySnssaiData() {
   m_SmPolicySnssaiDataIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

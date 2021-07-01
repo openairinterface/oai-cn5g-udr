@@ -85,35 +85,50 @@ void to_json(nlohmann::json &j, const TrafficInfluData &o) {
   j = nlohmann::json();
   if (o.upPathChgNotifCorreIdIsSet())
     j["upPathChgNotifCorreId"] = o.m_UpPathChgNotifCorreId;
-  if (o.appReloIndIsSet()) j["appReloInd"] = o.m_AppReloInd;
-  if (o.afAppIdIsSet()) j["afAppId"] = o.m_AfAppId;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
+  if (o.appReloIndIsSet())
+    j["appReloInd"] = o.m_AppReloInd;
+  if (o.afAppIdIsSet())
+    j["afAppId"] = o.m_AfAppId;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
   if (o.ethTrafficFiltersIsSet() || !o.m_EthTrafficFilters.empty())
     j["ethTrafficFilters"] = o.m_EthTrafficFilters;
-  if (o.snssaiIsSet()) j["snssai"] = o.m_Snssai;
-  if (o.interGroupIdIsSet()) j["interGroupId"] = o.m_InterGroupId;
-  if (o.supiIsSet()) j["supi"] = o.m_Supi;
+  if (o.snssaiIsSet())
+    j["snssai"] = o.m_Snssai;
+  if (o.interGroupIdIsSet())
+    j["interGroupId"] = o.m_InterGroupId;
+  if (o.supiIsSet())
+    j["supi"] = o.m_Supi;
   if (o.trafficFiltersIsSet() || !o.m_TrafficFilters.empty())
     j["trafficFilters"] = o.m_TrafficFilters;
   if (o.trafficRoutesIsSet() || !o.m_TrafficRoutes.empty())
     j["trafficRoutes"] = o.m_TrafficRoutes;
-  if (o.traffCorreIndIsSet()) j["traffCorreInd"] = o.m_TraffCorreInd;
-  if (o.validStartTimeIsSet()) j["validStartTime"] = o.m_ValidStartTime;
-  if (o.validEndTimeIsSet()) j["validEndTime"] = o.m_ValidEndTime;
+  if (o.traffCorreIndIsSet())
+    j["traffCorreInd"] = o.m_TraffCorreInd;
+  if (o.validStartTimeIsSet())
+    j["validStartTime"] = o.m_ValidStartTime;
+  if (o.validEndTimeIsSet())
+    j["validEndTime"] = o.m_ValidEndTime;
   if (o.tempValiditiesIsSet() || !o.m_TempValidities.empty())
     j["tempValidities"] = o.m_TempValidities;
-  if (o.nwAreaInfoIsSet()) j["nwAreaInfo"] = o.m_NwAreaInfo;
+  if (o.nwAreaInfoIsSet())
+    j["nwAreaInfo"] = o.m_NwAreaInfo;
   if (o.upPathChgNotifUriIsSet())
     j["upPathChgNotifUri"] = o.m_UpPathChgNotifUri;
-  if (o.headersIsSet() || !o.m_Headers.empty()) j["headers"] = o.m_Headers;
+  if (o.headersIsSet() || !o.m_Headers.empty())
+    j["headers"] = o.m_Headers;
   if (o.subscribedEventsIsSet() || !o.m_SubscribedEvents.empty())
     j["subscribedEvents"] = o.m_SubscribedEvents;
-  if (o.dnaiChgTypeIsSet()) j["dnaiChgType"] = o.m_DnaiChgType;
-  if (o.afAckIndIsSet()) j["afAckInd"] = o.m_AfAckInd;
-  if (o.addrPreserIndIsSet()) j["addrPreserInd"] = o.m_AddrPreserInd;
+  if (o.dnaiChgTypeIsSet())
+    j["dnaiChgType"] = o.m_DnaiChgType;
+  if (o.afAckIndIsSet())
+    j["afAckInd"] = o.m_AfAckInd;
+  if (o.addrPreserIndIsSet())
+    j["addrPreserInd"] = o.m_AddrPreserInd;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.resUriIsSet()) j["resUri"] = o.m_ResUri;
+  if (o.resUriIsSet())
+    j["resUri"] = o.m_ResUri;
 }
 
 void from_json(const nlohmann::json &j, TrafficInfluData &o) {
@@ -431,4 +446,4 @@ void TrafficInfluData::setResUri(std::string const &value) {
 bool TrafficInfluData::resUriIsSet() const { return m_ResUriIsSet; }
 void TrafficInfluData::unsetResUri() { m_ResUriIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

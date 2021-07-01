@@ -62,4 +62,4 @@ void PlmnId::setMcc(std::string const &value) { m_Mcc = value; }
 std::string PlmnId::getMnc() const { return m_Mnc; }
 void PlmnId::setMnc(std::string const &value) { m_Mnc = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

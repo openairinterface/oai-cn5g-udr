@@ -44,8 +44,7 @@ SessionManagementPolicyDataDocumentApiImpl::
     SessionManagementPolicyDataDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : SessionManagementPolicyDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SessionManagementPolicyDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SessionManagementPolicyDataDocumentApiImpl::
@@ -66,4 +65,4 @@ void SessionManagementPolicyDataDocumentApiImpl::
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

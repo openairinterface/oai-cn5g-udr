@@ -139,4 +139,4 @@ void GeographicArea::setIncludedAngle(int32_t const value) {
   m_IncludedAngle = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

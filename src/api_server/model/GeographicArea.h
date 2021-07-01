@@ -59,7 +59,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class GeographicArea {
- public:
+public:
   GeographicArea();
   virtual ~GeographicArea();
 
@@ -72,12 +72,12 @@ class GeographicArea {
   ///
   /// </summary>
   SupportedGADShapes getShape() const;
-  void setShape(SupportedGADShapes const& value);
+  void setShape(SupportedGADShapes const &value);
   /// <summary>
   ///
   /// </summary>
   GeographicalCoordinates getPoint() const;
-  void setPoint(GeographicalCoordinates const& value);
+  void setPoint(GeographicalCoordinates const &value);
   /// <summary>
   ///
   /// </summary>
@@ -87,7 +87,7 @@ class GeographicArea {
   ///
   /// </summary>
   UncertaintyEllipse getUncertaintyEllipse() const;
-  void setUncertaintyEllipse(UncertaintyEllipse const& value);
+  void setUncertaintyEllipse(UncertaintyEllipse const &value);
   /// <summary>
   ///
   /// </summary>
@@ -96,8 +96,8 @@ class GeographicArea {
   /// <summary>
   ///
   /// </summary>
-  std::vector<GeographicalCoordinates>& getPointList();
-  void setPointList(std::vector<GeographicalCoordinates> const& value);
+  std::vector<GeographicalCoordinates> &getPointList();
+  void setPointList(std::vector<GeographicalCoordinates> const &value);
   /// <summary>
   ///
   /// </summary>
@@ -129,10 +129,10 @@ class GeographicArea {
   int32_t getIncludedAngle() const;
   void setIncludedAngle(int32_t const value);
 
-  friend void to_json(nlohmann::json& j, const GeographicArea& o);
-  friend void from_json(const nlohmann::json& j, GeographicArea& o);
+  friend void to_json(nlohmann::json &j, const GeographicArea &o);
+  friend void from_json(const nlohmann::json &j, GeographicArea &o);
 
- protected:
+protected:
   SupportedGADShapes m_Shape;
 
   GeographicalCoordinates m_Point;
@@ -158,6 +158,6 @@ class GeographicArea {
   int32_t m_IncludedAngle;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* GeographicArea_H_ */

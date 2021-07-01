@@ -46,7 +46,8 @@ void UsageMonDataScope::validate() {
 void to_json(nlohmann::json &j, const UsageMonDataScope &o) {
   j = nlohmann::json();
   j["snssai"] = o.m_Snssai;
-  if (o.dnnIsSet() || !o.m_Dnn.empty()) j["dnn"] = o.m_Dnn;
+  if (o.dnnIsSet() || !o.m_Dnn.empty())
+    j["dnn"] = o.m_Dnn;
 }
 
 void from_json(const nlohmann::json &j, UsageMonDataScope &o) {
@@ -67,4 +68,4 @@ void UsageMonDataScope::setDnn(std::vector<std::string> const &value) {
 bool UsageMonDataScope::dnnIsSet() const { return m_DnnIsSet; }
 void UsageMonDataScope::unsetDnn() { m_DnnIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

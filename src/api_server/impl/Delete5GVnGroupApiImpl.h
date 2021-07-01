@@ -50,19 +50,19 @@ using namespace oai::udr::app;
 namespace oai::udr::api {
 
 class Delete5GVnGroupApiImpl : public oai::udr::api::Delete5GVnGroupApi {
- private:
-  udr_app* m_udr_app;
+private:
+  udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   Delete5GVnGroupApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                         udr_app* udr_app_inst, std::string address);
+                         udr_app *udr_app_inst, std::string address);
   ~Delete5GVnGroupApiImpl() {}
 
-  void delete5_g_vn_group(const std::string& externalGroupId,
-                          Pistache::Http::ResponseWriter& response);
+  void delete5_g_vn_group(const std::string &externalGroupId,
+                          Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

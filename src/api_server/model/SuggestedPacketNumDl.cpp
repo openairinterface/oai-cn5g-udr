@@ -50,7 +50,8 @@ void SuggestedPacketNumDl::validate() {
 void to_json(nlohmann::json &j, const SuggestedPacketNumDl &o) {
   j = nlohmann::json();
   j["suggestedPacketNumDl"] = o.m_SuggestedPacketNumDl;
-  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
+  if (o.validityTimeIsSet())
+    j["validityTime"] = o.m_ValidityTime;
 }
 
 void from_json(const nlohmann::json &j, SuggestedPacketNumDl &o) {
@@ -79,4 +80,4 @@ bool SuggestedPacketNumDl::validityTimeIsSet() const {
 }
 void SuggestedPacketNumDl::unsetValidityTime() { m_ValidityTimeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

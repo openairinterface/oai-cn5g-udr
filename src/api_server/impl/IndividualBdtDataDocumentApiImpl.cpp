@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 IndividualBdtDataDocumentApiImpl::IndividualBdtDataDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : IndividualBdtDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : IndividualBdtDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IndividualBdtDataDocumentApiImpl::create_individual_bdt_data(
@@ -73,4 +72,4 @@ void IndividualBdtDataDocumentApiImpl::update_individual_bdt_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 IndividualBDTPolicyDataDocumentApiImpl::IndividualBDTPolicyDataDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : IndividualBDTPolicyDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : IndividualBDTPolicyDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IndividualBDTPolicyDataDocumentApiImpl::
@@ -55,4 +54,4 @@ void IndividualBDTPolicyDataDocumentApiImpl::
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

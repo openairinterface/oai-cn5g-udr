@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 MessageWaitingDataDocumentApiImpl::MessageWaitingDataDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : MessageWaitingDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : MessageWaitingDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void MessageWaitingDataDocumentApiImpl::create_message_waiting_data(
@@ -73,4 +72,4 @@ void MessageWaitingDataDocumentApiImpl::query_message_waiting_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

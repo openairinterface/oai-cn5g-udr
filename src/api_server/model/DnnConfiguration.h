@@ -60,7 +60,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class DnnConfiguration {
- public:
+public:
   DnnConfiguration();
   virtual ~DnnConfiguration();
 
@@ -73,12 +73,12 @@ class DnnConfiguration {
   ///
   /// </summary>
   PduSessionTypes getPduSessionTypes() const;
-  void setPduSessionTypes(PduSessionTypes const& value);
+  void setPduSessionTypes(PduSessionTypes const &value);
   /// <summary>
   ///
   /// </summary>
   SscModes getSscModes() const;
-  void setSscModes(SscModes const& value);
+  void setSscModes(SscModes const &value);
   /// <summary>
   ///
   /// </summary>
@@ -90,56 +90,56 @@ class DnnConfiguration {
   ///
   /// </summary>
   SubscribedDefaultQos getR5gQosProfile() const;
-  void setR5gQosProfile(SubscribedDefaultQos const& value);
+  void setR5gQosProfile(SubscribedDefaultQos const &value);
   bool r5gQosProfileIsSet() const;
   void unsetr_5gQosProfile();
   /// <summary>
   ///
   /// </summary>
   Ambr getSessionAmbr() const;
-  void setSessionAmbr(Ambr const& value);
+  void setSessionAmbr(Ambr const &value);
   bool sessionAmbrIsSet() const;
   void unsetSessionAmbr();
   /// <summary>
   ///
   /// </summary>
   std::string getR3gppChargingCharacteristics() const;
-  void setR3gppChargingCharacteristics(std::string const& value);
+  void setR3gppChargingCharacteristics(std::string const &value);
   bool r3gppChargingCharacteristicsIsSet() const;
   void unsetr_3gppChargingCharacteristics();
   /// <summary>
   ///
   /// </summary>
-  std::vector<IpAddress>& getStaticIpAddress();
-  void setStaticIpAddress(std::vector<IpAddress> const& value);
+  std::vector<IpAddress> &getStaticIpAddress();
+  void setStaticIpAddress(std::vector<IpAddress> const &value);
   bool staticIpAddressIsSet() const;
   void unsetStaticIpAddress();
   /// <summary>
   ///
   /// </summary>
   UpSecurity getUpSecurity() const;
-  void setUpSecurity(UpSecurity const& value);
+  void setUpSecurity(UpSecurity const &value);
   bool upSecurityIsSet() const;
   void unsetUpSecurity();
   /// <summary>
   ///
   /// </summary>
   PduSessionContinuityInd getPduSessionContinuityInd() const;
-  void setPduSessionContinuityInd(PduSessionContinuityInd const& value);
+  void setPduSessionContinuityInd(PduSessionContinuityInd const &value);
   bool pduSessionContinuityIndIsSet() const;
   void unsetPduSessionContinuityInd();
   /// <summary>
   /// Identity of the NEF
   /// </summary>
   std::string getNiddNefId() const;
-  void setNiddNefId(std::string const& value);
+  void setNiddNefId(std::string const &value);
   bool niddNefIdIsSet() const;
   void unsetNiddNefId();
   /// <summary>
   ///
   /// </summary>
   NiddInformation getNiddInfo() const;
-  void setNiddInfo(NiddInformation const& value);
+  void setNiddInfo(NiddInformation const &value);
   bool niddInfoIsSet() const;
   void unsetNiddInfo();
   /// <summary>
@@ -153,21 +153,21 @@ class DnnConfiguration {
   ///
   /// </summary>
   AcsInfo getAcsInfo() const;
-  void setAcsInfo(AcsInfo const& value);
+  void setAcsInfo(AcsInfo const &value);
   bool acsInfoIsSet() const;
   void unsetAcsInfo();
   /// <summary>
   ///
   /// </summary>
-  std::vector<FrameRouteInfo>& getIpv4FrameRouteList();
-  void setIpv4FrameRouteList(std::vector<FrameRouteInfo> const& value);
+  std::vector<FrameRouteInfo> &getIpv4FrameRouteList();
+  void setIpv4FrameRouteList(std::vector<FrameRouteInfo> const &value);
   bool ipv4FrameRouteListIsSet() const;
   void unsetIpv4FrameRouteList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<FrameRouteInfo>& getIpv6FrameRouteList();
-  void setIpv6FrameRouteList(std::vector<FrameRouteInfo> const& value);
+  std::vector<FrameRouteInfo> &getIpv6FrameRouteList();
+  void setIpv6FrameRouteList(std::vector<FrameRouteInfo> const &value);
   bool ipv6FrameRouteListIsSet() const;
   void unsetIpv6FrameRouteList();
   /// <summary>
@@ -195,14 +195,14 @@ class DnnConfiguration {
   ///
   /// </summary>
   IpAddress getDnAaaAddress() const;
-  void setDnAaaAddress(IpAddress const& value);
+  void setDnAaaAddress(IpAddress const &value);
   bool dnAaaAddressIsSet() const;
   void unsetDnAaaAddress();
 
-  friend void to_json(nlohmann::json& j, const DnnConfiguration& o);
-  friend void from_json(const nlohmann::json& j, DnnConfiguration& o);
+  friend void to_json(nlohmann::json &j, const DnnConfiguration &o);
+  friend void from_json(const nlohmann::json &j, DnnConfiguration &o);
 
- protected:
+protected:
   PduSessionTypes m_PduSessionTypes;
 
   SscModes m_SscModes;
@@ -243,6 +243,6 @@ class DnnConfiguration {
   bool m_DnAaaAddressIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* DnnConfiguration_H_ */

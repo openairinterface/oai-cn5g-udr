@@ -58,7 +58,8 @@ void to_json(nlohmann::json &j, const ChargingInformation &o) {
   j = nlohmann::json();
   j["primaryChfAddress"] = o.m_PrimaryChfAddress;
   j["secondaryChfAddress"] = o.m_SecondaryChfAddress;
-  if (o.primaryChfSetIdIsSet()) j["primaryChfSetId"] = o.m_PrimaryChfSetId;
+  if (o.primaryChfSetIdIsSet())
+    j["primaryChfSetId"] = o.m_PrimaryChfSetId;
   if (o.primaryChfInstanceIdIsSet())
     j["primaryChfInstanceId"] = o.m_PrimaryChfInstanceId;
   if (o.secondaryChfSetIdIsSet())
@@ -153,4 +154,4 @@ void ChargingInformation::unsetSecondaryChfInstanceId() {
   m_SecondaryChfInstanceIdIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -57,4 +57,4 @@ void SnssaiInfo::setDnnInfos(std::vector<DnnInfo> const &value) {
   m_DnnInfos = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

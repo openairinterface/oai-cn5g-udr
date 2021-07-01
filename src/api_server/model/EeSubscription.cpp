@@ -63,14 +63,20 @@ void to_json(nlohmann::json &j, const EeSubscription &o) {
   j = nlohmann::json();
   j["callbackReference"] = o.m_CallbackReference;
   j["monitoringConfigurations"] = o.m_MonitoringConfigurations;
-  if (o.reportingOptionsIsSet()) j["reportingOptions"] = o.m_ReportingOptions;
+  if (o.reportingOptionsIsSet())
+    j["reportingOptions"] = o.m_ReportingOptions;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.subscriptionIdIsSet()) j["subscriptionId"] = o.m_SubscriptionId;
-  if (o.contextInfoIsSet()) j["contextInfo"] = o.m_ContextInfo;
-  if (o.epcAppliedIndIsSet()) j["epcAppliedInd"] = o.m_EpcAppliedInd;
-  if (o.scefDiamHostIsSet()) j["scefDiamHost"] = o.m_ScefDiamHost;
-  if (o.scefDiamRealmIsSet()) j["scefDiamRealm"] = o.m_ScefDiamRealm;
+  if (o.subscriptionIdIsSet())
+    j["subscriptionId"] = o.m_SubscriptionId;
+  if (o.contextInfoIsSet())
+    j["contextInfo"] = o.m_ContextInfo;
+  if (o.epcAppliedIndIsSet())
+    j["epcAppliedInd"] = o.m_EpcAppliedInd;
+  if (o.scefDiamHostIsSet())
+    j["scefDiamHost"] = o.m_ScefDiamHost;
+  if (o.scefDiamRealmIsSet())
+    j["scefDiamRealm"] = o.m_ScefDiamRealm;
   if (o.notifyCorrelationIdIsSet())
     j["notifyCorrelationId"] = o.m_NotifyCorrelationId;
 }
@@ -118,8 +124,8 @@ std::string EeSubscription::getCallbackReference() const {
 void EeSubscription::setCallbackReference(std::string const &value) {
   m_CallbackReference = value;
 }
-std::map<std::string, MonitoringConfiguration>
-    &EeSubscription::getMonitoringConfigurations() {
+std::map<std::string, MonitoringConfiguration> &
+EeSubscription::getMonitoringConfigurations() {
   return m_MonitoringConfigurations;
 }
 void EeSubscription::setMonitoringConfigurations(
@@ -205,4 +211,4 @@ void EeSubscription::unsetNotifyCorrelationId() {
   m_NotifyCorrelationIdIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

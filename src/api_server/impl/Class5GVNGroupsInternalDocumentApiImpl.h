@@ -54,21 +54,21 @@ using namespace oai::udr::app;
 
 class Class5GVNGroupsInternalDocumentApiImpl
     : public oai::udr::api::Class5GVNGroupsInternalDocumentApi {
- private:
-  udr_app* m_udr_app;
+private:
+  udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   Class5GVNGroupsInternalDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
   ~Class5GVNGroupsInternalDocumentApiImpl() {}
 
   void query5_g_vn_group_internal(
-      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
-      Pistache::Http::ResponseWriter& response);
+      const Pistache::Optional<std::vector<std::string>> &internalGroupIds,
+      Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

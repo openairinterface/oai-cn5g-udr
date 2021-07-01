@@ -71,19 +71,32 @@ void ServiceParameterData::validate() {
 
 void to_json(nlohmann::json &j, const ServiceParameterData &o) {
   j = nlohmann::json();
-  if (o.appIdIsSet()) j["appId"] = o.m_AppId;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
-  if (o.snssaiIsSet()) j["snssai"] = o.m_Snssai;
-  if (o.interGroupIdIsSet()) j["interGroupId"] = o.m_InterGroupId;
-  if (o.supiIsSet()) j["supi"] = o.m_Supi;
-  if (o.ueIpv4IsSet()) j["ueIpv4"] = o.m_UeIpv4;
-  if (o.ueIpv6IsSet()) j["ueIpv6"] = o.m_UeIpv6;
-  if (o.ueMacIsSet()) j["ueMac"] = o.m_UeMac;
-  if (o.anyUeIndIsSet()) j["anyUeInd"] = o.m_AnyUeInd;
-  if (o.paramOverPc5IsSet()) j["paramOverPc5"] = o.m_ParamOverPc5;
-  if (o.paramOverUuIsSet()) j["paramOverUu"] = o.m_ParamOverUu;
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
-  if (o.resUriIsSet()) j["resUri"] = o.m_ResUri;
+  if (o.appIdIsSet())
+    j["appId"] = o.m_AppId;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
+  if (o.snssaiIsSet())
+    j["snssai"] = o.m_Snssai;
+  if (o.interGroupIdIsSet())
+    j["interGroupId"] = o.m_InterGroupId;
+  if (o.supiIsSet())
+    j["supi"] = o.m_Supi;
+  if (o.ueIpv4IsSet())
+    j["ueIpv4"] = o.m_UeIpv4;
+  if (o.ueIpv6IsSet())
+    j["ueIpv6"] = o.m_UeIpv6;
+  if (o.ueMacIsSet())
+    j["ueMac"] = o.m_UeMac;
+  if (o.anyUeIndIsSet())
+    j["anyUeInd"] = o.m_AnyUeInd;
+  if (o.paramOverPc5IsSet())
+    j["paramOverPc5"] = o.m_ParamOverPc5;
+  if (o.paramOverUuIsSet())
+    j["paramOverUu"] = o.m_ParamOverUu;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
+  if (o.resUriIsSet())
+    j["resUri"] = o.m_ResUri;
 }
 
 void from_json(const nlohmann::json &j, ServiceParameterData &o) {
@@ -245,4 +258,4 @@ void ServiceParameterData::setResUri(std::string const &value) {
 bool ServiceParameterData::resUriIsSet() const { return m_ResUriIsSet; }
 void ServiceParameterData::unsetResUri() { m_ResUriIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -78,31 +78,46 @@ void AccessAndMobilityData::validate() {
 
 void to_json(nlohmann::json &j, const AccessAndMobilityData &o) {
   j = nlohmann::json();
-  if (o.locationIsSet()) j["location"] = o.m_Location;
-  if (o.locationTsIsSet()) j["locationTs"] = o.m_LocationTs;
-  if (o.timeZoneIsSet()) j["timeZone"] = o.m_TimeZone;
-  if (o.timeZoneTsIsSet()) j["timeZoneTs"] = o.m_TimeZoneTs;
-  if (o.accessTypeIsSet()) j["accessType"] = o.m_AccessType;
+  if (o.locationIsSet())
+    j["location"] = o.m_Location;
+  if (o.locationTsIsSet())
+    j["locationTs"] = o.m_LocationTs;
+  if (o.timeZoneIsSet())
+    j["timeZone"] = o.m_TimeZone;
+  if (o.timeZoneTsIsSet())
+    j["timeZoneTs"] = o.m_TimeZoneTs;
+  if (o.accessTypeIsSet())
+    j["accessType"] = o.m_AccessType;
   if (o.regStatesIsSet() || !o.m_RegStates.empty())
     j["regStates"] = o.m_RegStates;
-  if (o.regStatesTsIsSet()) j["regStatesTs"] = o.m_RegStatesTs;
+  if (o.regStatesTsIsSet())
+    j["regStatesTs"] = o.m_RegStatesTs;
   if (o.connStatesIsSet() || !o.m_ConnStates.empty())
     j["connStates"] = o.m_ConnStates;
-  if (o.connStatesTsIsSet()) j["connStatesTs"] = o.m_ConnStatesTs;
+  if (o.connStatesTsIsSet())
+    j["connStatesTs"] = o.m_ConnStatesTs;
   if (o.reachabilityStatusIsSet())
     j["reachabilityStatus"] = o.m_ReachabilityStatus;
   if (o.reachabilityStatusTsIsSet())
     j["reachabilityStatusTs"] = o.m_ReachabilityStatusTs;
-  if (o.smsOverNasStatusIsSet()) j["smsOverNasStatus"] = o.m_SmsOverNasStatus;
+  if (o.smsOverNasStatusIsSet())
+    j["smsOverNasStatus"] = o.m_SmsOverNasStatus;
   if (o.smsOverNasStatusTsIsSet())
     j["smsOverNasStatusTs"] = o.m_SmsOverNasStatusTs;
-  if (o.roamingStatusIsSet()) j["roamingStatus"] = o.m_RoamingStatus;
-  if (o.roamingStatusTsIsSet()) j["roamingStatusTs"] = o.m_RoamingStatusTs;
-  if (o.currentPlmnIsSet()) j["currentPlmn"] = o.m_CurrentPlmn;
-  if (o.currentPlmnTsIsSet()) j["currentPlmnTs"] = o.m_CurrentPlmnTs;
-  if (o.ratTypeIsSet() || !o.m_RatType.empty()) j["ratType"] = o.m_RatType;
-  if (o.ratTypesTsIsSet()) j["ratTypesTs"] = o.m_RatTypesTs;
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
+  if (o.roamingStatusIsSet())
+    j["roamingStatus"] = o.m_RoamingStatus;
+  if (o.roamingStatusTsIsSet())
+    j["roamingStatusTs"] = o.m_RoamingStatusTs;
+  if (o.currentPlmnIsSet())
+    j["currentPlmn"] = o.m_CurrentPlmn;
+  if (o.currentPlmnTsIsSet())
+    j["currentPlmnTs"] = o.m_CurrentPlmnTs;
+  if (o.ratTypeIsSet() || !o.m_RatType.empty())
+    j["ratType"] = o.m_RatType;
+  if (o.ratTypesTsIsSet())
+    j["ratTypesTs"] = o.m_RatTypesTs;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, AccessAndMobilityData &o) {
@@ -399,4 +414,4 @@ void AccessAndMobilityData::setSuppFeat(std::string const &value) {
 bool AccessAndMobilityData::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void AccessAndMobilityData::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

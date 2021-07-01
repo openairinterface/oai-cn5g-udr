@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class MeasurementPeriodLteMdt {
- public:
+public:
   MeasurementPeriodLteMdt();
   virtual ~MeasurementPeriodLteMdt();
 
@@ -56,12 +56,12 @@ class MeasurementPeriodLteMdt {
   /////////////////////////////////////////////
   /// MeasurementPeriodLteMdt members
 
-  friend void to_json(nlohmann::json& j, const MeasurementPeriodLteMdt& o);
-  friend void from_json(const nlohmann::json& j, MeasurementPeriodLteMdt& o);
+  friend void to_json(nlohmann::json &j, const MeasurementPeriodLteMdt &o);
+  friend void from_json(const nlohmann::json &j, MeasurementPeriodLteMdt &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* MeasurementPeriodLteMdt_H_ */

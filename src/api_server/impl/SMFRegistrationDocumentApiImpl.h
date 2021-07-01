@@ -54,11 +54,11 @@ using namespace oai::udr::app;
 
 class SMFRegistrationDocumentApiImpl
     : public oai::udr::api::SMFRegistrationDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   SMFRegistrationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                  udr_app *udr_app_inst, std::string address);
   ~SMFRegistrationDocumentApiImpl() {}
@@ -76,6 +76,6 @@ class SMFRegistrationDocumentApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

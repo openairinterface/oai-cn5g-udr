@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class VgmlcAddress {
- public:
+public:
   VgmlcAddress();
   virtual ~VgmlcAddress();
 
@@ -63,28 +63,28 @@ class VgmlcAddress {
   ///
   /// </summary>
   std::string getVgmlcAddressIpv4() const;
-  void setVgmlcAddressIpv4(std::string const& value);
+  void setVgmlcAddressIpv4(std::string const &value);
   bool vgmlcAddressIpv4IsSet() const;
   void unsetVgmlcAddressIpv4();
   /// <summary>
   ///
   /// </summary>
   Ipv6Addr getVgmlcAddressIpv6() const;
-  void setVgmlcAddressIpv6(Ipv6Addr const& value);
+  void setVgmlcAddressIpv6(Ipv6Addr const &value);
   bool vgmlcAddressIpv6IsSet() const;
   void unsetVgmlcAddressIpv6();
   /// <summary>
   /// Fully Qualified Domain Name
   /// </summary>
   std::string getVgmlcFqdn() const;
-  void setVgmlcFqdn(std::string const& value);
+  void setVgmlcFqdn(std::string const &value);
   bool vgmlcFqdnIsSet() const;
   void unsetVgmlcFqdn();
 
-  friend void to_json(nlohmann::json& j, const VgmlcAddress& o);
-  friend void from_json(const nlohmann::json& j, VgmlcAddress& o);
+  friend void to_json(nlohmann::json &j, const VgmlcAddress &o);
+  friend void from_json(const nlohmann::json &j, VgmlcAddress &o);
 
- protected:
+protected:
   std::string m_VgmlcAddressIpv4;
   bool m_VgmlcAddressIpv4IsSet;
   Ipv6Addr m_VgmlcAddressIpv6;
@@ -93,6 +93,6 @@ class VgmlcAddress {
   bool m_VgmlcFqdnIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* VgmlcAddress_H_ */

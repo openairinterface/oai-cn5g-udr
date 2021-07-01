@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 IndividualPFDDataDocumentApiImpl::IndividualPFDDataDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : IndividualPFDDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : IndividualPFDDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IndividualPFDDataDocumentApiImpl::create_or_replace_individual_pfd_data(
@@ -64,4 +63,4 @@ void IndividualPFDDataDocumentApiImpl::read_individual_pfd_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

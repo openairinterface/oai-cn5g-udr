@@ -49,7 +49,8 @@ void CagData::validate() {
 void to_json(nlohmann::json &j, const CagData &o) {
   j = nlohmann::json();
   j["cagInfos"] = o.m_CagInfos;
-  if (o.provisioningTimeIsSet()) j["provisioningTime"] = o.m_ProvisioningTime;
+  if (o.provisioningTimeIsSet())
+    j["provisioningTime"] = o.m_ProvisioningTime;
 }
 
 void from_json(const nlohmann::json &j, CagData &o) {
@@ -72,4 +73,4 @@ void CagData::setProvisioningTime(std::string const &value) {
 bool CagData::provisioningTimeIsSet() const { return m_ProvisioningTimeIsSet; }
 void CagData::unsetProvisioningTime() { m_ProvisioningTimeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

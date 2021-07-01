@@ -64,4 +64,4 @@ void EpsIwkPgw::setSmfInstanceId(std::string const &value) {
   m_SmfInstanceId = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

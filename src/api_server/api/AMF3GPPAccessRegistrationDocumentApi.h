@@ -57,14 +57,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class AMF3GPPAccessRegistrationDocumentApi {
- public:
+public:
   AMF3GPPAccessRegistrationDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~AMF3GPPAccessRegistrationDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void amf_context3gpp_handler(const Pistache::Rest::Request &request,
@@ -89,10 +89,11 @@ class AMF3GPPAccessRegistrationDocumentApi {
   /// <param name="patchItem"></param>
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
-  virtual void amf_context3gpp(
-      const std::string &ueId, const std::vector<PatchItem> &patchItem,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  amf_context3gpp(const std::string &ueId,
+                  const std::vector<PatchItem> &patchItem,
+                  const Pistache::Optional<std::string> &supportedFeatures,
+                  Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// To store the AMF context data of a UE using 3gpp access in the UDR
@@ -102,10 +103,10 @@ class AMF3GPPAccessRegistrationDocumentApi {
   /// </remarks>
   /// <param name="ueId">UE id</param>
   /// <param name="amf3GppAccessRegistration"> (optional)</param>
-  virtual void create_amf_context3gpp(
-      const std::string &ueId,
-      Amf3GppAccessRegistration &amf3GppAccessRegistration,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  create_amf_context3gpp(const std::string &ueId,
+                         Amf3GppAccessRegistration &amf3GppAccessRegistration,
+                         Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Retrieves the AMF context data of a UE using 3gpp access
@@ -125,6 +126,6 @@ class AMF3GPPAccessRegistrationDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* AMF3GPPAccessRegistrationDocumentApi_H_ */

@@ -53,7 +53,7 @@ namespace oai::udr::model {
 /// LATE: Late notification of UP path reconfiguration.
 /// </summary>
 class DnaiChangeType {
- public:
+public:
   DnaiChangeType();
   virtual ~DnaiChangeType();
 
@@ -62,12 +62,12 @@ class DnaiChangeType {
   /////////////////////////////////////////////
   /// DnaiChangeType members
 
-  friend void to_json(nlohmann::json& j, const DnaiChangeType& o);
-  friend void from_json(const nlohmann::json& j, DnaiChangeType& o);
+  friend void to_json(nlohmann::json &j, const DnaiChangeType &o);
+  friend void from_json(const nlohmann::json &j, DnaiChangeType &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* DnaiChangeType_H_ */

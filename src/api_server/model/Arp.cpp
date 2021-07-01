@@ -67,4 +67,4 @@ void Arp::setPreemptVuln(PreemptionVulnerability const &value) {
   m_PreemptVuln = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

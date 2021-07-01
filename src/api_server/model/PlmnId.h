@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PlmnId {
- public:
+public:
   PlmnId();
   virtual ~PlmnId();
 
@@ -61,22 +61,22 @@ class PlmnId {
   ///
   /// </summary>
   std::string getMcc() const;
-  void setMcc(std::string const& value);
+  void setMcc(std::string const &value);
   /// <summary>
   ///
   /// </summary>
   std::string getMnc() const;
-  void setMnc(std::string const& value);
+  void setMnc(std::string const &value);
 
-  friend void to_json(nlohmann::json& j, const PlmnId& o);
-  friend void from_json(const nlohmann::json& j, PlmnId& o);
+  friend void to_json(nlohmann::json &j, const PlmnId &o);
+  friend void from_json(const nlohmann::json &j, PlmnId &o);
 
- protected:
+protected:
   std::string m_Mcc;
 
   std::string m_Mnc;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* PlmnId_H_ */

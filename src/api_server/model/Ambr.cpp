@@ -62,4 +62,4 @@ void Ambr::setUplink(std::string const &value) { m_Uplink = value; }
 std::string Ambr::getDownlink() const { return m_Downlink; }
 void Ambr::setDownlink(std::string const &value) { m_Downlink = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

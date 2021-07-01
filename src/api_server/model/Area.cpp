@@ -49,8 +49,10 @@ void Area::validate() {
 
 void to_json(nlohmann::json &j, const Area &o) {
   j = nlohmann::json();
-  if (o.tacsIsSet() || !o.m_Tacs.empty()) j["tacs"] = o.m_Tacs;
-  if (o.areaCodeIsSet()) j["areaCode"] = o.m_AreaCode;
+  if (o.tacsIsSet() || !o.m_Tacs.empty())
+    j["tacs"] = o.m_Tacs;
+  if (o.areaCodeIsSet())
+    j["areaCode"] = o.m_AreaCode;
 }
 
 void from_json(const nlohmann::json &j, Area &o) {
@@ -79,4 +81,4 @@ void Area::setAreaCode(std::string const &value) {
 bool Area::areaCodeIsSet() const { return m_AreaCodeIsSet; }
 void Area::unsetAreaCode() { m_AreaCodeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -65,4 +65,4 @@ void NotificationItem::setNotifItems(std::vector<UpdatedItem> const &value) {
   m_NotifItems = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

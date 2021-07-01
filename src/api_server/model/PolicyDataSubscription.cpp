@@ -55,11 +55,13 @@ void PolicyDataSubscription::validate() {
 void to_json(nlohmann::json &j, const PolicyDataSubscription &o) {
   j = nlohmann::json();
   j["notificationUri"] = o.m_NotificationUri;
-  if (o.notifIdIsSet()) j["notifId"] = o.m_NotifId;
+  if (o.notifIdIsSet())
+    j["notifId"] = o.m_NotifId;
   j["monitoredResourceUris"] = o.m_MonitoredResourceUris;
   if (o.monResItemsIsSet() || !o.m_MonResItems.empty())
     j["monResItems"] = o.m_MonResItems;
-  if (o.expiryIsSet()) j["expiry"] = o.m_Expiry;
+  if (o.expiryIsSet())
+    j["expiry"] = o.m_Expiry;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
 }
@@ -138,4 +140,4 @@ void PolicyDataSubscription::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

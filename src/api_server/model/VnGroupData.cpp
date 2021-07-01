@@ -51,9 +51,12 @@ void VnGroupData::validate() {
 
 void to_json(nlohmann::json &j, const VnGroupData &o) {
   j = nlohmann::json();
-  if (o.pduSessionTypesIsSet()) j["pduSessionTypes"] = o.m_PduSessionTypes;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
-  if (o.singleNssaiIsSet()) j["singleNssai"] = o.m_SingleNssai;
+  if (o.pduSessionTypesIsSet())
+    j["pduSessionTypes"] = o.m_PduSessionTypes;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
+  if (o.singleNssaiIsSet())
+    j["singleNssai"] = o.m_SingleNssai;
   if (o.appDescriptorsIsSet() || !o.m_AppDescriptors.empty())
     j["appDescriptors"] = o.m_AppDescriptors;
 }
@@ -112,4 +115,4 @@ void VnGroupData::setAppDescriptors(std::vector<AppDescriptor> const &value) {
 bool VnGroupData::appDescriptorsIsSet() const { return m_AppDescriptorsIsSet; }
 void VnGroupData::unsetAppDescriptors() { m_AppDescriptorsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

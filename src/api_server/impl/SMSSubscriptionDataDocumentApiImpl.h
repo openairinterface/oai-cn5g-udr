@@ -54,11 +54,11 @@ using namespace oai::udr::app;
 
 class SMSSubscriptionDataDocumentApiImpl
     : public oai::udr::api::SMSSubscriptionDataDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   SMSSubscriptionDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                      udr_app *udr_app_inst,
                                      std::string address);
@@ -72,6 +72,6 @@ class SMSSubscriptionDataDocumentApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

@@ -56,8 +56,10 @@ void to_json(nlohmann::json &j, const PatchItem &o) {
   j = nlohmann::json();
   j["op"] = o.m_Op;
   j["path"] = o.m_Path;
-  if (o.fromIsSet()) j["from"] = o.m_From;
-  if (o.valueIsSet()) j["value"] = o.m_Value;
+  if (o.fromIsSet())
+    j["from"] = o.m_From;
+  if (o.valueIsSet())
+    j["value"] = o.m_Value;
 }
 
 void from_json(const nlohmann::json &j, PatchItem &o) {
@@ -92,4 +94,4 @@ void PatchItem::setValue(std::string const &value) {
 bool PatchItem::valueIsSet() const { return m_ValueIsSet; }
 void PatchItem::unsetValue() { m_ValueIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

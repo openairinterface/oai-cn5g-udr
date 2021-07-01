@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class EventReportMode {
- public:
+public:
   EventReportMode();
   virtual ~EventReportMode();
 
@@ -56,12 +56,12 @@ class EventReportMode {
   /////////////////////////////////////////////
   /// EventReportMode members
 
-  friend void to_json(nlohmann::json& j, const EventReportMode& o);
-  friend void from_json(const nlohmann::json& j, EventReportMode& o);
+  friend void to_json(nlohmann::json &j, const EventReportMode &o);
+  friend void from_json(const nlohmann::json &j, EventReportMode &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* EventReportMode_H_ */

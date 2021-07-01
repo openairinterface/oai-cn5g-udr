@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class BatteryIndication {
- public:
+public:
   BatteryIndication();
   virtual ~BatteryIndication();
 
@@ -78,10 +78,10 @@ class BatteryIndication {
   bool rechargeableIndIsSet() const;
   void unsetRechargeableInd();
 
-  friend void to_json(nlohmann::json& j, const BatteryIndication& o);
-  friend void from_json(const nlohmann::json& j, BatteryIndication& o);
+  friend void to_json(nlohmann::json &j, const BatteryIndication &o);
+  friend void from_json(const nlohmann::json &j, BatteryIndication &o);
 
- protected:
+protected:
   bool m_BatteryInd;
   bool m_BatteryIndIsSet;
   bool m_ReplaceableInd;
@@ -90,6 +90,6 @@ class BatteryIndication {
   bool m_RechargeableIndIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* BatteryIndication_H_ */

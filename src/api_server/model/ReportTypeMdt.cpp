@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const ReportTypeMdt &o) {
 
 void from_json(const nlohmann::json &j, ReportTypeMdt &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

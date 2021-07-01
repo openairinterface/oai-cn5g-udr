@@ -50,8 +50,10 @@ void RegistrationLocationInfo::validate() {
 void to_json(nlohmann::json &j, const RegistrationLocationInfo &o) {
   j = nlohmann::json();
   j["amfInstanceId"] = o.m_AmfInstanceId;
-  if (o.plmnIdIsSet()) j["plmnId"] = o.m_PlmnId;
-  if (o.vgmlcAddressIsSet()) j["vgmlcAddress"] = o.m_VgmlcAddress;
+  if (o.plmnIdIsSet())
+    j["plmnId"] = o.m_PlmnId;
+  if (o.vgmlcAddressIsSet())
+    j["vgmlcAddress"] = o.m_VgmlcAddress;
   j["accessTypeList"] = o.m_AccessTypeList;
 }
 
@@ -102,4 +104,4 @@ void RegistrationLocationInfo::setAccessTypeList(
   m_AccessTypeList = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

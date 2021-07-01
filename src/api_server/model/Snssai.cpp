@@ -50,7 +50,8 @@ void Snssai::validate() {
 void to_json(nlohmann::json &j, const Snssai &o) {
   j = nlohmann::json();
   j["sst"] = o.m_Sst;
-  if (o.sdIsSet()) j["sd"] = o.m_Sd;
+  if (o.sdIsSet())
+    j["sd"] = o.m_Sd;
 }
 
 void from_json(const nlohmann::json &j, Snssai &o) {
@@ -71,4 +72,4 @@ void Snssai::setSd(std::string const &value) {
 bool Snssai::sdIsSet() const { return m_SdIsSet; }
 void Snssai::unsetSd() { m_SdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -66,8 +66,8 @@ PlmnId PlmnRouteSelectionDescriptor::getServingPlmn() const {
 void PlmnRouteSelectionDescriptor::setServingPlmn(PlmnId const &value) {
   m_ServingPlmn = value;
 }
-std::vector<SnssaiRouteSelectionDescriptor>
-    &PlmnRouteSelectionDescriptor::getSnssaiRouteSelDescs() {
+std::vector<SnssaiRouteSelectionDescriptor> &
+PlmnRouteSelectionDescriptor::getSnssaiRouteSelDescs() {
   return m_SnssaiRouteSelDescs;
 }
 void PlmnRouteSelectionDescriptor::setSnssaiRouteSelDescs(
@@ -82,4 +82,4 @@ void PlmnRouteSelectionDescriptor::unsetSnssaiRouteSelDescs() {
   m_SnssaiRouteSelDescsIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

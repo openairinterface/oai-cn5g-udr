@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 NSSAIUpdateAckDocumentApiImpl::NSSAIUpdateAckDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : NSSAIUpdateAckDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : NSSAIUpdateAckDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void NSSAIUpdateAckDocumentApiImpl::create_nssai_update_ack(
@@ -56,4 +55,4 @@ void NSSAIUpdateAckDocumentApiImpl::create_nssai_update_ack(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -53,10 +53,14 @@ void EmergencyInfo::validate() {
 
 void to_json(nlohmann::json &j, const EmergencyInfo &o) {
   j = nlohmann::json();
-  if (o.pgwFqdnIsSet()) j["pgwFqdn"] = o.m_PgwFqdn;
-  if (o.pgwIpAddressIsSet()) j["pgwIpAddress"] = o.m_PgwIpAddress;
-  if (o.smfInstanceIdIsSet()) j["smfInstanceId"] = o.m_SmfInstanceId;
-  if (o.epdgIndIsSet()) j["epdgInd"] = o.m_EpdgInd;
+  if (o.pgwFqdnIsSet())
+    j["pgwFqdn"] = o.m_PgwFqdn;
+  if (o.pgwIpAddressIsSet())
+    j["pgwIpAddress"] = o.m_PgwIpAddress;
+  if (o.smfInstanceIdIsSet())
+    j["smfInstanceId"] = o.m_SmfInstanceId;
+  if (o.epdgIndIsSet())
+    j["epdgInd"] = o.m_EpdgInd;
 }
 
 void from_json(const nlohmann::json &j, EmergencyInfo &o) {
@@ -107,4 +111,4 @@ void EmergencyInfo::setEpdgInd(bool const value) {
 bool EmergencyInfo::epdgIndIsSet() const { return m_EpdgIndIsSet; }
 void EmergencyInfo::unsetEpdgInd() { m_EpdgIndIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
