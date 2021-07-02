@@ -151,7 +151,7 @@ int udr_config::load_interface(const libconfig::Setting &if_cfg,
                                 address.c_str());
         return RETURNerror;
       }
-      unsigned char buf_in_addr[sizeof(struct in6_addr)];  // you never know...
+      unsigned char buf_in_addr[sizeof(struct in6_addr)]; // you never know...
       if (inet_pton(AF_INET, util::trim(words.at(0)).c_str(), buf_in_addr) ==
           1) {
         memcpy(&cfg.addr4, buf_in_addr, sizeof(struct in_addr));
@@ -204,4 +204,4 @@ void udr_config::display() {
       mysql.mysql_db.c_str());
 }
 
-}  // namespace config
+} // namespace config

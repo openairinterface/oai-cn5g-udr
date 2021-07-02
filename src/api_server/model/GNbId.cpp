@@ -62,4 +62,4 @@ void GNbId::setBitLength(int32_t const value) { m_BitLength = value; }
 std::string GNbId::getGNBValue() const { return m_GNBValue; }
 void GNbId::setGNBValue(std::string const &value) { m_GNBValue = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

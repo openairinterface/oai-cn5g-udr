@@ -49,7 +49,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ScheduledCommunicationTime {
- public:
+public:
   ScheduledCommunicationTime();
   virtual ~ScheduledCommunicationTime();
 
@@ -62,7 +62,7 @@ class ScheduledCommunicationTime {
   /// Identifies the day(s) of the week. If absent, it indicates every day of
   /// the week.
   /// </summary>
-  std::vector<int32_t>& getDaysOfWeek();
+  std::vector<int32_t> &getDaysOfWeek();
   void setDaysOfWeek(std::vector<int32_t> const value);
   bool daysOfWeekIsSet() const;
   void unsetDaysOfWeek();
@@ -72,7 +72,7 @@ class ScheduledCommunicationTime {
   /// UTC).
   /// </summary>
   std::string getTimeOfDayStart() const;
-  void setTimeOfDayStart(std::string const& value);
+  void setTimeOfDayStart(std::string const &value);
   bool timeOfDayStartIsSet() const;
   void unsetTimeOfDayStart();
   /// <summary>
@@ -81,14 +81,14 @@ class ScheduledCommunicationTime {
   /// UTC).
   /// </summary>
   std::string getTimeOfDayEnd() const;
-  void setTimeOfDayEnd(std::string const& value);
+  void setTimeOfDayEnd(std::string const &value);
   bool timeOfDayEndIsSet() const;
   void unsetTimeOfDayEnd();
 
-  friend void to_json(nlohmann::json& j, const ScheduledCommunicationTime& o);
-  friend void from_json(const nlohmann::json& j, ScheduledCommunicationTime& o);
+  friend void to_json(nlohmann::json &j, const ScheduledCommunicationTime &o);
+  friend void from_json(const nlohmann::json &j, ScheduledCommunicationTime &o);
 
- protected:
+protected:
   std::vector<int32_t> m_DaysOfWeek;
   bool m_DaysOfWeekIsSet;
   std::string m_TimeOfDayStart;
@@ -97,6 +97,6 @@ class ScheduledCommunicationTime {
   bool m_TimeOfDayEndIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* ScheduledCommunicationTime_H_ */

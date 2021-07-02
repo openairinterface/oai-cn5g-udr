@@ -55,7 +55,8 @@ void to_json(nlohmann::json &j, const ApplicationDataSubs &o) {
   j["notificationUri"] = o.m_NotificationUri;
   if (o.dataFiltersIsSet() || !o.m_DataFilters.empty())
     j["dataFilters"] = o.m_DataFilters;
-  if (o.expiryIsSet()) j["expiry"] = o.m_Expiry;
+  if (o.expiryIsSet())
+    j["expiry"] = o.m_Expiry;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
 }
@@ -114,4 +115,4 @@ void ApplicationDataSubs::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

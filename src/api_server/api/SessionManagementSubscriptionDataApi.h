@@ -54,14 +54,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SessionManagementSubscriptionDataApi {
- public:
+public:
   SessionManagementSubscriptionDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SessionManagementSubscriptionDataApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void query_sm_data_handler(const Pistache::Rest::Request &request,
@@ -101,6 +101,6 @@ class SessionManagementSubscriptionDataApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* SessionManagementSubscriptionDataApi_H_ */

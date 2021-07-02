@@ -55,4 +55,4 @@ void GroupIdentifiersApiImpl::get_group_identifiers(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

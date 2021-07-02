@@ -45,8 +45,7 @@ IndividualExposureDataSubscriptionDocumentApiImpl::
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
     : IndividualExposureDataSubscriptionDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
-      m_address(address) {}
+      m_udr_app(udr_app_inst), m_address(address) {}
 
 void IndividualExposureDataSubscriptionDocumentApiImpl::
     delete_individual_exposure_data_subscription(
@@ -63,4 +62,4 @@ void IndividualExposureDataSubscriptionDocumentApiImpl::
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

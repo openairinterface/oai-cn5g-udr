@@ -44,8 +44,7 @@ PolicyDataSubscriptionsCollectionApiImpl::
     PolicyDataSubscriptionsCollectionApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : PolicyDataSubscriptionsCollectionApi(rtr),
-      m_udr_app(udr_app_inst),
+    : PolicyDataSubscriptionsCollectionApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void PolicyDataSubscriptionsCollectionApiImpl::
@@ -56,4 +55,4 @@ void PolicyDataSubscriptionsCollectionApiImpl::
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

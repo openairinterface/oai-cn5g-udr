@@ -61,17 +61,28 @@ void N3gaLocation::validate() {
 
 void to_json(nlohmann::json &j, const N3gaLocation &o) {
   j = nlohmann::json();
-  if (o.n3gppTaiIsSet()) j["n3gppTai"] = o.m_N3gppTai;
-  if (o.n3IwfIdIsSet()) j["n3IwfId"] = o.m_N3IwfId;
-  if (o.ueIpv4AddrIsSet()) j["ueIpv4Addr"] = o.m_UeIpv4Addr;
-  if (o.ueIpv6AddrIsSet()) j["ueIpv6Addr"] = o.m_UeIpv6Addr;
-  if (o.portNumberIsSet()) j["portNumber"] = o.m_PortNumber;
-  if (o.tnapIdIsSet()) j["tnapId"] = o.m_TnapId;
-  if (o.twapIdIsSet()) j["twapId"] = o.m_TwapId;
-  if (o.hfcNodeIdIsSet()) j["hfcNodeId"] = o.m_HfcNodeId;
-  if (o.gliIsSet()) j["gli"] = o.m_Gli;
-  if (o.w5gbanLineTypeIsSet()) j["w5gbanLineType"] = o.m_W5gbanLineType;
-  if (o.gciIsSet()) j["gci"] = o.m_Gci;
+  if (o.n3gppTaiIsSet())
+    j["n3gppTai"] = o.m_N3gppTai;
+  if (o.n3IwfIdIsSet())
+    j["n3IwfId"] = o.m_N3IwfId;
+  if (o.ueIpv4AddrIsSet())
+    j["ueIpv4Addr"] = o.m_UeIpv4Addr;
+  if (o.ueIpv6AddrIsSet())
+    j["ueIpv6Addr"] = o.m_UeIpv6Addr;
+  if (o.portNumberIsSet())
+    j["portNumber"] = o.m_PortNumber;
+  if (o.tnapIdIsSet())
+    j["tnapId"] = o.m_TnapId;
+  if (o.twapIdIsSet())
+    j["twapId"] = o.m_TwapId;
+  if (o.hfcNodeIdIsSet())
+    j["hfcNodeId"] = o.m_HfcNodeId;
+  if (o.gliIsSet())
+    j["gli"] = o.m_Gli;
+  if (o.w5gbanLineTypeIsSet())
+    j["w5gbanLineType"] = o.m_W5gbanLineType;
+  if (o.gciIsSet())
+    j["gci"] = o.m_Gci;
 }
 
 void from_json(const nlohmann::json &j, N3gaLocation &o) {
@@ -199,4 +210,4 @@ void N3gaLocation::setGci(std::string const &value) {
 bool N3gaLocation::gciIsSet() const { return m_GciIsSet; }
 void N3gaLocation::unsetGci() { m_GciIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

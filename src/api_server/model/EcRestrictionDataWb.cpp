@@ -94,4 +94,4 @@ void EcRestrictionDataWb::unsetEcModeBRestricted() {
   m_EcModeBRestrictedIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

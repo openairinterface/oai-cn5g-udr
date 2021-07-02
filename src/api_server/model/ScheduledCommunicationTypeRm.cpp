@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const ScheduledCommunicationTypeRm &o) {
 
 void from_json(const nlohmann::json &j, ScheduledCommunicationTypeRm &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

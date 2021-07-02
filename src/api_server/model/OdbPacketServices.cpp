@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const OdbPacketServices &o) {
 
 void from_json(const nlohmann::json &j, OdbPacketServices &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

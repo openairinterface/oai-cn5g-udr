@@ -55,7 +55,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class N3gaLocation {
- public:
+public:
   N3gaLocation();
   virtual ~N3gaLocation();
 
@@ -68,28 +68,28 @@ class N3gaLocation {
   ///
   /// </summary>
   Tai getN3gppTai() const;
-  void setN3gppTai(Tai const& value);
+  void setN3gppTai(Tai const &value);
   bool n3gppTaiIsSet() const;
   void unsetN3gppTai();
   /// <summary>
   ///
   /// </summary>
   std::string getN3IwfId() const;
-  void setN3IwfId(std::string const& value);
+  void setN3IwfId(std::string const &value);
   bool n3IwfIdIsSet() const;
   void unsetN3IwfId();
   /// <summary>
   ///
   /// </summary>
   std::string getUeIpv4Addr() const;
-  void setUeIpv4Addr(std::string const& value);
+  void setUeIpv4Addr(std::string const &value);
   bool ueIpv4AddrIsSet() const;
   void unsetUeIpv4Addr();
   /// <summary>
   ///
   /// </summary>
   Ipv6Addr getUeIpv6Addr() const;
-  void setUeIpv6Addr(Ipv6Addr const& value);
+  void setUeIpv6Addr(Ipv6Addr const &value);
   bool ueIpv6AddrIsSet() const;
   void unsetUeIpv6Addr();
   /// <summary>
@@ -103,49 +103,49 @@ class N3gaLocation {
   ///
   /// </summary>
   TnapId getTnapId() const;
-  void setTnapId(TnapId const& value);
+  void setTnapId(TnapId const &value);
   bool tnapIdIsSet() const;
   void unsetTnapId();
   /// <summary>
   ///
   /// </summary>
   TwapId getTwapId() const;
-  void setTwapId(TwapId const& value);
+  void setTwapId(TwapId const &value);
   bool twapIdIsSet() const;
   void unsetTwapId();
   /// <summary>
   ///
   /// </summary>
   HfcNodeId getHfcNodeId() const;
-  void setHfcNodeId(HfcNodeId const& value);
+  void setHfcNodeId(HfcNodeId const &value);
   bool hfcNodeIdIsSet() const;
   void unsetHfcNodeId();
   /// <summary>
   ///
   /// </summary>
   std::string getGli() const;
-  void setGli(std::string const& value);
+  void setGli(std::string const &value);
   bool gliIsSet() const;
   void unsetGli();
   /// <summary>
   ///
   /// </summary>
   LineType getW5gbanLineType() const;
-  void setW5gbanLineType(LineType const& value);
+  void setW5gbanLineType(LineType const &value);
   bool w5gbanLineTypeIsSet() const;
   void unsetW5gbanLineType();
   /// <summary>
   ///
   /// </summary>
   std::string getGci() const;
-  void setGci(std::string const& value);
+  void setGci(std::string const &value);
   bool gciIsSet() const;
   void unsetGci();
 
-  friend void to_json(nlohmann::json& j, const N3gaLocation& o);
-  friend void from_json(const nlohmann::json& j, N3gaLocation& o);
+  friend void to_json(nlohmann::json &j, const N3gaLocation &o);
+  friend void from_json(const nlohmann::json &j, N3gaLocation &o);
 
- protected:
+protected:
   Tai m_N3gppTai;
   bool m_N3gppTaiIsSet;
   std::string m_N3IwfId;
@@ -170,6 +170,6 @@ class N3gaLocation {
   bool m_GciIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* N3gaLocation_H_ */

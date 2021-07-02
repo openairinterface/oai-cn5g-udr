@@ -40,11 +40,11 @@
 #ifndef _AMF_SUBSCRIPTION_INFO_DOCUMENT_API_IMPL_H_
 #define _AMF_SUBSCRIPTION_INFO_DOCUMENT_API_IMPL_H_
 
+#include "PatchItem.h"
+#include "udr_app.hpp"
 #include <AmfSubscriptionInfoDocumentApi.h>
 #include <pistache/http.h>
 #include <vector>
-#include "PatchItem.h"
-#include "udr_app.hpp"
 
 namespace oai::udr::api {
 
@@ -53,11 +53,11 @@ using namespace oai::udr::app;
 
 class AmfSubscriptionInfoDocumentApiImpl
     : public oai::udr::api::AmfSubscriptionInfoDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   AmfSubscriptionInfoDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                      udr_app *udr_app_inst,
                                      std::string address);
@@ -70,6 +70,6 @@ class AmfSubscriptionInfoDocumentApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

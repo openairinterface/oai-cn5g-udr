@@ -55,7 +55,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualAppliedBDTPolicyDataDocumentApi {
- public:
+public:
   IndividualAppliedBDTPolicyDataDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualAppliedBDTPolicyDataDocumentApi() {}
@@ -63,7 +63,7 @@ class IndividualAppliedBDTPolicyDataDocumentApi {
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void delete_individual_applied_bdt_policy_data_handler(
@@ -107,6 +107,6 @@ class IndividualAppliedBDTPolicyDataDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* IndividualAppliedBDTPolicyDataDocumentApi_H_ */

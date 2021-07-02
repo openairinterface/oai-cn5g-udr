@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const ReportIntervalNrMdt &o) {
 
 void from_json(const nlohmann::json &j, ReportIntervalNrMdt &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

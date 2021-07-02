@@ -51,11 +51,15 @@ void ApplicationDataChangeNotif::validate() {
 
 void to_json(nlohmann::json &j, const ApplicationDataChangeNotif &o) {
   j = nlohmann::json();
-  if (o.iptvConfigDataIsSet()) j["iptvConfigData"] = o.m_IptvConfigData;
-  if (o.pfdDataIsSet()) j["pfdData"] = o.m_PfdData;
-  if (o.bdtPolicyDataIsSet()) j["bdtPolicyData"] = o.m_BdtPolicyData;
+  if (o.iptvConfigDataIsSet())
+    j["iptvConfigData"] = o.m_IptvConfigData;
+  if (o.pfdDataIsSet())
+    j["pfdData"] = o.m_PfdData;
+  if (o.bdtPolicyDataIsSet())
+    j["bdtPolicyData"] = o.m_BdtPolicyData;
   j["resUri"] = o.m_ResUri;
-  if (o.serParamDataIsSet()) j["serParamData"] = o.m_SerParamData;
+  if (o.serParamDataIsSet())
+    j["serParamData"] = o.m_SerParamData;
 }
 
 void from_json(const nlohmann::json &j, ApplicationDataChangeNotif &o) {
@@ -134,4 +138,4 @@ void ApplicationDataChangeNotif::unsetSerParamData() {
   m_SerParamDataIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

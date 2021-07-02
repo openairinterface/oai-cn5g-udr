@@ -51,10 +51,12 @@ void UpuData_2::validate() {
 
 void to_json(nlohmann::json &j, const UpuData_2 &o) {
   j = nlohmann::json();
-  if (o.secPacketIsSet()) j["secPacket"] = o.m_SecPacket;
+  if (o.secPacketIsSet())
+    j["secPacket"] = o.m_SecPacket;
   if (o.defaultConfNssaiIsSet() || !o.m_DefaultConfNssai.empty())
     j["defaultConfNssai"] = o.m_DefaultConfNssai;
-  if (o.routingIdIsSet()) j["routingId"] = o.m_RoutingId;
+  if (o.routingIdIsSet())
+    j["routingId"] = o.m_RoutingId;
 }
 
 void from_json(const nlohmann::json &j, UpuData_2 &o) {
@@ -98,4 +100,4 @@ void UpuData_2::setRoutingId(std::string const &value) {
 bool UpuData_2::routingIdIsSet() const { return m_RoutingIdIsSet; }
 void UpuData_2::unsetRoutingId() { m_RoutingIdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

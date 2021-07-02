@@ -45,7 +45,8 @@ void MessageWaitingData::validate() {
 
 void to_json(nlohmann::json &j, const MessageWaitingData &o) {
   j = nlohmann::json();
-  if (o.mwdListIsSet() || !o.m_MwdList.empty()) j["mwdList"] = o.m_MwdList;
+  if (o.mwdListIsSet() || !o.m_MwdList.empty())
+    j["mwdList"] = o.m_MwdList;
 }
 
 void from_json(const nlohmann::json &j, MessageWaitingData &o) {
@@ -63,4 +64,4 @@ void MessageWaitingData::setMwdList(std::vector<SmscData> const &value) {
 bool MessageWaitingData::mwdListIsSet() const { return m_MwdListIsSet; }
 void MessageWaitingData::unsetMwdList() { m_MwdListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

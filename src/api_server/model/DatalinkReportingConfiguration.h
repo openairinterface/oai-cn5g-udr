@@ -53,7 +53,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class DatalinkReportingConfiguration {
- public:
+public:
   DatalinkReportingConfiguration();
   virtual ~DatalinkReportingConfiguration();
 
@@ -65,38 +65,38 @@ class DatalinkReportingConfiguration {
   /// <summary>
   ///
   /// </summary>
-  std::vector<DddTrafficDescriptor>& getDddTrafficDes();
-  void setDddTrafficDes(std::vector<DddTrafficDescriptor> const& value);
+  std::vector<DddTrafficDescriptor> &getDddTrafficDes();
+  void setDddTrafficDes(std::vector<DddTrafficDescriptor> const &value);
   bool dddTrafficDesIsSet() const;
   void unsetDddTrafficDes();
   /// <summary>
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const& value);
+  void setDnn(std::string const &value);
   bool dnnIsSet() const;
   void unsetDnn();
   /// <summary>
   ///
   /// </summary>
   Snssai getSlice() const;
-  void setSlice(Snssai const& value);
+  void setSlice(Snssai const &value);
   bool sliceIsSet() const;
   void unsetSlice();
   /// <summary>
   ///
   /// </summary>
-  std::vector<DlDataDeliveryStatus>& getDddStatusList();
-  void setDddStatusList(std::vector<DlDataDeliveryStatus> const& value);
+  std::vector<DlDataDeliveryStatus> &getDddStatusList();
+  void setDddStatusList(std::vector<DlDataDeliveryStatus> const &value);
   bool dddStatusListIsSet() const;
   void unsetDddStatusList();
 
-  friend void to_json(nlohmann::json& j,
-                      const DatalinkReportingConfiguration& o);
-  friend void from_json(const nlohmann::json& j,
-                        DatalinkReportingConfiguration& o);
+  friend void to_json(nlohmann::json &j,
+                      const DatalinkReportingConfiguration &o);
+  friend void from_json(const nlohmann::json &j,
+                        DatalinkReportingConfiguration &o);
 
- protected:
+protected:
   std::vector<DddTrafficDescriptor> m_DddTrafficDes;
   bool m_DddTrafficDesIsSet;
   std::string m_Dnn;
@@ -107,6 +107,6 @@ class DatalinkReportingConfiguration {
   bool m_DddStatusListIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* DatalinkReportingConfiguration_H_ */

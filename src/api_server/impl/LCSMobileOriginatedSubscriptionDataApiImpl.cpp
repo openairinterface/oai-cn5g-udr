@@ -44,8 +44,7 @@ LCSMobileOriginatedSubscriptionDataApiImpl::
     LCSMobileOriginatedSubscriptionDataApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : LCSMobileOriginatedSubscriptionDataApi(rtr),
-      m_udr_app(udr_app_inst),
+    : LCSMobileOriginatedSubscriptionDataApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void LCSMobileOriginatedSubscriptionDataApiImpl::query_lcs_mo_data(
@@ -59,4 +58,4 @@ void LCSMobileOriginatedSubscriptionDataApiImpl::query_lcs_mo_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

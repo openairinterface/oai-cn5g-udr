@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UeAuth {
- public:
+public:
   UeAuth();
   virtual ~UeAuth();
 
@@ -56,12 +56,12 @@ class UeAuth {
   /////////////////////////////////////////////
   /// UeAuth members
 
-  friend void to_json(nlohmann::json& j, const UeAuth& o);
-  friend void from_json(const nlohmann::json& j, UeAuth& o);
+  friend void to_json(nlohmann::json &j, const UeAuth &o);
+  friend void from_json(const nlohmann::json &j, UeAuth &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* UeAuth_H_ */

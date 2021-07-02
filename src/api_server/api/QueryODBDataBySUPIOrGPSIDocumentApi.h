@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class QueryODBDataBySUPIOrGPSIDocumentApi {
- public:
+public:
   QueryODBDataBySUPIOrGPSIDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~QueryODBDataBySUPIOrGPSIDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void get_odb_data_handler(const Pistache::Rest::Request &request,
@@ -82,6 +82,6 @@ class QueryODBDataBySUPIOrGPSIDocumentApi {
                             Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* QueryODBDataBySUPIOrGPSIDocumentApi_H_ */

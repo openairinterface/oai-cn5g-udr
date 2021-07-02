@@ -53,7 +53,8 @@ void to_json(nlohmann::json &j, const ExposureDataSubscription &o) {
   j = nlohmann::json();
   j["notificationUri"] = o.m_NotificationUri;
   j["monitoredResourceUris"] = o.m_MonitoredResourceUris;
-  if (o.expiryIsSet()) j["expiry"] = o.m_Expiry;
+  if (o.expiryIsSet())
+    j["expiry"] = o.m_Expiry;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
 }
@@ -105,4 +106,4 @@ void ExposureDataSubscription::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

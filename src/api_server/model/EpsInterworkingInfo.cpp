@@ -67,4 +67,4 @@ void EpsInterworkingInfo::setEpsIwkPgws(
 bool EpsInterworkingInfo::epsIwkPgwsIsSet() const { return m_EpsIwkPgwsIsSet; }
 void EpsInterworkingInfo::unsetEpsIwkPgws() { m_EpsIwkPgwsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

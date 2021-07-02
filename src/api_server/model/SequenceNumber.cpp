@@ -54,12 +54,16 @@ void SequenceNumber::validate() {
 
 void to_json(nlohmann::json &j, const SequenceNumber &o) {
   j = nlohmann::json();
-  if (o.sqnSchemeIsSet()) j["sqnScheme"] = o.m_SqnScheme;
-  if (o.sqnIsSet()) j["sqn"] = o.m_Sqn;
+  if (o.sqnSchemeIsSet())
+    j["sqnScheme"] = o.m_SqnScheme;
+  if (o.sqnIsSet())
+    j["sqn"] = o.m_Sqn;
   if (o.lastIndexesIsSet() || !o.m_LastIndexes.empty())
     j["lastIndexes"] = o.m_LastIndexes;
-  if (o.indLengthIsSet()) j["indLength"] = o.m_IndLength;
-  if (o.difSignIsSet()) j["difSign"] = o.m_DifSign;
+  if (o.indLengthIsSet())
+    j["indLength"] = o.m_IndLength;
+  if (o.difSignIsSet())
+    j["difSign"] = o.m_DifSign;
 }
 
 void from_json(const nlohmann::json &j, SequenceNumber &o) {
@@ -124,4 +128,4 @@ void SequenceNumber::setDifSign(Sign const &value) {
 bool SequenceNumber::difSignIsSet() const { return m_DifSignIsSet; }
 void SequenceNumber::unsetDifSign() { m_DifSignIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

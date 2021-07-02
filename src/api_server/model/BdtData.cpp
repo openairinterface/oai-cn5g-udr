@@ -63,15 +63,24 @@ void to_json(nlohmann::json &j, const BdtData &o) {
   j = nlohmann::json();
   j["aspId"] = o.m_AspId;
   j["transPolicy"] = o.m_TransPolicy;
-  if (o.bdtRefIdIsSet()) j["bdtRefId"] = o.m_BdtRefId;
-  if (o.nwAreaInfoIsSet()) j["nwAreaInfo"] = o.m_NwAreaInfo;
-  if (o.numOfUesIsSet()) j["numOfUes"] = o.m_NumOfUes;
-  if (o.volPerUeIsSet()) j["volPerUe"] = o.m_VolPerUe;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
-  if (o.snssaiIsSet()) j["snssai"] = o.m_Snssai;
-  if (o.trafficDesIsSet()) j["trafficDes"] = o.m_TrafficDes;
-  if (o.bdtpStatusIsSet()) j["bdtpStatus"] = o.m_BdtpStatus;
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
+  if (o.bdtRefIdIsSet())
+    j["bdtRefId"] = o.m_BdtRefId;
+  if (o.nwAreaInfoIsSet())
+    j["nwAreaInfo"] = o.m_NwAreaInfo;
+  if (o.numOfUesIsSet())
+    j["numOfUes"] = o.m_NumOfUes;
+  if (o.volPerUeIsSet())
+    j["volPerUe"] = o.m_VolPerUe;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
+  if (o.snssaiIsSet())
+    j["snssai"] = o.m_Snssai;
+  if (o.trafficDesIsSet())
+    j["trafficDes"] = o.m_TrafficDes;
+  if (o.bdtpStatusIsSet())
+    j["bdtpStatus"] = o.m_BdtpStatus;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, BdtData &o) {
@@ -185,4 +194,4 @@ void BdtData::setSuppFeat(std::string const &value) {
 bool BdtData::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void BdtData::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

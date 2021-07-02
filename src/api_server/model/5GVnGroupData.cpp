@@ -58,8 +58,10 @@ void to_json(nlohmann::json &j, const _5GVnGroupData &o) {
     j["pduSessionTypes"] = o.m_PduSessionTypes;
   if (o.appDescriptorsIsSet() || !o.m_AppDescriptors.empty())
     j["appDescriptors"] = o.m_AppDescriptors;
-  if (o.secondaryAuthIsSet()) j["secondaryAuth"] = o.m_SecondaryAuth;
-  if (o.dnAaaAddressIsSet()) j["dnAaaAddress"] = o.m_DnAaaAddress;
+  if (o.secondaryAuthIsSet())
+    j["secondaryAuth"] = o.m_SecondaryAuth;
+  if (o.dnAaaAddressIsSet())
+    j["dnAaaAddress"] = o.m_DnAaaAddress;
 }
 
 void from_json(const nlohmann::json &j, _5GVnGroupData &o) {
@@ -126,4 +128,4 @@ void _5GVnGroupData::setDnAaaAddress(IpAddress const &value) {
 bool _5GVnGroupData::dnAaaAddressIsSet() const { return m_DnAaaAddressIsSet; }
 void _5GVnGroupData::unsetDnAaaAddress() { m_DnAaaAddressIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

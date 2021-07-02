@@ -59,4 +59,4 @@ void Guami::setPlmnId(PlmnIdNid const &value) { m_PlmnId = value; }
 std::string Guami::getAmfId() const { return m_AmfId; }
 void Guami::setAmfId(std::string const &value) { m_AmfId = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

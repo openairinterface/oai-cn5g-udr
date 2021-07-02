@@ -53,7 +53,8 @@ void to_json(nlohmann::json &j, const ChangeItem &o) {
   j = nlohmann::json();
   j["op"] = o.m_Op;
   j["path"] = o.m_Path;
-  if (o.fromIsSet()) j["from"] = o.m_From;
+  if (o.fromIsSet())
+    j["from"] = o.m_From;
   //    if(o.origValueIsSet())
   //        j["origValue"] = o.m_OrigValue;
   //    if(o.newValueIsSet())
@@ -111,4 +112,4 @@ void ChangeItem::unsetOrigValue() { m_OrigValueIsSet = false; }
 bool ChangeItem::newValueIsSet() const { return m_NewValueIsSet; }
 void ChangeItem::unsetNewValue() { m_NewValueIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

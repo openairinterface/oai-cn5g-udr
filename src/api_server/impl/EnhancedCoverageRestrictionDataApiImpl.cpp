@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 EnhancedCoverageRestrictionDataApiImpl::EnhancedCoverageRestrictionDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : EnhancedCoverageRestrictionDataApi(rtr),
-      m_udr_app(udr_app_inst),
+    : EnhancedCoverageRestrictionDataApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void EnhancedCoverageRestrictionDataApiImpl::query_coverage_restriction_data(
@@ -57,4 +56,4 @@ void EnhancedCoverageRestrictionDataApiImpl::query_coverage_restriction_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

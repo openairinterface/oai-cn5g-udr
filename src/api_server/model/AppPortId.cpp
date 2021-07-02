@@ -50,8 +50,10 @@ void AppPortId::validate() {
 
 void to_json(nlohmann::json &j, const AppPortId &o) {
   j = nlohmann::json();
-  if (o.destinationPortIsSet()) j["destinationPort"] = o.m_DestinationPort;
-  if (o.originatorPortIsSet()) j["originatorPort"] = o.m_OriginatorPort;
+  if (o.destinationPortIsSet())
+    j["destinationPort"] = o.m_DestinationPort;
+  if (o.originatorPortIsSet())
+    j["originatorPort"] = o.m_OriginatorPort;
 }
 
 void from_json(const nlohmann::json &j, AppPortId &o) {
@@ -80,4 +82,4 @@ void AppPortId::setOriginatorPort(int32_t const value) {
 bool AppPortId::originatorPortIsSet() const { return m_OriginatorPortIsSet; }
 void AppPortId::unsetOriginatorPort() { m_OriginatorPortIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

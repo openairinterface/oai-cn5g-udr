@@ -49,9 +49,12 @@ void UserLocation::validate() {
 
 void to_json(nlohmann::json &j, const UserLocation &o) {
   j = nlohmann::json();
-  if (o.eutraLocationIsSet()) j["eutraLocation"] = o.m_EutraLocation;
-  if (o.nrLocationIsSet()) j["nrLocation"] = o.m_NrLocation;
-  if (o.n3gaLocationIsSet()) j["n3gaLocation"] = o.m_N3gaLocation;
+  if (o.eutraLocationIsSet())
+    j["eutraLocation"] = o.m_EutraLocation;
+  if (o.nrLocationIsSet())
+    j["nrLocation"] = o.m_NrLocation;
+  if (o.n3gaLocationIsSet())
+    j["n3gaLocation"] = o.m_N3gaLocation;
 }
 
 void from_json(const nlohmann::json &j, UserLocation &o) {
@@ -91,4 +94,4 @@ void UserLocation::setN3gaLocation(N3gaLocation const &value) {
 bool UserLocation::n3gaLocationIsSet() const { return m_N3gaLocationIsSet; }
 void UserLocation::unsetN3gaLocation() { m_N3gaLocationIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

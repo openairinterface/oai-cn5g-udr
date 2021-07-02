@@ -52,8 +52,8 @@ void from_json(const nlohmann::json &j, LcsBroadcastAssistanceTypesData &o) {
   j.at("locationAssistanceType").get_to(o.m_LocationAssistanceType);
 }
 
-std::vector<std::string>
-    &LcsBroadcastAssistanceTypesData::getLocationAssistanceType() {
+std::vector<std::string> &
+LcsBroadcastAssistanceTypesData::getLocationAssistanceType() {
   return m_LocationAssistanceType;
 }
 void LcsBroadcastAssistanceTypesData::setLocationAssistanceType(
@@ -61,4 +61,4 @@ void LcsBroadcastAssistanceTypesData::setLocationAssistanceType(
   m_LocationAssistanceType = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

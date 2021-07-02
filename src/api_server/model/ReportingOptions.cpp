@@ -57,12 +57,18 @@ void ReportingOptions::validate() {
 
 void to_json(nlohmann::json &j, const ReportingOptions &o) {
   j = nlohmann::json();
-  if (o.reportModeIsSet()) j["reportMode"] = o.m_ReportMode;
-  if (o.maxNumOfReportsIsSet()) j["maxNumOfReports"] = o.m_MaxNumOfReports;
-  if (o.expiryIsSet()) j["expiry"] = o.m_Expiry;
-  if (o.samplingRatioIsSet()) j["samplingRatio"] = o.m_SamplingRatio;
-  if (o.guardTimeIsSet()) j["guardTime"] = o.m_GuardTime;
-  if (o.reportPeriodIsSet()) j["reportPeriod"] = o.m_ReportPeriod;
+  if (o.reportModeIsSet())
+    j["reportMode"] = o.m_ReportMode;
+  if (o.maxNumOfReportsIsSet())
+    j["maxNumOfReports"] = o.m_MaxNumOfReports;
+  if (o.expiryIsSet())
+    j["expiry"] = o.m_Expiry;
+  if (o.samplingRatioIsSet())
+    j["samplingRatio"] = o.m_SamplingRatio;
+  if (o.guardTimeIsSet())
+    j["guardTime"] = o.m_GuardTime;
+  if (o.reportPeriodIsSet())
+    j["reportPeriod"] = o.m_ReportPeriod;
 }
 
 void from_json(const nlohmann::json &j, ReportingOptions &o) {
@@ -143,4 +149,4 @@ void ReportingOptions::setReportPeriod(int32_t const value) {
 bool ReportingOptions::reportPeriodIsSet() const { return m_ReportPeriodIsSet; }
 void ReportingOptions::unsetReportPeriod() { m_ReportPeriodIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

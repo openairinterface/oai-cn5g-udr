@@ -40,13 +40,13 @@
 #ifndef SDM_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 #define SDM_SUBSCRIPTION_DOCUMENT_API_IMPL_H_
 
+#include "PatchItem.h"
+#include "SdmSubscription.h"
+#include "udr_app.hpp"
 #include <SDMSubscriptionDocumentApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
 #include <vector>
-#include "PatchItem.h"
-#include "SdmSubscription.h"
-#include "udr_app.hpp"
 
 namespace oai::udr::api {
 
@@ -55,11 +55,11 @@ using namespace oai::udr::app;
 
 class SDMSubscriptionDocumentApiImpl
     : public oai::udr::api::SDMSubscriptionDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   SDMSubscriptionDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                  udr_app *udr_app_inst, std::string address);
   ~SDMSubscriptionDocumentApiImpl() {}
@@ -80,6 +80,6 @@ class SDMSubscriptionDocumentApiImpl
                               Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

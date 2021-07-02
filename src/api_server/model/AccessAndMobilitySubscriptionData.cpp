@@ -110,13 +110,16 @@ void to_json(nlohmann::json &j, const AccessAndMobilitySubscriptionData &o) {
   j = nlohmann::json();
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.gpsisIsSet() || !o.m_Gpsis.empty()) j["gpsis"] = o.m_Gpsis;
+  if (o.gpsisIsSet() || !o.m_Gpsis.empty())
+    j["gpsis"] = o.m_Gpsis;
   if (o.internalGroupIdsIsSet() || !o.m_InternalGroupIds.empty())
     j["internalGroupIds"] = o.m_InternalGroupIds;
   if (o.sharedVnGroupDataIdsIsSet() || !o.m_SharedVnGroupDataIds.empty())
     j["sharedVnGroupDataIds"] = o.m_SharedVnGroupDataIds;
-  if (o.subscribedUeAmbrIsSet()) j["subscribedUeAmbr"] = o.m_SubscribedUeAmbr;
-  if (o.nssaiIsSet()) j["nssai"] = o.m_Nssai;
+  if (o.subscribedUeAmbrIsSet())
+    j["subscribedUeAmbr"] = o.m_SubscribedUeAmbr;
+  if (o.nssaiIsSet())
+    j["nssai"] = o.m_Nssai;
   if (o.ratRestrictionsIsSet() || !o.m_RatRestrictions.empty())
     j["ratRestrictions"] = o.m_RatRestrictions;
   if (o.forbiddenAreasIsSet() || !o.m_ForbiddenAreas.empty())
@@ -126,33 +129,52 @@ void to_json(nlohmann::json &j, const AccessAndMobilitySubscriptionData &o) {
   if (o.coreNetworkTypeRestrictionsIsSet() ||
       !o.m_CoreNetworkTypeRestrictions.empty())
     j["coreNetworkTypeRestrictions"] = o.m_CoreNetworkTypeRestrictions;
-  if (o.rfspIndexIsSet()) j["rfspIndex"] = o.m_RfspIndex;
-  if (o.subsRegTimerIsSet()) j["subsRegTimer"] = o.m_SubsRegTimer;
-  if (o.ueUsageTypeIsSet()) j["ueUsageType"] = o.m_UeUsageType;
-  if (o.mpsPriorityIsSet()) j["mpsPriority"] = o.m_MpsPriority;
-  if (o.mcsPriorityIsSet()) j["mcsPriority"] = o.m_McsPriority;
-  if (o.activeTimeIsSet()) j["activeTime"] = o.m_ActiveTime;
-  if (o.sorInfoIsSet()) j["sorInfo"] = o.m_SorInfo;
-  if (o.sorInfoExpectIndIsSet()) j["sorInfoExpectInd"] = o.m_SorInfoExpectInd;
-  if (o.sorafRetrievalIsSet()) j["sorafRetrieval"] = o.m_SorafRetrieval;
+  if (o.rfspIndexIsSet())
+    j["rfspIndex"] = o.m_RfspIndex;
+  if (o.subsRegTimerIsSet())
+    j["subsRegTimer"] = o.m_SubsRegTimer;
+  if (o.ueUsageTypeIsSet())
+    j["ueUsageType"] = o.m_UeUsageType;
+  if (o.mpsPriorityIsSet())
+    j["mpsPriority"] = o.m_MpsPriority;
+  if (o.mcsPriorityIsSet())
+    j["mcsPriority"] = o.m_McsPriority;
+  if (o.activeTimeIsSet())
+    j["activeTime"] = o.m_ActiveTime;
+  if (o.sorInfoIsSet())
+    j["sorInfo"] = o.m_SorInfo;
+  if (o.sorInfoExpectIndIsSet())
+    j["sorInfoExpectInd"] = o.m_SorInfoExpectInd;
+  if (o.sorafRetrievalIsSet())
+    j["sorafRetrieval"] = o.m_SorafRetrieval;
   if (o.sorUpdateIndicatorListIsSet() || !o.m_SorUpdateIndicatorList.empty())
     j["sorUpdateIndicatorList"] = o.m_SorUpdateIndicatorList;
-  if (o.upuInfoIsSet()) j["upuInfo"] = o.m_UpuInfo;
-  if (o.micoAllowedIsSet()) j["micoAllowed"] = o.m_MicoAllowed;
+  if (o.upuInfoIsSet())
+    j["upuInfo"] = o.m_UpuInfo;
+  if (o.micoAllowedIsSet())
+    j["micoAllowed"] = o.m_MicoAllowed;
   if (o.sharedAmDataIdsIsSet() || !o.m_SharedAmDataIds.empty())
     j["sharedAmDataIds"] = o.m_SharedAmDataIds;
   if (o.odbPacketServicesIsSet())
     j["odbPacketServices"] = o.m_OdbPacketServices;
   //    if(o.subscribedDnnListIsSet() || !o.m_SubscribedDnnList.empty())
   //        j["subscribedDnnList"] = o.m_SubscribedDnnList;
-  if (o.serviceGapTimeIsSet()) j["serviceGapTime"] = o.m_ServiceGapTime;
-  if (o.mdtUserConsentIsSet()) j["mdtUserConsent"] = o.m_MdtUserConsent;
-  if (o.mdtConfigurationIsSet()) j["mdtConfiguration"] = o.m_MdtConfiguration;
-  if (o.traceDataIsSet()) j["traceData"] = o.m_TraceData;
-  if (o.cagDataIsSet()) j["cagData"] = o.m_CagData;
-  if (o.stnSrIsSet()) j["stnSr"] = o.m_StnSr;
-  if (o.cMsisdnIsSet()) j["cMsisdn"] = o.m_CMsisdn;
-  if (o.nbIoTUePriorityIsSet()) j["nbIoTUePriority"] = o.m_NbIoTUePriority;
+  if (o.serviceGapTimeIsSet())
+    j["serviceGapTime"] = o.m_ServiceGapTime;
+  if (o.mdtUserConsentIsSet())
+    j["mdtUserConsent"] = o.m_MdtUserConsent;
+  if (o.mdtConfigurationIsSet())
+    j["mdtConfiguration"] = o.m_MdtConfiguration;
+  if (o.traceDataIsSet())
+    j["traceData"] = o.m_TraceData;
+  if (o.cagDataIsSet())
+    j["cagData"] = o.m_CagData;
+  if (o.stnSrIsSet())
+    j["stnSr"] = o.m_StnSr;
+  if (o.cMsisdnIsSet())
+    j["cMsisdn"] = o.m_CMsisdn;
+  if (o.nbIoTUePriorityIsSet())
+    j["nbIoTUePriority"] = o.m_NbIoTUePriority;
   if (o.nssaiInclusionAllowedIsSet())
     j["nssaiInclusionAllowed"] = o.m_NssaiInclusionAllowed;
   if (o.rgWirelineCharacteristicsIsSet())
@@ -390,8 +412,8 @@ bool AccessAndMobilitySubscriptionData::gpsisIsSet() const {
   return m_GpsisIsSet;
 }
 void AccessAndMobilitySubscriptionData::unsetGpsis() { m_GpsisIsSet = false; }
-std::vector<std::string>
-    &AccessAndMobilitySubscriptionData::getInternalGroupIds() {
+std::vector<std::string> &
+AccessAndMobilitySubscriptionData::getInternalGroupIds() {
   return m_InternalGroupIds;
 }
 void AccessAndMobilitySubscriptionData::setInternalGroupIds(
@@ -405,8 +427,8 @@ bool AccessAndMobilitySubscriptionData::internalGroupIdsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetInternalGroupIds() {
   m_InternalGroupIdsIsSet = false;
 }
-std::map<std::string, std::string>
-    &AccessAndMobilitySubscriptionData::getSharedVnGroupDataIds() {
+std::map<std::string, std::string> &
+AccessAndMobilitySubscriptionData::getSharedVnGroupDataIds() {
   return m_SharedVnGroupDataIds;
 }
 void AccessAndMobilitySubscriptionData::setSharedVnGroupDataIds(
@@ -486,8 +508,8 @@ bool AccessAndMobilitySubscriptionData::serviceAreaRestrictionIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetServiceAreaRestriction() {
   m_ServiceAreaRestrictionIsSet = false;
 }
-std::vector<CoreNetworkType>
-    &AccessAndMobilitySubscriptionData::getCoreNetworkTypeRestrictions() {
+std::vector<CoreNetworkType> &
+AccessAndMobilitySubscriptionData::getCoreNetworkTypeRestrictions() {
   return m_CoreNetworkTypeRestrictions;
 }
 void AccessAndMobilitySubscriptionData::setCoreNetworkTypeRestrictions(
@@ -619,8 +641,8 @@ bool AccessAndMobilitySubscriptionData::sorafRetrievalIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetSorafRetrieval() {
   m_SorafRetrievalIsSet = false;
 }
-std::vector<SorUpdateIndicator>
-    &AccessAndMobilitySubscriptionData::getSorUpdateIndicatorList() {
+std::vector<SorUpdateIndicator> &
+AccessAndMobilitySubscriptionData::getSorUpdateIndicatorList() {
   return m_SorUpdateIndicatorList;
 }
 void AccessAndMobilitySubscriptionData::setSorUpdateIndicatorList(
@@ -660,8 +682,8 @@ bool AccessAndMobilitySubscriptionData::micoAllowedIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetMicoAllowed() {
   m_MicoAllowedIsSet = false;
 }
-std::vector<std::string>
-    &AccessAndMobilitySubscriptionData::getSharedAmDataIds() {
+std::vector<std::string> &
+AccessAndMobilitySubscriptionData::getSharedAmDataIds() {
   return m_SharedAmDataIds;
 }
 void AccessAndMobilitySubscriptionData::setSharedAmDataIds(
@@ -675,8 +697,8 @@ bool AccessAndMobilitySubscriptionData::sharedAmDataIdsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetSharedAmDataIds() {
   m_SharedAmDataIdsIsSet = false;
 }
-OdbPacketServices AccessAndMobilitySubscriptionData::getOdbPacketServices()
-    const {
+OdbPacketServices
+AccessAndMobilitySubscriptionData::getOdbPacketServices() const {
   return m_OdbPacketServices;
 }
 void AccessAndMobilitySubscriptionData::setOdbPacketServices(
@@ -735,8 +757,8 @@ bool AccessAndMobilitySubscriptionData::mdtUserConsentIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetMdtUserConsent() {
   m_MdtUserConsentIsSet = false;
 }
-MdtConfiguration AccessAndMobilitySubscriptionData::getMdtConfiguration()
-    const {
+MdtConfiguration
+AccessAndMobilitySubscriptionData::getMdtConfiguration() const {
   return m_MdtConfiguration;
 }
 void AccessAndMobilitySubscriptionData::setMdtConfiguration(
@@ -828,8 +850,8 @@ bool AccessAndMobilitySubscriptionData::nssaiInclusionAllowedIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetNssaiInclusionAllowed() {
   m_NssaiInclusionAllowedIsSet = false;
 }
-std::string AccessAndMobilitySubscriptionData::getRgWirelineCharacteristics()
-    const {
+std::string
+AccessAndMobilitySubscriptionData::getRgWirelineCharacteristics() const {
   return m_RgWirelineCharacteristics;
 }
 void AccessAndMobilitySubscriptionData::setRgWirelineCharacteristics(
@@ -843,8 +865,8 @@ bool AccessAndMobilitySubscriptionData::rgWirelineCharacteristicsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetRgWirelineCharacteristics() {
   m_RgWirelineCharacteristicsIsSet = false;
 }
-EcRestrictionDataWb AccessAndMobilitySubscriptionData::getEcRestrictionDataWb()
-    const {
+EcRestrictionDataWb
+AccessAndMobilitySubscriptionData::getEcRestrictionDataWb() const {
   return m_EcRestrictionDataWb;
 }
 void AccessAndMobilitySubscriptionData::setEcRestrictionDataWb(
@@ -887,8 +909,8 @@ bool AccessAndMobilitySubscriptionData::expectedUeBehaviourListIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetExpectedUeBehaviourList() {
   m_ExpectedUeBehaviourListIsSet = false;
 }
-std::vector<RatType>
-    &AccessAndMobilitySubscriptionData::getPrimaryRatRestrictions() {
+std::vector<RatType> &
+AccessAndMobilitySubscriptionData::getPrimaryRatRestrictions() {
   return m_PrimaryRatRestrictions;
 }
 void AccessAndMobilitySubscriptionData::setPrimaryRatRestrictions(
@@ -902,8 +924,8 @@ bool AccessAndMobilitySubscriptionData::primaryRatRestrictionsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetPrimaryRatRestrictions() {
   m_PrimaryRatRestrictionsIsSet = false;
 }
-std::vector<RatType>
-    &AccessAndMobilitySubscriptionData::getSecondaryRatRestrictions() {
+std::vector<RatType> &
+AccessAndMobilitySubscriptionData::getSecondaryRatRestrictions() {
   return m_SecondaryRatRestrictions;
 }
 void AccessAndMobilitySubscriptionData::setSecondaryRatRestrictions(
@@ -917,8 +939,8 @@ bool AccessAndMobilitySubscriptionData::secondaryRatRestrictionsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetSecondaryRatRestrictions() {
   m_SecondaryRatRestrictionsIsSet = false;
 }
-std::vector<EdrxParameters>
-    &AccessAndMobilitySubscriptionData::getEdrxParametersList() {
+std::vector<EdrxParameters> &
+AccessAndMobilitySubscriptionData::getEdrxParametersList() {
   return m_EdrxParametersList;
 }
 void AccessAndMobilitySubscriptionData::setEdrxParametersList(
@@ -932,8 +954,8 @@ bool AccessAndMobilitySubscriptionData::edrxParametersListIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetEdrxParametersList() {
   m_EdrxParametersListIsSet = false;
 }
-std::vector<PtwParameters>
-    &AccessAndMobilitySubscriptionData::getPtwParametersList() {
+std::vector<PtwParameters> &
+AccessAndMobilitySubscriptionData::getPtwParametersList() {
   return m_PtwParametersList;
 }
 void AccessAndMobilitySubscriptionData::setPtwParametersList(
@@ -961,8 +983,8 @@ bool AccessAndMobilitySubscriptionData::iabOperationAllowedIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetIabOperationAllowed() {
   m_IabOperationAllowedIsSet = false;
 }
-std::vector<WirelineArea>
-    &AccessAndMobilitySubscriptionData::getWirelineForbiddenAreas() {
+std::vector<WirelineArea> &
+AccessAndMobilitySubscriptionData::getWirelineForbiddenAreas() {
   return m_WirelineForbiddenAreas;
 }
 void AccessAndMobilitySubscriptionData::setWirelineForbiddenAreas(
@@ -993,4 +1015,4 @@ void AccessAndMobilitySubscriptionData::unsetWirelineServiceAreaRestriction() {
   m_WirelineServiceAreaRestrictionIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

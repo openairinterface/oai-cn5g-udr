@@ -79,4 +79,4 @@ void PduSessionTypes::unsetAllowedSessionTypes() {
   m_AllowedSessionTypesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -50,7 +50,8 @@ void SmsSubscriptionData::validate() {
 
 void to_json(nlohmann::json &j, const SmsSubscriptionData &o) {
   j = nlohmann::json();
-  if (o.smsSubscribedIsSet()) j["smsSubscribed"] = o.m_SmsSubscribed;
+  if (o.smsSubscribedIsSet())
+    j["smsSubscribed"] = o.m_SmsSubscribed;
   if (o.sharedSmsSubsDataIdIsSet())
     j["sharedSmsSubsDataId"] = o.m_SharedSmsSubsDataId;
 }
@@ -89,4 +90,4 @@ void SmsSubscriptionData::unsetSharedSmsSubsDataId() {
   m_SharedSmsSubsDataIdIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

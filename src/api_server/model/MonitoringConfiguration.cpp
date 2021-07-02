@@ -65,15 +65,18 @@ void MonitoringConfiguration::validate() {
 void to_json(nlohmann::json &j, const MonitoringConfiguration &o) {
   j = nlohmann::json();
   j["eventType"] = o.m_EventType;
-  if (o.immediateFlagIsSet()) j["immediateFlag"] = o.m_ImmediateFlag;
+  if (o.immediateFlagIsSet())
+    j["immediateFlag"] = o.m_ImmediateFlag;
   if (o.locationReportingConfigurationIsSet())
     j["locationReportingConfiguration"] = o.m_LocationReportingConfiguration;
-  if (o.associationTypeIsSet()) j["associationType"] = o.m_AssociationType;
+  if (o.associationTypeIsSet())
+    j["associationType"] = o.m_AssociationType;
   if (o.datalinkReportCfgIsSet())
     j["datalinkReportCfg"] = o.m_DatalinkReportCfg;
   if (o.lossConnectivityCfgIsSet())
     j["lossConnectivityCfg"] = o.m_LossConnectivityCfg;
-  if (o.maximumLatencyIsSet()) j["maximumLatency"] = o.m_MaximumLatency;
+  if (o.maximumLatencyIsSet())
+    j["maximumLatency"] = o.m_MaximumLatency;
   if (o.maximumResponseTimeIsSet())
     j["maximumResponseTime"] = o.m_MaximumResponseTime;
   if (o.suggestedPacketNumDlIsSet())
@@ -84,7 +87,8 @@ void to_json(nlohmann::json &j, const MonitoringConfiguration &o) {
     j["reachabilityForSmsCfg"] = o.m_ReachabilityForSmsCfg;
   if (o.mtcProviderInformationIsSet())
     j["mtcProviderInformation"] = o.m_MtcProviderInformation;
-  if (o.afIdIsSet()) j["afId"] = o.m_AfId;
+  if (o.afIdIsSet())
+    j["afId"] = o.m_AfId;
 }
 
 void from_json(const nlohmann::json &j, MonitoringConfiguration &o) {
@@ -185,8 +189,8 @@ bool MonitoringConfiguration::associationTypeIsSet() const {
 void MonitoringConfiguration::unsetAssociationType() {
   m_AssociationTypeIsSet = false;
 }
-DatalinkReportingConfiguration MonitoringConfiguration::getDatalinkReportCfg()
-    const {
+DatalinkReportingConfiguration
+MonitoringConfiguration::getDatalinkReportCfg() const {
   return m_DatalinkReportCfg;
 }
 void MonitoringConfiguration::setDatalinkReportCfg(
@@ -304,4 +308,4 @@ void MonitoringConfiguration::setAfId(std::string const &value) {
 bool MonitoringConfiguration::afIdIsSet() const { return m_AfIdIsSet; }
 void MonitoringConfiguration::unsetAfId() { m_AfIdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

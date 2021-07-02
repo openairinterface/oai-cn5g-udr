@@ -53,24 +53,21 @@ void SMFRegistrationDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base +
-          "/subscription-data/:ueId/context-data/smf-registrations/"
-          ":pduSessionId",
+      base + "/subscription-data/:ueId/context-data/smf-registrations/"
+             ":pduSessionId",
       Routes::bind(
           &SMFRegistrationDocumentApi::create_smf_context_non3gpp_handler,
           this));
   Routes::Delete(
       *router,
-      base +
-          "/subscription-data/:ueId/context-data/smf-registrations/"
-          ":pduSessionId",
+      base + "/subscription-data/:ueId/context-data/smf-registrations/"
+             ":pduSessionId",
       Routes::bind(&SMFRegistrationDocumentApi::delete_smf_context_handler,
                    this));
   Routes::Get(
       *router,
-      base +
-          "/subscription-data/:ueId/context-data/smf-registrations/"
-          ":pduSessionId",
+      base + "/subscription-data/:ueId/context-data/smf-registrations/"
+             ":pduSessionId",
       Routes::bind(&SMFRegistrationDocumentApi::query_smf_registration_handler,
                    this));
 
@@ -185,4 +182,4 @@ void SMFRegistrationDocumentApi::smf_registration_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -53,8 +53,10 @@ void to_json(nlohmann::json &j, const PgwInfo &o) {
   j = nlohmann::json();
   j["dnn"] = o.m_Dnn;
   j["pgwFqdn"] = o.m_PgwFqdn;
-  if (o.plmnIdIsSet()) j["plmnId"] = o.m_PlmnId;
-  if (o.epdgIndIsSet()) j["epdgInd"] = o.m_EpdgInd;
+  if (o.plmnIdIsSet())
+    j["plmnId"] = o.m_PlmnId;
+  if (o.epdgIndIsSet())
+    j["epdgInd"] = o.m_EpdgInd;
 }
 
 void from_json(const nlohmann::json &j, PgwInfo &o) {
@@ -89,4 +91,4 @@ void PgwInfo::setEpdgInd(bool const value) {
 bool PgwInfo::epdgIndIsSet() const { return m_EpdgIndIsSet; }
 void PgwInfo::unsetEpdgInd() { m_EpdgIndIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

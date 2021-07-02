@@ -48,8 +48,10 @@ void WirelineServiceAreaRestriction::validate() {
 
 void to_json(nlohmann::json &j, const WirelineServiceAreaRestriction &o) {
   j = nlohmann::json();
-  if (o.restrictionTypeIsSet()) j["restrictionType"] = o.m_RestrictionType;
-  if (o.areasIsSet() || !o.m_Areas.empty()) j["areas"] = o.m_Areas;
+  if (o.restrictionTypeIsSet())
+    j["restrictionType"] = o.m_RestrictionType;
+  if (o.areasIsSet() || !o.m_Areas.empty())
+    j["areas"] = o.m_Areas;
 }
 
 void from_json(const nlohmann::json &j, WirelineServiceAreaRestriction &o) {
@@ -88,4 +90,4 @@ void WirelineServiceAreaRestriction::setAreas(
 bool WirelineServiceAreaRestriction::areasIsSet() const { return m_AreasIsSet; }
 void WirelineServiceAreaRestriction::unsetAreas() { m_AreasIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

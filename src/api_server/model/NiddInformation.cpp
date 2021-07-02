@@ -52,8 +52,10 @@ void NiddInformation::validate() {
 void to_json(nlohmann::json &j, const NiddInformation &o) {
   j = nlohmann::json();
   j["afId"] = o.m_AfId;
-  if (o.gpsiIsSet()) j["gpsi"] = o.m_Gpsi;
-  if (o.extGroupIdIsSet()) j["extGroupId"] = o.m_ExtGroupId;
+  if (o.gpsiIsSet())
+    j["gpsi"] = o.m_Gpsi;
+  if (o.extGroupIdIsSet())
+    j["extGroupId"] = o.m_ExtGroupId;
 }
 
 void from_json(const nlohmann::json &j, NiddInformation &o) {
@@ -85,4 +87,4 @@ void NiddInformation::setExtGroupId(std::string const &value) {
 bool NiddInformation::extGroupIdIsSet() const { return m_ExtGroupIdIsSet; }
 void NiddInformation::unsetExtGroupId() { m_ExtGroupIdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

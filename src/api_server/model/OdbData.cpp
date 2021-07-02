@@ -45,7 +45,8 @@ void OdbData::validate() {
 
 void to_json(nlohmann::json &j, const OdbData &o) {
   j = nlohmann::json();
-  if (o.roamingOdbIsSet()) j["roamingOdb"] = o.m_RoamingOdb;
+  if (o.roamingOdbIsSet())
+    j["roamingOdb"] = o.m_RoamingOdb;
 }
 
 void from_json(const nlohmann::json &j, OdbData &o) {
@@ -63,4 +64,4 @@ void OdbData::setRoamingOdb(RoamingOdb const &value) {
 bool OdbData::roamingOdbIsSet() const { return m_RoamingOdbIsSet; }
 void OdbData::unsetRoamingOdb() { m_RoamingOdbIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

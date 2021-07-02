@@ -72,63 +72,62 @@ bool Options::parseInputOptions(int argc, char **argv) {
   // Loop on arguments
   while (1) {
     c = getopt_long(argc, argv, "horc:", long_options, &option_index);
-    if (c == -1) break;  // Exit from the loop.
+    if (c == -1)
+      break; // Exit from the loop.
 
     switch (c) {
-      case 'h': {
-        help();
-        exit(0);
-        break;
-      }
+    case 'h': {
+      help();
+      exit(0);
+      break;
+    }
+    case 'c': {
+      m_libconfigcfg = optarg;
+      options |= libconfigcfg;
+      break;
+    }
+    case 'o': {
+      m_log_stdout = true;
+      options |= log_stdout;
+      break;
+    }
+    case 'r': {
+      m_log_rot_file_log = true;
+      options |= log_rot_file_log;
+      break;
+    }
+
+    case '?': {
+      switch (optopt) {
       case 'c': {
-        m_libconfigcfg = optarg;
-        options |= libconfigcfg;
+        std::cout << "Option -l (libconfig config) requires an argument"
+                  << std::endl;
         break;
       }
       case 'o': {
-        m_log_stdout = true;
-        options |= log_stdout;
+        std::cout << "Option -o do not requires an argument, can be also set "
+                     "with option -r."
+                  << std::endl;
         break;
       }
       case 'r': {
-        m_log_rot_file_log = true;
-        options |= log_rot_file_log;
-        break;
-      }
-
-      case '?': {
-        switch (optopt) {
-          case 'c': {
-            std::cout << "Option -l (libconfig config) requires an argument"
-                      << std::endl;
-            break;
-          }
-          case 'o': {
-            std::cout
-                << "Option -o do not requires an argument, can be also set "
-                   "with option -r."
-                << std::endl;
-            break;
-          }
-          case 'r': {
-            std::cout
-                << "Option -r do not requires an argument, can be also set "
-                   "with option -o."
-                << std::endl;
-            break;
-          }
-          default: {
-            std::cout << "Unrecognized option [" << c << "]" << std::endl;
-            break;
-          }
-        }
-        result = false;
+        std::cout << "Option -r do not requires an argument, can be also set "
+                     "with option -o."
+                  << std::endl;
         break;
       }
       default: {
         std::cout << "Unrecognized option [" << c << "]" << std::endl;
-        result = false;
+        break;
       }
+      }
+      result = false;
+      break;
+    }
+    default: {
+      std::cout << "Unrecognized option [" << c << "]" << std::endl;
+      result = false;
+    }
     }
   }
   return result;

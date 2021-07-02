@@ -68,19 +68,28 @@ void to_json(nlohmann::json &j, const SdmSubscription &o) {
   j["nfInstanceId"] = o.m_NfInstanceId;
   if (o.implicitUnsubscribeIsSet())
     j["implicitUnsubscribe"] = o.m_ImplicitUnsubscribe;
-  if (o.expiresIsSet()) j["expires"] = o.m_Expires;
+  if (o.expiresIsSet())
+    j["expires"] = o.m_Expires;
   j["callbackReference"] = o.m_CallbackReference;
-  if (o.amfServiceNameIsSet()) j["amfServiceName"] = o.m_AmfServiceName;
+  if (o.amfServiceNameIsSet())
+    j["amfServiceName"] = o.m_AmfServiceName;
   j["monitoredResourceUris"] = o.m_MonitoredResourceUris;
-  if (o.singleNssaiIsSet()) j["singleNssai"] = o.m_SingleNssai;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
-  if (o.subscriptionIdIsSet()) j["subscriptionId"] = o.m_SubscriptionId;
-  if (o.plmnIdIsSet()) j["plmnId"] = o.m_PlmnId;
-  if (o.immediateReportIsSet()) j["immediateReport"] = o.m_ImmediateReport;
-  if (o.reportIsSet()) j["report"] = o.m_Report;
+  if (o.singleNssaiIsSet())
+    j["singleNssai"] = o.m_SingleNssai;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
+  if (o.subscriptionIdIsSet())
+    j["subscriptionId"] = o.m_SubscriptionId;
+  if (o.plmnIdIsSet())
+    j["plmnId"] = o.m_PlmnId;
+  if (o.immediateReportIsSet())
+    j["immediateReport"] = o.m_ImmediateReport;
+  if (o.reportIsSet())
+    j["report"] = o.m_Report;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.contextInfoIsSet()) j["contextInfo"] = o.m_ContextInfo;
+  if (o.contextInfoIsSet())
+    j["contextInfo"] = o.m_ContextInfo;
 }
 
 void from_json(const nlohmann::json &j, SdmSubscription &o) {
@@ -250,4 +259,4 @@ void SdmSubscription::setContextInfo(ContextInfo const &value) {
 bool SdmSubscription::contextInfoIsSet() const { return m_ContextInfoIsSet; }
 void SdmSubscription::unsetContextInfo() { m_ContextInfoIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

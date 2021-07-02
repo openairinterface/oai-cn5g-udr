@@ -118,4 +118,4 @@ void OperatorSpecificDataContainer::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

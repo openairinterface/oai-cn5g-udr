@@ -40,11 +40,11 @@
 #ifndef INDIVIDUAL_BDT_POLICY_DATA_DOCUMENT_API_IMPL_H_
 #define INDIVIDUAL_BDT_POLICY_DATA_DOCUMENT_API_IMPL_H_
 
+#include "BdtPolicyData.h"
+#include "udr_app.hpp"
 #include <IndividualBDTPolicyDataDocumentApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include "BdtPolicyData.h"
-#include "udr_app.hpp"
 
 namespace oai::udr::api {
 
@@ -53,11 +53,11 @@ using namespace oai::udr::app;
 
 class IndividualBDTPolicyDataDocumentApiImpl
     : public oai::udr::api::IndividualBDTPolicyDataDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   IndividualBDTPolicyDataDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
@@ -68,6 +68,6 @@ class IndividualBDTPolicyDataDocumentApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

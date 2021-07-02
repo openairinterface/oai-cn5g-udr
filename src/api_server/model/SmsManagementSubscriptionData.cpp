@@ -64,17 +64,22 @@ void to_json(nlohmann::json &j, const SmsManagementSubscriptionData &o) {
   j = nlohmann::json();
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.mtSmsSubscribedIsSet()) j["mtSmsSubscribed"] = o.m_MtSmsSubscribed;
-  if (o.mtSmsBarringAllIsSet()) j["mtSmsBarringAll"] = o.m_MtSmsBarringAll;
+  if (o.mtSmsSubscribedIsSet())
+    j["mtSmsSubscribed"] = o.m_MtSmsSubscribed;
+  if (o.mtSmsBarringAllIsSet())
+    j["mtSmsBarringAll"] = o.m_MtSmsBarringAll;
   if (o.mtSmsBarringRoamingIsSet())
     j["mtSmsBarringRoaming"] = o.m_MtSmsBarringRoaming;
-  if (o.moSmsSubscribedIsSet()) j["moSmsSubscribed"] = o.m_MoSmsSubscribed;
-  if (o.moSmsBarringAllIsSet()) j["moSmsBarringAll"] = o.m_MoSmsBarringAll;
+  if (o.moSmsSubscribedIsSet())
+    j["moSmsSubscribed"] = o.m_MoSmsSubscribed;
+  if (o.moSmsBarringAllIsSet())
+    j["moSmsBarringAll"] = o.m_MoSmsBarringAll;
   if (o.moSmsBarringRoamingIsSet())
     j["moSmsBarringRoaming"] = o.m_MoSmsBarringRoaming;
   if (o.sharedSmsMngDataIdsIsSet() || !o.m_SharedSmsMngDataIds.empty())
     j["sharedSmsMngDataIds"] = o.m_SharedSmsMngDataIds;
-  if (o.traceDataIsSet()) j["traceData"] = o.m_TraceData;
+  if (o.traceDataIsSet())
+    j["traceData"] = o.m_TraceData;
 }
 
 void from_json(const nlohmann::json &j, SmsManagementSubscriptionData &o) {
@@ -208,8 +213,8 @@ bool SmsManagementSubscriptionData::moSmsBarringRoamingIsSet() const {
 void SmsManagementSubscriptionData::unsetMoSmsBarringRoaming() {
   m_MoSmsBarringRoamingIsSet = false;
 }
-std::vector<std::string>
-    &SmsManagementSubscriptionData::getSharedSmsMngDataIds() {
+std::vector<std::string> &
+SmsManagementSubscriptionData::getSharedSmsMngDataIds() {
   return m_SharedSmsMngDataIds;
 }
 void SmsManagementSubscriptionData::setSharedSmsMngDataIds(
@@ -237,4 +242,4 @@ void SmsManagementSubscriptionData::unsetTraceData() {
   m_TraceDataIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

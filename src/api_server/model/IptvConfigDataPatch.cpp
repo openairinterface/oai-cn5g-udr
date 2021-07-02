@@ -56,8 +56,8 @@ void from_json(const nlohmann::json &j, IptvConfigDataPatch &o) {
   }
 }
 
-std::map<std::string, MulticastAccessControl>
-    &IptvConfigDataPatch::getMultiAccCtrls() {
+std::map<std::string, MulticastAccessControl> &
+IptvConfigDataPatch::getMultiAccCtrls() {
   return m_MultiAccCtrls;
 }
 void IptvConfigDataPatch::setMultiAccCtrls(
@@ -70,4 +70,4 @@ bool IptvConfigDataPatch::multiAccCtrlsIsSet() const {
 }
 void IptvConfigDataPatch::unsetMultiAccCtrls() { m_MultiAccCtrlsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

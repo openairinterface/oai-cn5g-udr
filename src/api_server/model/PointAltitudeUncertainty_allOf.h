@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PointAltitudeUncertainty_allOf {
- public:
+public:
   PointAltitudeUncertainty_allOf();
   virtual ~PointAltitudeUncertainty_allOf();
 
@@ -63,7 +63,7 @@ class PointAltitudeUncertainty_allOf {
   ///
   /// </summary>
   GeographicalCoordinates getPoint() const;
-  void setPoint(GeographicalCoordinates const& value);
+  void setPoint(GeographicalCoordinates const &value);
   /// <summary>
   ///
   /// </summary>
@@ -73,7 +73,7 @@ class PointAltitudeUncertainty_allOf {
   ///
   /// </summary>
   UncertaintyEllipse getUncertaintyEllipse() const;
-  void setUncertaintyEllipse(UncertaintyEllipse const& value);
+  void setUncertaintyEllipse(UncertaintyEllipse const &value);
   /// <summary>
   ///
   /// </summary>
@@ -85,12 +85,12 @@ class PointAltitudeUncertainty_allOf {
   int32_t getConfidence() const;
   void setConfidence(int32_t const value);
 
-  friend void to_json(nlohmann::json& j,
-                      const PointAltitudeUncertainty_allOf& o);
-  friend void from_json(const nlohmann::json& j,
-                        PointAltitudeUncertainty_allOf& o);
+  friend void to_json(nlohmann::json &j,
+                      const PointAltitudeUncertainty_allOf &o);
+  friend void from_json(const nlohmann::json &j,
+                        PointAltitudeUncertainty_allOf &o);
 
- protected:
+protected:
   GeographicalCoordinates m_Point;
 
   double m_Altitude;
@@ -102,6 +102,6 @@ class PointAltitudeUncertainty_allOf {
   int32_t m_Confidence;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* PointAltitudeUncertainty_allOf_H_ */

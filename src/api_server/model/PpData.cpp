@@ -62,11 +62,16 @@ void to_json(nlohmann::json &j, const PpData &o) {
     j["supportedFeatures"] = o.m_SupportedFeatures;
   if (o.expectedUeBehaviourParametersIsSet())
     j["expectedUeBehaviourParameters"] = o.m_ExpectedUeBehaviourParameters;
-  if (o.ecRestrictionIsSet()) j["ecRestriction"] = o.m_EcRestriction;
-  if (o.acsInfoIsSet()) j["acsInfo"] = o.m_AcsInfo;
-  if (o.stnSrIsSet()) j["stnSr"] = o.m_StnSr;
-  if (o.lcsPrivacyIsSet()) j["lcsPrivacy"] = o.m_LcsPrivacy;
-  if (o.sorInfoIsSet()) j["sorInfo"] = o.m_SorInfo;
+  if (o.ecRestrictionIsSet())
+    j["ecRestriction"] = o.m_EcRestriction;
+  if (o.acsInfoIsSet())
+    j["acsInfo"] = o.m_AcsInfo;
+  if (o.stnSrIsSet())
+    j["stnSr"] = o.m_StnSr;
+  if (o.lcsPrivacyIsSet())
+    j["lcsPrivacy"] = o.m_LcsPrivacy;
+  if (o.sorInfoIsSet())
+    j["sorInfo"] = o.m_SorInfo;
 }
 
 void from_json(const nlohmann::json &j, PpData &o) {
@@ -177,4 +182,4 @@ void PpData::setSorInfo(SorInfo const &value) {
 bool PpData::sorInfoIsSet() const { return m_SorInfoIsSet; }
 void PpData::unsetSorInfo() { m_SorInfoIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

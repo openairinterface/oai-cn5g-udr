@@ -73,4 +73,4 @@ void AdditionalSnssaiData::unsetRequiredAuthnAuthz() {
   m_RequiredAuthnAuthzIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

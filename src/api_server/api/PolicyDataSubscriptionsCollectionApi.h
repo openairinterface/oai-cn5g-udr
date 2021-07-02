@@ -52,14 +52,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class PolicyDataSubscriptionsCollectionApi {
- public:
+public:
   PolicyDataSubscriptionsCollectionApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~PolicyDataSubscriptionsCollectionApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void create_individual_policy_data_subscription_handler(
@@ -83,6 +83,6 @@ class PolicyDataSubscriptionsCollectionApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* PolicyDataSubscriptionsCollectionApi_H_ */

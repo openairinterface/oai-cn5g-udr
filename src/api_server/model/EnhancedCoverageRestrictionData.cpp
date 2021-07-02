@@ -73,4 +73,4 @@ void EnhancedCoverageRestrictionData::unsetPlmnEcInfoList() {
   m_PlmnEcInfoListIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

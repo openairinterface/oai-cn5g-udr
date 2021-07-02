@@ -102,4 +102,4 @@ bool fromStringValue(const std::string &inStr, double &value) {
   return true;
 }
 
-}  // namespace oai::udr::helpers
+} // namespace oai::udr::helpers

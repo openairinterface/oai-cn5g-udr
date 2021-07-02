@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ReportingTrigger {
- public:
+public:
   ReportingTrigger();
   virtual ~ReportingTrigger();
 
@@ -56,12 +56,12 @@ class ReportingTrigger {
   /////////////////////////////////////////////
   /// ReportingTrigger members
 
-  friend void to_json(nlohmann::json& j, const ReportingTrigger& o);
-  friend void from_json(const nlohmann::json& j, ReportingTrigger& o);
+  friend void to_json(nlohmann::json &j, const ReportingTrigger &o);
+  friend void from_json(const nlohmann::json &j, ReportingTrigger &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* ReportingTrigger_H_ */

@@ -64,8 +64,8 @@ Snssai SnssaiRouteSelectionDescriptor::getSnssai() const { return m_Snssai; }
 void SnssaiRouteSelectionDescriptor::setSnssai(Snssai const &value) {
   m_Snssai = value;
 }
-std::vector<DnnRouteSelectionDescriptor>
-    &SnssaiRouteSelectionDescriptor::getDnnRouteSelDescs() {
+std::vector<DnnRouteSelectionDescriptor> &
+SnssaiRouteSelectionDescriptor::getDnnRouteSelDescs() {
   return m_DnnRouteSelDescs;
 }
 void SnssaiRouteSelectionDescriptor::setDnnRouteSelDescs(
@@ -80,4 +80,4 @@ void SnssaiRouteSelectionDescriptor::unsetDnnRouteSelDescs() {
   m_DnnRouteSelDescsIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

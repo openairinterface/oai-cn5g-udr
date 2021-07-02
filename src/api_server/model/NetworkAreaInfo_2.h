@@ -55,7 +55,7 @@ namespace oai::udr::model {
 /// requests the number of UEs.
 /// </summary>
 class NetworkAreaInfo_2 {
- public:
+public:
   NetworkAreaInfo_2();
   virtual ~NetworkAreaInfo_2();
 
@@ -67,36 +67,36 @@ class NetworkAreaInfo_2 {
   /// <summary>
   /// Contains a list of E-UTRA cell identities.
   /// </summary>
-  std::vector<Ecgi>& getEcgis();
-  void setEcgis(std::vector<Ecgi> const& value);
+  std::vector<Ecgi> &getEcgis();
+  void setEcgis(std::vector<Ecgi> const &value);
   bool ecgisIsSet() const;
   void unsetEcgis();
   /// <summary>
   /// Contains a list of NR cell identities.
   /// </summary>
-  std::vector<Ncgi>& getNcgis();
-  void setNcgis(std::vector<Ncgi> const& value);
+  std::vector<Ncgi> &getNcgis();
+  void setNcgis(std::vector<Ncgi> const &value);
   bool ncgisIsSet() const;
   void unsetNcgis();
   /// <summary>
   /// Contains a list of NG RAN nodes.
   /// </summary>
-  std::vector<GlobalRanNodeId>& getGRanNodeIds();
-  void setGRanNodeIds(std::vector<GlobalRanNodeId> const& value);
+  std::vector<GlobalRanNodeId> &getGRanNodeIds();
+  void setGRanNodeIds(std::vector<GlobalRanNodeId> const &value);
   bool gRanNodeIdsIsSet() const;
   void unsetGRanNodeIds();
   /// <summary>
   /// Contains a list of tracking area identities.
   /// </summary>
-  std::vector<Tai>& getTais();
-  void setTais(std::vector<Tai> const& value);
+  std::vector<Tai> &getTais();
+  void setTais(std::vector<Tai> const &value);
   bool taisIsSet() const;
   void unsetTais();
 
-  friend void to_json(nlohmann::json& j, const NetworkAreaInfo_2& o);
-  friend void from_json(const nlohmann::json& j, NetworkAreaInfo_2& o);
+  friend void to_json(nlohmann::json &j, const NetworkAreaInfo_2 &o);
+  friend void from_json(const nlohmann::json &j, NetworkAreaInfo_2 &o);
 
- protected:
+protected:
   std::vector<Ecgi> m_Ecgis;
   bool m_EcgisIsSet;
   std::vector<Ncgi> m_Ncgis;
@@ -107,6 +107,6 @@ class NetworkAreaInfo_2 {
   bool m_TaisIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* NetworkAreaInfo_2_H_ */

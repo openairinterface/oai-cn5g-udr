@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 LCSPrivacySubscriptionDataApiImpl::LCSPrivacySubscriptionDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : LCSPrivacySubscriptionDataApi(rtr),
-      m_udr_app(udr_app_inst),
+    : LCSPrivacySubscriptionDataApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void LCSPrivacySubscriptionDataApiImpl::query_lcs_privacy_data(
@@ -58,4 +57,4 @@ void LCSPrivacySubscriptionDataApiImpl::query_lcs_privacy_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class TwapId {
- public:
+public:
   TwapId();
   virtual ~TwapId();
 
@@ -61,26 +61,26 @@ class TwapId {
   ///
   /// </summary>
   std::string getSsId() const;
-  void setSsId(std::string const& value);
+  void setSsId(std::string const &value);
   /// <summary>
   ///
   /// </summary>
   std::string getBssId() const;
-  void setBssId(std::string const& value);
+  void setBssId(std::string const &value);
   bool bssIdIsSet() const;
   void unsetBssId();
   /// <summary>
   ///
   /// </summary>
   std::string getCivicAddress() const;
-  void setCivicAddress(std::string const& value);
+  void setCivicAddress(std::string const &value);
   bool civicAddressIsSet() const;
   void unsetCivicAddress();
 
-  friend void to_json(nlohmann::json& j, const TwapId& o);
-  friend void from_json(const nlohmann::json& j, TwapId& o);
+  friend void to_json(nlohmann::json &j, const TwapId &o);
+  friend void from_json(const nlohmann::json &j, TwapId &o);
 
- protected:
+protected:
   std::string m_SsId;
 
   std::string m_BssId;
@@ -89,6 +89,6 @@ class TwapId {
   bool m_CivicAddressIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* TwapId_H_ */

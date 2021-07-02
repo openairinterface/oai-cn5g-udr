@@ -53,8 +53,10 @@ void to_json(nlohmann::json &j, const ScheduledCommunicationTimeRm &o) {
   j = nlohmann::json();
   if (o.daysOfWeekIsSet() || !o.m_DaysOfWeek.empty())
     j["daysOfWeek"] = o.m_DaysOfWeek;
-  if (o.timeOfDayStartIsSet()) j["timeOfDayStart"] = o.m_TimeOfDayStart;
-  if (o.timeOfDayEndIsSet()) j["timeOfDayEnd"] = o.m_TimeOfDayEnd;
+  if (o.timeOfDayStartIsSet())
+    j["timeOfDayStart"] = o.m_TimeOfDayStart;
+  if (o.timeOfDayEndIsSet())
+    j["timeOfDayEnd"] = o.m_TimeOfDayEnd;
 }
 
 void from_json(const nlohmann::json &j, ScheduledCommunicationTimeRm &o) {
@@ -113,4 +115,4 @@ void ScheduledCommunicationTimeRm::unsetTimeOfDayEnd() {
   m_TimeOfDayEndIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

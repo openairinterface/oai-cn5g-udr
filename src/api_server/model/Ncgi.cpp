@@ -51,7 +51,8 @@ void to_json(nlohmann::json &j, const Ncgi &o) {
   j = nlohmann::json();
   j["plmnId"] = o.m_PlmnId;
   j["nrCellId"] = o.m_NrCellId;
-  if (o.nidIsSet()) j["nid"] = o.m_Nid;
+  if (o.nidIsSet())
+    j["nid"] = o.m_Nid;
 }
 
 void from_json(const nlohmann::json &j, Ncgi &o) {
@@ -75,4 +76,4 @@ void Ncgi::setNid(std::string const &value) {
 bool Ncgi::nidIsSet() const { return m_NidIsSet; }
 void Ncgi::unsetNid() { m_NidIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

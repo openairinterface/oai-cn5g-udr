@@ -56,8 +56,10 @@ void to_json(nlohmann::json &j, const SorInfo &o) {
   if (o.steeringContainerIsSet())
     j["steeringContainer"] = o.m_SteeringContainer;
   j["ackInd"] = o.m_AckInd;
-  if (o.sorMacIausfIsSet()) j["sorMacIausf"] = o.m_SorMacIausf;
-  if (o.countersorIsSet()) j["countersor"] = o.m_Countersor;
+  if (o.sorMacIausfIsSet())
+    j["sorMacIausf"] = o.m_SorMacIausf;
+  if (o.countersorIsSet())
+    j["countersor"] = o.m_Countersor;
   j["provisioningTime"] = o.m_ProvisioningTime;
 }
 
@@ -110,4 +112,4 @@ void SorInfo::setProvisioningTime(std::string const &value) {
   m_ProvisioningTime = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

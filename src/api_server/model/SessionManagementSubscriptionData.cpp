@@ -70,7 +70,8 @@ void to_json(nlohmann::json &j, const SessionManagementSubscriptionData &o) {
     j["sharedDnnConfigurationsId"] = o.m_SharedDnnConfigurationsId;
   if (o.odbPacketServicesIsSet())
     j["odbPacketServices"] = o.m_OdbPacketServices;
-  if (o.traceDataIsSet()) j["traceData"] = o.m_TraceData;
+  if (o.traceDataIsSet())
+    j["traceData"] = o.m_TraceData;
   if (o.sharedTraceDataIdIsSet())
     j["sharedTraceDataId"] = o.m_SharedTraceDataId;
   if (o.expectedUeBehavioursListIsSet() ||
@@ -134,8 +135,8 @@ Snssai SessionManagementSubscriptionData::getSingleNssai() const {
 void SessionManagementSubscriptionData::setSingleNssai(Snssai const &value) {
   m_SingleNssai = value;
 }
-std::map<std::string, DnnConfiguration>
-    &SessionManagementSubscriptionData::getDnnConfigurations() {
+std::map<std::string, DnnConfiguration> &
+SessionManagementSubscriptionData::getDnnConfigurations() {
   return m_DnnConfigurations;
 }
 void SessionManagementSubscriptionData::setDnnConfigurations(
@@ -149,8 +150,8 @@ bool SessionManagementSubscriptionData::dnnConfigurationsIsSet() const {
 void SessionManagementSubscriptionData::unsetDnnConfigurations() {
   m_DnnConfigurationsIsSet = false;
 }
-std::vector<std::string>
-    &SessionManagementSubscriptionData::getInternalGroupIds() {
+std::vector<std::string> &
+SessionManagementSubscriptionData::getInternalGroupIds() {
   return m_InternalGroupIds;
 }
 void SessionManagementSubscriptionData::setInternalGroupIds(
@@ -164,8 +165,8 @@ bool SessionManagementSubscriptionData::internalGroupIdsIsSet() const {
 void SessionManagementSubscriptionData::unsetInternalGroupIds() {
   m_InternalGroupIdsIsSet = false;
 }
-std::map<std::string, std::string>
-    &SessionManagementSubscriptionData::getSharedVnGroupDataIds() {
+std::map<std::string, std::string> &
+SessionManagementSubscriptionData::getSharedVnGroupDataIds() {
   return m_SharedVnGroupDataIds;
 }
 void SessionManagementSubscriptionData::setSharedVnGroupDataIds(
@@ -179,8 +180,8 @@ bool SessionManagementSubscriptionData::sharedVnGroupDataIdsIsSet() const {
 void SessionManagementSubscriptionData::unsetSharedVnGroupDataIds() {
   m_SharedVnGroupDataIdsIsSet = false;
 }
-std::string SessionManagementSubscriptionData::getSharedDnnConfigurationsId()
-    const {
+std::string
+SessionManagementSubscriptionData::getSharedDnnConfigurationsId() const {
   return m_SharedDnnConfigurationsId;
 }
 void SessionManagementSubscriptionData::setSharedDnnConfigurationsId(
@@ -194,8 +195,8 @@ bool SessionManagementSubscriptionData::sharedDnnConfigurationsIdIsSet() const {
 void SessionManagementSubscriptionData::unsetSharedDnnConfigurationsId() {
   m_SharedDnnConfigurationsIdIsSet = false;
 }
-OdbPacketServices SessionManagementSubscriptionData::getOdbPacketServices()
-    const {
+OdbPacketServices
+SessionManagementSubscriptionData::getOdbPacketServices() const {
   return m_OdbPacketServices;
 }
 void SessionManagementSubscriptionData::setOdbPacketServices(
@@ -236,8 +237,8 @@ bool SessionManagementSubscriptionData::sharedTraceDataIdIsSet() const {
 void SessionManagementSubscriptionData::unsetSharedTraceDataId() {
   m_SharedTraceDataIdIsSet = false;
 }
-std::map<std::string, ExpectedUeBehaviourData>
-    &SessionManagementSubscriptionData::getExpectedUeBehavioursList() {
+std::map<std::string, ExpectedUeBehaviourData> &
+SessionManagementSubscriptionData::getExpectedUeBehavioursList() {
   return m_ExpectedUeBehavioursList;
 }
 void SessionManagementSubscriptionData::setExpectedUeBehavioursList(
@@ -251,8 +252,8 @@ bool SessionManagementSubscriptionData::expectedUeBehavioursListIsSet() const {
 void SessionManagementSubscriptionData::unsetExpectedUeBehavioursList() {
   m_ExpectedUeBehavioursListIsSet = false;
 }
-std::map<std::string, SuggestedPacketNumDl>
-    &SessionManagementSubscriptionData::getSuggestedPacketNumDlList() {
+std::map<std::string, SuggestedPacketNumDl> &
+SessionManagementSubscriptionData::getSuggestedPacketNumDlList() {
   return m_SuggestedPacketNumDlList;
 }
 void SessionManagementSubscriptionData::setSuggestedPacketNumDlList(
@@ -266,8 +267,8 @@ bool SessionManagementSubscriptionData::suggestedPacketNumDlListIsSet() const {
 void SessionManagementSubscriptionData::unsetSuggestedPacketNumDlList() {
   m_SuggestedPacketNumDlListIsSet = false;
 }
-std::string SessionManagementSubscriptionData::getR3gppChargingCharacteristics()
-    const {
+std::string
+SessionManagementSubscriptionData::getR3gppChargingCharacteristics() const {
   return m_r_3gppChargingCharacteristics;
 }
 void SessionManagementSubscriptionData::setR3gppChargingCharacteristics(
@@ -283,4 +284,4 @@ void SessionManagementSubscriptionData::unsetr_3gppChargingCharacteristics() {
   m_r_3gppChargingCharacteristicsIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

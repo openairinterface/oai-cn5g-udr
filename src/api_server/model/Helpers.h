@@ -88,6 +88,6 @@ bool fromStringValue(const std::string &inStr, std::vector<T> &value,
   return fromStringValue(inStrings, value);
 }
 
-}  // namespace oai::udr::helpers
+} // namespace oai::udr::helpers
 
-#endif  // Helpers_H_
+#endif // Helpers_H_

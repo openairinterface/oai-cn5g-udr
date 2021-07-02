@@ -60,4 +60,4 @@ void Polygon_allOf::setPointList(
   m_PointList = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

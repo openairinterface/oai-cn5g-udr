@@ -48,7 +48,8 @@ void AmPolicyData::validate() {
 
 void to_json(nlohmann::json &j, const AmPolicyData &o) {
   j = nlohmann::json();
-  if (o.praInfosIsSet() || !o.m_PraInfos.empty()) j["praInfos"] = o.m_PraInfos;
+  if (o.praInfosIsSet() || !o.m_PraInfos.empty())
+    j["praInfos"] = o.m_PraInfos;
   if (o.subscCatsIsSet() || !o.m_SubscCats.empty())
     j["subscCats"] = o.m_SubscCats;
 }
@@ -82,4 +83,4 @@ void AmPolicyData::setSubscCats(std::vector<std::string> const &value) {
 bool AmPolicyData::subscCatsIsSet() const { return m_SubscCatsIsSet; }
 void AmPolicyData::unsetSubscCats() { m_SubscCatsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

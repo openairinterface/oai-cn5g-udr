@@ -52,9 +52,12 @@ void LocationReportingConfiguration::validate() {
 void to_json(nlohmann::json &j, const LocationReportingConfiguration &o) {
   j = nlohmann::json();
   j["currentLocation"] = o.m_CurrentLocation;
-  if (o.oneTimeIsSet()) j["oneTime"] = o.m_OneTime;
-  if (o.accuracyIsSet()) j["accuracy"] = o.m_Accuracy;
-  if (o.n3gppAccuracyIsSet()) j["n3gppAccuracy"] = o.m_N3gppAccuracy;
+  if (o.oneTimeIsSet())
+    j["oneTime"] = o.m_OneTime;
+  if (o.accuracyIsSet())
+    j["accuracy"] = o.m_Accuracy;
+  if (o.n3gppAccuracyIsSet())
+    j["n3gppAccuracy"] = o.m_N3gppAccuracy;
 }
 
 void from_json(const nlohmann::json &j, LocationReportingConfiguration &o) {
@@ -117,4 +120,4 @@ void LocationReportingConfiguration::unsetN3gppAccuracy() {
   m_N3gppAccuracyIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

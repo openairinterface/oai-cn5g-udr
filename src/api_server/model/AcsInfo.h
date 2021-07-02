@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class AcsInfo {
- public:
+public:
   AcsInfo();
   virtual ~AcsInfo();
 
@@ -63,28 +63,28 @@ class AcsInfo {
   ///
   /// </summary>
   std::string getAcsUrl() const;
-  void setAcsUrl(std::string const& value);
+  void setAcsUrl(std::string const &value);
   bool acsUrlIsSet() const;
   void unsetAcsUrl();
   /// <summary>
   ///
   /// </summary>
   std::string getAcsIpv4Addr() const;
-  void setAcsIpv4Addr(std::string const& value);
+  void setAcsIpv4Addr(std::string const &value);
   bool acsIpv4AddrIsSet() const;
   void unsetAcsIpv4Addr();
   /// <summary>
   ///
   /// </summary>
   Ipv6Addr getAcsIpv6Addr() const;
-  void setAcsIpv6Addr(Ipv6Addr const& value);
+  void setAcsIpv6Addr(Ipv6Addr const &value);
   bool acsIpv6AddrIsSet() const;
   void unsetAcsIpv6Addr();
 
-  friend void to_json(nlohmann::json& j, const AcsInfo& o);
-  friend void from_json(const nlohmann::json& j, AcsInfo& o);
+  friend void to_json(nlohmann::json &j, const AcsInfo &o);
+  friend void from_json(const nlohmann::json &j, AcsInfo &o);
 
- protected:
+protected:
   std::string m_AcsUrl;
   bool m_AcsUrlIsSet;
   std::string m_AcsIpv4Addr;
@@ -93,6 +93,6 @@ class AcsInfo {
   bool m_AcsIpv6AddrIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* AcsInfo_H_ */

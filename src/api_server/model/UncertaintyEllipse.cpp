@@ -75,4 +75,4 @@ void UncertaintyEllipse::setOrientationMajor(int32_t const value) {
   m_OrientationMajor = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

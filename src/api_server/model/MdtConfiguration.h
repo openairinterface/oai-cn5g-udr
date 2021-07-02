@@ -71,7 +71,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class MdtConfiguration {
- public:
+public:
   MdtConfiguration();
   virtual ~MdtConfiguration();
 
@@ -84,68 +84,68 @@ class MdtConfiguration {
   ///
   /// </summary>
   JobType getJobType() const;
-  void setJobType(JobType const& value);
+  void setJobType(JobType const &value);
   /// <summary>
   ///
   /// </summary>
   ReportTypeMdt getReportType() const;
-  void setReportType(ReportTypeMdt const& value);
+  void setReportType(ReportTypeMdt const &value);
   bool reportTypeIsSet() const;
   void unsetReportType();
   /// <summary>
   ///
   /// </summary>
   AreaScope getAreaScope() const;
-  void setAreaScope(AreaScope const& value);
+  void setAreaScope(AreaScope const &value);
   bool areaScopeIsSet() const;
   void unsetAreaScope();
   /// <summary>
   ///
   /// </summary>
-  std::vector<MeasurementLteForMdt>& getMeasurementLteList();
-  void setMeasurementLteList(std::vector<MeasurementLteForMdt> const& value);
+  std::vector<MeasurementLteForMdt> &getMeasurementLteList();
+  void setMeasurementLteList(std::vector<MeasurementLteForMdt> const &value);
   bool measurementLteListIsSet() const;
   void unsetMeasurementLteList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<MeasurementNrForMdt>& getMeasurementNrList();
-  void setMeasurementNrList(std::vector<MeasurementNrForMdt> const& value);
+  std::vector<MeasurementNrForMdt> &getMeasurementNrList();
+  void setMeasurementNrList(std::vector<MeasurementNrForMdt> const &value);
   bool measurementNrListIsSet() const;
   void unsetMeasurementNrList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<SensorMeasurement>& getSensorMeasurementList();
-  void setSensorMeasurementList(std::vector<SensorMeasurement> const& value);
+  std::vector<SensorMeasurement> &getSensorMeasurementList();
+  void setSensorMeasurementList(std::vector<SensorMeasurement> const &value);
   bool sensorMeasurementListIsSet() const;
   void unsetSensorMeasurementList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<ReportingTrigger>& getReportingTriggerList();
-  void setReportingTriggerList(std::vector<ReportingTrigger> const& value);
+  std::vector<ReportingTrigger> &getReportingTriggerList();
+  void setReportingTriggerList(std::vector<ReportingTrigger> const &value);
   bool reportingTriggerListIsSet() const;
   void unsetReportingTriggerList();
   /// <summary>
   ///
   /// </summary>
   ReportIntervalMdt getReportInterval() const;
-  void setReportInterval(ReportIntervalMdt const& value);
+  void setReportInterval(ReportIntervalMdt const &value);
   bool reportIntervalIsSet() const;
   void unsetReportInterval();
   /// <summary>
   ///
   /// </summary>
   ReportIntervalNrMdt getReportIntervalNr() const;
-  void setReportIntervalNr(ReportIntervalNrMdt const& value);
+  void setReportIntervalNr(ReportIntervalNrMdt const &value);
   bool reportIntervalNrIsSet() const;
   void unsetReportIntervalNr();
   /// <summary>
   ///
   /// </summary>
   ReportAmountMdt getReportAmount() const;
-  void setReportAmount(ReportAmountMdt const& value);
+  void setReportAmount(ReportAmountMdt const &value);
   bool reportAmountIsSet() const;
   void unsetReportAmount();
   /// <summary>
@@ -179,92 +179,92 @@ class MdtConfiguration {
   /// <summary>
   ///
   /// </summary>
-  std::vector<EventForMdt>& getEventList();
-  void setEventList(std::vector<EventForMdt> const& value);
+  std::vector<EventForMdt> &getEventList();
+  void setEventList(std::vector<EventForMdt> const &value);
   bool eventListIsSet() const;
   void unsetEventList();
   /// <summary>
   ///
   /// </summary>
   LoggingIntervalMdt getLoggingInterval() const;
-  void setLoggingInterval(LoggingIntervalMdt const& value);
+  void setLoggingInterval(LoggingIntervalMdt const &value);
   bool loggingIntervalIsSet() const;
   void unsetLoggingInterval();
   /// <summary>
   ///
   /// </summary>
   LoggingIntervalNrMdt getLoggingIntervalNr() const;
-  void setLoggingIntervalNr(LoggingIntervalNrMdt const& value);
+  void setLoggingIntervalNr(LoggingIntervalNrMdt const &value);
   bool loggingIntervalNrIsSet() const;
   void unsetLoggingIntervalNr();
   /// <summary>
   ///
   /// </summary>
   LoggingDurationMdt getLoggingDuration() const;
-  void setLoggingDuration(LoggingDurationMdt const& value);
+  void setLoggingDuration(LoggingDurationMdt const &value);
   bool loggingDurationIsSet() const;
   void unsetLoggingDuration();
   /// <summary>
   ///
   /// </summary>
   LoggingDurationNrMdt getLoggingDurationNr() const;
-  void setLoggingDurationNr(LoggingDurationNrMdt const& value);
+  void setLoggingDurationNr(LoggingDurationNrMdt const &value);
   bool loggingDurationNrIsSet() const;
   void unsetLoggingDurationNr();
   /// <summary>
   ///
   /// </summary>
   PositioningMethodMdt getPositioningMethod() const;
-  void setPositioningMethod(PositioningMethodMdt const& value);
+  void setPositioningMethod(PositioningMethodMdt const &value);
   bool positioningMethodIsSet() const;
   void unsetPositioningMethod();
   /// <summary>
   ///
   /// </summary>
   CollectionPeriodRmmLteMdt getCollectionPeriodRmmLte() const;
-  void setCollectionPeriodRmmLte(CollectionPeriodRmmLteMdt const& value);
+  void setCollectionPeriodRmmLte(CollectionPeriodRmmLteMdt const &value);
   bool collectionPeriodRmmLteIsSet() const;
   void unsetCollectionPeriodRmmLte();
   /// <summary>
   ///
   /// </summary>
   CollectionPeriodRmmNrMdt getCollectionPeriodRmmNr() const;
-  void setCollectionPeriodRmmNr(CollectionPeriodRmmNrMdt const& value);
+  void setCollectionPeriodRmmNr(CollectionPeriodRmmNrMdt const &value);
   bool collectionPeriodRmmNrIsSet() const;
   void unsetCollectionPeriodRmmNr();
   /// <summary>
   ///
   /// </summary>
   MeasurementPeriodLteMdt getMeasurementPeriodLte() const;
-  void setMeasurementPeriodLte(MeasurementPeriodLteMdt const& value);
+  void setMeasurementPeriodLte(MeasurementPeriodLteMdt const &value);
   bool measurementPeriodLteIsSet() const;
   void unsetMeasurementPeriodLte();
   /// <summary>
   ///
   /// </summary>
-  std::vector<PlmnId>& getMdtAllowedPlmnIdList();
-  void setMdtAllowedPlmnIdList(std::vector<PlmnId> const& value);
+  std::vector<PlmnId> &getMdtAllowedPlmnIdList();
+  void setMdtAllowedPlmnIdList(std::vector<PlmnId> const &value);
   bool mdtAllowedPlmnIdListIsSet() const;
   void unsetMdtAllowedPlmnIdList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<MbsfnArea>& getMbsfnAreaList();
-  void setMbsfnAreaList(std::vector<MbsfnArea> const& value);
+  std::vector<MbsfnArea> &getMbsfnAreaList();
+  void setMbsfnAreaList(std::vector<MbsfnArea> const &value);
   bool mbsfnAreaListIsSet() const;
   void unsetMbsfnAreaList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<InterFreqTargetInfo>& getInterFreqTargetList();
-  void setInterFreqTargetList(std::vector<InterFreqTargetInfo> const& value);
+  std::vector<InterFreqTargetInfo> &getInterFreqTargetList();
+  void setInterFreqTargetList(std::vector<InterFreqTargetInfo> const &value);
   bool interFreqTargetListIsSet() const;
   void unsetInterFreqTargetList();
 
-  friend void to_json(nlohmann::json& j, const MdtConfiguration& o);
-  friend void from_json(const nlohmann::json& j, MdtConfiguration& o);
+  friend void to_json(nlohmann::json &j, const MdtConfiguration &o);
+  friend void from_json(const nlohmann::json &j, MdtConfiguration &o);
 
- protected:
+protected:
   JobType m_JobType;
 
   ReportTypeMdt m_ReportType;
@@ -319,6 +319,6 @@ class MdtConfiguration {
   bool m_InterFreqTargetListIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* MdtConfiguration_H_ */

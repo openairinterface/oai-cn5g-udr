@@ -95,4 +95,4 @@ void PlmnEcInfo::unsetEcRestrictionDataNb() {
   m_EcRestrictionDataNbIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

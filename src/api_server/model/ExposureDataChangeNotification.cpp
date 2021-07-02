@@ -51,7 +51,8 @@ void ExposureDataChangeNotification::validate() {
 
 void to_json(nlohmann::json &j, const ExposureDataChangeNotification &o) {
   j = nlohmann::json();
-  if (o.ueIdIsSet()) j["ueId"] = o.m_UeId;
+  if (o.ueIdIsSet())
+    j["ueId"] = o.m_UeId;
   if (o.accessAndMobilityDataIsSet())
     j["accessAndMobilityData"] = o.m_AccessAndMobilityData;
   if (o.pduSessionManagementDataIsSet() ||
@@ -87,8 +88,8 @@ void ExposureDataChangeNotification::setUeId(std::string const &value) {
 }
 bool ExposureDataChangeNotification::ueIdIsSet() const { return m_UeIdIsSet; }
 void ExposureDataChangeNotification::unsetUeId() { m_UeIdIsSet = false; }
-AccessAndMobilityData ExposureDataChangeNotification::getAccessAndMobilityData()
-    const {
+AccessAndMobilityData
+ExposureDataChangeNotification::getAccessAndMobilityData() const {
   return m_AccessAndMobilityData;
 }
 void ExposureDataChangeNotification::setAccessAndMobilityData(
@@ -102,8 +103,8 @@ bool ExposureDataChangeNotification::accessAndMobilityDataIsSet() const {
 void ExposureDataChangeNotification::unsetAccessAndMobilityData() {
   m_AccessAndMobilityDataIsSet = false;
 }
-std::vector<PduSessionManagementData>
-    &ExposureDataChangeNotification::getPduSessionManagementData() {
+std::vector<PduSessionManagementData> &
+ExposureDataChangeNotification::getPduSessionManagementData() {
   return m_PduSessionManagementData;
 }
 void ExposureDataChangeNotification::setPduSessionManagementData(
@@ -132,4 +133,4 @@ void ExposureDataChangeNotification::unsetDelResources() {
   m_DelResourcesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -51,7 +51,7 @@ namespace oai::udr::model {
 /// identifier.
 /// </summary>
 class SponsorConnectivityData {
- public:
+public:
   SponsorConnectivityData();
   virtual ~SponsorConnectivityData();
 
@@ -63,16 +63,16 @@ class SponsorConnectivityData {
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string>& getAspIds();
-  void setAspIds(std::vector<std::string> const& value);
+  std::vector<std::string> &getAspIds();
+  void setAspIds(std::vector<std::string> const &value);
 
-  friend void to_json(nlohmann::json& j, const SponsorConnectivityData& o);
-  friend void from_json(const nlohmann::json& j, SponsorConnectivityData& o);
+  friend void to_json(nlohmann::json &j, const SponsorConnectivityData &o);
+  friend void from_json(const nlohmann::json &j, SponsorConnectivityData &o);
 
- protected:
+protected:
   std::vector<std::string> m_AspIds;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* SponsorConnectivityData_H_ */

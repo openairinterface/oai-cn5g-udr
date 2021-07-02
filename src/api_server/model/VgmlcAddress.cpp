@@ -51,9 +51,12 @@ void VgmlcAddress::validate() {
 
 void to_json(nlohmann::json &j, const VgmlcAddress &o) {
   j = nlohmann::json();
-  if (o.vgmlcAddressIpv4IsSet()) j["vgmlcAddressIpv4"] = o.m_VgmlcAddressIpv4;
-  if (o.vgmlcAddressIpv6IsSet()) j["vgmlcAddressIpv6"] = o.m_VgmlcAddressIpv6;
-  if (o.vgmlcFqdnIsSet()) j["vgmlcFqdn"] = o.m_VgmlcFqdn;
+  if (o.vgmlcAddressIpv4IsSet())
+    j["vgmlcAddressIpv4"] = o.m_VgmlcAddressIpv4;
+  if (o.vgmlcAddressIpv6IsSet())
+    j["vgmlcAddressIpv6"] = o.m_VgmlcAddressIpv6;
+  if (o.vgmlcFqdnIsSet())
+    j["vgmlcFqdn"] = o.m_VgmlcFqdn;
 }
 
 void from_json(const nlohmann::json &j, VgmlcAddress &o) {
@@ -101,4 +104,4 @@ void VgmlcAddress::setVgmlcFqdn(std::string const &value) {
 bool VgmlcAddress::vgmlcFqdnIsSet() const { return m_VgmlcFqdnIsSet; }
 void VgmlcAddress::unsetVgmlcFqdn() { m_VgmlcFqdnIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

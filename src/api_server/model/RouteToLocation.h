@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class RouteToLocation {
- public:
+public:
   RouteToLocation();
   virtual ~RouteToLocation();
 
@@ -63,26 +63,26 @@ class RouteToLocation {
   ///
   /// </summary>
   std::string getDnai() const;
-  void setDnai(std::string const& value);
+  void setDnai(std::string const &value);
   /// <summary>
   ///
   /// </summary>
   RouteInformation getRouteInfo() const;
-  void setRouteInfo(RouteInformation const& value);
+  void setRouteInfo(RouteInformation const &value);
   bool routeInfoIsSet() const;
   void unsetRouteInfo();
   /// <summary>
   ///
   /// </summary>
   std::string getRouteProfId() const;
-  void setRouteProfId(std::string const& value);
+  void setRouteProfId(std::string const &value);
   bool routeProfIdIsSet() const;
   void unsetRouteProfId();
 
-  friend void to_json(nlohmann::json& j, const RouteToLocation& o);
-  friend void from_json(const nlohmann::json& j, RouteToLocation& o);
+  friend void to_json(nlohmann::json &j, const RouteToLocation &o);
+  friend void from_json(const nlohmann::json &j, RouteToLocation &o);
 
- protected:
+protected:
   std::string m_Dnai;
 
   RouteInformation m_RouteInfo;
@@ -91,6 +91,6 @@ class RouteToLocation {
   bool m_RouteProfIdIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* RouteToLocation_H_ */

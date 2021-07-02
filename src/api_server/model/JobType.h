@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class JobType {
- public:
+public:
   JobType();
   virtual ~JobType();
 
@@ -56,12 +56,12 @@ class JobType {
   /////////////////////////////////////////////
   /// JobType members
 
-  friend void to_json(nlohmann::json& j, const JobType& o);
-  friend void from_json(const nlohmann::json& j, JobType& o);
+  friend void to_json(nlohmann::json &j, const JobType &o);
+  friend void from_json(const nlohmann::json &j, JobType &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* JobType_H_ */

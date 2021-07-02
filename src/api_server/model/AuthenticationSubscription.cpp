@@ -67,21 +67,28 @@ void AuthenticationSubscription::validate() {
 void to_json(nlohmann::json &j, const AuthenticationSubscription &o) {
   j = nlohmann::json();
   j["authenticationMethod"] = o.m_AuthenticationMethod;
-  if (o.encPermanentKeyIsSet()) j["encPermanentKey"] = o.m_EncPermanentKey;
+  if (o.encPermanentKeyIsSet())
+    j["encPermanentKey"] = o.m_EncPermanentKey;
   if (o.protectionParameterIdIsSet())
     j["protectionParameterId"] = o.m_ProtectionParameterId;
-  if (o.sequenceNumberIsSet()) j["sequenceNumber"] = o.m_SequenceNumber;
+  if (o.sequenceNumberIsSet())
+    j["sequenceNumber"] = o.m_SequenceNumber;
   if (o.authenticationManagementFieldIsSet())
     j["authenticationManagementField"] = o.m_AuthenticationManagementField;
-  if (o.algorithmIdIsSet()) j["algorithmId"] = o.m_AlgorithmId;
-  if (o.encOpcKeyIsSet()) j["encOpcKey"] = o.m_EncOpcKey;
-  if (o.encTopcKeyIsSet()) j["encTopcKey"] = o.m_EncTopcKey;
+  if (o.algorithmIdIsSet())
+    j["algorithmId"] = o.m_AlgorithmId;
+  if (o.encOpcKeyIsSet())
+    j["encOpcKey"] = o.m_EncOpcKey;
+  if (o.encTopcKeyIsSet())
+    j["encTopcKey"] = o.m_EncTopcKey;
   if (o.vectorGenerationInHssIsSet())
     j["vectorGenerationInHss"] = o.m_VectorGenerationInHss;
-  if (o.n5gcAuthMethodIsSet()) j["n5gcAuthMethod"] = o.m_N5gcAuthMethod;
+  if (o.n5gcAuthMethodIsSet())
+    j["n5gcAuthMethod"] = o.m_N5gcAuthMethod;
   if (o.rgAuthenticationIndIsSet())
     j["rgAuthenticationInd"] = o.m_RgAuthenticationInd;
-  if (o.supiIsSet()) j["supi"] = o.m_Supi;
+  if (o.supiIsSet())
+    j["supi"] = o.m_Supi;
 }
 
 void from_json(const nlohmann::json &j, AuthenticationSubscription &o) {
@@ -181,8 +188,8 @@ bool AuthenticationSubscription::sequenceNumberIsSet() const {
 void AuthenticationSubscription::unsetSequenceNumber() {
   m_SequenceNumberIsSet = false;
 }
-std::string AuthenticationSubscription::getAuthenticationManagementField()
-    const {
+std::string
+AuthenticationSubscription::getAuthenticationManagementField() const {
   return m_AuthenticationManagementField;
 }
 void AuthenticationSubscription::setAuthenticationManagementField(
@@ -280,4 +287,4 @@ void AuthenticationSubscription::setSupi(std::string const &value) {
 bool AuthenticationSubscription::supiIsSet() const { return m_SupiIsSet; }
 void AuthenticationSubscription::unsetSupi() { m_SupiIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

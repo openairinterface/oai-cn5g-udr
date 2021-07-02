@@ -52,8 +52,10 @@ void TransferPolicy::validate() {
 
 void to_json(nlohmann::json &j, const TransferPolicy &o) {
   j = nlohmann::json();
-  if (o.maxBitRateDlIsSet()) j["maxBitRateDl"] = o.m_MaxBitRateDl;
-  if (o.maxBitRateUlIsSet()) j["maxBitRateUl"] = o.m_MaxBitRateUl;
+  if (o.maxBitRateDlIsSet())
+    j["maxBitRateDl"] = o.m_MaxBitRateDl;
+  if (o.maxBitRateUlIsSet())
+    j["maxBitRateUl"] = o.m_MaxBitRateUl;
   j["ratingGroup"] = o.m_RatingGroup;
   j["recTimeInt"] = o.m_RecTimeInt;
   j["transPolicyId"] = o.m_TransPolicyId;
@@ -100,4 +102,4 @@ void TransferPolicy::setTransPolicyId(int32_t const value) {
   m_TransPolicyId = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

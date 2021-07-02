@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class EllipsoidArc {
- public:
+public:
   EllipsoidArc();
   virtual ~EllipsoidArc();
 
@@ -65,12 +65,12 @@ class EllipsoidArc {
   ///
   /// </summary>
   SupportedGADShapes getShape() const;
-  void setShape(SupportedGADShapes const& value);
+  void setShape(SupportedGADShapes const &value);
   /// <summary>
   ///
   /// </summary>
   GeographicalCoordinates getPoint() const;
-  void setPoint(GeographicalCoordinates const& value);
+  void setPoint(GeographicalCoordinates const &value);
   /// <summary>
   ///
   /// </summary>
@@ -97,10 +97,10 @@ class EllipsoidArc {
   int32_t getConfidence() const;
   void setConfidence(int32_t const value);
 
-  friend void to_json(nlohmann::json& j, const EllipsoidArc& o);
-  friend void from_json(const nlohmann::json& j, EllipsoidArc& o);
+  friend void to_json(nlohmann::json &j, const EllipsoidArc &o);
+  friend void from_json(const nlohmann::json &j, EllipsoidArc &o);
 
- protected:
+protected:
   SupportedGADShapes m_Shape;
 
   GeographicalCoordinates m_Point;
@@ -116,6 +116,6 @@ class EllipsoidArc {
   int32_t m_Confidence;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* EllipsoidArc_H_ */

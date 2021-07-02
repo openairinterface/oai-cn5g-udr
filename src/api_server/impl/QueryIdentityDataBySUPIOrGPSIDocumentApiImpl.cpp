@@ -44,8 +44,7 @@ QueryIdentityDataBySUPIOrGPSIDocumentApiImpl::
     QueryIdentityDataBySUPIOrGPSIDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : QueryIdentityDataBySUPIOrGPSIDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : QueryIdentityDataBySUPIOrGPSIDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void QueryIdentityDataBySUPIOrGPSIDocumentApiImpl::get_identity_data(
@@ -57,4 +56,4 @@ void QueryIdentityDataBySUPIOrGPSIDocumentApiImpl::get_identity_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

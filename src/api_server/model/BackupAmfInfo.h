@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class BackupAmfInfo {
- public:
+public:
   BackupAmfInfo();
   virtual ~BackupAmfInfo();
 
@@ -64,25 +64,25 @@ class BackupAmfInfo {
   ///
   /// </summary>
   std::string getBackupAmf() const;
-  void setBackupAmf(std::string const& value);
+  void setBackupAmf(std::string const &value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<Guami>& getGuamiList();
-  void setGuamiList(std::vector<Guami> const& value);
+  std::vector<Guami> &getGuamiList();
+  void setGuamiList(std::vector<Guami> const &value);
   bool guamiListIsSet() const;
   void unsetGuamiList();
 
-  friend void to_json(nlohmann::json& j, const BackupAmfInfo& o);
-  friend void from_json(const nlohmann::json& j, BackupAmfInfo& o);
+  friend void to_json(nlohmann::json &j, const BackupAmfInfo &o);
+  friend void from_json(const nlohmann::json &j, BackupAmfInfo &o);
 
- protected:
+protected:
   std::string m_BackupAmf;
 
   std::vector<Guami> m_GuamiList;
   bool m_GuamiListIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* BackupAmfInfo_H_ */

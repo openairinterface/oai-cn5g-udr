@@ -55,10 +55,14 @@ void to_json(nlohmann::json &j, const UePolicySetPatch &o) {
   j = nlohmann::json();
   if (o.uePolicySectionsIsSet() || !o.m_UePolicySections.empty())
     j["uePolicySections"] = o.m_UePolicySections;
-  if (o.upsisIsSet() || !o.m_Upsis.empty()) j["upsis"] = o.m_Upsis;
-  if (o.andspIndIsSet()) j["andspInd"] = o.m_AndspInd;
-  if (o.peiIsSet()) j["pei"] = o.m_Pei;
-  if (o.osIdsIsSet() || !o.m_OsIds.empty()) j["osIds"] = o.m_OsIds;
+  if (o.upsisIsSet() || !o.m_Upsis.empty())
+    j["upsis"] = o.m_Upsis;
+  if (o.andspIndIsSet())
+    j["andspInd"] = o.m_AndspInd;
+  if (o.peiIsSet())
+    j["pei"] = o.m_Pei;
+  if (o.osIdsIsSet() || !o.m_OsIds.empty())
+    j["osIds"] = o.m_OsIds;
 }
 
 void from_json(const nlohmann::json &j, UePolicySetPatch &o) {
@@ -84,8 +88,8 @@ void from_json(const nlohmann::json &j, UePolicySetPatch &o) {
   }
 }
 
-std::map<std::string, UePolicySection>
-    &UePolicySetPatch::getUePolicySections() {
+std::map<std::string, UePolicySection> &
+UePolicySetPatch::getUePolicySections() {
   return m_UePolicySections;
 }
 void UePolicySetPatch::setUePolicySections(
@@ -128,4 +132,4 @@ void UePolicySetPatch::setOsIds(std::vector<std::string> const &value) {
 bool UePolicySetPatch::osIdsIsSet() const { return m_OsIdsIsSet; }
 void UePolicySetPatch::unsetOsIds() { m_OsIdsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

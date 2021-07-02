@@ -54,7 +54,8 @@ void to_json(nlohmann::json &j, const AreaScope &o) {
     j["eutraCellIdList"] = o.m_EutraCellIdList;
   if (o.nrCellIdListIsSet() || !o.m_NrCellIdList.empty())
     j["nrCellIdList"] = o.m_NrCellIdList;
-  if (o.tacListIsSet() || !o.m_TacList.empty()) j["tacList"] = o.m_TacList;
+  if (o.tacListIsSet() || !o.m_TacList.empty())
+    j["tacList"] = o.m_TacList;
   if (o.tacInfoPerPlmnIsSet() || !o.m_TacInfoPerPlmn.empty())
     j["tacInfoPerPlmn"] = o.m_TacInfoPerPlmn;
 }
@@ -113,4 +114,4 @@ void AreaScope::setTacInfoPerPlmn(std::map<std::string, TacInfo> const &value) {
 bool AreaScope::tacInfoPerPlmnIsSet() const { return m_TacInfoPerPlmnIsSet; }
 void AreaScope::unsetTacInfoPerPlmn() { m_TacInfoPerPlmnIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

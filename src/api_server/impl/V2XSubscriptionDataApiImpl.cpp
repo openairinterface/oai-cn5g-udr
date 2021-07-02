@@ -43,9 +43,8 @@ using namespace oai::udr::model;
 V2XSubscriptionDataApiImpl::V2XSubscriptionDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : V2XSubscriptionDataApi(rtr),
-      m_udr_app(udr_app_inst),
-      m_address(address) {}
+    : V2XSubscriptionDataApi(rtr), m_udr_app(udr_app_inst), m_address(address) {
+}
 
 void V2XSubscriptionDataApiImpl::query_v2x_data(
     const std::string &ueId,
@@ -57,4 +56,4 @@ void V2XSubscriptionDataApiImpl::query_v2x_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

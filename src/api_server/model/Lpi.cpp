@@ -46,7 +46,8 @@ void Lpi::validate() {
 void to_json(nlohmann::json &j, const Lpi &o) {
   j = nlohmann::json();
   j["locationPrivacyInd"] = o.m_LocationPrivacyInd;
-  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.validTimePeriodIsSet())
+    j["validTimePeriod"] = o.m_ValidTimePeriod;
 }
 
 void from_json(const nlohmann::json &j, Lpi &o) {
@@ -71,4 +72,4 @@ void Lpi::setValidTimePeriod(ValidTimePeriod const &value) {
 bool Lpi::validTimePeriodIsSet() const { return m_ValidTimePeriodIsSet; }
 void Lpi::unsetValidTimePeriod() { m_ValidTimePeriodIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

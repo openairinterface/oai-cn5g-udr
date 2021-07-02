@@ -57,7 +57,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class OperatorSpecificDataContainerDocumentApi {
- public:
+public:
   OperatorSpecificDataContainerDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~OperatorSpecificDataContainerDocumentApi() {}
@@ -65,7 +65,7 @@ class OperatorSpecificDataContainerDocumentApi {
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void modify_oper_spec_data_handler(const Pistache::Rest::Request &request,
@@ -117,6 +117,6 @@ class OperatorSpecificDataContainerDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* OperatorSpecificDataContainerDocumentApi_H_ */

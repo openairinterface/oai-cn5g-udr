@@ -50,8 +50,10 @@ void RouteInformation::validate() {
 
 void to_json(nlohmann::json &j, const RouteInformation &o) {
   j = nlohmann::json();
-  if (o.ipv4AddrIsSet()) j["ipv4Addr"] = o.m_Ipv4Addr;
-  if (o.ipv6AddrIsSet()) j["ipv6Addr"] = o.m_Ipv6Addr;
+  if (o.ipv4AddrIsSet())
+    j["ipv4Addr"] = o.m_Ipv4Addr;
+  if (o.ipv6AddrIsSet())
+    j["ipv6Addr"] = o.m_Ipv6Addr;
   j["portNumber"] = o.m_PortNumber;
 }
 
@@ -86,4 +88,4 @@ void RouteInformation::setPortNumber(int32_t const value) {
   m_PortNumber = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

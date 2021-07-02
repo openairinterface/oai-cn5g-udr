@@ -53,7 +53,7 @@ namespace oai::udr::model {
 /// and ATSSS information) per SNSSAI
 /// </summary>
 class SnssaiRouteSelectionDescriptor {
- public:
+public:
   SnssaiRouteSelectionDescriptor();
   virtual ~SnssaiRouteSelectionDescriptor();
 
@@ -66,28 +66,28 @@ class SnssaiRouteSelectionDescriptor {
   ///
   /// </summary>
   Snssai getSnssai() const;
-  void setSnssai(Snssai const& value);
+  void setSnssai(Snssai const &value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<DnnRouteSelectionDescriptor>& getDnnRouteSelDescs();
-  void setDnnRouteSelDescs(
-      std::vector<DnnRouteSelectionDescriptor> const& value);
+  std::vector<DnnRouteSelectionDescriptor> &getDnnRouteSelDescs();
+  void
+  setDnnRouteSelDescs(std::vector<DnnRouteSelectionDescriptor> const &value);
   bool dnnRouteSelDescsIsSet() const;
   void unsetDnnRouteSelDescs();
 
-  friend void to_json(nlohmann::json& j,
-                      const SnssaiRouteSelectionDescriptor& o);
-  friend void from_json(const nlohmann::json& j,
-                        SnssaiRouteSelectionDescriptor& o);
+  friend void to_json(nlohmann::json &j,
+                      const SnssaiRouteSelectionDescriptor &o);
+  friend void from_json(const nlohmann::json &j,
+                        SnssaiRouteSelectionDescriptor &o);
 
- protected:
+protected:
   Snssai m_Snssai;
 
   std::vector<DnnRouteSelectionDescriptor> m_DnnRouteSelDescs;
   bool m_DnnRouteSelDescsIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* SnssaiRouteSelectionDescriptor_H_ */

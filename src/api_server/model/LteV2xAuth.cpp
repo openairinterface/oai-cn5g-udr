@@ -48,8 +48,10 @@ void LteV2xAuth::validate() {
 
 void to_json(nlohmann::json &j, const LteV2xAuth &o) {
   j = nlohmann::json();
-  if (o.vehicleUeAuthIsSet()) j["vehicleUeAuth"] = o.m_VehicleUeAuth;
-  if (o.pedestrianUeAuthIsSet()) j["pedestrianUeAuth"] = o.m_PedestrianUeAuth;
+  if (o.vehicleUeAuthIsSet())
+    j["vehicleUeAuth"] = o.m_VehicleUeAuth;
+  if (o.pedestrianUeAuthIsSet())
+    j["pedestrianUeAuth"] = o.m_PedestrianUeAuth;
 }
 
 void from_json(const nlohmann::json &j, LteV2xAuth &o) {
@@ -80,4 +82,4 @@ bool LteV2xAuth::pedestrianUeAuthIsSet() const {
 }
 void LteV2xAuth::unsetPedestrianUeAuth() { m_PedestrianUeAuthIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

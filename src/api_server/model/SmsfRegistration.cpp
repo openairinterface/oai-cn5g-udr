@@ -58,15 +58,19 @@ void SmsfRegistration::validate() {
 void to_json(nlohmann::json &j, const SmsfRegistration &o) {
   j = nlohmann::json();
   j["smsfInstanceId"] = o.m_SmsfInstanceId;
-  if (o.smsfSetIdIsSet()) j["smsfSetId"] = o.m_SmsfSetId;
+  if (o.smsfSetIdIsSet())
+    j["smsfSetId"] = o.m_SmsfSetId;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
   j["plmnId"] = o.m_PlmnId;
-  if (o.smsfMAPAddressIsSet()) j["smsfMAPAddress"] = o.m_SmsfMAPAddress;
+  if (o.smsfMAPAddressIsSet())
+    j["smsfMAPAddress"] = o.m_SmsfMAPAddress;
   if (o.smsfDiameterAddressIsSet())
     j["smsfDiameterAddress"] = o.m_SmsfDiameterAddress;
-  if (o.registrationTimeIsSet()) j["registrationTime"] = o.m_RegistrationTime;
-  if (o.contextInfoIsSet()) j["contextInfo"] = o.m_ContextInfo;
+  if (o.registrationTimeIsSet())
+    j["registrationTime"] = o.m_RegistrationTime;
+  if (o.contextInfoIsSet())
+    j["contextInfo"] = o.m_ContextInfo;
 }
 
 void from_json(const nlohmann::json &j, SmsfRegistration &o) {
@@ -172,4 +176,4 @@ void SmsfRegistration::setContextInfo(ContextInfo const &value) {
 bool SmsfRegistration::contextInfoIsSet() const { return m_ContextInfoIsSet; }
 void SmsfRegistration::unsetContextInfo() { m_ContextInfoIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

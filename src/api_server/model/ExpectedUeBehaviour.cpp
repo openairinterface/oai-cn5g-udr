@@ -70,15 +70,18 @@ void to_json(nlohmann::json &j, const ExpectedUeBehaviour &o) {
     j["communicationDurationTime"] = o.m_CommunicationDurationTime;
   if (o.scheduledCommunicationTypeIsSet())
     j["scheduledCommunicationType"] = o.m_ScheduledCommunicationType;
-  if (o.periodicTimeIsSet()) j["periodicTime"] = o.m_PeriodicTime;
+  if (o.periodicTimeIsSet())
+    j["periodicTime"] = o.m_PeriodicTime;
   if (o.scheduledCommunicationTimeIsSet())
     j["scheduledCommunicationTime"] = o.m_ScheduledCommunicationTime;
   if (o.expectedUmtsIsSet() || !o.m_ExpectedUmts.empty())
     j["expectedUmts"] = o.m_ExpectedUmts;
-  if (o.trafficProfileIsSet()) j["trafficProfile"] = o.m_TrafficProfile;
+  if (o.trafficProfileIsSet())
+    j["trafficProfile"] = o.m_TrafficProfile;
   if (o.batteryIndicationIsSet())
     j["batteryIndication"] = o.m_BatteryIndication;
-  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
+  if (o.validityTimeIsSet())
+    j["validityTime"] = o.m_ValidityTime;
   if (o.mtcProviderInformationIsSet())
     j["mtcProviderInformation"] = o.m_MtcProviderInformation;
 }
@@ -268,4 +271,4 @@ void ExpectedUeBehaviour::unsetMtcProviderInformation() {
   m_MtcProviderInformationIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

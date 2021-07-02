@@ -65,4 +65,4 @@ void PtwParameters::setPtwValue(std::string const &value) {
   m_PtwValue = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

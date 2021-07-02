@@ -51,9 +51,12 @@ void TnapId::validate() {
 
 void to_json(nlohmann::json &j, const TnapId &o) {
   j = nlohmann::json();
-  if (o.ssIdIsSet()) j["ssId"] = o.m_SsId;
-  if (o.bssIdIsSet()) j["bssId"] = o.m_BssId;
-  if (o.civicAddressIsSet()) j["civicAddress"] = o.m_CivicAddress;
+  if (o.ssIdIsSet())
+    j["ssId"] = o.m_SsId;
+  if (o.bssIdIsSet())
+    j["bssId"] = o.m_BssId;
+  if (o.civicAddressIsSet())
+    j["civicAddress"] = o.m_CivicAddress;
 }
 
 void from_json(const nlohmann::json &j, TnapId &o) {
@@ -93,4 +96,4 @@ void TnapId::setCivicAddress(std::string const &value) {
 bool TnapId::civicAddressIsSet() const { return m_CivicAddressIsSet; }
 void TnapId::unsetCivicAddress() { m_CivicAddressIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

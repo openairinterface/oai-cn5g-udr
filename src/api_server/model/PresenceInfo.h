@@ -55,7 +55,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PresenceInfo {
- public:
+public:
   PresenceInfo();
   virtual ~PresenceInfo();
 
@@ -68,63 +68,63 @@ class PresenceInfo {
   ///
   /// </summary>
   std::string getPraId() const;
-  void setPraId(std::string const& value);
+  void setPraId(std::string const &value);
   bool praIdIsSet() const;
   void unsetPraId();
   /// <summary>
   ///
   /// </summary>
   std::string getAdditionalPraId() const;
-  void setAdditionalPraId(std::string const& value);
+  void setAdditionalPraId(std::string const &value);
   bool additionalPraIdIsSet() const;
   void unsetAdditionalPraId();
   /// <summary>
   ///
   /// </summary>
   PresenceState getPresenceState() const;
-  void setPresenceState(PresenceState const& value);
+  void setPresenceState(PresenceState const &value);
   bool presenceStateIsSet() const;
   void unsetPresenceState();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Tai>& getTrackingAreaList();
-  void setTrackingAreaList(std::vector<Tai> const& value);
+  std::vector<Tai> &getTrackingAreaList();
+  void setTrackingAreaList(std::vector<Tai> const &value);
   bool trackingAreaListIsSet() const;
   void unsetTrackingAreaList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Ecgi>& getEcgiList();
-  void setEcgiList(std::vector<Ecgi> const& value);
+  std::vector<Ecgi> &getEcgiList();
+  void setEcgiList(std::vector<Ecgi> const &value);
   bool ecgiListIsSet() const;
   void unsetEcgiList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Ncgi>& getNcgiList();
-  void setNcgiList(std::vector<Ncgi> const& value);
+  std::vector<Ncgi> &getNcgiList();
+  void setNcgiList(std::vector<Ncgi> const &value);
   bool ncgiListIsSet() const;
   void unsetNcgiList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<GlobalRanNodeId>& getGlobalRanNodeIdList();
-  void setGlobalRanNodeIdList(std::vector<GlobalRanNodeId> const& value);
+  std::vector<GlobalRanNodeId> &getGlobalRanNodeIdList();
+  void setGlobalRanNodeIdList(std::vector<GlobalRanNodeId> const &value);
   bool globalRanNodeIdListIsSet() const;
   void unsetGlobalRanNodeIdList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<GlobalRanNodeId>& getGlobaleNbIdList();
-  void setGlobaleNbIdList(std::vector<GlobalRanNodeId> const& value);
+  std::vector<GlobalRanNodeId> &getGlobaleNbIdList();
+  void setGlobaleNbIdList(std::vector<GlobalRanNodeId> const &value);
   bool globaleNbIdListIsSet() const;
   void unsetGlobaleNbIdList();
 
-  friend void to_json(nlohmann::json& j, const PresenceInfo& o);
-  friend void from_json(const nlohmann::json& j, PresenceInfo& o);
+  friend void to_json(nlohmann::json &j, const PresenceInfo &o);
+  friend void from_json(const nlohmann::json &j, PresenceInfo &o);
 
- protected:
+protected:
   std::string m_PraId;
   bool m_PraIdIsSet;
   std::string m_AdditionalPraId;
@@ -143,6 +143,6 @@ class PresenceInfo {
   bool m_GlobaleNbIdListIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* PresenceInfo_H_ */

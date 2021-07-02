@@ -69,24 +69,31 @@ void SmfRegistration::validate() {
 void to_json(nlohmann::json &j, const SmfRegistration &o) {
   j = nlohmann::json();
   j["smfInstanceId"] = o.m_SmfInstanceId;
-  if (o.smfSetIdIsSet()) j["smfSetId"] = o.m_SmfSetId;
+  if (o.smfSetIdIsSet())
+    j["smfSetId"] = o.m_SmfSetId;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
   j["pduSessionId"] = o.m_PduSessionId;
   j["singleNssai"] = o.m_SingleNssai;
-  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
+  if (o.dnnIsSet())
+    j["dnn"] = o.m_Dnn;
   if (o.emergencyServicesIsSet())
     j["emergencyServices"] = o.m_EmergencyServices;
   if (o.pcscfRestorationCallbackUriIsSet())
     j["pcscfRestorationCallbackUri"] = o.m_PcscfRestorationCallbackUri;
   j["plmnId"] = o.m_PlmnId;
-  if (o.pgwFqdnIsSet()) j["pgwFqdn"] = o.m_PgwFqdn;
-  if (o.epdgIndIsSet()) j["epdgInd"] = o.m_EpdgInd;
-  if (o.deregCallbackUriIsSet()) j["deregCallbackUri"] = o.m_DeregCallbackUri;
+  if (o.pgwFqdnIsSet())
+    j["pgwFqdn"] = o.m_PgwFqdn;
+  if (o.epdgIndIsSet())
+    j["epdgInd"] = o.m_EpdgInd;
+  if (o.deregCallbackUriIsSet())
+    j["deregCallbackUri"] = o.m_DeregCallbackUri;
   if (o.registrationReasonIsSet())
     j["registrationReason"] = o.m_RegistrationReason;
-  if (o.registrationTimeIsSet()) j["registrationTime"] = o.m_RegistrationTime;
-  if (o.contextInfoIsSet()) j["contextInfo"] = o.m_ContextInfo;
+  if (o.registrationTimeIsSet())
+    j["registrationTime"] = o.m_RegistrationTime;
+  if (o.contextInfoIsSet())
+    j["contextInfo"] = o.m_ContextInfo;
 }
 
 void from_json(const nlohmann::json &j, SmfRegistration &o) {
@@ -270,4 +277,4 @@ void SmfRegistration::setContextInfo(ContextInfo const &value) {
 bool SmfRegistration::contextInfoIsSet() const { return m_ContextInfoIsSet; }
 void SmfRegistration::unsetContextInfo() { m_ContextInfoIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

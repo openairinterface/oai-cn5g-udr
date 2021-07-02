@@ -47,8 +47,7 @@ AuthenticationSubscriptionDocumentApiImpl::
     AuthenticationSubscriptionDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : AuthenticationSubscriptionDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : AuthenticationSubscriptionDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AuthenticationSubscriptionDocumentApiImpl::
@@ -78,4 +77,4 @@ void AuthenticationSubscriptionDocumentApiImpl::
   response.send(code, response_data.dump().c_str());
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -53,14 +53,18 @@ void CommunicationCharacteristics::validate() {
 
 void to_json(nlohmann::json &j, const CommunicationCharacteristics &o) {
   j = nlohmann::json();
-  if (o.ppSubsRegTimerIsSet()) j["ppSubsRegTimer"] = o.m_PpSubsRegTimer;
-  if (o.ppActiveTimeIsSet()) j["ppActiveTime"] = o.m_PpActiveTime;
-  if (o.ppDlPacketCountIsSet()) j["ppDlPacketCount"] = o.m_PpDlPacketCount;
+  if (o.ppSubsRegTimerIsSet())
+    j["ppSubsRegTimer"] = o.m_PpSubsRegTimer;
+  if (o.ppActiveTimeIsSet())
+    j["ppActiveTime"] = o.m_PpActiveTime;
+  if (o.ppDlPacketCountIsSet())
+    j["ppDlPacketCount"] = o.m_PpDlPacketCount;
   if (o.ppDlPacketCountExtIsSet())
     j["ppDlPacketCountExt"] = o.m_PpDlPacketCountExt;
   if (o.ppMaximumResponseTimeIsSet())
     j["ppMaximumResponseTime"] = o.m_PpMaximumResponseTime;
-  if (o.ppMaximumLatencyIsSet()) j["ppMaximumLatency"] = o.m_PpMaximumLatency;
+  if (o.ppMaximumLatencyIsSet())
+    j["ppMaximumLatency"] = o.m_PpMaximumLatency;
 }
 
 void from_json(const nlohmann::json &j, CommunicationCharacteristics &o) {
@@ -144,8 +148,8 @@ bool CommunicationCharacteristics::ppDlPacketCountExtIsSet() const {
 void CommunicationCharacteristics::unsetPpDlPacketCountExt() {
   m_PpDlPacketCountExtIsSet = false;
 }
-PpMaximumResponseTime CommunicationCharacteristics::getPpMaximumResponseTime()
-    const {
+PpMaximumResponseTime
+CommunicationCharacteristics::getPpMaximumResponseTime() const {
   return m_PpMaximumResponseTime;
 }
 void CommunicationCharacteristics::setPpMaximumResponseTime(
@@ -174,4 +178,4 @@ void CommunicationCharacteristics::unsetPpMaximumLatency() {
   m_PpMaximumLatencyIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

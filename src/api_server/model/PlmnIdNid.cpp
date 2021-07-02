@@ -52,7 +52,8 @@ void to_json(nlohmann::json &j, const PlmnIdNid &o) {
   j = nlohmann::json();
   j["mcc"] = o.m_Mcc;
   j["mnc"] = o.m_Mnc;
-  if (o.nidIsSet()) j["nid"] = o.m_Nid;
+  if (o.nidIsSet())
+    j["nid"] = o.m_Nid;
 }
 
 void from_json(const nlohmann::json &j, PlmnIdNid &o) {
@@ -76,4 +77,4 @@ void PlmnIdNid::setNid(std::string const &value) {
 bool PlmnIdNid::nidIsSet() const { return m_NidIsSet; }
 void PlmnIdNid::unsetNid() { m_NidIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

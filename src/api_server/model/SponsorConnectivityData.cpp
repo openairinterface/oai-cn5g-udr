@@ -59,4 +59,4 @@ void SponsorConnectivityData::setAspIds(std::vector<std::string> const &value) {
   m_AspIds = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

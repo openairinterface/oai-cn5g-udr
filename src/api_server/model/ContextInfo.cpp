@@ -66,4 +66,4 @@ void ContextInfo::setOrigHeaders(std::vector<std::string> const &value) {
 bool ContextInfo::origHeadersIsSet() const { return m_OrigHeadersIsSet; }
 void ContextInfo::unsetOrigHeaders() { m_OrigHeadersIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

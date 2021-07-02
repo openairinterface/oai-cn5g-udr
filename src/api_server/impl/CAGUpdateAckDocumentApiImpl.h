@@ -54,11 +54,11 @@ using namespace oai::udr::app;
 
 class CAGUpdateAckDocumentApiImpl
     : public oai::udr::api::CAGUpdateAckDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   CAGUpdateAckDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                               udr_app *udr_app_inst, std::string address);
   ~CAGUpdateAckDocumentApiImpl() {}
@@ -69,6 +69,6 @@ class CAGUpdateAckDocumentApiImpl
       const CagAckData &cagAckData, Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

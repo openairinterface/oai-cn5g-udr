@@ -67,4 +67,4 @@ void PointAltitude::setPoint(GeographicalCoordinates const &value) {
 double PointAltitude::getAltitude() const { return m_Altitude; }
 void PointAltitude::setAltitude(double const value) { m_Altitude = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

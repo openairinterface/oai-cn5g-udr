@@ -62,4 +62,4 @@ void GeographicalCoordinates::setLon(double const value) { m_Lon = value; }
 double GeographicalCoordinates::getLat() const { return m_Lat; }
 void GeographicalCoordinates::setLat(double const value) { m_Lat = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

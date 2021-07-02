@@ -59,4 +59,4 @@ void Point::setShape(SupportedGADShapes const &value) { m_Shape = value; }
 GeographicalCoordinates Point::getPoint() const { return m_Point; }
 void Point::setPoint(GeographicalCoordinates const &value) { m_Point = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

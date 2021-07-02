@@ -53,19 +53,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SDMSubscriptionsCollectionApi {
- public:
+public:
   SDMSubscriptionsCollectionApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SDMSubscriptionsCollectionApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
-  void create_sdm_subscriptions_handler(
-      const Pistache::Rest::Request &request,
-      Pistache::Http::ResponseWriter response);
+  void
+  create_sdm_subscriptions_handler(const Pistache::Rest::Request &request,
+                                   Pistache::Http::ResponseWriter response);
   void querysdmsubscriptions_handler(const Pistache::Rest::Request &request,
                                      Pistache::Http::ResponseWriter response);
   void sdm_subscriptions_collection_api_default_handler(
@@ -82,9 +82,10 @@ class SDMSubscriptionsCollectionApi {
   /// </remarks>
   /// <param name="ueId">UE ID</param>
   /// <param name="sdmSubscription"></param>
-  virtual void create_sdm_subscriptions(
-      const std::string &ueId, SdmSubscription &sdmSubscription,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  create_sdm_subscriptions(const std::string &ueId,
+                           SdmSubscription &sdmSubscription,
+                           Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Retrieves the sdm subscriptions of a UE
@@ -101,6 +102,6 @@ class SDMSubscriptionsCollectionApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* SDMSubscriptionsCollectionApi_H_ */

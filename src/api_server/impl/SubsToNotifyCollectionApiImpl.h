@@ -54,19 +54,19 @@ using namespace oai::udr::app;
 
 class SubsToNotifyCollectionApiImpl
     : public oai::udr::api::SubsToNotifyCollectionApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   SubsToNotifyCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                 udr_app *udr_app_inst, std::string address);
   ~SubsToNotifyCollectionApiImpl() {}
 
-  void query_subs_to_notify(
-      const Pistache::Optional<std::string> &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response);
+  void
+  query_subs_to_notify(const Pistache::Optional<std::string> &ueId,
+                       const Pistache::Optional<std::string> &supportedFeatures,
+                       Pistache::Http::ResponseWriter &response);
   void remove_multiple_subscription_data_subscriptions(
       const Pistache::Optional<std::string> &ueId,
       const Pistache::Optional<std::string> &nfInstanceId,
@@ -78,6 +78,6 @@ class SubsToNotifyCollectionApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

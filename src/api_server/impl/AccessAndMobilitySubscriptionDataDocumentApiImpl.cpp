@@ -47,8 +47,7 @@ AccessAndMobilitySubscriptionDataDocumentApiImpl::
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
     : AccessAndMobilitySubscriptionDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
-      m_address(address) {}
+      m_udr_app(udr_app_inst), m_address(address) {}
 
 void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(
     const std::string &ueId, const std::string &servingPlmnId,
@@ -65,4 +64,4 @@ void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(
   response.send(code, response_data.dump().c_str());
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

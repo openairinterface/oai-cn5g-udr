@@ -57,4 +57,4 @@ void BdtPolicyDataPatch::setBdtRefId(std::string const &value) {
   m_BdtRefId = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

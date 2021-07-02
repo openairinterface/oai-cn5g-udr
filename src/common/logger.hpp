@@ -32,20 +32,20 @@
 #include <stdexcept>
 #include <vector>
 
-#define SPDLOG_LEVEL_NAMES \
+#define SPDLOG_LEVEL_NAMES                                                     \
   {"trace", "debug", "info ", "start", "warn ", "error", "off  "};
 
 #define SPDLOG_ENABLE_SYSLOG
 #include "spdlog/spdlog.h"
 
 class LoggerException : public std::runtime_error {
- public:
+public:
   explicit LoggerException(const char *m) : std::runtime_error(m) {}
   explicit LoggerException(const std::string &m) : std::runtime_error(m) {}
 };
 
 class _Logger {
- public:
+public:
   _Logger(const char *category, std::vector<spdlog::sink_ptr> &sinks,
           const char *pattern);
 
@@ -62,7 +62,7 @@ class _Logger {
   void error(const char *format, ...);
   void error(const std::string &format, ...);
 
- private:
+private:
   _Logger();
   enum _LogType { _ltTrace, _ltDebug, _ltInfo, _ltStartup, _ltWarn, _ltError };
 
@@ -71,7 +71,7 @@ class _Logger {
 };
 
 class Logger {
- public:
+public:
   static void init(const char *app, const bool log_stdout,
                    const bool log_rot_file) {
     singleton()._init(app, log_stdout, log_rot_file);
@@ -86,10 +86,11 @@ class Logger {
   static _Logger &config() { return *singleton().m_config; }
   static _Logger &udr_server() { return *singleton().m_udr_server; }
 
- private:
+private:
   static Logger *m_singleton;
   static Logger &singleton() {
-    if (!m_singleton) m_singleton = new Logger();
+    if (!m_singleton)
+      m_singleton = new Logger();
     return *m_singleton;
   }
 

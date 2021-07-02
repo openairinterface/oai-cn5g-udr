@@ -55,4 +55,4 @@ void from_json(const nlohmann::json &j, HfcNodeId &o) {
 std::string HfcNodeId::getHfcNId() const { return m_HfcNId; }
 void HfcNodeId::setHfcNId(std::string const &value) { m_HfcNId = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

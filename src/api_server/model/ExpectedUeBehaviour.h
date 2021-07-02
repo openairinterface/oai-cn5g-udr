@@ -56,7 +56,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ExpectedUeBehaviour {
- public:
+public:
   ExpectedUeBehaviour();
   virtual ~ExpectedUeBehaviour();
 
@@ -69,7 +69,7 @@ class ExpectedUeBehaviour {
   ///
   /// </summary>
   std::string getAfInstanceId() const;
-  void setAfInstanceId(std::string const& value);
+  void setAfInstanceId(std::string const &value);
   /// <summary>
   ///
   /// </summary>
@@ -79,7 +79,7 @@ class ExpectedUeBehaviour {
   ///
   /// </summary>
   StationaryIndicationRm getStationaryIndication() const;
-  void setStationaryIndication(StationaryIndicationRm const& value);
+  void setStationaryIndication(StationaryIndicationRm const &value);
   bool stationaryIndicationIsSet() const;
   void unsetStationaryIndication();
   /// <summary>
@@ -93,7 +93,7 @@ class ExpectedUeBehaviour {
   ///
   /// </summary>
   ScheduledCommunicationTypeRm getScheduledCommunicationType() const;
-  void setScheduledCommunicationType(ScheduledCommunicationTypeRm const& value);
+  void setScheduledCommunicationType(ScheduledCommunicationTypeRm const &value);
   bool scheduledCommunicationTypeIsSet() const;
   void unsetScheduledCommunicationType();
   /// <summary>
@@ -107,50 +107,50 @@ class ExpectedUeBehaviour {
   ///
   /// </summary>
   ScheduledCommunicationTimeRm getScheduledCommunicationTime() const;
-  void setScheduledCommunicationTime(ScheduledCommunicationTimeRm const& value);
+  void setScheduledCommunicationTime(ScheduledCommunicationTimeRm const &value);
   bool scheduledCommunicationTimeIsSet() const;
   void unsetScheduledCommunicationTime();
   /// <summary>
   /// Identifies the UE&#39;s expected geographical movement. The attribute is
   /// only applicable in 5G.
   /// </summary>
-  std::vector<LocationArea>& getExpectedUmts();
-  void setExpectedUmts(std::vector<LocationArea> const& value);
+  std::vector<LocationArea> &getExpectedUmts();
+  void setExpectedUmts(std::vector<LocationArea> const &value);
   bool expectedUmtsIsSet() const;
   void unsetExpectedUmts();
   /// <summary>
   ///
   /// </summary>
   TrafficProfileRm getTrafficProfile() const;
-  void setTrafficProfile(TrafficProfileRm const& value);
+  void setTrafficProfile(TrafficProfileRm const &value);
   bool trafficProfileIsSet() const;
   void unsetTrafficProfile();
   /// <summary>
   ///
   /// </summary>
   BatteryIndicationRm getBatteryIndication() const;
-  void setBatteryIndication(BatteryIndicationRm const& value);
+  void setBatteryIndication(BatteryIndicationRm const &value);
   bool batteryIndicationIsSet() const;
   void unsetBatteryIndication();
   /// <summary>
   ///
   /// </summary>
   std::string getValidityTime() const;
-  void setValidityTime(std::string const& value);
+  void setValidityTime(std::string const &value);
   bool validityTimeIsSet() const;
   void unsetValidityTime();
   /// <summary>
   ///
   /// </summary>
   std::string getMtcProviderInformation() const;
-  void setMtcProviderInformation(std::string const& value);
+  void setMtcProviderInformation(std::string const &value);
   bool mtcProviderInformationIsSet() const;
   void unsetMtcProviderInformation();
 
-  friend void to_json(nlohmann::json& j, const ExpectedUeBehaviour& o);
-  friend void from_json(const nlohmann::json& j, ExpectedUeBehaviour& o);
+  friend void to_json(nlohmann::json &j, const ExpectedUeBehaviour &o);
+  friend void from_json(const nlohmann::json &j, ExpectedUeBehaviour &o);
 
- protected:
+protected:
   std::string m_AfInstanceId;
 
   int32_t m_ReferenceId;
@@ -177,6 +177,6 @@ class ExpectedUeBehaviour {
   bool m_MtcProviderInformationIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* ExpectedUeBehaviour_H_ */

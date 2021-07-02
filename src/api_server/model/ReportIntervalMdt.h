@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ReportIntervalMdt {
- public:
+public:
   ReportIntervalMdt();
   virtual ~ReportIntervalMdt();
 
@@ -56,12 +56,12 @@ class ReportIntervalMdt {
   /////////////////////////////////////////////
   /// ReportIntervalMdt members
 
-  friend void to_json(nlohmann::json& j, const ReportIntervalMdt& o);
-  friend void from_json(const nlohmann::json& j, ReportIntervalMdt& o);
+  friend void to_json(nlohmann::json &j, const ReportIntervalMdt &o);
+  friend void from_json(const nlohmann::json &j, ReportIntervalMdt &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* ReportIntervalMdt_H_ */

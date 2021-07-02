@@ -53,9 +53,12 @@ void LcsPrivacy::validate() {
 
 void to_json(nlohmann::json &j, const LcsPrivacy &o) {
   j = nlohmann::json();
-  if (o.afInstanceIdIsSet()) j["afInstanceId"] = o.m_AfInstanceId;
-  if (o.referenceIdIsSet()) j["referenceId"] = o.m_ReferenceId;
-  if (o.lpiIsSet()) j["lpi"] = o.m_Lpi;
+  if (o.afInstanceIdIsSet())
+    j["afInstanceId"] = o.m_AfInstanceId;
+  if (o.referenceIdIsSet())
+    j["referenceId"] = o.m_ReferenceId;
+  if (o.lpiIsSet())
+    j["lpi"] = o.m_Lpi;
   if (o.mtcProviderInformationIsSet())
     j["mtcProviderInformation"] = o.m_MtcProviderInformation;
 }
@@ -114,4 +117,4 @@ void LcsPrivacy::unsetMtcProviderInformation() {
   m_MtcProviderInformationIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

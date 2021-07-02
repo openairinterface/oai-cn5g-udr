@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class EutraLocation {
- public:
+public:
   EutraLocation();
   virtual ~EutraLocation();
 
@@ -65,12 +65,12 @@ class EutraLocation {
   ///
   /// </summary>
   Tai getTai() const;
-  void setTai(Tai const& value);
+  void setTai(Tai const &value);
   /// <summary>
   ///
   /// </summary>
   Ecgi getEcgi() const;
-  void setEcgi(Ecgi const& value);
+  void setEcgi(Ecgi const &value);
   /// <summary>
   ///
   /// </summary>
@@ -89,42 +89,42 @@ class EutraLocation {
   ///
   /// </summary>
   std::string getUeLocationTimestamp() const;
-  void setUeLocationTimestamp(std::string const& value);
+  void setUeLocationTimestamp(std::string const &value);
   bool ueLocationTimestampIsSet() const;
   void unsetUeLocationTimestamp();
   /// <summary>
   ///
   /// </summary>
   std::string getGeographicalInformation() const;
-  void setGeographicalInformation(std::string const& value);
+  void setGeographicalInformation(std::string const &value);
   bool geographicalInformationIsSet() const;
   void unsetGeographicalInformation();
   /// <summary>
   ///
   /// </summary>
   std::string getGeodeticInformation() const;
-  void setGeodeticInformation(std::string const& value);
+  void setGeodeticInformation(std::string const &value);
   bool geodeticInformationIsSet() const;
   void unsetGeodeticInformation();
   /// <summary>
   ///
   /// </summary>
   GlobalRanNodeId getGlobalNgenbId() const;
-  void setGlobalNgenbId(GlobalRanNodeId const& value);
+  void setGlobalNgenbId(GlobalRanNodeId const &value);
   bool globalNgenbIdIsSet() const;
   void unsetGlobalNgenbId();
   /// <summary>
   ///
   /// </summary>
   GlobalRanNodeId getGlobalENbId() const;
-  void setGlobalENbId(GlobalRanNodeId const& value);
+  void setGlobalENbId(GlobalRanNodeId const &value);
   bool globalENbIdIsSet() const;
   void unsetGlobalENbId();
 
-  friend void to_json(nlohmann::json& j, const EutraLocation& o);
-  friend void from_json(const nlohmann::json& j, EutraLocation& o);
+  friend void to_json(nlohmann::json &j, const EutraLocation &o);
+  friend void from_json(const nlohmann::json &j, EutraLocation &o);
 
- protected:
+protected:
   Tai m_Tai;
 
   Ecgi m_Ecgi;
@@ -145,6 +145,6 @@ class EutraLocation {
   bool m_GlobalENbIdIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* EutraLocation_H_ */

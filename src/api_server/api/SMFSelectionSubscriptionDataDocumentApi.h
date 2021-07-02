@@ -53,7 +53,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SMFSelectionSubscriptionDataDocumentApi {
- public:
+public:
   SMFSelectionSubscriptionDataDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SMFSelectionSubscriptionDataDocumentApi() {}
@@ -61,7 +61,7 @@ class SMFSelectionSubscriptionDataDocumentApi {
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void query_smf_select_data_handler(const Pistache::Rest::Request &request,
@@ -97,6 +97,6 @@ class SMFSelectionSubscriptionDataDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* SMFSelectionSubscriptionDataDocumentApi_H_ */

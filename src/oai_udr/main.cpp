@@ -16,8 +16,8 @@
 
 #include <signal.h>
 #include <stdint.h>
-#include <stdlib.h>  // srand
-#include <unistd.h>  // get_pid(), pause()
+#include <stdlib.h> // srand
+#include <unistd.h> // get_pid(), pause()
 
 #include <iostream>
 #include <thread>
@@ -36,8 +36,8 @@ using namespace std;
 using namespace config;
 
 udr_config udr_cfg;
-udr_app* udr_app_inst = nullptr;
-UDRApiServer* api_server = nullptr;
+udr_app *udr_app_inst = nullptr;
+UDRApiServer *api_server = nullptr;
 #include "udr_config.hpp"
 
 //------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ void my_app_signal_handler(int s) {
 }
 
 //------------------------------------------------------------------------------
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   srand(time(NULL));
 
   // Command line options
@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
 
   // UDR Pistache API server (HTTP1)
   Pistache::Address addr(
-      std::string(inet_ntoa(*((struct in_addr*)&udr_cfg.nudr.addr4))),
+      std::string(inet_ntoa(*((struct in_addr *)&udr_cfg.nudr.addr4))),
       Pistache::Port(udr_cfg.nudr.port));
 
   api_server = new UDRApiServer(addr, udr_app_inst);
@@ -109,7 +109,7 @@ int main(int argc, char** argv) {
   std::thread udr_manager(&UDRApiServer::start, api_server);
   udr_manager.join();
 
-  FILE* fp = NULL;
+  FILE *fp = NULL;
   std::string filename = fmt::format("/tmp/udr_{}.status", getpid());
   fp = fopen(filename.c_str(), "w+");
   fprintf(fp, "STARTED\n");

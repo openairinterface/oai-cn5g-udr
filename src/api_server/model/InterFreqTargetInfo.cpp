@@ -77,4 +77,4 @@ void InterFreqTargetInfo::setCellIdList(std::vector<int32_t> const value) {
 bool InterFreqTargetInfo::cellIdListIsSet() const { return m_CellIdListIsSet; }
 void InterFreqTargetInfo::unsetCellIdList() { m_CellIdListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

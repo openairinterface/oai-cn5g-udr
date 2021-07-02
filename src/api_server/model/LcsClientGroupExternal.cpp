@@ -51,12 +51,14 @@ void LcsClientGroupExternal::validate() {
 
 void to_json(nlohmann::json &j, const LcsClientGroupExternal &o) {
   j = nlohmann::json();
-  if (o.lcsClientGroupIdIsSet()) j["lcsClientGroupId"] = o.m_LcsClientGroupId;
+  if (o.lcsClientGroupIdIsSet())
+    j["lcsClientGroupId"] = o.m_LcsClientGroupId;
   if (o.allowedGeographicAreaIsSet() || !o.m_AllowedGeographicArea.empty())
     j["allowedGeographicArea"] = o.m_AllowedGeographicArea;
   if (o.privacyCheckRelatedActionIsSet())
     j["privacyCheckRelatedAction"] = o.m_PrivacyCheckRelatedAction;
-  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.validTimePeriodIsSet())
+    j["validTimePeriod"] = o.m_ValidTimePeriod;
 }
 
 void from_json(const nlohmann::json &j, LcsClientGroupExternal &o) {
@@ -91,8 +93,8 @@ bool LcsClientGroupExternal::lcsClientGroupIdIsSet() const {
 void LcsClientGroupExternal::unsetLcsClientGroupId() {
   m_LcsClientGroupIdIsSet = false;
 }
-std::vector<GeographicArea>
-    &LcsClientGroupExternal::getAllowedGeographicArea() {
+std::vector<GeographicArea> &
+LcsClientGroupExternal::getAllowedGeographicArea() {
   return m_AllowedGeographicArea;
 }
 void LcsClientGroupExternal::setAllowedGeographicArea(
@@ -106,8 +108,8 @@ bool LcsClientGroupExternal::allowedGeographicAreaIsSet() const {
 void LcsClientGroupExternal::unsetAllowedGeographicArea() {
   m_AllowedGeographicAreaIsSet = false;
 }
-PrivacyCheckRelatedAction LcsClientGroupExternal::getPrivacyCheckRelatedAction()
-    const {
+PrivacyCheckRelatedAction
+LcsClientGroupExternal::getPrivacyCheckRelatedAction() const {
   return m_PrivacyCheckRelatedAction;
 }
 void LcsClientGroupExternal::setPrivacyCheckRelatedAction(
@@ -135,4 +137,4 @@ void LcsClientGroupExternal::unsetValidTimePeriod() {
   m_ValidTimePeriodIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UpConfidentiality {
- public:
+public:
   UpConfidentiality();
   virtual ~UpConfidentiality();
 
@@ -56,12 +56,12 @@ class UpConfidentiality {
   /////////////////////////////////////////////
   /// UpConfidentiality members
 
-  friend void to_json(nlohmann::json& j, const UpConfidentiality& o);
-  friend void from_json(const nlohmann::json& j, UpConfidentiality& o);
+  friend void to_json(nlohmann::json &j, const UpConfidentiality &o);
+  friend void from_json(const nlohmann::json &j, UpConfidentiality &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* UpConfidentiality_H_ */

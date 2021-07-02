@@ -58,18 +58,24 @@ void UePolicySet::validate() {
 
 void to_json(nlohmann::json &j, const UePolicySet &o) {
   j = nlohmann::json();
-  if (o.praInfosIsSet() || !o.m_PraInfos.empty()) j["praInfos"] = o.m_PraInfos;
+  if (o.praInfosIsSet() || !o.m_PraInfos.empty())
+    j["praInfos"] = o.m_PraInfos;
   if (o.subscCatsIsSet() || !o.m_SubscCats.empty())
     j["subscCats"] = o.m_SubscCats;
   if (o.uePolicySectionsIsSet() || !o.m_UePolicySections.empty())
     j["uePolicySections"] = o.m_UePolicySections;
-  if (o.upsisIsSet() || !o.m_Upsis.empty()) j["upsis"] = o.m_Upsis;
+  if (o.upsisIsSet() || !o.m_Upsis.empty())
+    j["upsis"] = o.m_Upsis;
   if (o.allowedRouteSelDescsIsSet() || !o.m_AllowedRouteSelDescs.empty())
     j["allowedRouteSelDescs"] = o.m_AllowedRouteSelDescs;
-  if (o.andspIndIsSet()) j["andspInd"] = o.m_AndspInd;
-  if (o.peiIsSet()) j["pei"] = o.m_Pei;
-  if (o.osIdsIsSet() || !o.m_OsIds.empty()) j["osIds"] = o.m_OsIds;
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
+  if (o.andspIndIsSet())
+    j["andspInd"] = o.m_AndspInd;
+  if (o.peiIsSet())
+    j["pei"] = o.m_Pei;
+  if (o.osIdsIsSet() || !o.m_OsIds.empty())
+    j["osIds"] = o.m_OsIds;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, UePolicySet &o) {
@@ -147,8 +153,8 @@ void UePolicySet::setUpsis(std::vector<std::string> const &value) {
 }
 bool UePolicySet::upsisIsSet() const { return m_UpsisIsSet; }
 void UePolicySet::unsetUpsis() { m_UpsisIsSet = false; }
-std::map<std::string, PlmnRouteSelectionDescriptor>
-    &UePolicySet::getAllowedRouteSelDescs() {
+std::map<std::string, PlmnRouteSelectionDescriptor> &
+UePolicySet::getAllowedRouteSelDescs() {
   return m_AllowedRouteSelDescs;
 }
 void UePolicySet::setAllowedRouteSelDescs(
@@ -191,4 +197,4 @@ void UePolicySet::setSuppFeat(std::string const &value) {
 bool UePolicySet::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void UePolicySet::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

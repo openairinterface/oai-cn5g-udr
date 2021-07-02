@@ -44,8 +44,7 @@ Class5GVnGroupConfigurationDocumentApiImpl::
     Class5GVnGroupConfigurationDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : Class5GVnGroupConfigurationDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : Class5GVnGroupConfigurationDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void Class5GVnGroupConfigurationDocumentApiImpl::create5_g_vn_group(
@@ -56,4 +55,4 @@ void Class5GVnGroupConfigurationDocumentApiImpl::create5_g_vn_group(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

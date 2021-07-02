@@ -52,16 +52,14 @@ void AuthenticationSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base +
-                  "/subscription-data/:ueId/authentication-data/"
-                  "authentication-subscription",
+              base + "/subscription-data/:ueId/authentication-data/"
+                     "authentication-subscription",
               Routes::bind(&AuthenticationSubscriptionDocumentApi::
                                read_authentication_subscription_handler,
                            this));
   Routes::Patch(*router,
-                base +
-                    "/subscription-data/:ueId/authentication-data/"
-                    "authentication-subscription",
+                base + "/subscription-data/:ueId/authentication-data/"
+                       "authentication-subscription",
                 Routes::bind(&AuthenticationSubscriptionDocumentApi::
                                  modify_authentication_subscription_handler,
                              this));
@@ -152,4 +150,4 @@ void AuthenticationSubscriptionDocumentApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

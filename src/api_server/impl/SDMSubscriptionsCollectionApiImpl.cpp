@@ -42,8 +42,7 @@ using namespace oai::udr::model;
 SDMSubscriptionsCollectionApiImpl::SDMSubscriptionsCollectionApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : SDMSubscriptionsCollectionApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SDMSubscriptionsCollectionApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SDMSubscriptionsCollectionApiImpl::create_sdm_subscriptions(
@@ -69,4 +68,4 @@ void SDMSubscriptionsCollectionApiImpl::querysdmsubscriptions(
   response.send(code, response_data.dump().c_str());
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

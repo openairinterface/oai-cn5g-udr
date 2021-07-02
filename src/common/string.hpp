@@ -33,13 +33,13 @@
 
 namespace util {
 
-std::string string_format(const char* format, ...);
+std::string string_format(const char *format, ...);
 
-std::string& ltrim(std::string& s);
+std::string &ltrim(std::string &s);
 // trim from end
-std::string& rtrim(std::string& s);
+std::string &rtrim(std::string &s);
 // trim from both ends
-std::string& trim(std::string& s);
+std::string &trim(std::string &s);
 
-}  // namespace util
+} // namespace util
 #endif

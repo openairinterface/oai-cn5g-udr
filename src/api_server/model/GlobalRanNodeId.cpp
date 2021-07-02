@@ -60,13 +60,20 @@ void GlobalRanNodeId::validate() {
 void to_json(nlohmann::json &j, const GlobalRanNodeId &o) {
   j = nlohmann::json();
   j["plmnId"] = o.m_PlmnId;
-  if (o.n3IwfIdIsSet()) j["n3IwfId"] = o.m_N3IwfId;
-  if (o.gNbIdIsSet()) j["gNbId"] = o.m_GNbId;
-  if (o.ngeNbIdIsSet()) j["ngeNbId"] = o.m_NgeNbId;
-  if (o.wagfIdIsSet()) j["wagfId"] = o.m_WagfId;
-  if (o.tngfIdIsSet()) j["tngfId"] = o.m_TngfId;
-  if (o.nidIsSet()) j["nid"] = o.m_Nid;
-  if (o.eNbIdIsSet()) j["eNbId"] = o.m_ENbId;
+  if (o.n3IwfIdIsSet())
+    j["n3IwfId"] = o.m_N3IwfId;
+  if (o.gNbIdIsSet())
+    j["gNbId"] = o.m_GNbId;
+  if (o.ngeNbIdIsSet())
+    j["ngeNbId"] = o.m_NgeNbId;
+  if (o.wagfIdIsSet())
+    j["wagfId"] = o.m_WagfId;
+  if (o.tngfIdIsSet())
+    j["tngfId"] = o.m_TngfId;
+  if (o.nidIsSet())
+    j["nid"] = o.m_Nid;
+  if (o.eNbIdIsSet())
+    j["eNbId"] = o.m_ENbId;
 }
 
 void from_json(const nlohmann::json &j, GlobalRanNodeId &o) {
@@ -153,4 +160,4 @@ void GlobalRanNodeId::setENbId(std::string const &value) {
 bool GlobalRanNodeId::eNbIdIsSet() const { return m_ENbIdIsSet; }
 void GlobalRanNodeId::unsetENbId() { m_ENbIdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

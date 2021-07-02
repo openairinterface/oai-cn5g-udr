@@ -56,8 +56,10 @@ void to_json(nlohmann::json &j, const V2xSubscriptionData &o) {
     j["nrV2xServicesAuth"] = o.m_NrV2xServicesAuth;
   if (o.lteV2xServicesAuthIsSet())
     j["lteV2xServicesAuth"] = o.m_LteV2xServicesAuth;
-  if (o.nrUePc5AmbrIsSet()) j["nrUePc5Ambr"] = o.m_NrUePc5Ambr;
-  if (o.ltePc5AmbrIsSet()) j["ltePc5Ambr"] = o.m_LtePc5Ambr;
+  if (o.nrUePc5AmbrIsSet())
+    j["nrUePc5Ambr"] = o.m_NrUePc5Ambr;
+  if (o.ltePc5AmbrIsSet())
+    j["ltePc5Ambr"] = o.m_LtePc5Ambr;
 }
 
 void from_json(const nlohmann::json &j, V2xSubscriptionData &o) {
@@ -124,4 +126,4 @@ void V2xSubscriptionData::setLtePc5Ambr(std::string const &value) {
 bool V2xSubscriptionData::ltePc5AmbrIsSet() const { return m_LtePc5AmbrIsSet; }
 void V2xSubscriptionData::unsetLtePc5Ambr() { m_LtePc5AmbrIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

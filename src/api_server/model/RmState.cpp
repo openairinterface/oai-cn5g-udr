@@ -47,4 +47,4 @@ void to_json(nlohmann::json &j, const RmState &o) { j = nlohmann::json(); }
 
 void from_json(const nlohmann::json &j, RmState &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

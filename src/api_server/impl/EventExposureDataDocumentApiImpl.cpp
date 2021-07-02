@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 EventExposureDataDocumentApiImpl::EventExposureDataDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : EventExposureDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : EventExposureDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void EventExposureDataDocumentApiImpl::query_ee_data(
@@ -56,4 +55,4 @@ void EventExposureDataDocumentApiImpl::query_ee_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

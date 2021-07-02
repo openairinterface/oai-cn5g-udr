@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class TrafficProfileRm {
- public:
+public:
   TrafficProfileRm();
   virtual ~TrafficProfileRm();
 
@@ -59,12 +59,12 @@ class TrafficProfileRm {
   /////////////////////////////////////////////
   /// TrafficProfileRm members
 
-  friend void to_json(nlohmann::json& j, const TrafficProfileRm& o);
-  friend void from_json(const nlohmann::json& j, TrafficProfileRm& o);
+  friend void to_json(nlohmann::json &j, const TrafficProfileRm &o);
+  friend void from_json(const nlohmann::json &j, TrafficProfileRm &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* TrafficProfileRm_H_ */

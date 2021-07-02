@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 AuthenticationStatusDocumentApiImpl::AuthenticationStatusDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : AuthenticationStatusDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : AuthenticationStatusDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AuthenticationStatusDocumentApiImpl::create_authentication_status(
@@ -81,4 +80,4 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(
   response.send(code, response_data.dump().c_str());
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

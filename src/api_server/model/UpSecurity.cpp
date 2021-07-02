@@ -61,4 +61,4 @@ void UpSecurity::setUpConfid(UpConfidentiality const &value) {
   m_UpConfid = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -49,4 +49,4 @@ void to_json(nlohmann::json &j, const SupportedGADShapes &o) {
 
 void from_json(const nlohmann::json &j, SupportedGADShapes &o) {}
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

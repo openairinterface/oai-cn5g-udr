@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 SMFRegistrationDocumentApiImpl::SMFRegistrationDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : SMFRegistrationDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SMFRegistrationDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(
@@ -83,4 +82,4 @@ void SMFRegistrationDocumentApiImpl::query_smf_registration(
   response.send(code, response_data.dump().c_str());
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -52,9 +52,12 @@ void BatteryIndication::validate() {
 
 void to_json(nlohmann::json &j, const BatteryIndication &o) {
   j = nlohmann::json();
-  if (o.batteryIndIsSet()) j["batteryInd"] = o.m_BatteryInd;
-  if (o.replaceableIndIsSet()) j["replaceableInd"] = o.m_ReplaceableInd;
-  if (o.rechargeableIndIsSet()) j["rechargeableInd"] = o.m_RechargeableInd;
+  if (o.batteryIndIsSet())
+    j["batteryInd"] = o.m_BatteryInd;
+  if (o.replaceableIndIsSet())
+    j["replaceableInd"] = o.m_ReplaceableInd;
+  if (o.rechargeableIndIsSet())
+    j["rechargeableInd"] = o.m_RechargeableInd;
 }
 
 void from_json(const nlohmann::json &j, BatteryIndication &o) {
@@ -100,4 +103,4 @@ void BatteryIndication::unsetRechargeableInd() {
   m_RechargeableIndIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

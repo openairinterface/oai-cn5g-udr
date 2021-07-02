@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 IndividualIPTVConfigurationDataApiImpl::IndividualIPTVConfigurationDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : IndividualIPTVConfigurationDataApi(rtr),
-      m_udr_app(udr_app_inst),
+    : IndividualIPTVConfigurationDataApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IndividualIPTVConfigurationDataApiImpl::
@@ -56,4 +55,4 @@ void IndividualIPTVConfigurationDataApiImpl::
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -50,8 +50,10 @@ void MbsfnArea::validate() {
 
 void to_json(nlohmann::json &j, const MbsfnArea &o) {
   j = nlohmann::json();
-  if (o.mbsfnAreaIdIsSet()) j["mbsfnAreaId"] = o.m_MbsfnAreaId;
-  if (o.carrierFrequencyIsSet()) j["carrierFrequency"] = o.m_CarrierFrequency;
+  if (o.mbsfnAreaIdIsSet())
+    j["mbsfnAreaId"] = o.m_MbsfnAreaId;
+  if (o.carrierFrequencyIsSet())
+    j["carrierFrequency"] = o.m_CarrierFrequency;
 }
 
 void from_json(const nlohmann::json &j, MbsfnArea &o) {
@@ -82,4 +84,4 @@ bool MbsfnArea::carrierFrequencyIsSet() const {
 }
 void MbsfnArea::unsetCarrierFrequency() { m_CarrierFrequencyIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

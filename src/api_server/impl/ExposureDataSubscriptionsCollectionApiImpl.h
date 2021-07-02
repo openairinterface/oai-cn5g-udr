@@ -40,11 +40,11 @@
 #ifndef EXPOSURE_DATA_SUBSCRIPTIONS_COLLECTION_API_IMPL_H_
 #define EXPOSURE_DATA_SUBSCRIPTIONS_COLLECTION_API_IMPL_H_
 
+#include "ExposureDataSubscription.h"
+#include "udr_app.hpp"
 #include <ExposureDataSubscriptionsCollectionApi.h>
 #include <pistache/http.h>
 #include <pistache/optional.h>
-#include "ExposureDataSubscription.h"
-#include "udr_app.hpp"
 
 namespace oai::udr::api {
 
@@ -53,21 +53,21 @@ using namespace oai::udr::app;
 
 class ExposureDataSubscriptionsCollectionApiImpl
     : public oai::udr::api::ExposureDataSubscriptionsCollectionApi {
- private:
-  udr_app* m_udr_app;
+private:
+  udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   ExposureDataSubscriptionsCollectionApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
   ~ExposureDataSubscriptionsCollectionApiImpl() {}
 
   void create_individual_exposure_data_subscription(
-      const ExposureDataSubscription& exposureDataSubscription,
-      Pistache::Http::ResponseWriter& response);
+      const ExposureDataSubscription &exposureDataSubscription,
+      Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

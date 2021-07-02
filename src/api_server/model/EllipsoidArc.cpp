@@ -97,4 +97,4 @@ void EllipsoidArc::setIncludedAngle(int32_t const value) {
 int32_t EllipsoidArc::getConfidence() const { return m_Confidence; }
 void EllipsoidArc::setConfidence(int32_t const value) { m_Confidence = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -53,11 +53,11 @@ using namespace oai::udr::model;
 using namespace oai::udr::app;
 
 class GroupIdentifiersApiImpl : public oai::udr::api::GroupIdentifiersApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   GroupIdentifiersApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                           udr_app *udr_app_inst, std::string address);
   ~GroupIdentifiersApiImpl() {}
@@ -70,6 +70,6 @@ class GroupIdentifiersApiImpl : public oai::udr::api::GroupIdentifiersApi {
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

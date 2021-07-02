@@ -56,11 +56,11 @@ using namespace oai::udr::app;
 
 class SubsToNotifyDocumentApiImpl
     : public oai::udr::api::SubsToNotifyDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   SubsToNotifyDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                               udr_app *udr_app_inst, std::string address);
   ~SubsToNotifyDocumentApiImpl() {}
@@ -75,6 +75,6 @@ class SubsToNotifyDocumentApiImpl
       const std::string &subsId, Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

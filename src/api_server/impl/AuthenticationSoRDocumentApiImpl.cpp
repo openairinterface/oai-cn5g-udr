@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 AuthenticationSoRDocumentApiImpl::AuthenticationSoRDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : AuthenticationSoRDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : AuthenticationSoRDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AuthenticationSoRDocumentApiImpl::create_authentication_so_r(
@@ -62,4 +61,4 @@ void AuthenticationSoRDocumentApiImpl::query_auth_so_r(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

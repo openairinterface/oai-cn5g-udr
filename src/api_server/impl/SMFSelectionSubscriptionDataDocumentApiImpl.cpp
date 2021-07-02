@@ -44,8 +44,7 @@ SMFSelectionSubscriptionDataDocumentApiImpl::
     SMFSelectionSubscriptionDataDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : SMFSelectionSubscriptionDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SMFSelectionSubscriptionDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
@@ -64,4 +63,4 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
   response.send(code, response_data.dump().c_str());
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

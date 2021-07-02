@@ -54,11 +54,11 @@ using namespace oai::udr::app;
 
 class LCSPrivacySubscriptionDataApiImpl
     : public oai::udr::api::LCSPrivacySubscriptionDataApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   LCSPrivacySubscriptionDataApiImpl(std::shared_ptr<Pistache::Rest::Router>,
                                     udr_app *udr_app_inst, std::string address);
   ~LCSPrivacySubscriptionDataApiImpl() {}
@@ -72,6 +72,6 @@ class LCSPrivacySubscriptionDataApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

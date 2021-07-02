@@ -44,8 +44,7 @@ SMSManagementSubscriptionDataDocumentApiImpl::
     SMSManagementSubscriptionDataDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : SMSManagementSubscriptionDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : SMSManagementSubscriptionDataDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SMSManagementSubscriptionDataDocumentApiImpl::query_sms_mng_data(
@@ -58,4 +57,4 @@ void SMSManagementSubscriptionDataDocumentApiImpl::query_sms_mng_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

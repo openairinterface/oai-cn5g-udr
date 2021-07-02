@@ -63,4 +63,4 @@ void Polygon::setPointList(std::vector<GeographicalCoordinates> const &value) {
   m_PointList = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

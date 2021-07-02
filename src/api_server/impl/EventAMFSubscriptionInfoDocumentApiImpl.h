@@ -52,11 +52,11 @@ using namespace oai::udr::app;
 
 class EventAMFSubscriptionInfoDocumentApiImpl
     : public oai::udr::api::EventAMFSubscriptionInfoDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   EventAMFSubscriptionInfoDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
@@ -67,6 +67,6 @@ class EventAMFSubscriptionInfoDocumentApiImpl
                                      Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

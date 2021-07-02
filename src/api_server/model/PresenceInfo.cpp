@@ -56,13 +56,18 @@ void PresenceInfo::validate() {
 
 void to_json(nlohmann::json &j, const PresenceInfo &o) {
   j = nlohmann::json();
-  if (o.praIdIsSet()) j["praId"] = o.m_PraId;
-  if (o.additionalPraIdIsSet()) j["additionalPraId"] = o.m_AdditionalPraId;
-  if (o.presenceStateIsSet()) j["presenceState"] = o.m_PresenceState;
+  if (o.praIdIsSet())
+    j["praId"] = o.m_PraId;
+  if (o.additionalPraIdIsSet())
+    j["additionalPraId"] = o.m_AdditionalPraId;
+  if (o.presenceStateIsSet())
+    j["presenceState"] = o.m_PresenceState;
   if (o.trackingAreaListIsSet() || !o.m_TrackingAreaList.empty())
     j["trackingAreaList"] = o.m_TrackingAreaList;
-  if (o.ecgiListIsSet() || !o.m_EcgiList.empty()) j["ecgiList"] = o.m_EcgiList;
-  if (o.ncgiListIsSet() || !o.m_NcgiList.empty()) j["ncgiList"] = o.m_NcgiList;
+  if (o.ecgiListIsSet() || !o.m_EcgiList.empty())
+    j["ecgiList"] = o.m_EcgiList;
+  if (o.ncgiListIsSet() || !o.m_NcgiList.empty())
+    j["ncgiList"] = o.m_NcgiList;
   if (o.globalRanNodeIdListIsSet() || !o.m_GlobalRanNodeIdList.empty())
     j["globalRanNodeIdList"] = o.m_GlobalRanNodeIdList;
   if (o.globaleNbIdListIsSet() || !o.m_GlobaleNbIdList.empty())
@@ -181,4 +186,4 @@ bool PresenceInfo::globaleNbIdListIsSet() const {
 }
 void PresenceInfo::unsetGlobaleNbIdList() { m_GlobaleNbIdListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

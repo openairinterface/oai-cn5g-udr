@@ -54,13 +54,13 @@ using namespace oai::udr::app;
 
 class RetrievalOfSharedDataApiImpl
     : public oai::udr::api::RetrievalOfSharedDataApi {
- private:
-  udr_app* m_udr_app;
+private:
+  udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   RetrievalOfSharedDataApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                               udr_app* udr_app_inst, std::string address);
+                               udr_app *udr_app_inst, std::string address);
   ~RetrievalOfSharedDataApiImpl() {}
 
   //    void get_shared_data(const Pistache::Optional<Set<std::string>>
@@ -68,6 +68,6 @@ class RetrievalOfSharedDataApiImpl
   //    &supportedFeatures, Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

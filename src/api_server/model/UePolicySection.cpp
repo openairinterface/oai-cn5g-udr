@@ -63,4 +63,4 @@ void UePolicySection::setUePolicySectionInfo(std::string const &value) {
 std::string UePolicySection::getUpsi() const { return m_Upsi; }
 void UePolicySection::setUpsi(std::string const &value) { m_Upsi = value; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

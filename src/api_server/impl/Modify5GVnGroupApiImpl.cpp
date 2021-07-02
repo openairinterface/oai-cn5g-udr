@@ -53,4 +53,4 @@ void Modify5GVnGroupApiImpl::modify5_g_vn_group(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

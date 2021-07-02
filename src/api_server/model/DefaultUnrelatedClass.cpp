@@ -55,8 +55,10 @@ void to_json(nlohmann::json &j, const DefaultUnrelatedClass &o) {
     j["allowedGeographicArea"] = o.m_AllowedGeographicArea;
   if (o.privacyCheckRelatedActionIsSet())
     j["privacyCheckRelatedAction"] = o.m_PrivacyCheckRelatedAction;
-  if (o.codeWordIndIsSet()) j["codeWordInd"] = o.m_CodeWordInd;
-  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.codeWordIndIsSet())
+    j["codeWordInd"] = o.m_CodeWordInd;
+  if (o.validTimePeriodIsSet())
+    j["validTimePeriod"] = o.m_ValidTimePeriod;
   if (o.codeWordListIsSet() || !o.m_CodeWordList.empty())
     j["codeWordList"] = o.m_CodeWordList;
 }
@@ -98,8 +100,8 @@ bool DefaultUnrelatedClass::allowedGeographicAreaIsSet() const {
 void DefaultUnrelatedClass::unsetAllowedGeographicArea() {
   m_AllowedGeographicAreaIsSet = false;
 }
-PrivacyCheckRelatedAction DefaultUnrelatedClass::getPrivacyCheckRelatedAction()
-    const {
+PrivacyCheckRelatedAction
+DefaultUnrelatedClass::getPrivacyCheckRelatedAction() const {
   return m_PrivacyCheckRelatedAction;
 }
 void DefaultUnrelatedClass::setPrivacyCheckRelatedAction(
@@ -150,4 +152,4 @@ bool DefaultUnrelatedClass::codeWordListIsSet() const {
 }
 void DefaultUnrelatedClass::unsetCodeWordList() { m_CodeWordListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

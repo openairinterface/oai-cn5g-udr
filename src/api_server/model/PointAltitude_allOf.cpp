@@ -65,4 +65,4 @@ void PointAltitude_allOf::setAltitude(double const value) {
   m_Altitude = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

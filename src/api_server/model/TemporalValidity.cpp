@@ -50,8 +50,10 @@ void TemporalValidity::validate() {
 
 void to_json(nlohmann::json &j, const TemporalValidity &o) {
   j = nlohmann::json();
-  if (o.startTimeIsSet()) j["startTime"] = o.m_StartTime;
-  if (o.stopTimeIsSet()) j["stopTime"] = o.m_StopTime;
+  if (o.startTimeIsSet())
+    j["startTime"] = o.m_StartTime;
+  if (o.stopTimeIsSet())
+    j["stopTime"] = o.m_StopTime;
 }
 
 void from_json(const nlohmann::json &j, TemporalValidity &o) {
@@ -80,4 +82,4 @@ void TemporalValidity::setStopTime(std::string const &value) {
 bool TemporalValidity::stopTimeIsSet() const { return m_StopTimeIsSet; }
 void TemporalValidity::unsetStopTime() { m_StopTimeIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

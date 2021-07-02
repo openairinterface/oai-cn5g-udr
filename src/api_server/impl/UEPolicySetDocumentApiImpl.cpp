@@ -43,9 +43,8 @@ using namespace oai::udr::model;
 UEPolicySetDocumentApiImpl::UEPolicySetDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : UEPolicySetDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
-      m_address(address) {}
+    : UEPolicySetDocumentApi(rtr), m_udr_app(udr_app_inst), m_address(address) {
+}
 
 void UEPolicySetDocumentApiImpl::create_or_replace_ue_policy_set(
     const std::string &ueId, const UePolicySet &uePolicySet,
@@ -66,4 +65,4 @@ void UEPolicySetDocumentApiImpl::update_ue_policy_set(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

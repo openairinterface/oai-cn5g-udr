@@ -48,8 +48,10 @@ void BdtDataPatch::validate() {
 
 void to_json(nlohmann::json &j, const BdtDataPatch &o) {
   j = nlohmann::json();
-  if (o.transPolicyIsSet()) j["transPolicy"] = o.m_TransPolicy;
-  if (o.bdtpStatusIsSet()) j["bdtpStatus"] = o.m_BdtpStatus;
+  if (o.transPolicyIsSet())
+    j["transPolicy"] = o.m_TransPolicy;
+  if (o.bdtpStatusIsSet())
+    j["bdtpStatus"] = o.m_BdtpStatus;
 }
 
 void from_json(const nlohmann::json &j, BdtDataPatch &o) {
@@ -78,4 +80,4 @@ void BdtDataPatch::setBdtpStatus(BdtPolicyStatus const &value) {
 bool BdtDataPatch::bdtpStatusIsSet() const { return m_BdtpStatusIsSet; }
 void BdtDataPatch::unsetBdtpStatus() { m_BdtpStatusIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

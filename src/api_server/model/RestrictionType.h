@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class RestrictionType {
- public:
+public:
   RestrictionType();
   virtual ~RestrictionType();
 
@@ -56,12 +56,12 @@ class RestrictionType {
   /////////////////////////////////////////////
   /// RestrictionType members
 
-  friend void to_json(nlohmann::json& j, const RestrictionType& o);
-  friend void from_json(const nlohmann::json& j, RestrictionType& o);
+  friend void to_json(nlohmann::json &j, const RestrictionType &o);
+  friend void from_json(const nlohmann::json &j, RestrictionType &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* RestrictionType_H_ */

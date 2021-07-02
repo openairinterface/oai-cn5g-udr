@@ -52,8 +52,10 @@ void LocationInfo::validate() {
 
 void to_json(nlohmann::json &j, const LocationInfo &o) {
   j = nlohmann::json();
-  if (o.supiIsSet()) j["supi"] = o.m_Supi;
-  if (o.gpsiIsSet()) j["gpsi"] = o.m_Gpsi;
+  if (o.supiIsSet())
+    j["supi"] = o.m_Supi;
+  if (o.gpsiIsSet())
+    j["gpsi"] = o.m_Gpsi;
   j["registrationLocationInfoList"] = o.m_RegistrationLocationInfoList;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
@@ -89,8 +91,8 @@ void LocationInfo::setGpsi(std::string const &value) {
 }
 bool LocationInfo::gpsiIsSet() const { return m_GpsiIsSet; }
 void LocationInfo::unsetGpsi() { m_GpsiIsSet = false; }
-std::vector<RegistrationLocationInfo>
-    &LocationInfo::getRegistrationLocationInfoList() {
+std::vector<RegistrationLocationInfo> &
+LocationInfo::getRegistrationLocationInfoList() {
   return m_RegistrationLocationInfoList;
 }
 void LocationInfo::setRegistrationLocationInfoList(
@@ -111,4 +113,4 @@ void LocationInfo::unsetSupportedFeatures() {
   m_SupportedFeaturesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

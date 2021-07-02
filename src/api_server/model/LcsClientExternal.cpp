@@ -53,7 +53,8 @@ void to_json(nlohmann::json &j, const LcsClientExternal &o) {
     j["allowedGeographicArea"] = o.m_AllowedGeographicArea;
   if (o.privacyCheckRelatedActionIsSet())
     j["privacyCheckRelatedAction"] = o.m_PrivacyCheckRelatedAction;
-  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.validTimePeriodIsSet())
+    j["validTimePeriod"] = o.m_ValidTimePeriod;
 }
 
 void from_json(const nlohmann::json &j, LcsClientExternal &o) {
@@ -85,8 +86,8 @@ bool LcsClientExternal::allowedGeographicAreaIsSet() const {
 void LcsClientExternal::unsetAllowedGeographicArea() {
   m_AllowedGeographicAreaIsSet = false;
 }
-PrivacyCheckRelatedAction LcsClientExternal::getPrivacyCheckRelatedAction()
-    const {
+PrivacyCheckRelatedAction
+LcsClientExternal::getPrivacyCheckRelatedAction() const {
   return m_PrivacyCheckRelatedAction;
 }
 void LcsClientExternal::setPrivacyCheckRelatedAction(
@@ -114,4 +115,4 @@ void LcsClientExternal::unsetValidTimePeriod() {
   m_ValidTimePeriodIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -54,4 +54,4 @@ void BdtPolicyDataStoreApiImpl::read_bdt_policy_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

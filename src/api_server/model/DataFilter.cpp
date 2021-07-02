@@ -55,15 +55,22 @@ void DataFilter::validate() {
 void to_json(nlohmann::json &j, const DataFilter &o) {
   j = nlohmann::json();
   j["dataInd"] = o.m_DataInd;
-  if (o.dnnsIsSet() || !o.m_Dnns.empty()) j["dnns"] = o.m_Dnns;
-  if (o.snssaisIsSet() || !o.m_Snssais.empty()) j["snssais"] = o.m_Snssais;
+  if (o.dnnsIsSet() || !o.m_Dnns.empty())
+    j["dnns"] = o.m_Dnns;
+  if (o.snssaisIsSet() || !o.m_Snssais.empty())
+    j["snssais"] = o.m_Snssais;
   if (o.internalGroupIdsIsSet() || !o.m_InternalGroupIds.empty())
     j["internalGroupIds"] = o.m_InternalGroupIds;
-  if (o.supisIsSet() || !o.m_Supis.empty()) j["supis"] = o.m_Supis;
-  if (o.appIdsIsSet() || !o.m_AppIds.empty()) j["appIds"] = o.m_AppIds;
-  if (o.ueIpv4sIsSet() || !o.m_UeIpv4s.empty()) j["ueIpv4s"] = o.m_UeIpv4s;
-  if (o.ueIpv6sIsSet() || !o.m_UeIpv6s.empty()) j["ueIpv6s"] = o.m_UeIpv6s;
-  if (o.ueMacsIsSet() || !o.m_UeMacs.empty()) j["ueMacs"] = o.m_UeMacs;
+  if (o.supisIsSet() || !o.m_Supis.empty())
+    j["supis"] = o.m_Supis;
+  if (o.appIdsIsSet() || !o.m_AppIds.empty())
+    j["appIds"] = o.m_AppIds;
+  if (o.ueIpv4sIsSet() || !o.m_UeIpv4s.empty())
+    j["ueIpv4s"] = o.m_UeIpv4s;
+  if (o.ueIpv6sIsSet() || !o.m_UeIpv6s.empty())
+    j["ueIpv6s"] = o.m_UeIpv6s;
+  if (o.ueMacsIsSet() || !o.m_UeMacs.empty())
+    j["ueMacs"] = o.m_UeMacs;
 }
 
 void from_json(const nlohmann::json &j, DataFilter &o) {
@@ -165,4 +172,4 @@ void DataFilter::setUeMacs(std::vector<std::string> const &value) {
 bool DataFilter::ueMacsIsSet() const { return m_UeMacsIsSet; }
 void DataFilter::unsetUeMacs() { m_UeMacsIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

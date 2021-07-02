@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ProblemDetails {
- public:
+public:
   ProblemDetails();
   virtual ~ProblemDetails();
 
@@ -64,14 +64,14 @@ class ProblemDetails {
   ///
   /// </summary>
   std::string getType() const;
-  void setType(std::string const& value);
+  void setType(std::string const &value);
   bool typeIsSet() const;
   void unsetType();
   /// <summary>
   ///
   /// </summary>
   std::string getTitle() const;
-  void setTitle(std::string const& value);
+  void setTitle(std::string const &value);
   bool titleIsSet() const;
   void unsetTitle();
   /// <summary>
@@ -85,49 +85,49 @@ class ProblemDetails {
   ///
   /// </summary>
   std::string getDetail() const;
-  void setDetail(std::string const& value);
+  void setDetail(std::string const &value);
   bool detailIsSet() const;
   void unsetDetail();
   /// <summary>
   ///
   /// </summary>
   std::string getInstance() const;
-  void setInstance(std::string const& value);
+  void setInstance(std::string const &value);
   bool instanceIsSet() const;
   void unsetInstance();
   /// <summary>
   ///
   /// </summary>
   std::string getCause() const;
-  void setCause(std::string const& value);
+  void setCause(std::string const &value);
   bool causeIsSet() const;
   void unsetCause();
   /// <summary>
   ///
   /// </summary>
-  std::vector<InvalidParam>& getInvalidParams();
-  void setInvalidParams(std::vector<InvalidParam> const& value);
+  std::vector<InvalidParam> &getInvalidParams();
+  void setInvalidParams(std::vector<InvalidParam> const &value);
   bool invalidParamsIsSet() const;
   void unsetInvalidParams();
   /// <summary>
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const& value);
+  void setSupportedFeatures(std::string const &value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
   std::string getTargetScp() const;
-  void setTargetScp(std::string const& value);
+  void setTargetScp(std::string const &value);
   bool targetScpIsSet() const;
   void unsetTargetScp();
 
-  friend void to_json(nlohmann::json& j, const ProblemDetails& o);
-  friend void from_json(const nlohmann::json& j, ProblemDetails& o);
+  friend void to_json(nlohmann::json &j, const ProblemDetails &o);
+  friend void from_json(const nlohmann::json &j, ProblemDetails &o);
 
- protected:
+protected:
   std::string m_Type;
   bool m_TypeIsSet;
   std::string m_Title;
@@ -148,6 +148,6 @@ class ProblemDetails {
   bool m_TargetScpIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* ProblemDetails_H_ */

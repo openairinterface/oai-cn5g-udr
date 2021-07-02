@@ -49,7 +49,7 @@ namespace oai::udr::model {
 /// the UP path changes for the PDU session.
 /// </summary>
 class SubscribedEvent {
- public:
+public:
   SubscribedEvent();
   virtual ~SubscribedEvent();
 
@@ -58,12 +58,12 @@ class SubscribedEvent {
   /////////////////////////////////////////////
   /// SubscribedEvent members
 
-  friend void to_json(nlohmann::json& j, const SubscribedEvent& o);
-  friend void from_json(const nlohmann::json& j, SubscribedEvent& o);
+  friend void to_json(nlohmann::json &j, const SubscribedEvent &o);
+  friend void from_json(const nlohmann::json &j, SubscribedEvent &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* SubscribedEvent_H_ */

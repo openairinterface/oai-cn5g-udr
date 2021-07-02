@@ -63,17 +63,24 @@ void ProblemDetails_2::validate() {
 
 void to_json(nlohmann::json &j, const ProblemDetails_2 &o) {
   j = nlohmann::json();
-  if (o.typeIsSet()) j["type"] = o.m_Type;
-  if (o.titleIsSet()) j["title"] = o.m_Title;
-  if (o.statusIsSet()) j["status"] = o.m_Status;
-  if (o.detailIsSet()) j["detail"] = o.m_Detail;
-  if (o.instanceIsSet()) j["instance"] = o.m_Instance;
-  if (o.causeIsSet()) j["cause"] = o.m_Cause;
+  if (o.typeIsSet())
+    j["type"] = o.m_Type;
+  if (o.titleIsSet())
+    j["title"] = o.m_Title;
+  if (o.statusIsSet())
+    j["status"] = o.m_Status;
+  if (o.detailIsSet())
+    j["detail"] = o.m_Detail;
+  if (o.instanceIsSet())
+    j["instance"] = o.m_Instance;
+  if (o.causeIsSet())
+    j["cause"] = o.m_Cause;
   if (o.invalidParamsIsSet() || !o.m_InvalidParams.empty())
     j["invalidParams"] = o.m_InvalidParams;
   if (o.supportedFeaturesIsSet())
     j["supportedFeatures"] = o.m_SupportedFeatures;
-  if (o.targetScpIsSet()) j["targetScp"] = o.m_TargetScp;
+  if (o.targetScpIsSet())
+    j["targetScp"] = o.m_TargetScp;
 }
 
 void from_json(const nlohmann::json &j, ProblemDetails_2 &o) {
@@ -190,4 +197,4 @@ void ProblemDetails_2::setTargetScp(std::string const &value) {
 bool ProblemDetails_2::targetScpIsSet() const { return m_TargetScpIsSet; }
 void ProblemDetails_2::unsetTargetScp() { m_TargetScpIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

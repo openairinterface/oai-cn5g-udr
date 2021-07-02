@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class InterFreqTargetInfo {
- public:
+public:
   InterFreqTargetInfo();
   virtual ~InterFreqTargetInfo();
 
@@ -65,21 +65,21 @@ class InterFreqTargetInfo {
   /// <summary>
   ///
   /// </summary>
-  std::vector<int32_t>& getCellIdList();
+  std::vector<int32_t> &getCellIdList();
   void setCellIdList(std::vector<int32_t> const value);
   bool cellIdListIsSet() const;
   void unsetCellIdList();
 
-  friend void to_json(nlohmann::json& j, const InterFreqTargetInfo& o);
-  friend void from_json(const nlohmann::json& j, InterFreqTargetInfo& o);
+  friend void to_json(nlohmann::json &j, const InterFreqTargetInfo &o);
+  friend void from_json(const nlohmann::json &j, InterFreqTargetInfo &o);
 
- protected:
+protected:
   int32_t m_DlCarrierFreq;
 
   std::vector<int32_t> m_CellIdList;
   bool m_CellIdListIsSet;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* InterFreqTargetInfo_H_ */

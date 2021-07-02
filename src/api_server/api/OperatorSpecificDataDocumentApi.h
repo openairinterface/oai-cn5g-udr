@@ -58,19 +58,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class OperatorSpecificDataDocumentApi {
- public:
+public:
   OperatorSpecificDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~OperatorSpecificDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
-  void read_operator_specific_data_handler(
-      const Pistache::Rest::Request &request,
-      Pistache::Http::ResponseWriter response);
+  void
+  read_operator_specific_data_handler(const Pistache::Rest::Request &request,
+                                      Pistache::Http::ResponseWriter response);
   void replace_operator_specific_data_handler(
       const Pistache::Rest::Request &request,
       Pistache::Http::ResponseWriter response);
@@ -120,11 +120,12 @@ class OperatorSpecificDataDocumentApi {
   /// </remarks>
   /// <param name="ueId">UE Id</param>
   /// <param name="patchItem"></param>
-  virtual void update_operator_specific_data(
-      const std::string &ueId, const std::vector<PatchItem> &patchItem,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  update_operator_specific_data(const std::string &ueId,
+                                const std::vector<PatchItem> &patchItem,
+                                Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* OperatorSpecificDataDocumentApi_H_ */

@@ -53,11 +53,11 @@ using namespace oai::udr::app;
 
 class AccessAndMobilitySubscriptionDataDocumentApiImpl
     : public oai::udr::api::AccessAndMobilitySubscriptionDataDocumentApi {
- private:
+private:
   udr_app *m_udr_app;
   std::string m_address;
 
- public:
+public:
   AccessAndMobilitySubscriptionDataDocumentApiImpl(
       std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
       std::string address);
@@ -72,6 +72,6 @@ class AccessAndMobilitySubscriptionDataDocumentApiImpl
       Pistache::Http::ResponseWriter &response);
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif

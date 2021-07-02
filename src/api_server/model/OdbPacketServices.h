@@ -49,7 +49,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class OdbPacketServices {
- public:
+public:
   OdbPacketServices();
   virtual ~OdbPacketServices();
 
@@ -58,12 +58,12 @@ class OdbPacketServices {
   /////////////////////////////////////////////
   /// OdbPacketServices members
 
-  friend void to_json(nlohmann::json& j, const OdbPacketServices& o);
-  friend void from_json(const nlohmann::json& j, OdbPacketServices& o);
+  friend void to_json(nlohmann::json &j, const OdbPacketServices &o);
+  friend void from_json(const nlohmann::json &j, OdbPacketServices &o);
 
- protected:
+protected:
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* OdbPacketServices_H_ */

@@ -42,8 +42,7 @@ using namespace oai::udr::model;
 AmfSubscriptionInfoDocumentApiImpl::AmfSubscriptionInfoDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : AmfSubscriptionInfoDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : AmfSubscriptionInfoDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AmfSubscriptionInfoDocumentApiImpl::modify_amf_subscription_info(
@@ -55,4 +54,4 @@ void AmfSubscriptionInfoDocumentApiImpl::modify_amf_subscription_info(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

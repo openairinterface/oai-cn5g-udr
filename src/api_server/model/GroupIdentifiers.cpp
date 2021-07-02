@@ -51,9 +51,12 @@ void GroupIdentifiers::validate() {
 
 void to_json(nlohmann::json &j, const GroupIdentifiers &o) {
   j = nlohmann::json();
-  if (o.extGroupIdIsSet()) j["extGroupId"] = o.m_ExtGroupId;
-  if (o.intGroupIdIsSet()) j["intGroupId"] = o.m_IntGroupId;
-  if (o.ueIdListIsSet() || !o.m_UeIdList.empty()) j["ueIdList"] = o.m_UeIdList;
+  if (o.extGroupIdIsSet())
+    j["extGroupId"] = o.m_ExtGroupId;
+  if (o.intGroupIdIsSet())
+    j["intGroupId"] = o.m_IntGroupId;
+  if (o.ueIdListIsSet() || !o.m_UeIdList.empty())
+    j["ueIdList"] = o.m_UeIdList;
 }
 
 void from_json(const nlohmann::json &j, GroupIdentifiers &o) {
@@ -93,4 +96,4 @@ void GroupIdentifiers::setUeIdList(std::vector<UeId> const &value) {
 bool GroupIdentifiers::ueIdListIsSet() const { return m_UeIdListIsSet; }
 void GroupIdentifiers::unsetUeIdList() { m_UeIdListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -76,8 +76,10 @@ void MdtConfiguration::validate() {
 void to_json(nlohmann::json &j, const MdtConfiguration &o) {
   j = nlohmann::json();
   j["jobType"] = o.m_JobType;
-  if (o.reportTypeIsSet()) j["reportType"] = o.m_ReportType;
-  if (o.areaScopeIsSet()) j["areaScope"] = o.m_AreaScope;
+  if (o.reportTypeIsSet())
+    j["reportType"] = o.m_ReportType;
+  if (o.areaScopeIsSet())
+    j["areaScope"] = o.m_AreaScope;
   if (o.measurementLteListIsSet() || !o.m_MeasurementLteList.empty())
     j["measurementLteList"] = o.m_MeasurementLteList;
   if (o.measurementNrListIsSet() || !o.m_MeasurementNrList.empty())
@@ -86,9 +88,12 @@ void to_json(nlohmann::json &j, const MdtConfiguration &o) {
     j["sensorMeasurementList"] = o.m_SensorMeasurementList;
   if (o.reportingTriggerListIsSet() || !o.m_ReportingTriggerList.empty())
     j["reportingTriggerList"] = o.m_ReportingTriggerList;
-  if (o.reportIntervalIsSet()) j["reportInterval"] = o.m_ReportInterval;
-  if (o.reportIntervalNrIsSet()) j["reportIntervalNr"] = o.m_ReportIntervalNr;
-  if (o.reportAmountIsSet()) j["reportAmount"] = o.m_ReportAmount;
+  if (o.reportIntervalIsSet())
+    j["reportInterval"] = o.m_ReportInterval;
+  if (o.reportIntervalNrIsSet())
+    j["reportIntervalNr"] = o.m_ReportIntervalNr;
+  if (o.reportAmountIsSet())
+    j["reportAmount"] = o.m_ReportAmount;
   if (o.eventThresholdRsrpIsSet())
     j["eventThresholdRsrp"] = o.m_EventThresholdRsrp;
   if (o.eventThresholdRsrpNrIsSet())
@@ -99,10 +104,12 @@ void to_json(nlohmann::json &j, const MdtConfiguration &o) {
     j["eventThresholdRsrqNr"] = o.m_EventThresholdRsrqNr;
   if (o.eventListIsSet() || !o.m_EventList.empty())
     j["eventList"] = o.m_EventList;
-  if (o.loggingIntervalIsSet()) j["loggingInterval"] = o.m_LoggingInterval;
+  if (o.loggingIntervalIsSet())
+    j["loggingInterval"] = o.m_LoggingInterval;
   if (o.loggingIntervalNrIsSet())
     j["loggingIntervalNr"] = o.m_LoggingIntervalNr;
-  if (o.loggingDurationIsSet()) j["loggingDuration"] = o.m_LoggingDuration;
+  if (o.loggingDurationIsSet())
+    j["loggingDuration"] = o.m_LoggingDuration;
   if (o.loggingDurationNrIsSet())
     j["loggingDurationNr"] = o.m_LoggingDurationNr;
   if (o.positioningMethodIsSet())
@@ -538,4 +545,4 @@ void MdtConfiguration::unsetInterFreqTargetList() {
   m_InterFreqTargetListIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

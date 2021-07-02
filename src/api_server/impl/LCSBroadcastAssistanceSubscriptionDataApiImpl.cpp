@@ -44,8 +44,7 @@ LCSBroadcastAssistanceSubscriptionDataApiImpl::
     LCSBroadcastAssistanceSubscriptionDataApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : LCSBroadcastAssistanceSubscriptionDataApi(rtr),
-      m_udr_app(udr_app_inst),
+    : LCSBroadcastAssistanceSubscriptionDataApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void LCSBroadcastAssistanceSubscriptionDataApiImpl::query_lcs_bca_data(
@@ -58,4 +57,4 @@ void LCSBroadcastAssistanceSubscriptionDataApiImpl::query_lcs_bca_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

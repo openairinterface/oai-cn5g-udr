@@ -51,8 +51,10 @@ void TwapId::validate() {
 void to_json(nlohmann::json &j, const TwapId &o) {
   j = nlohmann::json();
   j["ssId"] = o.m_SsId;
-  if (o.bssIdIsSet()) j["bssId"] = o.m_BssId;
-  if (o.civicAddressIsSet()) j["civicAddress"] = o.m_CivicAddress;
+  if (o.bssIdIsSet())
+    j["bssId"] = o.m_BssId;
+  if (o.civicAddressIsSet())
+    j["civicAddress"] = o.m_CivicAddress;
 }
 
 void from_json(const nlohmann::json &j, TwapId &o) {
@@ -84,4 +86,4 @@ void TwapId::setCivicAddress(std::string const &value) {
 bool TwapId::civicAddressIsSet() const { return m_CivicAddressIsSet; }
 void TwapId::unsetCivicAddress() { m_CivicAddressIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

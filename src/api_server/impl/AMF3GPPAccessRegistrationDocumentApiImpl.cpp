@@ -43,8 +43,7 @@ AMF3GPPAccessRegistrationDocumentApiImpl::
     AMF3GPPAccessRegistrationDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : AMF3GPPAccessRegistrationDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : AMF3GPPAccessRegistrationDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AMF3GPPAccessRegistrationDocumentApiImpl::amf_context3gpp(
@@ -85,4 +84,4 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
   response.send(code, response_data.dump().c_str());
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

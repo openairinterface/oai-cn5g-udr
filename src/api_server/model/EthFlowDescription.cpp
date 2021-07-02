@@ -59,14 +59,21 @@ void EthFlowDescription::validate() {
 
 void to_json(nlohmann::json &j, const EthFlowDescription &o) {
   j = nlohmann::json();
-  if (o.destMacAddrIsSet()) j["destMacAddr"] = o.m_DestMacAddr;
+  if (o.destMacAddrIsSet())
+    j["destMacAddr"] = o.m_DestMacAddr;
   j["ethType"] = o.m_EthType;
-  if (o.fDescIsSet()) j["fDesc"] = o.m_FDesc;
-  if (o.fDirIsSet()) j["fDir"] = o.m_FDir;
-  if (o.sourceMacAddrIsSet()) j["sourceMacAddr"] = o.m_SourceMacAddr;
-  if (o.vlanTagsIsSet() || !o.m_VlanTags.empty()) j["vlanTags"] = o.m_VlanTags;
-  if (o.srcMacAddrEndIsSet()) j["srcMacAddrEnd"] = o.m_SrcMacAddrEnd;
-  if (o.destMacAddrEndIsSet()) j["destMacAddrEnd"] = o.m_DestMacAddrEnd;
+  if (o.fDescIsSet())
+    j["fDesc"] = o.m_FDesc;
+  if (o.fDirIsSet())
+    j["fDir"] = o.m_FDir;
+  if (o.sourceMacAddrIsSet())
+    j["sourceMacAddr"] = o.m_SourceMacAddr;
+  if (o.vlanTagsIsSet() || !o.m_VlanTags.empty())
+    j["vlanTags"] = o.m_VlanTags;
+  if (o.srcMacAddrEndIsSet())
+    j["srcMacAddrEnd"] = o.m_SrcMacAddrEnd;
+  if (o.destMacAddrEndIsSet())
+    j["destMacAddrEnd"] = o.m_DestMacAddrEnd;
 }
 
 void from_json(const nlohmann::json &j, EthFlowDescription &o) {
@@ -171,4 +178,4 @@ void EthFlowDescription::unsetDestMacAddrEnd() {
   m_DestMacAddrEndIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

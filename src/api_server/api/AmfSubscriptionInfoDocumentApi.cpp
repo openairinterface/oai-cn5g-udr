@@ -52,9 +52,8 @@ void AmfSubscriptionInfoDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base +
-          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId/"
-          "amf-subscriptions",
+      base + "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId/"
+             "amf-subscriptions",
       Routes::bind(
           &AmfSubscriptionInfoDocumentApi::modify_amf_subscription_info_handler,
           this));
@@ -112,4 +111,4 @@ void AmfSubscriptionInfoDocumentApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

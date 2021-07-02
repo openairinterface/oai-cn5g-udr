@@ -92,4 +92,4 @@ void UeContextInSmsfData::unsetSmsfInfoNon3GppAccess() {
   m_SmsfInfoNon3GppAccessIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

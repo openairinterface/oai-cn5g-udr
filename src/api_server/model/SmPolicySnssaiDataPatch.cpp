@@ -64,8 +64,8 @@ Snssai SmPolicySnssaiDataPatch::getSnssai() const { return m_Snssai; }
 void SmPolicySnssaiDataPatch::setSnssai(Snssai const &value) {
   m_Snssai = value;
 }
-std::map<std::string, SmPolicyDnnDataPatch>
-    &SmPolicySnssaiDataPatch::getSmPolicyDnnData() {
+std::map<std::string, SmPolicyDnnDataPatch> &
+SmPolicySnssaiDataPatch::getSmPolicyDnnData() {
   return m_SmPolicyDnnData;
 }
 void SmPolicySnssaiDataPatch::setSmPolicyDnnData(
@@ -80,4 +80,4 @@ void SmPolicySnssaiDataPatch::unsetSmPolicyDnnData() {
   m_SmPolicyDnnDataIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

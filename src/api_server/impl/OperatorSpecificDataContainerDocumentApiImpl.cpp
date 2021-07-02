@@ -44,8 +44,7 @@ OperatorSpecificDataContainerDocumentApiImpl::
     OperatorSpecificDataContainerDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : OperatorSpecificDataContainerDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : OperatorSpecificDataContainerDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void OperatorSpecificDataContainerDocumentApiImpl::modify_oper_spec_data(
@@ -66,4 +65,4 @@ void OperatorSpecificDataContainerDocumentApiImpl::query_oper_spec_data(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -43,8 +43,7 @@ using namespace oai::udr::model;
 Class5GVNGroupsInternalDocumentApiImpl::Class5GVNGroupsInternalDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
     std::string address)
-    : Class5GVNGroupsInternalDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : Class5GVNGroupsInternalDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void Class5GVNGroupsInternalDocumentApiImpl::query5_g_vn_group_internal(
@@ -54,4 +53,4 @@ void Class5GVNGroupsInternalDocumentApiImpl::query5_g_vn_group_internal(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

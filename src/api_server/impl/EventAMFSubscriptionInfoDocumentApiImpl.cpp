@@ -42,8 +42,7 @@ EventAMFSubscriptionInfoDocumentApiImpl::
     EventAMFSubscriptionInfoDocumentApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : EventAMFSubscriptionInfoDocumentApi(rtr),
-      m_udr_app(udr_app_inst),
+    : EventAMFSubscriptionInfoDocumentApi(rtr), m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void EventAMFSubscriptionInfoDocumentApiImpl::remove_amf_subscriptions_info(
@@ -53,4 +52,4 @@ void EventAMFSubscriptionInfoDocumentApiImpl::remove_amf_subscriptions_info(
                 "This API has not been implemented yet!\n");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

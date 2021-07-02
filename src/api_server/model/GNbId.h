@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class GNbId {
- public:
+public:
   GNbId();
   virtual ~GNbId();
 
@@ -66,17 +66,17 @@ class GNbId {
   ///
   /// </summary>
   std::string getGNBValue() const;
-  void setGNBValue(std::string const& value);
+  void setGNBValue(std::string const &value);
 
-  friend void to_json(nlohmann::json& j, const GNbId& o);
-  friend void from_json(const nlohmann::json& j, GNbId& o);
+  friend void to_json(nlohmann::json &j, const GNbId &o);
+  friend void from_json(const nlohmann::json &j, GNbId &o);
 
- protected:
+protected:
   int32_t m_BitLength;
 
   std::string m_GNBValue;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* GNbId_H_ */

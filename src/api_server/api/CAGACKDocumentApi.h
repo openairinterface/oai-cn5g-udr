@@ -53,21 +53,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class CAGACKDocumentApi {
- public:
+public:
   CAGACKDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~CAGACKDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void query_cag_ack_handler(const Pistache::Rest::Request &request,
                              Pistache::Http::ResponseWriter response);
-  void cagack_document_api_default_handler(
-      const Pistache::Rest::Request &request,
-      Pistache::Http::ResponseWriter response);
+  void
+  cagack_document_api_default_handler(const Pistache::Rest::Request &request,
+                                      Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
 
@@ -80,12 +80,12 @@ class CAGACKDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
-  virtual void query_cag_ack(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  query_cag_ack(const std::string &ueId,
+                const Pistache::Optional<std::string> &supportedFeatures,
+                Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* CAGACKDocumentApi_H_ */

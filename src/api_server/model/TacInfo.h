@@ -49,7 +49,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class TacInfo {
- public:
+public:
   TacInfo();
   virtual ~TacInfo();
 
@@ -61,16 +61,16 @@ class TacInfo {
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string>& getTacList();
-  void setTacList(std::vector<std::string> const& value);
+  std::vector<std::string> &getTacList();
+  void setTacList(std::vector<std::string> const &value);
 
-  friend void to_json(nlohmann::json& j, const TacInfo& o);
-  friend void from_json(const nlohmann::json& j, TacInfo& o);
+  friend void to_json(nlohmann::json &j, const TacInfo &o);
+  friend void from_json(const nlohmann::json &j, TacInfo &o);
 
- protected:
+protected:
   std::vector<std::string> m_TacList;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* TacInfo_H_ */

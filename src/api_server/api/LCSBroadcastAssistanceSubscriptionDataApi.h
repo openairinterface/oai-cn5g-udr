@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class LCSBroadcastAssistanceSubscriptionDataApi {
- public:
+public:
   LCSBroadcastAssistanceSubscriptionDataApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~LCSBroadcastAssistanceSubscriptionDataApi() {}
@@ -62,7 +62,7 @@ class LCSBroadcastAssistanceSubscriptionDataApi {
 
   const std::string base = "/nudr-dr/v2";
 
- private:
+private:
   void setupRoutes();
 
   void query_lcs_bca_data_handler(const Pistache::Rest::Request &request,
@@ -95,6 +95,6 @@ class LCSBroadcastAssistanceSubscriptionDataApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* LCSBroadcastAssistanceSubscriptionDataApi_H_ */

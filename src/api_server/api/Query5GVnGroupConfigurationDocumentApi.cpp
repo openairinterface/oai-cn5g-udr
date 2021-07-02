@@ -50,12 +50,12 @@ void Query5GVnGroupConfigurationDocumentApi::init() { setupRoutes(); }
 void Query5GVnGroupConfigurationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(
-      *router,
-      base + "/subscription-data/group-data/5g-vn-groups/:externalGroupId",
-      Routes::bind(&Query5GVnGroupConfigurationDocumentApi::
-                       get5_g_vn_group_configuration_handler,
-                   this));
+  Routes::Get(*router,
+              base +
+                  "/subscription-data/group-data/5g-vn-groups/:externalGroupId",
+              Routes::bind(&Query5GVnGroupConfigurationDocumentApi::
+                               get5_g_vn_group_configuration_handler,
+                           this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -95,4 +95,4 @@ void Query5GVnGroupConfigurationDocumentApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

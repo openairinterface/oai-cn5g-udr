@@ -63,4 +63,4 @@ void NotifyItem::setChanges(std::vector<ChangeItem> const &value) {
   m_Changes = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

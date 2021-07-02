@@ -89,8 +89,8 @@ bool UnrelatedClass::externalUnrelatedClassIsSet() const {
 void UnrelatedClass::unsetExternalUnrelatedClass() {
   m_ExternalUnrelatedClassIsSet = false;
 }
-std::vector<ServiceTypeUnrelatedClass>
-    &UnrelatedClass::getServiceTypeUnrelatedClasses() {
+std::vector<ServiceTypeUnrelatedClass> &
+UnrelatedClass::getServiceTypeUnrelatedClasses() {
   return m_ServiceTypeUnrelatedClasses;
 }
 void UnrelatedClass::setServiceTypeUnrelatedClasses(
@@ -105,4 +105,4 @@ void UnrelatedClass::unsetServiceTypeUnrelatedClasses() {
   m_ServiceTypeUnrelatedClassesIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

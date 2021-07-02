@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ReportItem {
- public:
+public:
   ReportItem();
   virtual ~ReportItem();
 
@@ -61,15 +61,15 @@ class ReportItem {
   ///
   /// </summary>
   std::string getPath() const;
-  void setPath(std::string const& value);
+  void setPath(std::string const &value);
 
-  friend void to_json(nlohmann::json& j, const ReportItem& o);
-  friend void from_json(const nlohmann::json& j, ReportItem& o);
+  friend void to_json(nlohmann::json &j, const ReportItem &o);
+  friend void from_json(const nlohmann::json &j, ReportItem &o);
 
- protected:
+protected:
   std::string m_Path;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* ReportItem_H_ */

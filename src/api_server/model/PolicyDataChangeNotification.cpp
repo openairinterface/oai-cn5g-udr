@@ -68,25 +68,38 @@ void PolicyDataChangeNotification::validate() {
 
 void to_json(nlohmann::json &j, const PolicyDataChangeNotification &o) {
   j = nlohmann::json();
-  if (o.amPolicyDataIsSet()) j["amPolicyData"] = o.m_AmPolicyData;
-  if (o.uePolicySetIsSet()) j["uePolicySet"] = o.m_UePolicySet;
-  if (o.plmnUePolicySetIsSet()) j["plmnUePolicySet"] = o.m_PlmnUePolicySet;
-  if (o.smPolicyDataIsSet()) j["smPolicyData"] = o.m_SmPolicyData;
-  if (o.usageMonDataIsSet()) j["usageMonData"] = o.m_UsageMonData;
+  if (o.amPolicyDataIsSet())
+    j["amPolicyData"] = o.m_AmPolicyData;
+  if (o.uePolicySetIsSet())
+    j["uePolicySet"] = o.m_UePolicySet;
+  if (o.plmnUePolicySetIsSet())
+    j["plmnUePolicySet"] = o.m_PlmnUePolicySet;
+  if (o.smPolicyDataIsSet())
+    j["smPolicyData"] = o.m_SmPolicyData;
+  if (o.usageMonDataIsSet())
+    j["usageMonData"] = o.m_UsageMonData;
   if (o.sponsorConnectivityDataIsSet())
     j["SponsorConnectivityData"] = o.m_SponsorConnectivityData;
-  if (o.bdtDataIsSet()) j["bdtData"] = o.m_BdtData;
-  if (o.opSpecDataIsSet()) j["opSpecData"] = o.m_OpSpecData;
+  if (o.bdtDataIsSet())
+    j["bdtData"] = o.m_BdtData;
+  if (o.opSpecDataIsSet())
+    j["opSpecData"] = o.m_OpSpecData;
   if (o.opSpecDataMapIsSet() || !o.m_OpSpecDataMap.empty())
     j["opSpecDataMap"] = o.m_OpSpecDataMap;
-  if (o.ueIdIsSet()) j["ueId"] = o.m_UeId;
-  if (o.sponsorIdIsSet()) j["sponsorId"] = o.m_SponsorId;
-  if (o.bdtRefIdIsSet()) j["bdtRefId"] = o.m_BdtRefId;
-  if (o.usageMonIdIsSet()) j["usageMonId"] = o.m_UsageMonId;
-  if (o.plmnIdIsSet()) j["plmnId"] = o.m_PlmnId;
+  if (o.ueIdIsSet())
+    j["ueId"] = o.m_UeId;
+  if (o.sponsorIdIsSet())
+    j["sponsorId"] = o.m_SponsorId;
+  if (o.bdtRefIdIsSet())
+    j["bdtRefId"] = o.m_BdtRefId;
+  if (o.usageMonIdIsSet())
+    j["usageMonId"] = o.m_UsageMonId;
+  if (o.plmnIdIsSet())
+    j["plmnId"] = o.m_PlmnId;
   if (o.delResourcesIsSet() || !o.m_DelResources.empty())
     j["delResources"] = o.m_DelResources;
-  if (o.notifIdIsSet()) j["notifId"] = o.m_NotifId;
+  if (o.notifIdIsSet())
+    j["notifId"] = o.m_NotifId;
   if (o.reportedFragmentsIsSet() || !o.m_ReportedFragments.empty())
     j["reportedFragments"] = o.m_ReportedFragments;
 }
@@ -252,8 +265,8 @@ bool PolicyDataChangeNotification::bdtDataIsSet() const {
   return m_BdtDataIsSet;
 }
 void PolicyDataChangeNotification::unsetBdtData() { m_BdtDataIsSet = false; }
-OperatorSpecificDataContainer PolicyDataChangeNotification::getOpSpecData()
-    const {
+OperatorSpecificDataContainer
+PolicyDataChangeNotification::getOpSpecData() const {
   return m_OpSpecData;
 }
 void PolicyDataChangeNotification::setOpSpecData(
@@ -267,8 +280,8 @@ bool PolicyDataChangeNotification::opSpecDataIsSet() const {
 void PolicyDataChangeNotification::unsetOpSpecData() {
   m_OpSpecDataIsSet = false;
 }
-std::map<std::string, OperatorSpecificDataContainer>
-    &PolicyDataChangeNotification::getOpSpecDataMap() {
+std::map<std::string, OperatorSpecificDataContainer> &
+PolicyDataChangeNotification::getOpSpecDataMap() {
   return m_OpSpecDataMap;
 }
 void PolicyDataChangeNotification::setOpSpecDataMap(
@@ -358,8 +371,8 @@ bool PolicyDataChangeNotification::notifIdIsSet() const {
   return m_NotifIdIsSet;
 }
 void PolicyDataChangeNotification::unsetNotifId() { m_NotifIdIsSet = false; }
-std::vector<NotificationItem>
-    &PolicyDataChangeNotification::getReportedFragments() {
+std::vector<NotificationItem> &
+PolicyDataChangeNotification::getReportedFragments() {
   return m_ReportedFragments;
 }
 void PolicyDataChangeNotification::setReportedFragments(
@@ -374,4 +387,4 @@ void PolicyDataChangeNotification::unsetReportedFragments() {
   m_ReportedFragmentsIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

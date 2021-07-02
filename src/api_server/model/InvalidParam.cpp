@@ -50,7 +50,8 @@ void InvalidParam::validate() {
 void to_json(nlohmann::json &j, const InvalidParam &o) {
   j = nlohmann::json();
   j["param"] = o.m_Param;
-  if (o.reasonIsSet()) j["reason"] = o.m_Reason;
+  if (o.reasonIsSet())
+    j["reason"] = o.m_Reason;
 }
 
 void from_json(const nlohmann::json &j, InvalidParam &o) {
@@ -71,4 +72,4 @@ void InvalidParam::setReason(std::string const &value) {
 bool InvalidParam::reasonIsSet() const { return m_ReasonIsSet; }
 void InvalidParam::unsetReason() { m_ReasonIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

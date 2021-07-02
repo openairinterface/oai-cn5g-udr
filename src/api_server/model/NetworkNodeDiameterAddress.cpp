@@ -66,4 +66,4 @@ void NetworkNodeDiameterAddress::setRealm(std::string const &value) {
   m_Realm = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

@@ -60,7 +60,8 @@ void to_json(nlohmann::json &j, const EutraLocation &o) {
   j = nlohmann::json();
   j["tai"] = o.m_Tai;
   j["ecgi"] = o.m_Ecgi;
-  if (o.ignoreEcgiIsSet()) j["ignoreEcgi"] = o.m_IgnoreEcgi;
+  if (o.ignoreEcgiIsSet())
+    j["ignoreEcgi"] = o.m_IgnoreEcgi;
   if (o.ageOfLocationInformationIsSet())
     j["ageOfLocationInformation"] = o.m_AgeOfLocationInformation;
   if (o.ueLocationTimestampIsSet())
@@ -69,8 +70,10 @@ void to_json(nlohmann::json &j, const EutraLocation &o) {
     j["geographicalInformation"] = o.m_GeographicalInformation;
   if (o.geodeticInformationIsSet())
     j["geodeticInformation"] = o.m_GeodeticInformation;
-  if (o.globalNgenbIdIsSet()) j["globalNgenbId"] = o.m_GlobalNgenbId;
-  if (o.globalENbIdIsSet()) j["globalENbId"] = o.m_GlobalENbId;
+  if (o.globalNgenbIdIsSet())
+    j["globalNgenbId"] = o.m_GlobalNgenbId;
+  if (o.globalENbIdIsSet())
+    j["globalENbId"] = o.m_GlobalENbId;
 }
 
 void from_json(const nlohmann::json &j, EutraLocation &o) {
@@ -186,4 +189,4 @@ void EutraLocation::setGlobalENbId(GlobalRanNodeId const &value) {
 bool EutraLocation::globalENbIdIsSet() const { return m_GlobalENbIdIsSet; }
 void EutraLocation::unsetGlobalENbId() { m_GlobalENbIdIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

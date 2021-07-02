@@ -56,10 +56,14 @@ void _5GVnGroupConfiguration::validate() {
 
 void to_json(nlohmann::json &j, const _5GVnGroupConfiguration &o) {
   j = nlohmann::json();
-  if (o.r5gVnGroupDataIsSet()) j["5gVnGroupData"] = o.m_r_5gVnGroupData;
-  if (o.membersIsSet() || !o.m_Members.empty()) j["members"] = o.m_Members;
-  if (o.referenceIdIsSet()) j["referenceId"] = o.m_ReferenceId;
-  if (o.afInstanceIdIsSet()) j["afInstanceId"] = o.m_AfInstanceId;
+  if (o.r5gVnGroupDataIsSet())
+    j["5gVnGroupData"] = o.m_r_5gVnGroupData;
+  if (o.membersIsSet() || !o.m_Members.empty())
+    j["members"] = o.m_Members;
+  if (o.referenceIdIsSet())
+    j["referenceId"] = o.m_ReferenceId;
+  if (o.afInstanceIdIsSet())
+    j["afInstanceId"] = o.m_AfInstanceId;
   if (o.internalGroupIdentifierIsSet())
     j["internalGroupIdentifier"] = o.m_InternalGroupIdentifier;
   if (o.mtcProviderInformationIsSet())
@@ -169,4 +173,4 @@ void _5GVnGroupConfiguration::unsetMtcProviderInformation() {
   m_MtcProviderInformationIsSet = false;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

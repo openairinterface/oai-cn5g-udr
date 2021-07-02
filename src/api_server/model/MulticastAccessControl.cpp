@@ -52,10 +52,14 @@ void MulticastAccessControl::validate() {
 
 void to_json(nlohmann::json &j, const MulticastAccessControl &o) {
   j = nlohmann::json();
-  if (o.srcIpv4AddrIsSet()) j["srcIpv4Addr"] = o.m_SrcIpv4Addr;
-  if (o.srcIpv6AddrIsSet()) j["srcIpv6Addr"] = o.m_SrcIpv6Addr;
-  if (o.multicastV4AddrIsSet()) j["multicastV4Addr"] = o.m_MulticastV4Addr;
-  if (o.multicastV6AddrIsSet()) j["multicastV6Addr"] = o.m_MulticastV6Addr;
+  if (o.srcIpv4AddrIsSet())
+    j["srcIpv4Addr"] = o.m_SrcIpv4Addr;
+  if (o.srcIpv6AddrIsSet())
+    j["srcIpv6Addr"] = o.m_SrcIpv6Addr;
+  if (o.multicastV4AddrIsSet())
+    j["multicastV4Addr"] = o.m_MulticastV4Addr;
+  if (o.multicastV6AddrIsSet())
+    j["multicastV6Addr"] = o.m_MulticastV6Addr;
   j["accStatus"] = o.m_AccStatus;
 }
 
@@ -134,4 +138,4 @@ void MulticastAccessControl::setAccStatus(AccessRightStatus const &value) {
   m_AccStatus = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

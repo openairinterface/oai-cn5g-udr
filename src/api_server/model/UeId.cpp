@@ -49,7 +49,8 @@ void UeId::validate() {
 void to_json(nlohmann::json &j, const UeId &o) {
   j = nlohmann::json();
   j["supi"] = o.m_Supi;
-  if (o.gpsiListIsSet() || !o.m_GpsiList.empty()) j["gpsiList"] = o.m_GpsiList;
+  if (o.gpsiListIsSet() || !o.m_GpsiList.empty())
+    j["gpsiList"] = o.m_GpsiList;
 }
 
 void from_json(const nlohmann::json &j, UeId &o) {
@@ -70,4 +71,4 @@ void UeId::setGpsiList(std::vector<std::string> const &value) {
 bool UeId::gpsiListIsSet() const { return m_GpsiListIsSet; }
 void UeId::unsetGpsiList() { m_GpsiListIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

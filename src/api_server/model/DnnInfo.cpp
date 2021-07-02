@@ -64,11 +64,16 @@ void to_json(nlohmann::json &j, const DnnInfo &o) {
     j["defaultDnnIndicator"] = o.m_DefaultDnnIndicator;
   if (o.lboRoamingAllowedIsSet())
     j["lboRoamingAllowed"] = o.m_LboRoamingAllowed;
-  if (o.iwkEpsIndIsSet()) j["iwkEpsInd"] = o.m_IwkEpsInd;
-  if (o.dnnBarredIsSet()) j["dnnBarred"] = o.m_DnnBarred;
-  if (o.invokeNefIndIsSet()) j["invokeNefInd"] = o.m_InvokeNefInd;
-  if (o.smfListIsSet() || !o.m_SmfList.empty()) j["smfList"] = o.m_SmfList;
-  if (o.sameSmfIndIsSet()) j["sameSmfInd"] = o.m_SameSmfInd;
+  if (o.iwkEpsIndIsSet())
+    j["iwkEpsInd"] = o.m_IwkEpsInd;
+  if (o.dnnBarredIsSet())
+    j["dnnBarred"] = o.m_DnnBarred;
+  if (o.invokeNefIndIsSet())
+    j["invokeNefInd"] = o.m_InvokeNefInd;
+  if (o.smfListIsSet() || !o.m_SmfList.empty())
+    j["smfList"] = o.m_SmfList;
+  if (o.sameSmfIndIsSet())
+    j["sameSmfInd"] = o.m_SameSmfInd;
 }
 
 void from_json(const nlohmann::json &j, DnnInfo &o) {
@@ -165,4 +170,4 @@ void DnnInfo::setSameSmfInd(bool const value) {
 bool DnnInfo::sameSmfIndIsSet() const { return m_SameSmfIndIsSet; }
 void DnnInfo::unsetSameSmfInd() { m_SameSmfIndIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

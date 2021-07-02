@@ -53,8 +53,10 @@ void to_json(nlohmann::json &j, const SmPolicyData &o) {
   j["smPolicySnssaiData"] = o.m_SmPolicySnssaiData;
   if (o.umDataLimitsIsSet() || !o.m_UmDataLimits.empty())
     j["umDataLimits"] = o.m_UmDataLimits;
-  if (o.umDataIsSet() || !o.m_UmData.empty()) j["umData"] = o.m_UmData;
-  if (o.suppFeatIsSet()) j["suppFeat"] = o.m_SuppFeat;
+  if (o.umDataIsSet() || !o.m_UmData.empty())
+    j["umData"] = o.m_UmData;
+  if (o.suppFeatIsSet())
+    j["suppFeat"] = o.m_SuppFeat;
 }
 
 void from_json(const nlohmann::json &j, SmPolicyData &o) {
@@ -73,8 +75,8 @@ void from_json(const nlohmann::json &j, SmPolicyData &o) {
   }
 }
 
-std::map<std::string, SmPolicySnssaiData>
-    &SmPolicyData::getSmPolicySnssaiData() {
+std::map<std::string, SmPolicySnssaiData> &
+SmPolicyData::getSmPolicySnssaiData() {
   return m_SmPolicySnssaiData;
 }
 void SmPolicyData::setSmPolicySnssaiData(
@@ -108,4 +110,4 @@ void SmPolicyData::setSuppFeat(std::string const &value) {
 bool SmPolicyData::suppFeatIsSet() const { return m_SuppFeatIsSet; }
 void SmPolicyData::unsetSuppFeat() { m_SuppFeatIsSet = false; }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

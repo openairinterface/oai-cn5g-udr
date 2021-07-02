@@ -61,4 +61,4 @@ void EdrxParameters::setEdrxValue(std::string const &value) {
   m_EdrxValue = value;
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
