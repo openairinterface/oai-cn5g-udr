@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-CONFIG_DIR="/openair-udm/etc"
+CONFIG_DIR="/openair-udr/etc"
 UDR_INTERFACE_PORT_FOR_NUDR=${UDR_INTERFACE_PORT_FOR_NUDR:-80}
 
 for c in ${CONFIG_DIR}/*.conf; do
