@@ -50,6 +50,10 @@ RUN /bin/bash -c "if [[ -v NEEDED_GIT_PROXY ]]; then git config --global http.pr
 WORKDIR /openair-udr
 COPY . /openair-udr
 
+# wait for it
+WORKDIR /
+RUN git clone https://github.com/vishnubob/wait-for-it.git
+
 # Installing and Building UDR
 WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --install-deps --force
@@ -85,6 +89,7 @@ RUN apt-get update && \
 WORKDIR /openair-udr/bin
 COPY --from=oai-udr-builder /openair-udr/build/udr/build/udr oai_udr
 COPY --from=oai-udr-builder /openair-udr/scripts/entrypoint.sh .
+COPY --from=oai-udr-builder /wait-for-it/wait-for-it.sh .
 
 COPY --from=oai-udr-builder /usr/local/lib/libpistache.so /usr/local/lib/
 RUN ldconfig
