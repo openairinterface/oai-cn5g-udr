@@ -27,4 +27,9 @@ for c in ${CONFIG_DIR}/*.conf; do
     sed -i "${EXPRESSIONS}" ${c}
 done
 
+# check the mysql is ready
+pushd /openair-udr/bin
+./wait-for-it.sh ${MYSQL_IPV4_ADDRESS}:3306 -t 60
+popd
+
 exec "$@"
