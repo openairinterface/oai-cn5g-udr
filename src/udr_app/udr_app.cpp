@@ -696,13 +696,18 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
                                                   const AuthEvent &authEvent,
                                                   nlohmann::json &response_data,
                                                   Pistache::Http::Code &code) {
-  MYSQL_RES *res = NULL;
+  Logger::udr_server().info("Handle Create Authentication Status");
+
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
 
   const std::string select_AuthenticationStatus =
       "select * from AuthenticationStatus WHERE ueid='" + ue_id + "'";
   std::string query = {};
   nlohmann::json j = {};
+
+  Logger::udr_server().info("MySQL query: %s",
+                            select_AuthenticationStatus.c_str());
 
   if (mysql_real_query(&mysql, select_AuthenticationStatus.c_str(),
                        (unsigned long)select_AuthenticationStatus.size())) {
@@ -746,6 +751,8 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
     //        query += ",authType='"+j.dump()+"'";
   }
 
+  Logger::udr_server().info("MySQL query: %s", query.c_str());
+
   mysql_free_result(res);
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql create failure！SQL(%s)", query.c_str());
@@ -756,8 +763,8 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
   code = Pistache::Http::Code::No_Content;
 
   to_json(j, authEvent);
-  Logger::udr_server().debug("AuthenticationStatus PUT - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().info("AuthenticationStatus PUT - json:\n\"%s\"",
+                            j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -782,7 +789,8 @@ void udr_app::handle_delete_authentication_status(const std::string &ue_id,
 void udr_app::handle_query_authentication_status(const std::string &ue_id,
                                                  nlohmann::json &response_data,
                                                  Pistache::Http::Code &code) {
-  MYSQL_RES *res = NULL;
+  Logger::udr_server().info("Handle Query Authentication Status");
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
   nlohmann::json j = {};
@@ -790,6 +798,7 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
   const std::string query =
       "select * from AuthenticationStatus WHERE ueid='" + ue_id + "'";
 
+  Logger::udr_server().info("MySQL query: %s", query.c_str());
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
@@ -832,8 +841,8 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    Logger::udr_server().debug("AuthenticationStatus GET - json:\n\"%s\"",
-                               j.dump().c_str());
+    Logger::udr_server().info("AuthenticationStatus GET - json:\n\"%s\"",
+                              j.dump().c_str());
   } else {
     Logger::udr_server().error("AuthenticationStatus no data！SQL(%s)",
                                query.c_str());
@@ -846,11 +855,16 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
 void udr_app::handle_modify_authentication_subscription(
     const std::string &ue_id, const std::vector<PatchItem> &patchItem,
     nlohmann::json &response_data, Pistache::Http::Code &code) {
-  MYSQL_RES *res = NULL;
+  Logger::udr_server().info("Handle Update Authentication Subscription");
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
 
   const std::string select_Authenticationsubscription =
       "select * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
+
+  Logger::udr_server().info("MySQL Query (%s)",
+                            select_Authenticationsubscription.c_str());
+
   std::string query = {};
   nlohmann::json j = {};
   nlohmann::json tmp_j = {};
@@ -890,10 +904,11 @@ void udr_app::handle_modify_authentication_subscription(
             select_Authenticationsubscription.c_str());
       }
 
+      Logger::udr_server().info("MySQL Update cmd (%s)", query.c_str());
       mysql_free_result(res);
 
       if (mysql_real_query(&mysql, query.c_str(),
-                           (unsigned long)query.size())) {
+                           (unsigned long)query.size()) != 0) {
         Logger::udr_server().error("update mysql failure！SQL(%s)",
                                    query.c_str());
         return;
@@ -904,8 +919,8 @@ void udr_app::handle_modify_authentication_subscription(
     j += tmp_j;
   }
 
-  Logger::udr_server().debug("AuthenticationSubscription PATCH - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().info("AuthenticationSubscription PATCH - json:\n\"%s\"",
+                            j.dump().c_str());
 
   response_data = {};
   code = Pistache::Http::Code::No_Content;
@@ -915,14 +930,16 @@ void udr_app::handle_modify_authentication_subscription(
 void udr_app::handle_read_authentication_subscription(
     const std::string &ue_id, nlohmann::json &response_data,
     Pistache::Http::Code &code) {
-  MYSQL_RES *res = NULL;
+  Logger::udr_server().info("Handle Read Authentication Subscription");
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
   nlohmann::json j = {};
 
-  AuthenticationSubscription authenticationsubscription;
+  AuthenticationSubscription authenticationsubscription = {};
   const std::string query =
       "select * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
+  Logger::udr_server().info("MySQL Query (%s)", query.c_str());
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
@@ -990,8 +1007,8 @@ void udr_app::handle_read_authentication_subscription(
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    Logger::udr_server().debug("AuthenticationSubscription GET - json:\n\"%s\"",
-                               j.dump().c_str());
+    Logger::udr_server().info("AuthenticationSubscription GET - json:\n\"%s\"",
+                              j.dump().c_str());
   } else {
     Logger::udr_server().error("AuthenticationSubscription no data！SQL(%s)",
                                query.c_str());
