@@ -29,7 +29,7 @@ done
 
 # check the mysql is ready
 pushd /openair-udr/bin
-./wait-for-it.sh ${MYSQL_IPV4_ADDRESS}:3306 -t 60
+./wait-for-it.sh ${MYSQL_IPV4_ADDRESS}:3306 -t 120
 popd
 
 exec "$@"
