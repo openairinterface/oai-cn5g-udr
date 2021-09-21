@@ -49,7 +49,7 @@ namespace udr {
 namespace app {
 
 class udr_app {
-public:
+ public:
   explicit udr_app(const std::string &config_file);
   udr_app(udr_app const &) = delete;
   void operator=(udr_app const &) = delete;
@@ -240,7 +240,9 @@ public:
   void handle_query_sm_data(const std::string &ue_id,
                             const std::string &serving_plmn_id,
                             nlohmann::json &response_data,
-                            Pistache::Http::Code &code);
+                            Pistache::Http::Code &code,
+                            oai::udr::model::Snssai snssai = {},
+                            std::string dnn = {});
 
   /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)
@@ -309,12 +311,12 @@ public:
                                     nlohmann::json &response_data,
                                     Pistache::Http::Code &code);
 
-private:
+ private:
   MYSQL mysql;
 };
-} // namespace app
-} // namespace udr
-} // namespace oai
+}  // namespace app
+}  // namespace udr
+}  // namespace oai
 #include "udr_config.hpp"
 
 #endif /* FILE_UDR_APP_HPP_SEEN */
