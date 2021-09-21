@@ -23,8 +23,8 @@
 #define _UDR_CONFIG_H_
 
 #include <arpa/inet.h>
-#include <libconfig.h++>
 #include <netinet/in.h>
+#include <libconfig.h++>
 #include <string>
 
 #define UDR_CONFIG_STRING_UDR_CONFIG "UDR"
@@ -62,11 +62,12 @@ typedef struct interface_cfg_s {
   struct in6_addr addr6;
   unsigned int mtu;
   unsigned int port;
+  std::string api_version;
 
 } interface_cfg_t;
 
 class udr_config {
-public:
+ public:
   udr_config();
   ~udr_config();
 
@@ -78,10 +79,9 @@ public:
   std::string pid_dir;
   interface_cfg_t nudr;
   unsigned int nudr_http2_port;
-  std::string nudr_api_version;
 
   mysql_conf_t mysql;
 };
-} // namespace config
+}  // namespace config
 
 #endif

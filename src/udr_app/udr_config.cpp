@@ -40,7 +40,7 @@ namespace config {
 //------------------------------------------------------------------------------
 udr_config::udr_config() : mysql(), instance(), pid_dir(), nudr() {
   nudr_http2_port = 8080;
-  nudr_api_version = "v1";
+  nudr.api_version = "v1";
 }
 
 //------------------------------------------------------------------------------
@@ -97,12 +97,6 @@ int udr_config::load(const std ::string &config_file) {
       Logger::udr_app().error(UDR_CONFIG_STRING_HTTP2_PORT "failed");
       throw(UDR_CONFIG_STRING_HTTP2_PORT "failed");
     }
-    // NUDR API VERSION
-    if (!(nudr_cfg.lookupValue(UDR_CONFIG_STRING_API_VERSION,
-                               nudr_api_version))) {
-      Logger::udr_app().error(UDR_CONFIG_STRING_API_VERSION "failed");
-      throw(UDR_CONFIG_STRING_API_VERSION "failed");
-    }
 
   } catch (const SettingNotFoundException &nfex) {
     Logger::udr_app().error("%s : %s, using defaults", nfex.what(),
@@ -151,7 +145,7 @@ int udr_config::load_interface(const libconfig::Setting &if_cfg,
                                 address.c_str());
         return RETURNerror;
       }
-      unsigned char buf_in_addr[sizeof(struct in6_addr)]; // you never know...
+      unsigned char buf_in_addr[sizeof(struct in6_addr)];  // you never know...
       if (inet_pton(AF_INET, util::trim(words.at(0)).c_str(), buf_in_addr) ==
           1) {
         memcpy(&cfg.addr4, buf_in_addr, sizeof(struct in_addr));
@@ -167,6 +161,12 @@ int udr_config::load_interface(const libconfig::Setting &if_cfg,
                 0xFFFFFFFF << (32 - std::stoi(util::trim(words.at(1)))));
     }
     if_cfg.lookupValue(UDR_CONFIG_STRING_PORT, cfg.port);
+
+    // API VERSION
+    if (!(if_cfg.lookupValue(UDR_CONFIG_STRING_API_VERSION, cfg.api_version))) {
+      Logger::udr_app().error(UDR_CONFIG_STRING_API_VERSION "failed");
+      throw(UDR_CONFIG_STRING_API_VERSION "failed");
+    }
   }
   return RETURNok;
 }
@@ -190,7 +190,7 @@ void udr_config::display() {
   Logger::config().info("    Port ................: %d", nudr.port);
   Logger::config().info("    HTTP2 port ..........: %d", nudr_http2_port);
   Logger::config().info("    API version..........: %s",
-                        nudr_api_version.c_str());
+                        nudr.api_version.c_str());
 
   Logger::config().info(
       "- MYSQL Server Addr...................................: %s",
@@ -206,4 +206,4 @@ void udr_config::display() {
       mysql.mysql_db.c_str());
 }
 
-} // namespace config
+}  // namespace config
