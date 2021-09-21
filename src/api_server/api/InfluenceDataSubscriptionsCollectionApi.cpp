@@ -34,6 +34,9 @@
 #include "InfluenceDataSubscriptionsCollectionApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,11 +55,15 @@ void InfluenceDataSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/application-data/influenceData/subs-to-notify",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/influenceData/subs-to-notify",
       Routes::bind(&InfluenceDataSubscriptionsCollectionApi::
                        create_individual_influence_data_subscription_handler,
                    this));
-  Routes::Get(*router, base + "/application-data/influenceData/subs-to-notify",
+  Routes::Get(*router,
+              base + udr_cfg.nudr.api_version +
+                  "/application-data/influenceData/subs-to-notify",
               Routes::bind(&InfluenceDataSubscriptionsCollectionApi::
                                read_influence_data_subscriptions_handler,
                            this));
@@ -156,4 +163,4 @@ void InfluenceDataSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

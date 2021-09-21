@@ -34,6 +34,9 @@
 #include "SMSF3GPPRegistrationDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,17 +54,23 @@ void SMSF3GPPRegistrationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/subscription-data/:ueId/context-data/smsf-3gpp-access",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/smsf-3gpp-access",
       Routes::bind(
           &SMSF3GPPRegistrationDocumentApi::create_smsf_context3gpp_handler,
           this));
   Routes::Delete(
-      *router, base + "/subscription-data/:ueId/context-data/smsf-3gpp-access",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/smsf-3gpp-access",
       Routes::bind(
           &SMSF3GPPRegistrationDocumentApi::delete_smsf_context3gpp_handler,
           this));
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/context-data/smsf-3gpp-access",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/smsf-3gpp-access",
       Routes::bind(
           &SMSF3GPPRegistrationDocumentApi::query_smsf_context3gpp_handler,
           this));
@@ -168,4 +177,4 @@ void SMSF3GPPRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

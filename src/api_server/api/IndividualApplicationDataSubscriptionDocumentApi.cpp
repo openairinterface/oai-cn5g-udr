@@ -34,6 +34,9 @@
 #include "IndividualApplicationDataSubscriptionDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,17 +55,23 @@ void IndividualApplicationDataSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/application-data/subs-to-notify/:subsId",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/subs-to-notify/:subsId",
       Routes::bind(&IndividualApplicationDataSubscriptionDocumentApi::
                        delete_individual_application_data_subscription_handler,
                    this));
   Routes::Get(
-      *router, base + "/application-data/subs-to-notify/:subsId",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/subs-to-notify/:subsId",
       Routes::bind(&IndividualApplicationDataSubscriptionDocumentApi::
                        read_individual_application_data_subscription_handler,
                    this));
   Routes::Put(
-      *router, base + "/application-data/subs-to-notify/:subsId",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/subs-to-notify/:subsId",
       Routes::bind(&IndividualApplicationDataSubscriptionDocumentApi::
                        replace_individual_application_data_subscription_handler,
                    this));
@@ -155,4 +164,4 @@ void IndividualApplicationDataSubscriptionDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

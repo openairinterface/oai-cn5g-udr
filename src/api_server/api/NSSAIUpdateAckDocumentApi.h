@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class NSSAIUpdateAckDocumentApi {
-public:
+ public:
   NSSAIUpdateAckDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~NSSAIUpdateAckDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
   void create_nssai_update_ack_handler(const Pistache::Rest::Request &request,
@@ -87,6 +87,6 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* NSSAIUpdateAckDocumentApi_H_ */

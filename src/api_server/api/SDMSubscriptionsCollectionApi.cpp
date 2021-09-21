@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,12 +55,16 @@ void SDMSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/subscription-data/:ueId/context-data/sdm-subscriptions",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/sdm-subscriptions",
       Routes::bind(
           &SDMSubscriptionsCollectionApi::create_sdm_subscriptions_handler,
           this));
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/context-data/sdm-subscriptions",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/sdm-subscriptions",
       Routes::bind(
           &SDMSubscriptionsCollectionApi::querysdmsubscriptions_handler, this));
 
@@ -138,4 +145,4 @@ void SDMSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

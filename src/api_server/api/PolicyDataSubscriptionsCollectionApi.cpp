@@ -34,6 +34,9 @@
 #include "PolicyDataSubscriptionsCollectionApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,7 @@ void PolicyDataSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/policy-data/subs-to-notify",
+      *router, base + udr_cfg.nudr.api_version + "/policy-data/subs-to-notify",
       Routes::bind(&PolicyDataSubscriptionsCollectionApi::
                        create_individual_policy_data_subscription_handler,
                    this));
@@ -97,4 +100,4 @@ void PolicyDataSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

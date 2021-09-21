@@ -34,6 +34,9 @@
 #include "ProvisionedParameterDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void ProvisionedParameterDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Patch(
-      *router, base + "/subscription-data/:ueId/pp-data",
+      *router,
+      base + udr_cfg.nudr.api_version + "/subscription-data/:ueId/pp-data",
       Routes::bind(&ProvisionedParameterDataDocumentApi::modify_pp_data_handler,
                    this));
 
@@ -106,4 +110,4 @@ void ProvisionedParameterDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

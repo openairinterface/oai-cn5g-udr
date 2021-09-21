@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SubsToNotifyCollectionApi {
-public:
+ public:
   SubsToNotifyCollectionApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SubsToNotifyCollectionApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
   void query_subs_to_notify_handler(const Pistache::Rest::Request &request,
@@ -86,10 +86,10 @@ private:
   /// <param name="ueId">UE id</param>
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
-  virtual void
-  query_subs_to_notify(const Pistache::Optional<std::string> &ueId,
-                       const Pistache::Optional<std::string> &supportedFeatures,
-                       Pistache::Http::ResponseWriter &response) = 0;
+  virtual void query_subs_to_notify(
+      const Pistache::Optional<std::string> &ueId,
+      const Pistache::Optional<std::string> &supportedFeatures,
+      Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Deletes subscriptions identified by a given ue-id parameter
@@ -122,6 +122,6 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* SubsToNotifyCollectionApi_H_ */

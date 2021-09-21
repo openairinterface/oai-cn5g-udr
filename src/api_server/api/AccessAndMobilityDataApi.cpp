@@ -34,6 +34,9 @@
 #include "AccessAndMobilityDataApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,22 +54,30 @@ void AccessAndMobilityDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/exposure-data/:ueId/access-and-mobility-data",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/exposure-data/:ueId/access-and-mobility-data",
       Routes::bind(&AccessAndMobilityDataApi::
                        create_or_replace_access_and_mobility_data_handler,
                    this));
   Routes::Delete(
-      *router, base + "/exposure-data/:ueId/access-and-mobility-data",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/exposure-data/:ueId/access-and-mobility-data",
       Routes::bind(
           &AccessAndMobilityDataApi::delete_access_and_mobility_data_handler,
           this));
   Routes::Get(
-      *router, base + "/exposure-data/:ueId/access-and-mobility-data",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/exposure-data/:ueId/access-and-mobility-data",
       Routes::bind(
           &AccessAndMobilityDataApi::query_access_and_mobility_data_handler,
           this));
   Routes::Patch(
-      *router, base + "/exposure-data/:ueId/access-and-mobility-data",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/exposure-data/:ueId/access-and-mobility-data",
       Routes::bind(
           &AccessAndMobilityDataApi::update_access_and_mobility_data_handler,
           this));
@@ -191,4 +202,4 @@ void AccessAndMobilityDataApi::access_and_mobility_data_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

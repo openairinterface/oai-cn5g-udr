@@ -34,6 +34,9 @@
 #include "V2XSubscriptionDataApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void V2XSubscriptionDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/v2x-data",
+      *router,
+      base + udr_cfg.nudr.api_version + "/subscription-data/:ueId/v2x-data",
       Routes::bind(&V2XSubscriptionDataApi::query_v2x_data_handler, this));
 
   // Default handler, called when a route is not found
@@ -103,4 +107,4 @@ void V2XSubscriptionDataApi::v2_x_subscription_data_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

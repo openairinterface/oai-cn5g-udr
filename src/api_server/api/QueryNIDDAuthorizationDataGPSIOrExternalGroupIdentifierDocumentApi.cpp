@@ -34,6 +34,9 @@
 #include "QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -56,7 +59,9 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/nidd-authorization-data",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/nidd-authorization-data",
       Routes::bind(
           &QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
               get_nidd_au_data_handler,
@@ -132,4 +137,4 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

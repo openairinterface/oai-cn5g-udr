@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -53,7 +56,8 @@ void SessionManagementSubscriptionDataApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + "/subscription-data/:ueId/:servingPlmnId/provisioned-data/sm-data",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/:servingPlmnId/provisioned-data/sm-data",
       Routes::bind(&SessionManagementSubscriptionDataApi::query_sm_data_handler,
                    this));
 
@@ -77,10 +81,10 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
   auto singleNssaiQuery = request.query().get("single-nssai");
   Pistache::Optional<Snssai> singleNssai;
   if (!singleNssaiQuery.isEmpty()) {
-    //        Snssai valueQuery_instance;
-    //        if(fromStringValue(singleNssaiQuery.get(), valueQuery_instance)){
-    //            singleNssai = Pistache::Some(valueQuery_instance);
-    //        }
+    Snssai valueQuery_instance;
+    if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
+      singleNssai = Pistache::Some(valueQuery_instance);
+    }
   }
   auto dnnQuery = request.query().get("dnn");
   Pistache::Optional<std::string> dnn;
@@ -137,4 +141,4 @@ void SessionManagementSubscriptionDataApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

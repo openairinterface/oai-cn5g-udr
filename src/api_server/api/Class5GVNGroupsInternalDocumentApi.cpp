@@ -34,6 +34,9 @@
 #include "Class5GVNGroupsInternalDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void Class5GVNGroupsInternalDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base + "/subscription-data/group-data/5g-vn-groups/internal",
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/group-data/5g-vn-groups/internal",
               Routes::bind(&Class5GVNGroupsInternalDocumentApi::
                                query5_g_vn_group_internal_handler,
                            this));
@@ -100,4 +104,4 @@ void Class5GVNGroupsInternalDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -53,26 +53,26 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class AuthenticationStatusDocumentApi {
-public:
+ public:
   AuthenticationStatusDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~AuthenticationStatusDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  create_authentication_status_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
+  void create_authentication_status_handler(
+      const Pistache::Rest::Request &request,
+      Pistache::Http::ResponseWriter response);
 
-  void
-  delete_authentication_status_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
-  void
-  query_authentication_status_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
+  void delete_authentication_status_handler(
+      const Pistache::Rest::Request &request,
+      Pistache::Http::ResponseWriter response);
+  void query_authentication_status_handler(
+      const Pistache::Rest::Request &request,
+      Pistache::Http::ResponseWriter response);
 
   void authentication_status_document_api_default_handler(
       const Pistache::Rest::Request &request,
@@ -88,13 +88,11 @@ private:
   /// </remarks>
   /// <param name="ueId">UE id</param>
   /// <param name="authEvent"> (optional)</param>
-  virtual void
-  create_authentication_status(const std::string &ueId,
-                               const AuthEvent &authEvent,
-                               Pistache::Http::ResponseWriter &response) = 0;
-  virtual void
-  delete_authentication_status(const std::string &ueId,
-                               Pistache::Http::ResponseWriter &response) = 0;
+  virtual void create_authentication_status(
+      const std::string &ueId, const AuthEvent &authEvent,
+      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void delete_authentication_status(
+      const std::string &ueId, Pistache::Http::ResponseWriter &response) = 0;
   virtual void query_authentication_status(
       const std::string &ueId,
       const Pistache::Optional<std::vector<std::string>> &fields,
@@ -102,6 +100,6 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* AuthenticationStatusDocumentApi_H_ */

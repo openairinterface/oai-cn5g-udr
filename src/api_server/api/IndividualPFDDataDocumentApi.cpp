@@ -34,6 +34,9 @@
 #include "IndividualPFDDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -50,17 +53,20 @@ void IndividualPFDDataDocumentApi::init() { setupRoutes(); }
 void IndividualPFDDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Put(*router, base + "/application-data/pfds/:appId",
+  Routes::Put(*router,
+              base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
               Routes::bind(&IndividualPFDDataDocumentApi::
                                create_or_replace_individual_pfd_data_handler,
                            this));
   Routes::Delete(
-      *router, base + "/application-data/pfds/:appId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
       Routes::bind(
           &IndividualPFDDataDocumentApi::delete_individual_pfd_data_handler,
           this));
   Routes::Get(
-      *router, base + "/application-data/pfds/:appId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
       Routes::bind(
           &IndividualPFDDataDocumentApi::read_individual_pfd_data_handler,
           this));
@@ -151,4 +157,4 @@ void IndividualPFDDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

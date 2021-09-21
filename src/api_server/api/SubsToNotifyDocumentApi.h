@@ -57,14 +57,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SubsToNotifyDocumentApi {
-public:
+ public:
   SubsToNotifyDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SubsToNotifyDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
   void modifysubscription_data_subscription_handler(
@@ -118,6 +118,6 @@ private:
       const std::string &subsId, Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* SubsToNotifyDocumentApi_H_ */

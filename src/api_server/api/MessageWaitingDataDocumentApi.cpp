@@ -34,6 +34,9 @@
 #include "MessageWaitingDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,22 +54,30 @@ void MessageWaitingDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/subscription-data/:ueId/context-data/mwd",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/mwd",
       Routes::bind(
           &MessageWaitingDataDocumentApi::create_message_waiting_data_handler,
           this));
   Routes::Delete(
-      *router, base + "/subscription-data/:ueId/context-data/mwd",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/mwd",
       Routes::bind(
           &MessageWaitingDataDocumentApi::delete_message_waiting_data_handler,
           this));
   Routes::Patch(
-      *router, base + "/subscription-data/:ueId/context-data/mwd",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/mwd",
       Routes::bind(
           &MessageWaitingDataDocumentApi::modify_message_waiting_data_handler,
           this));
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/context-data/mwd",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/mwd",
       Routes::bind(
           &MessageWaitingDataDocumentApi::query_message_waiting_data_handler,
           this));
@@ -198,4 +209,4 @@ void MessageWaitingDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

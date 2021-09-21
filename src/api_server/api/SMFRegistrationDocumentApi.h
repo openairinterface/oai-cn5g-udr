@@ -53,19 +53,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SMFRegistrationDocumentApi {
-public:
+ public:
   SMFRegistrationDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SMFRegistrationDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  create_smf_context_non3gpp_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
+  void create_smf_context_non3gpp_handler(
+      const Pistache::Rest::Request &request,
+      Pistache::Http::ResponseWriter response);
   void delete_smf_context_handler(const Pistache::Rest::Request &request,
                                   Pistache::Http::ResponseWriter response);
   void query_smf_registration_handler(const Pistache::Rest::Request &request,
@@ -85,11 +85,10 @@ private:
   /// <param name="ueId">UE id</param>
   /// <param name="pduSessionId">PDU session id</param>
   /// <param name="smfRegistration"> (optional)</param>
-  virtual void
-  create_smf_context_non3gpp(const std::string &ueId,
-                             const int32_t &pduSessionId,
-                             const SmfRegistration &smfRegistration,
-                             Pistache::Http::ResponseWriter &response) = 0;
+  virtual void create_smf_context_non3gpp(
+      const std::string &ueId, const int32_t &pduSessionId,
+      const SmfRegistration &smfRegistration,
+      Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// To remove an individual SMF context data of a UE the UDR
@@ -122,6 +121,6 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* SMFRegistrationDocumentApi_H_ */

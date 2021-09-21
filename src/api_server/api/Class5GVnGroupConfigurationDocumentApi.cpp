@@ -34,6 +34,9 @@
 #include "Class5GVnGroupConfigurationDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,7 +55,8 @@ void Class5GVnGroupConfigurationDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + "/subscription-data/group-data/5g-vn-groups/:externalGroupId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/group-data/5g-vn-groups/:externalGroupId",
       Routes::bind(
           &Class5GVnGroupConfigurationDocumentApi::create5_g_vn_group_handler,
           this));
@@ -100,4 +104,4 @@ void Class5GVnGroupConfigurationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -34,6 +34,9 @@
 #include "PlmnUePolicySetDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,9 @@ void PlmnUePolicySetDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/policy-data/plmns/:plmnId/ue-policy-set",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/policy-data/plmns/:plmnId/ue-policy-set",
       Routes::bind(&PlmnUePolicySetDocumentApi::read_plmn_ue_policy_set_handler,
                    this));
 
@@ -92,4 +97,4 @@ void PlmnUePolicySetDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

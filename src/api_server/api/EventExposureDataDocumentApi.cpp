@@ -34,6 +34,9 @@
 #include "EventExposureDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,9 @@ void EventExposureDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/ee-profile-data",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/ee-profile-data",
       Routes::bind(&EventExposureDataDocumentApi::query_ee_data_handler, this));
 
   // Default handler, called when a route is not found
@@ -109,4 +114,4 @@ void EventExposureDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

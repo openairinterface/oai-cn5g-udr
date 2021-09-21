@@ -34,6 +34,9 @@
 #include "UsageMonitoringInformationDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -50,15 +53,21 @@ void UsageMonitoringInformationDocumentApi::init() { setupRoutes(); }
 void UsageMonitoringInformationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Put(*router, base + "/policy-data/ues/:ueId/sm-data/:usageMonId",
+  Routes::Put(*router,
+              base + udr_cfg.nudr.api_version +
+                  "/policy-data/ues/:ueId/sm-data/:usageMonId",
               Routes::bind(&UsageMonitoringInformationDocumentApi::
                                create_usage_monitoring_resource_handler,
                            this));
-  Routes::Delete(*router, base + "/policy-data/ues/:ueId/sm-data/:usageMonId",
+  Routes::Delete(*router,
+                 base + udr_cfg.nudr.api_version +
+                     "/policy-data/ues/:ueId/sm-data/:usageMonId",
                  Routes::bind(&UsageMonitoringInformationDocumentApi::
                                   delete_usage_monitoring_information_handler,
                               this));
-  Routes::Get(*router, base + "/policy-data/ues/:ueId/sm-data/:usageMonId",
+  Routes::Get(*router,
+              base + udr_cfg.nudr.api_version +
+                  "/policy-data/ues/:ueId/sm-data/:usageMonId",
               Routes::bind(&UsageMonitoringInformationDocumentApi::
                                read_usage_monitoring_information_handler,
                            this));
@@ -165,4 +174,4 @@ void UsageMonitoringInformationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

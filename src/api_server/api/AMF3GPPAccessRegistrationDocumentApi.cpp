@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,17 +55,23 @@ void AMF3GPPAccessRegistrationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Patch(
-      *router, base + "/subscription-data/:ueId/context-data/amf-3gpp-access",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/amf-3gpp-access",
       Routes::bind(
           &AMF3GPPAccessRegistrationDocumentApi::amf_context3gpp_handler,
           this));
   Routes::Put(
-      *router, base + "/subscription-data/:ueId/context-data/amf-3gpp-access",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/amf-3gpp-access",
       Routes::bind(
           &AMF3GPPAccessRegistrationDocumentApi::create_amf_context3gpp_handler,
           this));
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/context-data/amf-3gpp-access",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/amf-3gpp-access",
       Routes::bind(
           &AMF3GPPAccessRegistrationDocumentApi::query_amf_context3gpp_handler,
           this));
@@ -186,4 +195,4 @@ void AMF3GPPAccessRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

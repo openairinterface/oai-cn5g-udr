@@ -58,14 +58,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SDMSubscriptionDocumentApi {
-public:
+ public:
   SDMSubscriptionDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SDMSubscriptionDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
   void modifysdm_subscription_handler(const Pistache::Rest::Request &request,
@@ -107,9 +107,9 @@ private:
   /// </remarks>
   /// <param name="ueId"></param>
   /// <param name="subsId">Unique ID of the subscription to retrieve</param>
-  virtual void
-  querysdm_subscription(const std::string &ueId, const std::string &subsId,
-                        Pistache::Http::ResponseWriter &response) = 0;
+  virtual void querysdm_subscription(
+      const std::string &ueId, const std::string &subsId,
+      Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Deletes a sdmsubscriptions
@@ -119,9 +119,9 @@ private:
   /// </remarks>
   /// <param name="ueId"></param>
   /// <param name="subsId">Unique ID of the subscription to remove</param>
-  virtual void
-  removesdm_subscriptions(const std::string &ueId, const std::string &subsId,
-                          Pistache::Http::ResponseWriter &response) = 0;
+  virtual void removesdm_subscriptions(
+      const std::string &ueId, const std::string &subsId,
+      Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Update an individual sdm subscriptions of a UE
@@ -132,12 +132,12 @@ private:
   /// <param name="ueId"></param>
   /// <param name="subsId"></param>
   /// <param name="sdmSubscription"> (optional)</param>
-  virtual void
-  updatesdmsubscriptions(const std::string &ueId, const std::string &subsId,
-                         SdmSubscription &sdmSubscription,
-                         Pistache::Http::ResponseWriter &response) = 0;
+  virtual void updatesdmsubscriptions(
+      const std::string &ueId, const std::string &subsId,
+      SdmSubscription &sdmSubscription,
+      Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* SDMSubscriptionDocumentApi_H_ */

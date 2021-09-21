@@ -45,6 +45,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "Snssai.h"
 
 namespace oai::udr::helpers {
 
@@ -61,6 +62,8 @@ bool fromStringValue(const std::string &inStr, int64_t &value);
 bool fromStringValue(const std::string &inStr, bool &value);
 bool fromStringValue(const std::string &inStr, float &value);
 bool fromStringValue(const std::string &inStr, double &value);
+bool fromStringValue(const std::string &inStr, oai::udr::model::Snssai &value);
+
 template <typename T>
 bool fromStringValue(const std::vector<std::string> &inStr,
                      std::vector<T> &value) {
@@ -88,6 +91,6 @@ bool fromStringValue(const std::string &inStr, std::vector<T> &value,
   return fromStringValue(inStrings, value);
 }
 
-} // namespace oai::udr::helpers
+}  // namespace oai::udr::helpers
 
-#endif // Helpers_H_
+#endif  // Helpers_H_

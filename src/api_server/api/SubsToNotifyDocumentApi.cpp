@@ -34,6 +34,9 @@
 #include "SubsToNotifyDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -50,15 +53,21 @@ void SubsToNotifyDocumentApi::init() { setupRoutes(); }
 void SubsToNotifyDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Patch(*router, base + "/subscription-data/subs-to-notify/:subsId",
+  Routes::Patch(*router,
+                base + udr_cfg.nudr.api_version +
+                    "/subscription-data/subs-to-notify/:subsId",
                 Routes::bind(&SubsToNotifyDocumentApi::
                                  modifysubscription_data_subscription_handler,
                              this));
-  Routes::Get(*router, base + "/subscription-data/subs-to-notify/:subsId",
+  Routes::Get(*router,
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/subs-to-notify/:subsId",
               Routes::bind(&SubsToNotifyDocumentApi::
                                query_subscription_data_subscriptions_handler,
                            this));
-  Routes::Delete(*router, base + "/subscription-data/subs-to-notify/:subsId",
+  Routes::Delete(*router,
+                 base + udr_cfg.nudr.api_version +
+                     "/subscription-data/subs-to-notify/:subsId",
                  Routes::bind(&SubsToNotifyDocumentApi::
                                   removesubscription_data_subscriptions_handler,
                               this));
@@ -154,4 +163,4 @@ void SubsToNotifyDocumentApi::subs_to_notify_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

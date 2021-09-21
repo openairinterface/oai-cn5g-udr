@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SMSSubscriptionDataDocumentApi {
-public:
+ public:
   SMSSubscriptionDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SMSSubscriptionDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
   void query_sms_data_handler(const Pistache::Rest::Request &request,
@@ -93,6 +93,6 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* SMSSubscriptionDataDocumentApi_H_ */

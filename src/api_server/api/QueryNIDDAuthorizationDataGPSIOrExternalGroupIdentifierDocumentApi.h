@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
-public:
+ public:
   QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi() {
@@ -63,7 +63,7 @@ public:
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
   void get_nidd_au_data_handler(const Pistache::Rest::Request &request,
@@ -98,7 +98,7 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi_H_ \
         */

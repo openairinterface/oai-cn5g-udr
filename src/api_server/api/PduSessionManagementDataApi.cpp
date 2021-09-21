@@ -34,6 +34,9 @@
 #include "PduSessionManagementDataApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,19 +55,22 @@ void PduSessionManagementDataApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + "/exposure-data/:ueId/session-management-data/:pduSessionId",
+      base + udr_cfg.nudr.api_version +
+          "/exposure-data/:ueId/session-management-data/:pduSessionId",
       Routes::bind(&PduSessionManagementDataApi::
                        create_or_replace_session_management_data_handler,
                    this));
   Routes::Delete(
       *router,
-      base + "/exposure-data/:ueId/session-management-data/:pduSessionId",
+      base + udr_cfg.nudr.api_version +
+          "/exposure-data/:ueId/session-management-data/:pduSessionId",
       Routes::bind(
           &PduSessionManagementDataApi::delete_session_management_data_handler,
           this));
   Routes::Get(
       *router,
-      base + "/exposure-data/:ueId/session-management-data/:pduSessionId",
+      base + udr_cfg.nudr.api_version +
+          "/exposure-data/:ueId/session-management-data/:pduSessionId",
       Routes::bind(
           &PduSessionManagementDataApi::query_session_management_data_handler,
           this));
@@ -202,4 +208,4 @@ void PduSessionManagementDataApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

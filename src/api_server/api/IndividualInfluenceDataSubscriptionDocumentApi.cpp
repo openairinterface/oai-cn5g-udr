@@ -34,6 +34,9 @@
 #include "IndividualInfluenceDataSubscriptionDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -53,19 +56,22 @@ void IndividualInfluenceDataSubscriptionDocumentApi::setupRoutes() {
 
   Routes::Delete(
       *router,
-      base + "/application-data/influenceData/subs-to-notify/:subscriptionId",
+      base + udr_cfg.nudr.api_version +
+          "/application-data/influenceData/subs-to-notify/:subscriptionId",
       Routes::bind(&IndividualInfluenceDataSubscriptionDocumentApi::
                        delete_individual_influence_data_subscription_handler,
                    this));
   Routes::Get(
       *router,
-      base + "/application-data/influenceData/subs-to-notify/:subscriptionId",
+      base + udr_cfg.nudr.api_version +
+          "/application-data/influenceData/subs-to-notify/:subscriptionId",
       Routes::bind(&IndividualInfluenceDataSubscriptionDocumentApi::
                        read_individual_influence_data_subscription_handler,
                    this));
   Routes::Put(
       *router,
-      base + "/application-data/influenceData/subs-to-notify/:subscriptionId",
+      base + udr_cfg.nudr.api_version +
+          "/application-data/influenceData/subs-to-notify/:subscriptionId",
       Routes::bind(&IndividualInfluenceDataSubscriptionDocumentApi::
                        replace_individual_influence_data_subscription_handler,
                    this));
@@ -159,4 +165,4 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

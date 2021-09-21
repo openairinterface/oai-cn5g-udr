@@ -34,6 +34,9 @@
 #include "AuthenticationUPUDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,13 +55,15 @@ void AuthenticationUPUDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + "/subscription-data/:ueId/ue-update-confirmation-data/upu-data",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/ue-update-confirmation-data/upu-data",
       Routes::bind(
           &AuthenticationUPUDocumentApi::create_authentication_upu_handler,
           this));
   Routes::Get(
       *router,
-      base + "/subscription-data/:ueId/ue-update-confirmation-data/upu-data",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/ue-update-confirmation-data/upu-data",
       Routes::bind(&AuthenticationUPUDocumentApi::query_auth_upu_handler,
                    this));
 
@@ -145,4 +150,4 @@ void AuthenticationUPUDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

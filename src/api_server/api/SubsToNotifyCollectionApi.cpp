@@ -34,6 +34,9 @@
 #include "SubsToNotifyCollectionApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,16 +54,19 @@ void SubsToNotifyCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/subs-to-notify",
+      *router,
+      base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
       Routes::bind(&SubsToNotifyCollectionApi::query_subs_to_notify_handler,
                    this));
   Routes::Delete(
-      *router, base + "/subscription-data/subs-to-notify",
+      *router,
+      base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
       Routes::bind(&SubsToNotifyCollectionApi::
                        remove_multiple_subscription_data_subscriptions_handler,
                    this));
   Routes::Post(
-      *router, base + "/subscription-data/subs-to-notify",
+      *router,
+      base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
       Routes::bind(
           &SubsToNotifyCollectionApi::subscription_data_subscriptions_handler,
           this));
@@ -195,4 +201,4 @@ void SubsToNotifyCollectionApi::subs_to_notify_collection_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

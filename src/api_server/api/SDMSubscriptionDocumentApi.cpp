@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -53,17 +56,20 @@ void SDMSubscriptionDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
       Routes::bind(&SDMSubscriptionDocumentApi::modifysdm_subscription_handler,
                    this));
   Routes::Get(
       *router,
-      base + "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
       Routes::bind(&SDMSubscriptionDocumentApi::querysdm_subscription_handler,
                    this));
   Routes::Delete(
       *router,
-      base + "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
       Routes::bind(&SDMSubscriptionDocumentApi::removesdm_subscriptions_handler,
                    this));
   Routes::Put(
@@ -202,4 +208,4 @@ void SDMSubscriptionDocumentApi::sdm_subscription_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

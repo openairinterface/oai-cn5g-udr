@@ -34,6 +34,9 @@
 #include "InfluenceDataStoreApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void InfluenceDataStoreApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/application-data/influenceData",
+      *router,
+      base + udr_cfg.nudr.api_version + "/application-data/influenceData",
       Routes::bind(&InfluenceDataStoreApi::read_influence_data_handler, this));
 
   // Default handler, called when a route is not found
@@ -135,4 +139,4 @@ void InfluenceDataStoreApi::influence_data_store_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

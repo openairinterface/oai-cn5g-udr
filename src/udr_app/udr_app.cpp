@@ -40,7 +40,7 @@
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
-using namespace config;
+using namespace oai::udr::config;
 
 extern udr_app *udr_app_inst;
 extern udr_config udr_cfg;

@@ -34,6 +34,9 @@
 #include "IndividualInfluenceDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,15 +54,21 @@ void IndividualInfluenceDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/application-data/influenceData/:influenceId",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/influenceData/:influenceId",
       Routes::bind(&IndividualInfluenceDataDocumentApi::
                        create_or_replace_individual_influence_data_handler,
                    this));
-  Routes::Delete(*router, base + "/application-data/influenceData/:influenceId",
+  Routes::Delete(*router,
+                 base + udr_cfg.nudr.api_version +
+                     "/application-data/influenceData/:influenceId",
                  Routes::bind(&IndividualInfluenceDataDocumentApi::
                                   delete_individual_influence_data_handler,
                               this));
-  Routes::Patch(*router, base + "/application-data/influenceData/:influenceId",
+  Routes::Patch(*router,
+                base + udr_cfg.nudr.api_version +
+                    "/application-data/influenceData/:influenceId",
                 Routes::bind(&IndividualInfluenceDataDocumentApi::
                                  update_individual_influence_data_handler,
                              this));
@@ -158,4 +167,4 @@ void IndividualInfluenceDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

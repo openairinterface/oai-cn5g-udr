@@ -34,6 +34,9 @@
 #include "UEPolicySetDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,15 +54,18 @@ void UEPolicySetDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/policy-data/ues/:ueId/ue-policy-set",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/ue-policy-set",
       Routes::bind(
           &UEPolicySetDocumentApi::create_or_replace_ue_policy_set_handler,
           this));
   Routes::Get(
-      *router, base + "/policy-data/ues/:ueId/ue-policy-set",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/ue-policy-set",
       Routes::bind(&UEPolicySetDocumentApi::read_ue_policy_set_handler, this));
   Routes::Patch(
-      *router, base + "/policy-data/ues/:ueId/ue-policy-set",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/ue-policy-set",
       Routes::bind(&UEPolicySetDocumentApi::update_ue_policy_set_handler,
                    this));
 
@@ -159,4 +165,4 @@ void UEPolicySetDocumentApi::ue_policy_set_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

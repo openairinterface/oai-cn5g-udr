@@ -34,6 +34,9 @@
 #include "ApplicationDataSubscriptionsCollectionApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,12 +55,14 @@ void ApplicationDataSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/application-data/subs-to-notify",
+      *router,
+      base + udr_cfg.nudr.api_version + "/application-data/subs-to-notify",
       Routes::bind(&ApplicationDataSubscriptionsCollectionApi::
                        create_individual_application_data_subscription_handler,
                    this));
   Routes::Get(
-      *router, base + "/application-data/subs-to-notify",
+      *router,
+      base + udr_cfg.nudr.api_version + "/application-data/subs-to-notify",
       Routes::bind(&ApplicationDataSubscriptionsCollectionApi::
                        read_application_data_change_subscriptions_handler,
                    this));
@@ -132,4 +137,4 @@ void ApplicationDataSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

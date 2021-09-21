@@ -34,6 +34,9 @@
 #include "EventExposureGroupSubscriptionDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -53,14 +56,14 @@ void EventExposureGroupSubscriptionDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/group-data/:ueGroupId/ee-subscriptions/:subsId",
       Routes::bind(&EventExposureGroupSubscriptionDocumentApi::
                        modify_ee_group_subscription_handler,
                    this));
   Routes::Get(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/group-data/:ueGroupId/ee-subscriptions/:subsId",
       Routes::bind(&EventExposureGroupSubscriptionDocumentApi::
                        query_ee_group_subscription_handler,
@@ -209,4 +212,4 @@ void EventExposureGroupSubscriptionDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

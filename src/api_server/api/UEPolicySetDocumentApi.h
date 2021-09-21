@@ -55,14 +55,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class UEPolicySetDocumentApi {
-public:
+ public:
   UEPolicySetDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~UEPolicySetDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
   void create_or_replace_ue_policy_set_handler(
@@ -86,10 +86,9 @@ private:
   /// </remarks>
   /// <param name="ueId"></param>
   /// <param name="uePolicySet"></param>
-  virtual void
-  create_or_replace_ue_policy_set(const std::string &ueId,
-                                  const UePolicySet &uePolicySet,
-                                  Pistache::Http::ResponseWriter &response) = 0;
+  virtual void create_or_replace_ue_policy_set(
+      const std::string &ueId, const UePolicySet &uePolicySet,
+      Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Retrieves the UE policy set data for a subscriber
@@ -100,10 +99,9 @@ private:
   /// <param name="ueId"></param>
   /// <param name="suppFeat">Supported Features (optional, default to
   /// &quot;&quot;)</param>
-  virtual void
-  read_ue_policy_set(const std::string &ueId,
-                     const Pistache::Optional<std::string> &suppFeat,
-                     Pistache::Http::ResponseWriter &response) = 0;
+  virtual void read_ue_policy_set(
+      const std::string &ueId, const Pistache::Optional<std::string> &suppFeat,
+      Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Modify the UE policy set data for a subscriber
@@ -113,12 +111,11 @@ private:
   /// </remarks>
   /// <param name="ueId"></param>
   /// <param name="uePolicySetPatch"></param>
-  virtual void
-  update_ue_policy_set(const std::string &ueId,
-                       const UePolicySetPatch &uePolicySetPatch,
-                       Pistache::Http::ResponseWriter &response) = 0;
+  virtual void update_ue_policy_set(
+      const std::string &ueId, const UePolicySetPatch &uePolicySetPatch,
+      Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* UEPolicySetDocumentApi_H_ */

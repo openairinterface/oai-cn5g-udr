@@ -46,12 +46,12 @@
 #ifdef __linux__
 void sigHandler(int sig) {
   switch (sig) {
-  case SIGINT:
-  case SIGQUIT:
-  case SIGTERM:
-  case SIGHUP:
-  default:
-    break;
+    case SIGINT:
+    case SIGQUIT:
+    case SIGTERM:
+    case SIGHUP:
+    default:
+      break;
   }
   exit(0);
 }
@@ -59,21 +59,19 @@ void sigHandler(int sig) {
 void setUpUnixSignals(std::vector<int> quitSignals) {
   sigset_t blocking_mask;
   sigemptyset(&blocking_mask);
-  for (auto sig : quitSignals)
-    sigaddset(&blocking_mask, sig);
+  for (auto sig : quitSignals) sigaddset(&blocking_mask, sig);
 
   struct sigaction sa;
   sa.sa_handler = sigHandler;
   sa.sa_mask = blocking_mask;
   sa.sa_flags = 0;
 
-  for (auto sig : quitSignals)
-    sigaction(sig, &sa, nullptr);
+  for (auto sig : quitSignals) sigaction(sig, &sa, nullptr);
 }
 #endif
 
 using namespace oai::udr::api;
-using namespace config;
+using namespace oai::udr::config;
 using namespace oai::udr::model;
 
 //------------------------------------------------------------------------------

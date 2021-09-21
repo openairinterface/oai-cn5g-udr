@@ -34,6 +34,9 @@
 #include "SMSManagementSubscriptionDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -53,8 +56,9 @@ void SMSManagementSubscriptionDataDocumentApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + "/subscription-data/:ueId/:servingPlmnId/provisioned-data/"
-             "sms-mng-data",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/:servingPlmnId/provisioned-data/"
+          "sms-mng-data",
       Routes::bind(
           &SMSManagementSubscriptionDataDocumentApi::query_sms_mng_data_handler,
           this));
@@ -112,4 +116,4 @@ void SMSManagementSubscriptionDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

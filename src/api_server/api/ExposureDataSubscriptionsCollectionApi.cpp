@@ -34,6 +34,9 @@
 #include "ExposureDataSubscriptionsCollectionApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void ExposureDataSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(
-      *router, base + "/exposure-data/subs-to-notify",
+      *router,
+      base + udr_cfg.nudr.api_version + "/exposure-data/subs-to-notify",
       Routes::bind(&ExposureDataSubscriptionsCollectionApi::
                        create_individual_exposure_data_subscription_handler,
                    this));
@@ -97,4 +101,4 @@ void ExposureDataSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

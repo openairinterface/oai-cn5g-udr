@@ -34,6 +34,9 @@
 #include "NSSAIUpdateAckDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,8 +55,9 @@ void NSSAIUpdateAckDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + "/subscription-data/:ueId/ue-update-confirmation-data/"
-             "subscribed-snssais",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/ue-update-confirmation-data/"
+          "subscribed-snssais",
       Routes::bind(&NSSAIUpdateAckDocumentApi::create_nssai_update_ack_handler,
                    this));
 
@@ -107,4 +111,4 @@ void NSSAIUpdateAckDocumentApi::nssai_update_ack_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -35,7 +35,7 @@
 
 using namespace libconfig;
 
-namespace config {
+namespace oai::udr::config {
 
 //------------------------------------------------------------------------------
 udr_config::udr_config() : mysql(), instance(), pid_dir(), nudr() {
@@ -206,4 +206,4 @@ void udr_config::display() {
       mysql.mysql_db.c_str());
 }
 
-}  // namespace config
+}  // namespace oai::udr::config

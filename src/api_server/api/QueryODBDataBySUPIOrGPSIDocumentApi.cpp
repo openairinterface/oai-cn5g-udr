@@ -34,6 +34,9 @@
 #include "QueryODBDataBySUPIOrGPSIDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,7 +55,8 @@ void QueryODBDataBySUPIOrGPSIDocumentApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + "/subscription-data/:ueId/operator-determined-barring-data",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/operator-determined-barring-data",
       Routes::bind(&QueryODBDataBySUPIOrGPSIDocumentApi::get_odb_data_handler,
                    this));
 
@@ -93,4 +97,4 @@ void QueryODBDataBySUPIOrGPSIDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

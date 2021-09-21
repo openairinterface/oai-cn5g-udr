@@ -46,7 +46,7 @@
 
 using namespace libconfig;
 
-namespace config {
+namespace oai::udr::config {
 
 typedef struct {
   std::string mysql_server;
@@ -82,6 +82,6 @@ class udr_config {
 
   mysql_conf_t mysql;
 };
-}  // namespace config
+}  // namespace oai::udr::config
 
 #endif

@@ -34,6 +34,9 @@
 #include "OperatorSpecificDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,15 +54,21 @@ void OperatorSpecificDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/policy-data/ues/:ueId/operator-specific-data",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/policy-data/ues/:ueId/operator-specific-data",
       Routes::bind(
           &OperatorSpecificDataDocumentApi::read_operator_specific_data_handler,
           this));
-  Routes::Put(*router, base + "/policy-data/ues/:ueId/operator-specific-data",
+  Routes::Put(*router,
+              base + udr_cfg.nudr.api_version +
+                  "/policy-data/ues/:ueId/operator-specific-data",
               Routes::bind(&OperatorSpecificDataDocumentApi::
                                replace_operator_specific_data_handler,
                            this));
-  Routes::Patch(*router, base + "/policy-data/ues/:ueId/operator-specific-data",
+  Routes::Patch(*router,
+                base + udr_cfg.nudr.api_version +
+                    "/policy-data/ues/:ueId/operator-specific-data",
                 Routes::bind(&OperatorSpecificDataDocumentApi::
                                  update_operator_specific_data_handler,
                              this));
@@ -169,4 +178,4 @@ void OperatorSpecificDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

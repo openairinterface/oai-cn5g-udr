@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class UsageMonitoringInformationDocumentApi {
-public:
+ public:
   UsageMonitoringInformationDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~UsageMonitoringInformationDocumentApi() {}
@@ -62,7 +62,7 @@ public:
 
   const std::string base = "/nudr-dr/v2";
 
-private:
+ private:
   void setupRoutes();
 
   void create_usage_monitoring_resource_handler(
@@ -122,6 +122,6 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* UsageMonitoringInformationDocumentApi_H_ */
