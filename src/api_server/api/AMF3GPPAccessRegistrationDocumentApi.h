@@ -62,7 +62,7 @@ class AMF3GPPAccessRegistrationDocumentApi {
   virtual ~AMF3GPPAccessRegistrationDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/v2";
+  const std::string base = "/nudr-dr/";
 
  private:
   void setupRoutes();

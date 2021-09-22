@@ -59,7 +59,7 @@ class ContextDataDocumentApi {
   virtual ~ContextDataDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/v2";
+  const std::string base = "/nudr-dr/";
 
  private:
   void setupRoutes();
