@@ -79,18 +79,25 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
 
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
+  Logger::udr_server().debug("singleNssaiQuery: %s",
+                             singleNssaiQuery.get().c_str());
   Pistache::Optional<Snssai> singleNssai;
   if (!singleNssaiQuery.isEmpty()) {
     Snssai valueQuery_instance;
     if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
+      Logger::udr_server().debug("SNSSAI SST %d, SD %s",
+                                 valueQuery_instance.getSst(),
+                                 valueQuery_instance.getSd().c_str());
       singleNssai = Pistache::Some(valueQuery_instance);
     }
   }
   auto dnnQuery = request.query().get("dnn");
   Pistache::Optional<std::string> dnn;
   if (!dnnQuery.isEmpty()) {
+    Logger::udr_server().debug("dnnQuery: %s", dnnQuery.get().c_str());
     std::string valueQuery_instance;
     if (fromStringValue(dnnQuery.get(), valueQuery_instance)) {
+      Logger::udr_server().debug("DNN: %s", valueQuery_instance.c_str());
       dnn = Pistache::Some(valueQuery_instance);
     }
   }

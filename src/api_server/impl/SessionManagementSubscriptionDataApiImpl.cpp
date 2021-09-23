@@ -44,7 +44,8 @@ SessionManagementSubscriptionDataApiImpl::
     SessionManagementSubscriptionDataApiImpl(
         std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
         std::string address)
-    : SessionManagementSubscriptionDataApi(rtr), m_udr_app(udr_app_inst),
+    : SessionManagementSubscriptionDataApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SessionManagementSubscriptionDataApiImpl::query_sm_data(
@@ -69,10 +70,11 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
   // TODO: DNN and SNSSAI
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_query_sm_data(ueId, servingPlmnId, response_data, code);
+  m_udr_app->handle_query_sm_data(ueId, servingPlmnId, response_data, code,
+                                  snssai, dnn_str);
 
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
