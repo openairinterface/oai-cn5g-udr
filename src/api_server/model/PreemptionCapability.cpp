@@ -44,9 +44,11 @@ void PreemptionCapability::validate() {
 }
 
 void to_json(nlohmann::json &j, const PreemptionCapability &o) {
-  j = nlohmann::json();
+  j = o.get_value();
 }
 
-void from_json(const nlohmann::json &j, PreemptionCapability &o) {}
+void from_json(const nlohmann::json &j, PreemptionCapability &o) {
+  o.set_value(j.get<std::string>());
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

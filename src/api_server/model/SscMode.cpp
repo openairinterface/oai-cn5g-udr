@@ -43,8 +43,10 @@ void SscMode::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const SscMode &o) { j = nlohmann::json(); }
+void to_json(nlohmann::json &j, const SscMode &o) { j = o.get_value(); }
 
-void from_json(const nlohmann::json &j, SscMode &o) {}
+void from_json(const nlohmann::json &j, SscMode &o) {
+  o.set_value(j.get<std::string>());
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

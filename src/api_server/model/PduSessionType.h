@@ -47,11 +47,15 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PduSessionType {
-public:
+ public:
   PduSessionType();
   virtual ~PduSessionType();
 
   void validate();
+
+  void set_value(std::string value);
+  void get_value(std::string &value) const;
+  std::string get_value() const;
 
   /////////////////////////////////////////////
   /// PduSessionType members
@@ -59,9 +63,10 @@ public:
   friend void to_json(nlohmann::json &j, const PduSessionType &o);
   friend void from_json(const nlohmann::json &j, PduSessionType &o);
 
-protected:
+ protected:
+  std::string value;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PduSessionType_H_ */

@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PreemptionCapability {
-public:
+ public:
   PreemptionCapability();
   virtual ~PreemptionCapability();
 
@@ -59,9 +59,10 @@ public:
   friend void to_json(nlohmann::json &j, const PreemptionCapability &o);
   friend void from_json(const nlohmann::json &j, PreemptionCapability &o);
 
-protected:
+ protected:
+  std::string value;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PreemptionCapability_H_ */
