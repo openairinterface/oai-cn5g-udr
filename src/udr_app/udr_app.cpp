@@ -1499,15 +1499,15 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
   std::string query =
       "select * from SessionManagementSubscriptionData WHERE ueid='" + ue_id +
-      "' and servingPlmnid='" + serving_plmn_id + "'";
+      "' and servingPlmnid='" + serving_plmn_id + "' ";
   std::string option_str = {};
   if (snssai.getSst() > 0) {
-    option_str +=
-        "and JSON_EXTRACT(singleNssai, \"$.sst\") =" + snssai.getSst();
+    option_str += " and JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+                  std::to_string(snssai.getSst());
   }
   if (!dnn.empty()) {
     option_str +=
-        "and JSON_EXTRACT(dnnConfigurations, \"$." + dnn + ") IS NOT NULL";
+        " and JSON_EXTRACT(dnnConfigurations, \"$." + dnn + "\") IS NOT NULL";
   }
 
   query += option_str;
