@@ -53,6 +53,10 @@ class PreemptionCapability {
 
   void validate();
 
+  void set_value(std::string value);
+  void get_value(std::string &value) const;
+  std::string get_value() const;
+
   /////////////////////////////////////////////
   /// PreemptionCapability members
 

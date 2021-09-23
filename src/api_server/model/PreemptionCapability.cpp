@@ -43,6 +43,12 @@ void PreemptionCapability::validate() {
   // TODO: implement validation
 }
 
+void PreemptionCapability::set_value(std::string value) { this->value = value; }
+void PreemptionCapability::get_value(std::string &value) const {
+  value = this->value;
+}
+std::string PreemptionCapability::get_value() const { return value; }
+
 void to_json(nlohmann::json &j, const PreemptionCapability &o) {
   j = o.get_value();
 }
