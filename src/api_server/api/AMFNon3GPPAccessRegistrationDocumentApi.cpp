@@ -34,6 +34,9 @@
 #include "AMFNon3GPPAccessRegistrationDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -53,18 +56,19 @@ void AMFNon3GPPAccessRegistrationDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
       Routes::bind(
           &AMFNon3GPPAccessRegistrationDocumentApi::amf_context_non3gpp_handler,
           this));
   Routes::Put(*router,
-              base +
+              base + udr_cfg.nudr.api_version +
                   "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
               Routes::bind(&AMFNon3GPPAccessRegistrationDocumentApi::
                                create_amf_context_non3gpp_handler,
                            this));
   Routes::Get(*router,
-              base +
+              base + udr_cfg.nudr.api_version +
                   "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
               Routes::bind(&AMFNon3GPPAccessRegistrationDocumentApi::
                                query_amf_context_non3gpp_handler,

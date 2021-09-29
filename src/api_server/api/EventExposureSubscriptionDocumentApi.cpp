@@ -34,6 +34,9 @@
 #include "EventExposureSubscriptionDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,25 +55,29 @@ void EventExposureSubscriptionDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
       Routes::bind(
           &EventExposureSubscriptionDocumentApi::modify_eesubscription_handler,
           this));
   Routes::Get(
       *router,
-      base + "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
       Routes::bind(
           &EventExposureSubscriptionDocumentApi::queryee_subscription_handler,
           this));
   Routes::Delete(
       *router,
-      base + "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
       Routes::bind(
           &EventExposureSubscriptionDocumentApi::removeee_subscriptions_handler,
           this));
   Routes::Put(
       *router,
-      base + "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
       Routes::bind(
           &EventExposureSubscriptionDocumentApi::update_eesubscriptions_handler,
           this));

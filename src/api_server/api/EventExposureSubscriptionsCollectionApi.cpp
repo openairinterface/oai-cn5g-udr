@@ -34,6 +34,9 @@
 #include "EventExposureSubscriptionsCollectionApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,12 +55,14 @@ void EventExposureSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Post(*router,
-               base + "/subscription-data/:ueId/context-data/ee-subscriptions",
+               base + udr_cfg.nudr.api_version +
+                   "/subscription-data/:ueId/context-data/ee-subscriptions",
                Routes::bind(&EventExposureSubscriptionsCollectionApi::
                                 create_ee_subscriptions_handler,
                             this));
   Routes::Get(*router,
-              base + "/subscription-data/:ueId/context-data/ee-subscriptions",
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/:ueId/context-data/ee-subscriptions",
               Routes::bind(&EventExposureSubscriptionsCollectionApi::
                                queryeesubscriptions_handler,
                            this));

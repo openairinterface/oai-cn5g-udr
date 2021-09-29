@@ -40,7 +40,7 @@
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
-using namespace config;
+using namespace oai::udr::config;
 
 extern udr_app *udr_app_inst;
 extern udr_config udr_cfg;
@@ -1489,25 +1489,39 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
 void udr_app::handle_query_sm_data(const std::string &ue_id,
                                    const std::string &serving_plmn_id,
                                    nlohmann::json &response_data,
-                                   Pistache::Http::Code &code) {
-  MYSQL_RES *res = NULL;
+                                   Pistache::Http::Code &code,
+                                   oai::udr::model::Snssai snssai,
+                                   std::string dnn) {
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
   nlohmann::json j = {};
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
-  const std::string query =
+  std::string query =
       "select * from SessionManagementSubscriptionData WHERE ueid='" + ue_id +
-      "' and servingPlmnid='" + serving_plmn_id + "'";
+      "' and servingPlmnid='" + serving_plmn_id + "' ";
+  std::string option_str = {};
+  if (snssai.getSst() > 0) {
+    option_str += " and JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+                  std::to_string(snssai.getSst());
+  }
+  if (!dnn.empty()) {
+    option_str +=
+        " and JSON_EXTRACT(dnnConfigurations, \"$." + dnn + "\") IS NOT NULL";
+  }
+
+  query += option_str;
+  Logger::udr_server().debug("MySQL query: %s", query.c_str());
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure (SQL query %s)!",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure (SQL query %s)！",
                                query.c_str());
     return;
   }
@@ -1572,12 +1586,12 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
     response_data = j;
     code = Pistache::Http::Code::Ok;
 
-    Logger::udr_server().debug(
-        "SessionManagementSubscriptionData GET - json:\n\"%s\"",
-        j.dump().c_str());
+    Logger::udr_server().debug("SessionManagementSubscriptionData:\n %s",
+                               j.dump().c_str());
   } else {
     Logger::udr_server().error(
-        "SessionManagementSubscriptionData no data！SQL(%s)", query.c_str());
+        "SessionManagementSubscriptionData no data found (SQL query: %s)",
+        query.c_str());
   }
 
   mysql_free_result(res);

@@ -34,6 +34,9 @@
 #include "LCSBroadcastAssistanceSubscriptionDataApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,8 +55,9 @@ void LCSBroadcastAssistanceSubscriptionDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base + "/subscription-data/:ueId/:servingPlmnId/provisioned-data/"
-                     "lcs-bca-data",
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/:ueId/:servingPlmnId/provisioned-data/"
+                  "lcs-bca-data",
               Routes::bind(&LCSBroadcastAssistanceSubscriptionDataApi::
                                query_lcs_bca_data_handler,
                            this));

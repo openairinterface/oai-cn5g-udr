@@ -34,6 +34,9 @@
 #include "QueryIdentityDataBySUPIOrGPSIDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,7 +55,9 @@ void QueryIdentityDataBySUPIOrGPSIDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/identity-data",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/identity-data",
       Routes::bind(
           &QueryIdentityDataBySUPIOrGPSIDocumentApi::get_identity_data_handler,
           this));

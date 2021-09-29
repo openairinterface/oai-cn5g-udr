@@ -34,6 +34,9 @@
 #include "BdtPolicyDataStoreApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void BdtPolicyDataStoreApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/application-data/bdtPolicyData",
+      *router,
+      base + udr_cfg.nudr.api_version + "/application-data/bdtPolicyData",
       Routes::bind(&BdtPolicyDataStoreApi::read_bdt_policy_data_handler, this));
 
   // Default handler, called when a route is not found

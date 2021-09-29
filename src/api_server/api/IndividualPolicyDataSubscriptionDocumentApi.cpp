@@ -34,6 +34,9 @@
 #include "IndividualPolicyDataSubscriptionDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,12 +55,14 @@ void IndividualPolicyDataSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/policy-data/subs-to-notify/:subsId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/subs-to-notify/:subsId",
       Routes::bind(&IndividualPolicyDataSubscriptionDocumentApi::
                        delete_individual_policy_data_subscription_handler,
                    this));
   Routes::Put(
-      *router, base + "/policy-data/subs-to-notify/:subsId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/subs-to-notify/:subsId",
       Routes::bind(&IndividualPolicyDataSubscriptionDocumentApi::
                        replace_individual_policy_data_subscription_handler,
                    this));

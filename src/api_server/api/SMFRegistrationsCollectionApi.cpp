@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,7 +55,9 @@ void SMFRegistrationsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/context-data/smf-registrations",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/smf-registrations",
       Routes::bind(&SMFRegistrationsCollectionApi::query_smf_reg_list_handler,
                    this));
 

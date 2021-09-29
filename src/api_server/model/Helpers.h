@@ -39,6 +39,7 @@
 #ifndef Helpers_H_
 #define Helpers_H_
 
+#include "Snssai.h"
 #include <ctime>
 #include <iostream>
 #include <map>
@@ -61,6 +62,8 @@ bool fromStringValue(const std::string &inStr, int64_t &value);
 bool fromStringValue(const std::string &inStr, bool &value);
 bool fromStringValue(const std::string &inStr, float &value);
 bool fromStringValue(const std::string &inStr, double &value);
+bool fromStringValue(const std::string &inStr, oai::udr::model::Snssai &value);
+
 template <typename T>
 bool fromStringValue(const std::vector<std::string> &inStr,
                      std::vector<T> &value) {

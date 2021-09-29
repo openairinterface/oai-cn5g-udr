@@ -34,6 +34,9 @@
 #include "IndividualBdtDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,22 +54,26 @@ void IndividualBdtDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Put(
-      *router, base + "/policy-data/bdt-data/:bdtReferenceId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/bdt-data/:bdtReferenceId",
       Routes::bind(
           &IndividualBdtDataDocumentApi::create_individual_bdt_data_handler,
           this));
   Routes::Delete(
-      *router, base + "/policy-data/bdt-data/:bdtReferenceId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/bdt-data/:bdtReferenceId",
       Routes::bind(
           &IndividualBdtDataDocumentApi::delete_individual_bdt_data_handler,
           this));
   Routes::Get(
-      *router, base + "/policy-data/bdt-data/:bdtReferenceId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/bdt-data/:bdtReferenceId",
       Routes::bind(
           &IndividualBdtDataDocumentApi::read_individual_bdt_data_handler,
           this));
   Routes::Patch(
-      *router, base + "/policy-data/bdt-data/:bdtReferenceId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/policy-data/bdt-data/:bdtReferenceId",
       Routes::bind(
           &IndividualBdtDataDocumentApi::update_individual_bdt_data_handler,
           this));

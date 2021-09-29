@@ -34,6 +34,9 @@
 #include "TraceDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,7 +55,7 @@ void TraceDataDocumentApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/:servingPlmnId/provisioned-data/trace-data",
       Routes::bind(&TraceDataDocumentApi::query_trace_data_handler, this));
 

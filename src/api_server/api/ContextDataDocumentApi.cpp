@@ -34,6 +34,9 @@
 #include "ContextDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void ContextDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/context-data",
+      *router,
+      base + udr_cfg.nudr.api_version + "/subscription-data/:ueId/context-data",
       Routes::bind(&ContextDataDocumentApi::query_context_data_handler, this));
 
   // Default handler, called when a route is not found

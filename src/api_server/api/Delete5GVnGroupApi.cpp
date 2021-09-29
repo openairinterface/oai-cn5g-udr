@@ -34,6 +34,9 @@
 #include "Delete5GVnGroupApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void Delete5GVnGroupApi::setupRoutes() {
 
   Routes::Delete(
       *router,
-      base + "/subscription-data/group-data/5g-vn-groups/:externalGroupId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/group-data/5g-vn-groups/:externalGroupId",
       Routes::bind(&Delete5GVnGroupApi::delete5_g_vn_group_handler, this));
 
   // Default handler, called when a route is not found

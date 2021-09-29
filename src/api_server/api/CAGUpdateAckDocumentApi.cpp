@@ -34,6 +34,9 @@
 #include "CAGUpdateAckDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,7 +55,7 @@ void CAGUpdateAckDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/ue-update-confirmation-data/subscribed-cag",
       Routes::bind(&CAGUpdateAckDocumentApi::create_cag_update_ack_handler,
                    this));

@@ -34,6 +34,9 @@
 #include "PFDDataStoreApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -49,7 +52,8 @@ void PFDDataStoreApi::init() { setupRoutes(); }
 void PFDDataStoreApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(*router, base + "/application-data/pfds",
+  Routes::Get(*router,
+              base + udr_cfg.nudr.api_version + "/application-data/pfds",
               Routes::bind(&PFDDataStoreApi::read_pfd_data_handler, this));
 
   // Default handler, called when a route is not found

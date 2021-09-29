@@ -73,7 +73,7 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 #endif
 
 using namespace oai::udr::api;
-using namespace config;
+using namespace oai::udr::config;
 using namespace oai::udr::model;
 
 //------------------------------------------------------------------------------

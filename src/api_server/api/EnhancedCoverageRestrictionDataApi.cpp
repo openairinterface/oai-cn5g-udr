@@ -34,6 +34,9 @@
 #include "EnhancedCoverageRestrictionDataApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void EnhancedCoverageRestrictionDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base + "/subscription-data/:ueId/coverage-restriction-data",
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/:ueId/coverage-restriction-data",
               Routes::bind(&EnhancedCoverageRestrictionDataApi::
                                query_coverage_restriction_data_handler,
                            this));

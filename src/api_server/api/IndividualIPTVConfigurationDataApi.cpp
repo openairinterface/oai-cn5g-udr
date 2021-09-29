@@ -34,6 +34,9 @@
 #include "IndividualIPTVConfigurationDataApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,9 @@ void IndividualIPTVConfigurationDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Patch(
-      *router, base + "/application-data/iptvConfigData/:configurationId",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/iptvConfigData/:configurationId",
       Routes::bind(
           &IndividualIPTVConfigurationDataApi::
               partial_replace_individual_iptv_configuration_data_handler,

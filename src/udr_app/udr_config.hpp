@@ -46,7 +46,7 @@
 
 using namespace libconfig;
 
-namespace config {
+namespace oai::udr::config {
 
 typedef struct {
   std::string mysql_server;
@@ -62,6 +62,7 @@ typedef struct interface_cfg_s {
   struct in6_addr addr6;
   unsigned int mtu;
   unsigned int port;
+  std::string api_version;
 
 } interface_cfg_t;
 
@@ -78,10 +79,9 @@ public:
   std::string pid_dir;
   interface_cfg_t nudr;
   unsigned int nudr_http2_port;
-  std::string nudr_api_version;
 
   mysql_conf_t mysql;
 };
-} // namespace config
+} // namespace oai::udr::config
 
 #endif

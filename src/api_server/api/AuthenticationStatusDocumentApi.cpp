@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -53,7 +56,7 @@ void AuthenticationStatusDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/authentication-data/authentication-status",
       Routes::bind(&AuthenticationStatusDocumentApi::
                        create_authentication_status_handler,
@@ -61,14 +64,14 @@ void AuthenticationStatusDocumentApi::setupRoutes() {
 
   Routes::Delete(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/authentication-data/authentication-status",
       Routes::bind(&AuthenticationStatusDocumentApi::
                        delete_authentication_status_handler,
                    this));
   Routes::Get(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/authentication-data/authentication-status",
       Routes::bind(
           &AuthenticationStatusDocumentApi::query_authentication_status_handler,

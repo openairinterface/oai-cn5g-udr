@@ -34,6 +34,9 @@
 #include "IndividualExposureDataSubscriptionDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,12 +55,14 @@ void IndividualExposureDataSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/exposure-data/subs-to-notify/:subId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/exposure-data/subs-to-notify/:subId",
       Routes::bind(&IndividualExposureDataSubscriptionDocumentApi::
                        delete_individual_exposure_data_subscription_handler,
                    this));
   Routes::Put(
-      *router, base + "/exposure-data/subs-to-notify/:subId",
+      *router,
+      base + udr_cfg.nudr.api_version + "/exposure-data/subs-to-notify/:subId",
       Routes::bind(&IndividualExposureDataSubscriptionDocumentApi::
                        replace_individual_exposure_data_subscription_handler,
                    this));

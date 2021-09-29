@@ -34,6 +34,9 @@
 #include "SponsorConnectivityDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void SponsorConnectivityDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base + "/policy-data/sponsor-connectivity-data/:sponsorId",
+              base + udr_cfg.nudr.api_version +
+                  "/policy-data/sponsor-connectivity-data/:sponsorId",
               Routes::bind(&SponsorConnectivityDataDocumentApi::
                                read_sponsor_connectivity_data_handler,
                            this));

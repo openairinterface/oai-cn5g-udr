@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -53,8 +56,9 @@ void SMFSelectionSubscriptionDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base + "/subscription-data/:ueId/:servingPlmnId/provisioned-data/"
-                     "smf-selection-subscription-data",
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/:ueId/:servingPlmnId/provisioned-data/"
+                  "smf-selection-subscription-data",
               Routes::bind(&SMFSelectionSubscriptionDataDocumentApi::
                                query_smf_select_data_handler,
                            this));

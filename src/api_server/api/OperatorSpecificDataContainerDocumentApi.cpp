@@ -34,6 +34,9 @@
 #include "OperatorSpecificDataContainerDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,11 +55,14 @@ void OperatorSpecificDataContainerDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Patch(*router,
-                base + "/subscription-data/:ueId/operator-specific-data",
+                base + udr_cfg.nudr.api_version +
+                    "/subscription-data/:ueId/operator-specific-data",
                 Routes::bind(&OperatorSpecificDataContainerDocumentApi::
                                  modify_oper_spec_data_handler,
                              this));
-  Routes::Get(*router, base + "/subscription-data/:ueId/operator-specific-data",
+  Routes::Get(*router,
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/:ueId/operator-specific-data",
               Routes::bind(&OperatorSpecificDataContainerDocumentApi::
                                query_oper_spec_data_handler,
                            this));

@@ -34,6 +34,9 @@
 #include "IndividualAppliedBDTPolicyDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,12 +55,16 @@ void IndividualAppliedBDTPolicyDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Delete(
-      *router, base + "/application-data/bdtPolicyData/:bdtPolicyId",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/bdtPolicyData/:bdtPolicyId",
       Routes::bind(&IndividualAppliedBDTPolicyDataDocumentApi::
                        delete_individual_applied_bdt_policy_data_handler,
                    this));
   Routes::Patch(
-      *router, base + "/application-data/bdtPolicyData/:bdtPolicyId",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/bdtPolicyData/:bdtPolicyId",
       Routes::bind(&IndividualAppliedBDTPolicyDataDocumentApi::
                        update_individual_applied_bdt_policy_data_handler,
                    this));

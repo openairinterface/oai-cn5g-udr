@@ -34,6 +34,9 @@
 #include "LCSMobileOriginatedSubscriptionDataApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,8 @@ void LCSMobileOriginatedSubscriptionDataApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/:ueId/lcs-mo-data",
+      *router,
+      base + udr_cfg.nudr.api_version + "/subscription-data/:ueId/lcs-mo-data",
       Routes::bind(
           &LCSMobileOriginatedSubscriptionDataApi::query_lcs_mo_data_handler,
           this));

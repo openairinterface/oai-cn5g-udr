@@ -35,6 +35,9 @@
 
 #include "Helpers.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,14 +55,16 @@ void AuthenticationSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base + "/subscription-data/:ueId/authentication-data/"
-                     "authentication-subscription",
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/:ueId/authentication-data/"
+                  "authentication-subscription",
               Routes::bind(&AuthenticationSubscriptionDocumentApi::
                                read_authentication_subscription_handler,
                            this));
   Routes::Patch(*router,
-                base + "/subscription-data/:ueId/authentication-data/"
-                       "authentication-subscription",
+                base + udr_cfg.nudr.api_version +
+                    "/subscription-data/:ueId/authentication-data/"
+                    "authentication-subscription",
                 Routes::bind(&AuthenticationSubscriptionDocumentApi::
                                  modify_authentication_subscription_handler,
                              this));

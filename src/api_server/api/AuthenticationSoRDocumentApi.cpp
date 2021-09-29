@@ -34,6 +34,9 @@
 #include "AuthenticationSoRDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,13 +55,15 @@ void AuthenticationSoRDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + "/subscription-data/:ueId/ue-update-confirmation-data/sor-data",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/ue-update-confirmation-data/sor-data",
       Routes::bind(
           &AuthenticationSoRDocumentApi::create_authentication_so_r_handler,
           this));
   Routes::Get(
       *router,
-      base + "/subscription-data/:ueId/ue-update-confirmation-data/sor-data",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/ue-update-confirmation-data/sor-data",
       Routes::bind(&AuthenticationSoRDocumentApi::query_auth_so_r_handler,
                    this));
 

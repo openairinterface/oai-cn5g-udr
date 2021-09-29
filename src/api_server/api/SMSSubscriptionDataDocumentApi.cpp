@@ -34,6 +34,9 @@
 #include "SMSSubscriptionDataDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -52,7 +55,7 @@ void SMSSubscriptionDataDocumentApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/:servingPlmnId/provisioned-data/sms-data",
       Routes::bind(&SMSSubscriptionDataDocumentApi::query_sms_data_handler,
                    this));

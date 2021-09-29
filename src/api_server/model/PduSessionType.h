@@ -53,6 +53,10 @@ public:
 
   void validate();
 
+  void set_value(std::string value);
+  void get_value(std::string &value) const;
+  std::string get_value() const;
+
   /////////////////////////////////////////////
   /// PduSessionType members
 
@@ -60,6 +64,7 @@ public:
   friend void from_json(const nlohmann::json &j, PduSessionType &o);
 
 protected:
+  std::string value;
 };
 
 } // namespace oai::udr::model

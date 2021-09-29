@@ -102,4 +102,10 @@ bool fromStringValue(const std::string &inStr, double &value) {
   return true;
 }
 
+bool fromStringValue(const std::string &inStr, oai::udr::model::Snssai &value) {
+  nlohmann::json json_value = nlohmann::json::parse(inStr);
+  from_json(json_value, value);
+  return true;
+}
+
 } // namespace oai::udr::helpers

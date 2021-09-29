@@ -29,11 +29,10 @@
 #include "udr_app.hpp"
 #include "udr_config.hpp"
 
-using namespace oai::udr::app;
 using namespace util;
 using namespace std;
-
-using namespace config;
+using namespace oai::udr::app;
+using namespace oai::udr::config;
 
 udr_config udr_cfg;
 udr_app *udr_app_inst = nullptr;

@@ -34,6 +34,9 @@
 #include "GroupIdentifiersApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,7 +54,9 @@ void GroupIdentifiersApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + "/subscription-data/group-data/group-identifiers",
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/group-data/group-identifiers",
       Routes::bind(&GroupIdentifiersApi::get_group_identifiers_handler, this));
 
   // Default handler, called when a route is not found

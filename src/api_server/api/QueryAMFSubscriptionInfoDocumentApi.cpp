@@ -34,6 +34,9 @@
 #include "QueryAMFSubscriptionInfoDocumentApi.h"
 
 #include "Helpers.h"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -51,8 +54,9 @@ void QueryAMFSubscriptionInfoDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(*router,
-              base + "/subscription-data/:ueId/context-data/ee-subscriptions/"
-                     ":subsId/amf-subscriptions",
+              base + udr_cfg.nudr.api_version +
+                  "/subscription-data/:ueId/context-data/ee-subscriptions/"
+                  ":subsId/amf-subscriptions",
               Routes::bind(&QueryAMFSubscriptionInfoDocumentApi::
                                get_amf_subscription_info_handler,
                            this));
