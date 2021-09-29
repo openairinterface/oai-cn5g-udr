@@ -53,7 +53,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class AccessAndMobilitySubscriptionDataDocumentApi {
- public:
+public:
   AccessAndMobilitySubscriptionDataDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~AccessAndMobilitySubscriptionDataDocumentApi() {}
@@ -61,7 +61,7 @@ class AccessAndMobilitySubscriptionDataDocumentApi {
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void query_am_data_handler(const Pistache::Rest::Request &request,
@@ -97,6 +97,6 @@ class AccessAndMobilitySubscriptionDataDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* AccessAndMobilitySubscriptionDataDocumentApi_H_ */

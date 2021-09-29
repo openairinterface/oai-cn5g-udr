@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PduSessionType {
- public:
+public:
   PduSessionType();
   virtual ~PduSessionType();
 
@@ -63,10 +63,10 @@ class PduSessionType {
   friend void to_json(nlohmann::json &j, const PduSessionType &o);
   friend void from_json(const nlohmann::json &j, PduSessionType &o);
 
- protected:
+protected:
   std::string value;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* PduSessionType_H_ */

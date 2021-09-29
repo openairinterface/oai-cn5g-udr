@@ -192,4 +192,4 @@ void AMFNon3GPPAccessRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

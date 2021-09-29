@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class LCSPrivacySubscriptionDataApi {
- public:
+public:
   LCSPrivacySubscriptionDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~LCSPrivacySubscriptionDataApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void query_lcs_privacy_data_handler(const Pistache::Rest::Request &request,
@@ -95,6 +95,6 @@ class LCSPrivacySubscriptionDataApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* LCSPrivacySubscriptionDataApi_H_ */

@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class SscMode {
- public:
+public:
   SscMode();
   virtual ~SscMode();
 
@@ -62,10 +62,10 @@ class SscMode {
   friend void to_json(nlohmann::json &j, const SscMode &o);
   friend void from_json(const nlohmann::json &j, SscMode &o);
 
- protected:
+protected:
   std::string value;
 };
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model
 
 #endif /* SscMode_H_ */

@@ -56,7 +56,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class SessionManagementPolicyDataDocumentApi {
- public:
+public:
   SessionManagementPolicyDataDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SessionManagementPolicyDataDocumentApi() {}
@@ -64,7 +64,7 @@ class SessionManagementPolicyDataDocumentApi {
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void read_session_management_policy_data_handler(
@@ -111,6 +111,6 @@ class SessionManagementPolicyDataDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* SessionManagementPolicyDataDocumentApi_H_ */

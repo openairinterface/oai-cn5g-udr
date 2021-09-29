@@ -53,12 +53,12 @@ void AccessAndMobilityPolicyDataDocumentApi::init() { setupRoutes(); }
 void AccessAndMobilityPolicyDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(
-      *router,
-      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/am-data",
-      Routes::bind(&AccessAndMobilityPolicyDataDocumentApi::
-                       read_access_and_mobility_policy_data_handler,
-                   this));
+  Routes::Get(*router,
+              base + udr_cfg.nudr.api_version +
+                  "/policy-data/ues/:ueId/am-data",
+              Routes::bind(&AccessAndMobilityPolicyDataDocumentApi::
+                               read_access_and_mobility_policy_data_handler,
+                           this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -98,4 +98,4 @@ void AccessAndMobilityPolicyDataDocumentApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -23,8 +23,8 @@
 #define _UDR_CONFIG_H_
 
 #include <arpa/inet.h>
-#include <netinet/in.h>
 #include <libconfig.h++>
+#include <netinet/in.h>
 #include <string>
 
 #define UDR_CONFIG_STRING_UDR_CONFIG "UDR"
@@ -67,7 +67,7 @@ typedef struct interface_cfg_s {
 } interface_cfg_t;
 
 class udr_config {
- public:
+public:
   udr_config();
   ~udr_config();
 
@@ -82,6 +82,6 @@ class udr_config {
 
   mysql_conf_t mysql;
 };
-}  // namespace oai::udr::config
+} // namespace oai::udr::config
 
 #endif

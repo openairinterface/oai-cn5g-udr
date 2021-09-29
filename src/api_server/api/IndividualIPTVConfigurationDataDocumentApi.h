@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualIPTVConfigurationDataDocumentApi {
- public:
+public:
   IndividualIPTVConfigurationDataDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualIPTVConfigurationDataDocumentApi() {}
@@ -62,7 +62,7 @@ class IndividualIPTVConfigurationDataDocumentApi {
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void create_or_replace_individual_iptv_configuration_data_handler(
@@ -104,6 +104,6 @@ class IndividualIPTVConfigurationDataDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* IndividualIPTVConfigurationDataDocumentApi_H_ */

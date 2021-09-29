@@ -150,4 +150,4 @@ void AuthenticationUPUDocumentApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

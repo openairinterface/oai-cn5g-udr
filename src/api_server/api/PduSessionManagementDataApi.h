@@ -55,14 +55,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class PduSessionManagementDataApi {
- public:
+public:
   PduSessionManagementDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~PduSessionManagementDataApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void create_or_replace_session_management_data_handler(
@@ -104,9 +104,10 @@ class PduSessionManagementDataApi {
   /// </remarks>
   /// <param name="ueId">UE id</param>
   /// <param name="pduSessionId">PDU session id</param>
-  virtual void delete_session_management_data(
-      const std::string &ueId, const int32_t &pduSessionId,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  delete_session_management_data(const std::string &ueId,
+                                 const int32_t &pduSessionId,
+                                 Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Retrieves the session management data for a UE and for an individual PDU
@@ -134,6 +135,6 @@ class PduSessionManagementDataApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* PduSessionManagementDataApi_H_ */

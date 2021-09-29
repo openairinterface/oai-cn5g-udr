@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class CAGUpdateAckDocumentApi {
- public:
+public:
   CAGUpdateAckDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~CAGUpdateAckDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void create_cag_update_ack_handler(const Pistache::Rest::Request &request,
@@ -87,6 +87,6 @@ class CAGUpdateAckDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* CAGUpdateAckDocumentApi_H_ */

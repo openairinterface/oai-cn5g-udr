@@ -54,21 +54,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class PFDDataStoreApi {
- public:
+public:
   PFDDataStoreApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~PFDDataStoreApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void read_pfd_data_handler(const Pistache::Rest::Request &request,
                              Pistache::Http::ResponseWriter response);
-  void pfd_data_store_api_default_handler(
-      const Pistache::Rest::Request &request,
-      Pistache::Http::ResponseWriter response);
+  void
+  pfd_data_store_api_default_handler(const Pistache::Rest::Request &request,
+                                     Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
 
@@ -83,11 +83,11 @@ class PFDDataStoreApi {
   /// included in the URI, it applies to all application identifier(s) for the
   /// querying PFD Data resource. (optional, default to
   /// std::vector&lt;std::string&gt;())</param>
-  virtual void read_pfd_data(
-      const Pistache::Optional<std::vector<std::string>> &appId,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  read_pfd_data(const Pistache::Optional<std::vector<std::string>> &appId,
+                Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* PFDDataStoreApi_H_ */

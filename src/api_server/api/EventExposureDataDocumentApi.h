@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class EventExposureDataDocumentApi {
- public:
+public:
   EventExposureDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~EventExposureDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void query_ee_data_handler(const Pistache::Rest::Request &request,
@@ -82,13 +82,13 @@ class EventExposureDataDocumentApi {
   /// std::vector&lt;std::string&gt;())</param> <param
   /// name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
-  virtual void query_ee_data(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  query_ee_data(const std::string &ueId,
+                const Pistache::Optional<std::vector<std::string>> &fields,
+                const Pistache::Optional<std::string> &supportedFeatures,
+                Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* EventExposureDataDocumentApi_H_ */

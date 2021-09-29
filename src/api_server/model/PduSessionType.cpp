@@ -55,4 +55,4 @@ void from_json(const nlohmann::json &j, PduSessionType &o) {
   o.set_value(j.get<std::string>());
 }
 
-}  // namespace oai::udr::model
+} // namespace oai::udr::model

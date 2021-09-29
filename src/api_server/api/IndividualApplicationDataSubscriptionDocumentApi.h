@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualApplicationDataSubscriptionDocumentApi {
- public:
+public:
   IndividualApplicationDataSubscriptionDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualApplicationDataSubscriptionDocumentApi() {}
@@ -62,7 +62,7 @@ class IndividualApplicationDataSubscriptionDocumentApi {
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void delete_individual_application_data_subscription_handler(
@@ -114,6 +114,6 @@ class IndividualApplicationDataSubscriptionDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* IndividualApplicationDataSubscriptionDocumentApi_H_ */

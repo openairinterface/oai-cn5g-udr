@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class NSSAIACKDocumentApi {
- public:
+public:
   NSSAIACKDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~NSSAIACKDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void query_nssai_ack_handler(const Pistache::Rest::Request &request,
@@ -80,12 +80,12 @@ class NSSAIACKDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
-  virtual void query_nssai_ack(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  query_nssai_ack(const std::string &ueId,
+                  const Pistache::Optional<std::string> &supportedFeatures,
+                  Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* NSSAIACKDocumentApi_H_ */

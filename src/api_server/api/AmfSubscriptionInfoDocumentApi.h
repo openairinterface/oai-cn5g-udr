@@ -56,19 +56,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class AmfSubscriptionInfoDocumentApi {
- public:
+public:
   AmfSubscriptionInfoDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~AmfSubscriptionInfoDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
-  void modify_amf_subscription_info_handler(
-      const Pistache::Rest::Request &request,
-      Pistache::Http::ResponseWriter response);
+  void
+  modify_amf_subscription_info_handler(const Pistache::Rest::Request &request,
+                                       Pistache::Http::ResponseWriter response);
   void amf_subscription_info_document_api_default_handler(
       const Pistache::Rest::Request &request,
       Pistache::Http::ResponseWriter response);
@@ -93,6 +93,6 @@ class AmfSubscriptionInfoDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* AmfSubscriptionInfoDocumentApi_H_ */

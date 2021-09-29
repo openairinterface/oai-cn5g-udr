@@ -16,8 +16,8 @@
 
 #include <signal.h>
 #include <stdint.h>
-#include <stdlib.h>  // srand
-#include <unistd.h>  // get_pid(), pause()
+#include <stdlib.h> // srand
+#include <unistd.h> // get_pid(), pause()
 
 #include <iostream>
 #include <thread>

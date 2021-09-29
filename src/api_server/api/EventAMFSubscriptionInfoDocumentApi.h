@@ -50,14 +50,14 @@
 namespace oai::udr::api {
 
 class EventAMFSubscriptionInfoDocumentApi {
- public:
+public:
   EventAMFSubscriptionInfoDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~EventAMFSubscriptionInfoDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void remove_amf_subscriptions_info_handler(
@@ -77,11 +77,12 @@ class EventAMFSubscriptionInfoDocumentApi {
   /// </remarks>
   /// <param name="ueId"></param>
   /// <param name="subsId"></param>
-  virtual void remove_amf_subscriptions_info(
-      const std::string &ueId, const std::string &subsId,
-      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void
+  remove_amf_subscriptions_info(const std::string &ueId,
+                                const std::string &subsId,
+                                Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* EventAMFSubscriptionInfoDocumentApi_H_ */

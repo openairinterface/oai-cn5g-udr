@@ -63,7 +63,7 @@ using namespace oai::udr::model;
 using namespace oai::udr::config;
 
 class UDRApiServer {
- public:
+public:
   UDRApiServer(Pistache::Address address, udr_app *udr_app_inst)
       : m_httpEndpoint(std::make_shared<Pistache::Http::Endpoint>(address)) {
     m_router = std::make_shared<Pistache::Rest::Router>();
@@ -104,7 +104,7 @@ class UDRApiServer {
   void start();
   void shutdown();
 
- private:
+private:
   std::shared_ptr<Pistache::Http::Endpoint> m_httpEndpoint;
   std::shared_ptr<Pistache::Rest::Router> m_router;
 

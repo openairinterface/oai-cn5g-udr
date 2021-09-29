@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class EnhancedCoverageRestrictionDataApi {
- public:
+public:
   EnhancedCoverageRestrictionDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~EnhancedCoverageRestrictionDataApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void query_coverage_restriction_data_handler(
@@ -93,6 +93,6 @@ class EnhancedCoverageRestrictionDataApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* EnhancedCoverageRestrictionDataApi_H_ */

@@ -108,4 +108,4 @@ bool fromStringValue(const std::string &inStr, oai::udr::model::Snssai &value) {
   return true;
 }
 
-}  // namespace oai::udr::helpers
+} // namespace oai::udr::helpers

@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class V2XSubscriptionDataApi {
- public:
+public:
   V2XSubscriptionDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~V2XSubscriptionDataApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void query_v2x_data_handler(const Pistache::Rest::Request &request,
@@ -92,6 +92,6 @@ class V2XSubscriptionDataApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* V2XSubscriptionDataApi_H_ */

@@ -53,18 +53,18 @@ void SessionManagementPolicyDataDocumentApi::init() { setupRoutes(); }
 void SessionManagementPolicyDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(
-      *router,
-      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/sm-data",
-      Routes::bind(&SessionManagementPolicyDataDocumentApi::
-                       read_session_management_policy_data_handler,
-                   this));
-  Routes::Patch(
-      *router,
-      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/sm-data",
-      Routes::bind(&SessionManagementPolicyDataDocumentApi::
-                       update_session_management_policy_data_handler,
-                   this));
+  Routes::Get(*router,
+              base + udr_cfg.nudr.api_version +
+                  "/policy-data/ues/:ueId/sm-data",
+              Routes::bind(&SessionManagementPolicyDataDocumentApi::
+                               read_session_management_policy_data_handler,
+                           this));
+  Routes::Patch(*router,
+                base + udr_cfg.nudr.api_version +
+                    "/policy-data/ues/:ueId/sm-data",
+                Routes::bind(&SessionManagementPolicyDataDocumentApi::
+                                 update_session_management_policy_data_handler,
+                             this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -167,4 +167,4 @@ void SessionManagementPolicyDataDocumentApi::
                 "The requested method does not exist");
 }
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api

@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class TraceDataDocumentApi {
- public:
+public:
   TraceDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~TraceDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void query_trace_data_handler(const Pistache::Rest::Request &request,
@@ -90,6 +90,6 @@ class TraceDataDocumentApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* TraceDataDocumentApi_H_ */

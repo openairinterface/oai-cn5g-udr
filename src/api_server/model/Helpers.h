@@ -39,13 +39,13 @@
 #ifndef Helpers_H_
 #define Helpers_H_
 
+#include "Snssai.h"
 #include <ctime>
 #include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Snssai.h"
 
 namespace oai::udr::helpers {
 
@@ -91,6 +91,6 @@ bool fromStringValue(const std::string &inStr, std::vector<T> &value,
   return fromStringValue(inStrings, value);
 }
 
-}  // namespace oai::udr::helpers
+} // namespace oai::udr::helpers
 
-#endif  // Helpers_H_
+#endif // Helpers_H_

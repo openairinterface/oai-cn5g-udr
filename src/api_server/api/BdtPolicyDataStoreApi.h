@@ -54,14 +54,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class BdtPolicyDataStoreApi {
- public:
+public:
   BdtPolicyDataStoreApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~BdtPolicyDataStoreApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void read_bdt_policy_data_handler(const Pistache::Rest::Request &request,
@@ -91,6 +91,6 @@ class BdtPolicyDataStoreApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* BdtPolicyDataStoreApi_H_ */

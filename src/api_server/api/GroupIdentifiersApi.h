@@ -53,14 +53,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class GroupIdentifiersApi {
- public:
+public:
   GroupIdentifiersApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~GroupIdentifiersApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
- private:
+private:
   void setupRoutes();
 
   void get_group_identifiers_handler(const Pistache::Rest::Request &request,
@@ -92,6 +92,6 @@ class GroupIdentifiersApi {
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-}  // namespace oai::udr::api
+} // namespace oai::udr::api
 
 #endif /* GroupIdentifiersApi_H_ */
