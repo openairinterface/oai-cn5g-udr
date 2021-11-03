@@ -108,6 +108,7 @@ COPY --from=oai-udr-builder /lib64/libboost_date_time.so.1.66.0 .
 COPY --from=oai-udr-builder /lib64/libconfig++.so.9 .
 COPY --from=oai-udr-builder /lib64/libnghttp2.so.14 .
 COPY --from=oai-udr-builder /usr/lib64/mysql/libmysqlclient.so.21 .
+COPY --from=oai-udr-builder /usr/local/lib/libnghttp2_asio.so.1 /usr/lib64/
 
 RUN ldconfig
 

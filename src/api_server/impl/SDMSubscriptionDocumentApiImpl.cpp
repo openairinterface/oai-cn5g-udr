@@ -59,8 +59,12 @@ void SDMSubscriptionDocumentApiImpl::querysdm_subscription(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_query_sdm_subscription(ueId, subsId, response_data, code);
+  long http_code = 0;
 
+  m_udr_app->handle_query_sdm_subscription(ueId, subsId, response_data,
+                                           http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
@@ -69,8 +73,12 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_remove_sdm_subscription(ueId, subsId, response_data, code);
+  long http_code = 0;
 
+  m_udr_app->handle_remove_sdm_subscription(ueId, subsId, response_data,
+                                            http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
@@ -80,9 +88,12 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_update_sdm_subscription(ueId, subsId, sdmSubscription,
-                                            response_data, code);
+  long http_code = 0;
 
+  m_udr_app->handle_update_sdm_subscription(ueId, subsId, sdmSubscription,
+                                            response_data, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }

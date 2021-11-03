@@ -4,6 +4,7 @@ set -euo pipefail
 
 CONFIG_DIR="/openair-udr/etc"
 UDR_INTERFACE_PORT_FOR_NUDR=${UDR_INTERFACE_PORT_FOR_NUDR:-80}
+UDR_INTERFACE_HTTP2_PORT_FOR_NUDR=${UDR_INTERFACE_HTTP2_PORT_FOR_NUDR:-8080}
 
 for c in ${CONFIG_DIR}/*.conf; do
     # grep variable names (format: ${VAR}) from template to be rendered

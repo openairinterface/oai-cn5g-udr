@@ -187,7 +187,7 @@ void udr_config::display() {
   Logger::config().info("- Nudr Networking:");
   Logger::config().info("    Interface name ......: %s", nudr.if_name.c_str());
   Logger::config().info("    IPv4 Addr ...........: %s", inet_ntoa(nudr.addr4));
-  Logger::config().info("    Port ................: %d", nudr.port);
+  Logger::config().info("    HTTP1 Port ..........: %d", nudr.port);
   Logger::config().info("    HTTP2 port ..........: %d", nudr_http2_port);
   Logger::config().info("    API version..........: %s",
                         nudr.api_version.c_str());

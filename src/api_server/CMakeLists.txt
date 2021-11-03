@@ -31,6 +31,7 @@ include_directories(${SRC_TOP_DIR}/../build/ext/spdlog/include)
 
 file(GLOB UDR_API_SERVER_src_files
     ${UDR_API_SERVER_DIR}/udr-api-server.cpp
+    ${UDR_API_SERVER_DIR}/udr-http2-server.cpp
     ${UDR_API_SERVER_DIR}/model/*.cpp
     ${UDR_API_SERVER_DIR}/api/*.cpp
     ${UDR_API_SERVER_DIR}/impl/*.cpp

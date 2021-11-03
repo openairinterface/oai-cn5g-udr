@@ -69,9 +69,12 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
   // TODO: DNN and SNSSAI
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_query_sm_data(ueId, servingPlmnId, response_data, code,
+  long http_code = 0;
+
+  m_udr_app->handle_query_sm_data(ueId, servingPlmnId, response_data, http_code,
                                   snssai, dnn_str);
 
+  code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }

@@ -22,10 +22,12 @@
 #include <iostream>
 #include <thread>
 
+#include "conversions.hpp"
 #include "logger.hpp"
 #include "options.hpp"
 #include "pid_file.hpp"
 #include "udr-api-server.h"
+#include "udr-http2-server.h"
 #include "udr_app.hpp"
 #include "udr_config.hpp"
 
@@ -37,7 +39,7 @@ using namespace oai::udr::config;
 udr_config udr_cfg;
 udr_app *udr_app_inst = nullptr;
 UDRApiServer *api_server = nullptr;
-#include "udr_config.hpp"
+udr_http2_server *udr_api_server_2 = nullptr;
 
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
@@ -106,7 +108,15 @@ int main(int argc, char **argv) {
   api_server = new UDRApiServer(addr, udr_app_inst);
   api_server->init(2);
   std::thread udr_manager(&UDRApiServer::start, api_server);
+
+  // UDM NGHTTP API server (HTTP2)
+  udr_api_server_2 =
+      new udr_http2_server(conv::toString(udr_cfg.nudr.addr4),
+                           udr_cfg.nudr_http2_port, udr_app_inst);
+  std::thread udr_http2_manager(&udr_http2_server::start, udr_api_server_2);
+
   udr_manager.join();
+  udr_http2_manager.join();
 
   FILE *fp = NULL;
   std::string filename = fmt::format("/tmp/udr_{}.status", getpid());

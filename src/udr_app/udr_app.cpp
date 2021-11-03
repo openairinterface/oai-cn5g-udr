@@ -31,6 +31,7 @@
 #include <mysql/mysql.h>
 #include <unistd.h>
 
+#include "3gpp_29.500.h"
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AuthenticationSubscription.h"
 #include "ProblemDetails.h"
@@ -74,8 +75,7 @@ udr_app::~udr_app() { Logger::udr_app().debug("Delete UDM APP instance..."); }
 //------------------------------------------------------------------------------
 void udr_app::handle_query_am_data(const std::string &ue_id,
                                    const std::string &serving_plmn_id,
-                                   nlohmann::json &response_data,
-                                   Pistache::Http::Code &code) {
+                                   nlohmann::json &response_data, long &code) {
   MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
@@ -91,14 +91,16 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！");
-    code = Pistache::Http::Code::Internal_Server_Error;
+    // code = Pistache::Http::Code::Internal_Server_Error;
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
     Logger::udr_server().error("mysql_store_result failure！");
-    code = Pistache::Http::Code::Internal_Server_Error;
+    // code = Pistache::Http::Code::Internal_Server_Error;
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;
     return;
   }
 
@@ -306,14 +308,16 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
 
     to_json(j, subscription_data);
     response_data = j;
-    code = Pistache::Http::Code::Ok;
+    // code = Pistache::Http::Code::Ok;
+    code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug(
         "AccessAndMobilitySubscriptionData GET - json:\n\"%s\"",
         j.dump().c_str());
   } else {
     Logger::udr_server().error("AccessAndMobilitySubscriptionData no data！");
-    code = Pistache::Http::Code::Internal_Server_Error;
+    // code = Pistache::Http::Code::Internal_Server_Error;
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;
   }
 
   mysql_free_result(res);
@@ -323,7 +327,7 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
 void udr_app::handle_create_amf_context_3gpp(
     const std::string &ue_id,
     Amf3GppAccessRegistration &amf3GppAccessRegistration,
-    nlohmann::json &response_data, Pistache::Http::Code &code) {
+    nlohmann::json &response_data, long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
 
@@ -550,7 +554,8 @@ void udr_app::handle_create_amf_context_3gpp(
 
   to_json(j, amf3GppAccessRegistration);
   response_data = j;
-  code = Pistache::Http::Code::Created;
+  // code = Pistache::Http::Code::Created;
+  code = HTTP_STATUS_CODE_201_CREATED;
 
   Logger::udr_server().debug("Amf3GppAccessRegistration PUT - json:\n\"%s\"",
                              j.dump().c_str());
@@ -559,7 +564,7 @@ void udr_app::handle_create_amf_context_3gpp(
 //------------------------------------------------------------------------------
 void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
                                             nlohmann::json &response_data,
-                                            Pistache::Http::Code &code) {
+                                            long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
@@ -679,7 +684,8 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
     }
     to_json(j, amf3gppaccessregistration);
     response_data = j;
-    code = Pistache::Http::Code::Ok;
+    // code = Pistache::Http::Code::Ok;
+    code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug("Amf3GppAccessRegistration GET - json:\n\"%s\"",
                                j.dump().c_str());
@@ -695,7 +701,7 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
 void udr_app::handle_create_authentication_status(const std::string &ue_id,
                                                   const AuthEvent &authEvent,
                                                   nlohmann::json &response_data,
-                                                  Pistache::Http::Code &code) {
+                                                  long &code) {
   Logger::udr_server().info("Handle Create Authentication Status");
 
   MYSQL_RES *res = nullptr;
@@ -760,7 +766,8 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
   }
 
   response_data = {};
-  code = Pistache::Http::Code::No_Content;
+  // code = Pistache::Http::Code::No_Content;
+  code = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   to_json(j, authEvent);
   Logger::udr_server().info("AuthenticationStatus PUT - json:\n\"%s\"",
@@ -770,7 +777,7 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
 //------------------------------------------------------------------------------
 void udr_app::handle_delete_authentication_status(const std::string &ue_id,
                                                   nlohmann::json &response_data,
-                                                  Pistache::Http::Code &code) {
+                                                  long &code) {
   const std::string query =
       "DELETE from AuthenticationStatus WHERE ueid='" + ue_id + "'";
 
@@ -781,14 +788,15 @@ void udr_app::handle_delete_authentication_status(const std::string &ue_id,
   }
 
   response_data = {};
-  code = Pistache::Http::Code::No_Content;
+  // code = Pistache::Http::Code::No_Content;
+  code = HTTP_STATUS_CODE_204_NO_CONTENT;
   Logger::udr_server().debug("AuthenticationStatus DELETE - successful");
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_query_authentication_status(const std::string &ue_id,
                                                  nlohmann::json &response_data,
-                                                 Pistache::Http::Code &code) {
+                                                 long &code) {
   Logger::udr_server().info("Handle Query Authentication Status");
   MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
@@ -839,7 +847,8 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
 
     to_json(j, authenticationstatus);
     response_data = j;
-    code = Pistache::Http::Code::Ok;
+    // code = Pistache::Http::Code::Ok;
+    code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().info("AuthenticationStatus GET - json:\n\"%s\"",
                               j.dump().c_str());
@@ -854,7 +863,7 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
 //------------------------------------------------------------------------------
 void udr_app::handle_modify_authentication_subscription(
     const std::string &ue_id, const std::vector<PatchItem> &patchItem,
-    nlohmann::json &response_data, Pistache::Http::Code &code) {
+    nlohmann::json &response_data, long &code) {
   Logger::udr_server().info("Handle Update Authentication Subscription");
   MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
@@ -923,13 +932,13 @@ void udr_app::handle_modify_authentication_subscription(
                             j.dump().c_str());
 
   response_data = {};
-  code = Pistache::Http::Code::No_Content;
+  // code = Pistache::Http::Code::No_Content;
+  code = HTTP_STATUS_CODE_204_NO_CONTENT;
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_read_authentication_subscription(
-    const std::string &ue_id, nlohmann::json &response_data,
-    Pistache::Http::Code &code) {
+    const std::string &ue_id, nlohmann::json &response_data, long &code) {
   Logger::udr_server().info("Handle Read Authentication Subscription");
   MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
@@ -1005,10 +1014,12 @@ void udr_app::handle_read_authentication_subscription(
 
     to_json(j, authenticationsubscription);
     response_data = j;
-    code = Pistache::Http::Code::Ok;
+    // code = Pistache::Http::Code::Ok;
+    code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().info("AuthenticationSubscription GET - json:\n\"%s\"",
                               j.dump().c_str());
+
   } else {
     Logger::udr_server().error("AuthenticationSubscription no data！SQL(%s)",
                                query.c_str());
@@ -1021,7 +1032,7 @@ void udr_app::handle_read_authentication_subscription(
 void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
                                             const std::string &subs_id,
                                             nlohmann::json &response_data,
-                                            Pistache::Http::Code &code) {
+                                            long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
@@ -1097,7 +1108,8 @@ void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
     }
     to_json(j, SdmSubscriptions);
     response_data = j;
-    code = Pistache::Http::Code::Ok;
+    // code = Pistache::Http::Code::Ok;
+    code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug("SdmSubscription GET - json:\n\"%s\"",
                                j.dump().c_str());
@@ -1113,7 +1125,7 @@ void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
 void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
                                              const std::string &subs_id,
                                              nlohmann::json &response_data,
-                                             Pistache::Http::Code &code) {
+                                             long &code) {
   MYSQL_RES *res = NULL;
   nlohmann::json j = {};
   ProblemDetails problemdetails = {};
@@ -1132,7 +1144,8 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
     response_data = j;
-    code = Pistache::Http::Code::Not_Found;
+    // code = Pistache::Http::Code::Not_Found;
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
   res = mysql_store_result(&mysql);
@@ -1142,14 +1155,16 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
     Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
                                query.c_str());
     response_data = j;
-    code = Pistache::Http::Code::Not_Found;
+    // code = Pistache::Http::Code::Not_Found;
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
   if (!mysql_num_rows(res)) {
     problemdetails.setCause("DATA_NOT_FOUND");
     to_json(j, problemdetails);
     response_data = j;
-    code = Pistache::Http::Code::Not_Found;
+    // code = Pistache::Http::Code::Not_Found;
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
   mysql_free_result(res);
@@ -1159,12 +1174,14 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
     Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
                                query.c_str());
     response_data = j;
-    code = Pistache::Http::Code::Not_Found;
+    // code = Pistache::Http::Code::Not_Found;
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
 
   response_data = {};
-  code = Pistache::Http::Code::No_Content;
+  // code = Pistache::Http::Code::No_Content;
+  code = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   Logger::udr_server().debug("SdmSubscription DELETE - successful");
 }
@@ -1174,7 +1191,7 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
                                              const std::string &subs_id,
                                              SdmSubscription &sdmSubscription,
                                              nlohmann::json &response_data,
-                                             Pistache::Http::Code &code) {
+                                             long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
 
@@ -1256,7 +1273,8 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
   } else {
     to_json(j, problemdetails);
     response_data = j;
-    code = Pistache::Http::Code::Not_Found;
+    // code = Pistache::Http::Code::Not_Found;
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
 
     mysql_free_result(res);
     return;
@@ -1270,7 +1288,8 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
   }
 
   response_data = {};
-  code = Pistache::Http::Code::No_Content;
+  // code = Pistache::Http::Code::No_Content;
+  code = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   to_json(j, sdmSubscription);
   Logger::udr_server().debug("SdmSubscription PUT - json:\n\"%s\"",
@@ -1281,7 +1300,7 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
 void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
                                               SdmSubscription &sdmSubscription,
                                               nlohmann::json &response_data,
-                                              Pistache::Http::Code &code) {
+                                              long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
   nlohmann::json j = {};
@@ -1373,7 +1392,8 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
 
   to_json(j, sdmSubscription);
   response_data = j;
-  code = Pistache::Http::Code::Created;
+  // code = Pistache::Http::Code::Created;
+  code = HTTP_STATUS_CODE_201_CREATED;
 
   Logger::udr_server().debug("SdmSubscriptions POST - json:\n\"%s\"",
                              j.dump().c_str());
@@ -1382,7 +1402,7 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
                                              nlohmann::json &response_data,
-                                             Pistache::Http::Code &code) {
+                                             long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
@@ -1479,7 +1499,8 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
   mysql_free_result(res);
 
   response_data = j;
-  code = Pistache::Http::Code::Ok;
+  // code = Pistache::Http::Code::Ok;
+  code = HTTP_STATUS_CODE_200_OK;
 
   Logger::udr_server().debug("SdmSubscriptions GET - json:\n\"%s\"",
                              j.dump().c_str());
@@ -1488,8 +1509,7 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sm_data(const std::string &ue_id,
                                    const std::string &serving_plmn_id,
-                                   nlohmann::json &response_data,
-                                   Pistache::Http::Code &code,
+                                   nlohmann::json &response_data, long code,
                                    oai::udr::model::Snssai snssai,
                                    std::string dnn) {
   MYSQL_RES *res = nullptr;
@@ -1584,7 +1604,8 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
     }
     to_json(j, sessionmanagementsubscriptiondata);
     response_data = j;
-    code = Pistache::Http::Code::Ok;
+    // code = Pistache::Http::Code::Ok;
+    code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug("SessionManagementSubscriptionData:\n %s",
                                j.dump().c_str());
@@ -1601,7 +1622,7 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
 void udr_app::handle_create_smf_context_non_3gpp(
     const std::string &ue_id, const int32_t &pdu_session_id,
     const SmfRegistration &smfRegistration, nlohmann::json &response_data,
-    Pistache::Http::Code &code) {
+    long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
 
@@ -1738,7 +1759,8 @@ void udr_app::handle_create_smf_context_non_3gpp(
 
   to_json(j, smfRegistration);
   response_data = j;
-  code = Pistache::Http::Code::Created;
+  // code = Pistache::Http::Code::Created;
+  code = HTTP_STATUS_CODE_201_CREATED;
 
   Logger::udr_server().debug("SmfRegistration PUT - json:\n\"%s\"",
                              j.dump().c_str());
@@ -1748,7 +1770,7 @@ void udr_app::handle_create_smf_context_non_3gpp(
 void udr_app::handle_delete_smf_context(const std::string &ue_id,
                                         const int32_t &pdu_session_id,
                                         nlohmann::json &response_data,
-                                        Pistache::Http::Code &code) {
+                                        long &code) {
   const std::string query =
       "DELETE from SmfRegistrations WHERE ueid='" + ue_id +
       "' AND subpduSessionId=" + std::to_string(pdu_session_id);
@@ -1760,7 +1782,8 @@ void udr_app::handle_delete_smf_context(const std::string &ue_id,
   }
 
   response_data = {};
-  code = Pistache::Http::Code::No_Content;
+  // code = Pistache::Http::Code::No_Content;
+  code = HTTP_STATUS_CODE_204_NO_CONTENT;
   Logger::udr_server().debug("SmfRegistration DELETE - successful");
 }
 
@@ -1768,7 +1791,7 @@ void udr_app::handle_delete_smf_context(const std::string &ue_id,
 void udr_app::handle_query_smf_registration(const std::string &ue_id,
                                             const int32_t &pdu_session_id,
                                             nlohmann::json &response_data,
-                                            Pistache::Http::Code &code) {
+                                            long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
@@ -1852,7 +1875,8 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
     }
     to_json(j, smfregistration);
     response_data = j;
-    code = Pistache::Http::Code::Ok;
+    // code = Pistache::Http::Code::Ok;
+    code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug("SmfRegistration GET - json:\n\"%s\"",
                                j.dump().c_str());
@@ -1867,7 +1891,7 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
 //------------------------------------------------------------------------------
 void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
                                         nlohmann::json &response_data,
-                                        Pistache::Http::Code &code) {
+                                        long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
@@ -1968,7 +1992,8 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
   mysql_free_result(res);
 
   response_data = j;
-  code = Pistache::Http::Code::Ok;
+  // code = Pistache::Http::Code::Ok;
+  code = HTTP_STATUS_CODE_200_OK;
 
   Logger::udr_server().debug("SmfRegistrations GET - json:\n\"%s\"",
                              j.dump().c_str());
@@ -1978,7 +2003,7 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
 void udr_app::handle_query_smf_select_data(const std::string &ue_id,
                                            const std::string &serving_plmn_id,
                                            nlohmann::json &response_data,
-                                           Pistache::Http::Code &code) {
+                                           long &code) {
   MYSQL_RES *res = NULL;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
@@ -2020,7 +2045,9 @@ void udr_app::handle_query_smf_select_data(const std::string &ue_id,
     }
     to_json(j, smfselectionsubscriptiondata);
     response_data = j;
-    code = Pistache::Http::Code::Ok;
+    // code = Pistache::Http::Code::Ok;
+    code = HTTP_STATUS_CODE_200_OK;
+
     Logger::udr_server().debug(
         "SmfSelectionSubscriptionData GET - json:\n\"%s\"", j.dump().c_str());
   } else {

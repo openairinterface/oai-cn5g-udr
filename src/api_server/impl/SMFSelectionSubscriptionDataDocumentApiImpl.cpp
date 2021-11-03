@@ -56,9 +56,12 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_query_smf_select_data(ueId, servingPlmnId, response_data,
-                                          code);
+  long http_code = 0;
 
+  m_udr_app->handle_query_smf_select_data(ueId, servingPlmnId, response_data,
+                                          http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
