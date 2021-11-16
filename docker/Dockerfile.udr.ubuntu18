@@ -92,6 +92,9 @@ COPY --from=oai-udr-builder /openair-udr/scripts/entrypoint.sh .
 COPY --from=oai-udr-builder /wait-for-it/wait-for-it.sh .
 
 COPY --from=oai-udr-builder /usr/local/lib/libpistache.so /usr/local/lib/
+COPY --from=oai-udr-builder /usr/local/lib/libnghttp2_asio.so.1 /usr/local/lib/
+COPY --from=oai-udr-builder /usr/lib/x86_64-linux-gnu/libboost_system.so.1.65.1 /usr/local/lib/
+
 RUN ldconfig
 
 WORKDIR /openair-udr/etc

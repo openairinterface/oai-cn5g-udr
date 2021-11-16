@@ -62,13 +62,12 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string& ] serving_plmn_id: Serving PLMN ID
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_am_data(const std::string &ue_id,
                             const std::string &serving_plmn_id,
-                            nlohmann::json &response_data,
-                            Pistache::Http::Code &code);
+                            nlohmann::json &response_data, long &code);
 
   /*
    * Handle a request to create AMF3GPPAccessRegistration Context
@@ -77,25 +76,24 @@ public:
    * @param [Amf3GppAccessRegistration& ] amf3GppAccessRegistration:
    * Amf3GppAccessRegistration
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_create_amf_context_3gpp(
       const std::string &ue_id,
       Amf3GppAccessRegistration &amf3GppAccessRegistration,
-      nlohmann::json &response_data, Pistache::Http::Code &code);
+      nlohmann::json &response_data, long &code);
 
   /*
    * Handle a query for AMF3GPPAccessRegistration
    * (AMF3GPPAccessRegistrationDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_amf_context_3gpp(const std::string &ue_id,
-                                     nlohmann::json &response_data,
-                                     Pistache::Http::Code &code);
+                                     nlohmann::json &response_data, long &code);
 
   /*
    * Handle a request to create AuthenticationStatus
@@ -103,37 +101,37 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [const AuthEvent& ] authEvent:
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_create_authentication_status(const std::string &ue_id,
                                            const AuthEvent &authEvent,
                                            nlohmann::json &response_data,
-                                           Pistache::Http::Code &code);
+                                           long &code);
 
   /*
    * Handle a request to delete AuthenticationStatus
    * (AuthenticationStatusDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_delete_authentication_status(const std::string &ue_id,
                                            nlohmann::json &response_data,
-                                           Pistache::Http::Code &code);
+                                           long &code);
 
   /*
    * Handle a request to retrieve AuthenticationStatus
    * (AuthenticationStatusDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_authentication_status(const std::string &ue_id,
                                           nlohmann::json &response_data,
-                                          Pistache::Http::Code &code);
+                                          long &code);
 
   /*
    * Handle a request to modify AuthenticationSubscription
@@ -141,24 +139,24 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::vector<PatchItem>&] patchItem: PATCH message
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_modify_authentication_subscription(
       const std::string &ue_id, const std::vector<PatchItem> &patchItem,
-      nlohmann::json &response_data, Pistache::Http::Code &code);
+      nlohmann::json &response_data, long &code);
 
   /*
    * Handle a request to get AuthenticationSubscription
    * (AuthenticationSubscriptionDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_read_authentication_subscription(const std::string &ue_id,
                                                nlohmann::json &response_data,
-                                               Pistache::Http::Code &code);
+                                               long &code);
 
   /*
    * Handle a request to retrieve SDMSubscription
@@ -166,26 +164,25 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] subs_id: subscription ID
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_sdm_subscription(const std::string &ue_id,
                                      const std::string &subs_id,
-                                     nlohmann::json &response_data,
-                                     Pistache::Http::Code &code);
+                                     nlohmann::json &response_data, long &code);
 
   /*
    * Handle a request to remove SDMSubscription (SDMSubscriptionDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] subs_id: subscription ID
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_remove_sdm_subscription(const std::string &ue_id,
                                       const std::string &subs_id,
                                       nlohmann::json &response_data,
-                                      Pistache::Http::Code &code);
+                                      long &code);
 
   /*
    * Handle a request to update SDMSubscription (SDMSubscriptionDocumentApiImpl)
@@ -193,14 +190,14 @@ public:
    * @param [const std::string&] subs_id: subscription ID
    * @param [SdmSubscription&] sdmSubscription: subscription information
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_update_sdm_subscription(const std::string &ue_id,
                                       const std::string &subs_id,
                                       SdmSubscription &sdmSubscription,
                                       nlohmann::json &response_data,
-                                      Pistache::Http::Code &code);
+                                      long &code);
 
   /*
    * Handle a request to create SDMSubscriptions
@@ -208,25 +205,25 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [SdmSubscription&] sdmSubscription: subscription information
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_create_sdm_subscriptions(const std::string &ue_id,
                                        SdmSubscription &sdmSubscription,
                                        nlohmann::json &response_data,
-                                       Pistache::Http::Code &code);
+                                       long &code);
 
   /*
    * Handle a request to retrieve SDMSubscriptions
    * (SDMSubscriptionDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_sdm_subscriptions(const std::string &ue_id,
                                       nlohmann::json &response_data,
-                                      Pistache::Http::Code &code);
+                                      long &code);
 
   /*
    * Handle a request to retrieve SessionManagementSubscription
@@ -234,13 +231,12 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_sm_data(const std::string &ue_id,
                             const std::string &serving_plmn_id,
-                            nlohmann::json &response_data,
-                            Pistache::Http::Code &code,
+                            nlohmann::json &response_data, long code,
                             oai::udr::model::Snssai snssai = {},
                             std::string dnn = {});
 
@@ -250,26 +246,26 @@ public:
    * @param [const int32_t&] pdu_session_id: PDU Session ID
    * @param [const SmfRegistration&] smfRegistration: SMF registration info
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_create_smf_context_non_3gpp(
-      const std::string &ue_id, const int32_t &pdu_session_id,
-      const SmfRegistration &smfRegistration, nlohmann::json &response_data,
-      Pistache::Http::Code &code);
+  void
+  handle_create_smf_context_non_3gpp(const std::string &ue_id,
+                                     const int32_t &pdu_session_id,
+                                     const SmfRegistration &smfRegistration,
+                                     nlohmann::json &response_data, long &code);
 
   /*
    * Handle a request to delete SMFRegistration (SMFRegistrationDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [const int32_t&] pdu_session_id: PDU Session ID
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_delete_smf_context(const std::string &ue_id,
                                  const int32_t &pdu_session_id,
-                                 nlohmann::json &response_data,
-                                 Pistache::Http::Code &code);
+                                 nlohmann::json &response_data, long &code);
 
   /*
    * Handle a request to retrieve SMFRegistration
@@ -277,25 +273,23 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [const int32_t&] pdu_session_id: PDU Session ID
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_smf_registration(const std::string &ue_id,
                                      const int32_t &pdu_session_id,
-                                     nlohmann::json &response_data,
-                                     Pistache::Http::Code &code);
+                                     nlohmann::json &response_data, long &code);
 
   /*
    * Handle a request to retrieve SMFRegistrationsCollection
    * (SMFRegistrationsCollectionApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_smf_reg_list(const std::string &ue_id,
-                                 nlohmann::json &response_data,
-                                 Pistache::Http::Code &code);
+                                 nlohmann::json &response_data, long &code);
 
   /*
    * Handle a request to retrieve SMFSelectionSubscription
@@ -303,13 +297,12 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [Pistache::Http::Code&] code: HTTP response code
+   * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_smf_select_data(const std::string &ue_id,
                                     const std::string &serving_plmn_id,
-                                    nlohmann::json &response_data,
-                                    Pistache::Http::Code &code);
+                                    nlohmann::json &response_data, long &code);
 
 private:
   MYSQL mysql;

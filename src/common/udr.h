@@ -4,8 +4,8 @@
  * this work for additional information regarding copyright ownership.
  * The OpenAirInterface Software Alliance licenses this file to You under
  * the OAI Public License, Version 1.1  (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the
- * License at
+ *file except in compliance with the License. You may obtain a copy of the
+ *License at
  *
  *      http://www.openairinterface.org/?page_id=698
  *
@@ -19,28 +19,17 @@
  *      contact@openairinterface.org
  */
 
-/*! \file string.hpp
- \brief
- \author  Lionel GAUTHIER
- \date 2018
- \email: lionel.gauthier@eurecom.fr
- */
-#ifndef FILE_STRING_HPP_FILE_SEEN
-#define FILE_STRING_HPP_FILE_SEEN
+#ifndef FILE_UDR_SEEN
+#define FILE_UDR_SEEN
 
-#include <arpa/inet.h>
-#include <string>
+#define NUDR_DR_BASE "/nudr-dr/"
+#define NUDR_DR_AUTH_STATUS "authentication-status"
+#define NUDR_DR_AUTH_SUBS "authentication-subscription"
+#define NUDR_DR_AMF_XGPP_ACCESS "amf-3gpp-access"
+#define NUDR_DR_AM_DATA "am-data"
+#define NUDR_DR_SDM_SUBS "sdm-subscriptions"
+#define NUDR_DR_SM_DATA "sm-data"
+#define NUDR_DR_SMF_REG "smf-registrations"
+#define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
 
-namespace util {
-
-std::string string_format(const char *format, ...);
-
-std::string &ltrim(std::string &s);
-// trim from end
-std::string &rtrim(std::string &s);
-// trim from both ends
-std::string &trim(std::string &s);
-// extract query param from given querystring
-std::string get_query_param(std::string querystring, std::string param);
-} // namespace util
 #endif

@@ -51,9 +51,12 @@ void AuthenticationStatusDocumentApiImpl::create_authentication_status(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_create_authentication_status(ueId, authEvent, response_data,
-                                                 code);
+  long http_code = 0;
 
+  m_udr_app->handle_create_authentication_status(ueId, authEvent, response_data,
+                                                 http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
@@ -62,8 +65,12 @@ void AuthenticationStatusDocumentApiImpl::delete_authentication_status(
     const std::string &ueId, Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_delete_authentication_status(ueId, response_data, code);
+  long http_code = 0;
 
+  m_udr_app->handle_delete_authentication_status(ueId, response_data,
+                                                 http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
@@ -74,8 +81,11 @@ void AuthenticationStatusDocumentApiImpl::query_authentication_status(
     Pistache::Http::ResponseWriter &response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code = {};
-  m_udr_app->handle_query_authentication_status(ueId, response_data, code);
+  long http_code = 0;
 
+  m_udr_app->handle_query_authentication_status(ueId, response_data, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
