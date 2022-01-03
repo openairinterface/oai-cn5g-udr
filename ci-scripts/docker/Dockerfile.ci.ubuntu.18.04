@@ -83,7 +83,7 @@ COPY --from=oai-udr-builder \
     /usr/local/lib/libpistache.so \
     /usr/local/lib/libnghttp2_asio.so.1 \
     /usr/lib/x86_64-linux-gnu/libboost_system.so.1.65.1 \
-    ./
+    /usr/local/lib/
 
 RUN ldconfig && \
     ldd /openair-udr/bin/oai_udr
