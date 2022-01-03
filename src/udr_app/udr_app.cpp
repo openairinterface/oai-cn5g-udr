@@ -1509,7 +1509,7 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sm_data(const std::string &ue_id,
                                    const std::string &serving_plmn_id,
-                                   nlohmann::json &response_data, long code,
+                                   nlohmann::json &response_data, long &code,
                                    oai::udr::model::Snssai snssai,
                                    std::string dnn) {
   MYSQL_RES *res = nullptr;

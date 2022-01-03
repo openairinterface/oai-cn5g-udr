@@ -49,7 +49,7 @@ namespace udr {
 namespace app {
 
 class udr_app {
-public:
+ public:
   explicit udr_app(const std::string &config_file);
   udr_app(udr_app const &) = delete;
   void operator=(udr_app const &) = delete;
@@ -236,7 +236,7 @@ public:
    */
   void handle_query_sm_data(const std::string &ue_id,
                             const std::string &serving_plmn_id,
-                            nlohmann::json &response_data, long code,
+                            nlohmann::json &response_data, long &code,
                             oai::udr::model::Snssai snssai = {},
                             std::string dnn = {});
 
@@ -249,11 +249,10 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void
-  handle_create_smf_context_non_3gpp(const std::string &ue_id,
-                                     const int32_t &pdu_session_id,
-                                     const SmfRegistration &smfRegistration,
-                                     nlohmann::json &response_data, long &code);
+  void handle_create_smf_context_non_3gpp(
+      const std::string &ue_id, const int32_t &pdu_session_id,
+      const SmfRegistration &smfRegistration, nlohmann::json &response_data,
+      long &code);
 
   /*
    * Handle a request to delete SMFRegistration (SMFRegistrationDocumentApiImpl)
@@ -304,12 +303,12 @@ public:
                                     const std::string &serving_plmn_id,
                                     nlohmann::json &response_data, long &code);
 
-private:
+ private:
   MYSQL mysql;
 };
-} // namespace app
-} // namespace udr
-} // namespace oai
+}  // namespace app
+}  // namespace udr
+}  // namespace oai
 #include "udr_config.hpp"
 
 #endif /* FILE_UDR_APP_HPP_SEEN */
