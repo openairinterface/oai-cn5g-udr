@@ -70,7 +70,7 @@ udr_app::udr_app(const std::string &config_file) {
 }
 
 //------------------------------------------------------------------------------
-udr_app::~udr_app() { Logger::udr_app().debug("Delete UDM APP instance..."); }
+udr_app::~udr_app() { Logger::udr_app().debug("Delete UDR APP instance..."); }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_query_am_data(const std::string &ue_id,
@@ -1509,7 +1509,7 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sm_data(const std::string &ue_id,
                                    const std::string &serving_plmn_id,
-                                   nlohmann::json &response_data, long code,
+                                   nlohmann::json &response_data, long &code,
                                    oai::udr::model::Snssai snssai,
                                    std::string dnn) {
   MYSQL_RES *res = nullptr;
@@ -1559,6 +1559,14 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
         nlohmann::json::parse(row[i]).get_to(dnnconfigurations);
         sessionmanagementsubscriptiondata.setDnnConfigurations(
             dnnconfigurations);
+        Logger::udr_server().debug("DNN configurations (row %d): %s", i,
+                                   row[i]);
+        for (auto d : dnnconfigurations) {
+          nlohmann::json temp = {};
+          to_json(temp, d.second);
+          Logger::udr_server().debug("DNN configurations: %s",
+                                     temp.dump().c_str());
+        }
       } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
         std ::vector<std ::string> internalgroupIds;
         nlohmann::json::parse(row[i]).get_to(internalgroupIds);
