@@ -70,7 +70,7 @@ udr_app::udr_app(const std::string &config_file) {
 }
 
 //------------------------------------------------------------------------------
-udr_app::~udr_app() { Logger::udr_app().debug("Delete UDM APP instance..."); }
+udr_app::~udr_app() { Logger::udr_app().debug("Delete UDR APP instance..."); }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_query_am_data(const std::string &ue_id,
