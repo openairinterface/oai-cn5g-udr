@@ -41,7 +41,9 @@ RUN git clone https://github.com/vishnubob/wait-for-it.git
 # Building UDR
 WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --install-deps --force
-RUN ./build_udr --clean --Verbose --build-type Release --jobs
+RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
+    ldd /openair-udr/build/udr/build/udr && \
+    mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
@@ -71,15 +73,20 @@ RUN apt-get update && \
 
 # Copying executable and generated libraries
 WORKDIR /openair-udr/bin
-COPY --from=oai-udr-builder /openair-udr/build/udr/build/udr oai_udr
-COPY --from=oai-udr-builder /openair-udr/scripts/entrypoint.sh .
-COPY --from=oai-udr-builder /wait-for-it/wait-for-it.sh .
+COPY --from=oai-udr-builder \
+    /openair-udr/build/udr/build/oai_udr \
+    /openair-udr/scripts/entrypoint.sh \
+    /wait-for-it/wait-for-it.sh \
+    ./
 
-COPY --from=oai-udr-builder /usr/local/lib/libpistache.so /usr/local/lib/
-COPY --from=oai-udr-builder /usr/local/lib/libnghttp2_asio.so.1 /usr/local/lib/
-COPY --from=oai-udr-builder /usr/lib/x86_64-linux-gnu/libboost_system.so.1.65.1 /usr/local/lib/
+COPY --from=oai-udr-builder \
+    /usr/local/lib/libpistache.so \
+    /usr/local/lib/libnghttp2_asio.so.1 \
+    /usr/lib/x86_64-linux-gnu/libboost_system.so.1.65.1 \
+    /usr/local/lib/
 
-RUN ldconfig
+RUN ldconfig && \
+    ldd /openair-udr/bin/oai_udr
 
 WORKDIR /openair-udr/etc
 COPY --from=oai-udr-builder /openair-udr/etc/udr.conf .

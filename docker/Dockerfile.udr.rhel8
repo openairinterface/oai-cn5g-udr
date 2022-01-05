@@ -70,7 +70,9 @@ WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --install-deps --force
 # Patching the CMakefile to link mysqlclient
 RUN sed -i -e "s@-lmysqlclient@-L/usr/lib64/mysql -lmysqlclient@" ../../src/oai_udr/CMakeLists.txt && \
-    ./build_udr --clean --Verbose --build-type Release --jobs
+    ./build_udr --clean --Verbose --build-type Release --jobs && \
+    ldd /openair-udr/build/udr/build/udr && \
+    mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
@@ -96,21 +98,26 @@ RUN yum update -y && \
 
 # Copying executable and generated libraries
 WORKDIR /openair-udr/bin
-COPY --from=oai-udr-builder /openair-udr/build/udr/build/udr oai_udr
-COPY --from=oai-udr-builder /openair-udr/scripts/entrypoint.sh .
-COPY --from=oai-udr-builder /wait-for-it/wait-for-it.sh .
+COPY --from=oai-udr-builder \
+    /openair-udr/build/udr/build/oai_udr \
+    /openair-udr/scripts/entrypoint.sh \
+    /wait-for-it/wait-for-it.sh \
+    ./
 
 WORKDIR /usr/local/lib64
-COPY --from=oai-udr-builder /usr/local/lib64/libpistache.so.0 .
-COPY --from=oai-udr-builder /lib64/libboost_system.so.1.66.0 .
-COPY --from=oai-udr-builder /lib64/libboost_thread.so.1.66.0 .
-COPY --from=oai-udr-builder /lib64/libboost_date_time.so.1.66.0 .
-COPY --from=oai-udr-builder /lib64/libconfig++.so.9 .
-COPY --from=oai-udr-builder /lib64/libnghttp2.so.14 .
-COPY --from=oai-udr-builder /usr/lib64/mysql/libmysqlclient.so.21 .
-COPY --from=oai-udr-builder /usr/local/lib/libnghttp2_asio.so.1 /usr/lib64/
+COPY --from=oai-udr-builder \
+    /usr/local/lib64/libpistache.so.0 \
+    /lib64/libboost_system.so.1.66.0 \
+    /lib64/libboost_thread.so.1.66.0 \
+    /lib64/libboost_date_time.so.1.66.0 \
+    /lib64/libconfig++.so.9 \
+    /lib64/libnghttp2.so.14 \
+    /usr/lib64/mysql/libmysqlclient.so.21 \
+    /usr/local/lib/libnghttp2_asio.so.1 \
+    ./
 
-RUN ldconfig
+RUN ldconfig && \
+    ldd /openair-udr/bin/oai_udr
 
 WORKDIR /openair-udr/etc
 COPY --from=oai-udr-builder /openair-udr/etc/udr.conf .
