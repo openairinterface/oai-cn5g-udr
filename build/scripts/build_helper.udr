@@ -368,15 +368,19 @@ check_install_udr_deps() {
       "ubuntu18.04")
         specific_packages="libconfig++-dev libasio-dev libboost-all-dev"
       ;;
+      "ubuntu20.04")
+        specific_packages="libconfig++-dev libasio-dev libboost-all-dev"
+      ;;
     esac
     # removed libspdlog-dev
     PACKAGE_LIST="\
       $specific_packages \
+      libconfig++ \
       guile-2.0-dev \
       libcurl4-gnutls-dev \
       libevent-dev \
-      libgcrypt11-dev \
-      libgmp-dev \
+      libgcrypt?-dev \
+      libgmp?-dev \
       libhogweed? \
       libidn2-0-dev \
       libidn11-dev \
@@ -394,7 +398,7 @@ check_install_udr_deps() {
       mysql-server \
       mysql-client \
       libmysqlclient-dev \
-      libasan2"
+      libasan?"
   elif [[ "$OS_BASEDISTRO" == "fedora" ]]; then
     PACKAGE_LIST="\
       guile-devel \
