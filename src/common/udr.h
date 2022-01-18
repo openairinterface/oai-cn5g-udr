@@ -32,4 +32,34 @@
 #define NUDR_DR_SMF_REG "smf-registrations"
 #define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
 
+#define NF_CURL_TIMEOUT_MS 1000L
+
+typedef struct identity_range_s {
+  std::string start;
+  std::string end;
+  std::string pattern;
+} identity_range_t;
+
+typedef struct identity_range_udr_info_item_s {
+  identity_range_t identity_range;
+} identity_range_udr_info_item_t;
+
+typedef struct supi_range_s {
+  std::string start;
+  std::string end;
+  std::string pattern;
+} supi_range_t;
+
+typedef struct supi_range_udr_info_item_s {
+  supi_range_t supi_range;
+} supi_range_udr_info_item_t;
+
+typedef struct udr_info_s {
+  std::string groupid;
+  std::vector<supi_range_udr_info_item_t> supi_ranges;
+  std::vector<identity_range_udr_info_item_t> gpsi_ranges;
+  std::vector<identity_range_udr_info_item_t> ext_grp_id_ranges;
+  std::vector<std::string> data_set_id;
+} udr_info_t;
+
 #endif

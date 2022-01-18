@@ -68,6 +68,7 @@ RUN apt-get update && \
       libnettle6 \
       libnghttp2-14 \
       libhogweed4 \
+      perl \
       libconfig++9v5 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -82,7 +83,8 @@ COPY --from=oai-udr-builder \
 COPY --from=oai-udr-builder \
     /usr/local/lib/libpistache.so \
     /usr/local/lib/libnghttp2_asio.so.1 \
-    /usr/lib/x86_64-linux-gnu/libboost_system.so.1.65.1 \
+    /usr/lib/libboost_system.so.1.67.0 \
+    /usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4 \
     /usr/local/lib/
 
 RUN ldconfig && \

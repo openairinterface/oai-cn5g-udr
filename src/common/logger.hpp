@@ -85,6 +85,7 @@ public:
   static _Logger &system() { return *singleton().m_system; }
   static _Logger &config() { return *singleton().m_config; }
   static _Logger &udr_server() { return *singleton().m_udr_server; }
+  static _Logger &udr_nrf() { return *singleton().m_udr_nrf; }
 
 private:
   static Logger *m_singleton;
@@ -107,6 +108,7 @@ private:
   _Logger *m_config;
   _Logger *m_system;
   _Logger *m_udr_server;
+  _Logger *m_udr_nrf;
 };
 
 #endif

@@ -29,6 +29,9 @@ include_directories(${SRC_TOP_DIR}/common/)
 add_library (UDR STATIC
   udr_app.cpp
   udr_config.cpp 
+  udr_profile.cpp
+  udr_nrf.cpp 
+  udr_client.cpp 
 )
 
 
