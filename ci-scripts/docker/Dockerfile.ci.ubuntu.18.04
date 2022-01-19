@@ -40,7 +40,6 @@ RUN git clone https://github.com/vishnubob/wait-for-it.git
 
 # Building UDR
 WORKDIR /openair-udr/build/scripts
-RUN ./build_udr --install-deps --force
 RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
