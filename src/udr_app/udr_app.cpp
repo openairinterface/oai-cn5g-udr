@@ -38,6 +38,7 @@
 #include "SequenceNumber.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
+#include "udr_nrf.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
@@ -45,6 +46,7 @@ using namespace oai::udr::config;
 
 extern udr_app *udr_app_inst;
 extern udr_config udr_cfg;
+udr_nrf *udr_nrf_inst = nullptr;
 
 //------------------------------------------------------------------------------
 udr_app::udr_app(const std::string &config_file) {
@@ -65,7 +67,17 @@ udr_app::udr_app(const std::string &config_file) {
     throw std::runtime_error("Cannot connect to MySQL DB");
   }
 
-  // TODO: Register to NRF
+  // Register to NRF
+  if (udr_cfg.register_nrf) {
+    try {
+      udr_nrf_inst = new udr_nrf();
+      udr_nrf_inst->register_to_nrf();
+      Logger::udr_app().info("NRF TASK Created ");
+    } catch (std::exception &e) {
+      Logger::udr_app().error("Cannot create NRF TASK: %s", e.what());
+      throw;
+    }
+  }
   Logger::udr_app().startup("Started");
 }
 

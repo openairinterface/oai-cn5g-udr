@@ -29,6 +29,7 @@
 #include <boost/algorithm/string/split.hpp>
 
 #include "common_defs.h"
+#include "fqdn.hpp"
 #include "if.hpp"
 #include "logger.hpp"
 #include "string.hpp"
@@ -104,6 +105,98 @@ int udr_config::load(const std ::string &config_file) {
     return RETURNerror;
   }
 
+  // Support features
+  try {
+    const Setting &support_features =
+        udr_cfg[UDR_CONFIG_STRING_SUPPORT_FEATURES];
+    std::string opt = {};
+
+    support_features.lookupValue(
+        UDR_CONFIG_STRING_SUPPORT_FEATURES_USE_FQDN_DNS, opt);
+    if (boost::iequals(opt, "yes")) {
+      use_fqdn_dns = true;
+    } else {
+      use_fqdn_dns = false;
+    }
+
+    support_features.lookupValue(
+        UDR_CONFIG_STRING_SUPPORTED_FEATURES_REGISTER_NRF, opt);
+    if (boost::iequals(opt, "yes")) {
+      register_nrf = true;
+    } else {
+      register_nrf = false;
+    }
+
+    support_features.lookupValue(UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2,
+                                 opt);
+    if (boost::iequals(opt, "yes")) {
+      use_http2 = true;
+    } else {
+      use_http2 = false;
+    }
+  } catch (const SettingNotFoundException &nfex) {
+    Logger::udr_app().error("%s : %s, using defaults", nfex.what(),
+                            nfex.getPath());
+    return RETURNerror;
+  }
+
+  // NRF
+  if (register_nrf) {
+    try {
+      std::string astring = {};
+
+      const Setting &nrf_cfg = udr_cfg[UDR_CONFIG_STRING_NRF];
+      struct in_addr nrf_ipv4_addr = {};
+      unsigned int nrf_port = 0;
+      std::string nrf_api_version = {};
+
+      if (!use_fqdn_dns) {
+        nrf_cfg.lookupValue(UDR_CONFIG_STRING_NRF_IPV4_ADDRESS, astring);
+        IPV4_STR_ADDR_TO_INADDR(util::trim(astring).c_str(), nrf_ipv4_addr,
+                                "BAD IPv4 ADDRESS FORMAT FOR NRF !");
+        nrf_addr.ipv4_addr = nrf_ipv4_addr;
+        if (!(nrf_cfg.lookupValue(UDR_CONFIG_STRING_NRF_PORT, nrf_port))) {
+          Logger::udr_app().error(UDR_CONFIG_STRING_NRF_PORT "failed");
+          throw(UDR_CONFIG_STRING_NRF_PORT "failed");
+        }
+        nrf_addr.port = nrf_port;
+
+        if (!(nrf_cfg.lookupValue(UDR_CONFIG_STRING_API_VERSION,
+                                  nrf_api_version))) {
+          Logger::udr_app().error(UDR_CONFIG_STRING_API_VERSION "failed");
+          throw(UDR_CONFIG_STRING_API_VERSION "failed");
+        }
+        nrf_addr.api_version = nrf_api_version;
+
+      } else {
+        nrf_cfg.lookupValue(UDR_CONFIG_STRING_FQDN_DNS, astring);
+        uint8_t addr_type = {0};
+        std::string address = {};
+        fqdn::resolve(astring, address, nrf_port, addr_type);
+        if (addr_type != 0) { // IPv6
+          // TODO:
+          throw("DO NOT SUPPORT IPV6 ADDR FOR NRF!");
+        } else { // IPv4
+          IPV4_STR_ADDR_TO_INADDR(util::trim(address).c_str(), nrf_ipv4_addr,
+                                  "BAD IPv4 ADDRESS FORMAT FOR NRF !");
+          nrf_addr.ipv4_addr = nrf_ipv4_addr;
+          // We hardcode amf port from config for the moment
+          if (!(nrf_cfg.lookupValue(UDR_CONFIG_STRING_NRF_PORT, nrf_port))) {
+            Logger::udr_app().error(UDR_CONFIG_STRING_NRF_PORT "failed");
+            throw(UDR_CONFIG_STRING_NRF_PORT "failed");
+          }
+          nrf_addr.port = nrf_port;
+          nrf_addr.api_version = "v1"; // TODO: to get API version from DNS
+          nrf_addr.fqdn = astring;
+        }
+      }
+    } catch (const SettingNotFoundException &nfex) {
+      Logger::udr_app().error("%s : %s", nfex.what(), nfex.getPath());
+      return RETURNerror;
+    }
+  }
+
+  // MySQL
   try {
     const Setting &mysql_cfg = udr_cfg[UDR_CONFIG_STRING_MYSQL];
     mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_SERVER, mysql.mysql_server);
@@ -191,7 +284,22 @@ void udr_config::display() {
   Logger::config().info("    HTTP2 port ..........: %d", nudr_http2_port);
   Logger::config().info("    API version..........: %s",
                         nudr.api_version.c_str());
-
+  Logger::config().info("- Supported Features:");
+  Logger::config().info("    Register NRF ..........: %s",
+                        register_nrf ? "Yes" : "No");
+  Logger::config().info("    Use FQDN ..............: %s",
+                        use_fqdn_dns ? "Yes" : "No");
+  Logger::config().info("    Use HTTP2 .............: %s",
+                        use_http2 ? "Yes" : "No");
+  Logger::config().info("- NRF:");
+  Logger::config().info("    IPv4 Addr ............: %s",
+                        inet_ntoa(*((struct in_addr *)&nrf_addr.ipv4_addr)));
+  Logger::config().info("    Port .................: %lu  ", nrf_addr.port);
+  Logger::config().info("    API version ..........: %s",
+                        nrf_addr.api_version.c_str());
+  if (use_fqdn_dns)
+    Logger::config().info("    FQDN .................: %s",
+                          nrf_addr.fqdn.c_str());
   Logger::config().info(
       "- MYSQL Server Addr...................................: %s",
       mysql.mysql_server.c_str());

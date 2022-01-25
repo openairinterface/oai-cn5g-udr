@@ -38,6 +38,16 @@
 #define UDR_CONFIG_STRING_HTTP2_PORT "HTTP2_PORT"
 #define UDR_CONFIG_STRING_API_VERSION "API_VERSION"
 
+#define UDR_CONFIG_STRING_NRF "NRF"
+#define UDR_CONFIG_STRING_NRF_IPV4_ADDRESS "IPV4_ADDRESS"
+#define UDR_CONFIG_STRING_NRF_PORT "PORT"
+
+#define UDR_CONFIG_STRING_SUPPORT_FEATURES "SUPPORT_FEATURES"
+#define UDR_CONFIG_STRING_SUPPORT_FEATURES_USE_FQDN_DNS "USE_FQDN_DNS"
+#define UDR_CONFIG_STRING_SUPPORTED_FEATURES_REGISTER_NRF "REGISTER_NRF"
+#define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2 "USE_HTTP2"
+#define UDR_CONFIG_STRING_FQDN_DNS "FQDN"
+
 #define UDR_CONFIG_STRING_MYSQL "MYSQL"
 #define UDR_CONFIG_STRING_MYSQL_SERVER "MYSQL_SERVER"
 #define UDR_CONFIG_STRING_MYSQL_USER "MYSQL_USER"
@@ -79,6 +89,17 @@ public:
   std::string pid_dir;
   interface_cfg_t nudr;
   unsigned int nudr_http2_port;
+
+  struct {
+    struct in_addr ipv4_addr;
+    unsigned int port;
+    std::string api_version;
+    std::string fqdn;
+  } nrf_addr;
+
+  bool register_nrf;
+  bool use_fqdn_dns;
+  bool use_http2;
 
   mysql_conf_t mysql;
 };
