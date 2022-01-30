@@ -33,6 +33,7 @@
 #include <mysql/mysql.h>
 #include <pistache/http.h>
 
+#include "udr_event.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 
@@ -50,7 +51,7 @@ namespace app {
 
 class udr_app {
 public:
-  explicit udr_app(const std::string &config_file);
+  explicit udr_app(const std::string &config_file, udr_event &ev);
   udr_app(udr_app const &) = delete;
   void operator=(udr_app const &) = delete;
 
@@ -306,6 +307,7 @@ public:
 
 private:
   MYSQL mysql;
+  udr_event &event_sub;
 };
 } // namespace app
 } // namespace udr

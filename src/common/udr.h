@@ -22,6 +22,13 @@
 #ifndef FILE_UDR_SEEN
 #define FILE_UDR_SEEN
 
+#define HEART_BEAT_TIMER 10
+
+#define _unused(x) ((void)(x))
+
+#define NNRF_NFM_BASE "/nnrf-nfm/"
+#define UDR_NF_REGISTER_URL "/nf-instances/"
+
 #define NUDR_DR_BASE "/nudr-dr/"
 #define NUDR_DR_AUTH_STATUS "authentication-status"
 #define NUDR_DR_AUTH_SUBS "authentication-subscription"
