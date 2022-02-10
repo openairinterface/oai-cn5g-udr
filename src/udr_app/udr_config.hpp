@@ -29,6 +29,7 @@
 
 #define UDR_CONFIG_STRING_UDR_CONFIG "UDR"
 #define UDR_CONFIG_STRING_INSTANCE_ID "INSTANCE_ID"
+#define UDR_CONFIG_STRING_UDR_NAME "UDR_NAME"
 #define UDR_CONFIG_STRING_PID_DIRECTORY "PID_DIRECTORY"
 #define UDR_CONFIG_STRING_INTERFACES "INTERFACES"
 #define UDR_CONFIG_STRING_INTERFACE_NUDR "NUDR"
@@ -87,6 +88,7 @@ public:
 
   unsigned int instance;
   std::string pid_dir;
+  std::string udr_name;
   interface_cfg_t nudr;
   unsigned int nudr_http2_port;
 

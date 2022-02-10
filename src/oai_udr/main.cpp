@@ -84,12 +84,19 @@ int main(int argc, char **argv) {
   sigIntHandler.sa_flags = 0;
   sigaction(SIGINT, &sigIntHandler, NULL);
 
+  // Event subsystem
+  udr_event ev;
+
   // Config
   udr_cfg.load(Options::getlibconfigConfig());
   udr_cfg.display();
 
   // UDR application layer
-  udr_app_inst = new udr_app(Options::getlibconfigConfig());
+  udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);
+
+  // Task Manager
+  task_manager tm(ev);
+  std::thread task_manager_thread(&task_manager::run, &tm);
 
   // PID file
   // Currently hard-coded value. TODO: add as config option.

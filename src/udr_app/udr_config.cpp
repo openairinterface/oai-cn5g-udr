@@ -39,7 +39,7 @@ using namespace libconfig;
 namespace oai::udr::config {
 
 //------------------------------------------------------------------------------
-udr_config::udr_config() : mysql(), instance(), pid_dir(), nudr() {
+udr_config::udr_config() : mysql(), instance(), udr_name(), pid_dir(), nudr() {
   nudr_http2_port = 8080;
   nudr.api_version = "v1";
 }
@@ -87,7 +87,12 @@ int udr_config::load(const std ::string &config_file) {
     Logger::udr_app().error("%s : %s, using defaults", nfex.what(),
                             nfex.getPath());
   }
-
+  try {
+    udr_cfg.lookupValue(UDR_CONFIG_STRING_UDR_NAME, udr_name);
+  } catch (const SettingNotFoundException &nfex) {
+    Logger::config().error("%s : %s, using defaults", nfex.what(),
+                           nfex.getPath());
+  }
   try {
     const Setting &new_if_cfg = udr_cfg[UDR_CONFIG_STRING_INTERFACES];
     const Setting &nudr_cfg = new_if_cfg[UDR_CONFIG_STRING_INTERFACE_NUDR];
@@ -276,6 +281,7 @@ void udr_config::display() {
   Logger::config().info(
       "- PID dir ............................................: %s",
       pid_dir.c_str());
+  Logger::config().info("- UDR Name ..............: %s", udr_name.c_str());
 
   Logger::config().info("- Nudr Networking:");
   Logger::config().info("    Interface name ......: %s", nudr.if_name.c_str());

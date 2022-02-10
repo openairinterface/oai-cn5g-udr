@@ -49,7 +49,8 @@ extern udr_config udr_cfg;
 udr_nrf *udr_nrf_inst = nullptr;
 
 //------------------------------------------------------------------------------
-udr_app::udr_app(const std::string &config_file) {
+udr_app::udr_app(const std::string &config_file, udr_event &ev)
+    : event_sub(ev) {
   Logger::udr_app().startup("Starting...");
 
   if (!mysql_init(&mysql)) {
@@ -70,7 +71,7 @@ udr_app::udr_app(const std::string &config_file) {
   // Register to NRF
   if (udr_cfg.register_nrf) {
     try {
-      udr_nrf_inst = new udr_nrf();
+      udr_nrf_inst = new udr_nrf(ev);
       udr_nrf_inst->register_to_nrf();
       Logger::udr_app().info("NRF TASK Created ");
     } catch (std::exception &e) {

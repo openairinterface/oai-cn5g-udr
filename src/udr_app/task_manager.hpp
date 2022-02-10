@@ -19,82 +19,58 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_client.hpp
- \author  Tien-Thinh NGUYEN
+/*! \file task_manager.hpp
+ \brief
+ \author
  \company Eurecom
  \date 2020
- \email:
+ \email: Tien-Thinh.Nguyen@eurecom.fr
  */
 
-#ifndef FILE_UDR_NRF_SEEN
-#define FILE_UDR_NRF_SEEN
+#ifndef TASK_MANAGER_H_
+#define TASK_MANAGER_H_
 
-#include <map>
-#include <thread>
-
-#include <curl/curl.h>
-
-#include "logger.hpp"
-#include "udr_config.hpp"
 #include "udr_event.hpp"
-#include "udr_profile.hpp"
+
+#include <linux/types.h>
+#include <sys/timerfd.h>
 
 namespace oai {
 namespace udr {
 namespace app {
 
-class udr_nrf {
-private:
+class udr_event;
+class task_manager {
 public:
-  udr_profile udr_nf_profile;  // UDR profile
-  std::string udr_instance_id; // UDR instance id
-  // timer_id_t timer_udr_heartbeat;
-
-  udr_nrf(udr_event &ev);
-  udr_nrf(udr_nrf const &) = delete;
-  void operator=(udr_nrf const &) = delete;
-
-  void generate_uuid();
+  task_manager(udr_event &ev);
 
   /*
-   * Start event nf heartbeat procedure
+   * Manage the tasks
    * @param [void]
    * @return void
    */
-  void start_event_nf_heartbeat(std::string &remoteURI);
-  /*
-   * Trigger NF heartbeat procedure
-   * @param [void]
-   * @return void
-   */
-  void trigger_nf_heartbeat_procedure(uint64_t ms);
+  void manage_tasks();
 
   /*
-   * Generate a UDR profile for this instance
+   * Run the tasks (for the moment, simply call function manage_tasks)
    * @param [void]
    * @return void
    */
-  void generate_udr_profile(udr_profile &udr_nf_profile,
-                            std::string &udr_instance_id);
-
-  /*
-   * Trigger NF instance registration to NRF
-   * @param [void]
-   * @return void
-   */
-  void register_to_nrf();
-  /*
-   * Get udr API Root
-   * @param [std::string& ] api_root: udr's API Root
-   * @return void
-   */
-  void get_udr_api_root(std::string &api_root);
+  void run();
 
 private:
-  udr_event &m_event_sub;
-  bs2::connection task_connection;
+  /*
+   * Make sure that the task tick run every 1ms
+   * @param [void]
+   * @return void
+   */
+  void wait_for_cycle();
+
+  udr_event &event_sub_;
+  int sfd;
 };
 } // namespace app
 } // namespace udr
 } // namespace oai
-#endif /* FILE_UDR_NRF_SEEN */
+
+#endif

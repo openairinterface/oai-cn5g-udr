@@ -31,6 +31,8 @@ add_library (UDR STATIC
   udr_config.cpp 
   udr_profile.cpp
   udr_nrf.cpp 
+  udr_event.cpp
+  task_manager.cpp
   udr_client.cpp 
 )
 

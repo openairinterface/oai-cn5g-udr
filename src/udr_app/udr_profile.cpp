@@ -182,27 +182,28 @@ void udr_profile::display() const {
   }
 
   Logger::udr_app().debug("\tUDR Info");
-  Logger::udr_app().debug("\t\tGroupId: %s", udr_info.groupid);
+  Logger::udr_app().debug("\t\tGroupId: %s", udr_info.groupid.c_str());
   for (auto supi : udr_info.supi_ranges) {
     Logger::udr_app().debug(
         "\t\t SupiRanges: Start - %s, End - %s, Pattern - %s",
-        supi.supi_range.start, supi.supi_range.end, supi.supi_range.pattern);
+        supi.supi_range.start.c_str(), supi.supi_range.end.c_str(),
+        supi.supi_range.pattern.c_str());
   }
   for (auto gpsi : udr_info.gpsi_ranges) {
     Logger::udr_app().debug(
         "\t\t GpsiRanges: Start - %s, End - %s, Pattern - %s",
-        gpsi.identity_range.start, gpsi.identity_range.end,
-        gpsi.identity_range.pattern);
+        gpsi.identity_range.start.c_str(), gpsi.identity_range.end.c_str(),
+        gpsi.identity_range.pattern.c_str());
   }
   for (auto ext_grp_id : udr_info.ext_grp_id_ranges) {
     Logger::udr_app().debug("\t\t externalGroupIdentifiersRanges: Start - %s, "
                             "End - %s, Pattern - %s",
-                            ext_grp_id.identity_range.start,
-                            ext_grp_id.identity_range.end,
-                            ext_grp_id.identity_range.pattern);
+                            ext_grp_id.identity_range.start.c_str(),
+                            ext_grp_id.identity_range.end.c_str(),
+                            ext_grp_id.identity_range.pattern.c_str());
   }
   for (auto data_set_Id : udr_info.data_set_id) {
-    Logger::udr_app().debug("\t\t Data Set Id: %s", data_set_Id);
+    Logger::udr_app().debug("\t\t Data Set Id: %s", data_set_Id.c_str());
   }
 }
 
