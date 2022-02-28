@@ -94,8 +94,9 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
   MYSQL_FIELD *field = nullptr;
   nlohmann::json j = {};
   response_data = {};
-
   oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
+
+  Logger::udr_server().debug("Handle Query AM Data request");
 
   // TODO: Define query template in a header file
   const std::string query =
@@ -104,7 +105,6 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！");
-    // code = Pistache::Http::Code::Internal_Server_Error;
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;
     return;
   }
@@ -112,7 +112,6 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
   res = mysql_store_result(&mysql);
   if (res == NULL) {
     Logger::udr_server().error("mysql_store_result failure！");
-    // code = Pistache::Http::Code::Internal_Server_Error;
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;
     return;
   }
@@ -321,15 +320,14 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
 
     to_json(j, subscription_data);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
     code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug(
-        "AccessAndMobilitySubscriptionData GET - json:\n\"%s\"",
+        "AccessAndMobilitySubscriptionData GET (JSON): \n %s",
         j.dump().c_str());
   } else {
-    Logger::udr_server().error("AccessAndMobilitySubscriptionData no data！");
-    // code = Pistache::Http::Code::Internal_Server_Error;
+    Logger::udr_server().error(
+        "No data available for AccessAndMobilitySubscriptionData!");
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;
   }
 
