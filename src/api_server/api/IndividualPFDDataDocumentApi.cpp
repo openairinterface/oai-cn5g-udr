@@ -82,6 +82,11 @@ void IndividualPFDDataDocumentApi::
     create_or_replace_individual_pfd_data_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":appId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto appId = request.param(":appId").as<std::string>();
 
@@ -109,6 +114,11 @@ void IndividualPFDDataDocumentApi::
 void IndividualPFDDataDocumentApi::delete_individual_pfd_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":appId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto appId = request.param(":appId").as<std::string>();
 
@@ -130,6 +140,11 @@ void IndividualPFDDataDocumentApi::delete_individual_pfd_data_handler(
 void IndividualPFDDataDocumentApi::read_individual_pfd_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":appId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto appId = request.param(":appId").as<std::string>();
 
@@ -157,4 +172,4 @@ void IndividualPFDDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

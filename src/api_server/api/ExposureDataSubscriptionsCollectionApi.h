@@ -52,7 +52,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class ExposureDataSubscriptionsCollectionApi {
-public:
+ public:
   ExposureDataSubscriptionsCollectionApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~ExposureDataSubscriptionsCollectionApi() {}
@@ -60,7 +60,7 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_individual_exposure_data_subscription_handler(
@@ -84,6 +84,6 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* ExposureDataSubscriptionsCollectionApi_H_ */

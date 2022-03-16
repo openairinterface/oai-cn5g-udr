@@ -80,6 +80,11 @@ void IndividualAppliedBDTPolicyDataDocumentApi::
     delete_individual_applied_bdt_policy_data_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtPolicyId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtPolicyId = request.param(":bdtPolicyId").as<std::string>();
 
@@ -102,6 +107,11 @@ void IndividualAppliedBDTPolicyDataDocumentApi::
     update_individual_applied_bdt_policy_data_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtPolicyId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtPolicyId = request.param(":bdtPolicyId").as<std::string>();
 
@@ -135,4 +145,4 @@ void IndividualAppliedBDTPolicyDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

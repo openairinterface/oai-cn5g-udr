@@ -84,6 +84,11 @@ void AMFNon3GPPAccessRegistrationDocumentApi::setupRoutes() {
 void AMFNon3GPPAccessRegistrationDocumentApi::amf_context_non3gpp_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -120,6 +125,11 @@ void AMFNon3GPPAccessRegistrationDocumentApi::
     create_amf_context_non3gpp_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -147,6 +157,11 @@ void AMFNon3GPPAccessRegistrationDocumentApi::
 void AMFNon3GPPAccessRegistrationDocumentApi::query_amf_context_non3gpp_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -192,4 +207,4 @@ void AMFNon3GPPAccessRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

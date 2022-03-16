@@ -83,6 +83,11 @@ void OperatorSpecificDataDocumentApi::setupRoutes() {
 void OperatorSpecificDataDocumentApi::read_operator_specific_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -122,6 +127,11 @@ void OperatorSpecificDataDocumentApi::read_operator_specific_data_handler(
 void OperatorSpecificDataDocumentApi::replace_operator_specific_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -147,6 +157,11 @@ void OperatorSpecificDataDocumentApi::replace_operator_specific_data_handler(
 void OperatorSpecificDataDocumentApi::update_operator_specific_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -178,4 +193,4 @@ void OperatorSpecificDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

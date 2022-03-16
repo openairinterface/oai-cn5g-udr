@@ -78,6 +78,11 @@ void IndividualPolicyDataSubscriptionDocumentApi::
     delete_individual_policy_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
@@ -100,6 +105,11 @@ void IndividualPolicyDataSubscriptionDocumentApi::
     replace_individual_policy_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
@@ -133,4 +143,4 @@ void IndividualPolicyDataSubscriptionDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

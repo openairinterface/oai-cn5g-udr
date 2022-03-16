@@ -87,6 +87,11 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
     delete_individual_influence_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subscriptionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
@@ -110,6 +115,11 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
     read_individual_influence_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subscriptionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
@@ -132,6 +142,11 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
     replace_individual_influence_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subscriptionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
@@ -165,4 +180,4 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -92,6 +92,12 @@ void AccessAndMobilityDataApi::
     create_or_replace_access_and_mobility_data_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -119,6 +125,11 @@ void AccessAndMobilityDataApi::
 void AccessAndMobilityDataApi::delete_access_and_mobility_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -140,6 +151,11 @@ void AccessAndMobilityDataApi::delete_access_and_mobility_data_handler(
 void AccessAndMobilityDataApi::query_access_and_mobility_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -171,6 +187,11 @@ void AccessAndMobilityDataApi::query_access_and_mobility_data_handler(
 void AccessAndMobilityDataApi::update_access_and_mobility_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -202,4 +223,4 @@ void AccessAndMobilityDataApi::access_and_mobility_data_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

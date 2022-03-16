@@ -71,6 +71,11 @@ void QueryAMFSubscriptionInfoDocumentApi::setupRoutes() {
 void QueryAMFSubscriptionInfoDocumentApi::get_amf_subscription_info_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
@@ -99,4 +104,4 @@ void QueryAMFSubscriptionInfoDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

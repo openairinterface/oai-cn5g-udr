@@ -56,14 +56,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IPSMGWRegistrationDocumentApi {
-public:
+ public:
   IPSMGWRegistrationDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IPSMGWRegistrationDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_ip_sm_gw_context_handler(const Pistache::Rest::Request &request,
@@ -88,10 +88,9 @@ private:
   /// </remarks>
   /// <param name="ueId">UE id</param>
   /// <param name="ipSmGwRegistration"> (optional)</param>
-  virtual void
-  create_ip_sm_gw_context(const std::string &ueId,
-                          const IpSmGwRegistration &ipSmGwRegistration,
-                          Pistache::Http::ResponseWriter &response) = 0;
+  virtual void create_ip_sm_gw_context(
+      const std::string &ueId, const IpSmGwRegistration &ipSmGwRegistration,
+      Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// To remove the IP-SM-GW context data of a UE
@@ -100,9 +99,8 @@ private:
   ///
   /// </remarks>
   /// <param name="ueId">UE id</param>
-  virtual void
-  delete_ip_sm_gw_context(const std::string &ueId,
-                          Pistache::Http::ResponseWriter &response) = 0;
+  virtual void delete_ip_sm_gw_context(
+      const std::string &ueId, Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Modify the IP-SM-GW context data of a UE
@@ -112,10 +110,9 @@ private:
   /// </remarks>
   /// <param name="ueId">UE id</param>
   /// <param name="patchItem"></param>
-  virtual void
-  modify_ip_sm_gw_context(const std::string &ueId,
-                          const std::vector<PatchItem> &patchItem,
-                          Pistache::Http::ResponseWriter &response) = 0;
+  virtual void modify_ip_sm_gw_context(
+      const std::string &ueId, const std::vector<PatchItem> &patchItem,
+      Pistache::Http::ResponseWriter &response) = 0;
 
   /// <summary>
   /// Retrieves the IP-SM-GW context data of a UE
@@ -135,6 +132,6 @@ private:
       Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IPSMGWRegistrationDocumentApi_H_ */

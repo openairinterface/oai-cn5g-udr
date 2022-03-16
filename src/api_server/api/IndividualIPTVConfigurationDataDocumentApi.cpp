@@ -81,6 +81,11 @@ void IndividualIPTVConfigurationDataDocumentApi::
     create_or_replace_individual_iptv_configuration_data_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":configurationId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto configurationId = request.param(":configurationId").as<std::string>();
 
@@ -109,6 +114,11 @@ void IndividualIPTVConfigurationDataDocumentApi::
     delete_individual_iptv_configuration_data_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":configurationId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto configurationId = request.param(":configurationId").as<std::string>();
 
@@ -136,4 +146,4 @@ void IndividualIPTVConfigurationDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

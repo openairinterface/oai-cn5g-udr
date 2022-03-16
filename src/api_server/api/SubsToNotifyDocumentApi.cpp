@@ -81,6 +81,11 @@ void SubsToNotifyDocumentApi::setupRoutes() {
 void SubsToNotifyDocumentApi::modifysubscription_data_subscription_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
@@ -117,6 +122,11 @@ void SubsToNotifyDocumentApi::modifysubscription_data_subscription_handler(
 void SubsToNotifyDocumentApi::query_subscription_data_subscriptions_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
@@ -138,6 +148,11 @@ void SubsToNotifyDocumentApi::query_subscription_data_subscriptions_handler(
 void SubsToNotifyDocumentApi::removesubscription_data_subscriptions_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
@@ -163,4 +178,4 @@ void SubsToNotifyDocumentApi::subs_to_notify_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

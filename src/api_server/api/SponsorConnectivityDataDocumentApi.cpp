@@ -70,6 +70,11 @@ void SponsorConnectivityDataDocumentApi::setupRoutes() {
 void SponsorConnectivityDataDocumentApi::read_sponsor_connectivity_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":sponsorId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto sponsorId = request.param(":sponsorId").as<std::string>();
 
@@ -97,4 +102,4 @@ void SponsorConnectivityDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

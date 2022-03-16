@@ -71,6 +71,11 @@ void Query5GVnGroupConfigurationDocumentApi::
     get5_g_vn_group_configuration_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":externalGroupId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto externalGroupId = request.param(":externalGroupId").as<std::string>();
 
@@ -98,4 +103,4 @@ void Query5GVnGroupConfigurationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -89,6 +89,11 @@ void SDMSubscriptionDocumentApi::modifysdm_subscription_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscription Method: PATCH!");
+  if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
 
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
@@ -128,7 +133,11 @@ void SDMSubscriptionDocumentApi::querysdm_subscription_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscription Method: GET!");
-
+  if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
@@ -152,7 +161,11 @@ void SDMSubscriptionDocumentApi::removesdm_subscriptions_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscription Method: DELETE!");
-
+  if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
@@ -176,7 +189,11 @@ void SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscription Method: PUT!");
-
+  if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
@@ -208,4 +225,4 @@ void SDMSubscriptionDocumentApi::sdm_subscription_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -78,6 +78,11 @@ void IndividualExposureDataSubscriptionDocumentApi::
     delete_individual_exposure_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subId = request.param(":subId").as<std::string>();
 
@@ -100,6 +105,11 @@ void IndividualExposureDataSubscriptionDocumentApi::
     replace_individual_exposure_data_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subId = request.param(":subId").as<std::string>();
 
@@ -133,4 +143,4 @@ void IndividualExposureDataSubscriptionDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

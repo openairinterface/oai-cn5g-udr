@@ -201,4 +201,4 @@ void SubsToNotifyCollectionApi::subs_to_notify_collection_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

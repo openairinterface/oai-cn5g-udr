@@ -79,7 +79,11 @@ void SDMSubscriptionsCollectionApi::create_sdm_subscriptions_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscriptions Method: POST!");
-
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -107,7 +111,11 @@ void SDMSubscriptionsCollectionApi::querysdmsubscriptions_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscriptions Method: GET!");
-
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -145,4 +153,4 @@ void SDMSubscriptionsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

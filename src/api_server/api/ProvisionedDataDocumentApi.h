@@ -54,14 +54,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class ProvisionedDataDocumentApi {
-public:
+ public:
   ProvisionedDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~ProvisionedDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void query_provisioned_data_handler(const Pistache::Rest::Request &request,
@@ -87,6 +87,6 @@ private:
   //    &datasetNames, Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* ProvisionedDataDocumentApi_H_ */

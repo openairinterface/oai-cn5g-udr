@@ -74,6 +74,13 @@ void AccessAndMobilitySubscriptionDataDocumentApi::query_am_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("AccessAndMobilitySubscriptionData Method: GET!");
+
+  if (!request.hasParam(":ueId") or !request.hasParam(":servingPlmnId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto servingPlmnId = request.param(":servingPlmnId").as<std::string>();
@@ -125,4 +132,4 @@ void AccessAndMobilitySubscriptionDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

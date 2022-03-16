@@ -72,6 +72,11 @@ void SMFRegistrationsCollectionApi::query_smf_reg_list_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SMFRegistrations Method: GET!");
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -109,4 +114,4 @@ void SMFRegistrationsCollectionApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

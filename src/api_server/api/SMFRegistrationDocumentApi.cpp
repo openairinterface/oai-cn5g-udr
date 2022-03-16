@@ -89,6 +89,12 @@ void SMFRegistrationDocumentApi::create_smf_context_non3gpp_handler(
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SMFRegistration Method: PUT!");
 
+  if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
@@ -119,6 +125,12 @@ void SMFRegistrationDocumentApi::delete_smf_context_handler(
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().debug("Handle Delete SMF Context Request");
 
+  if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
@@ -142,6 +154,12 @@ void SMFRegistrationDocumentApi::query_smf_registration_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().debug("Handle Query SMF Registration");
+
+  if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
 
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
@@ -188,4 +206,4 @@ void SMFRegistrationDocumentApi::smf_registration_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

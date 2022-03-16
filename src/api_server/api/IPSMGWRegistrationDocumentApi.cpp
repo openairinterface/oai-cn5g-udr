@@ -92,6 +92,11 @@ void IPSMGWRegistrationDocumentApi::setupRoutes() {
 void IPSMGWRegistrationDocumentApi::create_ip_sm_gw_context_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -118,6 +123,11 @@ void IPSMGWRegistrationDocumentApi::create_ip_sm_gw_context_handler(
 void IPSMGWRegistrationDocumentApi::delete_ip_sm_gw_context_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -139,6 +149,11 @@ void IPSMGWRegistrationDocumentApi::delete_ip_sm_gw_context_handler(
 void IPSMGWRegistrationDocumentApi::modify_ip_sm_gw_context_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -164,6 +179,11 @@ void IPSMGWRegistrationDocumentApi::modify_ip_sm_gw_context_handler(
 void IPSMGWRegistrationDocumentApi::query_ip_sm_gw_context_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -209,4 +229,4 @@ void IPSMGWRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

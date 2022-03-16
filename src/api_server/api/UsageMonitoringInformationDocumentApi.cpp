@@ -83,6 +83,11 @@ void UsageMonitoringInformationDocumentApi::
     create_usage_monitoring_resource_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId") or !request.hasParam(":usageMonId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto usageMonId = request.param(":usageMonId").as<std::string>();
@@ -112,6 +117,11 @@ void UsageMonitoringInformationDocumentApi::
     delete_usage_monitoring_information_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId") or !request.hasParam(":usageMonId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto usageMonId = request.param(":usageMonId").as<std::string>();
@@ -135,6 +145,11 @@ void UsageMonitoringInformationDocumentApi::
     read_usage_monitoring_information_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId") or !request.hasParam(":usageMonId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto usageMonId = request.param(":usageMonId").as<std::string>();
@@ -174,4 +189,4 @@ void UsageMonitoringInformationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

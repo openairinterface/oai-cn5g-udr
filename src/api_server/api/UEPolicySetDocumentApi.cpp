@@ -78,6 +78,11 @@ void UEPolicySetDocumentApi::setupRoutes() {
 void UEPolicySetDocumentApi::create_or_replace_ue_policy_set_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -104,6 +109,11 @@ void UEPolicySetDocumentApi::create_or_replace_ue_policy_set_handler(
 void UEPolicySetDocumentApi::read_ue_policy_set_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -135,6 +145,11 @@ void UEPolicySetDocumentApi::read_ue_policy_set_handler(
 void UEPolicySetDocumentApi::update_ue_policy_set_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -165,4 +180,4 @@ void UEPolicySetDocumentApi::ue_policy_set_document_api_default_handler(
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -94,6 +94,12 @@ void EventExposureGroupSubscriptionDocumentApi::
     modify_ee_group_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueGroupId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueGroupId = request.param(":ueGroupId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
@@ -132,6 +138,11 @@ void EventExposureGroupSubscriptionDocumentApi::
     query_ee_group_subscription_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueGroupId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueGroupId = request.param(":ueGroupId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
@@ -155,6 +166,11 @@ void EventExposureGroupSubscriptionDocumentApi::
     remove_ee_group_subscriptions_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueGroupId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueGroupId = request.param(":ueGroupId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
@@ -178,6 +194,11 @@ void EventExposureGroupSubscriptionDocumentApi::
     update_ee_group_subscriptions_handler(
         const Pistache::Rest::Request &request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueGroupId") or !request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueGroupId = request.param(":ueGroupId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
@@ -212,4 +233,4 @@ void EventExposureGroupSubscriptionDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

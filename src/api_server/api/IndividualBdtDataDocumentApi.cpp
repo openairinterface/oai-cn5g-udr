@@ -88,6 +88,11 @@ void IndividualBdtDataDocumentApi::setupRoutes() {
 void IndividualBdtDataDocumentApi::create_individual_bdt_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtReferenceId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtReferenceId = request.param(":bdtReferenceId").as<std::string>();
 
@@ -114,6 +119,11 @@ void IndividualBdtDataDocumentApi::create_individual_bdt_data_handler(
 void IndividualBdtDataDocumentApi::delete_individual_bdt_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtReferenceId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtReferenceId = request.param(":bdtReferenceId").as<std::string>();
 
@@ -135,6 +145,11 @@ void IndividualBdtDataDocumentApi::delete_individual_bdt_data_handler(
 void IndividualBdtDataDocumentApi::read_individual_bdt_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtReferenceId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtReferenceId = request.param(":bdtReferenceId").as<std::string>();
 
@@ -166,6 +181,11 @@ void IndividualBdtDataDocumentApi::read_individual_bdt_data_handler(
 void IndividualBdtDataDocumentApi::update_individual_bdt_data_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtReferenceId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtReferenceId = request.param(":bdtReferenceId").as<std::string>();
 
@@ -198,4 +218,4 @@ void IndividualBdtDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

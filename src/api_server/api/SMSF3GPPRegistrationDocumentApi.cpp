@@ -85,6 +85,12 @@ void SMSF3GPPRegistrationDocumentApi::setupRoutes() {
 void SMSF3GPPRegistrationDocumentApi::create_smsf_context3gpp_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -111,6 +117,12 @@ void SMSF3GPPRegistrationDocumentApi::create_smsf_context3gpp_handler(
 void SMSF3GPPRegistrationDocumentApi::delete_smsf_context3gpp_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -132,6 +144,12 @@ void SMSF3GPPRegistrationDocumentApi::delete_smsf_context3gpp_handler(
 void SMSF3GPPRegistrationDocumentApi::query_smsf_context3gpp_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -177,4 +195,4 @@ void SMSF3GPPRegistrationDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

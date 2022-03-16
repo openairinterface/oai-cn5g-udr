@@ -70,6 +70,11 @@ void PlmnUePolicySetDocumentApi::setupRoutes() {
 void PlmnUePolicySetDocumentApi::read_plmn_ue_policy_set_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":plmnId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto plmnId = request.param(":plmnId").as<std::string>();
 
@@ -97,4 +102,4 @@ void PlmnUePolicySetDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

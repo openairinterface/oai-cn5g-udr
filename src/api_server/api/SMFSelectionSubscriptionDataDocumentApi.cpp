@@ -75,6 +75,12 @@ void SMFSelectionSubscriptionDataDocumentApi::query_smf_select_data_handler(
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().debug("Handle Query SMF Select Data");
 
+  if (!request.hasParam(":ueId") or !request.hasParam(":servingPlmnId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
   auto servingPlmnId = request.param(":servingPlmnId").as<std::string>();
@@ -126,4 +132,4 @@ void SMFSelectionSubscriptionDataDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

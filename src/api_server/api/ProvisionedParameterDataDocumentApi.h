@@ -56,14 +56,14 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class ProvisionedParameterDataDocumentApi {
-public:
+ public:
   ProvisionedParameterDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~ProvisionedParameterDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void modify_pp_data_handler(const Pistache::Rest::Request &request,
@@ -84,13 +84,12 @@ private:
   /// <param name="patchItem"></param>
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
-  virtual void
-  modify_pp_data(const std::string &ueId,
-                 const std::vector<PatchItem> &patchItem,
-                 const Pistache::Optional<std::string> &supportedFeatures,
-                 Pistache::Http::ResponseWriter &response) = 0;
+  virtual void modify_pp_data(
+      const std::string &ueId, const std::vector<PatchItem> &patchItem,
+      const Pistache::Optional<std::string> &supportedFeatures,
+      Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* ProvisionedParameterDataDocumentApi_H_ */

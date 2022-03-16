@@ -77,6 +77,11 @@ void AuthenticationUPUDocumentApi::setupRoutes() {
 void AuthenticationUPUDocumentApi::create_authentication_upu_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -113,6 +118,11 @@ void AuthenticationUPUDocumentApi::create_authentication_upu_handler(
 void AuthenticationUPUDocumentApi::query_auth_upu_handler(
     const Pistache::Rest::Request &request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -150,4 +160,4 @@ void AuthenticationUPUDocumentApi::
                 "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
