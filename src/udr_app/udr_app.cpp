@@ -99,8 +99,8 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
 
   // TODO: Define query template in a header file
   const std::string query =
-      "select * from AccessAndMobilitySubscriptionData WHERE ueid='" + ue_id +
-      "' and servingPlmnid='" + serving_plmn_id + "'";
+      "SELECT * from AccessAndMobilitySubscriptionData WHERE ueid='" + ue_id +
+      "' AND servingPlmnid='" + serving_plmn_id + "'";
 
   Logger::udr_server().debug("SQL Query: %s", query.c_str());
 
@@ -142,7 +142,7 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
           nlohmann::json::parse(row[i]).get_to(subscribedueambr);
           subscription_data.setSubscribedUeAmbr(subscribedueambr);
         } else if (!strcmp("nssai", field->name) && row[i] != NULL) {
-          Nssai nssai;
+          Nssai nssai = {};
           nlohmann::json::parse(row[i]).get_to(nssai);
           subscription_data.setNssai(nssai);
         } else if (!strcmp("ratRestrictions", field->name) && row[i] != NULL) {
@@ -323,7 +323,7 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
     code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug(
-        "AccessAndMobilitySubscriptionData GET (JSON): \n %s",
+        "AccessAndMobilitySubscriptionData GET (JSON): %s",
         response_data.dump().c_str());
   } else {
     Logger::udr_server().error(
@@ -339,11 +339,11 @@ void udr_app::handle_create_amf_context_3gpp(
     const std::string &ue_id,
     Amf3GppAccessRegistration &amf3GppAccessRegistration,
     nlohmann::json &response_data, long &code) {
-  MYSQL_RES *res = NULL;
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
 
   const std::string select_AMF3GPPAccessRegistration =
-      "select * from Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
   std::string query = {};
 
   nlohmann::json j = {};
@@ -351,20 +351,20 @@ void udr_app::handle_create_amf_context_3gpp(
   if (mysql_real_query(
           &mysql, select_AMF3GPPAccessRegistration.c_str(),
           (unsigned long)select_AMF3GPPAccessRegistration.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                select_AMF3GPPAccessRegistration.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！ SQL Query: %s",
                                select_AMF3GPPAccessRegistration.c_str());
     return;
   }
   if (mysql_num_rows(res)) {
     query =
-        "update Amf3GppAccessRegistration set amfInstanceId='" +
+        "UPDATE Amf3GppAccessRegistration SET amfInstanceId='" +
         amf3GppAccessRegistration.getAmfInstanceId() + "'" +
         (amf3GppAccessRegistration.supportedFeaturesIsSet()
              ? ",supportedFeatures='" +
@@ -457,10 +457,10 @@ void udr_app::handle_create_amf_context_3gpp(
     query += ",guami='" + j.dump() + "'";
     to_json(j, amf3GppAccessRegistration.getRatType());
     query += ",ratType='" + j.dump() + "'";
-    query += " where ueid='" + ue_id + "'";
+    query += " WHERE ueid='" + ue_id + "'";
   } else {
     query =
-        "insert into Amf3GppAccessRegistration set ueid='" + ue_id + "'" +
+        "INSERT INTO Amf3GppAccessRegistration SET ueid='" + ue_id + "'" +
         ",amfInstanceId='" + amf3GppAccessRegistration.getAmfInstanceId() +
         "'" +
         (amf3GppAccessRegistration.supportedFeaturesIsSet()
@@ -558,17 +558,16 @@ void udr_app::handle_create_amf_context_3gpp(
 
   mysql_free_result(res);
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query %s",
                                query.c_str());
     return;
   }
 
   to_json(j, amf3GppAccessRegistration);
   response_data = j;
-  // code = Pistache::Http::Code::Created;
   code = HTTP_STATUS_CODE_201_CREATED;
 
-  Logger::udr_server().debug("Amf3GppAccessRegistration PUT - json:\n\"%s\"",
+  Logger::udr_server().debug("Amf3GppAccessRegistration PUT: %s",
                              j.dump().c_str());
 }
 
@@ -576,7 +575,7 @@ void udr_app::handle_create_amf_context_3gpp(
 void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
                                             nlohmann::json &response_data,
                                             long &code) {
-  MYSQL_RES *res = NULL;
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
 
@@ -584,17 +583,17 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
 
   Amf3GppAccessRegistration amf3gppaccessregistration;
   const std::string query =
-      "select * from Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query %s",
                                query.c_str());
     return;
   }
@@ -695,14 +694,13 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
     }
     to_json(j, amf3gppaccessregistration);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
     code = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug("Amf3GppAccessRegistration GET - json:\n\"%s\"",
+    Logger::udr_server().debug("Amf3GppAccessRegistration GET %s",
                                j.dump().c_str());
   } else {
-    Logger::udr_server().error("Amf3GppAccessRegistration no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "Amf3GppAccessRegistration no data！ SQL Query %s", query.c_str());
   }
 
   mysql_free_result(res);
@@ -719,7 +717,7 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
   MYSQL_ROW row = {};
 
   const std::string select_AuthenticationStatus =
-      "select * from AuthenticationStatus WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
   std::string query = {};
   nlohmann::json j = {};
 
@@ -728,19 +726,19 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
 
   if (mysql_real_query(&mysql, select_AuthenticationStatus.c_str(),
                        (unsigned long)select_AuthenticationStatus.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query %s",
                                select_AuthenticationStatus.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！ SQL Query %s",
                                select_AuthenticationStatus.c_str());
     return;
   }
   if (mysql_num_rows(res)) {
-    query = "update AuthenticationStatus set nfInstanceId='" +
+    query = "UPDATE AuthenticationStatus SET nfInstanceId='" +
             authEvent.getNfInstanceId() + "'" +
             ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
             authEvent.getTimeStamp() + "'" + ",authType='" +
@@ -752,9 +750,9 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
                  : "");
     //        to_json(j,authEvent.getAuthType());
     //        query += ",authType='"+j.dump()+"'";
-    query += " where ueid='" + ue_id + "'";
+    query += " WHERE ueid='" + ue_id + "'";
   } else {
-    query = "insert into AuthenticationStatus set ueid='" + ue_id + "'" +
+    query = "INSERT INTO AuthenticationStatus SET ueid='" + ue_id + "'" +
             ",nfInstanceId='" + authEvent.getNfInstanceId() + "'" +
             ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
             authEvent.getTimeStamp() + "'" + ",authType='" +
@@ -772,17 +770,16 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
 
   mysql_free_result(res);
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql create failure！SQL(%s)", query.c_str());
+    Logger::udr_server().error("mysql create failure！ SQL Query %s",
+                               query.c_str());
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
   code = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   to_json(j, authEvent);
-  Logger::udr_server().info("AuthenticationStatus PUT - json:\n\"%s\"",
-                            j.dump().c_str());
+  Logger::udr_server().info("AuthenticationStatus PUT: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -790,16 +787,15 @@ void udr_app::handle_delete_authentication_status(const std::string &ue_id,
                                                   nlohmann::json &response_data,
                                                   long &code) {
   const std::string query =
-      "DELETE from AuthenticationStatus WHERE ueid='" + ue_id + "'";
+      "DELETE FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query %s",
                                query.c_str());
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
   code = HTTP_STATUS_CODE_204_NO_CONTENT;
   Logger::udr_server().debug("AuthenticationStatus DELETE - successful");
 }
@@ -815,11 +811,11 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
   nlohmann::json j = {};
   AuthEvent authenticationstatus = {};
   const std::string query =
-      "select * from AuthenticationStatus WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
 
   Logger::udr_server().info("MySQL query: %s", query.c_str());
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query %s",
                                query.c_str());
     return;
   }
@@ -858,13 +854,11 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
 
     to_json(j, authenticationstatus);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
     code = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().info("AuthenticationStatus GET - json:\n\"%s\"",
-                              j.dump().c_str());
+    Logger::udr_server().info("AuthenticationStatus GET: %s", j.dump().c_str());
   } else {
-    Logger::udr_server().error("AuthenticationStatus no data！SQL(%s)",
+    Logger::udr_server().error("AuthenticationStatus no data！ SQL Query %s",
                                query.c_str());
   }
 
@@ -880,9 +874,9 @@ void udr_app::handle_modify_authentication_subscription(
   MYSQL_ROW row = {};
 
   const std::string select_Authenticationsubscription =
-      "select * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
+      "SELECT * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
 
-  Logger::udr_server().info("MySQL Query (%s)",
+  Logger::udr_server().info("MySQL Query: %s",
                             select_Authenticationsubscription.c_str());
 
   std::string query = {};
@@ -900,36 +894,36 @@ void udr_app::handle_modify_authentication_subscription(
       if (mysql_real_query(
               &mysql, select_Authenticationsubscription.c_str(),
               (unsigned long)select_Authenticationsubscription.size())) {
-        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+        Logger::udr_server().error("mysql_real_query failure！SQL Query: %s",
                                    select_Authenticationsubscription.c_str());
         return;
       }
 
       res = mysql_store_result(&mysql);
       if (res == NULL) {
-        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+        Logger::udr_server().error("mysql_store_result failure！SQL Query: %s",
                                    select_Authenticationsubscription.c_str());
         return;
       }
       if (mysql_num_rows(res)) {
         nlohmann::json sequencenumber_j;
-        query = "update AuthenticationSubscription set sequenceNumber='";
+        query = "UPDATE AuthenticationSubscription SET sequenceNumber='";
 
         to_json(sequencenumber_j, sequencenumber);
         query += sequencenumber_j.dump() + "'";
-        query += " where ueid='" + ue_id + "'";
+        query += " WHERE ueid='" + ue_id + "'";
       } else {
         Logger::udr_server().error(
-            "AuthenticationSubscription no data！SQL(%s)",
+            "AuthenticationSubscription no data！ SQL Query %s",
             select_Authenticationsubscription.c_str());
       }
 
-      Logger::udr_server().info("MySQL Update cmd (%s)", query.c_str());
+      Logger::udr_server().info("MySQL Update Cmd %s", query.c_str());
       mysql_free_result(res);
 
       if (mysql_real_query(&mysql, query.c_str(),
                            (unsigned long)query.size()) != 0) {
-        Logger::udr_server().error("update mysql failure！SQL(%s)",
+        Logger::udr_server().error("update mysql failure！ SQL Cmd: %s",
                                    query.c_str());
         return;
       }
@@ -939,11 +933,10 @@ void udr_app::handle_modify_authentication_subscription(
     j += tmp_j;
   }
 
-  Logger::udr_server().info("AuthenticationSubscription PATCH - json:\n\"%s\"",
+  Logger::udr_server().info("AuthenticationSubscription PATCH: %s",
                             j.dump().c_str());
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
   code = HTTP_STATUS_CODE_204_NO_CONTENT;
 }
 
@@ -958,18 +951,18 @@ void udr_app::handle_read_authentication_subscription(
 
   AuthenticationSubscription authenticationsubscription = {};
   const std::string query =
-      "select * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
-  Logger::udr_server().info("MySQL Query (%s)", query.c_str());
+      "SELECT * FROM AuthenticationSubscription WHERE ueid='" + ue_id + "'";
+  Logger::udr_server().info("MySQL Query: %s", query.c_str());
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
@@ -988,7 +981,7 @@ void udr_app::handle_read_authentication_subscription(
                  row[i] != NULL) {
         authenticationsubscription.setProtectionParameterId(row[i]);
       } else if (!strcmp("sequenceNumber", field->name) && row[i] != NULL) {
-        SequenceNumber sequencenumber;
+        SequenceNumber sequencenumber = {};
         nlohmann::json::parse(row[i]).get_to(sequencenumber);
         authenticationsubscription.setSequenceNumber(sequencenumber);
       } else if (!strcmp("authenticationManagementField", field->name) &&
@@ -1025,15 +1018,14 @@ void udr_app::handle_read_authentication_subscription(
 
     to_json(j, authenticationsubscription);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
     code = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().info("AuthenticationSubscription GET - json:\n\"%s\"",
+    Logger::udr_server().info("AuthenticationSubscription GET: %s",
                               j.dump().c_str());
 
   } else {
-    Logger::udr_server().error("AuthenticationSubscription no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "AuthenticationSubscription no data！ SQL Query: %s", query.c_str());
   }
 
   mysql_free_result(res);
@@ -1049,18 +1041,18 @@ void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
   MYSQL_FIELD *field = nullptr;
   nlohmann::json j = {};
   SdmSubscription SdmSubscriptions = {};
-  const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='" +
+  const std::string query = "SELECT * FROM SdmSubscriptions WHERE ueid='" +
                             ue_id + "' AND subsId=" + subs_id;
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
@@ -1119,13 +1111,11 @@ void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
     }
     to_json(j, SdmSubscriptions);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
     code = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug("SdmSubscription GET - json:\n\"%s\"",
-                               j.dump().c_str());
+    Logger::udr_server().debug("SdmSubscription GET: %s", j.dump().c_str());
   } else {
-    Logger::udr_server().error("SdmSubscription no data！SQL(%s)",
+    Logger::udr_server().error("SdmSubscription no data！ SQL Query: %s",
                                query.c_str());
   }
 
@@ -1137,22 +1127,22 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
                                              const std::string &subs_id,
                                              nlohmann::json &response_data,
                                              long &code) {
-  MYSQL_RES *res = NULL;
+  MYSQL_RES *res = nullptr;
   nlohmann::json j = {};
   ProblemDetails problemdetails = {};
 
   const std::string select_query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id +
+      "SELECT * FROM SdmSubscriptions WHERE ueid='" + ue_id +
       "' AND subsId=" + subs_id;
 
-  const std::string query = "DELETE from SdmSubscriptions WHERE ueid='" +
+  const std::string query = "DELETE FROM SdmSubscriptions WHERE ueid='" +
                             ue_id + "' AND subsId=" + subs_id;
 
   if (mysql_real_query(&mysql, select_query.c_str(),
                        (unsigned long)select_query.size())) {
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     response_data = j;
     // code = Pistache::Http::Code::Not_Found;
@@ -1163,10 +1153,9 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
   if (res == NULL) {
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！ SQL Query: %s",
                                query.c_str());
     response_data = j;
-    // code = Pistache::Http::Code::Not_Found;
     code = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
@@ -1174,7 +1163,6 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
     problemdetails.setCause("DATA_NOT_FOUND");
     to_json(j, problemdetails);
     response_data = j;
-    // code = Pistache::Http::Code::Not_Found;
     code = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
@@ -1182,16 +1170,14 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     response_data = j;
-    // code = Pistache::Http::Code::Not_Found;
     code = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
   code = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   Logger::udr_server().debug("SdmSubscription DELETE - successful");
@@ -1207,7 +1193,7 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
   MYSQL_ROW row = {};
 
   const std::string select_query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id +
+      "SELECT * FROM SdmSubscriptions WHERE ueid='" + ue_id +
       "' AND subsId=" + subs_id;
   std::string query = {};
   nlohmann::json j = {};
@@ -1215,14 +1201,14 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
 
   if (mysql_real_query(&mysql, select_query.c_str(),
                        (unsigned long)select_query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！SQL Query: %s",
                                query.c_str());
     return;
   }
@@ -1231,7 +1217,7 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
         sdmSubscription.getMonitoredResourceUris());
 
     query =
-        "update SdmSubscriptions set nfInstanceId='" +
+        "UPDATE SdmSubscriptions SET nfInstanceId='" +
         sdmSubscription.getNfInstanceId() + "'" +
         (sdmSubscription.implicitUnsubscribeIsSet()
              ? (sdmSubscription.isImplicitUnsubscribe()
@@ -1280,11 +1266,10 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
     query +=
         ",monitoredResourceUris='" + MonitoredResourceUris_json.dump() + "'";
 
-    query += " where ueid='" + ue_id + "' AND subsId=" + subs_id;
+    query += " WHERE ueid='" + ue_id + "' AND subsId=" + subs_id;
   } else {
     to_json(j, problemdetails);
     response_data = j;
-    // code = Pistache::Http::Code::Not_Found;
     code = HTTP_STATUS_CODE_404_NOT_FOUND;
 
     mysql_free_result(res);
@@ -1293,18 +1278,16 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
 
   mysql_free_result(res);
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
   code = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   to_json(j, sdmSubscription);
-  Logger::udr_server().debug("SdmSubscription PUT - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SdmSubscription PUT: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -1312,21 +1295,21 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
                                               SdmSubscription &sdmSubscription,
                                               nlohmann::json &response_data,
                                               long &code) {
-  MYSQL_RES *res = NULL;
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   nlohmann::json j = {};
   int32_t subs_id = 0;
   int32_t count = 0;
   std::string query =
-      "SELECT subsId from SdmSubscriptions WHERE ueid='" + ue_id + "'";
+      "SELECT subsId FROM SdmSubscriptions WHERE ueid='" + ue_id + "'";
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query %s",
                                query.c_str());
     return;
   }
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！ SQL Query %s",
                                query.c_str());
     return;
   }
@@ -1341,7 +1324,7 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
   mysql_free_result(res);
 
   query =
-      "insert into SdmSubscriptions set ueid='" + ue_id + "'" +
+      "INSERT INTO SdmSubscriptions SET ueid='" + ue_id + "'" +
       ",nfInstanceId='" + sdmSubscription.getNfInstanceId() + "'" +
       (sdmSubscription.implicitUnsubscribeIsSet()
            ? (sdmSubscription.isImplicitUnsubscribe()
@@ -1396,25 +1379,23 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
   }
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query %s",
                                query.c_str());
     return;
   }
 
   to_json(j, sdmSubscription);
   response_data = j;
-  // code = Pistache::Http::Code::Created;
   code = HTTP_STATUS_CODE_201_CREATED;
 
-  Logger::udr_server().debug("SdmSubscriptions POST - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SdmSubscriptions POST: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
                                              nlohmann::json &response_data,
                                              long &code) {
-  MYSQL_RES *res = NULL;
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
   std::vector<std::string> fields;
@@ -1423,17 +1404,17 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
   nlohmann::json tmp = {};
 
   const std::string query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM SdmSubscriptions WHERE ueid='" + ue_id + "'";
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
@@ -1510,11 +1491,9 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
   mysql_free_result(res);
 
   response_data = j;
-  // code = Pistache::Http::Code::Ok;
   code = HTTP_STATUS_CODE_200_OK;
 
-  Logger::udr_server().debug("SdmSubscriptions GET - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SdmSubscriptions GET: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -1529,30 +1508,30 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
   nlohmann::json j = {};
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
   std::string query =
-      "select * from SessionManagementSubscriptionData WHERE ueid='" + ue_id +
-      "' and servingPlmnid='" + serving_plmn_id + "' ";
+      "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
+      "' AND servingPlmnid='" + serving_plmn_id + "' ";
   std::string option_str = {};
   if (snssai.getSst() > 0) {
-    option_str += " and JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+    option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                   std::to_string(snssai.getSst());
   }
   if (!dnn.empty()) {
     option_str +=
-        " and JSON_EXTRACT(dnnConfigurations, \"$." + dnn + "\") IS NOT NULL";
+        " AND JSON_EXTRACT(dnnConfigurations, \"$." + dnn + "\") IS NOT NULL";
   }
 
   query += option_str;
   Logger::udr_server().debug("MySQL query: %s", query.c_str());
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure (SQL query %s)!",
+    Logger::udr_server().error("mysql_real_query failure, SQL Query: %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure (SQL query %s)！",
+    Logger::udr_server().error("mysql_store_result failure, SQL Query: %s",
                                query.c_str());
     return;
   }
@@ -1623,14 +1602,13 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
     }
     to_json(j, sessionmanagementsubscriptiondata);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
     code = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug("SessionManagementSubscriptionData:\n %s",
+    Logger::udr_server().debug("SessionManagementSubscriptionData: %s",
                                j.dump().c_str());
   } else {
     Logger::udr_server().error(
-        "SessionManagementSubscriptionData no data found (SQL query: %s)",
+        "SessionManagementSubscriptionData no data found, SQL query: %s",
         query.c_str());
   }
 
@@ -1646,27 +1624,27 @@ void udr_app::handle_create_smf_context_non_3gpp(
   MYSQL_ROW row = {};
 
   const std::string select_SmfRegistration =
-      "SELECT * from SmfRegistrations WHERE ueid='" + ue_id +
+      "SELECT * FROM SmfRegistrations WHERE ueid='" + ue_id +
       "' AND subpduSessionId=" + std::to_string(pdu_session_id);
   std::string query = {};
   nlohmann::json j = {};
 
   if (mysql_real_query(&mysql, select_SmfRegistration.c_str(),
                        (unsigned long)select_SmfRegistration.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                select_SmfRegistration.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！ SQL Query: %s",
                                select_SmfRegistration.c_str());
     return;
   }
   if (mysql_num_rows(res)) {
     query =
-        "update SmfRegistrations set smfInstanceId='" +
+        "UPDATE SmfRegistrations SET smfInstanceId='" +
         smfRegistration.getSmfInstanceId() + "'" +
         ",pduSessionId=" + std::to_string(smfRegistration.getPduSessionId()) +
         (smfRegistration.smfSetIdIsSet()
@@ -1714,11 +1692,11 @@ void udr_app::handle_create_smf_context_non_3gpp(
     query += ",singleNssai='" + j.dump() + "'";
     to_json(j, smfRegistration.getPlmnId());
     query += ",plmnId='" + j.dump() + "'";
-    query += " where ueid='" + ue_id +
+    query += " WHERE ueid='" + ue_id +
              "' AND subpduSessionId=" + std::to_string(pdu_session_id);
   } else {
     query =
-        "insert into SmfRegistrations set ueid='" + ue_id + "'" +
+        "INSERT INTO SmfRegistrations SET ueid='" + ue_id + "'" +
         ",subpduSessionId=" + std::to_string(pdu_session_id) +
         ",pduSessionId=" + std::to_string(smfRegistration.getPduSessionId()) +
         ",smfInstanceId='" + smfRegistration.getSmfInstanceId() + "'" +
@@ -1771,18 +1749,16 @@ void udr_app::handle_create_smf_context_non_3gpp(
 
   mysql_free_result(res);
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   to_json(j, smfRegistration);
   response_data = j;
-  // code = Pistache::Http::Code::Created;
   code = HTTP_STATUS_CODE_201_CREATED;
 
-  Logger::udr_server().debug("SmfRegistration PUT - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SmfRegistration PUT: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -1791,17 +1767,16 @@ void udr_app::handle_delete_smf_context(const std::string &ue_id,
                                         nlohmann::json &response_data,
                                         long &code) {
   const std::string query =
-      "DELETE from SmfRegistrations WHERE ueid='" + ue_id +
+      "DELETE FROM SmfRegistrations WHERE ueid='" + ue_id +
       "' AND subpduSessionId=" + std::to_string(pdu_session_id);
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
   code = HTTP_STATUS_CODE_204_NO_CONTENT;
   Logger::udr_server().debug("SmfRegistration DELETE - successful");
 }
@@ -1811,24 +1786,24 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
                                             const int32_t &pdu_session_id,
                                             nlohmann::json &response_data,
                                             long &code) {
-  MYSQL_RES *res = NULL;
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
   nlohmann::json j = {};
   SmfRegistration smfregistration = {};
   const std::string query =
-      "SELECT * from SmfRegistrations WHERE ueid='" + ue_id +
+      "SELECT * FROM SmfRegistrations WHERE ueid='" + ue_id +
       "' AND subpduSessionId=" + std::to_string(pdu_session_id);
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！SQL Query: %s",
                                query.c_str());
     return;
   }
@@ -1894,13 +1869,11 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
     }
     to_json(j, smfregistration);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
     code = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug("SmfRegistration GET - json:\n\"%s\"",
-                               j.dump().c_str());
+    Logger::udr_server().debug("SmfRegistration GET: %s", j.dump().c_str());
   } else {
-    Logger::udr_server().error("SmfRegistration no data！SQL(%s)",
+    Logger::udr_server().error("SmfRegistration no data！ SQL Query: %s",
                                query.c_str());
   }
 
@@ -1911,7 +1884,7 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
 void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
                                         nlohmann::json &response_data,
                                         long &code) {
-  MYSQL_RES *res = NULL;
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
   std::vector<std::string> fields;
@@ -1919,17 +1892,17 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
   nlohmann::json tmp = {};
 
   const std::string query =
-      "SELECT * from SmfRegistrations WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM SmfRegistrations WHERE ueid='" + ue_id + "'";
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！SQL Query: %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！SQL Query: %s",
                                query.c_str());
     return;
   }
@@ -2011,11 +1984,9 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
   mysql_free_result(res);
 
   response_data = j;
-  // code = Pistache::Http::Code::Ok;
   code = HTTP_STATUS_CODE_200_OK;
 
-  Logger::udr_server().debug("SmfRegistrations GET - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SmfRegistrations GET: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
@@ -2023,24 +1994,24 @@ void udr_app::handle_query_smf_select_data(const std::string &ue_id,
                                            const std::string &serving_plmn_id,
                                            nlohmann::json &response_data,
                                            long &code) {
-  MYSQL_RES *res = NULL;
+  MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
   nlohmann::json j = {};
   SmfSelectionSubscriptionData smfselectionsubscriptiondata = {};
   const std::string query =
-      "select * from SmfSelectionSubscriptionData WHERE ueid='" + ue_id +
-      "' and servingPlmnid='" + serving_plmn_id + "'";
+      "SELECT * FROM SmfSelectionSubscriptionData WHERE ueid='" + ue_id +
+      "' AND servingPlmnid='" + serving_plmn_id + "'";
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
+    Logger::udr_server().error("mysql_real_query failure！ SQL Query: %s",
                                query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
+    Logger::udr_server().error("mysql_store_result failure！SQL Query: %s",
                                query.c_str());
     return;
   }
@@ -2064,14 +2035,13 @@ void udr_app::handle_query_smf_select_data(const std::string &ue_id,
     }
     to_json(j, smfselectionsubscriptiondata);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
     code = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug(
-        "SmfSelectionSubscriptionData GET - json:\n\"%s\"", j.dump().c_str());
+    Logger::udr_server().debug("SmfSelectionSubscriptionData GET: %s",
+                               j.dump().c_str());
   } else {
-    Logger::udr_server().error("SmfSelectionSubscriptionData no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "SmfSelectionSubscriptionData no data！SQL Query: %s", query.c_str());
   }
 
   mysql_free_result(res);
