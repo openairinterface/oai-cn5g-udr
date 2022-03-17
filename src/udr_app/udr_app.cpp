@@ -92,7 +92,6 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
   MYSQL_RES *res = nullptr;
   MYSQL_ROW row = {};
   MYSQL_FIELD *field = nullptr;
-  nlohmann::json j = {};
   response_data = {};
   oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
 
@@ -102,6 +101,8 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
   const std::string query =
       "select * from AccessAndMobilitySubscriptionData WHERE ueid='" + ue_id +
       "' and servingPlmnid='" + serving_plmn_id + "'";
+
+  Logger::udr_server().debug("SQL Query: %s", query.c_str());
 
   if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
     Logger::udr_server().error("mysql_real_query failure！");
@@ -318,13 +319,12 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
       }
     }
 
-    to_json(j, subscription_data);
-    response_data = j;
+    to_json(response_data, subscription_data);
     code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug(
         "AccessAndMobilitySubscriptionData GET (JSON): \n %s",
-        j.dump().c_str());
+        response_data.dump().c_str());
   } else {
     Logger::udr_server().error(
         "No data available for AccessAndMobilitySubscriptionData!");
