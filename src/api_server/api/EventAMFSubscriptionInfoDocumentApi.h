@@ -61,10 +61,10 @@ class EventAMFSubscriptionInfoDocumentApi {
   void setupRoutes();
 
   void remove_amf_subscriptions_info_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void event_amf_subscription_info_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -78,8 +78,8 @@ class EventAMFSubscriptionInfoDocumentApi {
   /// <param name="ueId"></param>
   /// <param name="subsId"></param>
   virtual void remove_amf_subscriptions_info(
-      const std::string &ueId, const std::string &subsId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

@@ -48,7 +48,9 @@ V2XSubscriptionDataApi::V2XSubscriptionDataApi(
   router = rtr;
 }
 
-void V2XSubscriptionDataApi::init() { setupRoutes(); }
+void V2XSubscriptionDataApi::init() {
+  setupRoutes();
+}
 
 void V2XSubscriptionDataApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -65,7 +67,7 @@ void V2XSubscriptionDataApi::setupRoutes() {
 }
 
 void V2XSubscriptionDataApi::query_v2x_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -86,20 +88,20 @@ void V2XSubscriptionDataApi::query_v2x_data_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->query_v2x_data(ueId, supportedFeatures, ifNoneMatch, ifModifiedSince,
-                         response);
-  } catch (nlohmann::detail::exception &e) {
+    this->query_v2x_data(
+        ueId, supportedFeatures, ifNoneMatch, ifModifiedSince, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -107,9 +109,9 @@ void V2XSubscriptionDataApi::query_v2x_data_handler(
 }
 
 void V2XSubscriptionDataApi::v2_x_subscription_data_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

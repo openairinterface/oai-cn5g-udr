@@ -65,10 +65,10 @@ class Query5GVnGroupConfigurationDocumentApi {
   void setupRoutes();
 
   void get5_g_vn_group_configuration_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void query5_g_vn_group_configuration_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -81,8 +81,8 @@ class Query5GVnGroupConfigurationDocumentApi {
   /// </remarks>
   /// <param name="externalGroupId"></param>
   virtual void get5_g_vn_group_configuration(
-      const std::string &externalGroupId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& externalGroupId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

@@ -65,13 +65,13 @@ class ApplicationDataSubscriptionsCollectionApi {
   void setupRoutes();
 
   void create_individual_application_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void read_application_data_change_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void application_data_subscriptions_collection_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -84,8 +84,8 @@ class ApplicationDataSubscriptionsCollectionApi {
   /// </remarks>
   /// <param name="applicationDataSubs"></param>
   virtual void create_individual_application_data_subscription(
-      const ApplicationDataSubs &applicationDataSubs,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const ApplicationDataSubs& applicationDataSubs,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Read Application Data change Subscriptions
@@ -96,8 +96,8 @@ class ApplicationDataSubscriptionsCollectionApi {
   /// <param name="dataFilter">The data filter for the query. (optional, default
   /// to DataFilter())</param>
   virtual void read_application_data_change_subscriptions(
-      const Pistache::Optional<DataFilter> &dataFilter,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<DataFilter>& dataFilter,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

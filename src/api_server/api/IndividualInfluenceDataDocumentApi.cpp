@@ -48,7 +48,9 @@ IndividualInfluenceDataDocumentApi::IndividualInfluenceDataDocumentApi(
   router = rtr;
 }
 
-void IndividualInfluenceDataDocumentApi::init() { setupRoutes(); }
+void IndividualInfluenceDataDocumentApi::init() {
+  setupRoutes();
+}
 
 void IndividualInfluenceDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -57,32 +59,37 @@ void IndividualInfluenceDataDocumentApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/application-data/influenceData/:influenceId",
-      Routes::bind(&IndividualInfluenceDataDocumentApi::
-                       create_or_replace_individual_influence_data_handler,
-                   this));
-  Routes::Delete(*router,
-                 base + udr_cfg.nudr.api_version +
-                     "/application-data/influenceData/:influenceId",
-                 Routes::bind(&IndividualInfluenceDataDocumentApi::
-                                  delete_individual_influence_data_handler,
-                              this));
-  Routes::Patch(*router,
-                base + udr_cfg.nudr.api_version +
-                    "/application-data/influenceData/:influenceId",
-                Routes::bind(&IndividualInfluenceDataDocumentApi::
-                                 update_individual_influence_data_handler,
-                             this));
+      Routes::bind(
+          &IndividualInfluenceDataDocumentApi::
+              create_or_replace_individual_influence_data_handler,
+          this));
+  Routes::Delete(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/influenceData/:influenceId",
+      Routes::bind(
+          &IndividualInfluenceDataDocumentApi::
+              delete_individual_influence_data_handler,
+          this));
+  Routes::Patch(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/influenceData/:influenceId",
+      Routes::bind(
+          &IndividualInfluenceDataDocumentApi::
+              update_individual_influence_data_handler,
+          this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&IndividualInfluenceDataDocumentApi::
-                       individual_influence_data_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &IndividualInfluenceDataDocumentApi::
+          individual_influence_data_document_api_default_handler,
+      this));
 }
 
 void IndividualInfluenceDataDocumentApi::
     create_or_replace_individual_influence_data_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":influenceId")) {
     // send a 400 error
@@ -100,14 +107,14 @@ void IndividualInfluenceDataDocumentApi::
     nlohmann::json::parse(request.body()).get_to(trafficInfluData);
     this->create_or_replace_individual_influence_data(
         influenceId, trafficInfluData, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -115,7 +122,7 @@ void IndividualInfluenceDataDocumentApi::
 }
 void IndividualInfluenceDataDocumentApi::
     delete_individual_influence_data_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":influenceId")) {
     // send a 400 error
@@ -127,14 +134,14 @@ void IndividualInfluenceDataDocumentApi::
 
   try {
     this->delete_individual_influence_data(influenceId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -142,7 +149,7 @@ void IndividualInfluenceDataDocumentApi::
 }
 void IndividualInfluenceDataDocumentApi::
     update_individual_influence_data_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":influenceId")) {
     // send a 400 error
@@ -158,16 +165,16 @@ void IndividualInfluenceDataDocumentApi::
 
   try {
     nlohmann::json::parse(request.body()).get_to(trafficInfluDataPatch);
-    this->update_individual_influence_data(influenceId, trafficInfluDataPatch,
-                                           response);
-  } catch (nlohmann::detail::exception &e) {
+    this->update_individual_influence_data(
+        influenceId, trafficInfluDataPatch, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -176,10 +183,10 @@ void IndividualInfluenceDataDocumentApi::
 
 void IndividualInfluenceDataDocumentApi::
     individual_influence_data_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

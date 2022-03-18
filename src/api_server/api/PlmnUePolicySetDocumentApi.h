@@ -64,10 +64,11 @@ class PlmnUePolicySetDocumentApi {
  private:
   void setupRoutes();
 
-  void read_plmn_ue_policy_set_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
+  void read_plmn_ue_policy_set_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void plmn_ue_policy_set_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -80,7 +81,7 @@ class PlmnUePolicySetDocumentApi {
   /// </remarks>
   /// <param name="plmnId"></param>
   virtual void read_plmn_ue_policy_set(
-      const std::string &plmnId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& plmnId, Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

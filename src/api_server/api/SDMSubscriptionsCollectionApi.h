@@ -64,12 +64,13 @@ class SDMSubscriptionsCollectionApi {
   void setupRoutes();
 
   void create_sdm_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
-  void querysdmsubscriptions_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
+  void querysdmsubscriptions_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void sdm_subscriptions_collection_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -83,8 +84,8 @@ class SDMSubscriptionsCollectionApi {
   /// <param name="ueId">UE ID</param>
   /// <param name="sdmSubscription"></param>
   virtual void create_sdm_subscriptions(
-      const std::string &ueId, SdmSubscription &sdmSubscription,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the sdm subscriptions of a UE
@@ -96,9 +97,9 @@ class SDMSubscriptionsCollectionApi {
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void querysdmsubscriptions(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

@@ -68,16 +68,16 @@ class SubsToNotifyDocumentApi {
   void setupRoutes();
 
   void modifysubscription_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void query_subscription_data_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void removesubscription_data_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void subs_to_notify_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -93,9 +93,9 @@ class SubsToNotifyDocumentApi {
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modifysubscription_data_subscription(
-      const std::string &subsId, const std::vector<PatchItem> &patchItem,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subsId, const std::vector<PatchItem>& patchItem,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves a individual subscriptionDataSubscription identified by subsId
@@ -105,7 +105,7 @@ class SubsToNotifyDocumentApi {
   /// </remarks>
   /// <param name="subsId">Unique ID of the subscription to retrieve</param>
   virtual void query_subscription_data_subscriptions(
-      const std::string &subsId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subsId, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Deletes a subscriptionDataSubscriptions
@@ -115,7 +115,7 @@ class SubsToNotifyDocumentApi {
   /// </remarks>
   /// <param name="subsId">Unique ID of the subscription to remove</param>
   virtual void removesubscription_data_subscriptions(
-      const std::string &subsId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subsId, Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

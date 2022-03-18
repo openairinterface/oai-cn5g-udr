@@ -49,7 +49,9 @@ SDMSubscriptionDocumentApi::SDMSubscriptionDocumentApi(
   router = rtr;
 }
 
-void SDMSubscriptionDocumentApi::init() { setupRoutes(); }
+void SDMSubscriptionDocumentApi::init() {
+  setupRoutes();
+}
 
 void SDMSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -58,35 +60,35 @@ void SDMSubscriptionDocumentApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
-      Routes::bind(&SDMSubscriptionDocumentApi::modifysdm_subscription_handler,
-                   this));
+      Routes::bind(
+          &SDMSubscriptionDocumentApi::modifysdm_subscription_handler, this));
   Routes::Get(
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
-      Routes::bind(&SDMSubscriptionDocumentApi::querysdm_subscription_handler,
-                   this));
+      Routes::bind(
+          &SDMSubscriptionDocumentApi::querysdm_subscription_handler, this));
   Routes::Delete(
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
-      Routes::bind(&SDMSubscriptionDocumentApi::removesdm_subscriptions_handler,
-                   this));
+      Routes::bind(
+          &SDMSubscriptionDocumentApi::removesdm_subscriptions_handler, this));
   Routes::Put(
       *router,
       base + "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
-      Routes::bind(&SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler,
-                   this));
+      Routes::bind(
+          &SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&SDMSubscriptionDocumentApi::
-                       sdm_subscription_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &SDMSubscriptionDocumentApi::
+          sdm_subscription_document_api_default_handler,
+      this));
 }
 
 void SDMSubscriptionDocumentApi::modifysdm_subscription_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscription Method: PATCH!");
   if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
@@ -96,7 +98,7 @@ void SDMSubscriptionDocumentApi::modifysdm_subscription_handler(
   }
 
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId   = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
 
   // Getting the body param
@@ -114,23 +116,23 @@ void SDMSubscriptionDocumentApi::modifysdm_subscription_handler(
 
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);
-    this->modifysdm_subscription(ueId, subsId, patchItem, supportedFeatures,
-                                 response);
-  } catch (nlohmann::detail::exception &e) {
+    this->modifysdm_subscription(
+        ueId, subsId, patchItem, supportedFeatures, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SDMSubscriptionDocumentApi::querysdm_subscription_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscription Method: GET!");
   if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
@@ -139,26 +141,26 @@ void SDMSubscriptionDocumentApi::querysdm_subscription_handler(
     return;
   }
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId   = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
 
   try {
     this->querysdm_subscription(ueId, subsId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SDMSubscriptionDocumentApi::removesdm_subscriptions_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscription Method: DELETE!");
   if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
@@ -167,26 +169,26 @@ void SDMSubscriptionDocumentApi::removesdm_subscriptions_handler(
     return;
   }
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId   = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
 
   try {
     this->removesdm_subscriptions(ueId, subsId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscription Method: PUT!");
   if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
@@ -195,7 +197,7 @@ void SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler(
     return;
   }
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId   = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
 
   // Getting the body param
@@ -205,14 +207,14 @@ void SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(sdmSubscription);
     this->updatesdmsubscriptions(ueId, subsId, sdmSubscription, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -220,9 +222,9 @@ void SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler(
 }
 
 void SDMSubscriptionDocumentApi::sdm_subscription_document_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

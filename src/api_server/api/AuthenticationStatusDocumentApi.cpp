@@ -49,7 +49,9 @@ AuthenticationStatusDocumentApi::AuthenticationStatusDocumentApi(
   router = rtr;
 }
 
-void AuthenticationStatusDocumentApi::init() { setupRoutes(); }
+void AuthenticationStatusDocumentApi::init() {
+  setupRoutes();
+}
 
 void AuthenticationStatusDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -58,17 +60,19 @@ void AuthenticationStatusDocumentApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/authentication-data/authentication-status",
-      Routes::bind(&AuthenticationStatusDocumentApi::
-                       create_authentication_status_handler,
-                   this));
+      Routes::bind(
+          &AuthenticationStatusDocumentApi::
+              create_authentication_status_handler,
+          this));
 
   Routes::Delete(
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/authentication-data/authentication-status",
-      Routes::bind(&AuthenticationStatusDocumentApi::
-                       delete_authentication_status_handler,
-                   this));
+      Routes::bind(
+          &AuthenticationStatusDocumentApi::
+              delete_authentication_status_handler,
+          this));
   Routes::Get(
       *router,
       base + udr_cfg.nudr.api_version +
@@ -78,14 +82,14 @@ void AuthenticationStatusDocumentApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&AuthenticationStatusDocumentApi::
-                       authentication_status_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &AuthenticationStatusDocumentApi::
+          authentication_status_document_api_default_handler,
+      this));
 }
 
 void AuthenticationStatusDocumentApi::create_authentication_status_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -102,14 +106,14 @@ void AuthenticationStatusDocumentApi::create_authentication_status_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(authEvent);
     this->create_authentication_status(ueId, authEvent, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -117,7 +121,7 @@ void AuthenticationStatusDocumentApi::create_authentication_status_handler(
 }
 
 void AuthenticationStatusDocumentApi::delete_authentication_status_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -129,21 +133,21 @@ void AuthenticationStatusDocumentApi::delete_authentication_status_handler(
 
   try {
     this->delete_authentication_status(ueId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void AuthenticationStatusDocumentApi::query_authentication_status_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -172,16 +176,16 @@ void AuthenticationStatusDocumentApi::query_authentication_status_handler(
   }
 
   try {
-    this->query_authentication_status(ueId, fields, supportedFeatures,
-                                      response);
-  } catch (nlohmann::detail::exception &e) {
+    this->query_authentication_status(
+        ueId, fields, supportedFeatures, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -190,10 +194,10 @@ void AuthenticationStatusDocumentApi::query_authentication_status_handler(
 
 void AuthenticationStatusDocumentApi::
     authentication_status_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

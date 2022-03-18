@@ -69,16 +69,16 @@ class OperatorSpecificDataDocumentApi {
   void setupRoutes();
 
   void read_operator_specific_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void replace_operator_specific_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void update_operator_specific_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void operator_specific_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -94,10 +94,10 @@ class OperatorSpecificDataDocumentApi {
   /// std::vector&lt;std::string&gt;())</param> <param name="suppFeat">Supported
   /// Features (optional, default to &quot;&quot;)</param>
   virtual void read_operator_specific_data(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify the operator specific policy data of an UE
@@ -108,9 +108,9 @@ class OperatorSpecificDataDocumentApi {
   /// <param name="ueId">UE Id</param>
   /// <param name="requestBody"></param>
   virtual void replace_operator_specific_data(
-      const std::string &ueId,
-      const std::map<std::string, OperatorSpecificDataContainer> &requestBody,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const std::map<std::string, OperatorSpecificDataContainer>& requestBody,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify the operator specific policy data of an UE
@@ -121,8 +121,8 @@ class OperatorSpecificDataDocumentApi {
   /// <param name="ueId">UE Id</param>
   /// <param name="patchItem"></param>
   virtual void update_operator_specific_data(
-      const std::string &ueId, const std::vector<PatchItem> &patchItem,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

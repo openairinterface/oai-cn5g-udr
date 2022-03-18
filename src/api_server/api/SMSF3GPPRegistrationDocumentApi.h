@@ -63,14 +63,17 @@ class SMSF3GPPRegistrationDocumentApi {
  private:
   void setupRoutes();
 
-  void create_smsf_context3gpp_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
-  void delete_smsf_context3gpp_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
-  void query_smsf_context3gpp_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
+  void create_smsf_context3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void delete_smsf_context3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void query_smsf_context3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void smsf3_gpp_registration_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -84,8 +87,8 @@ class SMSF3GPPRegistrationDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="smsfRegistration"> (optional)</param>
   virtual void create_smsf_context3gpp(
-      const std::string &ueId, const SmsfRegistration &smsfRegistration,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const SmsfRegistration& smsfRegistration,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// To remove the SMSF context data of a UE via 3GPP access
@@ -95,7 +98,7 @@ class SMSF3GPPRegistrationDocumentApi {
   /// </remarks>
   /// <param name="ueId">UE id</param>
   virtual void delete_smsf_context3gpp(
-      const std::string &ueId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the SMSF context data of a UE using 3gpp access
@@ -109,10 +112,10 @@ class SMSF3GPPRegistrationDocumentApi {
   /// name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_smsf_context3gpp(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

@@ -63,16 +63,17 @@ class SubsToNotifyCollectionApi {
  private:
   void setupRoutes();
 
-  void query_subs_to_notify_handler(const Pistache::Rest::Request &request,
-                                    Pistache::Http::ResponseWriter response);
+  void query_subs_to_notify_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void remove_multiple_subscription_data_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void subscription_data_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void subs_to_notify_collection_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -87,9 +88,9 @@ class SubsToNotifyCollectionApi {
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_subs_to_notify(
-      const Pistache::Optional<std::string> &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::string>& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Deletes subscriptions identified by a given ue-id parameter
@@ -104,11 +105,11 @@ class SubsToNotifyCollectionApi {
   /// name="implicitUnsubscribeIndication">Implicit Unsubscribe Indication
   /// (optional, default to false)</param>
   virtual void remove_multiple_subscription_data_subscriptions(
-      const Pistache::Optional<std::string> &ueId,
-      const Pistache::Optional<std::string> &nfInstanceId,
-      const Pistache::Optional<bool> &deleteAllNfs,
-      const Pistache::Optional<bool> &implicitUnsubscribeIndication,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::string>& ueId,
+      const Pistache::Optional<std::string>& nfInstanceId,
+      const Pistache::Optional<bool>& deleteAllNfs,
+      const Pistache::Optional<bool>& implicitUnsubscribeIndication,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Subscription data subscriptions
@@ -118,8 +119,8 @@ class SubsToNotifyCollectionApi {
   /// </remarks>
   /// <param name="subscriptionDataSubscriptions"></param>
   virtual void subscription_data_subscriptions(
-      const SubscriptionDataSubscriptions &subscriptionDataSubscriptions,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const SubscriptionDataSubscriptions& subscriptionDataSubscriptions,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

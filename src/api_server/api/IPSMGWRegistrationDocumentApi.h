@@ -66,16 +66,20 @@ class IPSMGWRegistrationDocumentApi {
  private:
   void setupRoutes();
 
-  void create_ip_sm_gw_context_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
-  void delete_ip_sm_gw_context_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
-  void modify_ip_sm_gw_context_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
-  void query_ip_sm_gw_context_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
+  void create_ip_sm_gw_context_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void delete_ip_sm_gw_context_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void modify_ip_sm_gw_context_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void query_ip_sm_gw_context_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void ipsmgw_registration_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -89,8 +93,8 @@ class IPSMGWRegistrationDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="ipSmGwRegistration"> (optional)</param>
   virtual void create_ip_sm_gw_context(
-      const std::string &ueId, const IpSmGwRegistration &ipSmGwRegistration,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const IpSmGwRegistration& ipSmGwRegistration,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// To remove the IP-SM-GW context data of a UE
@@ -100,7 +104,7 @@ class IPSMGWRegistrationDocumentApi {
   /// </remarks>
   /// <param name="ueId">UE id</param>
   virtual void delete_ip_sm_gw_context(
-      const std::string &ueId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify the IP-SM-GW context data of a UE
@@ -111,8 +115,8 @@ class IPSMGWRegistrationDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="patchItem"></param>
   virtual void modify_ip_sm_gw_context(
-      const std::string &ueId, const std::vector<PatchItem> &patchItem,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the IP-SM-GW context data of a UE
@@ -126,10 +130,10 @@ class IPSMGWRegistrationDocumentApi {
   /// name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_ip_sm_gw_context(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

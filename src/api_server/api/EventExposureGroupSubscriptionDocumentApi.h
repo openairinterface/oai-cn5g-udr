@@ -70,19 +70,19 @@ class EventExposureGroupSubscriptionDocumentApi {
   void setupRoutes();
 
   void modify_ee_group_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void query_ee_group_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void remove_ee_group_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void update_ee_group_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void event_exposure_group_subscription_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -99,10 +99,10 @@ class EventExposureGroupSubscriptionDocumentApi {
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify_ee_group_subscription(
-      const std::string &ueGroupId, const std::string &subsId,
-      const std::vector<PatchItem> &patchItem,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueGroupId, const std::string& subsId,
+      const std::vector<PatchItem>& patchItem,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieve a individual eeSubscription for a group of UEs or any UE
@@ -113,8 +113,8 @@ class EventExposureGroupSubscriptionDocumentApi {
   /// <param name="ueGroupId"></param>
   /// <param name="subsId">Unique ID of the subscription to remove</param>
   virtual void query_ee_group_subscription(
-      const std::string &ueGroupId, const std::string &subsId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueGroupId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Deletes a eeSubscription for a group of UEs or any UE
@@ -125,8 +125,8 @@ class EventExposureGroupSubscriptionDocumentApi {
   /// <param name="ueGroupId"></param>
   /// <param name="subsId">Unique ID of the subscription to remove</param>
   virtual void remove_ee_group_subscriptions(
-      const std::string &ueGroupId, const std::string &subsId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueGroupId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Update an individual ee subscription of a group of UEs or any UE
@@ -138,9 +138,9 @@ class EventExposureGroupSubscriptionDocumentApi {
   /// <param name="subsId"></param>
   /// <param name="eeSubscription"> (optional)</param>
   virtual void update_ee_group_subscriptions(
-      const std::string &ueGroupId, const std::string &subsId,
-      const EeSubscription &eeSubscription,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueGroupId, const std::string& subsId,
+      const EeSubscription& eeSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

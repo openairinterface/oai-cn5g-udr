@@ -65,10 +65,10 @@ class SponsorConnectivityDataDocumentApi {
   void setupRoutes();
 
   void read_sponsor_connectivity_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void sponsor_connectivity_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -81,8 +81,8 @@ class SponsorConnectivityDataDocumentApi {
   /// </remarks>
   /// <param name="sponsorId"></param>
   virtual void read_sponsor_connectivity_data(
-      const std::string &sponsorId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& sponsorId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

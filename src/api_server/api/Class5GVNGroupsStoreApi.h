@@ -63,10 +63,11 @@ class Class5GVNGroupsStoreApi {
  private:
   void setupRoutes();
 
-  void query5_g_vn_group_handler(const Pistache::Rest::Request &request,
-                                 Pistache::Http::ResponseWriter response);
+  void query5_g_vn_group_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void class5_gvn_groups_store_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -80,8 +81,8 @@ class Class5GVNGroupsStoreApi {
   /// <param name="gpsis">List of GPSIs (optional, default to
   /// std::vector&lt;std::string&gt;())</param>
   virtual void query5_g_vn_group(
-      const Pistache::Optional<std::vector<std::string>> &gpsis,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::vector<std::string>>& gpsis,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

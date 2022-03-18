@@ -63,10 +63,11 @@ class SMFRegistrationsCollectionApi {
  private:
   void setupRoutes();
 
-  void query_smf_reg_list_handler(const Pistache::Rest::Request &request,
-                                  Pistache::Http::ResponseWriter response);
+  void query_smf_reg_list_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void smf_registrations_collection_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -81,9 +82,9 @@ class SMFRegistrationsCollectionApi {
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_smf_reg_list(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

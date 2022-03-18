@@ -64,10 +64,11 @@ class PFDDataStoreApi {
  private:
   void setupRoutes();
 
-  void read_pfd_data_handler(const Pistache::Rest::Request &request,
-                             Pistache::Http::ResponseWriter response);
+  void read_pfd_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void pfd_data_store_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -84,8 +85,8 @@ class PFDDataStoreApi {
   /// querying PFD Data resource. (optional, default to
   /// std::vector&lt;std::string&gt;())</param>
   virtual void read_pfd_data(
-      const Pistache::Optional<std::vector<std::string>> &appId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::vector<std::string>>& appId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

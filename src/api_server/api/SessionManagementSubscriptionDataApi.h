@@ -64,10 +64,11 @@ class SessionManagementSubscriptionDataApi {
  private:
   void setupRoutes();
 
-  void query_sm_data_handler(const Pistache::Rest::Request &request,
-                             Pistache::Http::ResponseWriter response);
+  void query_sm_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void session_management_subscription_data_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -91,14 +92,14 @@ class SessionManagementSubscriptionDataApi {
   /// conditional requests, as described in RFC 7232, 3.3 (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_sm_data(
-      const std::string &ueId, const std::string &servingPlmnId,
-      const Pistache::Optional<Snssai> &singleNssai,
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::string& servingPlmnId,
+      const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

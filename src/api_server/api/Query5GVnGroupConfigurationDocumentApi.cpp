@@ -48,17 +48,21 @@ Query5GVnGroupConfigurationDocumentApi::Query5GVnGroupConfigurationDocumentApi(
   router = rtr;
 }
 
-void Query5GVnGroupConfigurationDocumentApi::init() { setupRoutes(); }
+void Query5GVnGroupConfigurationDocumentApi::init() {
+  setupRoutes();
+}
 
 void Query5GVnGroupConfigurationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(*router,
-              base + udr_cfg.nudr.api_version +
-                  "/subscription-data/group-data/5g-vn-groups/:externalGroupId",
-              Routes::bind(&Query5GVnGroupConfigurationDocumentApi::
-                               get5_g_vn_group_configuration_handler,
-                           this));
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/group-data/5g-vn-groups/:externalGroupId",
+      Routes::bind(
+          &Query5GVnGroupConfigurationDocumentApi::
+              get5_g_vn_group_configuration_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -69,7 +73,7 @@ void Query5GVnGroupConfigurationDocumentApi::setupRoutes() {
 
 void Query5GVnGroupConfigurationDocumentApi::
     get5_g_vn_group_configuration_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":externalGroupId")) {
     // send a 400 error
@@ -81,14 +85,14 @@ void Query5GVnGroupConfigurationDocumentApi::
 
   try {
     this->get5_g_vn_group_configuration(externalGroupId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -97,10 +101,10 @@ void Query5GVnGroupConfigurationDocumentApi::
 
 void Query5GVnGroupConfigurationDocumentApi::
     query5_g_vn_group_configuration_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

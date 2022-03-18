@@ -48,28 +48,32 @@ QueryAMFSubscriptionInfoDocumentApi::QueryAMFSubscriptionInfoDocumentApi(
   router = rtr;
 }
 
-void QueryAMFSubscriptionInfoDocumentApi::init() { setupRoutes(); }
+void QueryAMFSubscriptionInfoDocumentApi::init() {
+  setupRoutes();
+}
 
 void QueryAMFSubscriptionInfoDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(*router,
-              base + udr_cfg.nudr.api_version +
-                  "/subscription-data/:ueId/context-data/ee-subscriptions/"
-                  ":subsId/amf-subscriptions",
-              Routes::bind(&QueryAMFSubscriptionInfoDocumentApi::
-                               get_amf_subscription_info_handler,
-                           this));
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/ee-subscriptions/"
+          ":subsId/amf-subscriptions",
+      Routes::bind(
+          &QueryAMFSubscriptionInfoDocumentApi::
+              get_amf_subscription_info_handler,
+          this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&QueryAMFSubscriptionInfoDocumentApi::
-                       query_amf_subscription_info_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &QueryAMFSubscriptionInfoDocumentApi::
+          query_amf_subscription_info_document_api_default_handler,
+      this));
 }
 
 void QueryAMFSubscriptionInfoDocumentApi::get_amf_subscription_info_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId") or !request.hasParam(":subsId")) {
     // send a 400 error
@@ -77,19 +81,19 @@ void QueryAMFSubscriptionInfoDocumentApi::get_amf_subscription_info_handler(
     return;
   }
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId   = request.param(":ueId").as<std::string>();
   auto subsId = request.param(":subsId").as<std::string>();
 
   try {
     this->get_amf_subscription_info(ueId, subsId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -98,10 +102,10 @@ void QueryAMFSubscriptionInfoDocumentApi::get_amf_subscription_info_handler(
 
 void QueryAMFSubscriptionInfoDocumentApi::
     query_amf_subscription_info_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

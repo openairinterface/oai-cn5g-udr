@@ -66,16 +66,16 @@ class PduSessionManagementDataApi {
   void setupRoutes();
 
   void create_or_replace_session_management_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void delete_session_management_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void query_session_management_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void pdu_session_management_data_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -91,9 +91,9 @@ class PduSessionManagementDataApi {
   /// <param name="pduSessionId">PDU session id</param>
   /// <param name="pduSessionManagementData"></param>
   virtual void create_or_replace_session_management_data(
-      const std::string &ueId, const int32_t &pduSessionId,
-      const PduSessionManagementData &pduSessionManagementData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const int32_t& pduSessionId,
+      const PduSessionManagementData& pduSessionManagementData,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Deletes the session management data for a UE and for an individual PDU
@@ -105,8 +105,8 @@ class PduSessionManagementDataApi {
   /// <param name="ueId">UE id</param>
   /// <param name="pduSessionId">PDU session id</param>
   virtual void delete_session_management_data(
-      const std::string &ueId, const int32_t &pduSessionId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const int32_t& pduSessionId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the session management data for a UE and for an individual PDU
@@ -125,13 +125,13 @@ class PduSessionManagementDataApi {
   /// std::vector&lt;std::string&gt;())</param> <param name="suppFeat">Supported
   /// Features (optional, default to &quot;&quot;)</param>
   virtual void query_session_management_data(
-      const std::string &ueId, const int32_t &pduSessionId,
-      const Pistache::Optional<std::string> &ipv4Addr,
-      const Pistache::Optional<Ipv6Prefix> &ipv6Prefix,
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const int32_t& pduSessionId,
+      const Pistache::Optional<std::string>& ipv4Addr,
+      const Pistache::Optional<Ipv6Prefix>& ipv6Prefix,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

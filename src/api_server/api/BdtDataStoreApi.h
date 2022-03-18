@@ -64,10 +64,11 @@ class BdtDataStoreApi {
  private:
   void setupRoutes();
 
-  void read_bdt_data_handler(const Pistache::Rest::Request &request,
-                             Pistache::Http::ResponseWriter response);
+  void read_bdt_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void bdt_data_store_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -83,9 +84,9 @@ class BdtDataStoreApi {
   /// name="suppFeat">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void read_bdt_data(
-      const Pistache::Optional<std::vector<std::string>> &bdtRefIds,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::vector<std::string>>& bdtRefIds,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

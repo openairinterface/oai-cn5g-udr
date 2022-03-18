@@ -48,7 +48,9 @@ SubsToNotifyCollectionApi::SubsToNotifyCollectionApi(
   router = rtr;
 }
 
-void SubsToNotifyCollectionApi::init() { setupRoutes(); }
+void SubsToNotifyCollectionApi::init() {
+  setupRoutes();
+}
 
 void SubsToNotifyCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -56,14 +58,15 @@ void SubsToNotifyCollectionApi::setupRoutes() {
   Routes::Get(
       *router,
       base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
-      Routes::bind(&SubsToNotifyCollectionApi::query_subs_to_notify_handler,
-                   this));
+      Routes::bind(
+          &SubsToNotifyCollectionApi::query_subs_to_notify_handler, this));
   Routes::Delete(
       *router,
       base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
-      Routes::bind(&SubsToNotifyCollectionApi::
-                       remove_multiple_subscription_data_subscriptions_handler,
-                   this));
+      Routes::bind(
+          &SubsToNotifyCollectionApi::
+              remove_multiple_subscription_data_subscriptions_handler,
+          this));
   Routes::Post(
       *router,
       base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
@@ -78,7 +81,7 @@ void SubsToNotifyCollectionApi::setupRoutes() {
 }
 
 void SubsToNotifyCollectionApi::query_subs_to_notify_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto ueIdQuery = request.query().get("ue-id");
@@ -100,14 +103,14 @@ void SubsToNotifyCollectionApi::query_subs_to_notify_handler(
 
   try {
     this->query_subs_to_notify(ueId, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -115,7 +118,7 @@ void SubsToNotifyCollectionApi::query_subs_to_notify_handler(
 }
 void SubsToNotifyCollectionApi::
     remove_multiple_subscription_data_subscriptions_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto ueIdQuery = request.query().get("ue-id");
@@ -147,8 +150,8 @@ void SubsToNotifyCollectionApi::
   Pistache::Optional<bool> implicitUnsubscribeIndication;
   if (!implicitUnsubscribeIndicationQuery.isEmpty()) {
     bool valueQuery_instance;
-    if (fromStringValue(implicitUnsubscribeIndicationQuery.get(),
-                        valueQuery_instance)) {
+    if (fromStringValue(
+            implicitUnsubscribeIndicationQuery.get(), valueQuery_instance)) {
       implicitUnsubscribeIndication = Pistache::Some(valueQuery_instance);
     }
   }
@@ -157,21 +160,21 @@ void SubsToNotifyCollectionApi::
     this->remove_multiple_subscription_data_subscriptions(
         ueId, nfInstanceId, deleteAllNfs, implicitUnsubscribeIndication,
         response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SubsToNotifyCollectionApi::subscription_data_subscriptions_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the body param
 
@@ -179,16 +182,16 @@ void SubsToNotifyCollectionApi::subscription_data_subscriptions_handler(
 
   try {
     nlohmann::json::parse(request.body()).get_to(subscriptionDataSubscriptions);
-    this->subscription_data_subscriptions(subscriptionDataSubscriptions,
-                                          response);
-  } catch (nlohmann::detail::exception &e) {
+    this->subscription_data_subscriptions(
+        subscriptionDataSubscriptions, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -196,9 +199,9 @@ void SubsToNotifyCollectionApi::subscription_data_subscriptions_handler(
 }
 
 void SubsToNotifyCollectionApi::subs_to_notify_collection_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

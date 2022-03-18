@@ -64,12 +64,13 @@ class AuthenticationUPUDocumentApi {
   void setupRoutes();
 
   void create_authentication_upu_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
-  void query_auth_upu_handler(const Pistache::Rest::Request &request,
-                              Pistache::Http::ResponseWriter response);
+  void query_auth_upu_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void authentication_upu_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -84,9 +85,9 @@ class AuthenticationUPUDocumentApi {
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param> <param name="upuData"> (optional)</param>
   virtual void create_authentication_upu(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const UpuData &upuData, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const UpuData& upuData, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the UPU acknowledgement information of a UE
@@ -98,9 +99,9 @@ class AuthenticationUPUDocumentApi {
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_auth_upu(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

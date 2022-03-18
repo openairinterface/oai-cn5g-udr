@@ -68,13 +68,13 @@ class SessionManagementPolicyDataDocumentApi {
   void setupRoutes();
 
   void read_session_management_policy_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void update_session_management_policy_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void session_management_policy_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -92,11 +92,11 @@ class SessionManagementPolicyDataDocumentApi {
   /// std::vector&lt;std::string&gt;())</param> <param name="suppFeat">Supported
   /// Features (optional, default to &quot;&quot;)</param>
   virtual void read_session_management_policy_data(
-      const std::string &ueId, const Pistache::Optional<Snssai> &snssai,
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const Pistache::Optional<Snssai>& snssai,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify the session management policy data for a subscriber
@@ -107,8 +107,8 @@ class SessionManagementPolicyDataDocumentApi {
   /// <param name="ueId"></param>
   /// <param name="smPolicyDataPatch"></param>
   virtual void update_session_management_policy_data(
-      const std::string &ueId, const SmPolicyDataPatch &smPolicyDataPatch,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const SmPolicyDataPatch& smPolicyDataPatch,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

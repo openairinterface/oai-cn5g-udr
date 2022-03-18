@@ -67,14 +67,17 @@ class AMF3GPPAccessRegistrationDocumentApi {
  private:
   void setupRoutes();
 
-  void amf_context3gpp_handler(const Pistache::Rest::Request &request,
-                               Pistache::Http::ResponseWriter response);
-  void create_amf_context3gpp_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
-  void query_amf_context3gpp_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
+  void amf_context3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void create_amf_context3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void query_amf_context3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void amf3_gpp_access_registration_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -90,9 +93,9 @@ class AMF3GPPAccessRegistrationDocumentApi {
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void amf_context3gpp(
-      const std::string &ueId, const std::vector<PatchItem> &patchItem,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// To store the AMF context data of a UE using 3gpp access in the UDR
@@ -103,9 +106,9 @@ class AMF3GPPAccessRegistrationDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="amf3GppAccessRegistration"> (optional)</param>
   virtual void create_amf_context3gpp(
-      const std::string &ueId,
-      Amf3GppAccessRegistration &amf3GppAccessRegistration,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the AMF context data of a UE using 3gpp access
@@ -119,10 +122,10 @@ class AMF3GPPAccessRegistrationDocumentApi {
   /// name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_amf_context3gpp(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

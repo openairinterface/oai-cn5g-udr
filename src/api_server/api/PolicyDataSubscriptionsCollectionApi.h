@@ -63,10 +63,10 @@ class PolicyDataSubscriptionsCollectionApi {
   void setupRoutes();
 
   void create_individual_policy_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void policy_data_subscriptions_collection_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -79,8 +79,8 @@ class PolicyDataSubscriptionsCollectionApi {
   /// </remarks>
   /// <param name="policyDataSubscription"></param>
   virtual void create_individual_policy_data_subscription(
-      const PolicyDataSubscription &policyDataSubscription,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const PolicyDataSubscription& policyDataSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

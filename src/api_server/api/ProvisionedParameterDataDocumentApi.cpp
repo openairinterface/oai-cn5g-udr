@@ -48,7 +48,9 @@ ProvisionedParameterDataDocumentApi::ProvisionedParameterDataDocumentApi(
   router = rtr;
 }
 
-void ProvisionedParameterDataDocumentApi::init() { setupRoutes(); }
+void ProvisionedParameterDataDocumentApi::init() {
+  setupRoutes();
+}
 
 void ProvisionedParameterDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -56,18 +58,18 @@ void ProvisionedParameterDataDocumentApi::setupRoutes() {
   Routes::Patch(
       *router,
       base + udr_cfg.nudr.api_version + "/subscription-data/:ueId/pp-data",
-      Routes::bind(&ProvisionedParameterDataDocumentApi::modify_pp_data_handler,
-                   this));
+      Routes::bind(
+          &ProvisionedParameterDataDocumentApi::modify_pp_data_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&ProvisionedParameterDataDocumentApi::
-                       provisioned_parameter_data_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &ProvisionedParameterDataDocumentApi::
+          provisioned_parameter_data_document_api_default_handler,
+      this));
 }
 
 void ProvisionedParameterDataDocumentApi::modify_pp_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -93,14 +95,14 @@ void ProvisionedParameterDataDocumentApi::modify_pp_data_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);
     this->modify_pp_data(ueId, patchItem, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -109,10 +111,10 @@ void ProvisionedParameterDataDocumentApi::modify_pp_data_handler(
 
 void ProvisionedParameterDataDocumentApi::
     provisioned_parameter_data_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

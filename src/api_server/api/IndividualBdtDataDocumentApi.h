@@ -66,19 +66,19 @@ class IndividualBdtDataDocumentApi {
   void setupRoutes();
 
   void create_individual_bdt_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void delete_individual_bdt_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void read_individual_bdt_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void update_individual_bdt_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_bdt_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -92,8 +92,8 @@ class IndividualBdtDataDocumentApi {
   /// <param name="bdtReferenceId"></param>
   /// <param name="bdtData"></param>
   virtual void create_individual_bdt_data(
-      const std::string &bdtReferenceId, const BdtData &bdtData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& bdtReferenceId, const BdtData& bdtData,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Deletes an BDT data resource associated with an BDT reference Id
@@ -103,8 +103,8 @@ class IndividualBdtDataDocumentApi {
   /// </remarks>
   /// <param name="bdtReferenceId"></param>
   virtual void delete_individual_bdt_data(
-      const std::string &bdtReferenceId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& bdtReferenceId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the BDT data information associated with a BDT reference Id
@@ -116,9 +116,9 @@ class IndividualBdtDataDocumentApi {
   /// <param name="suppFeat">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void read_individual_bdt_data(
-      const std::string &bdtReferenceId,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& bdtReferenceId,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modifies an BDT data resource associated with an BDT reference Id
@@ -129,8 +129,8 @@ class IndividualBdtDataDocumentApi {
   /// <param name="bdtReferenceId"></param>
   /// <param name="bdtDataPatch"></param>
   virtual void update_individual_bdt_data(
-      const std::string &bdtReferenceId, const BdtDataPatch &bdtDataPatch,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& bdtReferenceId, const BdtDataPatch& bdtDataPatch,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

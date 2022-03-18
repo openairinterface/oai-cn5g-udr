@@ -49,7 +49,9 @@ AMF3GPPAccessRegistrationDocumentApi::AMF3GPPAccessRegistrationDocumentApi(
   router = rtr;
 }
 
-void AMF3GPPAccessRegistrationDocumentApi::init() { setupRoutes(); }
+void AMF3GPPAccessRegistrationDocumentApi::init() {
+  setupRoutes();
+}
 
 void AMF3GPPAccessRegistrationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -84,7 +86,7 @@ void AMF3GPPAccessRegistrationDocumentApi::setupRoutes() {
 }
 
 void AMF3GPPAccessRegistrationDocumentApi::amf_context3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("AMF3GPPAccessRegistration Method: PATCH!");
   if (!request.hasParam(":ueId")) {
@@ -112,21 +114,21 @@ void AMF3GPPAccessRegistrationDocumentApi::amf_context3gpp_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);
     this->amf_context3gpp(ueId, patchItem, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void AMF3GPPAccessRegistrationDocumentApi::create_amf_context3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("AMF3GPPAccessRegistration Method: PUT!");
   if (!request.hasParam(":ueId")) {
@@ -144,21 +146,21 @@ void AMF3GPPAccessRegistrationDocumentApi::create_amf_context3gpp_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(amf3GppAccessRegistration);
     this->create_amf_context3gpp(ueId, amf3GppAccessRegistration, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void AMF3GPPAccessRegistrationDocumentApi::query_amf_context3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("AMF3GPPAccessRegistration Method: GET!");
   if (!request.hasParam(":ueId")) {
@@ -189,14 +191,14 @@ void AMF3GPPAccessRegistrationDocumentApi::query_amf_context3gpp_handler(
 
   try {
     this->query_amf_context3gpp(ueId, fields, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -205,10 +207,10 @@ void AMF3GPPAccessRegistrationDocumentApi::query_amf_context3gpp_handler(
 
 void AMF3GPPAccessRegistrationDocumentApi::
     amf3_gpp_access_registration_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

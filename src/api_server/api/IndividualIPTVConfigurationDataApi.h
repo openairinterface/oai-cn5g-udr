@@ -66,10 +66,10 @@ class IndividualIPTVConfigurationDataApi {
   void setupRoutes();
 
   void partial_replace_individual_iptv_configuration_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_iptv_configuration_data_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -84,9 +84,9 @@ class IndividualIPTVConfigurationDataApi {
   /// Configuration Data to be updated. It shall apply the format of Data type
   /// string.</param> <param name="iptvConfigDataPatch"></param>
   virtual void partial_replace_individual_iptv_configuration_data(
-      const std::string &configurationId,
-      const IptvConfigDataPatch &iptvConfigDataPatch,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& configurationId,
+      const IptvConfigDataPatch& iptvConfigDataPatch,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

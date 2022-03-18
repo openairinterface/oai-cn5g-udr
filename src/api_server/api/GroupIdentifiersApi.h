@@ -63,10 +63,11 @@ class GroupIdentifiersApi {
  private:
   void setupRoutes();
 
-  void get_group_identifiers_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
+  void get_group_identifiers_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void group_identifiers_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -85,11 +86,11 @@ class GroupIdentifiersApi {
   /// name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void get_group_identifiers(
-      const Pistache::Optional<std::string> &extGroupId,
-      const Pistache::Optional<std::string> &intGroupId,
-      const Pistache::Optional<bool> &ueIdInd,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::string>& extGroupId,
+      const Pistache::Optional<std::string>& intGroupId,
+      const Pistache::Optional<bool>& ueIdInd,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

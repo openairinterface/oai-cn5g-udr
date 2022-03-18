@@ -66,11 +66,12 @@ class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
  private:
   void setupRoutes();
 
-  void get_nidd_au_data_handler(const Pistache::Rest::Request &request,
-                                Pistache::Http::ResponseWriter response);
+  void get_nidd_au_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void
   query_nidd_authorization_data_gpsi_or_external_group_identifier_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -90,12 +91,12 @@ class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
   /// name="ifModifiedSince">Validator for conditional requests, as described in
   /// RFC 7232, 3.3 (optional, default to &quot;&quot;)</param>
   virtual void get_nidd_au_data(
-      const std::string &ueId, const Pistache::Optional<Snssai> &singleNssai,
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<std::string> &mtcProviderInformation,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<std::string>& mtcProviderInformation,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

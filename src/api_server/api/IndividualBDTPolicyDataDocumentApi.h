@@ -65,10 +65,10 @@ class IndividualBDTPolicyDataDocumentApi {
   void setupRoutes();
 
   void create_individual_applied_bdt_policy_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_bdt_policy_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -83,8 +83,8 @@ class IndividualBDTPolicyDataDocumentApi {
   /// Policy Data to be created or updated. It shall apply the format of Data
   /// type string.</param> <param name="bdtPolicyData"></param>
   virtual void create_individual_applied_bdt_policy_data(
-      const std::string &bdtPolicyId, const BdtPolicyData &bdtPolicyData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& bdtPolicyId, const BdtPolicyData& bdtPolicyData,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

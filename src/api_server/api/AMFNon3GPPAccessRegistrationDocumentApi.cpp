@@ -49,7 +49,9 @@ AMFNon3GPPAccessRegistrationDocumentApi::
   router = rtr;
 }
 
-void AMFNon3GPPAccessRegistrationDocumentApi::init() { setupRoutes(); }
+void AMFNon3GPPAccessRegistrationDocumentApi::init() {
+  setupRoutes();
+}
 
 void AMFNon3GPPAccessRegistrationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -61,18 +63,22 @@ void AMFNon3GPPAccessRegistrationDocumentApi::setupRoutes() {
       Routes::bind(
           &AMFNon3GPPAccessRegistrationDocumentApi::amf_context_non3gpp_handler,
           this));
-  Routes::Put(*router,
-              base + udr_cfg.nudr.api_version +
-                  "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
-              Routes::bind(&AMFNon3GPPAccessRegistrationDocumentApi::
-                               create_amf_context_non3gpp_handler,
-                           this));
-  Routes::Get(*router,
-              base + udr_cfg.nudr.api_version +
-                  "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
-              Routes::bind(&AMFNon3GPPAccessRegistrationDocumentApi::
-                               query_amf_context_non3gpp_handler,
-                           this));
+  Routes::Put(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
+      Routes::bind(
+          &AMFNon3GPPAccessRegistrationDocumentApi::
+              create_amf_context_non3gpp_handler,
+          this));
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/amf-non-3gpp-access",
+      Routes::bind(
+          &AMFNon3GPPAccessRegistrationDocumentApi::
+              query_amf_context_non3gpp_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -82,7 +88,7 @@ void AMFNon3GPPAccessRegistrationDocumentApi::setupRoutes() {
 }
 
 void AMFNon3GPPAccessRegistrationDocumentApi::amf_context_non3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -108,14 +114,14 @@ void AMFNon3GPPAccessRegistrationDocumentApi::amf_context_non3gpp_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);
     this->amf_context_non3gpp(ueId, patchItem, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -123,7 +129,7 @@ void AMFNon3GPPAccessRegistrationDocumentApi::amf_context_non3gpp_handler(
 }
 void AMFNon3GPPAccessRegistrationDocumentApi::
     create_amf_context_non3gpp_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -139,23 +145,23 @@ void AMFNon3GPPAccessRegistrationDocumentApi::
 
   try {
     nlohmann::json::parse(request.body()).get_to(amfNon3GppAccessRegistration);
-    this->create_amf_context_non3gpp(ueId, amfNon3GppAccessRegistration,
-                                     response);
-  } catch (nlohmann::detail::exception &e) {
+    this->create_amf_context_non3gpp(
+        ueId, amfNon3GppAccessRegistration, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void AMFNon3GPPAccessRegistrationDocumentApi::query_amf_context_non3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -185,14 +191,14 @@ void AMFNon3GPPAccessRegistrationDocumentApi::query_amf_context_non3gpp_handler(
 
   try {
     this->query_amf_context_non3gpp(ueId, fields, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -201,10 +207,10 @@ void AMFNon3GPPAccessRegistrationDocumentApi::query_amf_context_non3gpp_handler(
 
 void AMFNon3GPPAccessRegistrationDocumentApi::
     amf_non3_gpp_access_registration_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

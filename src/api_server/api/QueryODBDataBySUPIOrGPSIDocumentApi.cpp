@@ -48,7 +48,9 @@ QueryODBDataBySUPIOrGPSIDocumentApi::QueryODBDataBySUPIOrGPSIDocumentApi(
   router = rtr;
 }
 
-void QueryODBDataBySUPIOrGPSIDocumentApi::init() { setupRoutes(); }
+void QueryODBDataBySUPIOrGPSIDocumentApi::init() {
+  setupRoutes();
+}
 
 void QueryODBDataBySUPIOrGPSIDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -57,8 +59,8 @@ void QueryODBDataBySUPIOrGPSIDocumentApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/operator-determined-barring-data",
-      Routes::bind(&QueryODBDataBySUPIOrGPSIDocumentApi::get_odb_data_handler,
-                   this));
+      Routes::bind(
+          &QueryODBDataBySUPIOrGPSIDocumentApi::get_odb_data_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -68,7 +70,7 @@ void QueryODBDataBySUPIOrGPSIDocumentApi::setupRoutes() {
 }
 
 void QueryODBDataBySUPIOrGPSIDocumentApi::get_odb_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -80,14 +82,14 @@ void QueryODBDataBySUPIOrGPSIDocumentApi::get_odb_data_handler(
 
   try {
     this->get_odb_data(ueId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -96,10 +98,10 @@ void QueryODBDataBySUPIOrGPSIDocumentApi::get_odb_data_handler(
 
 void QueryODBDataBySUPIOrGPSIDocumentApi::
     query_odb_data_by_supi_or_gpsi_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

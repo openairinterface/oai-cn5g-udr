@@ -66,14 +66,16 @@ class UEPolicySetDocumentApi {
   void setupRoutes();
 
   void create_or_replace_ue_policy_set_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
-  void read_ue_policy_set_handler(const Pistache::Rest::Request &request,
-                                  Pistache::Http::ResponseWriter response);
-  void update_ue_policy_set_handler(const Pistache::Rest::Request &request,
-                                    Pistache::Http::ResponseWriter response);
+  void read_ue_policy_set_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void update_ue_policy_set_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void ue_policy_set_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -87,8 +89,8 @@ class UEPolicySetDocumentApi {
   /// <param name="ueId"></param>
   /// <param name="uePolicySet"></param>
   virtual void create_or_replace_ue_policy_set(
-      const std::string &ueId, const UePolicySet &uePolicySet,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const UePolicySet& uePolicySet,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the UE policy set data for a subscriber
@@ -100,8 +102,8 @@ class UEPolicySetDocumentApi {
   /// <param name="suppFeat">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void read_ue_policy_set(
-      const std::string &ueId, const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify the UE policy set data for a subscriber
@@ -112,8 +114,8 @@ class UEPolicySetDocumentApi {
   /// <param name="ueId"></param>
   /// <param name="uePolicySetPatch"></param>
   virtual void update_ue_policy_set(
-      const std::string &ueId, const UePolicySetPatch &uePolicySetPatch,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const UePolicySetPatch& uePolicySetPatch,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

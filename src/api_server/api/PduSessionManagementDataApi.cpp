@@ -48,7 +48,9 @@ PduSessionManagementDataApi::PduSessionManagementDataApi(
   router = rtr;
 }
 
-void PduSessionManagementDataApi::init() { setupRoutes(); }
+void PduSessionManagementDataApi::init() {
+  setupRoutes();
+}
 
 void PduSessionManagementDataApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -57,9 +59,10 @@ void PduSessionManagementDataApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/exposure-data/:ueId/session-management-data/:pduSessionId",
-      Routes::bind(&PduSessionManagementDataApi::
-                       create_or_replace_session_management_data_handler,
-                   this));
+      Routes::bind(
+          &PduSessionManagementDataApi::
+              create_or_replace_session_management_data_handler,
+          this));
   Routes::Delete(
       *router,
       base + udr_cfg.nudr.api_version +
@@ -76,15 +79,15 @@ void PduSessionManagementDataApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&PduSessionManagementDataApi::
-                       pdu_session_management_data_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &PduSessionManagementDataApi::
+          pdu_session_management_data_api_default_handler,
+      this));
 }
 
 void PduSessionManagementDataApi::
     create_or_replace_session_management_data_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
     // send a 400 error
@@ -92,7 +95,7 @@ void PduSessionManagementDataApi::
     return;
   }
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId         = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   // Getting the body param
@@ -103,21 +106,21 @@ void PduSessionManagementDataApi::
     nlohmann::json::parse(request.body()).get_to(pduSessionManagementData);
     this->create_or_replace_session_management_data(
         ueId, pduSessionId, pduSessionManagementData, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void PduSessionManagementDataApi::delete_session_management_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
     // send a 400 error
@@ -125,26 +128,26 @@ void PduSessionManagementDataApi::delete_session_management_data_handler(
     return;
   }
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId         = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   try {
     this->delete_session_management_data(ueId, pduSessionId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void PduSessionManagementDataApi::query_session_management_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
     // send a 400 error
@@ -152,7 +155,7 @@ void PduSessionManagementDataApi::query_session_management_data_handler(
     return;
   }
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId         = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   // Getting the query params
@@ -198,17 +201,17 @@ void PduSessionManagementDataApi::query_session_management_data_handler(
   }
 
   try {
-    this->query_session_management_data(ueId, pduSessionId, ipv4Addr,
-                                        ipv6Prefix, dnn, fields, suppFeat,
-                                        response);
-  } catch (nlohmann::detail::exception &e) {
+    this->query_session_management_data(
+        ueId, pduSessionId, ipv4Addr, ipv6Prefix, dnn, fields, suppFeat,
+        response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -217,10 +220,10 @@ void PduSessionManagementDataApi::query_session_management_data_handler(
 
 void PduSessionManagementDataApi::
     pdu_session_management_data_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

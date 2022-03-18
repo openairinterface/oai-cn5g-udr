@@ -49,7 +49,9 @@ IndividualIPTVConfigurationDataDocumentApi::
   router = rtr;
 }
 
-void IndividualIPTVConfigurationDataDocumentApi::init() { setupRoutes(); }
+void IndividualIPTVConfigurationDataDocumentApi::init() {
+  setupRoutes();
+}
 
 void IndividualIPTVConfigurationDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -66,9 +68,10 @@ void IndividualIPTVConfigurationDataDocumentApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/application-data/iptvConfigData/:configurationId",
-      Routes::bind(&IndividualIPTVConfigurationDataDocumentApi::
-                       delete_individual_iptv_configuration_data_handler,
-                   this));
+      Routes::bind(
+          &IndividualIPTVConfigurationDataDocumentApi::
+              delete_individual_iptv_configuration_data_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -79,7 +82,7 @@ void IndividualIPTVConfigurationDataDocumentApi::setupRoutes() {
 
 void IndividualIPTVConfigurationDataDocumentApi::
     create_or_replace_individual_iptv_configuration_data_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":configurationId")) {
     // send a 400 error
@@ -97,14 +100,14 @@ void IndividualIPTVConfigurationDataDocumentApi::
     nlohmann::json::parse(request.body()).get_to(iptvConfigData);
     this->create_or_replace_individual_iptv_configuration_data(
         configurationId, iptvConfigData, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -112,7 +115,7 @@ void IndividualIPTVConfigurationDataDocumentApi::
 }
 void IndividualIPTVConfigurationDataDocumentApi::
     delete_individual_iptv_configuration_data_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":configurationId")) {
     // send a 400 error
@@ -124,14 +127,14 @@ void IndividualIPTVConfigurationDataDocumentApi::
 
   try {
     this->delete_individual_iptv_configuration_data(configurationId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -140,10 +143,10 @@ void IndividualIPTVConfigurationDataDocumentApi::
 
 void IndividualIPTVConfigurationDataDocumentApi::
     individual_iptv_configuration_data_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

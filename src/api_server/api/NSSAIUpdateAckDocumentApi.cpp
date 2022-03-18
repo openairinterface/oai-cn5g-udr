@@ -48,7 +48,9 @@ NSSAIUpdateAckDocumentApi::NSSAIUpdateAckDocumentApi(
   router = rtr;
 }
 
-void NSSAIUpdateAckDocumentApi::init() { setupRoutes(); }
+void NSSAIUpdateAckDocumentApi::init() {
+  setupRoutes();
+}
 
 void NSSAIUpdateAckDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -58,8 +60,8 @@ void NSSAIUpdateAckDocumentApi::setupRoutes() {
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/ue-update-confirmation-data/"
           "subscribed-snssais",
-      Routes::bind(&NSSAIUpdateAckDocumentApi::create_nssai_update_ack_handler,
-                   this));
+      Routes::bind(
+          &NSSAIUpdateAckDocumentApi::create_nssai_update_ack_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -68,7 +70,7 @@ void NSSAIUpdateAckDocumentApi::setupRoutes() {
 }
 
 void NSSAIUpdateAckDocumentApi::create_nssai_update_ack_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":ueId")) {
     // send a 400 error
@@ -94,16 +96,16 @@ void NSSAIUpdateAckDocumentApi::create_nssai_update_ack_handler(
 
   try {
     nlohmann::json::parse(request.body()).get_to(nssaiAckData);
-    this->create_nssai_update_ack(ueId, supportedFeatures, nssaiAckData,
-                                  response);
-  } catch (nlohmann::detail::exception &e) {
+    this->create_nssai_update_ack(
+        ueId, supportedFeatures, nssaiAckData, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -111,9 +113,9 @@ void NSSAIUpdateAckDocumentApi::create_nssai_update_ack_handler(
 }
 
 void NSSAIUpdateAckDocumentApi::nssai_update_ack_document_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

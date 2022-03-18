@@ -65,13 +65,13 @@ class EventExposureGroupSubscriptionsCollectionApi {
   void setupRoutes();
 
   void create_ee_group_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void query_ee_group_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void event_exposure_group_subscriptions_collection_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -85,8 +85,8 @@ class EventExposureGroupSubscriptionsCollectionApi {
   /// <param name="ueGroupId">Group of UEs or any UE</param>
   /// <param name="eeSubscription"></param>
   virtual void create_ee_group_subscriptions(
-      const std::string &ueGroupId, const EeSubscription &eeSubscription,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueGroupId, const EeSubscription& eeSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the ee subscriptions of a group of UEs or any UE
@@ -98,9 +98,9 @@ class EventExposureGroupSubscriptionsCollectionApi {
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_ee_group_subscriptions(
-      const std::string &ueGroupId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueGroupId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

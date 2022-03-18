@@ -49,7 +49,9 @@ IndividualExposureDataSubscriptionDocumentApi::
   router = rtr;
 }
 
-void IndividualExposureDataSubscriptionDocumentApi::init() { setupRoutes(); }
+void IndividualExposureDataSubscriptionDocumentApi::init() {
+  setupRoutes();
+}
 
 void IndividualExposureDataSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -57,15 +59,17 @@ void IndividualExposureDataSubscriptionDocumentApi::setupRoutes() {
   Routes::Delete(
       *router,
       base + udr_cfg.nudr.api_version + "/exposure-data/subs-to-notify/:subId",
-      Routes::bind(&IndividualExposureDataSubscriptionDocumentApi::
-                       delete_individual_exposure_data_subscription_handler,
-                   this));
+      Routes::bind(
+          &IndividualExposureDataSubscriptionDocumentApi::
+              delete_individual_exposure_data_subscription_handler,
+          this));
   Routes::Put(
       *router,
       base + udr_cfg.nudr.api_version + "/exposure-data/subs-to-notify/:subId",
-      Routes::bind(&IndividualExposureDataSubscriptionDocumentApi::
-                       replace_individual_exposure_data_subscription_handler,
-                   this));
+      Routes::bind(
+          &IndividualExposureDataSubscriptionDocumentApi::
+              replace_individual_exposure_data_subscription_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -76,7 +80,7 @@ void IndividualExposureDataSubscriptionDocumentApi::setupRoutes() {
 
 void IndividualExposureDataSubscriptionDocumentApi::
     delete_individual_exposure_data_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":subId")) {
     // send a 400 error
@@ -88,14 +92,14 @@ void IndividualExposureDataSubscriptionDocumentApi::
 
   try {
     this->delete_individual_exposure_data_subscription(subId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -103,7 +107,7 @@ void IndividualExposureDataSubscriptionDocumentApi::
 }
 void IndividualExposureDataSubscriptionDocumentApi::
     replace_individual_exposure_data_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   if (!request.hasParam(":subId")) {
     // send a 400 error
@@ -121,14 +125,14 @@ void IndividualExposureDataSubscriptionDocumentApi::
     nlohmann::json::parse(request.body()).get_to(exposureDataSubscription);
     this->replace_individual_exposure_data_subscription(
         subId, exposureDataSubscription, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -137,10 +141,10 @@ void IndividualExposureDataSubscriptionDocumentApi::
 
 void IndividualExposureDataSubscriptionDocumentApi::
     individual_exposure_data_subscription_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
 }  // namespace oai::udr::api

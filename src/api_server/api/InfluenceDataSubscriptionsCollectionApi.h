@@ -67,13 +67,13 @@ class InfluenceDataSubscriptionsCollectionApi {
   void setupRoutes();
 
   void create_individual_influence_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void read_influence_data_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void influence_data_subscriptions_collection_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -86,8 +86,8 @@ class InfluenceDataSubscriptionsCollectionApi {
   /// </remarks>
   /// <param name="trafficInfluSub"></param>
   virtual void create_individual_influence_data_subscription(
-      const TrafficInfluSub &trafficInfluSub,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const TrafficInfluSub& trafficInfluSub,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Read Influence Data Subscriptions
@@ -101,11 +101,11 @@ class InfluenceDataSubscriptionsCollectionApi {
   /// group of users. (optional, default to &quot;&quot;)</param> <param
   /// name="supi">Identifies a user. (optional, default to &quot;&quot;)</param>
   virtual void read_influence_data_subscriptions(
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<Snssai> &snssai,
-      const Pistache::Optional<std::string> &internalGroupId,
-      const Pistache::Optional<std::string> &supi,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<Snssai>& snssai,
+      const Pistache::Optional<std::string>& internalGroupId,
+      const Pistache::Optional<std::string>& supi,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

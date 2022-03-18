@@ -66,10 +66,10 @@ class AccessAndMobilityPolicyDataDocumentApi {
   void setupRoutes();
 
   void read_access_and_mobility_policy_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void access_and_mobility_policy_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -82,7 +82,7 @@ class AccessAndMobilityPolicyDataDocumentApi {
   /// </remarks>
   /// <param name="ueId"></param>
   virtual void read_access_and_mobility_policy_data(
-      const std::string &ueId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api
