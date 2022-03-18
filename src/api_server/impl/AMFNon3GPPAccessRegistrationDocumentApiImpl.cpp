@@ -41,32 +41,33 @@ using namespace oai::udr::model;
 
 AMFNon3GPPAccessRegistrationDocumentApiImpl::
     AMFNon3GPPAccessRegistrationDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : AMFNon3GPPAccessRegistrationDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : AMFNon3GPPAccessRegistrationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AMFNon3GPPAccessRegistrationDocumentApiImpl::amf_context_non3gpp(
-    const std::string &ueId, const std::vector<PatchItem> &patchItem,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::vector<PatchItem>& patchItem,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void AMFNon3GPPAccessRegistrationDocumentApiImpl::create_amf_context_non3gpp(
-    const std::string &ueId,
-    const AmfNon3GppAccessRegistration &amfNon3GppAccessRegistration,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId,
+    const AmfNon3GppAccessRegistration& amfNon3GppAccessRegistration,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void AMFNon3GPPAccessRegistrationDocumentApiImpl::query_amf_context_non3gpp(
-    const std::string &ueId,
-    const Pistache::Optional<std::vector<std::string>> &fields,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId,
+    const Pistache::Optional<std::vector<std::string>>& fields,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -43,16 +43,22 @@ void PduSessionType::validate() {
   // TODO: implement validation
 }
 
-void PduSessionType::set_value(std::string value) { this->value = value; }
-void PduSessionType::get_value(std::string &value) const {
+void PduSessionType::set_value(std::string value) {
+  this->value = value;
+}
+void PduSessionType::get_value(std::string& value) const {
   value = this->value;
 }
-std::string PduSessionType::get_value() const { return value; }
+std::string PduSessionType::get_value() const {
+  return value;
+}
 
-void to_json(nlohmann::json &j, const PduSessionType &o) { j = o.get_value(); }
+void to_json(nlohmann::json& j, const PduSessionType& o) {
+  j = o.get_value();
+}
 
-void from_json(const nlohmann::json &j, PduSessionType &o) {
+void from_json(const nlohmann::json& j, PduSessionType& o) {
   o.set_value(j.get<std::string>());
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

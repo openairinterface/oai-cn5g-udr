@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UnrelatedClass {
-public:
+ public:
   UnrelatedClass();
   virtual ~UnrelatedClass();
 
@@ -65,27 +65,27 @@ public:
   ///
   /// </summary>
   DefaultUnrelatedClass getDefaultUnrelatedClass() const;
-  void setDefaultUnrelatedClass(DefaultUnrelatedClass const &value);
+  void setDefaultUnrelatedClass(DefaultUnrelatedClass const& value);
   /// <summary>
   ///
   /// </summary>
   ExternalUnrelatedClass getExternalUnrelatedClass() const;
-  void setExternalUnrelatedClass(ExternalUnrelatedClass const &value);
+  void setExternalUnrelatedClass(ExternalUnrelatedClass const& value);
   bool externalUnrelatedClassIsSet() const;
   void unsetExternalUnrelatedClass();
   /// <summary>
   ///
   /// </summary>
-  std::vector<ServiceTypeUnrelatedClass> &getServiceTypeUnrelatedClasses();
+  std::vector<ServiceTypeUnrelatedClass>& getServiceTypeUnrelatedClasses();
   void setServiceTypeUnrelatedClasses(
-      std::vector<ServiceTypeUnrelatedClass> const &value);
+      std::vector<ServiceTypeUnrelatedClass> const& value);
   bool serviceTypeUnrelatedClassesIsSet() const;
   void unsetServiceTypeUnrelatedClasses();
 
-  friend void to_json(nlohmann::json &j, const UnrelatedClass &o);
-  friend void from_json(const nlohmann::json &j, UnrelatedClass &o);
+  friend void to_json(nlohmann::json& j, const UnrelatedClass& o);
+  friend void from_json(const nlohmann::json& j, UnrelatedClass& o);
 
-protected:
+ protected:
   DefaultUnrelatedClass m_DefaultUnrelatedClass;
 
   ExternalUnrelatedClass m_ExternalUnrelatedClass;
@@ -94,6 +94,6 @@ protected:
   bool m_ServiceTypeUnrelatedClassesIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* UnrelatedClass_H_ */

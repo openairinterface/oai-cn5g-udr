@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class MeasurementLteForMdt {
-public:
+ public:
   MeasurementLteForMdt();
   virtual ~MeasurementLteForMdt();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// MeasurementLteForMdt members
 
-  friend void to_json(nlohmann::json &j, const MeasurementLteForMdt &o);
-  friend void from_json(const nlohmann::json &j, MeasurementLteForMdt &o);
+  friend void to_json(nlohmann::json& j, const MeasurementLteForMdt& o);
+  friend void from_json(const nlohmann::json& j, MeasurementLteForMdt& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* MeasurementLteForMdt_H_ */

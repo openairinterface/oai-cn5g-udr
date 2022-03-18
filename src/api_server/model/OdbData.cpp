@@ -35,7 +35,9 @@
 
 namespace oai::udr::model {
 
-OdbData::OdbData() { m_RoamingOdbIsSet = false; }
+OdbData::OdbData() {
+  m_RoamingOdbIsSet = false;
+}
 
 OdbData::~OdbData() {}
 
@@ -43,25 +45,30 @@ void OdbData::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const OdbData &o) {
+void to_json(nlohmann::json& j, const OdbData& o) {
   j = nlohmann::json();
-  if (o.roamingOdbIsSet())
-    j["roamingOdb"] = o.m_RoamingOdb;
+  if (o.roamingOdbIsSet()) j["roamingOdb"] = o.m_RoamingOdb;
 }
 
-void from_json(const nlohmann::json &j, OdbData &o) {
+void from_json(const nlohmann::json& j, OdbData& o) {
   if (j.find("roamingOdb") != j.end()) {
     j.at("roamingOdb").get_to(o.m_RoamingOdb);
     o.m_RoamingOdbIsSet = true;
   }
 }
 
-RoamingOdb OdbData::getRoamingOdb() const { return m_RoamingOdb; }
-void OdbData::setRoamingOdb(RoamingOdb const &value) {
-  m_RoamingOdb = value;
+RoamingOdb OdbData::getRoamingOdb() const {
+  return m_RoamingOdb;
+}
+void OdbData::setRoamingOdb(RoamingOdb const& value) {
+  m_RoamingOdb      = value;
   m_RoamingOdbIsSet = true;
 }
-bool OdbData::roamingOdbIsSet() const { return m_RoamingOdbIsSet; }
-void OdbData::unsetRoamingOdb() { m_RoamingOdbIsSet = false; }
+bool OdbData::roamingOdbIsSet() const {
+  return m_RoamingOdbIsSet;
+}
+void OdbData::unsetRoamingOdb() {
+  m_RoamingOdbIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

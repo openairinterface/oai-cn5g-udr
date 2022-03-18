@@ -41,61 +41,62 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 SDMSubscriptionDocumentApiImpl::SDMSubscriptionDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : SDMSubscriptionDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : SDMSubscriptionDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SDMSubscriptionDocumentApiImpl::modifysdm_subscription(
-    const std::string &ueId, const std::string &subsId,
-    const std::vector<PatchItem> &patchItem,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::string& subsId,
+    const std::vector<PatchItem>& patchItem,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void SDMSubscriptionDocumentApiImpl::querysdm_subscription(
-    const std::string &ueId, const std::string &subsId,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const std::string& subsId,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_query_sdm_subscription(ueId, subsId, response_data,
-                                           http_code);
+  m_udr_app->handle_query_sdm_subscription(
+      ueId, subsId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
 void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(
-    const std::string &ueId, const std::string &subsId,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const std::string& subsId,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_remove_sdm_subscription(ueId, subsId, response_data,
-                                            http_code);
+  m_udr_app->handle_remove_sdm_subscription(
+      ueId, subsId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
 void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(
-    const std::string &ueId, const std::string &subsId,
-    SdmSubscription &sdmSubscription,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const std::string& subsId,
+    SdmSubscription& sdmSubscription,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_update_sdm_subscription(ueId, subsId, sdmSubscription,
-                                            response_data, http_code);
+  m_udr_app->handle_update_sdm_subscription(
+      ueId, subsId, sdmSubscription, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

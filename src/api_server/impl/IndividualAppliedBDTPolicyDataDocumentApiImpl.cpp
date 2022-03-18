@@ -42,25 +42,26 @@ using namespace oai::udr::model;
 
 IndividualAppliedBDTPolicyDataDocumentApiImpl::
     IndividualAppliedBDTPolicyDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : IndividualAppliedBDTPolicyDataDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : IndividualAppliedBDTPolicyDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IndividualAppliedBDTPolicyDataDocumentApiImpl::
     delete_individual_applied_bdt_policy_data(
-        const std::string &bdtPolicyId,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& bdtPolicyId,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void IndividualAppliedBDTPolicyDataDocumentApiImpl::
     update_individual_applied_bdt_policy_data(
-        const std::string &bdtPolicyId,
-        const BdtPolicyDataPatch &bdtPolicyDataPatch,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& bdtPolicyId,
+        const BdtPolicyDataPatch& bdtPolicyDataPatch,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

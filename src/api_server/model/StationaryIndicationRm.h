@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class StationaryIndicationRm {
-public:
+ public:
   StationaryIndicationRm();
   virtual ~StationaryIndicationRm();
 
@@ -59,12 +59,12 @@ public:
   /////////////////////////////////////////////
   /// StationaryIndicationRm members
 
-  friend void to_json(nlohmann::json &j, const StationaryIndicationRm &o);
-  friend void from_json(const nlohmann::json &j, StationaryIndicationRm &o);
+  friend void to_json(nlohmann::json& j, const StationaryIndicationRm& o);
+  friend void from_json(const nlohmann::json& j, StationaryIndicationRm& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* StationaryIndicationRm_H_ */

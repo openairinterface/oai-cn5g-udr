@@ -40,12 +40,12 @@ namespace bs2 = boost::signals2;
 namespace oai::udr::app {
 class task_manager;
 class udr_event {
-public:
+ public:
   udr_event(){};
-  udr_event(udr_event const &) = delete;
-  void operator=(udr_event const &) = delete;
+  udr_event(udr_event const&) = delete;
+  void operator=(udr_event const&) = delete;
 
-  static udr_event &get_instance() {
+  static udr_event& get_instance() {
     static udr_event instance;
     return instance;
   }
@@ -63,12 +63,11 @@ public:
    * @param [uint64_t] start:
    * @return void
    */
-  bs2::connection subscribe_task_nf_heartbeat(const task_sig_t::slot_type &sig,
-                                              uint64_t period,
-                                              uint64_t start = 0);
+  bs2::connection subscribe_task_nf_heartbeat(
+      const task_sig_t::slot_type& sig, uint64_t period, uint64_t start = 0);
 
-private:
+ private:
   task_sig_t task_tick;
 };
-} // namespace oai::udr::app
+}  // namespace oai::udr::app
 #endif

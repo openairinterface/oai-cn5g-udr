@@ -35,7 +35,9 @@
 
 namespace oai::udr::model {
 
-PtwParameters::PtwParameters() { m_PtwValue = ""; }
+PtwParameters::PtwParameters() {
+  m_PtwValue = "";
+}
 
 PtwParameters::~PtwParameters() {}
 
@@ -43,13 +45,13 @@ void PtwParameters::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PtwParameters &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const PtwParameters& o) {
+  j                  = nlohmann::json();
   j["operationMode"] = o.m_OperationMode;
-  j["ptwValue"] = o.m_PtwValue;
+  j["ptwValue"]      = o.m_PtwValue;
 }
 
-void from_json(const nlohmann::json &j, PtwParameters &o) {
+void from_json(const nlohmann::json& j, PtwParameters& o) {
   j.at("operationMode").get_to(o.m_OperationMode);
   j.at("ptwValue").get_to(o.m_PtwValue);
 }
@@ -57,12 +59,14 @@ void from_json(const nlohmann::json &j, PtwParameters &o) {
 OperationMode PtwParameters::getOperationMode() const {
   return m_OperationMode;
 }
-void PtwParameters::setOperationMode(OperationMode const &value) {
+void PtwParameters::setOperationMode(OperationMode const& value) {
   m_OperationMode = value;
 }
-std::string PtwParameters::getPtwValue() const { return m_PtwValue; }
-void PtwParameters::setPtwValue(std::string const &value) {
+std::string PtwParameters::getPtwValue() const {
+  return m_PtwValue;
+}
+void PtwParameters::setPtwValue(std::string const& value) {
   m_PtwValue = value;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

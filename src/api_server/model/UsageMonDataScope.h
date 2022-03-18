@@ -53,7 +53,7 @@ namespace oai::udr::model {
 /// belongs to.
 /// </summary>
 class UsageMonDataScope {
-public:
+ public:
   UsageMonDataScope();
   virtual ~UsageMonDataScope();
 
@@ -66,25 +66,25 @@ public:
   ///
   /// </summary>
   Snssai getSnssai() const;
-  void setSnssai(Snssai const &value);
+  void setSnssai(Snssai const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getDnn();
-  void setDnn(std::vector<std::string> const &value);
+  std::vector<std::string>& getDnn();
+  void setDnn(std::vector<std::string> const& value);
   bool dnnIsSet() const;
   void unsetDnn();
 
-  friend void to_json(nlohmann::json &j, const UsageMonDataScope &o);
-  friend void from_json(const nlohmann::json &j, UsageMonDataScope &o);
+  friend void to_json(nlohmann::json& j, const UsageMonDataScope& o);
+  friend void from_json(const nlohmann::json& j, UsageMonDataScope& o);
 
-protected:
+ protected:
   Snssai m_Snssai;
 
   std::vector<std::string> m_Dnn;
   bool m_DnnIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* UsageMonDataScope_H_ */

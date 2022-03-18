@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class CodeWordInd {
-public:
+ public:
   CodeWordInd();
   virtual ~CodeWordInd();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// CodeWordInd members
 
-  friend void to_json(nlohmann::json &j, const CodeWordInd &o);
-  friend void from_json(const nlohmann::json &j, CodeWordInd &o);
+  friend void to_json(nlohmann::json& j, const CodeWordInd& o);
+  friend void from_json(const nlohmann::json& j, CodeWordInd& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* CodeWordInd_H_ */

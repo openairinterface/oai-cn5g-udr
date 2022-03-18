@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class SensorMeasurement {
-public:
+ public:
   SensorMeasurement();
   virtual ~SensorMeasurement();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// SensorMeasurement members
 
-  friend void to_json(nlohmann::json &j, const SensorMeasurement &o);
-  friend void from_json(const nlohmann::json &j, SensorMeasurement &o);
+  friend void to_json(nlohmann::json& j, const SensorMeasurement& o);
+  friend void from_json(const nlohmann::json& j, SensorMeasurement& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* SensorMeasurement_H_ */

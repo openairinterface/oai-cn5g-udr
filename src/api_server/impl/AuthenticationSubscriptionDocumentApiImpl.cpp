@@ -45,19 +45,20 @@ using namespace oai::udr::model;
 
 AuthenticationSubscriptionDocumentApiImpl::
     AuthenticationSubscriptionDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : AuthenticationSubscriptionDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : AuthenticationSubscriptionDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AuthenticationSubscriptionDocumentApiImpl::
     modify_authentication_subscription(
-        const std::string &ueId, const std::vector<PatchItem> &patchItem,
-        const Pistache::Optional<std::string> &supportedFeatures,
-        Pistache::Http::ResponseWriter &response) {
+        const std::string& ueId, const std::vector<PatchItem>& patchItem,
+        const Pistache::Optional<std::string>& supportedFeatures,
+        Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
   m_udr_app->handle_modify_authentication_subscription(
       ueId, patchItem, response_data, http_code);
@@ -69,19 +70,19 @@ void AuthenticationSubscriptionDocumentApiImpl::
 
 void AuthenticationSubscriptionDocumentApiImpl::
     read_authentication_subscription(
-        const std::string &ueId,
-        const Pistache::Optional<std::string> &supportedFeatures,
-        Pistache::Http::ResponseWriter &response) {
+        const std::string& ueId,
+        const Pistache::Optional<std::string>& supportedFeatures,
+        Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_read_authentication_subscription(ueId, response_data,
-                                                     http_code);
+  m_udr_app->handle_read_authentication_subscription(
+      ueId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

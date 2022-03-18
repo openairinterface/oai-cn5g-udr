@@ -44,15 +44,15 @@ namespace udr {
 namespace app {
 
 class udr_nrf {
-private:
-public:
-  udr_profile udr_nf_profile;  // UDR profile
-  std::string udr_instance_id; // UDR instance id
+ private:
+ public:
+  udr_profile udr_nf_profile;   // UDR profile
+  std::string udr_instance_id;  // UDR instance id
   // timer_id_t timer_udr_heartbeat;
 
-  udr_nrf(udr_event &ev);
-  udr_nrf(udr_nrf const &) = delete;
-  void operator=(udr_nrf const &) = delete;
+  udr_nrf(udr_event& ev);
+  udr_nrf(udr_nrf const&) = delete;
+  void operator=(udr_nrf const&) = delete;
 
   void generate_uuid();
 
@@ -61,7 +61,7 @@ public:
    * @param [void]
    * @return void
    */
-  void start_event_nf_heartbeat(std::string &remoteURI);
+  void start_event_nf_heartbeat(std::string& remoteURI);
   /*
    * Trigger NF heartbeat procedure
    * @param [void]
@@ -74,8 +74,8 @@ public:
    * @param [void]
    * @return void
    */
-  void generate_udr_profile(udr_profile &udr_nf_profile,
-                            std::string &udr_instance_id);
+  void generate_udr_profile(
+      udr_profile& udr_nf_profile, std::string& udr_instance_id);
 
   /*
    * Trigger NF instance registration to NRF
@@ -88,13 +88,13 @@ public:
    * @param [std::string& ] api_root: udr's API Root
    * @return void
    */
-  void get_udr_api_root(std::string &api_root);
+  void get_udr_api_root(std::string& api_root);
 
-private:
-  udr_event &m_event_sub;
+ private:
+  udr_event& m_event_sub;
   bs2::connection task_connection;
 };
-} // namespace app
-} // namespace udr
-} // namespace oai
+}  // namespace app
+}  // namespace udr
+}  // namespace oai
 #endif /* FILE_UDR_NRF_SEEN */

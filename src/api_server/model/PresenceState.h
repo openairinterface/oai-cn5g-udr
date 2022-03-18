@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PresenceState {
-public:
+ public:
   PresenceState();
   virtual ~PresenceState();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// PresenceState members
 
-  friend void to_json(nlohmann::json &j, const PresenceState &o);
-  friend void from_json(const nlohmann::json &j, PresenceState &o);
+  friend void to_json(nlohmann::json& j, const PresenceState& o);
+  friend void from_json(const nlohmann::json& j, PresenceState& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PresenceState_H_ */

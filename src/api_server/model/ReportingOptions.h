@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ReportingOptions {
-public:
+ public:
   ReportingOptions();
   virtual ~ReportingOptions();
 
@@ -63,7 +63,7 @@ public:
   ///
   /// </summary>
   EventReportMode getReportMode() const;
-  void setReportMode(EventReportMode const &value);
+  void setReportMode(EventReportMode const& value);
   bool reportModeIsSet() const;
   void unsetReportMode();
   /// <summary>
@@ -77,7 +77,7 @@ public:
   ///
   /// </summary>
   std::string getExpiry() const;
-  void setExpiry(std::string const &value);
+  void setExpiry(std::string const& value);
   bool expiryIsSet() const;
   void unsetExpiry();
   /// <summary>
@@ -102,10 +102,10 @@ public:
   bool reportPeriodIsSet() const;
   void unsetReportPeriod();
 
-  friend void to_json(nlohmann::json &j, const ReportingOptions &o);
-  friend void from_json(const nlohmann::json &j, ReportingOptions &o);
+  friend void to_json(nlohmann::json& j, const ReportingOptions& o);
+  friend void from_json(const nlohmann::json& j, ReportingOptions& o);
 
-protected:
+ protected:
   EventReportMode m_ReportMode;
   bool m_ReportModeIsSet;
   int32_t m_MaxNumOfReports;
@@ -120,6 +120,6 @@ protected:
   bool m_ReportPeriodIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* ReportingOptions_H_ */

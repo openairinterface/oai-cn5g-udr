@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class DddTrafficDescriptor {
-public:
+ public:
   DddTrafficDescriptor();
   virtual ~DddTrafficDescriptor();
 
@@ -63,14 +63,14 @@ public:
   ///
   /// </summary>
   std::string getIpv4Addr() const;
-  void setIpv4Addr(std::string const &value);
+  void setIpv4Addr(std::string const& value);
   bool ipv4AddrIsSet() const;
   void unsetIpv4Addr();
   /// <summary>
   ///
   /// </summary>
   Ipv6Addr getIpv6Addr() const;
-  void setIpv6Addr(Ipv6Addr const &value);
+  void setIpv6Addr(Ipv6Addr const& value);
   bool ipv6AddrIsSet() const;
   void unsetIpv6Addr();
   /// <summary>
@@ -84,14 +84,14 @@ public:
   ///
   /// </summary>
   std::string getMacAddr() const;
-  void setMacAddr(std::string const &value);
+  void setMacAddr(std::string const& value);
   bool macAddrIsSet() const;
   void unsetMacAddr();
 
-  friend void to_json(nlohmann::json &j, const DddTrafficDescriptor &o);
-  friend void from_json(const nlohmann::json &j, DddTrafficDescriptor &o);
+  friend void to_json(nlohmann::json& j, const DddTrafficDescriptor& o);
+  friend void from_json(const nlohmann::json& j, DddTrafficDescriptor& o);
 
-protected:
+ protected:
   std::string m_Ipv4Addr;
   bool m_Ipv4AddrIsSet;
   Ipv6Addr m_Ipv6Addr;
@@ -102,6 +102,6 @@ protected:
   bool m_MacAddrIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* DddTrafficDescriptor_H_ */

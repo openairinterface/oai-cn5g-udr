@@ -56,25 +56,25 @@ using namespace oai::udr::app;
 class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl
     : public oai::udr::api::
           QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
+ public:
   QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
       std::string address);
   ~QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl() {}
 
   void get_nidd_au_data(
-      const std::string &ueId, const Pistache::Optional<Snssai> &singleNssai,
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<std::string> &mtcProviderInformation,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId, const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<std::string>& mtcProviderInformation,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

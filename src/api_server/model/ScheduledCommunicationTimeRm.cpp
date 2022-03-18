@@ -36,11 +36,11 @@
 namespace oai::udr::model {
 
 ScheduledCommunicationTimeRm::ScheduledCommunicationTimeRm() {
-  m_DaysOfWeekIsSet = false;
-  m_TimeOfDayStart = "";
+  m_DaysOfWeekIsSet     = false;
+  m_TimeOfDayStart      = "";
   m_TimeOfDayStartIsSet = false;
-  m_TimeOfDayEnd = "";
-  m_TimeOfDayEndIsSet = false;
+  m_TimeOfDayEnd        = "";
+  m_TimeOfDayEndIsSet   = false;
 }
 
 ScheduledCommunicationTimeRm::~ScheduledCommunicationTimeRm() {}
@@ -49,17 +49,15 @@ void ScheduledCommunicationTimeRm::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ScheduledCommunicationTimeRm &o) {
+void to_json(nlohmann::json& j, const ScheduledCommunicationTimeRm& o) {
   j = nlohmann::json();
   if (o.daysOfWeekIsSet() || !o.m_DaysOfWeek.empty())
     j["daysOfWeek"] = o.m_DaysOfWeek;
-  if (o.timeOfDayStartIsSet())
-    j["timeOfDayStart"] = o.m_TimeOfDayStart;
-  if (o.timeOfDayEndIsSet())
-    j["timeOfDayEnd"] = o.m_TimeOfDayEnd;
+  if (o.timeOfDayStartIsSet()) j["timeOfDayStart"] = o.m_TimeOfDayStart;
+  if (o.timeOfDayEndIsSet()) j["timeOfDayEnd"] = o.m_TimeOfDayEnd;
 }
 
-void from_json(const nlohmann::json &j, ScheduledCommunicationTimeRm &o) {
+void from_json(const nlohmann::json& j, ScheduledCommunicationTimeRm& o) {
   if (j.find("daysOfWeek") != j.end()) {
     j.at("daysOfWeek").get_to(o.m_DaysOfWeek);
     o.m_DaysOfWeekIsSet = true;
@@ -74,12 +72,12 @@ void from_json(const nlohmann::json &j, ScheduledCommunicationTimeRm &o) {
   }
 }
 
-std::vector<int32_t> &ScheduledCommunicationTimeRm::getDaysOfWeek() {
+std::vector<int32_t>& ScheduledCommunicationTimeRm::getDaysOfWeek() {
   return m_DaysOfWeek;
 }
 void ScheduledCommunicationTimeRm::setDaysOfWeek(
     std::vector<int32_t> const value) {
-  m_DaysOfWeek = value;
+  m_DaysOfWeek      = value;
   m_DaysOfWeekIsSet = true;
 }
 bool ScheduledCommunicationTimeRm::daysOfWeekIsSet() const {
@@ -91,8 +89,8 @@ void ScheduledCommunicationTimeRm::unsetDaysOfWeek() {
 std::string ScheduledCommunicationTimeRm::getTimeOfDayStart() const {
   return m_TimeOfDayStart;
 }
-void ScheduledCommunicationTimeRm::setTimeOfDayStart(std::string const &value) {
-  m_TimeOfDayStart = value;
+void ScheduledCommunicationTimeRm::setTimeOfDayStart(std::string const& value) {
+  m_TimeOfDayStart      = value;
   m_TimeOfDayStartIsSet = true;
 }
 bool ScheduledCommunicationTimeRm::timeOfDayStartIsSet() const {
@@ -104,8 +102,8 @@ void ScheduledCommunicationTimeRm::unsetTimeOfDayStart() {
 std::string ScheduledCommunicationTimeRm::getTimeOfDayEnd() const {
   return m_TimeOfDayEnd;
 }
-void ScheduledCommunicationTimeRm::setTimeOfDayEnd(std::string const &value) {
-  m_TimeOfDayEnd = value;
+void ScheduledCommunicationTimeRm::setTimeOfDayEnd(std::string const& value) {
+  m_TimeOfDayEnd      = value;
   m_TimeOfDayEndIsSet = true;
 }
 bool ScheduledCommunicationTimeRm::timeOfDayEndIsSet() const {
@@ -115,4 +113,4 @@ void ScheduledCommunicationTimeRm::unsetTimeOfDayEnd() {
   m_TimeOfDayEndIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

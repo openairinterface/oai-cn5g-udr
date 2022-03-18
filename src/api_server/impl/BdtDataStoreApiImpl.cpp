@@ -41,16 +41,16 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 BdtDataStoreApiImpl::BdtDataStoreApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
     : BdtDataStoreApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void BdtDataStoreApiImpl::read_bdt_data(
-    const Pistache::Optional<std::vector<std::string>> &bdtRefIds,
-    const Pistache::Optional<std::string> &suppFeat,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const Pistache::Optional<std::vector<std::string>>& bdtRefIds,
+    const Pistache::Optional<std::string>& suppFeat,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

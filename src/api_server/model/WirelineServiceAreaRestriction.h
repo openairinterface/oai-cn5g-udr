@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class WirelineServiceAreaRestriction {
-public:
+ public:
   WirelineServiceAreaRestriction();
   virtual ~WirelineServiceAreaRestriction();
 
@@ -64,29 +64,29 @@ public:
   ///
   /// </summary>
   RestrictionType getRestrictionType() const;
-  void setRestrictionType(RestrictionType const &value);
+  void setRestrictionType(RestrictionType const& value);
   bool restrictionTypeIsSet() const;
   void unsetRestrictionType();
   /// <summary>
   ///
   /// </summary>
-  std::vector<WirelineArea> &getAreas();
-  void setAreas(std::vector<WirelineArea> const &value);
+  std::vector<WirelineArea>& getAreas();
+  void setAreas(std::vector<WirelineArea> const& value);
   bool areasIsSet() const;
   void unsetAreas();
 
-  friend void to_json(nlohmann::json &j,
-                      const WirelineServiceAreaRestriction &o);
-  friend void from_json(const nlohmann::json &j,
-                        WirelineServiceAreaRestriction &o);
+  friend void to_json(
+      nlohmann::json& j, const WirelineServiceAreaRestriction& o);
+  friend void from_json(
+      const nlohmann::json& j, WirelineServiceAreaRestriction& o);
 
-protected:
+ protected:
   RestrictionType m_RestrictionType;
   bool m_RestrictionTypeIsSet;
   std::vector<WirelineArea> m_Areas;
   bool m_AreasIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* WirelineServiceAreaRestriction_H_ */

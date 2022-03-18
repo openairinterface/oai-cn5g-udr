@@ -35,7 +35,9 @@
 
 namespace oai::udr::model {
 
-UpdatedItem::UpdatedItem() { m_Item = ""; }
+UpdatedItem::UpdatedItem() {
+  m_Item = "";
+}
 
 UpdatedItem::~UpdatedItem() {}
 
@@ -43,19 +45,23 @@ void UpdatedItem::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const UpdatedItem &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const UpdatedItem& o) {
+  j         = nlohmann::json();
   j["item"] = o.m_Item;
   //    j["value"] = o.m_Value;
 }
 
-void from_json(const nlohmann::json &j, UpdatedItem &o) {
+void from_json(const nlohmann::json& j, UpdatedItem& o) {
   j.at("item").get_to(o.m_Item);
   //    j.at("value").get_to(o.m_Value);
 }
 
-std::string UpdatedItem::getItem() const { return m_Item; }
-void UpdatedItem::setItem(std::string const &value) { m_Item = value; }
+std::string UpdatedItem::getItem() const {
+  return m_Item;
+}
+void UpdatedItem::setItem(std::string const& value) {
+  m_Item = value;
+}
 // AnyType UpdatedItem::getValue() const
 //{
 //    return m_Value;
@@ -65,4 +71,4 @@ void UpdatedItem::setItem(std::string const &value) { m_Item = value; }
 //    m_Value = value;
 //}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

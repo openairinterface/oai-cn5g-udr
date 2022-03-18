@@ -63,10 +63,10 @@ using namespace oai::udr::model;
 using namespace oai::udr::config;
 
 class UDRApiServer {
-public:
-  UDRApiServer(Pistache::Address address, udr_app *udr_app_inst)
+ public:
+  UDRApiServer(Pistache::Address address, udr_app* udr_app_inst)
       : m_httpEndpoint(std::make_shared<Pistache::Http::Endpoint>(address)) {
-    m_router = std::make_shared<Pistache::Rest::Router>();
+    m_router  = std::make_shared<Pistache::Rest::Router>();
     m_address = address.host() + ":" + (address.port()).toString();
 
     m_authenticationSubscriptionDocumentApiserver =
@@ -88,14 +88,14 @@ public:
         std::make_shared<AMF3GPPAccessRegistrationDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
     m_sMFRegistrationDocumentApiserver =
-        std::make_shared<SMFRegistrationDocumentApiImpl>(m_router, udr_app_inst,
-                                                         m_address);
+        std::make_shared<SMFRegistrationDocumentApiImpl>(
+            m_router, udr_app_inst, m_address);
     m_sMFRegistrationsCollectionApiserver =
         std::make_shared<SMFRegistrationsCollectionApiImpl>(
             m_router, udr_app_inst, m_address);
     m_sDMSubscriptionDocumentApiserver =
-        std::make_shared<SDMSubscriptionDocumentApiImpl>(m_router, udr_app_inst,
-                                                         m_address);
+        std::make_shared<SDMSubscriptionDocumentApiImpl>(
+            m_router, udr_app_inst, m_address);
     m_sDMSubscriptionsCollectionApiserver =
         std::make_shared<SDMSubscriptionsCollectionApiImpl>(
             m_router, udr_app_inst, m_address);
@@ -104,7 +104,7 @@ public:
   void start();
   void shutdown();
 
-private:
+ private:
   std::shared_ptr<Pistache::Http::Endpoint> m_httpEndpoint;
   std::shared_ptr<Pistache::Rest::Router> m_router;
 

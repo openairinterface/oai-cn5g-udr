@@ -41,8 +41,8 @@ namespace app {
 
 class udr_event;
 class task_manager {
-public:
-  task_manager(udr_event &ev);
+ public:
+  task_manager(udr_event& ev);
 
   /*
    * Manage the tasks
@@ -58,7 +58,7 @@ public:
    */
   void run();
 
-private:
+ private:
   /*
    * Make sure that the task tick run every 1ms
    * @param [void]
@@ -66,11 +66,11 @@ private:
    */
   void wait_for_cycle();
 
-  udr_event &event_sub_;
+  udr_event& event_sub_;
   int sfd;
 };
-} // namespace app
-} // namespace udr
-} // namespace oai
+}  // namespace app
+}  // namespace udr
+}  // namespace oai
 
 #endif

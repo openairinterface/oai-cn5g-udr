@@ -42,17 +42,18 @@ namespace udr {
 namespace app {
 
 class udr_client {
-private:
-public:
+ private:
+ public:
   udr_client();
   virtual ~udr_client();
 
-  udr_client(udr_client const &) = delete;
+  udr_client(udr_client const&) = delete;
 
-  void curl_http_client(std::string remoteUri, std::string method,
-                        std::string msgBody, std::string &response);
+  void curl_http_client(
+      std::string remoteUri, std::string method, std::string msgBody,
+      std::string& response);
 };
-} // namespace app
-} // namespace udr
-} // namespace oai
+}  // namespace app
+}  // namespace udr
+}  // namespace oai
 #endif /* FILE_UDR_CLIENT_HPP_SEEN */

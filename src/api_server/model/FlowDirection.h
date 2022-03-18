@@ -65,7 +65,7 @@ namespace oai::udr::model {
 /// the same value is received from the SMF.
 /// </summary>
 class FlowDirection {
-public:
+ public:
   FlowDirection();
   virtual ~FlowDirection();
 
@@ -74,12 +74,12 @@ public:
   /////////////////////////////////////////////
   /// FlowDirection members
 
-  friend void to_json(nlohmann::json &j, const FlowDirection &o);
-  friend void from_json(const nlohmann::json &j, FlowDirection &o);
+  friend void to_json(nlohmann::json& j, const FlowDirection& o);
+  friend void from_json(const nlohmann::json& j, FlowDirection& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* FlowDirection_H_ */

@@ -36,11 +36,11 @@
 namespace oai::udr::model {
 
 AfExternal::AfExternal() {
-  m_AfId = "";
-  m_AfIdIsSet = false;
-  m_AllowedGeographicAreaIsSet = false;
+  m_AfId                           = "";
+  m_AfIdIsSet                      = false;
+  m_AllowedGeographicAreaIsSet     = false;
   m_PrivacyCheckRelatedActionIsSet = false;
-  m_ValidTimePeriodIsSet = false;
+  m_ValidTimePeriodIsSet           = false;
 }
 
 AfExternal::~AfExternal() {}
@@ -49,19 +49,17 @@ void AfExternal::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const AfExternal &o) {
+void to_json(nlohmann::json& j, const AfExternal& o) {
   j = nlohmann::json();
-  if (o.afIdIsSet())
-    j["afId"] = o.m_AfId;
+  if (o.afIdIsSet()) j["afId"] = o.m_AfId;
   if (o.allowedGeographicAreaIsSet() || !o.m_AllowedGeographicArea.empty())
     j["allowedGeographicArea"] = o.m_AllowedGeographicArea;
   if (o.privacyCheckRelatedActionIsSet())
     j["privacyCheckRelatedAction"] = o.m_PrivacyCheckRelatedAction;
-  if (o.validTimePeriodIsSet())
-    j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
 }
 
-void from_json(const nlohmann::json &j, AfExternal &o) {
+void from_json(const nlohmann::json& j, AfExternal& o) {
   if (j.find("afId") != j.end()) {
     j.at("afId").get_to(o.m_AfId);
     o.m_AfIdIsSet = true;
@@ -80,19 +78,25 @@ void from_json(const nlohmann::json &j, AfExternal &o) {
   }
 }
 
-std::string AfExternal::getAfId() const { return m_AfId; }
-void AfExternal::setAfId(std::string const &value) {
-  m_AfId = value;
+std::string AfExternal::getAfId() const {
+  return m_AfId;
+}
+void AfExternal::setAfId(std::string const& value) {
+  m_AfId      = value;
   m_AfIdIsSet = true;
 }
-bool AfExternal::afIdIsSet() const { return m_AfIdIsSet; }
-void AfExternal::unsetAfId() { m_AfIdIsSet = false; }
-std::vector<GeographicArea> &AfExternal::getAllowedGeographicArea() {
+bool AfExternal::afIdIsSet() const {
+  return m_AfIdIsSet;
+}
+void AfExternal::unsetAfId() {
+  m_AfIdIsSet = false;
+}
+std::vector<GeographicArea>& AfExternal::getAllowedGeographicArea() {
   return m_AllowedGeographicArea;
 }
 void AfExternal::setAllowedGeographicArea(
-    std::vector<GeographicArea> const &value) {
-  m_AllowedGeographicArea = value;
+    std::vector<GeographicArea> const& value) {
+  m_AllowedGeographicArea      = value;
   m_AllowedGeographicAreaIsSet = true;
 }
 bool AfExternal::allowedGeographicAreaIsSet() const {
@@ -105,8 +109,8 @@ PrivacyCheckRelatedAction AfExternal::getPrivacyCheckRelatedAction() const {
   return m_PrivacyCheckRelatedAction;
 }
 void AfExternal::setPrivacyCheckRelatedAction(
-    PrivacyCheckRelatedAction const &value) {
-  m_PrivacyCheckRelatedAction = value;
+    PrivacyCheckRelatedAction const& value) {
+  m_PrivacyCheckRelatedAction      = value;
   m_PrivacyCheckRelatedActionIsSet = true;
 }
 bool AfExternal::privacyCheckRelatedActionIsSet() const {
@@ -118,11 +122,15 @@ void AfExternal::unsetPrivacyCheckRelatedAction() {
 ValidTimePeriod AfExternal::getValidTimePeriod() const {
   return m_ValidTimePeriod;
 }
-void AfExternal::setValidTimePeriod(ValidTimePeriod const &value) {
-  m_ValidTimePeriod = value;
+void AfExternal::setValidTimePeriod(ValidTimePeriod const& value) {
+  m_ValidTimePeriod      = value;
   m_ValidTimePeriodIsSet = true;
 }
-bool AfExternal::validTimePeriodIsSet() const { return m_ValidTimePeriodIsSet; }
-void AfExternal::unsetValidTimePeriod() { m_ValidTimePeriodIsSet = false; }
+bool AfExternal::validTimePeriodIsSet() const {
+  return m_ValidTimePeriodIsSet;
+}
+void AfExternal::unsetValidTimePeriod() {
+  m_ValidTimePeriodIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

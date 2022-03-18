@@ -41,18 +41,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 SMFRegistrationDocumentApiImpl::SMFRegistrationDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : SMFRegistrationDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : SMFRegistrationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(
-    const std::string &ueId, const int32_t &pduSessionId,
-    const SmfRegistration &smfRegistration,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const int32_t& pduSessionId,
+    const SmfRegistration& smfRegistration,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
   m_udr_app->handle_create_smf_context_non_3gpp(
       ueId, pduSessionId, smfRegistration, response_data, http_code);
@@ -62,34 +63,34 @@ void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(
   response.send(code, response_data.dump().c_str());
 }
 void SMFRegistrationDocumentApiImpl::delete_smf_context(
-    const std::string &ueId, const int32_t &pduSessionId,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const int32_t& pduSessionId,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_delete_smf_context(ueId, pduSessionId, response_data,
-                                       http_code);
+  m_udr_app->handle_delete_smf_context(
+      ueId, pduSessionId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
 void SMFRegistrationDocumentApiImpl::query_smf_registration(
-    const std::string &ueId, const int32_t &pduSessionId,
-    const Pistache::Optional<std::vector<std::string>> &fields,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const int32_t& pduSessionId,
+    const Pistache::Optional<std::vector<std::string>>& fields,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_query_smf_registration(ueId, pduSessionId, response_data,
-                                           http_code);
+  m_udr_app->handle_query_smf_registration(
+      ueId, pduSessionId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

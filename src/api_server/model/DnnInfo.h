@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class DnnInfo {
-public:
+ public:
   DnnInfo();
   virtual ~DnnInfo();
 
@@ -102,8 +102,8 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getSmfList();
-  void setSmfList(std::vector<std::string> const &value);
+  std::vector<std::string>& getSmfList();
+  void setSmfList(std::vector<std::string> const& value);
   bool smfListIsSet() const;
   void unsetSmfList();
   /// <summary>
@@ -114,10 +114,10 @@ public:
   bool sameSmfIndIsSet() const;
   void unsetSameSmfInd();
 
-  friend void to_json(nlohmann::json &j, const DnnInfo &o);
-  friend void from_json(const nlohmann::json &j, DnnInfo &o);
+  friend void to_json(nlohmann::json& j, const DnnInfo& o);
+  friend void from_json(const nlohmann::json& j, DnnInfo& o);
 
-protected:
+ protected:
   //    AnyOfstringstring m_Dnn;
 
   bool m_DefaultDnnIndicator;
@@ -136,6 +136,6 @@ protected:
   bool m_SameSmfIndIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* DnnInfo_H_ */

@@ -54,28 +54,30 @@ using namespace oai::udr::app;
 
 class SMFRegistrationDocumentApiImpl
     : public oai::udr::api::SMFRegistrationDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  SMFRegistrationDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                 udr_app *udr_app_inst, std::string address);
+ public:
+  SMFRegistrationDocumentApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~SMFRegistrationDocumentApiImpl() {}
 
-  void create_smf_context_non3gpp(const std::string &ueId,
-                                  const int32_t &pduSessionId,
-                                  const SmfRegistration &smfRegistration,
-                                  Pistache::Http::ResponseWriter &response);
-  void delete_smf_context(const std::string &ueId, const int32_t &pduSessionId,
-                          Pistache::Http::ResponseWriter &response);
+  void create_smf_context_non3gpp(
+      const std::string& ueId, const int32_t& pduSessionId,
+      const SmfRegistration& smfRegistration,
+      Pistache::Http::ResponseWriter& response);
+  void delete_smf_context(
+      const std::string& ueId, const int32_t& pduSessionId,
+      Pistache::Http::ResponseWriter& response);
   void query_smf_registration(
-      const std::string &ueId, const int32_t &pduSessionId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId, const int32_t& pduSessionId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

@@ -43,10 +43,10 @@ void TrafficProfile::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const TrafficProfile &o) {
+void to_json(nlohmann::json& j, const TrafficProfile& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, TrafficProfile &o) {}
+void from_json(const nlohmann::json& j, TrafficProfile& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

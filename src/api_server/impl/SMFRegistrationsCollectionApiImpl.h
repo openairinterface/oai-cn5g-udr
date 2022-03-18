@@ -54,21 +54,22 @@ using namespace oai::udr::app;
 
 class SMFRegistrationsCollectionApiImpl
     : public oai::udr::api::SMFRegistrationsCollectionApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  SMFRegistrationsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                    udr_app *udr_app_inst, std::string address);
+ public:
+  SMFRegistrationsCollectionApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~SMFRegistrationsCollectionApiImpl() {}
 
-  void
-  query_smf_reg_list(const std::string &ueId,
-                     const Pistache::Optional<std::string> &supportedFeatures,
-                     Pistache::Http::ResponseWriter &response);
+  void query_smf_reg_list(
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class CmInfo {
-public:
+ public:
   CmInfo();
   virtual ~CmInfo();
 
@@ -63,22 +63,22 @@ public:
   ///
   /// </summary>
   CmState getCmState() const;
-  void setCmState(CmState const &value);
+  void setCmState(CmState const& value);
   /// <summary>
   ///
   /// </summary>
   AccessType getAccessType() const;
-  void setAccessType(AccessType const &value);
+  void setAccessType(AccessType const& value);
 
-  friend void to_json(nlohmann::json &j, const CmInfo &o);
-  friend void from_json(const nlohmann::json &j, CmInfo &o);
+  friend void to_json(nlohmann::json& j, const CmInfo& o);
+  friend void from_json(const nlohmann::json& j, CmInfo& o);
 
-protected:
+ protected:
   CmState m_CmState;
 
   AccessType m_AccessType;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* CmInfo_H_ */

@@ -43,10 +43,10 @@ void ScheduledCommunicationTypeRm::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ScheduledCommunicationTypeRm &o) {
+void to_json(nlohmann::json& j, const ScheduledCommunicationTypeRm& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, ScheduledCommunicationTypeRm &o) {}
+void from_json(const nlohmann::json& j, ScheduledCommunicationTypeRm& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

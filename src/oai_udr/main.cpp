@@ -16,8 +16,8 @@
 
 #include <signal.h>
 #include <stdint.h>
-#include <stdlib.h> // srand
-#include <unistd.h> // get_pid(), pause()
+#include <stdlib.h>  // srand
+#include <unistd.h>  // get_pid(), pause()
 
 #include <iostream>
 #include <thread>
@@ -37,9 +37,9 @@ using namespace oai::udr::app;
 using namespace oai::udr::config;
 
 udr_config udr_cfg;
-udr_app *udr_app_inst = nullptr;
-UDRApiServer *api_server = nullptr;
-udr_http2_server *udr_api_server_2 = nullptr;
+udr_app* udr_app_inst              = nullptr;
+UDRApiServer* api_server           = nullptr;
+udr_http2_server* udr_api_server_2 = nullptr;
 
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
@@ -65,7 +65,7 @@ void my_app_signal_handler(int s) {
 }
 
 //------------------------------------------------------------------------------
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   srand(time(NULL));
 
   // Command line options
@@ -102,14 +102,14 @@ int main(int argc, char **argv) {
   // Currently hard-coded value. TODO: add as config option.
   string pid_file_name = get_exe_absolute_path("/var/run", udr_cfg.instance);
   if (!is_pid_file_lock_success(pid_file_name.c_str())) {
-    Logger::udr_server().error("Lock PID file %s failed\n",
-                               pid_file_name.c_str());
+    Logger::udr_server().error(
+        "Lock PID file %s failed\n", pid_file_name.c_str());
     exit(-EDEADLK);
   }
 
   // UDR Pistache API server (HTTP1)
   Pistache::Address addr(
-      std::string(inet_ntoa(*((struct in_addr *)&udr_cfg.nudr.addr4))),
+      std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
       Pistache::Port(udr_cfg.nudr.port));
 
   api_server = new UDRApiServer(addr, udr_app_inst);
@@ -117,17 +117,17 @@ int main(int argc, char **argv) {
   std::thread udr_manager(&UDRApiServer::start, api_server);
 
   // UDM NGHTTP API server (HTTP2)
-  udr_api_server_2 =
-      new udr_http2_server(conv::toString(udr_cfg.nudr.addr4),
-                           udr_cfg.nudr_http2_port, udr_app_inst);
+  udr_api_server_2 = new udr_http2_server(
+      conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr_http2_port,
+      udr_app_inst);
   std::thread udr_http2_manager(&udr_http2_server::start, udr_api_server_2);
 
   udr_manager.join();
   udr_http2_manager.join();
 
-  FILE *fp = NULL;
+  FILE* fp             = NULL;
   std::string filename = fmt::format("/tmp/udr_{}.status", getpid());
-  fp = fopen(filename.c_str(), "w+");
+  fp                   = fopen(filename.c_str(), "w+");
   fprintf(fp, "STARTED\n");
   fflush(fp);
   fclose(fp);

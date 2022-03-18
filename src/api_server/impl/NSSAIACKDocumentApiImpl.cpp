@@ -41,16 +41,16 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 NSSAIACKDocumentApiImpl::NSSAIACKDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
     : NSSAIACKDocumentApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void NSSAIACKDocumentApiImpl::query_nssai_ack(
-    const std::string &ueId,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

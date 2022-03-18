@@ -41,20 +41,20 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 InfluenceDataStoreApiImpl::InfluenceDataStoreApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
     : InfluenceDataStoreApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void InfluenceDataStoreApiImpl::read_influence_data(
-    const Pistache::Optional<std::vector<std::string>> &influenceIds,
-    const Pistache::Optional<std::vector<std::string>> &dnns,
-    const Pistache::Optional<std::vector<Snssai>> &snssais,
-    const Pistache::Optional<std::vector<std::string>> &internalGroupIds,
-    const Pistache::Optional<std::vector<std::string>> &supis,
-    const Pistache::Optional<std::string> &suppFeat,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const Pistache::Optional<std::vector<std::string>>& influenceIds,
+    const Pistache::Optional<std::vector<std::string>>& dnns,
+    const Pistache::Optional<std::vector<Snssai>>& snssais,
+    const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
+    const Pistache::Optional<std::vector<std::string>>& supis,
+    const Pistache::Optional<std::string>& suppFeat,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

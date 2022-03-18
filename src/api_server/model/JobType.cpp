@@ -43,8 +43,10 @@ void JobType::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const JobType &o) { j = nlohmann::json(); }
+void to_json(nlohmann::json& j, const JobType& o) {
+  j = nlohmann::json();
+}
 
-void from_json(const nlohmann::json &j, JobType &o) {}
+void from_json(const nlohmann::json& j, JobType& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ImsVoPs {
-public:
+ public:
   ImsVoPs();
   virtual ~ImsVoPs();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// ImsVoPs members
 
-  friend void to_json(nlohmann::json &j, const ImsVoPs &o);
-  friend void from_json(const nlohmann::json &j, ImsVoPs &o);
+  friend void to_json(nlohmann::json& j, const ImsVoPs& o);
+  friend void from_json(const nlohmann::json& j, ImsVoPs& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* ImsVoPs_H_ */

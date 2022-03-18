@@ -42,16 +42,17 @@ using namespace oai::udr::model;
 
 Query5GVnGroupConfigurationDocumentApiImpl::
     Query5GVnGroupConfigurationDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : Query5GVnGroupConfigurationDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : Query5GVnGroupConfigurationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void Query5GVnGroupConfigurationDocumentApiImpl::get5_g_vn_group_configuration(
-    const std::string &externalGroupId,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& externalGroupId,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

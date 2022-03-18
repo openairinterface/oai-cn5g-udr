@@ -43,10 +43,10 @@ void ReportAmountMdt::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ReportAmountMdt &o) {
+void to_json(nlohmann::json& j, const ReportAmountMdt& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, ReportAmountMdt &o) {}
+void from_json(const nlohmann::json& j, ReportAmountMdt& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

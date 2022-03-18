@@ -41,17 +41,18 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 UEsLocationInformationDocumentApiImpl::UEsLocationInformationDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : UEsLocationInformationDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : UEsLocationInformationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void UEsLocationInformationDocumentApiImpl::query_ue_location(
-    const std::string &ueId,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

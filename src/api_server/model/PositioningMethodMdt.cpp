@@ -43,10 +43,10 @@ void PositioningMethodMdt::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PositioningMethodMdt &o) {
+void to_json(nlohmann::json& j, const PositioningMethodMdt& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, PositioningMethodMdt &o) {}
+void from_json(const nlohmann::json& j, PositioningMethodMdt& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

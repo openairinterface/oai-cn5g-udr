@@ -41,18 +41,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 SMFRegistrationsCollectionApiImpl::SMFRegistrationsCollectionApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : SMFRegistrationsCollectionApi(rtr), m_udr_app(udr_app_inst),
+    : SMFRegistrationsCollectionApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(
-    const std::string &ueId,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
   m_udr_app->handle_query_smf_reg_list(ueId, response_data, http_code);
 
@@ -61,4 +62,4 @@ void SMFRegistrationsCollectionApiImpl::query_smf_reg_list(
   response.send(code, response_data.dump().c_str());
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

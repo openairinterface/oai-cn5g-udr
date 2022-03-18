@@ -42,17 +42,18 @@ using namespace oai::udr::model;
 
 PolicyDataSubscriptionsCollectionApiImpl::
     PolicyDataSubscriptionsCollectionApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : PolicyDataSubscriptionsCollectionApi(rtr), m_udr_app(udr_app_inst),
+    : PolicyDataSubscriptionsCollectionApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void PolicyDataSubscriptionsCollectionApiImpl::
     create_individual_policy_data_subscription(
-        const PolicyDataSubscription &policyDataSubscription,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const PolicyDataSubscription& policyDataSubscription,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

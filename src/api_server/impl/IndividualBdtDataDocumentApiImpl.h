@@ -55,28 +55,31 @@ using namespace oai::udr::app;
 
 class IndividualBdtDataDocumentApiImpl
     : public oai::udr::api::IndividualBdtDataDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  IndividualBdtDataDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                   udr_app *udr_app_inst, std::string address);
+ public:
+  IndividualBdtDataDocumentApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~IndividualBdtDataDocumentApiImpl() {}
 
-  void create_individual_bdt_data(const std::string &bdtReferenceId,
-                                  const BdtData &bdtData,
-                                  Pistache::Http::ResponseWriter &response);
-  void delete_individual_bdt_data(const std::string &bdtReferenceId,
-                                  Pistache::Http::ResponseWriter &response);
-  void read_individual_bdt_data(const std::string &bdtReferenceId,
-                                const Pistache::Optional<std::string> &suppFeat,
-                                Pistache::Http::ResponseWriter &response);
-  void update_individual_bdt_data(const std::string &bdtReferenceId,
-                                  const BdtDataPatch &bdtDataPatch,
-                                  Pistache::Http::ResponseWriter &response);
+  void create_individual_bdt_data(
+      const std::string& bdtReferenceId, const BdtData& bdtData,
+      Pistache::Http::ResponseWriter& response);
+  void delete_individual_bdt_data(
+      const std::string& bdtReferenceId,
+      Pistache::Http::ResponseWriter& response);
+  void read_individual_bdt_data(
+      const std::string& bdtReferenceId,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response);
+  void update_individual_bdt_data(
+      const std::string& bdtReferenceId, const BdtDataPatch& bdtDataPatch,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

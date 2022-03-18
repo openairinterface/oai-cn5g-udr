@@ -40,18 +40,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 AmfSubscriptionInfoDocumentApiImpl::AmfSubscriptionInfoDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : AmfSubscriptionInfoDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : AmfSubscriptionInfoDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AmfSubscriptionInfoDocumentApiImpl::modify_amf_subscription_info(
-    const std::string &ueId, const std::string &subsId,
-    const std::vector<PatchItem> &patchItem,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::string& subsId,
+    const std::vector<PatchItem>& patchItem,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
