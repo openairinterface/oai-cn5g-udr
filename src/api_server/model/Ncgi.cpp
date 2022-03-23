@@ -37,7 +37,7 @@ namespace oai::udr::model {
 
 Ncgi::Ncgi() {
   m_NrCellId = "";
-  m_Nid = "";
+  m_Nid      = "";
   m_NidIsSet = false;
 }
 
@@ -47,15 +47,14 @@ void Ncgi::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const Ncgi &o) {
-  j = nlohmann::json();
-  j["plmnId"] = o.m_PlmnId;
+void to_json(nlohmann::json& j, const Ncgi& o) {
+  j             = nlohmann::json();
+  j["plmnId"]   = o.m_PlmnId;
   j["nrCellId"] = o.m_NrCellId;
-  if (o.nidIsSet())
-    j["nid"] = o.m_Nid;
+  if (o.nidIsSet()) j["nid"] = o.m_Nid;
 }
 
-void from_json(const nlohmann::json &j, Ncgi &o) {
+void from_json(const nlohmann::json& j, Ncgi& o) {
   j.at("plmnId").get_to(o.m_PlmnId);
   j.at("nrCellId").get_to(o.m_NrCellId);
   if (j.find("nid") != j.end()) {
@@ -64,16 +63,30 @@ void from_json(const nlohmann::json &j, Ncgi &o) {
   }
 }
 
-PlmnId Ncgi::getPlmnId() const { return m_PlmnId; }
-void Ncgi::setPlmnId(PlmnId const &value) { m_PlmnId = value; }
-std::string Ncgi::getNrCellId() const { return m_NrCellId; }
-void Ncgi::setNrCellId(std::string const &value) { m_NrCellId = value; }
-std::string Ncgi::getNid() const { return m_Nid; }
-void Ncgi::setNid(std::string const &value) {
-  m_Nid = value;
+PlmnId Ncgi::getPlmnId() const {
+  return m_PlmnId;
+}
+void Ncgi::setPlmnId(PlmnId const& value) {
+  m_PlmnId = value;
+}
+std::string Ncgi::getNrCellId() const {
+  return m_NrCellId;
+}
+void Ncgi::setNrCellId(std::string const& value) {
+  m_NrCellId = value;
+}
+std::string Ncgi::getNid() const {
+  return m_Nid;
+}
+void Ncgi::setNid(std::string const& value) {
+  m_Nid      = value;
   m_NidIsSet = true;
 }
-bool Ncgi::nidIsSet() const { return m_NidIsSet; }
-void Ncgi::unsetNid() { m_NidIsSet = false; }
+bool Ncgi::nidIsSet() const {
+  return m_NidIsSet;
+}
+void Ncgi::unsetNid() {
+  m_NidIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

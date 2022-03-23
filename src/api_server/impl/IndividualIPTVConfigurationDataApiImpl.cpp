@@ -41,18 +41,19 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 IndividualIPTVConfigurationDataApiImpl::IndividualIPTVConfigurationDataApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : IndividualIPTVConfigurationDataApi(rtr), m_udr_app(udr_app_inst),
+    : IndividualIPTVConfigurationDataApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IndividualIPTVConfigurationDataApiImpl::
     partial_replace_individual_iptv_configuration_data(
-        const std::string &configurationId,
-        const IptvConfigDataPatch &iptvConfigDataPatch,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& configurationId,
+        const IptvConfigDataPatch& iptvConfigDataPatch,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

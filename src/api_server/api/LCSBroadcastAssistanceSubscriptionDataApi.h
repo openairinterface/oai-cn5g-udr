@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class LCSBroadcastAssistanceSubscriptionDataApi {
-public:
+ public:
   LCSBroadcastAssistanceSubscriptionDataApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~LCSBroadcastAssistanceSubscriptionDataApi() {}
@@ -62,13 +62,14 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void query_lcs_bca_data_handler(const Pistache::Rest::Request &request,
-                                  Pistache::Http::ResponseWriter response);
+  void query_lcs_bca_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void lcs_broadcast_assistance_subscription_data_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -88,13 +89,13 @@ private:
   /// conditional requests, as described in RFC 7232, 3.3 (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_lcs_bca_data(
-      const std::string &ueId, const std::string &servingPlmnId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::string& servingPlmnId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* LCSBroadcastAssistanceSubscriptionDataApi_H_ */

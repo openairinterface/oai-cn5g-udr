@@ -37,10 +37,10 @@ namespace oai::udr::model {
 
 VnGroupData::VnGroupData() {
   m_PduSessionTypesIsSet = false;
-  m_Dnn = "";
-  m_DnnIsSet = false;
-  m_SingleNssaiIsSet = false;
-  m_AppDescriptorsIsSet = false;
+  m_Dnn                  = "";
+  m_DnnIsSet             = false;
+  m_SingleNssaiIsSet     = false;
+  m_AppDescriptorsIsSet  = false;
 }
 
 VnGroupData::~VnGroupData() {}
@@ -49,19 +49,16 @@ void VnGroupData::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const VnGroupData &o) {
+void to_json(nlohmann::json& j, const VnGroupData& o) {
   j = nlohmann::json();
-  if (o.pduSessionTypesIsSet())
-    j["pduSessionTypes"] = o.m_PduSessionTypes;
-  if (o.dnnIsSet())
-    j["dnn"] = o.m_Dnn;
-  if (o.singleNssaiIsSet())
-    j["singleNssai"] = o.m_SingleNssai;
+  if (o.pduSessionTypesIsSet()) j["pduSessionTypes"] = o.m_PduSessionTypes;
+  if (o.dnnIsSet()) j["dnn"] = o.m_Dnn;
+  if (o.singleNssaiIsSet()) j["singleNssai"] = o.m_SingleNssai;
   if (o.appDescriptorsIsSet() || !o.m_AppDescriptors.empty())
     j["appDescriptors"] = o.m_AppDescriptors;
 }
 
-void from_json(const nlohmann::json &j, VnGroupData &o) {
+void from_json(const nlohmann::json& j, VnGroupData& o) {
   if (j.find("pduSessionTypes") != j.end()) {
     j.at("pduSessionTypes").get_to(o.m_PduSessionTypes);
     o.m_PduSessionTypesIsSet = true;
@@ -83,36 +80,54 @@ void from_json(const nlohmann::json &j, VnGroupData &o) {
 PduSessionTypes VnGroupData::getPduSessionTypes() const {
   return m_PduSessionTypes;
 }
-void VnGroupData::setPduSessionTypes(PduSessionTypes const &value) {
-  m_PduSessionTypes = value;
+void VnGroupData::setPduSessionTypes(PduSessionTypes const& value) {
+  m_PduSessionTypes      = value;
   m_PduSessionTypesIsSet = true;
 }
 bool VnGroupData::pduSessionTypesIsSet() const {
   return m_PduSessionTypesIsSet;
 }
-void VnGroupData::unsetPduSessionTypes() { m_PduSessionTypesIsSet = false; }
-std::string VnGroupData::getDnn() const { return m_Dnn; }
-void VnGroupData::setDnn(std::string const &value) {
-  m_Dnn = value;
+void VnGroupData::unsetPduSessionTypes() {
+  m_PduSessionTypesIsSet = false;
+}
+std::string VnGroupData::getDnn() const {
+  return m_Dnn;
+}
+void VnGroupData::setDnn(std::string const& value) {
+  m_Dnn      = value;
   m_DnnIsSet = true;
 }
-bool VnGroupData::dnnIsSet() const { return m_DnnIsSet; }
-void VnGroupData::unsetDnn() { m_DnnIsSet = false; }
-Snssai VnGroupData::getSingleNssai() const { return m_SingleNssai; }
-void VnGroupData::setSingleNssai(Snssai const &value) {
-  m_SingleNssai = value;
+bool VnGroupData::dnnIsSet() const {
+  return m_DnnIsSet;
+}
+void VnGroupData::unsetDnn() {
+  m_DnnIsSet = false;
+}
+Snssai VnGroupData::getSingleNssai() const {
+  return m_SingleNssai;
+}
+void VnGroupData::setSingleNssai(Snssai const& value) {
+  m_SingleNssai      = value;
   m_SingleNssaiIsSet = true;
 }
-bool VnGroupData::singleNssaiIsSet() const { return m_SingleNssaiIsSet; }
-void VnGroupData::unsetSingleNssai() { m_SingleNssaiIsSet = false; }
-std::vector<AppDescriptor> &VnGroupData::getAppDescriptors() {
+bool VnGroupData::singleNssaiIsSet() const {
+  return m_SingleNssaiIsSet;
+}
+void VnGroupData::unsetSingleNssai() {
+  m_SingleNssaiIsSet = false;
+}
+std::vector<AppDescriptor>& VnGroupData::getAppDescriptors() {
   return m_AppDescriptors;
 }
-void VnGroupData::setAppDescriptors(std::vector<AppDescriptor> const &value) {
-  m_AppDescriptors = value;
+void VnGroupData::setAppDescriptors(std::vector<AppDescriptor> const& value) {
+  m_AppDescriptors      = value;
   m_AppDescriptorsIsSet = true;
 }
-bool VnGroupData::appDescriptorsIsSet() const { return m_AppDescriptorsIsSet; }
-void VnGroupData::unsetAppDescriptors() { m_AppDescriptorsIsSet = false; }
+bool VnGroupData::appDescriptorsIsSet() const {
+  return m_AppDescriptorsIsSet;
+}
+void VnGroupData::unsetAppDescriptors() {
+  m_AppDescriptorsIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

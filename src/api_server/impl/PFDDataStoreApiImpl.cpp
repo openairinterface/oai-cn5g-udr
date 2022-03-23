@@ -41,15 +41,15 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 PFDDataStoreApiImpl::PFDDataStoreApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
     : PFDDataStoreApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void PFDDataStoreApiImpl::read_pfd_data(
-    const Pistache::Optional<std::vector<std::string>> &appId,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const Pistache::Optional<std::vector<std::string>>& appId,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

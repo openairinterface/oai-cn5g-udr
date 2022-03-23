@@ -36,7 +36,7 @@
 namespace oai::udr::model {
 
 AuthorizationData::AuthorizationData() {
-  m_ValidityTime = "";
+  m_ValidityTime      = "";
   m_ValidityTimeIsSet = false;
 }
 
@@ -46,14 +46,13 @@ void AuthorizationData::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const AuthorizationData &o) {
+void to_json(nlohmann::json& j, const AuthorizationData& o) {
   j = nlohmann::json();
   //    j["authorizationData"] = o.m_AuthorizationData;
-  if (o.validityTimeIsSet())
-    j["validityTime"] = o.m_ValidityTime;
+  if (o.validityTimeIsSet()) j["validityTime"] = o.m_ValidityTime;
 }
 
-void from_json(const nlohmann::json &j, AuthorizationData &o) {
+void from_json(const nlohmann::json& j, AuthorizationData& o) {
   //    j.at("authorizationData").get_to(o.m_AuthorizationData);
   if (j.find("validityTime") != j.end()) {
     j.at("validityTime").get_to(o.m_ValidityTime);
@@ -73,13 +72,15 @@ void from_json(const nlohmann::json &j, AuthorizationData &o) {
 std::string AuthorizationData::getValidityTime() const {
   return m_ValidityTime;
 }
-void AuthorizationData::setValidityTime(std::string const &value) {
-  m_ValidityTime = value;
+void AuthorizationData::setValidityTime(std::string const& value) {
+  m_ValidityTime      = value;
   m_ValidityTimeIsSet = true;
 }
 bool AuthorizationData::validityTimeIsSet() const {
   return m_ValidityTimeIsSet;
 }
-void AuthorizationData::unsetValidityTime() { m_ValidityTimeIsSet = false; }
+void AuthorizationData::unsetValidityTime() {
+  m_ValidityTimeIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

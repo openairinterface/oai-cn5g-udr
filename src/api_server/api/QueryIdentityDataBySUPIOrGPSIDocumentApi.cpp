@@ -49,7 +49,9 @@ QueryIdentityDataBySUPIOrGPSIDocumentApi::
   router = rtr;
 }
 
-void QueryIdentityDataBySUPIOrGPSIDocumentApi::init() { setupRoutes(); }
+void QueryIdentityDataBySUPIOrGPSIDocumentApi::init() {
+  setupRoutes();
+}
 
 void QueryIdentityDataBySUPIOrGPSIDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -70,8 +72,13 @@ void QueryIdentityDataBySUPIOrGPSIDocumentApi::setupRoutes() {
 }
 
 void QueryIdentityDataBySUPIOrGPSIDocumentApi::get_identity_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -86,20 +93,20 @@ void QueryIdentityDataBySUPIOrGPSIDocumentApi::get_identity_data_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_identity_data(ueId, appPortId, ifNoneMatch, ifModifiedSince,
-                            response);
-  } catch (nlohmann::detail::exception &e) {
+    this->get_identity_data(
+        ueId, appPortId, ifNoneMatch, ifModifiedSince, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -108,10 +115,10 @@ void QueryIdentityDataBySUPIOrGPSIDocumentApi::get_identity_data_handler(
 
 void QueryIdentityDataBySUPIOrGPSIDocumentApi::
     query_identity_data_by_supi_or_gpsi_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

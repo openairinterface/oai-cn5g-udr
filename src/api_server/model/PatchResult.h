@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PatchResult {
-public:
+ public:
   PatchResult();
   virtual ~PatchResult();
 
@@ -62,16 +62,16 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<ReportItem> &getReport();
-  void setReport(std::vector<ReportItem> const &value);
+  std::vector<ReportItem>& getReport();
+  void setReport(std::vector<ReportItem> const& value);
 
-  friend void to_json(nlohmann::json &j, const PatchResult &o);
-  friend void from_json(const nlohmann::json &j, PatchResult &o);
+  friend void to_json(nlohmann::json& j, const PatchResult& o);
+  friend void from_json(const nlohmann::json& j, PatchResult& o);
 
-protected:
+ protected:
   std::vector<ReportItem> m_Report;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PatchResult_H_ */

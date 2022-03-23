@@ -49,7 +49,9 @@ InfluenceDataSubscriptionsCollectionApi::
   router = rtr;
 }
 
-void InfluenceDataSubscriptionsCollectionApi::init() { setupRoutes(); }
+void InfluenceDataSubscriptionsCollectionApi::init() {
+  setupRoutes();
+}
 
 void InfluenceDataSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -58,15 +60,18 @@ void InfluenceDataSubscriptionsCollectionApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/application-data/influenceData/subs-to-notify",
-      Routes::bind(&InfluenceDataSubscriptionsCollectionApi::
-                       create_individual_influence_data_subscription_handler,
-                   this));
-  Routes::Get(*router,
-              base + udr_cfg.nudr.api_version +
-                  "/application-data/influenceData/subs-to-notify",
-              Routes::bind(&InfluenceDataSubscriptionsCollectionApi::
-                               read_influence_data_subscriptions_handler,
-                           this));
+      Routes::bind(
+          &InfluenceDataSubscriptionsCollectionApi::
+              create_individual_influence_data_subscription_handler,
+          this));
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/application-data/influenceData/subs-to-notify",
+      Routes::bind(
+          &InfluenceDataSubscriptionsCollectionApi::
+              read_influence_data_subscriptions_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -77,7 +82,7 @@ void InfluenceDataSubscriptionsCollectionApi::setupRoutes() {
 
 void InfluenceDataSubscriptionsCollectionApi::
     create_individual_influence_data_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   // Getting the body param
 
@@ -85,16 +90,16 @@ void InfluenceDataSubscriptionsCollectionApi::
 
   try {
     nlohmann::json::parse(request.body()).get_to(trafficInfluSub);
-    this->create_individual_influence_data_subscription(trafficInfluSub,
-                                                        response);
-  } catch (nlohmann::detail::exception &e) {
+    this->create_individual_influence_data_subscription(
+        trafficInfluSub, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -102,7 +107,7 @@ void InfluenceDataSubscriptionsCollectionApi::
 }
 void InfluenceDataSubscriptionsCollectionApi::
     read_influence_data_subscriptions_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto dnnQuery = request.query().get("dnn");
@@ -139,16 +144,16 @@ void InfluenceDataSubscriptionsCollectionApi::
   }
 
   try {
-    this->read_influence_data_subscriptions(dnn, snssai, internalGroupId, supi,
-                                            response);
-  } catch (nlohmann::detail::exception &e) {
+    this->read_influence_data_subscriptions(
+        dnn, snssai, internalGroupId, supi, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -157,10 +162,10 @@ void InfluenceDataSubscriptionsCollectionApi::
 
 void InfluenceDataSubscriptionsCollectionApi::
     influence_data_subscriptions_collection_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

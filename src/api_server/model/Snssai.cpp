@@ -36,8 +36,8 @@
 namespace oai::udr::model {
 
 Snssai::Snssai() {
-  m_Sst = 0;
-  m_Sd = "";
+  m_Sst     = 0;
+  m_Sd      = "";
   m_SdIsSet = false;
 }
 
@@ -47,14 +47,13 @@ void Snssai::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const Snssai &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const Snssai& o) {
+  j        = nlohmann::json();
   j["sst"] = o.m_Sst;
-  if (o.sdIsSet())
-    j["sd"] = o.m_Sd;
+  if (o.sdIsSet()) j["sd"] = o.m_Sd;
 }
 
-void from_json(const nlohmann::json &j, Snssai &o) {
+void from_json(const nlohmann::json& j, Snssai& o) {
   j.at("sst").get_to(o.m_Sst);
   if (j.find("sd") != j.end()) {
     j.at("sd").get_to(o.m_Sd);
@@ -62,14 +61,24 @@ void from_json(const nlohmann::json &j, Snssai &o) {
   }
 }
 
-int32_t Snssai::getSst() const { return m_Sst; }
-void Snssai::setSst(int32_t const value) { m_Sst = value; }
-std::string Snssai::getSd() const { return m_Sd; }
-void Snssai::setSd(std::string const &value) {
-  m_Sd = value;
+int32_t Snssai::getSst() const {
+  return m_Sst;
+}
+void Snssai::setSst(int32_t const value) {
+  m_Sst = value;
+}
+std::string Snssai::getSd() const {
+  return m_Sd;
+}
+void Snssai::setSd(std::string const& value) {
+  m_Sd      = value;
   m_SdIsSet = true;
 }
-bool Snssai::sdIsSet() const { return m_SdIsSet; }
-void Snssai::unsetSd() { m_SdIsSet = false; }
+bool Snssai::sdIsSet() const {
+  return m_SdIsSet;
+}
+void Snssai::unsetSd() {
+  m_SdIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

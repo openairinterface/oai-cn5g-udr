@@ -36,7 +36,7 @@
 namespace oai::udr::model {
 
 InterFreqTargetInfo::InterFreqTargetInfo() {
-  m_DlCarrierFreq = 0;
+  m_DlCarrierFreq   = 0;
   m_CellIdListIsSet = false;
 }
 
@@ -46,14 +46,14 @@ void InterFreqTargetInfo::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const InterFreqTargetInfo &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const InterFreqTargetInfo& o) {
+  j                  = nlohmann::json();
   j["dlCarrierFreq"] = o.m_DlCarrierFreq;
   if (o.cellIdListIsSet() || !o.m_CellIdList.empty())
     j["cellIdList"] = o.m_CellIdList;
 }
 
-void from_json(const nlohmann::json &j, InterFreqTargetInfo &o) {
+void from_json(const nlohmann::json& j, InterFreqTargetInfo& o) {
   j.at("dlCarrierFreq").get_to(o.m_DlCarrierFreq);
   if (j.find("cellIdList") != j.end()) {
     j.at("cellIdList").get_to(o.m_CellIdList);
@@ -67,14 +67,18 @@ int32_t InterFreqTargetInfo::getDlCarrierFreq() const {
 void InterFreqTargetInfo::setDlCarrierFreq(int32_t const value) {
   m_DlCarrierFreq = value;
 }
-std::vector<int32_t> &InterFreqTargetInfo::getCellIdList() {
+std::vector<int32_t>& InterFreqTargetInfo::getCellIdList() {
   return m_CellIdList;
 }
 void InterFreqTargetInfo::setCellIdList(std::vector<int32_t> const value) {
-  m_CellIdList = value;
+  m_CellIdList      = value;
   m_CellIdListIsSet = true;
 }
-bool InterFreqTargetInfo::cellIdListIsSet() const { return m_CellIdListIsSet; }
-void InterFreqTargetInfo::unsetCellIdList() { m_CellIdListIsSet = false; }
+bool InterFreqTargetInfo::cellIdListIsSet() const {
+  return m_CellIdListIsSet;
+}
+void InterFreqTargetInfo::unsetCellIdList() {
+  m_CellIdListIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

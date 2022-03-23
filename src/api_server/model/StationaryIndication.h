@@ -49,7 +49,7 @@ namespace oai::udr::model {
 /// Identifies the UE is mobile
 /// </summary>
 class StationaryIndication {
-public:
+ public:
   StationaryIndication();
   virtual ~StationaryIndication();
 
@@ -58,12 +58,12 @@ public:
   /////////////////////////////////////////////
   /// StationaryIndication members
 
-  friend void to_json(nlohmann::json &j, const StationaryIndication &o);
-  friend void from_json(const nlohmann::json &j, StationaryIndication &o);
+  friend void to_json(nlohmann::json& j, const StationaryIndication& o);
+  friend void from_json(const nlohmann::json& j, StationaryIndication& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* StationaryIndication_H_ */

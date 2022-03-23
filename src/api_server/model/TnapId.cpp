@@ -36,10 +36,10 @@
 namespace oai::udr::model {
 
 TnapId::TnapId() {
-  m_SsId = "";
-  m_SsIdIsSet = false;
-  m_BssId = "";
-  m_BssIdIsSet = false;
+  m_SsId              = "";
+  m_SsIdIsSet         = false;
+  m_BssId             = "";
+  m_BssIdIsSet        = false;
   m_CivicAddressIsSet = false;
 }
 
@@ -49,17 +49,14 @@ void TnapId::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const TnapId &o) {
+void to_json(nlohmann::json& j, const TnapId& o) {
   j = nlohmann::json();
-  if (o.ssIdIsSet())
-    j["ssId"] = o.m_SsId;
-  if (o.bssIdIsSet())
-    j["bssId"] = o.m_BssId;
-  if (o.civicAddressIsSet())
-    j["civicAddress"] = o.m_CivicAddress;
+  if (o.ssIdIsSet()) j["ssId"] = o.m_SsId;
+  if (o.bssIdIsSet()) j["bssId"] = o.m_BssId;
+  if (o.civicAddressIsSet()) j["civicAddress"] = o.m_CivicAddress;
 }
 
-void from_json(const nlohmann::json &j, TnapId &o) {
+void from_json(const nlohmann::json& j, TnapId& o) {
   if (j.find("ssId") != j.end()) {
     j.at("ssId").get_to(o.m_SsId);
     o.m_SsIdIsSet = true;
@@ -74,26 +71,44 @@ void from_json(const nlohmann::json &j, TnapId &o) {
   }
 }
 
-std::string TnapId::getSsId() const { return m_SsId; }
-void TnapId::setSsId(std::string const &value) {
-  m_SsId = value;
+std::string TnapId::getSsId() const {
+  return m_SsId;
+}
+void TnapId::setSsId(std::string const& value) {
+  m_SsId      = value;
   m_SsIdIsSet = true;
 }
-bool TnapId::ssIdIsSet() const { return m_SsIdIsSet; }
-void TnapId::unsetSsId() { m_SsIdIsSet = false; }
-std::string TnapId::getBssId() const { return m_BssId; }
-void TnapId::setBssId(std::string const &value) {
-  m_BssId = value;
+bool TnapId::ssIdIsSet() const {
+  return m_SsIdIsSet;
+}
+void TnapId::unsetSsId() {
+  m_SsIdIsSet = false;
+}
+std::string TnapId::getBssId() const {
+  return m_BssId;
+}
+void TnapId::setBssId(std::string const& value) {
+  m_BssId      = value;
   m_BssIdIsSet = true;
 }
-bool TnapId::bssIdIsSet() const { return m_BssIdIsSet; }
-void TnapId::unsetBssId() { m_BssIdIsSet = false; }
-std::string TnapId::getCivicAddress() const { return m_CivicAddress; }
-void TnapId::setCivicAddress(std::string const &value) {
-  m_CivicAddress = value;
+bool TnapId::bssIdIsSet() const {
+  return m_BssIdIsSet;
+}
+void TnapId::unsetBssId() {
+  m_BssIdIsSet = false;
+}
+std::string TnapId::getCivicAddress() const {
+  return m_CivicAddress;
+}
+void TnapId::setCivicAddress(std::string const& value) {
+  m_CivicAddress      = value;
   m_CivicAddressIsSet = true;
 }
-bool TnapId::civicAddressIsSet() const { return m_CivicAddressIsSet; }
-void TnapId::unsetCivicAddress() { m_CivicAddressIsSet = false; }
+bool TnapId::civicAddressIsSet() const {
+  return m_CivicAddressIsSet;
+}
+void TnapId::unsetCivicAddress() {
+  m_CivicAddressIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

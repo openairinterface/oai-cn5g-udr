@@ -24,7 +24,7 @@
 
 #define HEART_BEAT_TIMER 10
 
-#define _unused(x) ((void)(x))
+#define _unused(x) ((void) (x))
 
 #define NNRF_NFM_BASE "/nnrf-nfm/"
 #define UDR_NF_REGISTER_URL "/nf-instances/"

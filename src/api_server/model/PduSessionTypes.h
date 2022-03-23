@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PduSessionTypes {
-public:
+ public:
   PduSessionTypes();
   virtual ~PduSessionTypes();
 
@@ -63,25 +63,25 @@ public:
   ///
   /// </summary>
   PduSessionType getDefaultSessionType() const;
-  void setDefaultSessionType(PduSessionType const &value);
+  void setDefaultSessionType(PduSessionType const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<PduSessionType> &getAllowedSessionTypes();
-  void setAllowedSessionTypes(std::vector<PduSessionType> const &value);
+  std::vector<PduSessionType>& getAllowedSessionTypes();
+  void setAllowedSessionTypes(std::vector<PduSessionType> const& value);
   bool allowedSessionTypesIsSet() const;
   void unsetAllowedSessionTypes();
 
-  friend void to_json(nlohmann::json &j, const PduSessionTypes &o);
-  friend void from_json(const nlohmann::json &j, PduSessionTypes &o);
+  friend void to_json(nlohmann::json& j, const PduSessionTypes& o);
+  friend void from_json(const nlohmann::json& j, PduSessionTypes& o);
 
-protected:
+ protected:
   PduSessionType m_DefaultSessionType;
 
   std::vector<PduSessionType> m_AllowedSessionTypes;
   bool m_AllowedSessionTypesIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PduSessionTypes_H_ */

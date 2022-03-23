@@ -54,21 +54,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualBDTPolicyDataDocumentApi {
-public:
+ public:
   IndividualBDTPolicyDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualBDTPolicyDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_individual_applied_bdt_policy_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_bdt_policy_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -83,10 +83,10 @@ private:
   /// Policy Data to be created or updated. It shall apply the format of Data
   /// type string.</param> <param name="bdtPolicyData"></param>
   virtual void create_individual_applied_bdt_policy_data(
-      const std::string &bdtPolicyId, const BdtPolicyData &bdtPolicyData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& bdtPolicyId, const BdtPolicyData& bdtPolicyData,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IndividualBDTPolicyDataDocumentApi_H_ */

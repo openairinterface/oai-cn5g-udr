@@ -37,9 +37,9 @@ namespace bs2 = boost::signals2;
 
 namespace oai::udr::app {
 
-typedef bs2::signal_type<void(uint64_t),
-                         bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
+typedef bs2::signal_type<
+    void(uint64_t), bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
     task_sig_t;
 
-} // namespace oai::udr::app
+}  // namespace oai::udr::app
 #endif

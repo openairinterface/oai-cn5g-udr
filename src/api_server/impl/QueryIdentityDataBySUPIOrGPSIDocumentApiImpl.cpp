@@ -42,18 +42,19 @@ using namespace oai::udr::model;
 
 QueryIdentityDataBySUPIOrGPSIDocumentApiImpl::
     QueryIdentityDataBySUPIOrGPSIDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : QueryIdentityDataBySUPIOrGPSIDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : QueryIdentityDataBySUPIOrGPSIDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void QueryIdentityDataBySUPIOrGPSIDocumentApiImpl::get_identity_data(
-    const std::string &ueId, const Pistache::Optional<AppPortId> &appPortId,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const Pistache::Optional<AppPortId>& appPortId,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

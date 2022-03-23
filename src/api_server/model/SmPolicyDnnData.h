@@ -54,7 +54,7 @@ namespace oai::udr::model {
 /// Contains the SM policy data for a given DNN (and S-NSSAI).
 /// </summary>
 class SmPolicyDnnData {
-public:
+ public:
   SmPolicyDnnData();
   virtual ~SmPolicyDnnData();
 
@@ -67,33 +67,33 @@ public:
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const &value);
+  void setDnn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getAllowedServices();
-  void setAllowedServices(std::vector<std::string> const &value);
+  std::vector<std::string>& getAllowedServices();
+  void setAllowedServices(std::vector<std::string> const& value);
   bool allowedServicesIsSet() const;
   void unsetAllowedServices();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getSubscCats();
-  void setSubscCats(std::vector<std::string> const &value);
+  std::vector<std::string>& getSubscCats();
+  void setSubscCats(std::vector<std::string> const& value);
   bool subscCatsIsSet() const;
   void unsetSubscCats();
   /// <summary>
   ///
   /// </summary>
   std::string getGbrUl() const;
-  void setGbrUl(std::string const &value);
+  void setGbrUl(std::string const& value);
   bool gbrUlIsSet() const;
   void unsetGbrUl();
   /// <summary>
   ///
   /// </summary>
   std::string getGbrDl() const;
-  void setGbrDl(std::string const &value);
+  void setGbrDl(std::string const& value);
   bool gbrDlIsSet() const;
   void unsetGbrDl();
   /// <summary>
@@ -142,15 +142,15 @@ public:
   ///
   /// </summary>
   ChargingInformation getChfInfo() const;
-  void setChfInfo(ChargingInformation const &value);
+  void setChfInfo(ChargingInformation const& value);
   bool chfInfoIsSet() const;
   void unsetChfInfo();
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, LimitIdToMonitoringKey> &getRefUmDataLimitIds();
+  std::map<std::string, LimitIdToMonitoringKey>& getRefUmDataLimitIds();
   void setRefUmDataLimitIds(
-      std::map<std::string, LimitIdToMonitoringKey> const &value);
+      std::map<std::string, LimitIdToMonitoringKey> const& value);
   bool refUmDataLimitIdsIsSet() const;
   void unsetRefUmDataLimitIds();
   /// <summary>
@@ -191,15 +191,15 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, PresenceInfo> &getPraInfos();
-  void setPraInfos(std::map<std::string, PresenceInfo> const &value);
+  std::map<std::string, PresenceInfo>& getPraInfos();
+  void setPraInfos(std::map<std::string, PresenceInfo> const& value);
   bool praInfosIsSet() const;
   void unsetPraInfos();
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, std::string> &getBdtRefIds();
-  void setBdtRefIds(std::map<std::string, std::string> const &value);
+  std::map<std::string, std::string>& getBdtRefIds();
+  void setBdtRefIds(std::map<std::string, std::string> const& value);
   bool bdtRefIdsIsSet() const;
   void unsetBdtRefIds();
   /// <summary>
@@ -210,10 +210,10 @@ public:
   bool locRoutNotAllowedIsSet() const;
   void unsetLocRoutNotAllowed();
 
-  friend void to_json(nlohmann::json &j, const SmPolicyDnnData &o);
-  friend void from_json(const nlohmann::json &j, SmPolicyDnnData &o);
+  friend void to_json(nlohmann::json& j, const SmPolicyDnnData& o);
+  friend void from_json(const nlohmann::json& j, SmPolicyDnnData& o);
 
-protected:
+ protected:
   std::string m_Dnn;
 
   std::vector<std::string> m_AllowedServices;
@@ -258,6 +258,6 @@ protected:
   bool m_LocRoutNotAllowedIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* SmPolicyDnnData_H_ */

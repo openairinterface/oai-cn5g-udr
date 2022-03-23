@@ -49,7 +49,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UeContextInAmfData {
-public:
+ public:
   UeContextInAmfData();
   virtual ~UeContextInAmfData();
 
@@ -62,18 +62,18 @@ public:
   ///
   /// </summary>
   EpsInterworkingInfo getEpsInterworkingInfo() const;
-  void setEpsInterworkingInfo(EpsInterworkingInfo const &value);
+  void setEpsInterworkingInfo(EpsInterworkingInfo const& value);
   bool epsInterworkingInfoIsSet() const;
   void unsetEpsInterworkingInfo();
 
-  friend void to_json(nlohmann::json &j, const UeContextInAmfData &o);
-  friend void from_json(const nlohmann::json &j, UeContextInAmfData &o);
+  friend void to_json(nlohmann::json& j, const UeContextInAmfData& o);
+  friend void from_json(const nlohmann::json& j, UeContextInAmfData& o);
 
-protected:
+ protected:
   EpsInterworkingInfo m_EpsInterworkingInfo;
   bool m_EpsInterworkingInfoIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* UeContextInAmfData_H_ */

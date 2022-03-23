@@ -55,27 +55,27 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualInfluenceDataDocumentApi {
-public:
+ public:
   IndividualInfluenceDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualInfluenceDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_or_replace_individual_influence_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void delete_individual_influence_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void update_individual_influence_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_influence_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -90,8 +90,8 @@ private:
   /// to be created or updated. It shall apply the format of Data type
   /// string.</param> <param name="trafficInfluData"></param>
   virtual void create_or_replace_individual_influence_data(
-      const std::string &influenceId, const TrafficInfluData &trafficInfluData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& influenceId, const TrafficInfluData& trafficInfluData,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Delete an individual Influence Data resource
@@ -102,8 +102,8 @@ private:
   /// <param name="influenceId">The Identifier of an Individual Influence Data
   /// to be updated. It shall apply the format of Data type string.</param>
   virtual void delete_individual_influence_data(
-      const std::string &influenceId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& influenceId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify part of the properties of an individual Influence Data resource
@@ -115,11 +115,11 @@ private:
   /// to be updated. It shall apply the format of Data type string.</param>
   /// <param name="trafficInfluDataPatch"></param>
   virtual void update_individual_influence_data(
-      const std::string &influenceId,
-      const TrafficInfluDataPatch &trafficInfluDataPatch,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& influenceId,
+      const TrafficInfluDataPatch& trafficInfluDataPatch,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IndividualInfluenceDataDocumentApi_H_ */

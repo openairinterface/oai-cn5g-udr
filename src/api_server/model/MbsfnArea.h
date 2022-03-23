@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class MbsfnArea {
-public:
+ public:
   MbsfnArea();
   virtual ~MbsfnArea();
 
@@ -71,16 +71,16 @@ public:
   bool carrierFrequencyIsSet() const;
   void unsetCarrierFrequency();
 
-  friend void to_json(nlohmann::json &j, const MbsfnArea &o);
-  friend void from_json(const nlohmann::json &j, MbsfnArea &o);
+  friend void to_json(nlohmann::json& j, const MbsfnArea& o);
+  friend void from_json(const nlohmann::json& j, MbsfnArea& o);
 
-protected:
+ protected:
   int32_t m_MbsfnAreaId;
   bool m_MbsfnAreaIdIsSet;
   int32_t m_CarrierFrequency;
   bool m_CarrierFrequencyIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* MbsfnArea_H_ */

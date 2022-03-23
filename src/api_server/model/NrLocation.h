@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class NrLocation {
-public:
+ public:
   NrLocation();
   virtual ~NrLocation();
 
@@ -65,12 +65,12 @@ public:
   ///
   /// </summary>
   Tai getTai() const;
-  void setTai(Tai const &value);
+  void setTai(Tai const& value);
   /// <summary>
   ///
   /// </summary>
   Ncgi getNcgi() const;
-  void setNcgi(Ncgi const &value);
+  void setNcgi(Ncgi const& value);
   /// <summary>
   ///
   /// </summary>
@@ -82,35 +82,35 @@ public:
   ///
   /// </summary>
   std::string getUeLocationTimestamp() const;
-  void setUeLocationTimestamp(std::string const &value);
+  void setUeLocationTimestamp(std::string const& value);
   bool ueLocationTimestampIsSet() const;
   void unsetUeLocationTimestamp();
   /// <summary>
   ///
   /// </summary>
   std::string getGeographicalInformation() const;
-  void setGeographicalInformation(std::string const &value);
+  void setGeographicalInformation(std::string const& value);
   bool geographicalInformationIsSet() const;
   void unsetGeographicalInformation();
   /// <summary>
   ///
   /// </summary>
   std::string getGeodeticInformation() const;
-  void setGeodeticInformation(std::string const &value);
+  void setGeodeticInformation(std::string const& value);
   bool geodeticInformationIsSet() const;
   void unsetGeodeticInformation();
   /// <summary>
   ///
   /// </summary>
   GlobalRanNodeId getGlobalGnbId() const;
-  void setGlobalGnbId(GlobalRanNodeId const &value);
+  void setGlobalGnbId(GlobalRanNodeId const& value);
   bool globalGnbIdIsSet() const;
   void unsetGlobalGnbId();
 
-  friend void to_json(nlohmann::json &j, const NrLocation &o);
-  friend void from_json(const nlohmann::json &j, NrLocation &o);
+  friend void to_json(nlohmann::json& j, const NrLocation& o);
+  friend void from_json(const nlohmann::json& j, NrLocation& o);
 
-protected:
+ protected:
   Tai m_Tai;
 
   Ncgi m_Ncgi;
@@ -127,6 +127,6 @@ protected:
   bool m_GlobalGnbIdIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* NrLocation_H_ */

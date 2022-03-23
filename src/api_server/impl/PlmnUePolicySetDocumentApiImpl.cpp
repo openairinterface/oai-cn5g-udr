@@ -41,15 +41,16 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 PlmnUePolicySetDocumentApiImpl::PlmnUePolicySetDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : PlmnUePolicySetDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : PlmnUePolicySetDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void PlmnUePolicySetDocumentApiImpl::read_plmn_ue_policy_set(
-    const std::string &plmnId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& plmnId, Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

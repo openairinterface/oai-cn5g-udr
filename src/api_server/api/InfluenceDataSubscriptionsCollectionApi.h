@@ -55,7 +55,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class InfluenceDataSubscriptionsCollectionApi {
-public:
+ public:
   InfluenceDataSubscriptionsCollectionApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~InfluenceDataSubscriptionsCollectionApi() {}
@@ -63,17 +63,17 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_individual_influence_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void read_influence_data_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void influence_data_subscriptions_collection_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -86,8 +86,8 @@ private:
   /// </remarks>
   /// <param name="trafficInfluSub"></param>
   virtual void create_individual_influence_data_subscription(
-      const TrafficInfluSub &trafficInfluSub,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const TrafficInfluSub& trafficInfluSub,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Read Influence Data Subscriptions
@@ -101,13 +101,13 @@ private:
   /// group of users. (optional, default to &quot;&quot;)</param> <param
   /// name="supi">Identifies a user. (optional, default to &quot;&quot;)</param>
   virtual void read_influence_data_subscriptions(
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<Snssai> &snssai,
-      const Pistache::Optional<std::string> &internalGroupId,
-      const Pistache::Optional<std::string> &supi,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<Snssai>& snssai,
+      const Pistache::Optional<std::string>& internalGroupId,
+      const Pistache::Optional<std::string>& supi,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* InfluenceDataSubscriptionsCollectionApi_H_ */

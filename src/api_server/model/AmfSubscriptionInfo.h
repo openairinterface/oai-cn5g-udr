@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class AmfSubscriptionInfo {
-public:
+ public:
   AmfSubscriptionInfo();
   virtual ~AmfSubscriptionInfo();
 
@@ -61,24 +61,24 @@ public:
   ///
   /// </summary>
   std::string getAmfInstanceId() const;
-  void setAmfInstanceId(std::string const &value);
+  void setAmfInstanceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getSubscriptionId() const;
-  void setSubscriptionId(std::string const &value);
+  void setSubscriptionId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getSubsChangeNotifyCorrelationId() const;
-  void setSubsChangeNotifyCorrelationId(std::string const &value);
+  void setSubsChangeNotifyCorrelationId(std::string const& value);
   bool subsChangeNotifyCorrelationIdIsSet() const;
   void unsetSubsChangeNotifyCorrelationId();
 
-  friend void to_json(nlohmann::json &j, const AmfSubscriptionInfo &o);
-  friend void from_json(const nlohmann::json &j, AmfSubscriptionInfo &o);
+  friend void to_json(nlohmann::json& j, const AmfSubscriptionInfo& o);
+  friend void from_json(const nlohmann::json& j, AmfSubscriptionInfo& o);
 
-protected:
+ protected:
   std::string m_AmfInstanceId;
 
   std::string m_SubscriptionId;
@@ -87,6 +87,6 @@ protected:
   bool m_SubsChangeNotifyCorrelationIdIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* AmfSubscriptionInfo_H_ */

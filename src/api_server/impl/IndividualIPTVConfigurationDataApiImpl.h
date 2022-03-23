@@ -55,22 +55,22 @@ using namespace oai::udr::app;
 
 class IndividualIPTVConfigurationDataApiImpl
     : public oai::udr::api::IndividualIPTVConfigurationDataApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
+ public:
   IndividualIPTVConfigurationDataApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
       std::string address);
   ~IndividualIPTVConfigurationDataApiImpl() {}
 
   void partial_replace_individual_iptv_configuration_data(
-      const std::string &configurationId,
-      const IptvConfigDataPatch &iptvConfigDataPatch,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& configurationId,
+      const IptvConfigDataPatch& iptvConfigDataPatch,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class AreaScope {
-public:
+ public:
   AreaScope();
   virtual ~AreaScope();
 
@@ -64,36 +64,36 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getEutraCellIdList();
-  void setEutraCellIdList(std::vector<std::string> const &value);
+  std::vector<std::string>& getEutraCellIdList();
+  void setEutraCellIdList(std::vector<std::string> const& value);
   bool eutraCellIdListIsSet() const;
   void unsetEutraCellIdList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getNrCellIdList();
-  void setNrCellIdList(std::vector<std::string> const &value);
+  std::vector<std::string>& getNrCellIdList();
+  void setNrCellIdList(std::vector<std::string> const& value);
   bool nrCellIdListIsSet() const;
   void unsetNrCellIdList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getTacList();
-  void setTacList(std::vector<std::string> const &value);
+  std::vector<std::string>& getTacList();
+  void setTacList(std::vector<std::string> const& value);
   bool tacListIsSet() const;
   void unsetTacList();
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, TacInfo> &getTacInfoPerPlmn();
-  void setTacInfoPerPlmn(std::map<std::string, TacInfo> const &value);
+  std::map<std::string, TacInfo>& getTacInfoPerPlmn();
+  void setTacInfoPerPlmn(std::map<std::string, TacInfo> const& value);
   bool tacInfoPerPlmnIsSet() const;
   void unsetTacInfoPerPlmn();
 
-  friend void to_json(nlohmann::json &j, const AreaScope &o);
-  friend void from_json(const nlohmann::json &j, AreaScope &o);
+  friend void to_json(nlohmann::json& j, const AreaScope& o);
+  friend void from_json(const nlohmann::json& j, AreaScope& o);
 
-protected:
+ protected:
   std::vector<std::string> m_EutraCellIdList;
   bool m_EutraCellIdListIsSet;
   std::vector<std::string> m_NrCellIdList;
@@ -104,6 +104,6 @@ protected:
   bool m_TacInfoPerPlmnIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* AreaScope_H_ */

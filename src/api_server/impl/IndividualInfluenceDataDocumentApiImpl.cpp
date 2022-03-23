@@ -41,30 +41,31 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 IndividualInfluenceDataDocumentApiImpl::IndividualInfluenceDataDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : IndividualInfluenceDataDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : IndividualInfluenceDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IndividualInfluenceDataDocumentApiImpl::
     create_or_replace_individual_influence_data(
-        const std::string &influenceId,
-        const TrafficInfluData &trafficInfluData,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& influenceId,
+        const TrafficInfluData& trafficInfluData,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void IndividualInfluenceDataDocumentApiImpl::delete_individual_influence_data(
-    const std::string &influenceId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& influenceId, Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void IndividualInfluenceDataDocumentApiImpl::update_individual_influence_data(
-    const std::string &influenceId,
-    const TrafficInfluDataPatch &trafficInfluDataPatch,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& influenceId,
+    const TrafficInfluDataPatch& trafficInfluDataPatch,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -36,11 +36,11 @@
 namespace oai::udr::model {
 
 LcsClientGroupExternal::LcsClientGroupExternal() {
-  m_LcsClientGroupId = "";
-  m_LcsClientGroupIdIsSet = false;
-  m_AllowedGeographicAreaIsSet = false;
+  m_LcsClientGroupId               = "";
+  m_LcsClientGroupIdIsSet          = false;
+  m_AllowedGeographicAreaIsSet     = false;
   m_PrivacyCheckRelatedActionIsSet = false;
-  m_ValidTimePeriodIsSet = false;
+  m_ValidTimePeriodIsSet           = false;
 }
 
 LcsClientGroupExternal::~LcsClientGroupExternal() {}
@@ -49,19 +49,17 @@ void LcsClientGroupExternal::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const LcsClientGroupExternal &o) {
+void to_json(nlohmann::json& j, const LcsClientGroupExternal& o) {
   j = nlohmann::json();
-  if (o.lcsClientGroupIdIsSet())
-    j["lcsClientGroupId"] = o.m_LcsClientGroupId;
+  if (o.lcsClientGroupIdIsSet()) j["lcsClientGroupId"] = o.m_LcsClientGroupId;
   if (o.allowedGeographicAreaIsSet() || !o.m_AllowedGeographicArea.empty())
     j["allowedGeographicArea"] = o.m_AllowedGeographicArea;
   if (o.privacyCheckRelatedActionIsSet())
     j["privacyCheckRelatedAction"] = o.m_PrivacyCheckRelatedAction;
-  if (o.validTimePeriodIsSet())
-    j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
 }
 
-void from_json(const nlohmann::json &j, LcsClientGroupExternal &o) {
+void from_json(const nlohmann::json& j, LcsClientGroupExternal& o) {
   if (j.find("lcsClientGroupId") != j.end()) {
     j.at("lcsClientGroupId").get_to(o.m_LcsClientGroupId);
     o.m_LcsClientGroupIdIsSet = true;
@@ -83,8 +81,8 @@ void from_json(const nlohmann::json &j, LcsClientGroupExternal &o) {
 std::string LcsClientGroupExternal::getLcsClientGroupId() const {
   return m_LcsClientGroupId;
 }
-void LcsClientGroupExternal::setLcsClientGroupId(std::string const &value) {
-  m_LcsClientGroupId = value;
+void LcsClientGroupExternal::setLcsClientGroupId(std::string const& value) {
+  m_LcsClientGroupId      = value;
   m_LcsClientGroupIdIsSet = true;
 }
 bool LcsClientGroupExternal::lcsClientGroupIdIsSet() const {
@@ -93,13 +91,13 @@ bool LcsClientGroupExternal::lcsClientGroupIdIsSet() const {
 void LcsClientGroupExternal::unsetLcsClientGroupId() {
   m_LcsClientGroupIdIsSet = false;
 }
-std::vector<GeographicArea> &
+std::vector<GeographicArea>&
 LcsClientGroupExternal::getAllowedGeographicArea() {
   return m_AllowedGeographicArea;
 }
 void LcsClientGroupExternal::setAllowedGeographicArea(
-    std::vector<GeographicArea> const &value) {
-  m_AllowedGeographicArea = value;
+    std::vector<GeographicArea> const& value) {
+  m_AllowedGeographicArea      = value;
   m_AllowedGeographicAreaIsSet = true;
 }
 bool LcsClientGroupExternal::allowedGeographicAreaIsSet() const {
@@ -108,13 +106,13 @@ bool LcsClientGroupExternal::allowedGeographicAreaIsSet() const {
 void LcsClientGroupExternal::unsetAllowedGeographicArea() {
   m_AllowedGeographicAreaIsSet = false;
 }
-PrivacyCheckRelatedAction
-LcsClientGroupExternal::getPrivacyCheckRelatedAction() const {
+PrivacyCheckRelatedAction LcsClientGroupExternal::getPrivacyCheckRelatedAction()
+    const {
   return m_PrivacyCheckRelatedAction;
 }
 void LcsClientGroupExternal::setPrivacyCheckRelatedAction(
-    PrivacyCheckRelatedAction const &value) {
-  m_PrivacyCheckRelatedAction = value;
+    PrivacyCheckRelatedAction const& value) {
+  m_PrivacyCheckRelatedAction      = value;
   m_PrivacyCheckRelatedActionIsSet = true;
 }
 bool LcsClientGroupExternal::privacyCheckRelatedActionIsSet() const {
@@ -126,8 +124,8 @@ void LcsClientGroupExternal::unsetPrivacyCheckRelatedAction() {
 ValidTimePeriod LcsClientGroupExternal::getValidTimePeriod() const {
   return m_ValidTimePeriod;
 }
-void LcsClientGroupExternal::setValidTimePeriod(ValidTimePeriod const &value) {
-  m_ValidTimePeriod = value;
+void LcsClientGroupExternal::setValidTimePeriod(ValidTimePeriod const& value) {
+  m_ValidTimePeriod      = value;
   m_ValidTimePeriodIsSet = true;
 }
 bool LcsClientGroupExternal::validTimePeriodIsSet() const {
@@ -137,4 +135,4 @@ void LcsClientGroupExternal::unsetValidTimePeriod() {
   m_ValidTimePeriodIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

@@ -43,8 +43,10 @@ void Ipv6Addr::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const Ipv6Addr &o) { j = nlohmann::json(); }
+void to_json(nlohmann::json& j, const Ipv6Addr& o) {
+  j = nlohmann::json();
+}
 
-void from_json(const nlohmann::json &j, Ipv6Addr &o) {}
+void from_json(const nlohmann::json& j, Ipv6Addr& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

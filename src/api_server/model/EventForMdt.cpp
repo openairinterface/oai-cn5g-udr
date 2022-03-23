@@ -43,8 +43,10 @@ void EventForMdt::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const EventForMdt &o) { j = nlohmann::json(); }
+void to_json(nlohmann::json& j, const EventForMdt& o) {
+  j = nlohmann::json();
+}
 
-void from_json(const nlohmann::json &j, EventForMdt &o) {}
+void from_json(const nlohmann::json& j, EventForMdt& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

@@ -36,9 +36,9 @@
 namespace oai::udr::model {
 
 EcRestrictionDataWb::EcRestrictionDataWb() {
-  m_EcModeARestricted = false;
+  m_EcModeARestricted      = false;
   m_EcModeARestrictedIsSet = false;
-  m_EcModeBRestricted = false;
+  m_EcModeBRestricted      = false;
   m_EcModeBRestrictedIsSet = false;
 }
 
@@ -48,7 +48,7 @@ void EcRestrictionDataWb::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const EcRestrictionDataWb &o) {
+void to_json(nlohmann::json& j, const EcRestrictionDataWb& o) {
   j = nlohmann::json();
   if (o.ecModeARestrictedIsSet())
     j["ecModeARestricted"] = o.m_EcModeARestricted;
@@ -56,7 +56,7 @@ void to_json(nlohmann::json &j, const EcRestrictionDataWb &o) {
     j["ecModeBRestricted"] = o.m_EcModeBRestricted;
 }
 
-void from_json(const nlohmann::json &j, EcRestrictionDataWb &o) {
+void from_json(const nlohmann::json& j, EcRestrictionDataWb& o) {
   if (j.find("ecModeARestricted") != j.end()) {
     j.at("ecModeARestricted").get_to(o.m_EcModeARestricted);
     o.m_EcModeARestrictedIsSet = true;
@@ -71,7 +71,7 @@ bool EcRestrictionDataWb::isEcModeARestricted() const {
   return m_EcModeARestricted;
 }
 void EcRestrictionDataWb::setEcModeARestricted(bool const value) {
-  m_EcModeARestricted = value;
+  m_EcModeARestricted      = value;
   m_EcModeARestrictedIsSet = true;
 }
 bool EcRestrictionDataWb::ecModeARestrictedIsSet() const {
@@ -84,7 +84,7 @@ bool EcRestrictionDataWb::isEcModeBRestricted() const {
   return m_EcModeBRestricted;
 }
 void EcRestrictionDataWb::setEcModeBRestricted(bool const value) {
-  m_EcModeBRestricted = value;
+  m_EcModeBRestricted      = value;
   m_EcModeBRestrictedIsSet = true;
 }
 bool EcRestrictionDataWb::ecModeBRestrictedIsSet() const {
@@ -94,4 +94,4 @@ void EcRestrictionDataWb::unsetEcModeBRestricted() {
   m_EcModeBRestrictedIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

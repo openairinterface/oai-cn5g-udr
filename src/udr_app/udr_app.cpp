@@ -44,12 +44,12 @@ using namespace oai::udr::app;
 using namespace oai::udr::model;
 using namespace oai::udr::config;
 
-extern udr_app *udr_app_inst;
+extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
-udr_nrf *udr_nrf_inst = nullptr;
+udr_nrf* udr_nrf_inst = nullptr;
 
 //------------------------------------------------------------------------------
-udr_app::udr_app(const std::string &config_file, udr_event &ev)
+udr_app::udr_app(const std::string& config_file, udr_event& ev)
     : event_sub(ev) {
   Logger::udr_app().startup("Starting...");
 
@@ -58,10 +58,10 @@ udr_app::udr_app(const std::string &config_file, udr_event &ev)
     throw std::runtime_error("Cannot initialize MySQL");
   }
 
-  if (!mysql_real_connect(&mysql, udr_cfg.mysql.mysql_server.c_str(),
-                          udr_cfg.mysql.mysql_user.c_str(),
-                          udr_cfg.mysql.mysql_pass.c_str(),
-                          udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
+  if (!mysql_real_connect(
+          &mysql, udr_cfg.mysql.mysql_server.c_str(),
+          udr_cfg.mysql.mysql_user.c_str(), udr_cfg.mysql.mysql_pass.c_str(),
+          udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
     Logger::udr_app().error(
         "An error occurred while connecting to MySQL DB: %s",
         mysql_error(&mysql));
@@ -74,7 +74,7 @@ udr_app::udr_app(const std::string &config_file, udr_event &ev)
       udr_nrf_inst = new udr_nrf(ev);
       udr_nrf_inst->register_to_nrf();
       Logger::udr_app().info("NRF TASK Created ");
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
       Logger::udr_app().error("Cannot create NRF TASK: %s", e.what());
       throw;
     }
@@ -83,27 +83,30 @@ udr_app::udr_app(const std::string &config_file, udr_event &ev)
 }
 
 //------------------------------------------------------------------------------
-udr_app::~udr_app() { Logger::udr_app().debug("Delete UDR APP instance..."); }
+udr_app::~udr_app() {
+  Logger::udr_app().debug("Delete UDR APP instance...");
+}
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_am_data(const std::string &ue_id,
-                                   const std::string &serving_plmn_id,
-                                   nlohmann::json &response_data, long &code) {
-  MYSQL_RES *res = nullptr;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
-  nlohmann::json j = {};
-  response_data = {};
+void udr_app::handle_query_am_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
+  response_data      = {};
   oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
 
   Logger::udr_server().debug("Handle Query AM Data request");
 
   // TODO: Define query template in a header file
   const std::string query =
-      "select * from AccessAndMobilitySubscriptionData WHERE ueid='" + ue_id +
-      "' and servingPlmnid='" + serving_plmn_id + "'";
+      "SELECT * from AccessAndMobilitySubscriptionData WHERE ueid='" + ue_id +
+      "' AND servingPlmnid='" + serving_plmn_id + "'";
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
+  Logger::udr_server().debug("SQL Query: %s", query.c_str());
+
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_server().error("mysql_real_query failure！");
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;
     return;
@@ -131,8 +134,8 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
           std::vector<std ::string> internalgroupids;
           nlohmann::json::parse(row[i]).get_to(internalgroupids);
           subscription_data.setInternalGroupIds(internalgroupids);
-        } else if (!strcmp("sharedVnGroupDataIds", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("sharedVnGroupDataIds", field->name) && row[i] != NULL) {
           std::map<std ::string, std::string> sharedvngroupdataids;
           nlohmann::json::parse(row[i]).get_to(sharedvngroupdataids);
           subscription_data.setSharedVnGroupDataIds(sharedvngroupdataids);
@@ -141,7 +144,7 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
           nlohmann::json::parse(row[i]).get_to(subscribedueambr);
           subscription_data.setSubscribedUeAmbr(subscribedueambr);
         } else if (!strcmp("nssai", field->name) && row[i] != NULL) {
-          Nssai nssai;
+          Nssai nssai = {};
           nlohmann::json::parse(row[i]).get_to(nssai);
           subscription_data.setNssai(nssai);
         } else if (!strcmp("ratRestrictions", field->name) && row[i] != NULL) {
@@ -152,13 +155,14 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
           std ::vector<Area> forbiddenareas;
           nlohmann::json::parse(row[i]).get_to(forbiddenareas);
           subscription_data.setForbiddenAreas(forbiddenareas);
-        } else if (!strcmp("serviceAreaRestriction", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("serviceAreaRestriction", field->name) && row[i] != NULL) {
           ServiceAreaRestriction servicearearestriction;
           nlohmann::json::parse(row[i]).get_to(servicearearestriction);
           subscription_data.setServiceAreaRestriction(servicearearestriction);
-        } else if (!strcmp("coreNetworkTypeRestrictions", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("coreNetworkTypeRestrictions", field->name) &&
+            row[i] != NULL) {
           std ::vector<CoreNetworkType> corenetworktyperestrictions;
           nlohmann::json::parse(row[i]).get_to(corenetworktyperestrictions);
           subscription_data.setCoreNetworkTypeRestrictions(
@@ -199,8 +203,8 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
             subscription_data.setSorafRetrieval(true);
           else
             subscription_data.setSorafRetrieval(false);
-        } else if (!strcmp("sorUpdateIndicatorList", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("sorUpdateIndicatorList", field->name) && row[i] != NULL) {
           std ::vector<SorUpdateIndicator> sorupdateindicatorlist;
           nlohmann::json::parse(row[i]).get_to(sorupdateindicatorlist);
           subscription_data.setSorUpdateIndicatorList(sorupdateindicatorlist);
@@ -217,8 +221,8 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
           std ::vector<std ::string> sharedamdataids;
           nlohmann::json::parse(row[i]).get_to(sharedamdataids);
           subscription_data.setSharedAmDataIds(sharedamdataids);
-        } else if (!strcmp("odbPacketServices", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("odbPacketServices", field->name) && row[i] != NULL) {
           OdbPacketServices odbpacketservices;
           nlohmann::json::parse(row[i]).get_to(odbpacketservices);
           subscription_data.setOdbPacketServices(odbpacketservices);
@@ -248,65 +252,68 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
         } else if (!strcmp("nbIoTUePriority", field->name) && row[i] != NULL) {
           int32_t a = std::stoi(row[i]);
           subscription_data.setNbIoTUePriority(a);
-        } else if (!strcmp("nssaiInclusionAllowed", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("nssaiInclusionAllowed", field->name) && row[i] != NULL) {
           if (strcmp(row[i], "0"))
             subscription_data.setNssaiInclusionAllowed(true);
           else
             subscription_data.setNssaiInclusionAllowed(false);
-        } else if (!strcmp("rgWirelineCharacteristics", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("rgWirelineCharacteristics", field->name) &&
+            row[i] != NULL) {
           subscription_data.setRgWirelineCharacteristics(row[i]);
-        } else if (!strcmp("ecRestrictionDataWb", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("ecRestrictionDataWb", field->name) && row[i] != NULL) {
           EcRestrictionDataWb ecrestrictiondatawb;
           nlohmann::json::parse(row[i]).get_to(ecrestrictiondatawb);
           subscription_data.setEcRestrictionDataWb(ecrestrictiondatawb);
-        } else if (!strcmp("ecRestrictionDataNb", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("ecRestrictionDataNb", field->name) && row[i] != NULL) {
           if (strcmp(row[i], "0"))
             subscription_data.setEcRestrictionDataNb(true);
           else
             subscription_data.setEcRestrictionDataNb(false);
-        } else if (!strcmp("expectedUeBehaviourList", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("expectedUeBehaviourList", field->name) && row[i] != NULL) {
           ExpectedUeBehaviourData expecteduebehaviourlist;
           nlohmann::json::parse(row[i]).get_to(expecteduebehaviourlist);
           subscription_data.setExpectedUeBehaviourList(expecteduebehaviourlist);
-        } else if (!strcmp("primaryRatRestrictions", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("primaryRatRestrictions", field->name) && row[i] != NULL) {
           std ::vector<RatType> primaryratrestrictions;
           nlohmann::json::parse(row[i]).get_to(primaryratrestrictions);
           subscription_data.setPrimaryRatRestrictions(primaryratrestrictions);
-        } else if (!strcmp("secondaryRatRestrictions", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("secondaryRatRestrictions", field->name) &&
+            row[i] != NULL) {
           std ::vector<RatType> secondaryratrestrictions;
           nlohmann::json::parse(row[i]).get_to(secondaryratrestrictions);
           subscription_data.setSecondaryRatRestrictions(
               secondaryratrestrictions);
-        } else if (!strcmp("edrxParametersList", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("edrxParametersList", field->name) && row[i] != NULL) {
           std ::vector<EdrxParameters> edrxparameterslist;
           nlohmann::json::parse(row[i]).get_to(edrxparameterslist);
           subscription_data.setEdrxParametersList(edrxparameterslist);
-        } else if (!strcmp("ptwParametersList", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("ptwParametersList", field->name) && row[i] != NULL) {
           std ::vector<PtwParameters> ptwparameterslist;
           nlohmann::json::parse(row[i]).get_to(ptwparameterslist);
           subscription_data.setPtwParametersList(ptwparameterslist);
-        } else if (!strcmp("iabOperationAllowed", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("iabOperationAllowed", field->name) && row[i] != NULL) {
           if (strcmp(row[i], "0"))
             subscription_data.setIabOperationAllowed(true);
           else
             subscription_data.setIabOperationAllowed(false);
-        } else if (!strcmp("wirelineForbiddenAreas", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("wirelineForbiddenAreas", field->name) && row[i] != NULL) {
           std ::vector<WirelineArea> wirelineforbiddenareas;
           nlohmann::json::parse(row[i]).get_to(wirelineforbiddenareas);
           subscription_data.setWirelineForbiddenAreas(wirelineforbiddenareas);
-        } else if (!strcmp("wirelineServiceAreaRestriction", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("wirelineServiceAreaRestriction", field->name) &&
+            row[i] != NULL) {
           WirelineServiceAreaRestriction wirelineservicearearestriction;
           nlohmann::json::parse(row[i]).get_to(wirelineservicearearestriction);
           subscription_data.setWirelineServiceAreaRestriction(
@@ -318,13 +325,12 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
       }
     }
 
-    to_json(j, subscription_data);
-    response_data = j;
+    to_json(response_data, subscription_data);
     code = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug(
-        "AccessAndMobilitySubscriptionData GET (JSON): \n %s",
-        j.dump().c_str());
+        "AccessAndMobilitySubscriptionData GET (JSON): %s",
+        response_data.dump().c_str());
   } else {
     Logger::udr_server().error(
         "No data available for AccessAndMobilitySubscriptionData!");
@@ -336,86 +342,88 @@ void udr_app::handle_query_am_data(const std::string &ue_id,
 
 //------------------------------------------------------------------------------
 void udr_app::handle_create_amf_context_3gpp(
-    const std::string &ue_id,
-    Amf3GppAccessRegistration &amf3GppAccessRegistration,
-    nlohmann::json &response_data, long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
+    const std::string& ue_id,
+    Amf3GppAccessRegistration& amf3GppAccessRegistration,
+    nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res = nullptr;
+  MYSQL_ROW row  = {};
 
   const std::string select_AMF3GPPAccessRegistration =
-      "select * from Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
   std::string query = {};
 
   nlohmann::json j = {};
 
   if (mysql_real_query(
           &mysql, select_AMF3GPPAccessRegistration.c_str(),
-          (unsigned long)select_AMF3GPPAccessRegistration.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               select_AMF3GPPAccessRegistration.c_str());
+          (unsigned long) select_AMF3GPPAccessRegistration.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s",
+        select_AMF3GPPAccessRegistration.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               select_AMF3GPPAccessRegistration.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！ SQL Query: %s",
+        select_AMF3GPPAccessRegistration.c_str());
     return;
   }
   if (mysql_num_rows(res)) {
     query =
-        "update Amf3GppAccessRegistration set amfInstanceId='" +
+        "UPDATE Amf3GppAccessRegistration SET amfInstanceId='" +
         amf3GppAccessRegistration.getAmfInstanceId() + "'" +
-        (amf3GppAccessRegistration.supportedFeaturesIsSet()
-             ? ",supportedFeatures='" +
-                   amf3GppAccessRegistration.getSupportedFeatures() + "'"
-             : "") +
-        (amf3GppAccessRegistration.purgeFlagIsSet()
-             ? (amf3GppAccessRegistration.isPurgeFlag() ? ",purgeFlag=1"
-                                                        : ",purgeFlag=0")
-             : "") +
-        (amf3GppAccessRegistration.peiIsSet()
-             ? ",pei='" + amf3GppAccessRegistration.getPei() + "'"
-             : "") +
+        (amf3GppAccessRegistration.supportedFeaturesIsSet() ?
+             ",supportedFeatures='" +
+                 amf3GppAccessRegistration.getSupportedFeatures() + "'" :
+             "") +
+        (amf3GppAccessRegistration.purgeFlagIsSet() ?
+             (amf3GppAccessRegistration.isPurgeFlag() ? ",purgeFlag=1" :
+                                                        ",purgeFlag=0") :
+             "") +
+        (amf3GppAccessRegistration.peiIsSet() ?
+             ",pei='" + amf3GppAccessRegistration.getPei() + "'" :
+             "") +
         ",deregCallbackUri='" +
         amf3GppAccessRegistration.getDeregCallbackUri() + "'" +
-        (amf3GppAccessRegistration.pcscfRestorationCallbackUriIsSet()
-             ? ",pcscfRestorationCallbackUri='" +
-                   amf3GppAccessRegistration.getPcscfRestorationCallbackUri() +
-                   "'"
-             : "") +
-        (amf3GppAccessRegistration.initialRegistrationIndIsSet()
-             ? (amf3GppAccessRegistration.isInitialRegistrationInd()
-                    ? ",initialRegistrationInd=1"
-                    : ",initialRegistrationInd=0")
-             : "") +
-        (amf3GppAccessRegistration.drFlagIsSet()
-             ? (amf3GppAccessRegistration.isDrFlag() ? ",drFlag=1"
-                                                     : ",drFlag=0")
-             : "") +
-        (amf3GppAccessRegistration.urrpIndicatorIsSet()
-             ? (amf3GppAccessRegistration.isUrrpIndicator()
-                    ? ",urrpIndicator=1"
-                    : ",urrpIndicator=0")
-             : "") +
-        (amf3GppAccessRegistration.amfEeSubscriptionIdIsSet()
-             ? ",amfEeSubscriptionId='" +
-                   amf3GppAccessRegistration.getAmfEeSubscriptionId() + "'"
-             : "") +
-        (amf3GppAccessRegistration.ueSrvccCapabilityIsSet()
-             ? (amf3GppAccessRegistration.isUeSrvccCapability()
-                    ? ",ueSrvccCapability=1"
-                    : ",ueSrvccCapability=0")
-             : "") +
-        (amf3GppAccessRegistration.registrationTimeIsSet()
-             ? ",registrationTime='" +
-                   amf3GppAccessRegistration.getRegistrationTime() + "'"
-             : "") +
-        (amf3GppAccessRegistration.noEeSubscriptionIndIsSet()
-             ? (amf3GppAccessRegistration.isNoEeSubscriptionInd()
-                    ? ",noEeSubscriptionInd=1"
-                    : ",noEeSubscriptionInd=0")
-             : "");
+        (amf3GppAccessRegistration.pcscfRestorationCallbackUriIsSet() ?
+             ",pcscfRestorationCallbackUri='" +
+                 amf3GppAccessRegistration.getPcscfRestorationCallbackUri() +
+                 "'" :
+             "") +
+        (amf3GppAccessRegistration.initialRegistrationIndIsSet() ?
+             (amf3GppAccessRegistration.isInitialRegistrationInd() ?
+                  ",initialRegistrationInd=1" :
+                  ",initialRegistrationInd=0") :
+             "") +
+        (amf3GppAccessRegistration.drFlagIsSet() ?
+             (amf3GppAccessRegistration.isDrFlag() ? ",drFlag=1" :
+                                                     ",drFlag=0") :
+             "") +
+        (amf3GppAccessRegistration.urrpIndicatorIsSet() ?
+             (amf3GppAccessRegistration.isUrrpIndicator() ?
+                  ",urrpIndicator=1" :
+                  ",urrpIndicator=0") :
+             "") +
+        (amf3GppAccessRegistration.amfEeSubscriptionIdIsSet() ?
+             ",amfEeSubscriptionId='" +
+                 amf3GppAccessRegistration.getAmfEeSubscriptionId() + "'" :
+             "") +
+        (amf3GppAccessRegistration.ueSrvccCapabilityIsSet() ?
+             (amf3GppAccessRegistration.isUeSrvccCapability() ?
+                  ",ueSrvccCapability=1" :
+                  ",ueSrvccCapability=0") :
+             "") +
+        (amf3GppAccessRegistration.registrationTimeIsSet() ?
+             ",registrationTime='" +
+                 amf3GppAccessRegistration.getRegistrationTime() + "'" :
+             "") +
+        (amf3GppAccessRegistration.noEeSubscriptionIndIsSet() ?
+             (amf3GppAccessRegistration.isNoEeSubscriptionInd() ?
+                  ",noEeSubscriptionInd=1" :
+                  ",noEeSubscriptionInd=0") :
+             "");
 
     if (amf3GppAccessRegistration.imsVoPsIsSet()) {
       to_json(j, amf3GppAccessRegistration.getImsVoPs());
@@ -457,62 +465,62 @@ void udr_app::handle_create_amf_context_3gpp(
     query += ",guami='" + j.dump() + "'";
     to_json(j, amf3GppAccessRegistration.getRatType());
     query += ",ratType='" + j.dump() + "'";
-    query += " where ueid='" + ue_id + "'";
+    query += " WHERE ueid='" + ue_id + "'";
   } else {
     query =
-        "insert into Amf3GppAccessRegistration set ueid='" + ue_id + "'" +
+        "INSERT INTO Amf3GppAccessRegistration SET ueid='" + ue_id + "'" +
         ",amfInstanceId='" + amf3GppAccessRegistration.getAmfInstanceId() +
         "'" +
-        (amf3GppAccessRegistration.supportedFeaturesIsSet()
-             ? ",supportedFeatures='" +
-                   amf3GppAccessRegistration.getSupportedFeatures() + "'"
-             : "") +
-        (amf3GppAccessRegistration.purgeFlagIsSet()
-             ? (amf3GppAccessRegistration.isPurgeFlag() ? ",purgeFlag=1"
-                                                        : ",purgeFlag=0")
-             : "") +
-        (amf3GppAccessRegistration.peiIsSet()
-             ? ",pei='" + amf3GppAccessRegistration.getPei() + "'"
-             : "") +
+        (amf3GppAccessRegistration.supportedFeaturesIsSet() ?
+             ",supportedFeatures='" +
+                 amf3GppAccessRegistration.getSupportedFeatures() + "'" :
+             "") +
+        (amf3GppAccessRegistration.purgeFlagIsSet() ?
+             (amf3GppAccessRegistration.isPurgeFlag() ? ",purgeFlag=1" :
+                                                        ",purgeFlag=0") :
+             "") +
+        (amf3GppAccessRegistration.peiIsSet() ?
+             ",pei='" + amf3GppAccessRegistration.getPei() + "'" :
+             "") +
         ",deregCallbackUri='" +
         amf3GppAccessRegistration.getDeregCallbackUri() + "'" +
-        (amf3GppAccessRegistration.pcscfRestorationCallbackUriIsSet()
-             ? ",pcscfRestorationCallbackUri='" +
-                   amf3GppAccessRegistration.getPcscfRestorationCallbackUri() +
-                   "'"
-             : "") +
-        (amf3GppAccessRegistration.initialRegistrationIndIsSet()
-             ? (amf3GppAccessRegistration.isInitialRegistrationInd()
-                    ? ",initialRegistrationInd=1"
-                    : ",initialRegistrationInd=0")
-             : "") +
-        (amf3GppAccessRegistration.drFlagIsSet()
-             ? (amf3GppAccessRegistration.isDrFlag() ? ",drFlag=1"
-                                                     : ",drFlag=0")
-             : "") +
-        (amf3GppAccessRegistration.urrpIndicatorIsSet()
-             ? (amf3GppAccessRegistration.isUrrpIndicator()
-                    ? ",urrpIndicator=1"
-                    : ",urrpIndicator=0")
-             : "") +
-        (amf3GppAccessRegistration.amfEeSubscriptionIdIsSet()
-             ? ",amfEeSubscriptionId='" +
-                   amf3GppAccessRegistration.getAmfEeSubscriptionId() + "'"
-             : "") +
-        (amf3GppAccessRegistration.ueSrvccCapabilityIsSet()
-             ? (amf3GppAccessRegistration.isUeSrvccCapability()
-                    ? ",ueSrvccCapability=1"
-                    : ",ueSrvccCapability=0")
-             : "") +
-        (amf3GppAccessRegistration.registrationTimeIsSet()
-             ? ",registrationTime='" +
-                   amf3GppAccessRegistration.getRegistrationTime() + "'"
-             : "") +
-        (amf3GppAccessRegistration.noEeSubscriptionIndIsSet()
-             ? (amf3GppAccessRegistration.isNoEeSubscriptionInd()
-                    ? ",noEeSubscriptionInd=1"
-                    : ",noEeSubscriptionInd=0")
-             : "");
+        (amf3GppAccessRegistration.pcscfRestorationCallbackUriIsSet() ?
+             ",pcscfRestorationCallbackUri='" +
+                 amf3GppAccessRegistration.getPcscfRestorationCallbackUri() +
+                 "'" :
+             "") +
+        (amf3GppAccessRegistration.initialRegistrationIndIsSet() ?
+             (amf3GppAccessRegistration.isInitialRegistrationInd() ?
+                  ",initialRegistrationInd=1" :
+                  ",initialRegistrationInd=0") :
+             "") +
+        (amf3GppAccessRegistration.drFlagIsSet() ?
+             (amf3GppAccessRegistration.isDrFlag() ? ",drFlag=1" :
+                                                     ",drFlag=0") :
+             "") +
+        (amf3GppAccessRegistration.urrpIndicatorIsSet() ?
+             (amf3GppAccessRegistration.isUrrpIndicator() ?
+                  ",urrpIndicator=1" :
+                  ",urrpIndicator=0") :
+             "") +
+        (amf3GppAccessRegistration.amfEeSubscriptionIdIsSet() ?
+             ",amfEeSubscriptionId='" +
+                 amf3GppAccessRegistration.getAmfEeSubscriptionId() + "'" :
+             "") +
+        (amf3GppAccessRegistration.ueSrvccCapabilityIsSet() ?
+             (amf3GppAccessRegistration.isUeSrvccCapability() ?
+                  ",ueSrvccCapability=1" :
+                  ",ueSrvccCapability=0") :
+             "") +
+        (amf3GppAccessRegistration.registrationTimeIsSet() ?
+             ",registrationTime='" +
+                 amf3GppAccessRegistration.getRegistrationTime() + "'" :
+             "") +
+        (amf3GppAccessRegistration.noEeSubscriptionIndIsSet() ?
+             (amf3GppAccessRegistration.isNoEeSubscriptionInd() ?
+                  ",noEeSubscriptionInd=1" :
+                  ",noEeSubscriptionInd=0") :
+             "");
 
     if (amf3GppAccessRegistration.imsVoPsIsSet()) {
       to_json(j, amf3GppAccessRegistration.getImsVoPs());
@@ -557,45 +565,43 @@ void udr_app::handle_create_amf_context_3gpp(
   }
 
   mysql_free_result(res);
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
     return;
   }
 
   to_json(j, amf3GppAccessRegistration);
   response_data = j;
-  // code = Pistache::Http::Code::Created;
-  code = HTTP_STATUS_CODE_201_CREATED;
+  code          = HTTP_STATUS_CODE_201_CREATED;
 
-  Logger::udr_server().debug("Amf3GppAccessRegistration PUT - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug(
+      "Amf3GppAccessRegistration PUT: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
-                                            nlohmann::json &response_data,
-                                            long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
+void udr_app::handle_query_amf_context_3gpp(
+    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
 
   nlohmann::json j = {};
 
   Amf3GppAccessRegistration amf3gppaccessregistration;
   const std::string query =
-      "select * from Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
     return;
   }
 
@@ -620,22 +626,23 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
         amf3gppaccessregistration.setImsVoPs(imsvops);
       } else if (!strcmp("deregCallbackUri", field->name)) {
         amf3gppaccessregistration.setDeregCallbackUri(row[i]);
-      } else if (!strcmp("amfServiceNameDereg", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("amfServiceNameDereg", field->name) && row[i] != NULL) {
         ServiceName amfservicenamedereg;
         nlohmann::json::parse(row[i]).get_to(amfservicenamedereg);
         amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
-      } else if (!strcmp("pcscfRestorationCallbackUri", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("pcscfRestorationCallbackUri", field->name) &&
+          row[i] != NULL) {
         amf3gppaccessregistration.setPcscfRestorationCallbackUri(row[i]);
-      } else if (!strcmp("amfServiceNamePcscfRest", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("amfServiceNamePcscfRest", field->name) && row[i] != NULL) {
         ServiceName amfservicenamepcscfrest;
         nlohmann::json::parse(row[i]).get_to(amfservicenamepcscfrest);
         amf3gppaccessregistration.setAmfServiceNamePcscfRest(
             amfservicenamepcscfrest);
-      } else if (!strcmp("initialRegistrationInd", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("initialRegistrationInd", field->name) && row[i] != NULL) {
         if (strcmp(row[i], "0"))
           amf3gppaccessregistration.setInitialRegistrationInd(true);
         else
@@ -662,11 +669,11 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
           amf3gppaccessregistration.setUrrpIndicator(true);
         else
           amf3gppaccessregistration.setUrrpIndicator(false);
-      } else if (!strcmp("amfEeSubscriptionId", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("amfEeSubscriptionId", field->name) && row[i] != NULL) {
         amf3gppaccessregistration.setAmfEeSubscriptionId(row[i]);
-      } else if (!strcmp("epsInterworkingInfo", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("epsInterworkingInfo", field->name) && row[i] != NULL) {
         EpsInterworkingInfo epsinterworkinginfo;
         nlohmann::json::parse(row[i]).get_to(epsinterworkinginfo);
         amf3gppaccessregistration.setEpsInterworkingInfo(epsinterworkinginfo);
@@ -685,8 +692,8 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
         ContextInfo contextinfo;
         nlohmann::json::parse(row[i]).get_to(contextinfo);
         amf3gppaccessregistration.setContextInfo(contextinfo);
-      } else if (!strcmp("noEeSubscriptionInd", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("noEeSubscriptionInd", field->name) && row[i] != NULL) {
         if (strcmp(row[i], "0"))
           amf3gppaccessregistration.setNoEeSubscriptionInd(true);
         else
@@ -695,75 +702,76 @@ void udr_app::handle_query_amf_context_3gpp(const std::string &ue_id,
     }
     to_json(j, amf3gppaccessregistration);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
-    code = HTTP_STATUS_CODE_200_OK;
+    code          = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug("Amf3GppAccessRegistration GET - json:\n\"%s\"",
-                               j.dump().c_str());
+    Logger::udr_server().debug(
+        "Amf3GppAccessRegistration GET %s", j.dump().c_str());
   } else {
-    Logger::udr_server().error("Amf3GppAccessRegistration no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "Amf3GppAccessRegistration no data！ SQL Query %s", query.c_str());
   }
 
   mysql_free_result(res);
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_create_authentication_status(const std::string &ue_id,
-                                                  const AuthEvent &authEvent,
-                                                  nlohmann::json &response_data,
-                                                  long &code) {
+void udr_app::handle_create_authentication_status(
+    const std::string& ue_id, const AuthEvent& authEvent,
+    nlohmann::json& response_data, long& code) {
   Logger::udr_server().info("Handle Create Authentication Status");
 
-  MYSQL_RES *res = nullptr;
-  MYSQL_ROW row = {};
+  MYSQL_RES* res = nullptr;
+  MYSQL_ROW row  = {};
 
   const std::string select_AuthenticationStatus =
-      "select * from AuthenticationStatus WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
   std::string query = {};
-  nlohmann::json j = {};
+  nlohmann::json j  = {};
 
-  Logger::udr_server().info("MySQL query: %s",
-                            select_AuthenticationStatus.c_str());
+  Logger::udr_server().info(
+      "MySQL query: %s", select_AuthenticationStatus.c_str());
 
-  if (mysql_real_query(&mysql, select_AuthenticationStatus.c_str(),
-                       (unsigned long)select_AuthenticationStatus.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               select_AuthenticationStatus.c_str());
+  if (mysql_real_query(
+          &mysql, select_AuthenticationStatus.c_str(),
+          (unsigned long) select_AuthenticationStatus.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query %s",
+        select_AuthenticationStatus.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               select_AuthenticationStatus.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！ SQL Query %s",
+        select_AuthenticationStatus.c_str());
     return;
   }
   if (mysql_num_rows(res)) {
-    query = "update AuthenticationStatus set nfInstanceId='" +
+    query = "UPDATE AuthenticationStatus SET nfInstanceId='" +
             authEvent.getNfInstanceId() + "'" +
             ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
             authEvent.getTimeStamp() + "'" + ",authType='" +
             authEvent.getAuthType() + "'" + ",servingNetworkName='" +
             authEvent.getServingNetworkName() + "'" +
-            (authEvent.authRemovalIndIsSet()
-                 ? (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1"
-                                                 : ",authRemovalInd=0")
-                 : "");
+            (authEvent.authRemovalIndIsSet() ?
+                 (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1" :
+                                                 ",authRemovalInd=0") :
+                 "");
     //        to_json(j,authEvent.getAuthType());
     //        query += ",authType='"+j.dump()+"'";
-    query += " where ueid='" + ue_id + "'";
+    query += " WHERE ueid='" + ue_id + "'";
   } else {
-    query = "insert into AuthenticationStatus set ueid='" + ue_id + "'" +
+    query = "INSERT INTO AuthenticationStatus SET ueid='" + ue_id + "'" +
             ",nfInstanceId='" + authEvent.getNfInstanceId() + "'" +
             ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
             authEvent.getTimeStamp() + "'" + ",authType='" +
             authEvent.getAuthType() + "'" + ",servingNetworkName='" +
             authEvent.getServingNetworkName() + "'" +
-            (authEvent.authRemovalIndIsSet()
-                 ? (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1"
-                                                 : ",authRemovalInd=0")
-                 : "");
+            (authEvent.authRemovalIndIsSet() ?
+                 (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1" :
+                                                 ",authRemovalInd=0") :
+                 "");
     //        to_json(j,authEvent.getAuthType());
     //        query += ",authType='"+j.dump()+"'";
   }
@@ -771,56 +779,52 @@ void udr_app::handle_create_authentication_status(const std::string &ue_id,
   Logger::udr_server().info("MySQL query: %s", query.c_str());
 
   mysql_free_result(res);
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql create failure！SQL(%s)", query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql create failure！ SQL Query %s", query.c_str());
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
-  code = HTTP_STATUS_CODE_204_NO_CONTENT;
+  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   to_json(j, authEvent);
-  Logger::udr_server().info("AuthenticationStatus PUT - json:\n\"%s\"",
-                            j.dump().c_str());
+  Logger::udr_server().info("AuthenticationStatus PUT: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_delete_authentication_status(const std::string &ue_id,
-                                                  nlohmann::json &response_data,
-                                                  long &code) {
+void udr_app::handle_delete_authentication_status(
+    const std::string& ue_id, nlohmann::json& response_data, long& code) {
   const std::string query =
-      "DELETE from AuthenticationStatus WHERE ueid='" + ue_id + "'";
+      "DELETE FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
-  code = HTTP_STATUS_CODE_204_NO_CONTENT;
+  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
   Logger::udr_server().debug("AuthenticationStatus DELETE - successful");
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_authentication_status(const std::string &ue_id,
-                                                 nlohmann::json &response_data,
-                                                 long &code) {
+void udr_app::handle_query_authentication_status(
+    const std::string& ue_id, nlohmann::json& response_data, long& code) {
   Logger::udr_server().info("Handle Query Authentication Status");
-  MYSQL_RES *res = nullptr;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
-  nlohmann::json j = {};
+  MYSQL_RES* res                 = nullptr;
+  MYSQL_ROW row                  = {};
+  MYSQL_FIELD* field             = nullptr;
+  nlohmann::json j               = {};
   AuthEvent authenticationstatus = {};
   const std::string query =
-      "select * from AuthenticationStatus WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
 
   Logger::udr_server().info("MySQL query: %s", query.c_str());
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
     return;
   }
 
@@ -858,14 +862,12 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
 
     to_json(j, authenticationstatus);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
-    code = HTTP_STATUS_CODE_200_OK;
+    code          = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().info("AuthenticationStatus GET - json:\n\"%s\"",
-                              j.dump().c_str());
+    Logger::udr_server().info("AuthenticationStatus GET: %s", j.dump().c_str());
   } else {
-    Logger::udr_server().error("AuthenticationStatus no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "AuthenticationStatus no data！ SQL Query %s", query.c_str());
   }
 
   mysql_free_result(res);
@@ -873,20 +875,20 @@ void udr_app::handle_query_authentication_status(const std::string &ue_id,
 
 //------------------------------------------------------------------------------
 void udr_app::handle_modify_authentication_subscription(
-    const std::string &ue_id, const std::vector<PatchItem> &patchItem,
-    nlohmann::json &response_data, long &code) {
+    const std::string& ue_id, const std::vector<PatchItem>& patchItem,
+    nlohmann::json& response_data, long& code) {
   Logger::udr_server().info("Handle Update Authentication Subscription");
-  MYSQL_RES *res = nullptr;
-  MYSQL_ROW row = {};
+  MYSQL_RES* res = nullptr;
+  MYSQL_ROW row  = {};
 
   const std::string select_Authenticationsubscription =
-      "select * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
+      "SELECT * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
 
-  Logger::udr_server().info("MySQL Query (%s)",
-                            select_Authenticationsubscription.c_str());
+  Logger::udr_server().info(
+      "MySQL Query: %s", select_Authenticationsubscription.c_str());
 
-  std::string query = {};
-  nlohmann::json j = {};
+  std::string query    = {};
+  nlohmann::json j     = {};
   nlohmann::json tmp_j = {};
 
   for (int i = 0; i < patchItem.size(); i++) {
@@ -899,38 +901,40 @@ void udr_app::handle_modify_authentication_subscription(
 
       if (mysql_real_query(
               &mysql, select_Authenticationsubscription.c_str(),
-              (unsigned long)select_Authenticationsubscription.size())) {
-        Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                                   select_Authenticationsubscription.c_str());
+              (unsigned long) select_Authenticationsubscription.size())) {
+        Logger::udr_server().error(
+            "mysql_real_query failure！SQL Query: %s",
+            select_Authenticationsubscription.c_str());
         return;
       }
 
       res = mysql_store_result(&mysql);
       if (res == NULL) {
-        Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                                   select_Authenticationsubscription.c_str());
+        Logger::udr_server().error(
+            "mysql_store_result failure！SQL Query: %s",
+            select_Authenticationsubscription.c_str());
         return;
       }
       if (mysql_num_rows(res)) {
         nlohmann::json sequencenumber_j;
-        query = "update AuthenticationSubscription set sequenceNumber='";
+        query = "UPDATE AuthenticationSubscription SET sequenceNumber='";
 
         to_json(sequencenumber_j, sequencenumber);
         query += sequencenumber_j.dump() + "'";
-        query += " where ueid='" + ue_id + "'";
+        query += " WHERE ueid='" + ue_id + "'";
       } else {
         Logger::udr_server().error(
-            "AuthenticationSubscription no data！SQL(%s)",
+            "AuthenticationSubscription no data！ SQL Query %s",
             select_Authenticationsubscription.c_str());
       }
 
-      Logger::udr_server().info("MySQL Update cmd (%s)", query.c_str());
+      Logger::udr_server().info("MySQL Update Cmd %s", query.c_str());
       mysql_free_result(res);
 
-      if (mysql_real_query(&mysql, query.c_str(),
-                           (unsigned long)query.size()) != 0) {
-        Logger::udr_server().error("update mysql failure！SQL(%s)",
-                                   query.c_str());
+      if (mysql_real_query(
+              &mysql, query.c_str(), (unsigned long) query.size()) != 0) {
+        Logger::udr_server().error(
+            "update mysql failure！ SQL Cmd: %s", query.c_str());
         return;
       }
     }
@@ -939,38 +943,37 @@ void udr_app::handle_modify_authentication_subscription(
     j += tmp_j;
   }
 
-  Logger::udr_server().info("AuthenticationSubscription PATCH - json:\n\"%s\"",
-                            j.dump().c_str());
+  Logger::udr_server().info(
+      "AuthenticationSubscription PATCH: %s", j.dump().c_str());
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
-  code = HTTP_STATUS_CODE_204_NO_CONTENT;
+  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_read_authentication_subscription(
-    const std::string &ue_id, nlohmann::json &response_data, long &code) {
+    const std::string& ue_id, nlohmann::json& response_data, long& code) {
   Logger::udr_server().info("Handle Read Authentication Subscription");
-  MYSQL_RES *res = nullptr;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
-  nlohmann::json j = {};
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
+  nlohmann::json j   = {};
 
   AuthenticationSubscription authenticationsubscription = {};
   const std::string query =
-      "select * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
-  Logger::udr_server().info("MySQL Query (%s)", query.c_str());
+      "SELECT * FROM AuthenticationSubscription WHERE ueid='" + ue_id + "'";
+  Logger::udr_server().info("MySQL Query: %s", query.c_str());
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！ SQL Query: %s", query.c_str());
     return;
   }
 
@@ -984,15 +987,16 @@ void udr_app::handle_read_authentication_subscription(
         authenticationsubscription.setAuthenticationMethod(row[i]);
       } else if (!strcmp("encPermanentKey", field->name) && row[i] != NULL) {
         authenticationsubscription.setEncPermanentKey(row[i]);
-      } else if (!strcmp("protectionParameterId", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("protectionParameterId", field->name) && row[i] != NULL) {
         authenticationsubscription.setProtectionParameterId(row[i]);
       } else if (!strcmp("sequenceNumber", field->name) && row[i] != NULL) {
-        SequenceNumber sequencenumber;
+        SequenceNumber sequencenumber = {};
         nlohmann::json::parse(row[i]).get_to(sequencenumber);
         authenticationsubscription.setSequenceNumber(sequencenumber);
-      } else if (!strcmp("authenticationManagementField", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("authenticationManagementField", field->name) &&
+          row[i] != NULL) {
         authenticationsubscription.setAuthenticationManagementField(row[i]);
       } else if (!strcmp("algorithmId", field->name) && row[i] != NULL) {
         authenticationsubscription.setAlgorithmId(row[i]);
@@ -1000,8 +1004,8 @@ void udr_app::handle_read_authentication_subscription(
         authenticationsubscription.setEncOpcKey(row[i]);
       } else if (!strcmp("encTopcKey", field->name) && row[i] != NULL) {
         authenticationsubscription.setEncTopcKey(row[i]);
-      } else if (!strcmp("vectorGenerationInHss", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("vectorGenerationInHss", field->name) && row[i] != NULL) {
         std::cout << row[i] << std::endl;
         if (strcmp(row[i], "0"))
           authenticationsubscription.setVectorGenerationInHss(true);
@@ -1011,8 +1015,8 @@ void udr_app::handle_read_authentication_subscription(
         //                AuthMethod n5gcauthmethod;
         //                nlohmann::json::parse(row[i]).get_to(n5gcauthmethod);
         authenticationsubscription.setN5gcAuthMethod(row[i]);
-      } else if (!strcmp("rgAuthenticationInd", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("rgAuthenticationInd", field->name) && row[i] != NULL) {
         std::cout << row[i] << std::endl;
         if (strcmp(row[i], "0"))
           authenticationsubscription.setRgAuthenticationInd(true);
@@ -1025,43 +1029,41 @@ void udr_app::handle_read_authentication_subscription(
 
     to_json(j, authenticationsubscription);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
-    code = HTTP_STATUS_CODE_200_OK;
+    code          = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().info("AuthenticationSubscription GET - json:\n\"%s\"",
-                              j.dump().c_str());
+    Logger::udr_server().info(
+        "AuthenticationSubscription GET: %s", j.dump().c_str());
 
   } else {
-    Logger::udr_server().error("AuthenticationSubscription no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "AuthenticationSubscription no data！ SQL Query: %s", query.c_str());
   }
 
   mysql_free_result(res);
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
-                                            const std::string &subs_id,
-                                            nlohmann::json &response_data,
-                                            long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
-  nlohmann::json j = {};
+void udr_app::handle_query_sdm_subscription(
+    const std::string& ue_id, const std::string& subs_id,
+    nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res                   = NULL;
+  MYSQL_ROW row                    = {};
+  MYSQL_FIELD* field               = nullptr;
+  nlohmann::json j                 = {};
   SdmSubscription SdmSubscriptions = {};
-  const std::string query = "SELECT * from SdmSubscriptions WHERE ueid='" +
+  const std::string query = "SELECT * FROM SdmSubscriptions WHERE ueid='" +
                             ue_id + "' AND subsId=" + subs_id;
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！ SQL Query: %s", query.c_str());
     return;
   }
 
@@ -1070,8 +1072,8 @@ void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
     for (int i = 0; field = mysql_fetch_field(res); i++) {
       if (!strcmp("nfInstanceId", field->name)) {
         SdmSubscriptions.setNfInstanceId(row[i]);
-      } else if (!strcmp("implicitUnsubscribe", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("implicitUnsubscribe", field->name) && row[i] != NULL) {
         if (strcmp(row[i], "0"))
           SdmSubscriptions.setImplicitUnsubscribe(true);
         else
@@ -1119,41 +1121,38 @@ void udr_app::handle_query_sdm_subscription(const std::string &ue_id,
     }
     to_json(j, SdmSubscriptions);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
-    code = HTTP_STATUS_CODE_200_OK;
+    code          = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug("SdmSubscription GET - json:\n\"%s\"",
-                               j.dump().c_str());
+    Logger::udr_server().debug("SdmSubscription GET: %s", j.dump().c_str());
   } else {
-    Logger::udr_server().error("SdmSubscription no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "SdmSubscription no data！ SQL Query: %s", query.c_str());
   }
 
   mysql_free_result(res);
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
-                                             const std::string &subs_id,
-                                             nlohmann::json &response_data,
-                                             long &code) {
-  MYSQL_RES *res = NULL;
-  nlohmann::json j = {};
+void udr_app::handle_remove_sdm_subscription(
+    const std::string& ue_id, const std::string& subs_id,
+    nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res                = nullptr;
+  nlohmann::json j              = {};
   ProblemDetails problemdetails = {};
 
   const std::string select_query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id +
+      "SELECT * FROM SdmSubscriptions WHERE ueid='" + ue_id +
       "' AND subsId=" + subs_id;
 
-  const std::string query = "DELETE from SdmSubscriptions WHERE ueid='" +
+  const std::string query = "DELETE FROM SdmSubscriptions WHERE ueid='" +
                             ue_id + "' AND subsId=" + subs_id;
 
-  if (mysql_real_query(&mysql, select_query.c_str(),
-                       (unsigned long)select_query.size())) {
+  if (mysql_real_query(
+          &mysql, select_query.c_str(), (unsigned long) select_query.size())) {
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     response_data = j;
     // code = Pistache::Http::Code::Not_Found;
     code = HTTP_STATUS_CODE_404_NOT_FOUND;
@@ -1163,67 +1162,62 @@ void udr_app::handle_remove_sdm_subscription(const std::string &ue_id,
   if (res == NULL) {
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！ SQL Query: %s", query.c_str());
     response_data = j;
-    // code = Pistache::Http::Code::Not_Found;
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+    code          = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
   if (!mysql_num_rows(res)) {
     problemdetails.setCause("DATA_NOT_FOUND");
     to_json(j, problemdetails);
     response_data = j;
-    // code = Pistache::Http::Code::Not_Found;
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+    code          = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
   mysql_free_result(res);
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     response_data = j;
-    // code = Pistache::Http::Code::Not_Found;
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+    code          = HTTP_STATUS_CODE_404_NOT_FOUND;
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
-  code = HTTP_STATUS_CODE_204_NO_CONTENT;
+  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   Logger::udr_server().debug("SdmSubscription DELETE - successful");
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
-                                             const std::string &subs_id,
-                                             SdmSubscription &sdmSubscription,
-                                             nlohmann::json &response_data,
-                                             long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
+void udr_app::handle_update_sdm_subscription(
+    const std::string& ue_id, const std::string& subs_id,
+    SdmSubscription& sdmSubscription, nlohmann::json& response_data,
+    long& code) {
+  MYSQL_RES* res = NULL;
+  MYSQL_ROW row  = {};
 
   const std::string select_query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id +
+      "SELECT * FROM SdmSubscriptions WHERE ueid='" + ue_id +
       "' AND subsId=" + subs_id;
-  std::string query = {};
-  nlohmann::json j = {};
+  std::string query             = {};
+  nlohmann::json j              = {};
   ProblemDetails problemdetails = {};
 
-  if (mysql_real_query(&mysql, select_query.c_str(),
-                       (unsigned long)select_query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(
+          &mysql, select_query.c_str(), (unsigned long) select_query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！SQL Query: %s", query.c_str());
     return;
   }
   if (mysql_num_rows(res)) {
@@ -1231,30 +1225,31 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
         sdmSubscription.getMonitoredResourceUris());
 
     query =
-        "update SdmSubscriptions set nfInstanceId='" +
+        "UPDATE SdmSubscriptions SET nfInstanceId='" +
         sdmSubscription.getNfInstanceId() + "'" +
-        (sdmSubscription.implicitUnsubscribeIsSet()
-             ? (sdmSubscription.isImplicitUnsubscribe()
-                    ? ",implicitUnsubscribe=1"
-                    : ",implicitUnsubscribe=0")
-             : "") +
-        (sdmSubscription.expiresIsSet()
-             ? ",expires='" + sdmSubscription.getExpires() + "'"
-             : "") +
+        (sdmSubscription.implicitUnsubscribeIsSet() ?
+             (sdmSubscription.isImplicitUnsubscribe() ?
+                  ",implicitUnsubscribe=1" :
+                  ",implicitUnsubscribe=0") :
+             "") +
+        (sdmSubscription.expiresIsSet() ?
+             ",expires='" + sdmSubscription.getExpires() + "'" :
+             "") +
         ",callbackReference='" + sdmSubscription.getCallbackReference() + "'" +
-        (sdmSubscription.dnnIsSet() ? ",dnn='" + sdmSubscription.getDnn() + "'"
-                                    : "") +
-        (sdmSubscription.subscriptionIdIsSet()
-             ? ",subscriptionId='" + sdmSubscription.getSubscriptionId() + "'"
-             : "") +
-        (sdmSubscription.immediateReportIsSet()
-             ? (sdmSubscription.isImmediateReport() ? ",immediateReport=1"
-                                                    : ",immediateReport=0")
-             : "") +
-        (sdmSubscription.supportedFeaturesIsSet()
-             ? ",supportedFeatures='" + sdmSubscription.getSupportedFeatures() +
-                   "'"
-             : "");
+        (sdmSubscription.dnnIsSet() ?
+             ",dnn='" + sdmSubscription.getDnn() + "'" :
+             "") +
+        (sdmSubscription.subscriptionIdIsSet() ?
+             ",subscriptionId='" + sdmSubscription.getSubscriptionId() + "'" :
+             "") +
+        (sdmSubscription.immediateReportIsSet() ?
+             (sdmSubscription.isImmediateReport() ? ",immediateReport=1" :
+                                                    ",immediateReport=0") :
+             "") +
+        (sdmSubscription.supportedFeaturesIsSet() ?
+             ",supportedFeatures='" + sdmSubscription.getSupportedFeatures() +
+                 "'" :
+             "");
 
     if (sdmSubscription.amfServiceNameIsSet()) {
       to_json(j, sdmSubscription.getAmfServiceName());
@@ -1280,54 +1275,50 @@ void udr_app::handle_update_sdm_subscription(const std::string &ue_id,
     query +=
         ",monitoredResourceUris='" + MonitoredResourceUris_json.dump() + "'";
 
-    query += " where ueid='" + ue_id + "' AND subsId=" + subs_id;
+    query += " WHERE ueid='" + ue_id + "' AND subsId=" + subs_id;
   } else {
     to_json(j, problemdetails);
     response_data = j;
-    // code = Pistache::Http::Code::Not_Found;
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+    code          = HTTP_STATUS_CODE_404_NOT_FOUND;
 
     mysql_free_result(res);
     return;
   }
 
   mysql_free_result(res);
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
-  code = HTTP_STATUS_CODE_204_NO_CONTENT;
+  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
 
   to_json(j, sdmSubscription);
-  Logger::udr_server().debug("SdmSubscription PUT - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SdmSubscription PUT: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
-                                              SdmSubscription &sdmSubscription,
-                                              nlohmann::json &response_data,
-                                              long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
+void udr_app::handle_create_sdm_subscriptions(
+    const std::string& ue_id, SdmSubscription& sdmSubscription,
+    nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res   = nullptr;
+  MYSQL_ROW row    = {};
   nlohmann::json j = {};
-  int32_t subs_id = 0;
-  int32_t count = 0;
+  int32_t subs_id  = 0;
+  int32_t count    = 0;
   std::string query =
-      "SELECT subsId from SdmSubscriptions WHERE ueid='" + ue_id + "'";
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+      "SELECT subsId FROM SdmSubscriptions WHERE ueid='" + ue_id + "'";
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
     return;
   }
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！ SQL Query %s", query.c_str());
     return;
   }
 
@@ -1341,30 +1332,30 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
   mysql_free_result(res);
 
   query =
-      "insert into SdmSubscriptions set ueid='" + ue_id + "'" +
+      "INSERT INTO SdmSubscriptions SET ueid='" + ue_id + "'" +
       ",nfInstanceId='" + sdmSubscription.getNfInstanceId() + "'" +
-      (sdmSubscription.implicitUnsubscribeIsSet()
-           ? (sdmSubscription.isImplicitUnsubscribe()
-                  ? ",implicitUnsubscribe=1"
-                  : ",implicitUnsubscribe=0")
-           : "") +
-      (sdmSubscription.expiresIsSet()
-           ? ",expires='" + sdmSubscription.getExpires() + "'"
-           : "") +
+      (sdmSubscription.implicitUnsubscribeIsSet() ?
+           (sdmSubscription.isImplicitUnsubscribe() ?
+                ",implicitUnsubscribe=1" :
+                ",implicitUnsubscribe=0") :
+           "") +
+      (sdmSubscription.expiresIsSet() ?
+           ",expires='" + sdmSubscription.getExpires() + "'" :
+           "") +
       ",callbackReference='" + sdmSubscription.getCallbackReference() + "'" +
-      (sdmSubscription.dnnIsSet() ? ",dnn='" + sdmSubscription.getDnn() + "'"
-                                  : "") +
-      (sdmSubscription.subscriptionIdIsSet()
-           ? ",subscriptionId='" + sdmSubscription.getSubscriptionId() + "'"
-           : "") +
-      (sdmSubscription.immediateReportIsSet()
-           ? (sdmSubscription.isImmediateReport() ? ",immediateReport=1"
-                                                  : ",immediateReport=0")
-           : "") +
-      (sdmSubscription.supportedFeaturesIsSet()
-           ? ",supportedFeatures='" + sdmSubscription.getSupportedFeatures() +
-                 "'"
-           : "");
+      (sdmSubscription.dnnIsSet() ? ",dnn='" + sdmSubscription.getDnn() + "'" :
+                                    "") +
+      (sdmSubscription.subscriptionIdIsSet() ?
+           ",subscriptionId='" + sdmSubscription.getSubscriptionId() + "'" :
+           "") +
+      (sdmSubscription.immediateReportIsSet() ?
+           (sdmSubscription.isImmediateReport() ? ",immediateReport=1" :
+                                                  ",immediateReport=0") :
+           "") +
+      (sdmSubscription.supportedFeaturesIsSet() ?
+           ",supportedFeatures='" + sdmSubscription.getSupportedFeatures() +
+               "'" :
+           "");
 
   if (sdmSubscription.amfServiceNameIsSet()) {
     to_json(j, sdmSubscription.getAmfServiceName());
@@ -1395,46 +1386,43 @@ void udr_app::handle_create_sdm_subscriptions(const std::string &ue_id,
     query += ",subsId=" + std::to_string(subs_id);
   }
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
     return;
   }
 
   to_json(j, sdmSubscription);
   response_data = j;
-  // code = Pistache::Http::Code::Created;
-  code = HTTP_STATUS_CODE_201_CREATED;
+  code          = HTTP_STATUS_CODE_201_CREATED;
 
-  Logger::udr_server().debug("SdmSubscriptions POST - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SdmSubscriptions POST: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
-                                             nlohmann::json &response_data,
-                                             long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
+void udr_app::handle_query_sdm_subscriptions(
+    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
   std::vector<std::string> fields;
 
-  nlohmann::json j = {};
+  nlohmann::json j   = {};
   nlohmann::json tmp = {};
 
   const std::string query =
-      "SELECT * from SdmSubscriptions WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM SdmSubscriptions WHERE ueid='" + ue_id + "'";
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！ SQL Query: %s", query.c_str());
     return;
   }
 
@@ -1452,8 +1440,8 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
     for (int i = 0; i < fields.size(); i++) {
       if (!strcmp("nfInstanceId", fields[i].c_str())) {
         sdmsubscriptions.setNfInstanceId(row[i]);
-      } else if (!strcmp("implicitUnsubscribe", fields[i].c_str()) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("implicitUnsubscribe", fields[i].c_str()) && row[i] != NULL) {
         if (strcmp(row[i], "0"))
           sdmsubscriptions.setImplicitUnsubscribe(true);
         else
@@ -1462,8 +1450,8 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
         sdmsubscriptions.setExpires(row[i]);
       } else if (!strcmp("callbackReference", fields[i].c_str())) {
         sdmsubscriptions.setCallbackReference(row[i]);
-      } else if (!strcmp("amfServiceName", fields[i].c_str()) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("amfServiceName", fields[i].c_str()) && row[i] != NULL) {
         ServiceName amfservicename;
         nlohmann::json::parse(row[i]).get_to(amfservicename);
         sdmsubscriptions.setAmfServiceName(amfservicename);
@@ -1477,15 +1465,15 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
         sdmsubscriptions.setSingleNssai(singlenssai);
       } else if (!strcmp("dnn", fields[i].c_str()) && row[i] != NULL) {
         sdmsubscriptions.setDnn(row[i]);
-      } else if (!strcmp("subscriptionId", fields[i].c_str()) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("subscriptionId", fields[i].c_str()) && row[i] != NULL) {
         sdmsubscriptions.setSubscriptionId(row[i]);
       } else if (!strcmp("plmnId", fields[i].c_str()) && row[i] != NULL) {
         PlmnId plmnid;
         nlohmann::json::parse(row[i]).get_to(plmnid);
         sdmsubscriptions.setPlmnId(plmnid);
-      } else if (!strcmp("immediateReport", fields[i].c_str()) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("immediateReport", fields[i].c_str()) && row[i] != NULL) {
         if (strcmp(row[i], "0"))
           sdmsubscriptions.setImmediateReport(true);
         else
@@ -1494,8 +1482,8 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
         SubscriptionDataSets report;
         nlohmann::json::parse(row[i]).get_to(report);
         sdmsubscriptions.setReport(report);
-      } else if (!strcmp("supportedFeatures", fields[i].c_str()) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("supportedFeatures", fields[i].c_str()) && row[i] != NULL) {
         sdmsubscriptions.setSupportedFeatures(row[i]);
       } else if (!strcmp("contextInfo", fields[i].c_str()) && row[i] != NULL) {
         ContextInfo contextinfo;
@@ -1510,50 +1498,47 @@ void udr_app::handle_query_sdm_subscriptions(const std::string &ue_id,
   mysql_free_result(res);
 
   response_data = j;
-  // code = Pistache::Http::Code::Ok;
-  code = HTTP_STATUS_CODE_200_OK;
+  code          = HTTP_STATUS_CODE_200_OK;
 
-  Logger::udr_server().debug("SdmSubscriptions GET - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SdmSubscriptions GET: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_sm_data(const std::string &ue_id,
-                                   const std::string &serving_plmn_id,
-                                   nlohmann::json &response_data, long &code,
-                                   oai::udr::model::Snssai snssai,
-                                   std::string dnn) {
-  MYSQL_RES *res = nullptr;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
-  nlohmann::json j = {};
+void udr_app::handle_query_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& response_data, long& code, oai::udr::model::Snssai snssai,
+    std::string dnn) {
+  MYSQL_RES* res                                                      = nullptr;
+  MYSQL_ROW row                                                       = {};
+  MYSQL_FIELD* field                                                  = nullptr;
+  nlohmann::json j                                                    = {};
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
   std::string query =
-      "select * from SessionManagementSubscriptionData WHERE ueid='" + ue_id +
-      "' and servingPlmnid='" + serving_plmn_id + "' ";
+      "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
+      "' AND servingPlmnid='" + serving_plmn_id + "' ";
   std::string option_str = {};
   if (snssai.getSst() > 0) {
-    option_str += " and JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+    option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                   std::to_string(snssai.getSst());
   }
   if (!dnn.empty()) {
     option_str +=
-        " and JSON_EXTRACT(dnnConfigurations, \"$." + dnn + "\") IS NOT NULL";
+        " AND JSON_EXTRACT(dnnConfigurations, \"$." + dnn + "\") IS NOT NULL";
   }
 
   query += option_str;
   Logger::udr_server().debug("MySQL query: %s", query.c_str());
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure (SQL query %s)!",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure, SQL Query: %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure (SQL query %s)！",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure, SQL Query: %s", query.c_str());
     return;
   }
 
@@ -1570,26 +1555,26 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
         nlohmann::json::parse(row[i]).get_to(dnnconfigurations);
         sessionmanagementsubscriptiondata.setDnnConfigurations(
             dnnconfigurations);
-        Logger::udr_server().debug("DNN configurations (row %d): %s", i,
-                                   row[i]);
+        Logger::udr_server().debug(
+            "DNN configurations (row %d): %s", i, row[i]);
         for (auto d : dnnconfigurations) {
           nlohmann::json temp = {};
           to_json(temp, d.second);
-          Logger::udr_server().debug("DNN configurations: %s",
-                                     temp.dump().c_str());
+          Logger::udr_server().debug(
+              "DNN configurations: %s", temp.dump().c_str());
         }
       } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
         std ::vector<std ::string> internalgroupIds;
         nlohmann::json::parse(row[i]).get_to(internalgroupIds);
         sessionmanagementsubscriptiondata.setInternalGroupIds(internalgroupIds);
-      } else if (!strcmp("sharedVnGroupDataIds", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("sharedVnGroupDataIds", field->name) && row[i] != NULL) {
         std ::map<std ::string, std ::string> sharedvngroupdataids;
         nlohmann::json::parse(row[i]).get_to(sharedvngroupdataids);
         sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(
             sharedvngroupdataids);
-      } else if (!strcmp("sharedDnnConfigurationsId", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("sharedDnnConfigurationsId", field->name) && row[i] != NULL) {
         sessionmanagementsubscriptiondata.setSharedDnnConfigurationsId(row[i]);
       } else if (!strcmp("odbPacketServices", field->name) && row[i] != NULL) {
         OdbPacketServices odbpacketservices;
@@ -1602,35 +1587,35 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
         sessionmanagementsubscriptiondata.setTraceData(tracedata);
       } else if (!strcmp("sharedTraceDataId", field->name) && row[i] != NULL) {
         sessionmanagementsubscriptiondata.setSharedTraceDataId(row[i]);
-      } else if (!strcmp("expectedUeBehavioursList", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("expectedUeBehavioursList", field->name) && row[i] != NULL) {
         std ::map<std ::string, ExpectedUeBehaviourData>
             expecteduebehaviourslist;
         nlohmann::json::parse(row[i]).get_to(expecteduebehaviourslist);
         sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(
             expecteduebehaviourslist);
-      } else if (!strcmp("suggestedPacketNumDlList", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("suggestedPacketNumDlList", field->name) && row[i] != NULL) {
         std ::map<std ::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
         nlohmann::json::parse(row[i]).get_to(suggestedpacketnumdllist);
         sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(
             suggestedpacketnumdllist);
-      } else if (!strcmp("3gppChargingCharacteristics", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("3gppChargingCharacteristics", field->name) &&
+          row[i] != NULL) {
         sessionmanagementsubscriptiondata.setR3gppChargingCharacteristics(
             row[i]);
       }
     }
     to_json(j, sessionmanagementsubscriptiondata);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
-    code = HTTP_STATUS_CODE_200_OK;
+    code          = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug("SessionManagementSubscriptionData:\n %s",
-                               j.dump().c_str());
+    Logger::udr_server().debug(
+        "SessionManagementSubscriptionData: %s", j.dump().c_str());
   } else {
     Logger::udr_server().error(
-        "SessionManagementSubscriptionData no data found (SQL query: %s)",
+        "SessionManagementSubscriptionData no data found, SQL query: %s",
         query.c_str());
   }
 
@@ -1639,67 +1624,71 @@ void udr_app::handle_query_sm_data(const std::string &ue_id,
 
 //------------------------------------------------------------------------------
 void udr_app::handle_create_smf_context_non_3gpp(
-    const std::string &ue_id, const int32_t &pdu_session_id,
-    const SmfRegistration &smfRegistration, nlohmann::json &response_data,
-    long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
+    const std::string& ue_id, const int32_t& pdu_session_id,
+    const SmfRegistration& smfRegistration, nlohmann::json& response_data,
+    long& code) {
+  MYSQL_RES* res = NULL;
+  MYSQL_ROW row  = {};
 
   const std::string select_SmfRegistration =
-      "SELECT * from SmfRegistrations WHERE ueid='" + ue_id +
+      "SELECT * FROM SmfRegistrations WHERE ueid='" + ue_id +
       "' AND subpduSessionId=" + std::to_string(pdu_session_id);
   std::string query = {};
-  nlohmann::json j = {};
+  nlohmann::json j  = {};
 
-  if (mysql_real_query(&mysql, select_SmfRegistration.c_str(),
-                       (unsigned long)select_SmfRegistration.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               select_SmfRegistration.c_str());
+  if (mysql_real_query(
+          &mysql, select_SmfRegistration.c_str(),
+          (unsigned long) select_SmfRegistration.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s",
+        select_SmfRegistration.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               select_SmfRegistration.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！ SQL Query: %s",
+        select_SmfRegistration.c_str());
     return;
   }
   if (mysql_num_rows(res)) {
     query =
-        "update SmfRegistrations set smfInstanceId='" +
+        "UPDATE SmfRegistrations SET smfInstanceId='" +
         smfRegistration.getSmfInstanceId() + "'" +
         ",pduSessionId=" + std::to_string(smfRegistration.getPduSessionId()) +
-        (smfRegistration.smfSetIdIsSet()
-             ? ",smfSetId='" + smfRegistration.getSmfSetId() + "'"
-             : "") +
-        (smfRegistration.supportedFeaturesIsSet()
-             ? ",supportedFeatures='" + smfRegistration.getSupportedFeatures() +
-                   "'"
-             : "") +
-        (smfRegistration.dnnIsSet() ? ",dnn='" + smfRegistration.getDnn() + "'"
-                                    : "") +
-        (smfRegistration.emergencyServicesIsSet()
-             ? (smfRegistration.isEmergencyServices() ? ",emergencyServices=1"
-                                                      : ",emergencyServices=0")
-             : "") +
-        (smfRegistration.pcscfRestorationCallbackUriIsSet()
-             ? ",pcscfRestorationCallbackUri='" +
-                   smfRegistration.getPcscfRestorationCallbackUri() + "'"
-             : "") +
-        (smfRegistration.pgwFqdnIsSet()
-             ? ",pgwFqdn='" + smfRegistration.getPgwFqdn() + "'"
-             : "") +
-        (smfRegistration.epdgIndIsSet()
-             ? (smfRegistration.isEpdgInd() ? ",epdgInd=1" : ",epdgInd=0")
-             : "") +
-        (smfRegistration.deregCallbackUriIsSet()
-             ? ",deregCallbackUri='" + smfRegistration.getDeregCallbackUri() +
-                   "'"
-             : "") +
-        (smfRegistration.registrationTimeIsSet()
-             ? ",registrationTime='" + smfRegistration.getRegistrationTime() +
-                   "'"
-             : "");
+        (smfRegistration.smfSetIdIsSet() ?
+             ",smfSetId='" + smfRegistration.getSmfSetId() + "'" :
+             "") +
+        (smfRegistration.supportedFeaturesIsSet() ?
+             ",supportedFeatures='" + smfRegistration.getSupportedFeatures() +
+                 "'" :
+             "") +
+        (smfRegistration.dnnIsSet() ?
+             ",dnn='" + smfRegistration.getDnn() + "'" :
+             "") +
+        (smfRegistration.emergencyServicesIsSet() ?
+             (smfRegistration.isEmergencyServices() ? ",emergencyServices=1" :
+                                                      ",emergencyServices=0") :
+             "") +
+        (smfRegistration.pcscfRestorationCallbackUriIsSet() ?
+             ",pcscfRestorationCallbackUri='" +
+                 smfRegistration.getPcscfRestorationCallbackUri() + "'" :
+             "") +
+        (smfRegistration.pgwFqdnIsSet() ?
+             ",pgwFqdn='" + smfRegistration.getPgwFqdn() + "'" :
+             "") +
+        (smfRegistration.epdgIndIsSet() ?
+             (smfRegistration.isEpdgInd() ? ",epdgInd=1" : ",epdgInd=0") :
+             "") +
+        (smfRegistration.deregCallbackUriIsSet() ?
+             ",deregCallbackUri='" + smfRegistration.getDeregCallbackUri() +
+                 "'" :
+             "") +
+        (smfRegistration.registrationTimeIsSet() ?
+             ",registrationTime='" + smfRegistration.getRegistrationTime() +
+                 "'" :
+             "");
 
     if (smfRegistration.registrationReasonIsSet()) {
       to_json(j, smfRegistration.getRegistrationReason());
@@ -1714,45 +1703,46 @@ void udr_app::handle_create_smf_context_non_3gpp(
     query += ",singleNssai='" + j.dump() + "'";
     to_json(j, smfRegistration.getPlmnId());
     query += ",plmnId='" + j.dump() + "'";
-    query += " where ueid='" + ue_id +
+    query += " WHERE ueid='" + ue_id +
              "' AND subpduSessionId=" + std::to_string(pdu_session_id);
   } else {
     query =
-        "insert into SmfRegistrations set ueid='" + ue_id + "'" +
+        "INSERT INTO SmfRegistrations SET ueid='" + ue_id + "'" +
         ",subpduSessionId=" + std::to_string(pdu_session_id) +
         ",pduSessionId=" + std::to_string(smfRegistration.getPduSessionId()) +
         ",smfInstanceId='" + smfRegistration.getSmfInstanceId() + "'" +
-        (smfRegistration.smfSetIdIsSet()
-             ? ",smfSetId='" + smfRegistration.getSmfSetId() + "'"
-             : "") +
-        (smfRegistration.supportedFeaturesIsSet()
-             ? ",supportedFeatures='" + smfRegistration.getSupportedFeatures() +
-                   "'"
-             : "") +
-        (smfRegistration.dnnIsSet() ? ",dnn='" + smfRegistration.getDnn() + "'"
-                                    : "") +
-        (smfRegistration.emergencyServicesIsSet()
-             ? (smfRegistration.isEmergencyServices() ? ",emergencyServices=1"
-                                                      : ",emergencyServices=0")
-             : "") +
-        (smfRegistration.pcscfRestorationCallbackUriIsSet()
-             ? ",pcscfRestorationCallbackUri='" +
-                   smfRegistration.getPcscfRestorationCallbackUri() + "'"
-             : "") +
-        (smfRegistration.pgwFqdnIsSet()
-             ? ",pgwFqdn='" + smfRegistration.getPgwFqdn() + "'"
-             : "") +
-        (smfRegistration.epdgIndIsSet()
-             ? (smfRegistration.isEpdgInd() ? ",epdgInd=1" : ",epdgInd=0")
-             : "") +
-        (smfRegistration.deregCallbackUriIsSet()
-             ? ",deregCallbackUri='" + smfRegistration.getDeregCallbackUri() +
-                   "'"
-             : "") +
-        (smfRegistration.registrationTimeIsSet()
-             ? ",registrationTime='" + smfRegistration.getRegistrationTime() +
-                   "'"
-             : "");
+        (smfRegistration.smfSetIdIsSet() ?
+             ",smfSetId='" + smfRegistration.getSmfSetId() + "'" :
+             "") +
+        (smfRegistration.supportedFeaturesIsSet() ?
+             ",supportedFeatures='" + smfRegistration.getSupportedFeatures() +
+                 "'" :
+             "") +
+        (smfRegistration.dnnIsSet() ?
+             ",dnn='" + smfRegistration.getDnn() + "'" :
+             "") +
+        (smfRegistration.emergencyServicesIsSet() ?
+             (smfRegistration.isEmergencyServices() ? ",emergencyServices=1" :
+                                                      ",emergencyServices=0") :
+             "") +
+        (smfRegistration.pcscfRestorationCallbackUriIsSet() ?
+             ",pcscfRestorationCallbackUri='" +
+                 smfRegistration.getPcscfRestorationCallbackUri() + "'" :
+             "") +
+        (smfRegistration.pgwFqdnIsSet() ?
+             ",pgwFqdn='" + smfRegistration.getPgwFqdn() + "'" :
+             "") +
+        (smfRegistration.epdgIndIsSet() ?
+             (smfRegistration.isEpdgInd() ? ",epdgInd=1" : ",epdgInd=0") :
+             "") +
+        (smfRegistration.deregCallbackUriIsSet() ?
+             ",deregCallbackUri='" + smfRegistration.getDeregCallbackUri() +
+                 "'" :
+             "") +
+        (smfRegistration.registrationTimeIsSet() ?
+             ",registrationTime='" + smfRegistration.getRegistrationTime() +
+                 "'" :
+             "");
 
     if (smfRegistration.registrationReasonIsSet()) {
       to_json(j, smfRegistration.getRegistrationReason());
@@ -1770,66 +1760,61 @@ void udr_app::handle_create_smf_context_non_3gpp(
   }
 
   mysql_free_result(res);
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   to_json(j, smfRegistration);
   response_data = j;
-  // code = Pistache::Http::Code::Created;
-  code = HTTP_STATUS_CODE_201_CREATED;
+  code          = HTTP_STATUS_CODE_201_CREATED;
 
-  Logger::udr_server().debug("SmfRegistration PUT - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SmfRegistration PUT: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_delete_smf_context(const std::string &ue_id,
-                                        const int32_t &pdu_session_id,
-                                        nlohmann::json &response_data,
-                                        long &code) {
+void udr_app::handle_delete_smf_context(
+    const std::string& ue_id, const int32_t& pdu_session_id,
+    nlohmann::json& response_data, long& code) {
   const std::string query =
-      "DELETE from SmfRegistrations WHERE ueid='" + ue_id +
+      "DELETE FROM SmfRegistrations WHERE ueid='" + ue_id +
       "' AND subpduSessionId=" + std::to_string(pdu_session_id);
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   response_data = {};
-  // code = Pistache::Http::Code::No_Content;
-  code = HTTP_STATUS_CODE_204_NO_CONTENT;
+  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
   Logger::udr_server().debug("SmfRegistration DELETE - successful");
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_smf_registration(const std::string &ue_id,
-                                            const int32_t &pdu_session_id,
-                                            nlohmann::json &response_data,
-                                            long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
-  nlohmann::json j = {};
+void udr_app::handle_query_smf_registration(
+    const std::string& ue_id, const int32_t& pdu_session_id,
+    nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res                  = nullptr;
+  MYSQL_ROW row                   = {};
+  MYSQL_FIELD* field              = nullptr;
+  nlohmann::json j                = {};
   SmfRegistration smfregistration = {};
   const std::string query =
-      "SELECT * from SmfRegistrations WHERE ueid='" + ue_id +
+      "SELECT * FROM SmfRegistrations WHERE ueid='" + ue_id +
       "' AND subpduSessionId=" + std::to_string(pdu_session_id);
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！SQL Query: %s", query.c_str());
     return;
   }
 
@@ -1841,8 +1826,8 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
           smfregistration.setSmfInstanceId(row[i]);
         } else if (!strcmp("smfSetId", field->name) && row[i] != NULL) {
           smfregistration.setSmfSetId(row[i]);
-        } else if (!strcmp("supportedFeatures", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("supportedFeatures", field->name) && row[i] != NULL) {
           smfregistration.setSupportedFeatures(row[i]);
         } else if (!strcmp("pduSessionId", field->name)) {
           int32_t a = std::stoi(row[i]);
@@ -1853,14 +1838,15 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
           smfregistration.setSingleNssai(singlenssai);
         } else if (!strcmp("dnn", field->name) && row[i] != NULL) {
           smfregistration.setDnn(row[i]);
-        } else if (!strcmp("emergencyServices", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("emergencyServices", field->name) && row[i] != NULL) {
           if (strcmp(row[i], "0"))
             smfregistration.setEmergencyServices(true);
           else
             smfregistration.setEmergencyServices(false);
-        } else if (!strcmp("pcscfRestorationCallbackUri", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("pcscfRestorationCallbackUri", field->name) &&
+            row[i] != NULL) {
           smfregistration.setPcscfRestorationCallbackUri(row[i]);
         } else if (!strcmp("plmnId", field->name)) {
           PlmnId plmnid;
@@ -1875,8 +1861,8 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
             smfregistration.setEpdgInd(false);
         } else if (!strcmp("deregCallbackUri", field->name) && row[i] != NULL) {
           smfregistration.setDeregCallbackUri(row[i]);
-        } else if (!strcmp("registrationReason", field->name) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("registrationReason", field->name) && row[i] != NULL) {
           RegistrationReason registrationreason;
           nlohmann::json::parse(row[i]).get_to(registrationreason);
           smfregistration.setRegistrationReason(registrationreason);
@@ -1894,43 +1880,40 @@ void udr_app::handle_query_smf_registration(const std::string &ue_id,
     }
     to_json(j, smfregistration);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
-    code = HTTP_STATUS_CODE_200_OK;
+    code          = HTTP_STATUS_CODE_200_OK;
 
-    Logger::udr_server().debug("SmfRegistration GET - json:\n\"%s\"",
-                               j.dump().c_str());
+    Logger::udr_server().debug("SmfRegistration GET: %s", j.dump().c_str());
   } else {
-    Logger::udr_server().error("SmfRegistration no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "SmfRegistration no data！ SQL Query: %s", query.c_str());
   }
 
   mysql_free_result(res);
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
-                                        nlohmann::json &response_data,
-                                        long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
+void udr_app::handle_query_smf_reg_list(
+    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
   std::vector<std::string> fields;
-  nlohmann::json j = {};
+  nlohmann::json j   = {};
   nlohmann::json tmp = {};
 
   const std::string query =
-      "SELECT * from SmfRegistrations WHERE ueid='" + ue_id + "'";
+      "SELECT * FROM SmfRegistrations WHERE ueid='" + ue_id + "'";
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！SQL Query: %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！SQL Query: %s", query.c_str());
     return;
   }
 
@@ -1950,8 +1933,8 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
           smfregistration.setSmfInstanceId(row[i]);
         } else if (!strcmp("smfSetId", fields[i].c_str()) && row[i] != NULL) {
           smfregistration.setSmfSetId(row[i]);
-        } else if (!strcmp("supportedFeatures", fields[i].c_str()) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("supportedFeatures", fields[i].c_str()) && row[i] != NULL) {
           smfregistration.setSupportedFeatures(row[i]);
         } else if (!strcmp("pduSessionId", fields[i].c_str())) {
           int32_t a = std::stoi(row[i]);
@@ -1962,14 +1945,15 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
           smfregistration.setSingleNssai(singlenssai);
         } else if (!strcmp("dnn", fields[i].c_str()) && row[i] != NULL) {
           smfregistration.setDnn(row[i]);
-        } else if (!strcmp("emergencyServices", fields[i].c_str()) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("emergencyServices", fields[i].c_str()) && row[i] != NULL) {
           if (strcmp(row[i], "0"))
             smfregistration.setEmergencyServices(true);
           else
             smfregistration.setEmergencyServices(false);
-        } else if (!strcmp("pcscfRestorationCallbackUri", fields[i].c_str()) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("pcscfRestorationCallbackUri", fields[i].c_str()) &&
+            row[i] != NULL) {
           smfregistration.setPcscfRestorationCallbackUri(row[i]);
         } else if (!strcmp("plmnId", fields[i].c_str())) {
           PlmnId plmnid;
@@ -1982,19 +1966,20 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
             smfregistration.setEpdgInd(true);
           else
             smfregistration.setEpdgInd(false);
-        } else if (!strcmp("deregCallbackUri", fields[i].c_str()) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("deregCallbackUri", fields[i].c_str()) && row[i] != NULL) {
           smfregistration.setDeregCallbackUri(row[i]);
-        } else if (!strcmp("registrationReason", fields[i].c_str()) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("registrationReason", fields[i].c_str()) &&
+            row[i] != NULL) {
           RegistrationReason registrationreason;
           nlohmann::json::parse(row[i]).get_to(registrationreason);
           smfregistration.setRegistrationReason(registrationreason);
-        } else if (!strcmp("registrationTime", fields[i].c_str()) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("registrationTime", fields[i].c_str()) && row[i] != NULL) {
           smfregistration.setRegistrationTime(row[i]);
-        } else if (!strcmp("contextInfo", fields[i].c_str()) &&
-                   row[i] != NULL) {
+        } else if (
+            !strcmp("contextInfo", fields[i].c_str()) && row[i] != NULL) {
           ContextInfo contextinfo;
           nlohmann::json::parse(row[i]).get_to(contextinfo);
           smfregistration.setContextInfo(contextinfo);
@@ -2011,37 +1996,34 @@ void udr_app::handle_query_smf_reg_list(const std::string &ue_id,
   mysql_free_result(res);
 
   response_data = j;
-  // code = Pistache::Http::Code::Ok;
-  code = HTTP_STATUS_CODE_200_OK;
+  code          = HTTP_STATUS_CODE_200_OK;
 
-  Logger::udr_server().debug("SmfRegistrations GET - json:\n\"%s\"",
-                             j.dump().c_str());
+  Logger::udr_server().debug("SmfRegistrations GET: %s", j.dump().c_str());
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_smf_select_data(const std::string &ue_id,
-                                           const std::string &serving_plmn_id,
-                                           nlohmann::json &response_data,
-                                           long &code) {
-  MYSQL_RES *res = NULL;
-  MYSQL_ROW row = {};
-  MYSQL_FIELD *field = nullptr;
-  nlohmann::json j = {};
+void udr_app::handle_query_smf_select_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& response_data, long& code) {
+  MYSQL_RES* res                                            = nullptr;
+  MYSQL_ROW row                                             = {};
+  MYSQL_FIELD* field                                        = nullptr;
+  nlohmann::json j                                          = {};
   SmfSelectionSubscriptionData smfselectionsubscriptiondata = {};
   const std::string query =
-      "select * from SmfSelectionSubscriptionData WHERE ueid='" + ue_id +
-      "' and servingPlmnid='" + serving_plmn_id + "'";
+      "SELECT * FROM SmfSelectionSubscriptionData WHERE ueid='" + ue_id +
+      "' AND servingPlmnid='" + serving_plmn_id + "'";
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long)query.size())) {
-    Logger::udr_server().error("mysql_real_query failure！SQL(%s)",
-                               query.c_str());
+  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_server().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
     return;
   }
 
   res = mysql_store_result(&mysql);
   if (res == NULL) {
-    Logger::udr_server().error("mysql_store_result failure！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "mysql_store_result failure！SQL Query: %s", query.c_str());
     return;
   }
 
@@ -2051,27 +2033,26 @@ void udr_app::handle_query_smf_select_data(const std::string &ue_id,
     for (int i = 0; field = mysql_fetch_field(res); i++) {
       if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
         smfselectionsubscriptiondata.setSupportedFeatures(row[i]);
-      } else if (!strcmp("subscribedSnssaiInfos", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("subscribedSnssaiInfos", field->name) && row[i] != NULL) {
         std ::map<std ::string, SnssaiInfo> subscribedsnssaiinfos;
         nlohmann::json::parse(row[i]).get_to(subscribedsnssaiinfos);
         smfselectionsubscriptiondata.setSubscribedSnssaiInfos(
             subscribedsnssaiinfos);
-      } else if (!strcmp("sharedSnssaiInfosId", field->name) &&
-                 row[i] != NULL) {
+      } else if (
+          !strcmp("sharedSnssaiInfosId", field->name) && row[i] != NULL) {
         smfselectionsubscriptiondata.setSharedSnssaiInfosId(row[i]);
       }
     }
     to_json(j, smfselectionsubscriptiondata);
     response_data = j;
-    // code = Pistache::Http::Code::Ok;
-    code = HTTP_STATUS_CODE_200_OK;
+    code          = HTTP_STATUS_CODE_200_OK;
 
     Logger::udr_server().debug(
-        "SmfSelectionSubscriptionData GET - json:\n\"%s\"", j.dump().c_str());
+        "SmfSelectionSubscriptionData GET: %s", j.dump().c_str());
   } else {
-    Logger::udr_server().error("SmfSelectionSubscriptionData no data！SQL(%s)",
-                               query.c_str());
+    Logger::udr_server().error(
+        "SmfSelectionSubscriptionData no data！SQL Query: %s", query.c_str());
   }
 
   mysql_free_result(res);

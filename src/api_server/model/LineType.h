@@ -48,7 +48,7 @@ namespace oai::udr::model {
 /// line
 /// </summary>
 class LineType {
-public:
+ public:
   LineType();
   virtual ~LineType();
 
@@ -57,12 +57,12 @@ public:
   /////////////////////////////////////////////
   /// LineType members
 
-  friend void to_json(nlohmann::json &j, const LineType &o);
-  friend void from_json(const nlohmann::json &j, LineType &o);
+  friend void to_json(nlohmann::json& j, const LineType& o);
+  friend void from_json(const nlohmann::json& j, LineType& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* LineType_H_ */

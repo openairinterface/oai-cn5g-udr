@@ -48,7 +48,9 @@ SMSF3GPPRegistrationDocumentApi::SMSF3GPPRegistrationDocumentApi(
   router = rtr;
 }
 
-void SMSF3GPPRegistrationDocumentApi::init() { setupRoutes(); }
+void SMSF3GPPRegistrationDocumentApi::init() {
+  setupRoutes();
+}
 
 void SMSF3GPPRegistrationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -76,15 +78,21 @@ void SMSF3GPPRegistrationDocumentApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&SMSF3GPPRegistrationDocumentApi::
-                       smsf3_gpp_registration_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &SMSF3GPPRegistrationDocumentApi::
+          smsf3_gpp_registration_document_api_default_handler,
+      this));
 }
 
 void SMSF3GPPRegistrationDocumentApi::create_smsf_context3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -95,43 +103,55 @@ void SMSF3GPPRegistrationDocumentApi::create_smsf_context3gpp_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(smsfRegistration);
     this->create_smsf_context3gpp(ueId, smsfRegistration, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SMSF3GPPRegistrationDocumentApi::delete_smsf_context3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
   try {
     this->delete_smsf_context3gpp(ueId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SMSF3GPPRegistrationDocumentApi::query_smsf_context3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -155,14 +175,14 @@ void SMSF3GPPRegistrationDocumentApi::query_smsf_context3gpp_handler(
 
   try {
     this->query_smsf_context3gpp(ueId, fields, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -171,10 +191,10 @@ void SMSF3GPPRegistrationDocumentApi::query_smsf_context3gpp_handler(
 
 void SMSF3GPPRegistrationDocumentApi::
     smsf3_gpp_registration_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

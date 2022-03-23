@@ -48,7 +48,9 @@ Modify5GVnGroupApi::Modify5GVnGroupApi(
   router = rtr;
 }
 
-void Modify5GVnGroupApi::init() { setupRoutes(); }
+void Modify5GVnGroupApi::init() {
+  setupRoutes();
+}
 
 void Modify5GVnGroupApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -65,8 +67,13 @@ void Modify5GVnGroupApi::setupRoutes() {
 }
 
 void Modify5GVnGroupApi::modify5_g_vn_group_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":externalGroupId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto externalGroupId = request.param(":externalGroupId").as<std::string>();
 
@@ -85,16 +92,16 @@ void Modify5GVnGroupApi::modify5_g_vn_group_handler(
 
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);
-    this->modify5_g_vn_group(externalGroupId, patchItem, supportedFeatures,
-                             response);
-  } catch (nlohmann::detail::exception &e) {
+    this->modify5_g_vn_group(
+        externalGroupId, patchItem, supportedFeatures, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -102,9 +109,9 @@ void Modify5GVnGroupApi::modify5_g_vn_group_handler(
 }
 
 void Modify5GVnGroupApi::modify5_g_vn_group_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

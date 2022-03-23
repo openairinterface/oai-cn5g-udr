@@ -41,24 +41,25 @@ using namespace oai::udr::model;
 
 ApplicationDataSubscriptionsCollectionApiImpl::
     ApplicationDataSubscriptionsCollectionApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : ApplicationDataSubscriptionsCollectionApi(rtr), m_udr_app(udr_app_inst),
+    : ApplicationDataSubscriptionsCollectionApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void ApplicationDataSubscriptionsCollectionApiImpl::
     create_individual_application_data_subscription(
-        const ApplicationDataSubs &applicationDataSubs,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const ApplicationDataSubs& applicationDataSubs,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void ApplicationDataSubscriptionsCollectionApiImpl::
     read_application_data_change_subscriptions(
-        const Pistache::Optional<DataFilter> &dataFilter,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const Pistache::Optional<DataFilter>& dataFilter,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

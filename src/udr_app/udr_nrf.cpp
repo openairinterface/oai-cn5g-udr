@@ -50,22 +50,22 @@ using namespace oai::udr::app;
 using json = nlohmann::json;
 
 extern udr_config udr_cfg;
-extern udr_nrf *udr_nrf_inst;
-udr_client *udr_client_instance = nullptr;
+extern udr_nrf* udr_nrf_inst;
+udr_client* udr_client_instance = nullptr;
 
 //------------------------------------------------------------------------------
-udr_nrf::udr_nrf(udr_event &ev) : m_event_sub(ev) {}
+udr_nrf::udr_nrf(udr_event& ev) : m_event_sub(ev) {}
 //---------------------------------------------------------------------------------------------
-void udr_nrf::get_udr_api_root(std::string &api_root) {
+void udr_nrf::get_udr_api_root(std::string& api_root) {
   api_root =
-      std::string(inet_ntoa(*((struct in_addr *)&udr_cfg.nrf_addr.ipv4_addr))) +
+      std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nrf_addr.ipv4_addr))) +
       ":" + std::to_string(udr_cfg.nrf_addr.port) + NNRF_NFM_BASE +
       udr_cfg.nrf_addr.api_version;
 }
 
 //---------------------------------------------------------------------------------------------
-void udr_nrf::generate_udr_profile(udr_profile &udr_nf_profile,
-                                   std::string &udr_instance_id) {
+void udr_nrf::generate_udr_profile(
+    udr_profile& udr_nf_profile, std::string& udr_instance_id) {
   // TODO: remove hardcoded values
   udr_nf_profile.set_nf_instance_id(udr_instance_id);
   udr_nf_profile.set_nf_instance_name("OAI-UDR");
@@ -89,14 +89,14 @@ void udr_nrf::generate_udr_profile(udr_profile &udr_nf_profile,
   udr_info_item.groupid = "oai-udr-testgroupid";
   udr_info_item.data_set_id.push_back("0210");
   udr_info_item.data_set_id.push_back("9876");
-  supi_ranges.supi_range.start = "208950000000031";
+  supi_ranges.supi_range.start   = "208950000000031";
   supi_ranges.supi_range.pattern = "^imsi-20895[31-131]{6}$";
-  supi_ranges.supi_range.start = "208950000000131";
+  supi_ranges.supi_range.start   = "208950000000131";
   udr_info_item.supi_ranges.push_back(supi_ranges);
   identity_range_udr_info_item_t gpsi_ranges;
-  gpsi_ranges.identity_range.start = "752740000";
+  gpsi_ranges.identity_range.start   = "752740000";
   gpsi_ranges.identity_range.pattern = "^gpsi-75274[0-9]{4}$";
-  gpsi_ranges.identity_range.end = "752749999";
+  gpsi_ranges.identity_range.end     = "752749999";
   udr_info_item.gpsi_ranges.push_back(gpsi_ranges);
   udr_nf_profile.set_udr_info(udr_info_item);
   // ToDo:- Add remaining fields
@@ -107,7 +107,7 @@ void udr_nrf::generate_udr_profile(udr_profile &udr_nf_profile,
 //---------------------------------------------------------------------------------------------
 void udr_nrf::register_to_nrf() {
   // generate UUID
-  udr_instance_id = to_string(boost::uuids::random_generator()());
+  udr_instance_id              = to_string(boost::uuids::random_generator()());
   nlohmann::json response_data = {};
 
   // Generate NF Profile
@@ -116,38 +116,38 @@ void udr_nrf::register_to_nrf() {
 
   // Send NF registeration request
   std::string udr_api_root = {};
-  std::string response = {};
-  std::string method = {"PUT"};
+  std::string response     = {};
+  std::string method       = {"PUT"};
   get_udr_api_root(udr_api_root);
   std::string remoteUri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
   nlohmann::json json_data = {};
   udr_nf_profile.to_json(json_data);
 
   Logger::udr_nrf().info("Sending NF registeration request");
-  udr_client_instance->curl_http_client(remoteUri, method,
-                                        json_data.dump().c_str(), response);
+  udr_client_instance->curl_http_client(
+      remoteUri, method, json_data.dump().c_str(), response);
 
   try {
     response_data = nlohmann::json::parse(response);
     if (response.find("REGISTERED") != 0) {
       start_event_nf_heartbeat(remoteUri);
     }
-  } catch (nlohmann::json::exception &e) {
+  } catch (nlohmann::json::exception& e) {
     Logger::udr_nrf().info("NF registeration procedure failed");
   }
 }
 //---------------------------------------------------------------------------------------------
-void udr_nrf::start_event_nf_heartbeat(std::string &remoteURI) {
+void udr_nrf::start_event_nf_heartbeat(std::string& remoteURI) {
   // get current time
   uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch())
                     .count();
   struct itimerspec its;
-  its.it_value.tv_sec = HEART_BEAT_TIMER; // seconds
-  its.it_value.tv_nsec = 0;               // 100 * 1000 * 1000; //100ms
+  its.it_value.tv_sec  = HEART_BEAT_TIMER;  // seconds
+  its.it_value.tv_nsec = 0;                 // 100 * 1000 * 1000; //100ms
   const uint64_t interval =
       its.it_value.tv_sec * 1000 +
-      its.it_value.tv_nsec / 1000000; // convert sec, nsec to msec
+      its.it_value.tv_nsec / 1000000;  // convert sec, nsec to msec
 
   task_connection = m_event_sub.subscribe_task_nf_heartbeat(
       boost::bind(&udr_nrf::trigger_nf_heartbeat_procedure, this, _1), interval,
@@ -165,8 +165,8 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   patch_items.push_back(patch_item);
   Logger::udr_nrf().info("Sending NF heartbeat request");
 
-  std::string response = {};
-  std::string method = {"PATCH"};
+  std::string response     = {};
+  std::string method       = {"PATCH"};
   nlohmann::json json_data = nlohmann::json::array();
   for (auto i : patch_items) {
     nlohmann::json item = {};
@@ -177,8 +177,7 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   std::string udr_api_root = {};
   get_udr_api_root(udr_api_root);
   std::string remoteUri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
-  udr_client_instance->curl_http_client(remoteUri, method,
-                                        json_data.dump().c_str(), response);
-  if (!response.empty())
-    task_connection.disconnect();
+  udr_client_instance->curl_http_client(
+      remoteUri, method, json_data.dump().c_str(), response);
+  if (!response.empty()) task_connection.disconnect();
 }

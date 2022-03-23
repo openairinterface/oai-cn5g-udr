@@ -53,20 +53,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class NSSAIUpdateAckDocumentApi {
-public:
+ public:
   NSSAIUpdateAckDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~NSSAIUpdateAckDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void create_nssai_update_ack_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
+  void create_nssai_update_ack_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void nssai_update_ack_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -81,12 +82,12 @@ private:
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param> <param name="nssaiAckData"> (optional)</param>
   virtual void create_nssai_update_ack(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const NssaiAckData &nssaiAckData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const NssaiAckData& nssaiAckData,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* NSSAIUpdateAckDocumentApi_H_ */

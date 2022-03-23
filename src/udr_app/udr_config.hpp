@@ -78,12 +78,12 @@ typedef struct interface_cfg_s {
 } interface_cfg_t;
 
 class udr_config {
-public:
+ public:
   udr_config();
   ~udr_config();
 
-  int load(const std::string &config_file);
-  int load_interface(const Setting &if_cfg, interface_cfg_t &cfg);
+  int load(const std::string& config_file);
+  int load_interface(const Setting& if_cfg, interface_cfg_t& cfg);
   void display();
 
   unsigned int instance;
@@ -105,6 +105,6 @@ public:
 
   mysql_conf_t mysql;
 };
-} // namespace oai::udr::config
+}  // namespace oai::udr::config
 
 #endif

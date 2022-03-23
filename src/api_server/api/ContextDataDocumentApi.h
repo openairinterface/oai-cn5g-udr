@@ -54,20 +54,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class ContextDataDocumentApi {
-public:
+ public:
   ContextDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~ContextDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void query_context_data_handler(const Pistache::Rest::Request &request,
-                                  Pistache::Http::ResponseWriter response);
+  void query_context_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void context_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -85,6 +86,6 @@ private:
   //    Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* ContextDataDocumentApi_H_ */

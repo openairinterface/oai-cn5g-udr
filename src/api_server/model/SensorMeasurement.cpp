@@ -43,10 +43,10 @@ void SensorMeasurement::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const SensorMeasurement &o) {
+void to_json(nlohmann::json& j, const SensorMeasurement& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, SensorMeasurement &o) {}
+void from_json(const nlohmann::json& j, SensorMeasurement& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

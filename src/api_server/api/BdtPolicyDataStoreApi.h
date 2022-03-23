@@ -54,20 +54,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class BdtPolicyDataStoreApi {
-public:
+ public:
   BdtPolicyDataStoreApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~BdtPolicyDataStoreApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void read_bdt_policy_data_handler(const Pistache::Rest::Request &request,
-                                    Pistache::Http::ResponseWriter response);
+  void read_bdt_policy_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void bdt_policy_data_store_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -85,12 +86,12 @@ private:
   /// name="supis">Each element identifies the user. (optional, default to
   /// std::vector&lt;std::string&gt;())</param>
   virtual void read_bdt_policy_data(
-      const Pistache::Optional<std::vector<std::string>> &bdtPolicyIds,
-      const Pistache::Optional<std::vector<std::string>> &internalGroupIds,
-      const Pistache::Optional<std::vector<std::string>> &supis,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::vector<std::string>>& bdtPolicyIds,
+      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
+      const Pistache::Optional<std::vector<std::string>>& supis,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* BdtPolicyDataStoreApi_H_ */

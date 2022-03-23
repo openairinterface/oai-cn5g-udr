@@ -47,14 +47,16 @@ PFDDataStoreApi::PFDDataStoreApi(std::shared_ptr<Pistache::Rest::Router> rtr) {
   router = rtr;
 }
 
-void PFDDataStoreApi::init() { setupRoutes(); }
+void PFDDataStoreApi::init() {
+  setupRoutes();
+}
 
 void PFDDataStoreApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(*router,
-              base + udr_cfg.nudr.api_version + "/application-data/pfds",
-              Routes::bind(&PFDDataStoreApi::read_pfd_data_handler, this));
+  Routes::Get(
+      *router, base + udr_cfg.nudr.api_version + "/application-data/pfds",
+      Routes::bind(&PFDDataStoreApi::read_pfd_data_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(
@@ -62,7 +64,7 @@ void PFDDataStoreApi::setupRoutes() {
 }
 
 void PFDDataStoreApi::read_pfd_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto appIdQuery = request.query().get("appId");
@@ -76,14 +78,14 @@ void PFDDataStoreApi::read_pfd_data_handler(
 
   try {
     this->read_pfd_data(appId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -91,9 +93,9 @@ void PFDDataStoreApi::read_pfd_data_handler(
 }
 
 void PFDDataStoreApi::pfd_data_store_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

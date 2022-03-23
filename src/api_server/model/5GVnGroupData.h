@@ -54,7 +54,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class _5GVnGroupData {
-public:
+ public:
   _5GVnGroupData();
   virtual ~_5GVnGroupData();
 
@@ -67,24 +67,24 @@ public:
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const &value);
+  void setDnn(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   Snssai getSNssai() const;
-  void setSNssai(Snssai const &value);
+  void setSNssai(Snssai const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<PduSessionType> &getPduSessionTypes();
-  void setPduSessionTypes(std::vector<PduSessionType> const &value);
+  std::vector<PduSessionType>& getPduSessionTypes();
+  void setPduSessionTypes(std::vector<PduSessionType> const& value);
   bool pduSessionTypesIsSet() const;
   void unsetPduSessionTypes();
   /// <summary>
   ///
   /// </summary>
-  std::vector<AppDescriptor> &getAppDescriptors();
-  void setAppDescriptors(std::vector<AppDescriptor> const &value);
+  std::vector<AppDescriptor>& getAppDescriptors();
+  void setAppDescriptors(std::vector<AppDescriptor> const& value);
   bool appDescriptorsIsSet() const;
   void unsetAppDescriptors();
   /// <summary>
@@ -98,14 +98,14 @@ public:
   ///
   /// </summary>
   IpAddress getDnAaaAddress() const;
-  void setDnAaaAddress(IpAddress const &value);
+  void setDnAaaAddress(IpAddress const& value);
   bool dnAaaAddressIsSet() const;
   void unsetDnAaaAddress();
 
-  friend void to_json(nlohmann::json &j, const _5GVnGroupData &o);
-  friend void from_json(const nlohmann::json &j, _5GVnGroupData &o);
+  friend void to_json(nlohmann::json& j, const _5GVnGroupData& o);
+  friend void from_json(const nlohmann::json& j, _5GVnGroupData& o);
 
-protected:
+ protected:
   std::string m_Dnn;
 
   Snssai m_SNssai;
@@ -120,6 +120,6 @@ protected:
   bool m_DnAaaAddressIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* 5GVnGroupData_H_ */

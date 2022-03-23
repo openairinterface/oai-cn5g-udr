@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class RoamingOdb {
-public:
+ public:
   RoamingOdb();
   virtual ~RoamingOdb();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// RoamingOdb members
 
-  friend void to_json(nlohmann::json &j, const RoamingOdb &o);
-  friend void from_json(const nlohmann::json &j, RoamingOdb &o);
+  friend void to_json(nlohmann::json& j, const RoamingOdb& o);
+  friend void from_json(const nlohmann::json& j, RoamingOdb& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* RoamingOdb_H_ */

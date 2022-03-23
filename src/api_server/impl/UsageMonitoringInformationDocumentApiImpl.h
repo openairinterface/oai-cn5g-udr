@@ -54,31 +54,29 @@ using namespace oai::udr::app;
 
 class UsageMonitoringInformationDocumentApiImpl
     : public oai::udr::api::UsageMonitoringInformationDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
+ public:
   UsageMonitoringInformationDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
       std::string address);
   ~UsageMonitoringInformationDocumentApiImpl() {}
 
-  void
-  create_usage_monitoring_resource(const std::string &ueId,
-                                   const std::string &usageMonId,
-                                   const UsageMonData &usageMonData,
-                                   Pistache::Http::ResponseWriter &response);
-  void
-  delete_usage_monitoring_information(const std::string &ueId,
-                                      const std::string &usageMonId,
-                                      Pistache::Http::ResponseWriter &response);
+  void create_usage_monitoring_resource(
+      const std::string& ueId, const std::string& usageMonId,
+      const UsageMonData& usageMonData,
+      Pistache::Http::ResponseWriter& response);
+  void delete_usage_monitoring_information(
+      const std::string& ueId, const std::string& usageMonId,
+      Pistache::Http::ResponseWriter& response);
   void read_usage_monitoring_information(
-      const std::string &ueId, const std::string &usageMonId,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId, const std::string& usageMonId,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

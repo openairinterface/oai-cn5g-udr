@@ -35,7 +35,9 @@
 
 namespace oai::udr::model {
 
-UeContextInAmfData::UeContextInAmfData() { m_EpsInterworkingInfoIsSet = false; }
+UeContextInAmfData::UeContextInAmfData() {
+  m_EpsInterworkingInfoIsSet = false;
+}
 
 UeContextInAmfData::~UeContextInAmfData() {}
 
@@ -43,13 +45,13 @@ void UeContextInAmfData::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const UeContextInAmfData &o) {
+void to_json(nlohmann::json& j, const UeContextInAmfData& o) {
   j = nlohmann::json();
   if (o.epsInterworkingInfoIsSet())
     j["epsInterworkingInfo"] = o.m_EpsInterworkingInfo;
 }
 
-void from_json(const nlohmann::json &j, UeContextInAmfData &o) {
+void from_json(const nlohmann::json& j, UeContextInAmfData& o) {
   if (j.find("epsInterworkingInfo") != j.end()) {
     j.at("epsInterworkingInfo").get_to(o.m_EpsInterworkingInfo);
     o.m_EpsInterworkingInfoIsSet = true;
@@ -60,8 +62,8 @@ EpsInterworkingInfo UeContextInAmfData::getEpsInterworkingInfo() const {
   return m_EpsInterworkingInfo;
 }
 void UeContextInAmfData::setEpsInterworkingInfo(
-    EpsInterworkingInfo const &value) {
-  m_EpsInterworkingInfo = value;
+    EpsInterworkingInfo const& value) {
+  m_EpsInterworkingInfo      = value;
   m_EpsInterworkingInfoIsSet = true;
 }
 bool UeContextInAmfData::epsInterworkingInfoIsSet() const {
@@ -71,4 +73,4 @@ void UeContextInAmfData::unsetEpsInterworkingInfo() {
   m_EpsInterworkingInfoIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

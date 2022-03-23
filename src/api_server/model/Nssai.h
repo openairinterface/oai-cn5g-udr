@@ -53,7 +53,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class Nssai {
-public:
+ public:
   Nssai();
   virtual ~Nssai();
 
@@ -66,41 +66,41 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Snssai> &getDefaultSingleNssais();
-  void setDefaultSingleNssais(std::vector<Snssai> const &value);
+  std::vector<Snssai>& getDefaultSingleNssais();
+  void setDefaultSingleNssais(std::vector<Snssai> const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<Snssai> &getSingleNssais();
-  void setSingleNssais(std::vector<Snssai> const &value);
+  std::vector<Snssai>& getSingleNssais();
+  void setSingleNssais(std::vector<Snssai> const& value);
   bool singleNssaisIsSet() const;
   void unsetSingleNssais();
   /// <summary>
   ///
   /// </summary>
   std::string getProvisioningTime() const;
-  void setProvisioningTime(std::string const &value);
+  void setProvisioningTime(std::string const& value);
   bool provisioningTimeIsSet() const;
   void unsetProvisioningTime();
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, AdditionalSnssaiData> &getAdditionalSnssaiData();
+  std::map<std::string, AdditionalSnssaiData>& getAdditionalSnssaiData();
   void setAdditionalSnssaiData(
-      std::map<std::string, AdditionalSnssaiData> const &value);
+      std::map<std::string, AdditionalSnssaiData> const& value);
   bool additionalSnssaiDataIsSet() const;
   void unsetAdditionalSnssaiData();
 
-  friend void to_json(nlohmann::json &j, const Nssai &o);
-  friend void from_json(const nlohmann::json &j, Nssai &o);
+  friend void to_json(nlohmann::json& j, const Nssai& o);
+  friend void from_json(const nlohmann::json& j, Nssai& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   std::vector<Snssai> m_DefaultSingleNssais;
@@ -113,6 +113,6 @@ protected:
   bool m_AdditionalSnssaiDataIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* Nssai_H_ */

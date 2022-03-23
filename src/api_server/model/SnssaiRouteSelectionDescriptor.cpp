@@ -45,14 +45,14 @@ void SnssaiRouteSelectionDescriptor::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const SnssaiRouteSelectionDescriptor &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const SnssaiRouteSelectionDescriptor& o) {
+  j           = nlohmann::json();
   j["snssai"] = o.m_Snssai;
   if (o.dnnRouteSelDescsIsSet() || !o.m_DnnRouteSelDescs.empty())
     j["dnnRouteSelDescs"] = o.m_DnnRouteSelDescs;
 }
 
-void from_json(const nlohmann::json &j, SnssaiRouteSelectionDescriptor &o) {
+void from_json(const nlohmann::json& j, SnssaiRouteSelectionDescriptor& o) {
   j.at("snssai").get_to(o.m_Snssai);
   if (j.find("dnnRouteSelDescs") != j.end()) {
     j.at("dnnRouteSelDescs").get_to(o.m_DnnRouteSelDescs);
@@ -60,17 +60,19 @@ void from_json(const nlohmann::json &j, SnssaiRouteSelectionDescriptor &o) {
   }
 }
 
-Snssai SnssaiRouteSelectionDescriptor::getSnssai() const { return m_Snssai; }
-void SnssaiRouteSelectionDescriptor::setSnssai(Snssai const &value) {
+Snssai SnssaiRouteSelectionDescriptor::getSnssai() const {
+  return m_Snssai;
+}
+void SnssaiRouteSelectionDescriptor::setSnssai(Snssai const& value) {
   m_Snssai = value;
 }
-std::vector<DnnRouteSelectionDescriptor> &
+std::vector<DnnRouteSelectionDescriptor>&
 SnssaiRouteSelectionDescriptor::getDnnRouteSelDescs() {
   return m_DnnRouteSelDescs;
 }
 void SnssaiRouteSelectionDescriptor::setDnnRouteSelDescs(
-    std::vector<DnnRouteSelectionDescriptor> const &value) {
-  m_DnnRouteSelDescs = value;
+    std::vector<DnnRouteSelectionDescriptor> const& value) {
+  m_DnnRouteSelDescs      = value;
   m_DnnRouteSelDescsIsSet = true;
 }
 bool SnssaiRouteSelectionDescriptor::dnnRouteSelDescsIsSet() const {
@@ -80,4 +82,4 @@ void SnssaiRouteSelectionDescriptor::unsetDnnRouteSelDescs() {
   m_DnnRouteSelDescsIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

@@ -36,16 +36,16 @@
 namespace oai::udr::model {
 
 PresenceInfo::PresenceInfo() {
-  m_PraId = "";
-  m_PraIdIsSet = false;
-  m_AdditionalPraId = "";
-  m_AdditionalPraIdIsSet = false;
-  m_PresenceStateIsSet = false;
-  m_TrackingAreaListIsSet = false;
-  m_EcgiListIsSet = false;
-  m_NcgiListIsSet = false;
+  m_PraId                    = "";
+  m_PraIdIsSet               = false;
+  m_AdditionalPraId          = "";
+  m_AdditionalPraIdIsSet     = false;
+  m_PresenceStateIsSet       = false;
+  m_TrackingAreaListIsSet    = false;
+  m_EcgiListIsSet            = false;
+  m_NcgiListIsSet            = false;
   m_GlobalRanNodeIdListIsSet = false;
-  m_GlobaleNbIdListIsSet = false;
+  m_GlobaleNbIdListIsSet     = false;
 }
 
 PresenceInfo::~PresenceInfo() {}
@@ -54,27 +54,22 @@ void PresenceInfo::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PresenceInfo &o) {
+void to_json(nlohmann::json& j, const PresenceInfo& o) {
   j = nlohmann::json();
-  if (o.praIdIsSet())
-    j["praId"] = o.m_PraId;
-  if (o.additionalPraIdIsSet())
-    j["additionalPraId"] = o.m_AdditionalPraId;
-  if (o.presenceStateIsSet())
-    j["presenceState"] = o.m_PresenceState;
+  if (o.praIdIsSet()) j["praId"] = o.m_PraId;
+  if (o.additionalPraIdIsSet()) j["additionalPraId"] = o.m_AdditionalPraId;
+  if (o.presenceStateIsSet()) j["presenceState"] = o.m_PresenceState;
   if (o.trackingAreaListIsSet() || !o.m_TrackingAreaList.empty())
     j["trackingAreaList"] = o.m_TrackingAreaList;
-  if (o.ecgiListIsSet() || !o.m_EcgiList.empty())
-    j["ecgiList"] = o.m_EcgiList;
-  if (o.ncgiListIsSet() || !o.m_NcgiList.empty())
-    j["ncgiList"] = o.m_NcgiList;
+  if (o.ecgiListIsSet() || !o.m_EcgiList.empty()) j["ecgiList"] = o.m_EcgiList;
+  if (o.ncgiListIsSet() || !o.m_NcgiList.empty()) j["ncgiList"] = o.m_NcgiList;
   if (o.globalRanNodeIdListIsSet() || !o.m_GlobalRanNodeIdList.empty())
     j["globalRanNodeIdList"] = o.m_GlobalRanNodeIdList;
   if (o.globaleNbIdListIsSet() || !o.m_GlobaleNbIdList.empty())
     j["globaleNbIdList"] = o.m_GlobaleNbIdList;
 }
 
-void from_json(const nlohmann::json &j, PresenceInfo &o) {
+void from_json(const nlohmann::json& j, PresenceInfo& o) {
   if (j.find("praId") != j.end()) {
     j.at("praId").get_to(o.m_PraId);
     o.m_PraIdIsSet = true;
@@ -109,62 +104,90 @@ void from_json(const nlohmann::json &j, PresenceInfo &o) {
   }
 }
 
-std::string PresenceInfo::getPraId() const { return m_PraId; }
-void PresenceInfo::setPraId(std::string const &value) {
-  m_PraId = value;
+std::string PresenceInfo::getPraId() const {
+  return m_PraId;
+}
+void PresenceInfo::setPraId(std::string const& value) {
+  m_PraId      = value;
   m_PraIdIsSet = true;
 }
-bool PresenceInfo::praIdIsSet() const { return m_PraIdIsSet; }
-void PresenceInfo::unsetPraId() { m_PraIdIsSet = false; }
+bool PresenceInfo::praIdIsSet() const {
+  return m_PraIdIsSet;
+}
+void PresenceInfo::unsetPraId() {
+  m_PraIdIsSet = false;
+}
 std::string PresenceInfo::getAdditionalPraId() const {
   return m_AdditionalPraId;
 }
-void PresenceInfo::setAdditionalPraId(std::string const &value) {
-  m_AdditionalPraId = value;
+void PresenceInfo::setAdditionalPraId(std::string const& value) {
+  m_AdditionalPraId      = value;
   m_AdditionalPraIdIsSet = true;
 }
 bool PresenceInfo::additionalPraIdIsSet() const {
   return m_AdditionalPraIdIsSet;
 }
-void PresenceInfo::unsetAdditionalPraId() { m_AdditionalPraIdIsSet = false; }
-PresenceState PresenceInfo::getPresenceState() const { return m_PresenceState; }
-void PresenceInfo::setPresenceState(PresenceState const &value) {
-  m_PresenceState = value;
+void PresenceInfo::unsetAdditionalPraId() {
+  m_AdditionalPraIdIsSet = false;
+}
+PresenceState PresenceInfo::getPresenceState() const {
+  return m_PresenceState;
+}
+void PresenceInfo::setPresenceState(PresenceState const& value) {
+  m_PresenceState      = value;
   m_PresenceStateIsSet = true;
 }
-bool PresenceInfo::presenceStateIsSet() const { return m_PresenceStateIsSet; }
-void PresenceInfo::unsetPresenceState() { m_PresenceStateIsSet = false; }
-std::vector<Tai> &PresenceInfo::getTrackingAreaList() {
+bool PresenceInfo::presenceStateIsSet() const {
+  return m_PresenceStateIsSet;
+}
+void PresenceInfo::unsetPresenceState() {
+  m_PresenceStateIsSet = false;
+}
+std::vector<Tai>& PresenceInfo::getTrackingAreaList() {
   return m_TrackingAreaList;
 }
-void PresenceInfo::setTrackingAreaList(std::vector<Tai> const &value) {
-  m_TrackingAreaList = value;
+void PresenceInfo::setTrackingAreaList(std::vector<Tai> const& value) {
+  m_TrackingAreaList      = value;
   m_TrackingAreaListIsSet = true;
 }
 bool PresenceInfo::trackingAreaListIsSet() const {
   return m_TrackingAreaListIsSet;
 }
-void PresenceInfo::unsetTrackingAreaList() { m_TrackingAreaListIsSet = false; }
-std::vector<Ecgi> &PresenceInfo::getEcgiList() { return m_EcgiList; }
-void PresenceInfo::setEcgiList(std::vector<Ecgi> const &value) {
-  m_EcgiList = value;
+void PresenceInfo::unsetTrackingAreaList() {
+  m_TrackingAreaListIsSet = false;
+}
+std::vector<Ecgi>& PresenceInfo::getEcgiList() {
+  return m_EcgiList;
+}
+void PresenceInfo::setEcgiList(std::vector<Ecgi> const& value) {
+  m_EcgiList      = value;
   m_EcgiListIsSet = true;
 }
-bool PresenceInfo::ecgiListIsSet() const { return m_EcgiListIsSet; }
-void PresenceInfo::unsetEcgiList() { m_EcgiListIsSet = false; }
-std::vector<Ncgi> &PresenceInfo::getNcgiList() { return m_NcgiList; }
-void PresenceInfo::setNcgiList(std::vector<Ncgi> const &value) {
-  m_NcgiList = value;
+bool PresenceInfo::ecgiListIsSet() const {
+  return m_EcgiListIsSet;
+}
+void PresenceInfo::unsetEcgiList() {
+  m_EcgiListIsSet = false;
+}
+std::vector<Ncgi>& PresenceInfo::getNcgiList() {
+  return m_NcgiList;
+}
+void PresenceInfo::setNcgiList(std::vector<Ncgi> const& value) {
+  m_NcgiList      = value;
   m_NcgiListIsSet = true;
 }
-bool PresenceInfo::ncgiListIsSet() const { return m_NcgiListIsSet; }
-void PresenceInfo::unsetNcgiList() { m_NcgiListIsSet = false; }
-std::vector<GlobalRanNodeId> &PresenceInfo::getGlobalRanNodeIdList() {
+bool PresenceInfo::ncgiListIsSet() const {
+  return m_NcgiListIsSet;
+}
+void PresenceInfo::unsetNcgiList() {
+  m_NcgiListIsSet = false;
+}
+std::vector<GlobalRanNodeId>& PresenceInfo::getGlobalRanNodeIdList() {
   return m_GlobalRanNodeIdList;
 }
 void PresenceInfo::setGlobalRanNodeIdList(
-    std::vector<GlobalRanNodeId> const &value) {
-  m_GlobalRanNodeIdList = value;
+    std::vector<GlobalRanNodeId> const& value) {
+  m_GlobalRanNodeIdList      = value;
   m_GlobalRanNodeIdListIsSet = true;
 }
 bool PresenceInfo::globalRanNodeIdListIsSet() const {
@@ -173,17 +196,19 @@ bool PresenceInfo::globalRanNodeIdListIsSet() const {
 void PresenceInfo::unsetGlobalRanNodeIdList() {
   m_GlobalRanNodeIdListIsSet = false;
 }
-std::vector<GlobalRanNodeId> &PresenceInfo::getGlobaleNbIdList() {
+std::vector<GlobalRanNodeId>& PresenceInfo::getGlobaleNbIdList() {
   return m_GlobaleNbIdList;
 }
 void PresenceInfo::setGlobaleNbIdList(
-    std::vector<GlobalRanNodeId> const &value) {
-  m_GlobaleNbIdList = value;
+    std::vector<GlobalRanNodeId> const& value) {
+  m_GlobaleNbIdList      = value;
   m_GlobaleNbIdListIsSet = true;
 }
 bool PresenceInfo::globaleNbIdListIsSet() const {
   return m_GlobaleNbIdListIsSet;
 }
-void PresenceInfo::unsetGlobaleNbIdList() { m_GlobaleNbIdListIsSet = false; }
+void PresenceInfo::unsetGlobaleNbIdList() {
+  m_GlobaleNbIdListIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

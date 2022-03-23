@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualInfluenceDataSubscriptionDocumentApi {
-public:
+ public:
   IndividualInfluenceDataSubscriptionDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualInfluenceDataSubscriptionDocumentApi() {}
@@ -62,20 +62,20 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void delete_individual_influence_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void read_individual_influence_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void replace_individual_influence_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_influence_data_subscription_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -89,8 +89,8 @@ private:
   /// <param name="subscriptionId">String identifying a subscription to the
   /// Individual Influence Data Subscription</param>
   virtual void delete_individual_influence_data_subscription(
-      const std::string &subscriptionId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subscriptionId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Get an existing individual Influence Data Subscription resource
@@ -101,8 +101,8 @@ private:
   /// <param name="subscriptionId">String identifying a subscription to the
   /// Individual Influence Data Subscription</param>
   virtual void read_individual_influence_data_subscription(
-      const std::string &subscriptionId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subscriptionId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify an existing individual Influence Data Subscription resource
@@ -114,10 +114,10 @@ private:
   /// Individual Influence Data Subscription</param> <param
   /// name="trafficInfluSub"></param>
   virtual void replace_individual_influence_data_subscription(
-      const std::string &subscriptionId, const TrafficInfluSub &trafficInfluSub,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subscriptionId, const TrafficInfluSub& trafficInfluSub,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IndividualInfluenceDataSubscriptionDocumentApi_H_ */

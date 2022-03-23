@@ -36,11 +36,11 @@
 namespace oai::udr::model {
 
 ServiceAreaRestriction::ServiceAreaRestriction() {
-  m_RestrictionTypeIsSet = false;
-  m_AreasIsSet = false;
-  m_MaxNumOfTAs = 0;
-  m_MaxNumOfTAsIsSet = false;
-  m_MaxNumOfTAsForNotAllowedAreas = 0;
+  m_RestrictionTypeIsSet               = false;
+  m_AreasIsSet                         = false;
+  m_MaxNumOfTAs                        = 0;
+  m_MaxNumOfTAsIsSet                   = false;
+  m_MaxNumOfTAsForNotAllowedAreas      = 0;
   m_MaxNumOfTAsForNotAllowedAreasIsSet = false;
 }
 
@@ -50,19 +50,16 @@ void ServiceAreaRestriction::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ServiceAreaRestriction &o) {
+void to_json(nlohmann::json& j, const ServiceAreaRestriction& o) {
   j = nlohmann::json();
-  if (o.restrictionTypeIsSet())
-    j["restrictionType"] = o.m_RestrictionType;
-  if (o.areasIsSet() || !o.m_Areas.empty())
-    j["areas"] = o.m_Areas;
-  if (o.maxNumOfTAsIsSet())
-    j["maxNumOfTAs"] = o.m_MaxNumOfTAs;
+  if (o.restrictionTypeIsSet()) j["restrictionType"] = o.m_RestrictionType;
+  if (o.areasIsSet() || !o.m_Areas.empty()) j["areas"] = o.m_Areas;
+  if (o.maxNumOfTAsIsSet()) j["maxNumOfTAs"] = o.m_MaxNumOfTAs;
   if (o.maxNumOfTAsForNotAllowedAreasIsSet())
     j["maxNumOfTAsForNotAllowedAreas"] = o.m_MaxNumOfTAsForNotAllowedAreas;
 }
 
-void from_json(const nlohmann::json &j, ServiceAreaRestriction &o) {
+void from_json(const nlohmann::json& j, ServiceAreaRestriction& o) {
   if (j.find("restrictionType") != j.end()) {
     j.at("restrictionType").get_to(o.m_RestrictionType);
     o.m_RestrictionTypeIsSet = true;
@@ -85,8 +82,8 @@ void from_json(const nlohmann::json &j, ServiceAreaRestriction &o) {
 RestrictionType ServiceAreaRestriction::getRestrictionType() const {
   return m_RestrictionType;
 }
-void ServiceAreaRestriction::setRestrictionType(RestrictionType const &value) {
-  m_RestrictionType = value;
+void ServiceAreaRestriction::setRestrictionType(RestrictionType const& value) {
+  m_RestrictionType      = value;
   m_RestrictionTypeIsSet = true;
 }
 bool ServiceAreaRestriction::restrictionTypeIsSet() const {
@@ -95,28 +92,38 @@ bool ServiceAreaRestriction::restrictionTypeIsSet() const {
 void ServiceAreaRestriction::unsetRestrictionType() {
   m_RestrictionTypeIsSet = false;
 }
-std::vector<Area> &ServiceAreaRestriction::getAreas() { return m_Areas; }
-void ServiceAreaRestriction::setAreas(std::vector<Area> const &value) {
-  m_Areas = value;
+std::vector<Area>& ServiceAreaRestriction::getAreas() {
+  return m_Areas;
+}
+void ServiceAreaRestriction::setAreas(std::vector<Area> const& value) {
+  m_Areas      = value;
   m_AreasIsSet = true;
 }
-bool ServiceAreaRestriction::areasIsSet() const { return m_AreasIsSet; }
-void ServiceAreaRestriction::unsetAreas() { m_AreasIsSet = false; }
-int32_t ServiceAreaRestriction::getMaxNumOfTAs() const { return m_MaxNumOfTAs; }
+bool ServiceAreaRestriction::areasIsSet() const {
+  return m_AreasIsSet;
+}
+void ServiceAreaRestriction::unsetAreas() {
+  m_AreasIsSet = false;
+}
+int32_t ServiceAreaRestriction::getMaxNumOfTAs() const {
+  return m_MaxNumOfTAs;
+}
 void ServiceAreaRestriction::setMaxNumOfTAs(int32_t const value) {
-  m_MaxNumOfTAs = value;
+  m_MaxNumOfTAs      = value;
   m_MaxNumOfTAsIsSet = true;
 }
 bool ServiceAreaRestriction::maxNumOfTAsIsSet() const {
   return m_MaxNumOfTAsIsSet;
 }
-void ServiceAreaRestriction::unsetMaxNumOfTAs() { m_MaxNumOfTAsIsSet = false; }
+void ServiceAreaRestriction::unsetMaxNumOfTAs() {
+  m_MaxNumOfTAsIsSet = false;
+}
 int32_t ServiceAreaRestriction::getMaxNumOfTAsForNotAllowedAreas() const {
   return m_MaxNumOfTAsForNotAllowedAreas;
 }
 void ServiceAreaRestriction::setMaxNumOfTAsForNotAllowedAreas(
     int32_t const value) {
-  m_MaxNumOfTAsForNotAllowedAreas = value;
+  m_MaxNumOfTAsForNotAllowedAreas      = value;
   m_MaxNumOfTAsForNotAllowedAreasIsSet = true;
 }
 bool ServiceAreaRestriction::maxNumOfTAsForNotAllowedAreasIsSet() const {
@@ -126,4 +133,4 @@ void ServiceAreaRestriction::unsetMaxNumOfTAsForNotAllowedAreas() {
   m_MaxNumOfTAsForNotAllowedAreasIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

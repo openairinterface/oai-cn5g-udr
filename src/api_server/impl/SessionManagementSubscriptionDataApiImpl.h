@@ -55,27 +55,27 @@ using namespace oai::udr::app;
 
 class SessionManagementSubscriptionDataApiImpl
     : public oai::udr::api::SessionManagementSubscriptionDataApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
+ public:
   SessionManagementSubscriptionDataApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
       std::string address);
   ~SessionManagementSubscriptionDataApiImpl() {}
 
   void query_sm_data(
-      const std::string &ueId, const std::string &servingPlmnId,
-      const Pistache::Optional<Snssai> &singleNssai,
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId, const std::string& servingPlmnId,
+      const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

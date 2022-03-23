@@ -48,16 +48,20 @@ IndividualPFDDataDocumentApi::IndividualPFDDataDocumentApi(
   router = rtr;
 }
 
-void IndividualPFDDataDocumentApi::init() { setupRoutes(); }
+void IndividualPFDDataDocumentApi::init() {
+  setupRoutes();
+}
 
 void IndividualPFDDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Put(*router,
-              base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
-              Routes::bind(&IndividualPFDDataDocumentApi::
-                               create_or_replace_individual_pfd_data_handler,
-                           this));
+  Routes::Put(
+      *router,
+      base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
+      Routes::bind(
+          &IndividualPFDDataDocumentApi::
+              create_or_replace_individual_pfd_data_handler,
+          this));
   Routes::Delete(
       *router,
       base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
@@ -72,16 +76,21 @@ void IndividualPFDDataDocumentApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&IndividualPFDDataDocumentApi::
-                       individual_pfd_data_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &IndividualPFDDataDocumentApi::
+          individual_pfd_data_document_api_default_handler,
+      this));
 }
 
 void IndividualPFDDataDocumentApi::
     create_or_replace_individual_pfd_data_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":appId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto appId = request.param(":appId").as<std::string>();
 
@@ -91,58 +100,68 @@ void IndividualPFDDataDocumentApi::
 
   try {
     nlohmann::json::parse(request.body()).get_to(pfdDataForAppExt);
-    this->create_or_replace_individual_pfd_data(appId, pfdDataForAppExt,
-                                                response);
-  } catch (nlohmann::detail::exception &e) {
+    this->create_or_replace_individual_pfd_data(
+        appId, pfdDataForAppExt, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void IndividualPFDDataDocumentApi::delete_individual_pfd_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":appId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto appId = request.param(":appId").as<std::string>();
 
   try {
     this->delete_individual_pfd_data(appId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void IndividualPFDDataDocumentApi::read_individual_pfd_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":appId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto appId = request.param(":appId").as<std::string>();
 
   try {
     this->read_individual_pfd_data(appId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -151,10 +170,10 @@ void IndividualPFDDataDocumentApi::read_individual_pfd_data_handler(
 
 void IndividualPFDDataDocumentApi::
     individual_pfd_data_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

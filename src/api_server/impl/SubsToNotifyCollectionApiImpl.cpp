@@ -41,33 +41,34 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 SubsToNotifyCollectionApiImpl::SubsToNotifyCollectionApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : SubsToNotifyCollectionApi(rtr), m_udr_app(udr_app_inst),
+    : SubsToNotifyCollectionApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SubsToNotifyCollectionApiImpl::query_subs_to_notify(
-    const Pistache::Optional<std::string> &ueId,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const Pistache::Optional<std::string>& ueId,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void SubsToNotifyCollectionApiImpl::
     remove_multiple_subscription_data_subscriptions(
-        const Pistache::Optional<std::string> &ueId,
-        const Pistache::Optional<std::string> &nfInstanceId,
-        const Pistache::Optional<bool> &deleteAllNfs,
-        const Pistache::Optional<bool> &implicitUnsubscribeIndication,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const Pistache::Optional<std::string>& ueId,
+        const Pistache::Optional<std::string>& nfInstanceId,
+        const Pistache::Optional<bool>& deleteAllNfs,
+        const Pistache::Optional<bool>& implicitUnsubscribeIndication,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void SubsToNotifyCollectionApiImpl::subscription_data_subscriptions(
-    const SubscriptionDataSubscriptions &subscriptionDataSubscriptions,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const SubscriptionDataSubscriptions& subscriptionDataSubscriptions,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

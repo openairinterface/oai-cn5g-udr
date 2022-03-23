@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class RouteInformation {
-public:
+ public:
   RouteInformation();
   virtual ~RouteInformation();
 
@@ -63,14 +63,14 @@ public:
   ///
   /// </summary>
   std::string getIpv4Addr() const;
-  void setIpv4Addr(std::string const &value);
+  void setIpv4Addr(std::string const& value);
   bool ipv4AddrIsSet() const;
   void unsetIpv4Addr();
   /// <summary>
   ///
   /// </summary>
   Ipv6Addr getIpv6Addr() const;
-  void setIpv6Addr(Ipv6Addr const &value);
+  void setIpv6Addr(Ipv6Addr const& value);
   bool ipv6AddrIsSet() const;
   void unsetIpv6Addr();
   /// <summary>
@@ -79,10 +79,10 @@ public:
   int32_t getPortNumber() const;
   void setPortNumber(int32_t const value);
 
-  friend void to_json(nlohmann::json &j, const RouteInformation &o);
-  friend void from_json(const nlohmann::json &j, RouteInformation &o);
+  friend void to_json(nlohmann::json& j, const RouteInformation& o);
+  friend void from_json(const nlohmann::json& j, RouteInformation& o);
 
-protected:
+ protected:
   std::string m_Ipv4Addr;
   bool m_Ipv4AddrIsSet;
   Ipv6Addr m_Ipv6Addr;
@@ -90,6 +90,6 @@ protected:
   int32_t m_PortNumber;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* RouteInformation_H_ */

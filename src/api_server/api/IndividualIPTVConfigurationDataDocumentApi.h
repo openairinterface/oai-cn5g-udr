@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualIPTVConfigurationDataDocumentApi {
-public:
+ public:
   IndividualIPTVConfigurationDataDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualIPTVConfigurationDataDocumentApi() {}
@@ -62,17 +62,17 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_or_replace_individual_iptv_configuration_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void delete_individual_iptv_configuration_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_iptv_configuration_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -87,8 +87,8 @@ private:
   /// Configuration Data to be created or updated. It shall apply the format of
   /// Data type string.</param> <param name="iptvConfigData"></param>
   virtual void create_or_replace_individual_iptv_configuration_data(
-      const std::string &configurationId, const IptvConfigData &iptvConfigData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& configurationId, const IptvConfigData& iptvConfigData,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Delete an individual IPTV configuration resource
@@ -100,10 +100,10 @@ private:
   /// Configuration to be updated. It shall apply the format of Data type
   /// string.</param>
   virtual void delete_individual_iptv_configuration_data(
-      const std::string &configurationId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& configurationId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IndividualIPTVConfigurationDataDocumentApi_H_ */

@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ServiceAreaRestriction {
-public:
+ public:
   ServiceAreaRestriction();
   virtual ~ServiceAreaRestriction();
 
@@ -64,14 +64,14 @@ public:
   ///
   /// </summary>
   RestrictionType getRestrictionType() const;
-  void setRestrictionType(RestrictionType const &value);
+  void setRestrictionType(RestrictionType const& value);
   bool restrictionTypeIsSet() const;
   void unsetRestrictionType();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Area> &getAreas();
-  void setAreas(std::vector<Area> const &value);
+  std::vector<Area>& getAreas();
+  void setAreas(std::vector<Area> const& value);
   bool areasIsSet() const;
   void unsetAreas();
   /// <summary>
@@ -89,10 +89,10 @@ public:
   bool maxNumOfTAsForNotAllowedAreasIsSet() const;
   void unsetMaxNumOfTAsForNotAllowedAreas();
 
-  friend void to_json(nlohmann::json &j, const ServiceAreaRestriction &o);
-  friend void from_json(const nlohmann::json &j, ServiceAreaRestriction &o);
+  friend void to_json(nlohmann::json& j, const ServiceAreaRestriction& o);
+  friend void from_json(const nlohmann::json& j, ServiceAreaRestriction& o);
 
-protected:
+ protected:
   RestrictionType m_RestrictionType;
   bool m_RestrictionTypeIsSet;
   std::vector<Area> m_Areas;
@@ -103,6 +103,6 @@ protected:
   bool m_MaxNumOfTAsForNotAllowedAreasIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* ServiceAreaRestriction_H_ */

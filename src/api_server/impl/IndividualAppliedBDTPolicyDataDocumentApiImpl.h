@@ -55,24 +55,24 @@ using namespace oai::udr::app;
 
 class IndividualAppliedBDTPolicyDataDocumentApiImpl
     : public oai::udr::api::IndividualAppliedBDTPolicyDataDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
+ public:
   IndividualAppliedBDTPolicyDataDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
       std::string address);
   ~IndividualAppliedBDTPolicyDataDocumentApiImpl() {}
 
   void delete_individual_applied_bdt_policy_data(
-      const std::string &bdtPolicyId, Pistache::Http::ResponseWriter &response);
+      const std::string& bdtPolicyId, Pistache::Http::ResponseWriter& response);
   void update_individual_applied_bdt_policy_data(
-      const std::string &bdtPolicyId,
-      const BdtPolicyDataPatch &bdtPolicyDataPatch,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& bdtPolicyId,
+      const BdtPolicyDataPatch& bdtPolicyDataPatch,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

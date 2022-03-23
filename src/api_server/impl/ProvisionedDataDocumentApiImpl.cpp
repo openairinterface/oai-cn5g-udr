@@ -41,9 +41,10 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 ProvisionedDataDocumentApiImpl::ProvisionedDataDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : ProvisionedDataDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : ProvisionedDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 // void ProvisionedDataDocumentApiImpl::query_provisioned_data(const std::string
@@ -54,4 +55,4 @@ ProvisionedDataDocumentApiImpl::ProvisionedDataDocumentApiImpl(
 //    yet!\n");
 //}
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

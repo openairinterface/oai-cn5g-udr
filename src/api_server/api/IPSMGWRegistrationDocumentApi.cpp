@@ -48,7 +48,9 @@ IPSMGWRegistrationDocumentApi::IPSMGWRegistrationDocumentApi(
   router = rtr;
 }
 
-void IPSMGWRegistrationDocumentApi::init() { setupRoutes(); }
+void IPSMGWRegistrationDocumentApi::init() {
+  setupRoutes();
+}
 
 void IPSMGWRegistrationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -83,15 +85,20 @@ void IPSMGWRegistrationDocumentApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&IPSMGWRegistrationDocumentApi::
-                       ipsmgw_registration_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &IPSMGWRegistrationDocumentApi::
+          ipsmgw_registration_document_api_default_handler,
+      this));
 }
 
 void IPSMGWRegistrationDocumentApi::create_ip_sm_gw_context_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -102,43 +109,53 @@ void IPSMGWRegistrationDocumentApi::create_ip_sm_gw_context_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(ipSmGwRegistration);
     this->create_ip_sm_gw_context(ueId, ipSmGwRegistration, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void IPSMGWRegistrationDocumentApi::delete_ip_sm_gw_context_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
   try {
     this->delete_ip_sm_gw_context(ueId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void IPSMGWRegistrationDocumentApi::modify_ip_sm_gw_context_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -148,22 +165,27 @@ void IPSMGWRegistrationDocumentApi::modify_ip_sm_gw_context_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);
     this->modify_ip_sm_gw_context(ueId, patchItem, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void IPSMGWRegistrationDocumentApi::query_ip_sm_gw_context_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -187,14 +209,14 @@ void IPSMGWRegistrationDocumentApi::query_ip_sm_gw_context_handler(
 
   try {
     this->query_ip_sm_gw_context(ueId, fields, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -203,10 +225,10 @@ void IPSMGWRegistrationDocumentApi::query_ip_sm_gw_context_handler(
 
 void IPSMGWRegistrationDocumentApi::
     ipsmgw_registration_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

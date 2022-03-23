@@ -43,10 +43,10 @@ void ReportingTrigger::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ReportingTrigger &o) {
+void to_json(nlohmann::json& j, const ReportingTrigger& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, ReportingTrigger &o) {}
+void from_json(const nlohmann::json& j, ReportingTrigger& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

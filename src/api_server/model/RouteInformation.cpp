@@ -36,10 +36,10 @@
 namespace oai::udr::model {
 
 RouteInformation::RouteInformation() {
-  m_Ipv4Addr = "";
+  m_Ipv4Addr      = "";
   m_Ipv4AddrIsSet = false;
   m_Ipv6AddrIsSet = false;
-  m_PortNumber = 0;
+  m_PortNumber    = 0;
 }
 
 RouteInformation::~RouteInformation() {}
@@ -48,16 +48,14 @@ void RouteInformation::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const RouteInformation &o) {
+void to_json(nlohmann::json& j, const RouteInformation& o) {
   j = nlohmann::json();
-  if (o.ipv4AddrIsSet())
-    j["ipv4Addr"] = o.m_Ipv4Addr;
-  if (o.ipv6AddrIsSet())
-    j["ipv6Addr"] = o.m_Ipv6Addr;
+  if (o.ipv4AddrIsSet()) j["ipv4Addr"] = o.m_Ipv4Addr;
+  if (o.ipv6AddrIsSet()) j["ipv6Addr"] = o.m_Ipv6Addr;
   j["portNumber"] = o.m_PortNumber;
 }
 
-void from_json(const nlohmann::json &j, RouteInformation &o) {
+void from_json(const nlohmann::json& j, RouteInformation& o) {
   if (j.find("ipv4Addr") != j.end()) {
     j.at("ipv4Addr").get_to(o.m_Ipv4Addr);
     o.m_Ipv4AddrIsSet = true;
@@ -69,23 +67,37 @@ void from_json(const nlohmann::json &j, RouteInformation &o) {
   j.at("portNumber").get_to(o.m_PortNumber);
 }
 
-std::string RouteInformation::getIpv4Addr() const { return m_Ipv4Addr; }
-void RouteInformation::setIpv4Addr(std::string const &value) {
-  m_Ipv4Addr = value;
+std::string RouteInformation::getIpv4Addr() const {
+  return m_Ipv4Addr;
+}
+void RouteInformation::setIpv4Addr(std::string const& value) {
+  m_Ipv4Addr      = value;
   m_Ipv4AddrIsSet = true;
 }
-bool RouteInformation::ipv4AddrIsSet() const { return m_Ipv4AddrIsSet; }
-void RouteInformation::unsetIpv4Addr() { m_Ipv4AddrIsSet = false; }
-Ipv6Addr RouteInformation::getIpv6Addr() const { return m_Ipv6Addr; }
-void RouteInformation::setIpv6Addr(Ipv6Addr const &value) {
-  m_Ipv6Addr = value;
+bool RouteInformation::ipv4AddrIsSet() const {
+  return m_Ipv4AddrIsSet;
+}
+void RouteInformation::unsetIpv4Addr() {
+  m_Ipv4AddrIsSet = false;
+}
+Ipv6Addr RouteInformation::getIpv6Addr() const {
+  return m_Ipv6Addr;
+}
+void RouteInformation::setIpv6Addr(Ipv6Addr const& value) {
+  m_Ipv6Addr      = value;
   m_Ipv6AddrIsSet = true;
 }
-bool RouteInformation::ipv6AddrIsSet() const { return m_Ipv6AddrIsSet; }
-void RouteInformation::unsetIpv6Addr() { m_Ipv6AddrIsSet = false; }
-int32_t RouteInformation::getPortNumber() const { return m_PortNumber; }
+bool RouteInformation::ipv6AddrIsSet() const {
+  return m_Ipv6AddrIsSet;
+}
+void RouteInformation::unsetIpv6Addr() {
+  m_Ipv6AddrIsSet = false;
+}
+int32_t RouteInformation::getPortNumber() const {
+  return m_PortNumber;
+}
 void RouteInformation::setPortNumber(int32_t const value) {
   m_PortNumber = value;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

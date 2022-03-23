@@ -29,7 +29,7 @@
 #define FILE_FQDN_HPP_SEEN
 #include <string>
 class fqdn {
-public:
+ public:
   /*
    * Resolve a DNS name to get host's IP Addr
    * @param [const std::string &] host_name: host's name/url
@@ -37,9 +37,9 @@ public:
    * @param [uint8_t &] addr_type: addr_type (Ipv4/v6)
    * @return void
    */
-  static bool resolve(const std::string &host_name, std::string &address,
-                      uint32_t &port, uint8_t &addr_type,
-                      const std::string &protocol = "http");
+  static bool resolve(
+      const std::string& host_name, std::string& address, uint32_t& port,
+      uint8_t& addr_type, const std::string& protocol = "http");
 };
 
 #endif /* FILE_FQDN_HPP_SEEN */

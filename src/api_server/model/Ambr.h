@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class Ambr {
-public:
+ public:
   Ambr();
   virtual ~Ambr();
 
@@ -61,22 +61,22 @@ public:
   ///
   /// </summary>
   std::string getUplink() const;
-  void setUplink(std::string const &value);
+  void setUplink(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getDownlink() const;
-  void setDownlink(std::string const &value);
+  void setDownlink(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const Ambr &o);
-  friend void from_json(const nlohmann::json &j, Ambr &o);
+  friend void to_json(nlohmann::json& j, const Ambr& o);
+  friend void from_json(const nlohmann::json& j, Ambr& o);
 
-protected:
+ protected:
   std::string m_Uplink;
 
   std::string m_Downlink;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* Ambr_H_ */

@@ -48,29 +48,37 @@ SubsToNotifyDocumentApi::SubsToNotifyDocumentApi(
   router = rtr;
 }
 
-void SubsToNotifyDocumentApi::init() { setupRoutes(); }
+void SubsToNotifyDocumentApi::init() {
+  setupRoutes();
+}
 
 void SubsToNotifyDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Patch(*router,
-                base + udr_cfg.nudr.api_version +
-                    "/subscription-data/subs-to-notify/:subsId",
-                Routes::bind(&SubsToNotifyDocumentApi::
-                                 modifysubscription_data_subscription_handler,
-                             this));
-  Routes::Get(*router,
-              base + udr_cfg.nudr.api_version +
-                  "/subscription-data/subs-to-notify/:subsId",
-              Routes::bind(&SubsToNotifyDocumentApi::
-                               query_subscription_data_subscriptions_handler,
-                           this));
-  Routes::Delete(*router,
-                 base + udr_cfg.nudr.api_version +
-                     "/subscription-data/subs-to-notify/:subsId",
-                 Routes::bind(&SubsToNotifyDocumentApi::
-                                  removesubscription_data_subscriptions_handler,
-                              this));
+  Routes::Patch(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/subs-to-notify/:subsId",
+      Routes::bind(
+          &SubsToNotifyDocumentApi::
+              modifysubscription_data_subscription_handler,
+          this));
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/subs-to-notify/:subsId",
+      Routes::bind(
+          &SubsToNotifyDocumentApi::
+              query_subscription_data_subscriptions_handler,
+          this));
+  Routes::Delete(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/subs-to-notify/:subsId",
+      Routes::bind(
+          &SubsToNotifyDocumentApi::
+              removesubscription_data_subscriptions_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -79,8 +87,13 @@ void SubsToNotifyDocumentApi::setupRoutes() {
 }
 
 void SubsToNotifyDocumentApi::modifysubscription_data_subscription_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
@@ -99,58 +112,68 @@ void SubsToNotifyDocumentApi::modifysubscription_data_subscription_handler(
 
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);
-    this->modifysubscription_data_subscription(subsId, patchItem,
-                                               supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->modifysubscription_data_subscription(
+        subsId, patchItem, supportedFeatures, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SubsToNotifyDocumentApi::query_subscription_data_subscriptions_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
   try {
     this->query_subscription_data_subscriptions(subsId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SubsToNotifyDocumentApi::removesubscription_data_subscriptions_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
   try {
     this->removesubscription_data_subscriptions(subsId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -158,9 +181,9 @@ void SubsToNotifyDocumentApi::removesubscription_data_subscriptions_handler(
 }
 
 void SubsToNotifyDocumentApi::subs_to_notify_document_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

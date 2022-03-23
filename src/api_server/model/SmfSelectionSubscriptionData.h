@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class SmfSelectionSubscriptionData {
-public:
+ public:
   SmfSelectionSubscriptionData();
   virtual ~SmfSelectionSubscriptionData();
 
@@ -65,29 +65,29 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, SnssaiInfo> &getSubscribedSnssaiInfos();
-  void setSubscribedSnssaiInfos(std::map<std::string, SnssaiInfo> const &value);
+  std::map<std::string, SnssaiInfo>& getSubscribedSnssaiInfos();
+  void setSubscribedSnssaiInfos(std::map<std::string, SnssaiInfo> const& value);
   bool subscribedSnssaiInfosIsSet() const;
   void unsetSubscribedSnssaiInfos();
   /// <summary>
   ///
   /// </summary>
   std::string getSharedSnssaiInfosId() const;
-  void setSharedSnssaiInfosId(std::string const &value);
+  void setSharedSnssaiInfosId(std::string const& value);
   bool sharedSnssaiInfosIdIsSet() const;
   void unsetSharedSnssaiInfosId();
 
-  friend void to_json(nlohmann::json &j, const SmfSelectionSubscriptionData &o);
-  friend void from_json(const nlohmann::json &j,
-                        SmfSelectionSubscriptionData &o);
+  friend void to_json(nlohmann::json& j, const SmfSelectionSubscriptionData& o);
+  friend void from_json(
+      const nlohmann::json& j, SmfSelectionSubscriptionData& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   std::map<std::string, SnssaiInfo> m_SubscribedSnssaiInfos;
@@ -96,6 +96,6 @@ protected:
   bool m_SharedSnssaiInfosIdIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* SmfSelectionSubscriptionData_H_ */

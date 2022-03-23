@@ -43,8 +43,10 @@ void UpIntegrity::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const UpIntegrity &o) { j = nlohmann::json(); }
+void to_json(nlohmann::json& j, const UpIntegrity& o) {
+  j = nlohmann::json();
+}
 
-void from_json(const nlohmann::json &j, UpIntegrity &o) {}
+void from_json(const nlohmann::json& j, UpIntegrity& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
