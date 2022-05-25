@@ -39,8 +39,9 @@ cassandra_db::cassandra_db() : database_wrapper<cassandra_db>() {
 cassandra_db::~cassandra_db() {}
 
 bool cassandra_db::initialize() {
-  Logger::udr_app().debug("Initialize from CassandraDB");
-  return true;
+  Logger::udr_app().debug("Initialize CassandraDB");
+  Logger::udr_app().debug("CassandraDB is not supported!");
+  return false;
 }
 
 bool cassandra_db::close_connection() {
@@ -54,6 +55,7 @@ bool cassandra_db::insert_authentication_subscription(
 
 bool cassandra_db::query_authentication_subscription(
     const std::string& id, nlohmann::json& json_data) {
+  Logger::udr_app().debug("CassandraDB is not supported!");
   return true;
 }
 

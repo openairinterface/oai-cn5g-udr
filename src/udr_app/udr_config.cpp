@@ -42,7 +42,7 @@ namespace oai::udr::config {
 udr_config::udr_config() : mysql(), instance(), udr_name(), pid_dir(), nudr() {
   nudr_http2_port  = 8080;
   nudr.api_version = "v1";
-  db_type          = DB_TYPE_CASSANDRA;
+  db_type          = DB_TYPE_MYSQL;
 }
 
 //------------------------------------------------------------------------------

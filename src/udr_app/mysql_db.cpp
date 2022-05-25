@@ -31,15 +31,13 @@ using namespace oai::udr::config;
 extern udr_config udr_cfg;
 
 //------------------------------------------------------------------------------
-mysql_db::mysql_db() : database_wrapper<mysql_db>() {
-  // initialize();
-}
+mysql_db::mysql_db() : database_wrapper<mysql_db>() {}
 
 //------------------------------------------------------------------------------
 mysql_db::~mysql_db() {}
 
 bool mysql_db::initialize() {
-  Logger::udr_app().debug("Initialize from MySQL DB");
+  Logger::udr_app().debug("Initialize MySQL DB");
   if (!mysql_init(&mysql_connector)) {
     Logger::udr_app().error("Cannot initialize MySQL");
     throw std::runtime_error("Cannot initialize MySQL");

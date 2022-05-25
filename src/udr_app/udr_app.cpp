@@ -55,12 +55,23 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
     : event_sub(ev) {
   Logger::udr_app().startup("Starting...");
 
-  if (udr_cfg.db_type == DB_TYPE_MYSQL) {
-    db_connector = std::make_shared<mysql_db>();
-  } else {
+  // Use the appropriate DB connector
+  if (udr_cfg.db_type == DB_TYPE_CASSANDRA) {
     db_connector = std::make_shared<cassandra_db>();
+  } else {
+    db_connector = std::make_shared<mysql_db>();
   }
-  db_connector->initialize();
+  if (!db_connector->initialize()) {
+    Logger::udr_app().error("Error when initializing a connection with DB");
+    return;
+  }
+
+  // TEST
+  std::string ue_id;
+  nlohmann::json response_data;
+  long code;
+  handle_read_authentication_subscription(ue_id, response_data, code);
+
   /*
     if (!mysql_init(&mysql)) {
       Logger::udr_app().error("Cannot initialize MySQL");
@@ -1050,20 +1061,13 @@ void udr_app::handle_read_authentication_subscription(
     const std::string& ue_id, nlohmann::json& response_data, long& code) {
   Logger::udr_server().info("Handle Read Authentication Subscription");
 
-  //  obj->accessDerivedField();
-
-  if (udr_cfg.db_type == DB_TYPE_MYSQL) {
-    if (std::dynamic_pointer_cast<mysql_db>(db_connector)
-            ->query_authentication_subscription(ue_id, response_data)) {
-      code = HTTP_STATUS_CODE_200_OK;
-      Logger::udr_server().info(
-          "AuthenticationSubscription GET: %s", response_data.dump().c_str());
-    } else {
-      code = HTTP_STATUS_CODE_404_NOT_FOUND;  // TODO
-    }
+  if (db_connector->query_authentication_subscription(ue_id, response_data)) {
+    code = HTTP_STATUS_CODE_200_OK;
+    Logger::udr_server().info(
+        "AuthenticationSubscription GET: %s", response_data.dump().c_str());
   } else {
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;  // TODO
   }
-
   return;
 
   /*
