@@ -22,6 +22,8 @@
 #ifndef _UDR_CONFIG_H_
 #define _UDR_CONFIG_H_
 
+#include "udr.h"
+
 #include <arpa/inet.h>
 #include <libconfig.h++>
 #include <netinet/in.h>
@@ -104,6 +106,7 @@ class udr_config {
   bool use_http2;
 
   mysql_conf_t mysql;
+  db_type_t db_type;
 };
 }  // namespace oai::udr::config
 

@@ -39,6 +39,8 @@
 #include "logger.hpp"
 #include "udr_config.hpp"
 #include "udr_nrf.hpp"
+#include "mysql_db.hpp"
+#include "cassandra_db.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
@@ -53,21 +55,28 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
     : event_sub(ev) {
   Logger::udr_app().startup("Starting...");
 
-  if (!mysql_init(&mysql)) {
-    Logger::udr_app().error("Cannot initialize MySQL");
-    throw std::runtime_error("Cannot initialize MySQL");
+  if (udr_cfg.db_type == DB_TYPE_MYSQL) {
+    db_connector = std::make_shared<mysql_db>();
+  } else {
+    db_connector = std::make_shared<cassandra_db>();
   }
+  db_connector->initialize();
+  /*
+    if (!mysql_init(&mysql)) {
+      Logger::udr_app().error("Cannot initialize MySQL");
+      throw std::runtime_error("Cannot initialize MySQL");
+    }
 
-  if (!mysql_real_connect(
-          &mysql, udr_cfg.mysql.mysql_server.c_str(),
-          udr_cfg.mysql.mysql_user.c_str(), udr_cfg.mysql.mysql_pass.c_str(),
-          udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
-    Logger::udr_app().error(
-        "An error occurred while connecting to MySQL DB: %s",
-        mysql_error(&mysql));
-    throw std::runtime_error("Cannot connect to MySQL DB");
-  }
-
+    if (!mysql_real_connect(
+            &mysql, udr_cfg.mysql.mysql_server.c_str(),
+            udr_cfg.mysql.mysql_user.c_str(), udr_cfg.mysql.mysql_pass.c_str(),
+            udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
+      Logger::udr_app().error(
+          "An error occurred while connecting to MySQL DB: %s",
+          mysql_error(&mysql));
+      throw std::runtime_error("Cannot connect to MySQL DB");
+    }
+  */
   // Register to NRF
   if (udr_cfg.register_nrf) {
     try {
@@ -874,6 +883,92 @@ void udr_app::handle_query_authentication_status(
 }
 
 //------------------------------------------------------------------------------
+void udr_app::handle_create_authentication_data(
+    const std::string& ue_id,
+    const AuthenticationSubscription& authentication_subscription,
+    nlohmann::json& response_data, long& http_code) {
+  /*
+
+            Logger::udr_server().info("Handle Create Authentication Status");
+
+            MYSQL_RES* res = nullptr;
+            MYSQL_ROW row  = {};
+
+            const std::string select_AuthenticationStatus =
+                "SELECT * FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
+            std::string query = {};
+            nlohmann::json j  = {};
+
+            Logger::udr_server().info(
+                "MySQL query: %s", select_AuthenticationStatus.c_str());
+
+            if (mysql_real_query(
+                    &mysql, select_AuthenticationStatus.c_str(),
+                    (unsigned long) select_AuthenticationStatus.size())) {
+              Logger::udr_server().error(
+                  "mysql_real_query failure！ SQL Query %s",
+                  select_AuthenticationStatus.c_str());
+              return;
+            }
+
+            res = mysql_store_result(&mysql);
+            if (res == NULL) {
+              Logger::udr_server().error(
+                  "mysql_store_result failure！ SQL Query %s",
+                  select_AuthenticationStatus.c_str());
+              return;
+            }
+            if (mysql_num_rows(res)) {
+              query = "UPDATE AuthenticationStatus SET nfInstanceId='" +
+                      authEvent.getNfInstanceId() + "'" +
+                      ",success=" + (authEvent.isSuccess() ? "1" : "0") +
+     ",timeStamp='" + authEvent.getTimeStamp() + "'" + ",authType='" +
+                      authEvent.getAuthType() + "'" + ",servingNetworkName='" +
+                      authEvent.getServingNetworkName() + "'" +
+                      (authEvent.authRemovalIndIsSet() ?
+                           (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1" :
+                                                           ",authRemovalInd=0")
+     :
+                           "");
+              //        to_json(j,authEvent.getAuthType());
+              //        query += ",authType='"+j.dump()+"'";
+              query += " WHERE ueid='" + ue_id + "'";
+            } else {
+              query = "INSERT INTO AuthenticationStatus SET ueid='" + ue_id +
+     "'" +
+                      ",nfInstanceId='" + authEvent.getNfInstanceId() + "'" +
+                      ",success=" + (authEvent.isSuccess() ? "1" : "0") +
+     ",timeStamp='" + authEvent.getTimeStamp() + "'" + ",authType='" +
+                      authEvent.getAuthType() + "'" + ",servingNetworkName='" +
+                      authEvent.getServingNetworkName() + "'" +
+                      (authEvent.authRemovalIndIsSet() ?
+                           (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1" :
+                                                           ",authRemovalInd=0")
+     :
+                           "");
+              //        to_json(j,authEvent.getAuthType());
+              //        query += ",authType='"+j.dump()+"'";
+            }
+
+            Logger::udr_server().info("MySQL query: %s", query.c_str());
+
+            mysql_free_result(res);
+            if (mysql_real_query(&mysql, query.c_str(), (unsigned long)
+     query.size())) { Logger::udr_server().error( "mysql create failure！ SQL
+     Query %s", query.c_str()); return;
+            }
+
+            response_data = {};
+            code          = HTTP_STATUS_CODE_204_NO_CONTENT;
+
+            to_json(j, authEvent);
+            Logger::udr_server().info("AuthenticationStatus PUT: %s",
+     j.dump().c_str());
+
+  */
+}
+
+//------------------------------------------------------------------------------
 void udr_app::handle_modify_authentication_subscription(
     const std::string& ue_id, const std::vector<PatchItem>& patchItem,
     nlohmann::json& response_data, long& code) {
@@ -954,92 +1049,111 @@ void udr_app::handle_modify_authentication_subscription(
 void udr_app::handle_read_authentication_subscription(
     const std::string& ue_id, nlohmann::json& response_data, long& code) {
   Logger::udr_server().info("Handle Read Authentication Subscription");
-  MYSQL_RES* res     = nullptr;
-  MYSQL_ROW row      = {};
-  MYSQL_FIELD* field = nullptr;
-  nlohmann::json j   = {};
 
-  AuthenticationSubscription authenticationsubscription = {};
-  const std::string query =
-      "SELECT * FROM AuthenticationSubscription WHERE ueid='" + ue_id + "'";
-  Logger::udr_server().info("MySQL Query: %s", query.c_str());
+  //  obj->accessDerivedField();
 
-  if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
-    Logger::udr_server().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
-    return;
+  if (udr_cfg.db_type == DB_TYPE_MYSQL) {
+    if (std::dynamic_pointer_cast<mysql_db>(db_connector)
+            ->query_authentication_subscription(ue_id, response_data)) {
+      code = HTTP_STATUS_CODE_200_OK;
+      Logger::udr_server().info(
+          "AuthenticationSubscription GET: %s", response_data.dump().c_str());
+    } else {
+      code = HTTP_STATUS_CODE_404_NOT_FOUND;  // TODO
+    }
+  } else {
   }
 
-  res = mysql_store_result(&mysql);
-  if (res == NULL) {
-    Logger::udr_server().error(
-        "mysql_store_result failure！ SQL Query: %s", query.c_str());
-    return;
-  }
+  return;
 
-  row = mysql_fetch_row(res);
+  /*
+    MYSQL_RES* res     = nullptr;
+    MYSQL_ROW row      = {};
+    MYSQL_FIELD* field = nullptr;
+    nlohmann::json j   = {};
 
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("authenticationMethod", field->name)) {
-        //                AuthMethod authenticationmethod;
-        //                nlohmann::json::parse(row[i]).get_to(authenticationmethod);
-        authenticationsubscription.setAuthenticationMethod(row[i]);
-      } else if (!strcmp("encPermanentKey", field->name) && row[i] != NULL) {
-        authenticationsubscription.setEncPermanentKey(row[i]);
-      } else if (
-          !strcmp("protectionParameterId", field->name) && row[i] != NULL) {
-        authenticationsubscription.setProtectionParameterId(row[i]);
-      } else if (!strcmp("sequenceNumber", field->name) && row[i] != NULL) {
-        SequenceNumber sequencenumber = {};
-        nlohmann::json::parse(row[i]).get_to(sequencenumber);
-        authenticationsubscription.setSequenceNumber(sequencenumber);
-      } else if (
-          !strcmp("authenticationManagementField", field->name) &&
-          row[i] != NULL) {
-        authenticationsubscription.setAuthenticationManagementField(row[i]);
-      } else if (!strcmp("algorithmId", field->name) && row[i] != NULL) {
-        authenticationsubscription.setAlgorithmId(row[i]);
-      } else if (!strcmp("encOpcKey", field->name) && row[i] != NULL) {
-        authenticationsubscription.setEncOpcKey(row[i]);
-      } else if (!strcmp("encTopcKey", field->name) && row[i] != NULL) {
-        authenticationsubscription.setEncTopcKey(row[i]);
-      } else if (
-          !strcmp("vectorGenerationInHss", field->name) && row[i] != NULL) {
-        std::cout << row[i] << std::endl;
-        if (strcmp(row[i], "0"))
-          authenticationsubscription.setVectorGenerationInHss(true);
-        else
-          authenticationsubscription.setVectorGenerationInHss(false);
-      } else if (!strcmp("n5gcAuthMethod", field->name) && row[i] != NULL) {
-        //                AuthMethod n5gcauthmethod;
-        //                nlohmann::json::parse(row[i]).get_to(n5gcauthmethod);
-        authenticationsubscription.setN5gcAuthMethod(row[i]);
-      } else if (
-          !strcmp("rgAuthenticationInd", field->name) && row[i] != NULL) {
-        std::cout << row[i] << std::endl;
-        if (strcmp(row[i], "0"))
-          authenticationsubscription.setRgAuthenticationInd(true);
-        else
-          authenticationsubscription.setRgAuthenticationInd(false);
-      } else if (!strcmp("supi", field->name) && row[i] != NULL) {
-        authenticationsubscription.setSupi(row[i]);
-      }
+    AuthenticationSubscription authenticationsubscription = {};
+    const std::string query =
+        "SELECT * FROM AuthenticationSubscription WHERE ueid='" + ue_id + "'";
+    Logger::udr_server().info("MySQL Query: %s", query.c_str());
+
+    if (mysql_real_query(&mysql, query.c_str(), (unsigned long) query.size())) {
+      Logger::udr_server().error(
+          "mysql_real_query failure！ SQL Query: %s", query.c_str());
+      return;
     }
 
-    to_json(j, authenticationsubscription);
-    response_data = j;
-    code          = HTTP_STATUS_CODE_200_OK;
+    res = mysql_store_result(&mysql);
+    if (res == NULL) {
+      Logger::udr_server().error(
+          "mysql_store_result failure！ SQL Query: %s", query.c_str());
+      return;
+    }
 
-    Logger::udr_server().info(
-        "AuthenticationSubscription GET: %s", j.dump().c_str());
+    row = mysql_fetch_row(res);
 
-  } else {
-    Logger::udr_server().error(
-        "AuthenticationSubscription no data！ SQL Query: %s", query.c_str());
-  }
+    if (row != NULL) {
+      for (int i = 0; field = mysql_fetch_field(res); i++) {
+        if (!strcmp("authenticationMethod", field->name)) {
+          //                AuthMethod authenticationmethod;
+          // nlohmann::json::parse(row[i]).get_to(authenticationmethod);
+          authenticationsubscription.setAuthenticationMethod(row[i]);
+        } else if (!strcmp("encPermanentKey", field->name) && row[i] != NULL) {
+          authenticationsubscription.setEncPermanentKey(row[i]);
+        } else if (
+            !strcmp("protectionParameterId", field->name) && row[i] != NULL) {
+          authenticationsubscription.setProtectionParameterId(row[i]);
+        } else if (!strcmp("sequenceNumber", field->name) && row[i] != NULL) {
+          SequenceNumber sequencenumber = {};
+          nlohmann::json::parse(row[i]).get_to(sequencenumber);
+          authenticationsubscription.setSequenceNumber(sequencenumber);
+        } else if (
+            !strcmp("authenticationManagementField", field->name) &&
+            row[i] != NULL) {
+          authenticationsubscription.setAuthenticationManagementField(row[i]);
+        } else if (!strcmp("algorithmId", field->name) && row[i] != NULL) {
+          authenticationsubscription.setAlgorithmId(row[i]);
+        } else if (!strcmp("encOpcKey", field->name) && row[i] != NULL) {
+          authenticationsubscription.setEncOpcKey(row[i]);
+        } else if (!strcmp("encTopcKey", field->name) && row[i] != NULL) {
+          authenticationsubscription.setEncTopcKey(row[i]);
+        } else if (
+            !strcmp("vectorGenerationInHss", field->name) && row[i] != NULL) {
+          std::cout << row[i] << std::endl;
+          if (strcmp(row[i], "0"))
+            authenticationsubscription.setVectorGenerationInHss(true);
+          else
+            authenticationsubscription.setVectorGenerationInHss(false);
+        } else if (!strcmp("n5gcAuthMethod", field->name) && row[i] != NULL) {
+          //                AuthMethod n5gcauthmethod;
+          // nlohmann::json::parse(row[i]).get_to(n5gcauthmethod);
+          authenticationsubscription.setN5gcAuthMethod(row[i]);
+        } else if (
+            !strcmp("rgAuthenticationInd", field->name) && row[i] != NULL) {
+          std::cout << row[i] << std::endl;
+          if (strcmp(row[i], "0"))
+            authenticationsubscription.setRgAuthenticationInd(true);
+          else
+            authenticationsubscription.setRgAuthenticationInd(false);
+        } else if (!strcmp("supi", field->name) && row[i] != NULL) {
+          authenticationsubscription.setSupi(row[i]);
+        }
+      }
 
-  mysql_free_result(res);
+      to_json(j, authenticationsubscription);
+      response_data = j;
+      code          = HTTP_STATUS_CODE_200_OK;
+
+      Logger::udr_server().info(
+          "AuthenticationSubscription GET: %s", j.dump().c_str());
+
+    } else {
+      Logger::udr_server().error(
+          "AuthenticationSubscription no data！ SQL Query: %s", query.c_str());
+    }
+
+    mysql_free_result(res);
+    */
 }
 
 //------------------------------------------------------------------------------

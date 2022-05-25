@@ -22,6 +22,9 @@
 #ifndef FILE_UDR_SEEN
 #define FILE_UDR_SEEN
 
+#include <string>
+#include <vector>
+
 #define HEART_BEAT_TIMER 10
 
 #define _unused(x) ((void) (x))
@@ -68,5 +71,11 @@ typedef struct udr_info_s {
   std::vector<identity_range_udr_info_item_t> ext_grp_id_ranges;
   std::vector<std::string> data_set_id;
 } udr_info_t;
+
+typedef enum db_type_s {
+  DB_TYPE_UNKNOWN   = 0,
+  DB_TYPE_MYSQL     = 1,
+  DB_TYPE_CASSANDRA = 2
+} db_type_t;
 
 #endif

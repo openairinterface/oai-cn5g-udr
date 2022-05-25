@@ -83,21 +83,22 @@ void UDRApiServer::init(size_t thr) {
   //  opts.maxResponseSize(PISTACHE_SERVER_MAX_RESPONSE_SIZE);
   m_httpEndpoint->init(opts);
 
-  m_authenticationSubscriptionDocumentApiserver->init();
-  m_authenticationStatusDocumentApiserver->init();
-  m_accessAndMobilitySubscriptionDataDocumentApiserver->init();
-  m_sMFSelectionSubscriptionDataDocumentApiserver->init();
-  m_sessionManagementSubscriptionDataApiserver->init();
-  m_aMF3GPPAccessRegistrationDocumentApiserver->init();
-  m_sMFRegistrationDocumentApiserver->init();
-  m_sMFRegistrationsCollectionApiserver->init();
-  m_sDMSubscriptionDocumentApiserver->init();
-  m_sDMSubscriptionsCollectionApiserver->init();
+  m_authenticationSubscriptionDocumentApiServer->init();
+  m_authenticationDataDocumentApiServer->init();
+  m_authenticationStatusDocumentApiServer->init();
+  m_accessAndMobilitySubscriptionDataDocumentApiServer->init();
+  m_sMFSelectionSubscriptionDataDocumentApiServer->init();
+  m_sessionManagementSubscriptionDataApiServer->init();
+  m_aMF3GPPAccessRegistrationDocumentApiServer->init();
+  m_sMFRegistrationDocumentApiServer->init();
+  m_sMFRegistrationsCollectionApiServer->init();
+  m_sDMSubscriptionDocumentApiServer->init();
+  m_sDMSubscriptionsCollectionApiServer->init();
 }
 
 //------------------------------------------------------------------------------
 void UDRApiServer::start() {
-  Logger::udr_server().info("HTTP1 server started");
+  Logger::udr_server().info("HTTP1 Server started");
   m_httpEndpoint->setHandler(m_router->handler());
   m_httpEndpoint->serve();
 }

@@ -30,6 +30,8 @@
 #ifndef FILE_UDR_APP_HPP_SEEN
 #define FILE_UDR_APP_HPP_SEEN
 
+#include "database_wrapper.hpp"
+
 #include <mysql/mysql.h>
 #include <pistache/http.h>
 
@@ -42,6 +44,7 @@
 #include "PatchItem.h"
 #include "SdmSubscription.h"
 #include "SmfRegistration.h"
+#include "AuthenticationSubscription.h"
 
 using namespace oai::udr::model;
 
@@ -130,6 +133,22 @@ class udr_app {
    */
   void handle_query_authentication_status(
       const std::string& ue_id, nlohmann::json& response_data, long& code);
+
+  /*
+   * Handle a request to Create an Authentication Subscription
+   * (AuthenticationSubscriptionDocumentApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [const AuthenticationSubscription&] authentication_subscription:
+   * UE's subscription information
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] http_code: HTTP response code
+   * @return void
+   */
+
+  void handle_create_authentication_data(
+      const std::string& ue_id,
+      const AuthenticationSubscription& authentication_subscription,
+      nlohmann::json& response_data, long& http_code);
 
   /*
    * Handle a request to modify AuthenticationSubscription
@@ -298,6 +317,8 @@ class udr_app {
  private:
   MYSQL mysql;
   udr_event& event_sub;
+  std::shared_ptr<database_wrapper_abstraction> db_connector;
+  // std::shared_ptr<database_wrapper> db_connector_test;
 };
 }  // namespace app
 }  // namespace udr

@@ -48,6 +48,7 @@
 #include "AccessAndMobilitySubscriptionDataDocumentApiImpl.h"
 #include "AuthenticationStatusDocumentApiImpl.h"
 #include "AuthenticationSubscriptionDocumentApiImpl.h"
+#include "AuthenticationDataDocumentApiImpl.h"
 #include "SDMSubscriptionDocumentApiImpl.h"
 #include "SDMSubscriptionsCollectionApiImpl.h"
 #include "SMFRegistrationDocumentApiImpl.h"
@@ -69,34 +70,37 @@ class UDRApiServer {
     m_router  = std::make_shared<Pistache::Rest::Router>();
     m_address = address.host() + ":" + (address.port()).toString();
 
-    m_authenticationSubscriptionDocumentApiserver =
+    m_authenticationDataDocumentApiServer =
+        std::make_shared<AuthenticationDataDocumentApiImpl>(
+            m_router, udr_app_inst, m_address);
+    m_authenticationSubscriptionDocumentApiServer =
         std::make_shared<AuthenticationSubscriptionDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_authenticationStatusDocumentApiserver =
+    m_authenticationStatusDocumentApiServer =
         std::make_shared<AuthenticationStatusDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_accessAndMobilitySubscriptionDataDocumentApiserver =
+    m_accessAndMobilitySubscriptionDataDocumentApiServer =
         std::make_shared<AccessAndMobilitySubscriptionDataDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_sMFSelectionSubscriptionDataDocumentApiserver =
+    m_sMFSelectionSubscriptionDataDocumentApiServer =
         std::make_shared<SMFSelectionSubscriptionDataDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_sessionManagementSubscriptionDataApiserver =
+    m_sessionManagementSubscriptionDataApiServer =
         std::make_shared<SessionManagementSubscriptionDataApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_aMF3GPPAccessRegistrationDocumentApiserver =
+    m_aMF3GPPAccessRegistrationDocumentApiServer =
         std::make_shared<AMF3GPPAccessRegistrationDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_sMFRegistrationDocumentApiserver =
+    m_sMFRegistrationDocumentApiServer =
         std::make_shared<SMFRegistrationDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_sMFRegistrationsCollectionApiserver =
+    m_sMFRegistrationsCollectionApiServer =
         std::make_shared<SMFRegistrationsCollectionApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_sDMSubscriptionDocumentApiserver =
+    m_sDMSubscriptionDocumentApiServer =
         std::make_shared<SDMSubscriptionDocumentApiImpl>(
             m_router, udr_app_inst, m_address);
-    m_sDMSubscriptionsCollectionApiserver =
+    m_sDMSubscriptionsCollectionApiServer =
         std::make_shared<SDMSubscriptionsCollectionApiImpl>(
             m_router, udr_app_inst, m_address);
   }
@@ -108,26 +112,28 @@ class UDRApiServer {
   std::shared_ptr<Pistache::Http::Endpoint> m_httpEndpoint;
   std::shared_ptr<Pistache::Rest::Router> m_router;
 
+  std::shared_ptr<AuthenticationDataDocumentApiImpl>
+      m_authenticationDataDocumentApiServer;
   std::shared_ptr<AuthenticationSubscriptionDocumentApiImpl>
-      m_authenticationSubscriptionDocumentApiserver;
+      m_authenticationSubscriptionDocumentApiServer;
   std::shared_ptr<AuthenticationStatusDocumentApiImpl>
-      m_authenticationStatusDocumentApiserver;
+      m_authenticationStatusDocumentApiServer;
   std::shared_ptr<AccessAndMobilitySubscriptionDataDocumentApiImpl>
-      m_accessAndMobilitySubscriptionDataDocumentApiserver;
+      m_accessAndMobilitySubscriptionDataDocumentApiServer;
   std::shared_ptr<SMFSelectionSubscriptionDataDocumentApiImpl>
-      m_sMFSelectionSubscriptionDataDocumentApiserver;
+      m_sMFSelectionSubscriptionDataDocumentApiServer;
   std::shared_ptr<SessionManagementSubscriptionDataApiImpl>
-      m_sessionManagementSubscriptionDataApiserver;
+      m_sessionManagementSubscriptionDataApiServer;
   std::shared_ptr<AMF3GPPAccessRegistrationDocumentApiImpl>
-      m_aMF3GPPAccessRegistrationDocumentApiserver;
+      m_aMF3GPPAccessRegistrationDocumentApiServer;
   std::shared_ptr<SMFRegistrationDocumentApiImpl>
-      m_sMFRegistrationDocumentApiserver;
+      m_sMFRegistrationDocumentApiServer;
   std::shared_ptr<SMFRegistrationsCollectionApiImpl>
-      m_sMFRegistrationsCollectionApiserver;
+      m_sMFRegistrationsCollectionApiServer;
   std::shared_ptr<SDMSubscriptionDocumentApiImpl>
-      m_sDMSubscriptionDocumentApiserver;
+      m_sDMSubscriptionDocumentApiServer;
   std::shared_ptr<SDMSubscriptionsCollectionApiImpl>
-      m_sDMSubscriptionsCollectionApiserver;
+      m_sDMSubscriptionsCollectionApiServer;
 
   std::string m_address;
 };
