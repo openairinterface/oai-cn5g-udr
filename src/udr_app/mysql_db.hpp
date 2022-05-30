@@ -23,6 +23,7 @@
 #define MYSQL_DB_HPP
 
 #include "database_wrapper.hpp"
+#include "Amf3GppAccessRegistration.h"
 #include <mysql/mysql.h>
 
 namespace oai::udr::app {
@@ -41,7 +42,9 @@ class mysql_db : public database_wrapper<mysql_db> {
   bool query_authentication_subscription(
       const std::string& id, nlohmann::json& json_data);
   bool update_authentication_subscription(
-      const std::string& id, const nlohmann::json& json_data);
+      const std::string& id,
+      const std::vector<oai::udr::model::PatchItem>& patchItem,
+      nlohmann::json& json_data);
   bool delete_authentication_subscription(const std::string& id);
 
   bool query_am_data(
@@ -49,13 +52,15 @@ class mysql_db : public database_wrapper<mysql_db> {
       nlohmann::json& json_data);
 
   bool create_amf_context_3gpp(
-      const std::string& ue_id, const nlohmann::json& json_data);
+      const std::string& ue_id,
+      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration);
 
   bool query_amf_context_3gpp(
       const std::string& ue_id, nlohmann::json& json_data);
 
   bool insert_authentication_status(
-      const std::string& ue_id, const nlohmann::json& json_data);
+      const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+      nlohmann::json& json_data);
 
   bool delete_authentication_status(const std::string& ue_id);
 
@@ -71,21 +76,25 @@ class mysql_db : public database_wrapper<mysql_db> {
 
   bool update_sdm_subscription(
       const std::string& ue_id, const std::string& subs_id,
+      oai::udr::model::SdmSubscription& sdmSubscription,
       nlohmann::json& json_data);
 
   bool create_sdm_subscriptions(
-      const std::string& ue_id, nlohmann::json& json_data);
+      const std::string& ue_id,
+      oai::udr::model::SdmSubscription& sdmSubscription,
+      nlohmann::json& json_data);
 
   bool query_sdm_subscriptions(
       const std::string& ue_id, nlohmann::json& json_data);
 
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, oai::udr::model::Snssai snssai = {},
-      std::string dnn = {});
+      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
+      const std::string dnn = {});
 
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,
+      const oai::udr::model::SmfRegistration& smfRegistration,
       nlohmann::json& json_data);
 
   bool delete_smf_context(

@@ -243,13 +243,15 @@ class udr_app {
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
    * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [const std::string&] dnn: DNN
    * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& response_data, long& code,
-      oai::udr::model::Snssai snssai = {}, std::string dnn = {});
+      const oai::udr::model::Snssai& snssai = {}, const std::string& dnn = {});
 
   /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)

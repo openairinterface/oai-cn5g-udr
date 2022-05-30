@@ -139,7 +139,8 @@ bool cassandra_db::query_sdm_subscriptions(
 //------------------------------------------------------------------------------
 bool cassandra_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& json_data, oai::udr::model::Snssai, std::string dnn) {
+    nlohmann::json& json_data, const oai::udr::model::Snssai&,
+    const std::string& dnn) {
   return true;
 }
 
