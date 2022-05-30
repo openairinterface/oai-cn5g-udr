@@ -31,38 +31,46 @@ using namespace oai::udr::config;
 extern udr_config udr_cfg;
 
 //------------------------------------------------------------------------------
-cassandra_db::cassandra_db() : database_wrapper<cassandra_db>() {
-  // initialize();
-}
+cassandra_db::cassandra_db() : database_wrapper<cassandra_db>() {}
 
 //------------------------------------------------------------------------------
 cassandra_db::~cassandra_db() {}
 
+//------------------------------------------------------------------------------
 bool cassandra_db::initialize() {
   Logger::udr_app().debug("Initialize CassandraDB");
   Logger::udr_app().debug("CassandraDB is not supported!");
   return false;
 }
 
+//------------------------------------------------------------------------------
 bool cassandra_db::close_connection() {
   return true;
 }
 
+//------------------------------------------------------------------------------
 bool cassandra_db::insert_authentication_subscription(
-    const std::string& id, const nlohmann::json& json_data) {
+    const std::string& id,
+    const oai::udr::model::AuthenticationSubscription&
+        authentication_subscription,
+    nlohmann::json& json_data) {
   return true;
 }
 
+//------------------------------------------------------------------------------
 bool cassandra_db::query_authentication_subscription(
     const std::string& id, nlohmann::json& json_data) {
   Logger::udr_app().debug("CassandraDB is not supported!");
   return true;
 }
 
+//------------------------------------------------------------------------------
 bool cassandra_db::update_authentication_subscription(
     const std::string& id, const nlohmann::json& json_data) {
   return true;
 }
+
+//------------------------------------------------------------------------------
 bool cassandra_db::delete_authentication_subscription(const std::string& id) {
   return true;
 }

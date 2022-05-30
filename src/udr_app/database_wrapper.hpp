@@ -57,7 +57,10 @@ class database_wrapper : public database_wrapper_abstraction {
   }
 
   bool insert_authentication_subscription(
-      const std::string& id, const nlohmann::json& json_data) override {
+      const std::string& id,
+      const oai::udr::model::AuthenticationSubscription&
+          authentication_subscription,
+      nlohmann::json& json_data) override {
     return true;
   }
 

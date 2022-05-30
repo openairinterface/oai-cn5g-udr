@@ -68,7 +68,92 @@ bool mysql_db::close_connection() {
 
 //------------------------------------------------------------------------------
 bool mysql_db::insert_authentication_subscription(
-    const std::string& id, const nlohmann::json& json_data) {
+    const std::string& id,
+    const oai::udr::model::AuthenticationSubscription& auth_subscription,
+    nlohmann::json& json_data) {
+  MYSQL_RES* res          = nullptr;
+  MYSQL_ROW row           = {};
+  nlohmann::json json_tmp = {};
+
+  std::string query =
+      "SELECT * FROM AuthenticationSubscription WHERE ueid='" + id + "'";
+  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size()) != 0) {
+    Logger::udr_mysql().error(
+        "Failed when executing mysql_real_query with SQL Query: %s",
+        query.c_str());
+    return false;
+  }
+
+  res = mysql_store_result(&mysql_connector);
+  if (res == nullptr) {
+    Logger::udr_mysql().error(
+        "mysql_store_result failure！ SQL Query: %s", query.c_str());
+    return false;
+  }
+
+  row = mysql_fetch_row(res);
+  if (row != nullptr) {
+    Logger::udr_mysql().error("AuthenticationSubscription existed!");
+    // Existed
+    return false;
+  }
+  mysql_free_result(res);
+
+  query =
+      "INSERT INTO AuthenticationSubscription SET ueid='" + id + "'" +
+      ",authenticationMethod='" + auth_subscription.getAuthenticationMethod() +
+      "'" +
+      (auth_subscription.encPermanentKeyIsSet() ?
+           ",encPermanentKey='" + auth_subscription.getEncPermanentKey() + "'" :
+           "") +
+      (auth_subscription.protectionParameterIdIsSet() ?
+           ",protectionParameterId='" +
+               auth_subscription.getProtectionParameterId() + "'" :
+           "") +
+      (auth_subscription.authenticationManagementFieldIsSet() ?
+           ",authenticationManagementField='" +
+               auth_subscription.getAuthenticationManagementField() + "'" :
+           "") +
+      (auth_subscription.algorithmIdIsSet() ?
+           ",algorithmId='" + auth_subscription.getAlgorithmId() + "'" :
+           "") +
+      (auth_subscription.encOpcKeyIsSet() ?
+           ",encOpcKey='" + auth_subscription.getEncOpcKey() + "'" :
+           "") +
+      (auth_subscription.encTopcKeyIsSet() ?
+           ",encTopcKey='" + auth_subscription.getEncTopcKey() + "'" :
+           "") +
+      //   (auth_subscription.vectorGenerationInHssIsSet() ?
+      //   ",vectorGenerationInHss='" +
+      //   auth_subscription.isVectorGenerationInHss() + "'" : "") +
+      (auth_subscription.n5gcAuthMethodIsSet() ?
+           ",n5gcAuthMethod='" + auth_subscription.getN5gcAuthMethod() + "'" :
+           "") +
+      // auth_subscription.rgAuthenticationIndIsSet() ? ",rgAuthenticationInd='"
+      // + auth_subscription.() + "'" : "") +
+      (auth_subscription.supiIsSet() ?
+           ",supi='" + auth_subscription.getSupi() + "'" :
+           "");
+
+  if (auth_subscription.sequenceNumberIsSet()) {
+    to_json(json_tmp, auth_subscription.getSequenceNumber());
+    query += ",sequenceNumber='" + json_tmp.dump() + "'";
+  }
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_mysql().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
+    return false;
+  }
+
+  to_json(json_data, auth_subscription);
+
+  Logger::udr_mysql().debug(
+      "AuthenticationSubscription POST: %s", json_data.dump().c_str());
   return true;
 }
 

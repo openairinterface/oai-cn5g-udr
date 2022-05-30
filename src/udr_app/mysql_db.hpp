@@ -34,17 +34,23 @@ class mysql_db : public database_wrapper<mysql_db> {
   virtual ~mysql_db();
 
   bool initialize();
+
   bool close_connection();
 
   bool insert_authentication_subscription(
-      const std::string& id, const nlohmann::json& json_data);
+      const std::string& id,
+      const oai::udr::model::AuthenticationSubscription&
+          authentication_subscription,
+      nlohmann::json& json_data);
 
   bool query_authentication_subscription(
       const std::string& id, nlohmann::json& json_data);
+
   bool update_authentication_subscription(
       const std::string& id,
       const std::vector<oai::udr::model::PatchItem>& patchItem,
       nlohmann::json& json_data);
+
   bool delete_authentication_subscription(const std::string& id);
 
   bool query_am_data(

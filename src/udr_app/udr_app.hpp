@@ -148,7 +148,7 @@ class udr_app {
   void handle_create_authentication_data(
       const std::string& ue_id,
       const AuthenticationSubscription& authentication_subscription,
-      nlohmann::json& response_data, long& http_code);
+      nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to modify AuthenticationSubscription

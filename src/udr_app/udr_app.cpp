@@ -28,14 +28,10 @@
  */
 
 #include "udr_app.hpp"
-#include <mysql/mysql.h>
-//#include <unistd.h>
 
 #include "3gpp_29.500.h"
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AuthenticationSubscription.h"
-//#include "ProblemDetails.h"
-//#include "SequenceNumber.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
 #include "udr_nrf.hpp"
@@ -190,8 +186,18 @@ void udr_app::handle_query_authentication_status(
 void udr_app::handle_create_authentication_data(
     const std::string& ue_id,
     const AuthenticationSubscription& authentication_subscription,
-    nlohmann::json& response_data, long& http_code) {
-  // TODO
+    nlohmann::json& response_data, long& code) {
+  Logger::udr_app().info("Crate an authentication subscription data of a UE");
+
+  if (db_connector->insert_authentication_subscription(
+          ue_id, authentication_subscription, response_data)) {
+    code = HTTP_STATUS_CODE_201_CREATED;
+    Logger::udr_app().info(
+        "AuthenticationSubscription: %s", response_data.dump().c_str());
+  } else {
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+  }
+  return;
 }
 
 //------------------------------------------------------------------------------

@@ -30,6 +30,7 @@
 #include "PatchItem.h"
 #include "SdmSubscription.h"
 #include "SmfRegistration.h"
+#include "AuthenticationSubscription.h"
 
 #include <nlohmann/json.hpp>
 
@@ -58,11 +59,16 @@ class database_wrapper_abstraction {
   /*
    * Insert a new item to the DB for the Authentication Subscription
    * @param [const std::string&] id: UE Identity
+   * @param [const oai::udr::model::AuthenticationSubscription&]
+   * authentication_subscription: Authentication data
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
   virtual bool insert_authentication_subscription(
-      const std::string& id, const nlohmann::json& json_data) = 0;
+      const std::string& id,
+      const oai::udr::model::AuthenticationSubscription&
+          authentication_subscription,
+      nlohmann::json& json_data) = 0;
   /*
    * Query an item from the DB for the Authentication Subscription
    * @param [const std::string&] id: UE Identity
