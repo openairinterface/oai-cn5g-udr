@@ -79,7 +79,9 @@ bool cassandra_db::query_authentication_subscription(
 
 //------------------------------------------------------------------------------
 bool cassandra_db::update_authentication_subscription(
-    const std::string& id, const nlohmann::json& json_data) {
+    const std::string& id,
+    const std::vector<oai::udr::model::PatchItem>& patchItem,
+    nlohmann::json& json_data) {
   return true;
 }
 
@@ -104,7 +106,8 @@ bool cassandra_db::query_amf_context_3gpp(
 
 //------------------------------------------------------------------------------
 bool cassandra_db::cassandra_db::insert_authentication_status(
-    const std::string& ue_id, const nlohmann::json& json_data) {
+    const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+    nlohmann::json& json_data) {
   return true;
 }
 
@@ -136,13 +139,15 @@ bool cassandra_db::cassandra_db::delete_sdm_subscription(
 //------------------------------------------------------------------------------
 bool cassandra_db::update_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
+    oai::udr::model::SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
   return true;
 }
 
 //------------------------------------------------------------------------------
 bool cassandra_db::create_sdm_subscriptions(
-    const std::string& ue_id, nlohmann::json& json_data) {
+    const std::string& ue_id, oai::udr::model::SdmSubscription& sdmSubscription,
+    nlohmann::json& json_data) {
   return true;
 }
 
@@ -163,6 +168,7 @@ bool cassandra_db::query_sm_data(
 //------------------------------------------------------------------------------
 bool cassandra_db::insert_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
+    const oai::udr::model::SmfRegistration& smfRegistration,
     nlohmann::json& json_data) {
   return true;
 }
