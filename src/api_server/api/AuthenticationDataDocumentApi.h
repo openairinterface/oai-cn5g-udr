@@ -68,6 +68,9 @@ class AuthenticationDataDocumentApi {
   void create_auth_subs_data_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
+  void delete_auth_subs_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void authentication_data_document_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -105,6 +108,16 @@ class AuthenticationDataDocumentApi {
       const oai::udr::model::AuthenticationSubscription&
           authenticationSubscription,
       Pistache::Http::ResponseWriter& response) = 0;
+
+  /// <summary>
+  /// To remove the Authentication subscription data of a UE
+  /// </summary>
+  /// <remarks>
+  ///
+  /// </remarks>
+  /// <param name="ueId">UE id</param>
+  virtual void delete_auth_subs_data(
+      const std::string& ueId, Pistache::Http::ResponseWriter& response) = 0;
 };
 
 }  // namespace oai::udr::api

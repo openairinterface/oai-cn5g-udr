@@ -43,6 +43,8 @@ class mysql_db : public database_wrapper<mysql_db> {
           authentication_subscription,
       nlohmann::json& json_data);
 
+  bool delete_authentication_subscription(const std::string& id);
+
   bool query_authentication_subscription(
       const std::string& id, nlohmann::json& json_data);
 
@@ -50,8 +52,6 @@ class mysql_db : public database_wrapper<mysql_db> {
       const std::string& id,
       const std::vector<oai::udr::model::PatchItem>& patchItem,
       nlohmann::json& json_data);
-
-  bool delete_authentication_subscription(const std::string& id);
 
   bool query_am_data(
       const std::string& ue_id, const std::string& serving_plmn_id,

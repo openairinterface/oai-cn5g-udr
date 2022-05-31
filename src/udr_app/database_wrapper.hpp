@@ -64,6 +64,10 @@ class database_wrapper : public database_wrapper_abstraction {
     return true;
   }
 
+  bool delete_authentication_subscription(const std::string& id) override {
+    return true;
+  }
+
   bool query_authentication_subscription(
       const std::string& id, nlohmann::json& json_data) override {
     return true;
@@ -73,10 +77,6 @@ class database_wrapper : public database_wrapper_abstraction {
       const std::string& id,
       const std::vector<oai::udr::model::PatchItem>& patchItem,
       nlohmann::json& json_data) override {
-    return true;
-  }
-
-  bool delete_authentication_subscription(const std::string& id) override {
     return true;
   }
 

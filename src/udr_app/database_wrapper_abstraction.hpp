@@ -69,6 +69,14 @@ class database_wrapper_abstraction {
       const oai::udr::model::AuthenticationSubscription&
           authentication_subscription,
       nlohmann::json& json_data) = 0;
+
+  /*
+   * Delete an item from the DB for the Authentication Subscription
+   * @param [const std::string&] id: UE Identity
+   * @return true if successful, otherwise return false
+   */
+  virtual bool delete_authentication_subscription(const std::string& id) = 0;
+
   /*
    * Query an item from the DB for the Authentication Subscription
    * @param [const std::string&] id: UE Identity
@@ -90,13 +98,6 @@ class database_wrapper_abstraction {
       const std::string& id,
       const std::vector<oai::udr::model::PatchItem>& patchItem,
       nlohmann::json& json_data) = 0;
-
-  /*
-   * Delete an item from the DB for the Authentication Subscription
-   * @param [const std::string&] id: UE Identity
-   * @return true if successful, otherwise return false
-   */
-  virtual bool delete_authentication_subscription(const std::string& id) = 0;
 
   /*
    *  Query an item from the DB for AccessandMobilitySubscriptionData

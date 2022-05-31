@@ -63,8 +63,19 @@ void AuthenticationDataDocumentApiImpl::create_auth_subs_data(
   code = static_cast<Pistache::Http::Code>(httpCode);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, responseData.dump().c_str());
+}
 
-  response.send(Pistache::Http::Code::Ok, "Do some magic\n");
+void AuthenticationDataDocumentApiImpl::delete_auth_subs_data(
+    const std::string& ueId, Pistache::Http::ResponseWriter& response) {
+  nlohmann::json responseData = {};
+  Pistache::Http::Code code   = {};
+  long httpCode               = 0;
+
+  m_udr_app->handle_delete_authentication_data(ueId, responseData, httpCode);
+
+  code = static_cast<Pistache::Http::Code>(httpCode);
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, responseData.dump().c_str());
 }
 
 }  // namespace api

@@ -64,6 +64,14 @@ void AuthenticationDataDocumentApi::setupRoutes() {
       Routes::bind(
           &AuthenticationDataDocumentApi::create_auth_subs_data_handler, this));
 
+  Routes::Delete(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/authentication-data/"
+          "authentication-subscription",
+      Routes::bind(
+          &AuthenticationDataDocumentApi::delete_auth_subs_data_handler, this));
+
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
       &AuthenticationDataDocumentApi::
@@ -116,6 +124,27 @@ void AuthenticationDataDocumentApi::create_auth_subs_data_handler(
     } catch (Pistache::Http::HttpError& e) {
       response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
       return;
+    } catch (std::exception& e) {
+      const std::pair<Pistache::Http::Code, std::string> errorInfo =
+          this->handleOperationException(e);
+      response.send(errorInfo.first, errorInfo.second);
+      return;
+    }
+
+  } catch (std::exception& e) {
+    response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
+  }
+}
+
+void AuthenticationDataDocumentApi::delete_auth_subs_data_handler(
+    const Pistache::Rest::Request& request,
+    Pistache::Http::ResponseWriter response) {
+  try {
+    // Getting the path params
+    auto ueId = request.param(":ueId").as<std::string>();
+
+    try {
+      this->delete_auth_subs_data(ueId, response);
     } catch (std::exception& e) {
       const std::pair<Pistache::Http::Code, std::string> errorInfo =
           this->handleOperationException(e);

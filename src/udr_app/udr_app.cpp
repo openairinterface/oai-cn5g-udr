@@ -187,13 +187,28 @@ void udr_app::handle_create_authentication_data(
     const std::string& ue_id,
     const AuthenticationSubscription& authentication_subscription,
     nlohmann::json& response_data, long& code) {
-  Logger::udr_app().info("Crate an authentication subscription data of a UE");
+  Logger::udr_app().info("Create an authentication subscription data of a UE");
 
   if (db_connector->insert_authentication_subscription(
           ue_id, authentication_subscription, response_data)) {
     code = HTTP_STATUS_CODE_201_CREATED;
     Logger::udr_app().info(
         "AuthenticationSubscription: %s", response_data.dump().c_str());
+  } else {
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_delete_authentication_data(
+    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+  Logger::udr_app().info("Delete an authentication subscription data of a UE");
+
+  if (db_connector->delete_authentication_subscription(ue_id)) {
+    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    Logger::udr_app().info(
+        "Successful removed the authentication subscription data of a UE");
   } else {
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
   }

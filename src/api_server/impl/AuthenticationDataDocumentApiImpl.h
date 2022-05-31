@@ -75,6 +75,8 @@ class AuthenticationDataDocumentApiImpl
       const std::string& ueId,
       const AuthenticationSubscription& authenticationSubscription,
       Pistache::Http::ResponseWriter& response);
+  void delete_auth_subs_data(
+      const std::string& ueId, Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace oai::udr::api

@@ -160,6 +160,26 @@ bool mysql_db::insert_authentication_subscription(
 }
 
 //------------------------------------------------------------------------------
+bool mysql_db::delete_authentication_subscription(const std::string& id) {
+  const std::string query =
+      "DELETE FROM AuthenticationSubscription WHERE ueid='" + id + "'";
+
+  Logger::udr_mysql().debug("MySQL Query %s: ", query.c_str());
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_mysql().error(
+        "mysql_real_query failure！ SQL Query %s", query.c_str());
+    return false;
+  }
+
+  Logger::udr_mysql().debug(
+      "Deleted AuthenticationSubscription (with UE ID %s) successfully",
+      id.c_str());
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool mysql_db::query_authentication_subscription(
     const std::string& id, nlohmann::json& json_data) {
   Logger::udr_mysql().info("Query Authentication Subscription");
@@ -318,11 +338,6 @@ bool mysql_db::update_authentication_subscription(
       "AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
 
   //	  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
-  return true;
-}
-
-//------------------------------------------------------------------------------
-bool mysql_db::delete_authentication_subscription(const std::string& id) {
   return true;
 }
 

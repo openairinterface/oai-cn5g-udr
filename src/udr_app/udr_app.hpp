@@ -144,11 +144,21 @@ class udr_app {
    * @param [long code] http_code: HTTP response code
    * @return void
    */
-
   void handle_create_authentication_data(
       const std::string& ue_id,
       const AuthenticationSubscription& authentication_subscription,
       nlohmann::json& response_data, long& code);
+
+  /*
+   * Handle a request to remove the AuthenticationSubscription
+   * (AuthenticationDataDocumentApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] code: HTTP response code
+   * @return void
+   */
+  void handle_delete_authentication_data(
+      const std::string& ue_id, nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to modify AuthenticationSubscription

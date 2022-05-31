@@ -58,6 +58,11 @@ bool cassandra_db::insert_authentication_subscription(
 }
 
 //------------------------------------------------------------------------------
+bool cassandra_db::delete_authentication_subscription(const std::string& id) {
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool cassandra_db::query_authentication_subscription(
     const std::string& id, nlohmann::json& json_data) {
   Logger::udr_app().debug("CassandraDB is not supported!");
@@ -67,11 +72,6 @@ bool cassandra_db::query_authentication_subscription(
 //------------------------------------------------------------------------------
 bool cassandra_db::update_authentication_subscription(
     const std::string& id, const nlohmann::json& json_data) {
-  return true;
-}
-
-//------------------------------------------------------------------------------
-bool cassandra_db::delete_authentication_subscription(const std::string& id) {
   return true;
 }
 
