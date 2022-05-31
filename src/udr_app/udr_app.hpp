@@ -30,21 +30,20 @@
 #ifndef FILE_UDR_APP_HPP_SEEN
 #define FILE_UDR_APP_HPP_SEEN
 
-#include "database_wrapper.hpp"
-
 #include <mysql/mysql.h>
 #include <pistache/http.h>
 
-#include "udr_event.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 
 #include "Amf3GppAccessRegistration.h"
 #include "AuthEvent.h"
+#include "AuthenticationSubscription.h"
 #include "PatchItem.h"
 #include "SdmSubscription.h"
 #include "SmfRegistration.h"
-#include "AuthenticationSubscription.h"
+#include "database_wrapper.hpp"
+#include "udr_event.hpp"
 
 using namespace oai::udr::model;
 

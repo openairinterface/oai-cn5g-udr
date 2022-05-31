@@ -22,12 +22,13 @@
 #ifndef _UDR_CONFIG_H_
 #define _UDR_CONFIG_H_
 
-#include "udr.h"
-
 #include <arpa/inet.h>
-#include <libconfig.h++>
 #include <netinet/in.h>
+
+#include <libconfig.h++>
 #include <string>
+
+#include "udr.h"
 
 #define UDR_CONFIG_STRING_UDR_CONFIG "UDR"
 #define UDR_CONFIG_STRING_INSTANCE_ID "INSTANCE_ID"
@@ -51,6 +52,7 @@
 #define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2 "USE_HTTP2"
 #define UDR_CONFIG_STRING_FQDN_DNS "FQDN"
 
+#define UDR_CONFIG_STRING_DATABASE_TYPE "DATABASE"
 #define UDR_CONFIG_STRING_MYSQL "MYSQL"
 #define UDR_CONFIG_STRING_MYSQL_SERVER "MYSQL_SERVER"
 #define UDR_CONFIG_STRING_MYSQL_USER "MYSQL_USER"

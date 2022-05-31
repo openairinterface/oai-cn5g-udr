@@ -32,11 +32,11 @@
 #include "3gpp_29.500.h"
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AuthenticationSubscription.h"
+#include "cassandra_db.hpp"
 #include "logger.hpp"
+#include "mysql_db.hpp"
 #include "udr_config.hpp"
 #include "udr_nrf.hpp"
-#include "mysql_db.hpp"
-#include "cassandra_db.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;

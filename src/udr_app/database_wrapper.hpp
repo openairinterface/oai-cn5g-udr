@@ -19,15 +19,23 @@
  *      contact@openairinterface.org
  */
 
+/*! \file databse_wrapper.hpp
+ \brief
+ \author  Tien-Thinh NGUYEN
+ \company Eurecom
+ \date 2022
+ \email: Tien-Thinh.Nguyen@eurecom.fr
+ */
+
 #ifndef DATABASE_WRAPPER_HPP
 #define DATABASE_WRAPPER_HPP
 
-#include "database_wrapper_abstraction.hpp"
-#include "udr.h"
-#include "Snssai.h"
-#include "logger.hpp"
-
 #include <nlohmann/json.hpp>
+
+#include "Snssai.h"
+#include "database_wrapper_abstraction.hpp"
+#include "logger.hpp"
+#include "udr.h"
 
 namespace oai::udr::app {
 

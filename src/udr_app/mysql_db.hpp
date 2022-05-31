@@ -19,12 +19,21 @@
  *      contact@openairinterface.org
  */
 
+/*! \file mysql_db.hpp
+ \brief
+ \author  Tien-Thinh NGUYEN
+ \company Eurecom
+ \date 2022
+ \email: Tien-Thinh.Nguyen@eurecom.fr
+ */
+
 #ifndef MYSQL_DB_HPP
 #define MYSQL_DB_HPP
 
-#include "database_wrapper.hpp"
-#include "Amf3GppAccessRegistration.h"
 #include <mysql/mysql.h>
+
+#include "Amf3GppAccessRegistration.h"
+#include "database_wrapper.hpp"
 
 namespace oai::udr::app {
 

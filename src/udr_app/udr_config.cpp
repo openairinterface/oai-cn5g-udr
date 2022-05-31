@@ -21,12 +21,11 @@
 
 #include "udr_config.hpp"
 
-#include <iostream>
-#include <libconfig.h++>
-
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <iostream>
+#include <libconfig.h++>
 
 #include "common_defs.h"
 #include "fqdn.hpp"
@@ -142,6 +141,17 @@ int udr_config::load(const std ::string& config_file) {
     } else {
       use_http2 = false;
     }
+
+    support_features.lookupValue(UDR_CONFIG_STRING_DATABASE_TYPE, opt);
+
+    if (boost::iequals(opt, "cassandra")) {
+      db_type = DB_TYPE_CASSANDRA;
+    } else if (boost::iequals(opt, "mysql")) {
+      db_type = DB_TYPE_MYSQL;
+    } else {
+      db_type = DB_TYPE_MYSQL;  // Default for now
+    }
+
   } catch (const SettingNotFoundException& nfex) {
     Logger::udr_app().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
@@ -281,20 +291,19 @@ void udr_config::display() {
   Logger::config().info(
       "======================    UDR   =====================");
   Logger::config().info("Configuration UDR:");
-  Logger::config().info(
-      "- Instance ...........................................: %d", instance);
-  Logger::config().info(
-      "- PID dir ............................................: %s",
-      pid_dir.c_str());
-  Logger::config().info("- UDR Name ..............: %s", udr_name.c_str());
+  Logger::config().info("- Instance ................: %d", instance);
+  Logger::config().info("- PID dir .................: %s", pid_dir.c_str());
+  Logger::config().info("- UDR Name ................: %s", udr_name.c_str());
 
   Logger::config().info("- Nudr Networking:");
-  Logger::config().info("    Interface name ......: %s", nudr.if_name.c_str());
-  Logger::config().info("    IPv4 Addr ...........: %s", inet_ntoa(nudr.addr4));
-  Logger::config().info("    HTTP1 Port ..........: %d", nudr.port);
-  Logger::config().info("    HTTP2 port ..........: %d", nudr_http2_port);
   Logger::config().info(
-      "    API version..........: %s", nudr.api_version.c_str());
+      "    Interface name ........: %s", nudr.if_name.c_str());
+  Logger::config().info(
+      "    IPv4 Addr .............: %s", inet_ntoa(nudr.addr4));
+  Logger::config().info("    HTTP1 Port ............: %d", nudr.port);
+  Logger::config().info("    HTTP2 port ............: %d", nudr_http2_port);
+  Logger::config().info(
+      "    API version ...........: %s", nudr.api_version.c_str());
   Logger::config().info("- Supported Features:");
   Logger::config().info(
       "    Register NRF ..........: %s", register_nrf ? "Yes" : "No");
@@ -302,28 +311,37 @@ void udr_config::display() {
       "    Use FQDN ..............: %s", use_fqdn_dns ? "Yes" : "No");
   Logger::config().info(
       "    Use HTTP2 .............: %s", use_http2 ? "Yes" : "No");
-  Logger::config().info("- NRF:");
   Logger::config().info(
-      "    IPv4 Addr ............: %s",
-      inet_ntoa(*((struct in_addr*) &nrf_addr.ipv4_addr)));
-  Logger::config().info("    Port .................: %lu  ", nrf_addr.port);
-  Logger::config().info(
-      "    API version ..........: %s", nrf_addr.api_version.c_str());
-  if (use_fqdn_dns)
+      "    Database ..............: %s", db_type_e2str[db_type].c_str());
+  if (register_nrf) {
+    Logger::config().info("- NRF:");
     Logger::config().info(
-        "    FQDN .................: %s", nrf_addr.fqdn.c_str());
-  Logger::config().info(
-      "- MYSQL Server Addr...................................: %s",
-      mysql.mysql_server.c_str());
-  Logger::config().info(
-      "- MYSQL user .........................................: %s",
-      mysql.mysql_user.c_str());
-  Logger::config().info(
-      "- MYSQL pass .........................................: %s",
-      mysql.mysql_pass.c_str());
-  Logger::config().info(
-      "- MYSQL db ...........................................: %s",
-      mysql.mysql_db.c_str());
+        "    IPv4 Addr .............: %s",
+        inet_ntoa(*((struct in_addr*) &nrf_addr.ipv4_addr)));
+    Logger::config().info("    Port ..................: %lu  ", nrf_addr.port);
+    Logger::config().info(
+        "    API version ...........: %s", nrf_addr.api_version.c_str());
+    if (use_fqdn_dns)
+      Logger::config().info(
+          "    FQDN ..................: %s", nrf_addr.fqdn.c_str());
+  }
+
+  if (db_type == DB_TYPE_MYSQL) {
+    Logger::config().info("- MySQL:");
+    Logger::config().info(
+        "    Server Addr ...........: %s", mysql.mysql_server.c_str());
+    Logger::config().info(
+        "    Username ..............: %s", mysql.mysql_user.c_str());
+    Logger::config().info(
+        "    Password ..............: %s", mysql.mysql_pass.c_str());
+    Logger::config().info(
+        "    Database ..............: %s", mysql.mysql_db.c_str());
+  } else if (db_type == DB_TYPE_CASSANDRA) {
+    Logger::config().info("- Cassandra:");
+    Logger::config().info(
+        "    Cassandra DB ..........: not "
+        "supported!");
+  }
 }
 
 }  // namespace oai::udr::config

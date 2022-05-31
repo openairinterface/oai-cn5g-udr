@@ -29,9 +29,10 @@
 
 #include "task_manager.hpp"
 
+#include <unistd.h>
+
 #include <iostream>
 #include <thread>
-#include <unistd.h>
 
 #include "logger.hpp"
 

@@ -19,14 +19,22 @@
  *      contact@openairinterface.org
  */
 
+/*! \file mysql_db.cpp
+ \brief
+ \author  Tien-Thinh NGUYEN
+ \company Eurecom
+ \date 2022
+ \email: Tien-Thinh.Nguyen@eurecom.fr
+ */
+
 #include "mysql_db.hpp"
 
-#include "udr_config.hpp"
-#include "AuthenticationSubscription.h"
 #include "AccessAndMobilitySubscriptionData.h"
-#include "SdmSubscription.h"
+#include "AuthenticationSubscription.h"
 #include "ProblemDetails.h"
+#include "SdmSubscription.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;

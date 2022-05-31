@@ -19,11 +19,19 @@
  *      contact@openairinterface.org
  */
 
+/*! \file cassandra_db.cpp
+ \brief
+ \author  Tien-Thinh NGUYEN
+ \company Eurecom
+ \date 2022
+ \email: Tien-Thinh.Nguyen@eurecom.fr
+ */
+
 #include "cassandra_db.hpp"
 
-#include "udr_config.hpp"
 #include "AuthenticationSubscription.h"
 #include "logger.hpp"
+#include "udr_config.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;

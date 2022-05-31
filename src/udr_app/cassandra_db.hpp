@@ -19,6 +19,14 @@
  *      contact@openairinterface.org
  */
 
+/*! \file cassandra_db.hpp
+ \brief
+ \author  Tien-Thinh NGUYEN
+ \company Eurecom
+ \date 2022
+ \email: Tien-Thinh.Nguyen@eurecom.fr
+ */
+
 #ifndef CASSANDRA_DB_HPP
 #define CASSANDRA_DB_HPP
 
