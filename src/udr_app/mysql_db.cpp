@@ -143,6 +143,8 @@ bool mysql_db::insert_authentication_subscription(
     query += ",sequenceNumber='" + json_tmp.dump() + "'";
   }
 
+  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(

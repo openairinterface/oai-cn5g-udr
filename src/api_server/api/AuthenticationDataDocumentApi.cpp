@@ -38,6 +38,8 @@
 #include "logger.hpp"
 #include "udr_config.hpp"
 
+extern oai::udr::config::udr_config udr_cfg;
+
 namespace oai::udr::api {
 
 using namespace oai::udr::helpers;
@@ -56,7 +58,7 @@ void AuthenticationDataDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base +
+      base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/authentication-data/"
           "authentication-subscription",
       Routes::bind(
