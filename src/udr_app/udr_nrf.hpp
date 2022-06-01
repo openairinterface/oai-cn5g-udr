@@ -29,10 +29,10 @@
 #ifndef FILE_UDR_NRF_SEEN
 #define FILE_UDR_NRF_SEEN
 
+#include <curl/curl.h>
+
 #include <map>
 #include <thread>
-
-#include <curl/curl.h>
 
 #include "logger.hpp"
 #include "udr_config.hpp"

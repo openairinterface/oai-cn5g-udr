@@ -33,15 +33,17 @@
 #include <mysql/mysql.h>
 #include <pistache/http.h>
 
-#include "udr_event.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 
 #include "Amf3GppAccessRegistration.h"
 #include "AuthEvent.h"
+#include "AuthenticationSubscription.h"
 #include "PatchItem.h"
 #include "SdmSubscription.h"
 #include "SmfRegistration.h"
+#include "database_wrapper.hpp"
+#include "udr_event.hpp"
 
 using namespace oai::udr::model;
 
@@ -129,6 +131,32 @@ class udr_app {
    * @return void
    */
   void handle_query_authentication_status(
+      const std::string& ue_id, nlohmann::json& response_data, long& code);
+
+  /*
+   * Handle a request to Create an Authentication Subscription
+   * (AuthenticationSubscriptionDocumentApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [const AuthenticationSubscription&] authentication_subscription:
+   * UE's subscription information
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] http_code: HTTP response code
+   * @return void
+   */
+  void handle_create_authentication_data(
+      const std::string& ue_id,
+      const AuthenticationSubscription& authentication_subscription,
+      nlohmann::json& response_data, long& code);
+
+  /*
+   * Handle a request to remove the AuthenticationSubscription
+   * (AuthenticationDataDocumentApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] code: HTTP response code
+   * @return void
+   */
+  void handle_delete_authentication_data(
       const std::string& ue_id, nlohmann::json& response_data, long& code);
 
   /*
@@ -224,13 +252,15 @@ class udr_app {
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
    * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [const std::string&] dnn: DNN
    * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& response_data, long& code,
-      oai::udr::model::Snssai snssai = {}, std::string dnn = {});
+      const oai::udr::model::Snssai& snssai = {}, const std::string& dnn = {});
 
   /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)
@@ -298,6 +328,8 @@ class udr_app {
  private:
   MYSQL mysql;
   udr_event& event_sub;
+  std::shared_ptr<database_wrapper_abstraction> db_connector;
+  // std::shared_ptr<database_wrapper> db_connector_test;
 };
 }  // namespace app
 }  // namespace udr

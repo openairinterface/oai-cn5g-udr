@@ -24,16 +24,16 @@
  \author
  \company Eurecom
  \date 2020
- \email: Tien-Thinh.Nguyen@eurecom.fr
+ \email:
  */
 
 #ifndef TASK_MANAGER_H_
 #define TASK_MANAGER_H_
 
-#include "udr_event.hpp"
-
 #include <linux/types.h>
 #include <sys/timerfd.h>
+
+#include "udr_event.hpp"
 
 namespace oai {
 namespace udr {

@@ -27,13 +27,14 @@
  \email: Tien-Thinh.Nguyen@eurecom.fr
  */
 
+#include "udr_profile.hpp"
+
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
 #include "fqdn.hpp"
 #include "logger.hpp"
 #include "string.hpp"
-#include "udr_profile.hpp"
 
 // using namespace udr;
 using namespace oai::udr::app;

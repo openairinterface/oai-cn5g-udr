@@ -87,6 +87,7 @@ class Logger {
   static _Logger& config() { return *singleton().m_config; }
   static _Logger& udr_server() { return *singleton().m_udr_server; }
   static _Logger& udr_nrf() { return *singleton().m_udr_nrf; }
+  static _Logger& udr_mysql() { return *singleton().m_udr_mysql; }
 
  private:
   static Logger* m_singleton;
@@ -109,6 +110,7 @@ class Logger {
   _Logger* m_system;
   _Logger* m_udr_server;
   _Logger* m_udr_nrf;
+  _Logger* m_udr_mysql;
 };
 
 #endif

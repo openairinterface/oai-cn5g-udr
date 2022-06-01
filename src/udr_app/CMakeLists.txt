@@ -33,7 +33,9 @@ add_library (UDR STATIC
   udr_nrf.cpp 
   udr_event.cpp
   task_manager.cpp
-  udr_client.cpp 
+  udr_client.cpp
+  mysql_db.cpp
+  cassandra_db.cpp
 )
 
 

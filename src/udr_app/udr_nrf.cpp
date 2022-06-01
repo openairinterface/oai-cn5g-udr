@@ -28,20 +28,21 @@
  */
 
 #include "udr_nrf.hpp"
-#include "udr_app.hpp"
-#include "udr_client.hpp"
-#include "udr_profile.hpp"
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid_io.hpp>
 
 #include <curl/curl.h>
-#include <nlohmann/json.hpp>
 #include <pistache/http.h>
 #include <pistache/mime.h>
+
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <nlohmann/json.hpp>
 #include <stdexcept>
 
 #include "logger.hpp"
 #include "udr.h"
+#include "udr_app.hpp"
+#include "udr_client.hpp"
+#include "udr_profile.hpp"
 
 using namespace oai::udr::config;
 // using namespace udr;
