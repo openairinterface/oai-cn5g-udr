@@ -262,6 +262,11 @@ class udr_app {
       nlohmann::json& response_data, long& code,
       const oai::udr::model::Snssai& snssai = {}, const std::string& dnn = {});
 
+  void handle_create_sm_data(
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      nlohmann::json& response_data, long& code,
+      const oai::udr::model::Snssai& snssai = {}, const std::string& dnn = {});
+
   /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
