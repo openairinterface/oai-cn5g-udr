@@ -27,6 +27,8 @@
 
 #define HEART_BEAT_TIMER 10
 
+#define DB_CONNECTION_TIMER 1000
+
 #define _unused(x) ((void) (x))
 
 #define NNRF_NFM_BASE "/nnrf-nfm/"
@@ -78,7 +80,7 @@ typedef enum db_type_s {
   DB_TYPE_CASSANDRA = 2
 } db_type_t;
 
-static const std::vector<std::string> db_type_e2str = {"Unknown", "MySQL",
-                                                       "Cassandra"};
+static const std::vector<std::string> db_type_e2str = {
+    "Unknown", "MySQL", "Cassandra"};
 
 #endif

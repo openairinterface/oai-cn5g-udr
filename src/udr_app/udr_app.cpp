@@ -37,6 +37,7 @@
 #include "mysql_db.hpp"
 #include "udr_config.hpp"
 #include "udr_nrf.hpp"
+#include "db_connection_manager.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
@@ -44,7 +45,8 @@ using namespace oai::udr::config;
 
 extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
-udr_nrf* udr_nrf_inst = nullptr;
+udr_nrf* udr_nrf_inst                             = nullptr;
+db_connection_manager* db_connection_manager_inst = nullptr;
 
 //------------------------------------------------------------------------------
 udr_app::udr_app(const std::string& config_file, udr_event& ev)
@@ -73,12 +75,23 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
       throw;
     }
   }
+
+  // DB Connection Manager
+  try {
+    db_connection_manager_inst = new db_connection_manager(ev);
+    Logger::udr_app().info("DB Connection Task Created ");
+  } catch (std::exception& e) {
+    Logger::udr_app().error("Cannot create DB Connection Task: %s", e.what());
+    throw;
+  }
   Logger::udr_app().startup("Started");
 }
 
 //------------------------------------------------------------------------------
 udr_app::~udr_app() {
   Logger::udr_app().debug("Delete UDR APP instance...");
+  // Close DB connection
+  db_connector->close_connection();
 }
 
 //------------------------------------------------------------------------------

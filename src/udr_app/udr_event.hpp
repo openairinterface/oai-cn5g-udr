@@ -66,8 +66,20 @@ class udr_event {
   bs2::connection subscribe_task_nf_heartbeat(
       const task_sig_t::slot_type& sig, uint64_t period, uint64_t start = 0);
 
+  /*
+   * Subscribe to the task db connection reset event
+   * @param [const db_connection_sig_t::slot_type &] sig
+   * @param [uint64_t] period: interval between two events
+   * @param [uint64_t] start:
+   * @return void
+   */
+  bs2::connection subscribe_task_db_connection_reset(
+      const db_connection_sig_t::slot_type& sig, uint64_t period,
+      uint64_t start = 0);
+
  private:
   task_sig_t task_tick;
+  db_connection_sig_t db_connection_sig;
 };
 }  // namespace oai::udr::app
 #endif

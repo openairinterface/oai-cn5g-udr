@@ -42,3 +42,13 @@ bs2::connection udr_event::subscribe_task_nf_heartbeat(
   };
   return task_tick.connect(f);
 }
+
+bs2::connection udr_event::subscribe_task_db_connection_reset(
+    const db_connection_sig_t::slot_type& sig,
+    std::shared_ptr<database_wrapper_abstraction>& db_connector,
+    uint64_t period, uint64_t start) {
+  auto f = [db_connector, period, start, sig](uint64_t t) {
+    if (t >= start && (t - start) % period == 0) sig(db_connector, t);
+  };
+  return db_connection_sig.connect(f);
+}
