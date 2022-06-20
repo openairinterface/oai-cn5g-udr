@@ -42,10 +42,12 @@ using namespace oai::udr::config;
 extern udr_config udr_cfg;
 
 //------------------------------------------------------------------------------
-mysql_db::mysql_db() : database_wrapper<mysql_db>() {}
+mysql_db::mysql_db(udr_event& ev) : database_wrapper<mysql_db>(ev) {}
 
 //------------------------------------------------------------------------------
-mysql_db::~mysql_db() {}
+mysql_db::~mysql_db() {
+  if (db_connection.connected()) db_connection.disconnect();
+}
 
 //------------------------------------------------------------------------------
 bool mysql_db::initialize() {
@@ -72,6 +74,42 @@ bool mysql_db::close_connection() {
   Logger::udr_mysql().debug("Close the connection with MySQL DB");
   mysql_close(&mysql_connector);
   return true;
+}
+
+//---------------------------------------------------------------------------------------------
+void mysql_db::start_event_connection_manager() {
+  // get current time
+  uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch())
+                    .count();
+  struct itimerspec its;
+  its.it_value.tv_sec  = DB_CONNECTION_TIMER;  // seconds
+  its.it_value.tv_nsec = 0;                    // 100 * 1000 * 1000; //100ms
+  const uint64_t interval =
+      its.it_value.tv_sec * 1000 +
+      its.it_value.tv_nsec / 1000000;  // convert sec, nsec to msec
+
+  db_connection = m_event_sub.subscribe_task_db_connection_manager(
+      boost::bind(
+          &mysql_db::trigger_connection_verification_procedure, this, _1),
+      interval, ms + interval);
+}
+//---------------------------------------------------------------------------------------------
+void mysql_db::trigger_connection_verification_procedure(uint64_t ms) {
+  _unused(ms);
+
+  if (!mysql_real_connect(
+          &mysql_connector, udr_cfg.mysql.mysql_server.c_str(),
+          udr_cfg.mysql.mysql_user.c_str(), udr_cfg.mysql.mysql_pass.c_str(),
+          udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
+    Logger::udr_mysql().error(
+        "An error occurred while connecting to MySQL DB: %s",
+        mysql_error(&mysql_connector));
+
+    // Reset the connection
+    close_connection();
+    initialize();
+  }
 }
 
 //------------------------------------------------------------------------------

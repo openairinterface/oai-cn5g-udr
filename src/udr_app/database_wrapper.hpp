@@ -212,6 +212,16 @@ class database_wrapper : public database_wrapper_abstraction {
     return derived->query_smf_select_data(ue_id, serving_plmn_id, json_data);
   }
 
+  void start_event_connection_handling() {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->start_event_connection_handling();
+  }
+
+  void trigger_connection_handling_procedure(uint64_t ms) {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->trigger_connection_handling_procedure(ms);
+  }
+
  protected:
 };
 }  // namespace oai::udr::app

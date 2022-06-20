@@ -34,12 +34,13 @@
 
 #include "Amf3GppAccessRegistration.h"
 #include "database_wrapper.hpp"
+#include "udr_event.hpp"
 
 namespace oai::udr::app {
 
 class mysql_db : public database_wrapper<mysql_db> {
  public:
-  mysql_db();
+  mysql_db(udr_event& ev);
   virtual ~mysql_db();
 
   bool initialize();
@@ -127,6 +128,7 @@ class mysql_db : public database_wrapper<mysql_db> {
 
  private:
   MYSQL mysql_connector;
+  bs2::connection db_connection;
 };
 }  // namespace oai::udr::app
 

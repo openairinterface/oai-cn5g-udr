@@ -41,14 +41,17 @@
 #include "Snssai.h"
 #include "logger.hpp"
 #include "udr.h"
+#include "udr_event.hpp"
 
 namespace oai::udr::app {
 
 class database_wrapper_abstraction {
  public:
-  database_wrapper_abstraction(){};
+  database_wrapper_abstraction(udr_event& ev) : m_event_sub(ev){};
   virtual ~database_wrapper_abstraction(){};
   // virtual std::unique_ptr<database_wrapper_abstraction> clone() const = 0;
+
+  udr_event& m_event_sub;
 
   /*
    * Initialize the DB and establish the connection between UDR and the DB
@@ -289,6 +292,20 @@ class database_wrapper_abstraction {
   virtual bool query_smf_select_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data) = 0;
+
+  /*
+   * Start event connection handling procedure
+   * @param [void]
+   * @return void
+   */
+  virtual void start_event_connection_handling() = 0;
+
+  /*
+   * Trigger connection handling procedure (kind of NF Heartbeat)
+   * @param [uint64_t] ms:
+   * @return void
+   */
+  virtual void trigger_connection_handling_procedure(uint64_t ms) = 0;
 };
 }  // namespace oai::udr::app
 
