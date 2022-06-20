@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class SteeringContainer {
-public:
+ public:
   SteeringContainer();
   virtual ~SteeringContainer();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// SteeringContainer members
 
-  friend void to_json(nlohmann::json &j, const SteeringContainer &o);
-  friend void from_json(const nlohmann::json &j, SteeringContainer &o);
+  friend void to_json(nlohmann::json& j, const SteeringContainer& o);
+  friend void from_json(const nlohmann::json& j, SteeringContainer& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* SteeringContainer_H_ */

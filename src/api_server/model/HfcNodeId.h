@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class HfcNodeId {
-public:
+ public:
   HfcNodeId();
   virtual ~HfcNodeId();
 
@@ -61,15 +61,15 @@ public:
   ///
   /// </summary>
   std::string getHfcNId() const;
-  void setHfcNId(std::string const &value);
+  void setHfcNId(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const HfcNodeId &o);
-  friend void from_json(const nlohmann::json &j, HfcNodeId &o);
+  friend void to_json(nlohmann::json& j, const HfcNodeId& o);
+  friend void from_json(const nlohmann::json& j, HfcNodeId& o);
 
-protected:
+ protected:
   std::string m_HfcNId;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* HfcNodeId_H_ */

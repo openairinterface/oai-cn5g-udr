@@ -53,22 +53,23 @@ using namespace oai::udr::model;
 using namespace oai::udr::app;
 
 class BdtPolicyDataStoreApiImpl : public oai::udr::api::BdtPolicyDataStoreApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  BdtPolicyDataStoreApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                            udr_app *udr_app_inst, std::string address);
+ public:
+  BdtPolicyDataStoreApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~BdtPolicyDataStoreApiImpl() {}
 
   void read_bdt_policy_data(
-      const Pistache::Optional<std::vector<std::string>> &bdtPolicyIds,
-      const Pistache::Optional<std::vector<std::string>> &internalGroupIds,
-      const Pistache::Optional<std::vector<std::string>> &supis,
-      Pistache::Http::ResponseWriter &response);
+      const Pistache::Optional<std::vector<std::string>>& bdtPolicyIds,
+      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
+      const Pistache::Optional<std::vector<std::string>>& supis,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

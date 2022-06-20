@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class UsageMonitoringInformationDocumentApi {
-public:
+ public:
   UsageMonitoringInformationDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~UsageMonitoringInformationDocumentApi() {}
@@ -62,20 +62,20 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_usage_monitoring_resource_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void delete_usage_monitoring_information_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void read_usage_monitoring_information_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void usage_monitoring_information_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -90,9 +90,9 @@ private:
   /// <param name="usageMonId"></param>
   /// <param name="usageMonData"></param>
   virtual void create_usage_monitoring_resource(
-      const std::string &ueId, const std::string &usageMonId,
-      const UsageMonData &usageMonData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::string& usageMonId,
+      const UsageMonData& usageMonData,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Delete a usage monitoring resource
@@ -103,8 +103,8 @@ private:
   /// <param name="ueId"></param>
   /// <param name="usageMonId"></param>
   virtual void delete_usage_monitoring_information(
-      const std::string &ueId, const std::string &usageMonId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::string& usageMonId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieve a usage monitoring resource
@@ -117,11 +117,11 @@ private:
   /// <param name="suppFeat">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void read_usage_monitoring_information(
-      const std::string &ueId, const std::string &usageMonId,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::string& usageMonId,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* UsageMonitoringInformationDocumentApi_H_ */

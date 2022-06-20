@@ -49,7 +49,9 @@ IndividualInfluenceDataSubscriptionDocumentApi::
   router = rtr;
 }
 
-void IndividualInfluenceDataSubscriptionDocumentApi::init() { setupRoutes(); }
+void IndividualInfluenceDataSubscriptionDocumentApi::init() {
+  setupRoutes();
+}
 
 void IndividualInfluenceDataSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -58,23 +60,26 @@ void IndividualInfluenceDataSubscriptionDocumentApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/application-data/influenceData/subs-to-notify/:subscriptionId",
-      Routes::bind(&IndividualInfluenceDataSubscriptionDocumentApi::
-                       delete_individual_influence_data_subscription_handler,
-                   this));
+      Routes::bind(
+          &IndividualInfluenceDataSubscriptionDocumentApi::
+              delete_individual_influence_data_subscription_handler,
+          this));
   Routes::Get(
       *router,
       base + udr_cfg.nudr.api_version +
           "/application-data/influenceData/subs-to-notify/:subscriptionId",
-      Routes::bind(&IndividualInfluenceDataSubscriptionDocumentApi::
-                       read_individual_influence_data_subscription_handler,
-                   this));
+      Routes::bind(
+          &IndividualInfluenceDataSubscriptionDocumentApi::
+              read_individual_influence_data_subscription_handler,
+          this));
   Routes::Put(
       *router,
       base + udr_cfg.nudr.api_version +
           "/application-data/influenceData/subs-to-notify/:subscriptionId",
-      Routes::bind(&IndividualInfluenceDataSubscriptionDocumentApi::
-                       replace_individual_influence_data_subscription_handler,
-                   this));
+      Routes::bind(
+          &IndividualInfluenceDataSubscriptionDocumentApi::
+              replace_individual_influence_data_subscription_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -85,22 +90,27 @@ void IndividualInfluenceDataSubscriptionDocumentApi::setupRoutes() {
 
 void IndividualInfluenceDataSubscriptionDocumentApi::
     delete_individual_influence_data_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subscriptionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
   try {
-    this->delete_individual_influence_data_subscription(subscriptionId,
-                                                        response);
-  } catch (nlohmann::detail::exception &e) {
+    this->delete_individual_influence_data_subscription(
+        subscriptionId, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -108,21 +118,26 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
 }
 void IndividualInfluenceDataSubscriptionDocumentApi::
     read_individual_influence_data_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subscriptionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
   try {
     this->read_individual_influence_data_subscription(subscriptionId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -130,8 +145,13 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
 }
 void IndividualInfluenceDataSubscriptionDocumentApi::
     replace_individual_influence_data_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subscriptionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subscriptionId = request.param(":subscriptionId").as<std::string>();
 
@@ -143,14 +163,14 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
     nlohmann::json::parse(request.body()).get_to(trafficInfluSub);
     this->replace_individual_influence_data_subscription(
         subscriptionId, trafficInfluSub, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -159,10 +179,10 @@ void IndividualInfluenceDataSubscriptionDocumentApi::
 
 void IndividualInfluenceDataSubscriptionDocumentApi::
     individual_influence_data_subscription_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

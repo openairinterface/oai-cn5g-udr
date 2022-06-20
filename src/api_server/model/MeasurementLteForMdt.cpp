@@ -43,10 +43,10 @@ void MeasurementLteForMdt::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const MeasurementLteForMdt &o) {
+void to_json(nlohmann::json& j, const MeasurementLteForMdt& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, MeasurementLteForMdt &o) {}
+void from_json(const nlohmann::json& j, MeasurementLteForMdt& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

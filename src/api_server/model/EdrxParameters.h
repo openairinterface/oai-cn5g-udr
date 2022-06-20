@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class EdrxParameters {
-public:
+ public:
   EdrxParameters();
   virtual ~EdrxParameters();
 
@@ -63,22 +63,22 @@ public:
   ///
   /// </summary>
   RatType getRatType() const;
-  void setRatType(RatType const &value);
+  void setRatType(RatType const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getEdrxValue() const;
-  void setEdrxValue(std::string const &value);
+  void setEdrxValue(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const EdrxParameters &o);
-  friend void from_json(const nlohmann::json &j, EdrxParameters &o);
+  friend void to_json(nlohmann::json& j, const EdrxParameters& o);
+  friend void from_json(const nlohmann::json& j, EdrxParameters& o);
 
-protected:
+ protected:
   RatType m_RatType;
 
   std::string m_EdrxValue;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* EdrxParameters_H_ */

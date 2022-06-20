@@ -43,18 +43,20 @@ void PatchResult::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PatchResult &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const PatchResult& o) {
+  j           = nlohmann::json();
   j["report"] = o.m_Report;
 }
 
-void from_json(const nlohmann::json &j, PatchResult &o) {
+void from_json(const nlohmann::json& j, PatchResult& o) {
   j.at("report").get_to(o.m_Report);
 }
 
-std::vector<ReportItem> &PatchResult::getReport() { return m_Report; }
-void PatchResult::setReport(std::vector<ReportItem> const &value) {
+std::vector<ReportItem>& PatchResult::getReport() {
+  return m_Report;
+}
+void PatchResult::setReport(std::vector<ReportItem> const& value) {
   m_Report = value;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

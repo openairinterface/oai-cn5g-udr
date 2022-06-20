@@ -53,21 +53,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class Class5GVNGroupsInternalDocumentApi {
-public:
+ public:
   Class5GVNGroupsInternalDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~Class5GVNGroupsInternalDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  query5_g_vn_group_internal_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
+  void query5_g_vn_group_internal_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void class5_gvn_groups_internal_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -80,10 +80,10 @@ private:
   /// </remarks>
   /// <param name="internalGroupIds">List of Internal Group IDs</param>
   virtual void query5_g_vn_group_internal(
-      const Pistache::Optional<std::vector<std::string>> &internalGroupIds,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* Class5GVNGroupsInternalDocumentApi_H_ */

@@ -49,7 +49,9 @@ SDMSubscriptionsCollectionApi::SDMSubscriptionsCollectionApi(
   router = rtr;
 }
 
-void SDMSubscriptionsCollectionApi::init() { setupRoutes(); }
+void SDMSubscriptionsCollectionApi::init() {
+  setupRoutes();
+}
 
 void SDMSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -69,17 +71,21 @@ void SDMSubscriptionsCollectionApi::setupRoutes() {
           &SDMSubscriptionsCollectionApi::querysdmsubscriptions_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&SDMSubscriptionsCollectionApi::
-                       sdm_subscriptions_collection_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &SDMSubscriptionsCollectionApi::
+          sdm_subscriptions_collection_api_default_handler,
+      this));
 }
 
 void SDMSubscriptionsCollectionApi::create_sdm_subscriptions_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscriptions Method: POST!");
-
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -90,24 +96,28 @@ void SDMSubscriptionsCollectionApi::create_sdm_subscriptions_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(sdmSubscription);
     this->create_sdm_subscriptions(ueId, sdmSubscription, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SDMSubscriptionsCollectionApi::querysdmsubscriptions_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SDMSubscriptions Method: GET!");
-
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -123,14 +133,14 @@ void SDMSubscriptionsCollectionApi::querysdmsubscriptions_handler(
 
   try {
     this->querysdmsubscriptions(ueId, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -139,10 +149,10 @@ void SDMSubscriptionsCollectionApi::querysdmsubscriptions_handler(
 
 void SDMSubscriptionsCollectionApi::
     sdm_subscriptions_collection_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class Tai {
-public:
+ public:
   Tai();
   virtual ~Tai();
 
@@ -63,24 +63,24 @@ public:
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const &value);
+  void setPlmnId(PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getTac() const;
-  void setTac(std::string const &value);
+  void setTac(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getNid() const;
-  void setNid(std::string const &value);
+  void setNid(std::string const& value);
   bool nidIsSet() const;
   void unsetNid();
 
-  friend void to_json(nlohmann::json &j, const Tai &o);
-  friend void from_json(const nlohmann::json &j, Tai &o);
+  friend void to_json(nlohmann::json& j, const Tai& o);
+  friend void from_json(const nlohmann::json& j, Tai& o);
 
-protected:
+ protected:
   PlmnId m_PlmnId;
 
   std::string m_Tac;
@@ -89,6 +89,6 @@ protected:
   bool m_NidIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* Tai_H_ */

@@ -57,7 +57,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class OperatorSpecificDataContainerDocumentApi {
-public:
+ public:
   OperatorSpecificDataContainerDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~OperatorSpecificDataContainerDocumentApi() {}
@@ -65,15 +65,17 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void modify_oper_spec_data_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
-  void query_oper_spec_data_handler(const Pistache::Rest::Request &request,
-                                    Pistache::Http::ResponseWriter response);
+  void modify_oper_spec_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void query_oper_spec_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void operator_specific_data_container_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -89,9 +91,9 @@ private:
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify_oper_spec_data(
-      const std::string &ueId, const std::vector<PatchItem> &patchItem,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the operator specific data of a UE
@@ -109,14 +111,14 @@ private:
   /// conditional requests, as described in RFC 7232, 3.3 (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_oper_spec_data(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* OperatorSpecificDataContainerDocumentApi_H_ */

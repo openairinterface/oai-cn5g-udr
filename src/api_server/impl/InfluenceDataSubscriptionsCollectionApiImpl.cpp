@@ -42,27 +42,28 @@ using namespace oai::udr::model;
 
 InfluenceDataSubscriptionsCollectionApiImpl::
     InfluenceDataSubscriptionsCollectionApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : InfluenceDataSubscriptionsCollectionApi(rtr), m_udr_app(udr_app_inst),
+    : InfluenceDataSubscriptionsCollectionApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void InfluenceDataSubscriptionsCollectionApiImpl::
     create_individual_influence_data_subscription(
-        const TrafficInfluSub &trafficInfluSub,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const TrafficInfluSub& trafficInfluSub,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void InfluenceDataSubscriptionsCollectionApiImpl::
     read_influence_data_subscriptions(
-        const Pistache::Optional<std::string> &dnn,
-        const Pistache::Optional<Snssai> &snssai,
-        const Pistache::Optional<std::string> &internalGroupId,
-        const Pistache::Optional<std::string> &supi,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const Pistache::Optional<std::string>& dnn,
+        const Pistache::Optional<Snssai>& snssai,
+        const Pistache::Optional<std::string>& internalGroupId,
+        const Pistache::Optional<std::string>& supi,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

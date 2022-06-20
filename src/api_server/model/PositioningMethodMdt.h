@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PositioningMethodMdt {
-public:
+ public:
   PositioningMethodMdt();
   virtual ~PositioningMethodMdt();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// PositioningMethodMdt members
 
-  friend void to_json(nlohmann::json &j, const PositioningMethodMdt &o);
-  friend void from_json(const nlohmann::json &j, PositioningMethodMdt &o);
+  friend void to_json(nlohmann::json& j, const PositioningMethodMdt& o);
+  friend void from_json(const nlohmann::json& j, PositioningMethodMdt& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PositioningMethodMdt_H_ */

@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualPolicyDataSubscriptionDocumentApi {
-public:
+ public:
   IndividualPolicyDataSubscriptionDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualPolicyDataSubscriptionDocumentApi() {}
@@ -62,17 +62,17 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void delete_individual_policy_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void replace_individual_policy_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_policy_data_subscription_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -85,7 +85,7 @@ private:
   /// </remarks>
   /// <param name="subsId"></param>
   virtual void delete_individual_policy_data_subscription(
-      const std::string &subsId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subsId, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify a subscription to receive notification of policy data changes
@@ -96,11 +96,11 @@ private:
   /// <param name="subsId"></param>
   /// <param name="policyDataSubscription"></param>
   virtual void replace_individual_policy_data_subscription(
-      const std::string &subsId,
-      const PolicyDataSubscription &policyDataSubscription,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subsId,
+      const PolicyDataSubscription& policyDataSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IndividualPolicyDataSubscriptionDocumentApi_H_ */

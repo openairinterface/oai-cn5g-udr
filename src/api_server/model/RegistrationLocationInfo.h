@@ -53,7 +53,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class RegistrationLocationInfo {
-public:
+ public:
   RegistrationLocationInfo();
   virtual ~RegistrationLocationInfo();
 
@@ -66,31 +66,31 @@ public:
   ///
   /// </summary>
   std::string getAmfInstanceId() const;
-  void setAmfInstanceId(std::string const &value);
+  void setAmfInstanceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const &value);
+  void setPlmnId(PlmnId const& value);
   bool plmnIdIsSet() const;
   void unsetPlmnId();
   /// <summary>
   ///
   /// </summary>
   VgmlcAddress getVgmlcAddress() const;
-  void setVgmlcAddress(VgmlcAddress const &value);
+  void setVgmlcAddress(VgmlcAddress const& value);
   bool vgmlcAddressIsSet() const;
   void unsetVgmlcAddress();
   /// <summary>
   ///
   /// </summary>
-  std::vector<AccessType> &getAccessTypeList();
-  void setAccessTypeList(std::vector<AccessType> const &value);
+  std::vector<AccessType>& getAccessTypeList();
+  void setAccessTypeList(std::vector<AccessType> const& value);
 
-  friend void to_json(nlohmann::json &j, const RegistrationLocationInfo &o);
-  friend void from_json(const nlohmann::json &j, RegistrationLocationInfo &o);
+  friend void to_json(nlohmann::json& j, const RegistrationLocationInfo& o);
+  friend void from_json(const nlohmann::json& j, RegistrationLocationInfo& o);
 
-protected:
+ protected:
   std::string m_AmfInstanceId;
 
   PlmnId m_PlmnId;
@@ -100,6 +100,6 @@ protected:
   std::vector<AccessType> m_AccessTypeList;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* RegistrationLocationInfo_H_ */

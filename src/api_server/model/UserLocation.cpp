@@ -37,8 +37,8 @@ namespace oai::udr::model {
 
 UserLocation::UserLocation() {
   m_EutraLocationIsSet = false;
-  m_NrLocationIsSet = false;
-  m_N3gaLocationIsSet = false;
+  m_NrLocationIsSet    = false;
+  m_N3gaLocationIsSet  = false;
 }
 
 UserLocation::~UserLocation() {}
@@ -47,17 +47,14 @@ void UserLocation::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const UserLocation &o) {
+void to_json(nlohmann::json& j, const UserLocation& o) {
   j = nlohmann::json();
-  if (o.eutraLocationIsSet())
-    j["eutraLocation"] = o.m_EutraLocation;
-  if (o.nrLocationIsSet())
-    j["nrLocation"] = o.m_NrLocation;
-  if (o.n3gaLocationIsSet())
-    j["n3gaLocation"] = o.m_N3gaLocation;
+  if (o.eutraLocationIsSet()) j["eutraLocation"] = o.m_EutraLocation;
+  if (o.nrLocationIsSet()) j["nrLocation"] = o.m_NrLocation;
+  if (o.n3gaLocationIsSet()) j["n3gaLocation"] = o.m_N3gaLocation;
 }
 
-void from_json(const nlohmann::json &j, UserLocation &o) {
+void from_json(const nlohmann::json& j, UserLocation& o) {
   if (j.find("eutraLocation") != j.end()) {
     j.at("eutraLocation").get_to(o.m_EutraLocation);
     o.m_EutraLocationIsSet = true;
@@ -72,26 +69,44 @@ void from_json(const nlohmann::json &j, UserLocation &o) {
   }
 }
 
-EutraLocation UserLocation::getEutraLocation() const { return m_EutraLocation; }
-void UserLocation::setEutraLocation(EutraLocation const &value) {
-  m_EutraLocation = value;
+EutraLocation UserLocation::getEutraLocation() const {
+  return m_EutraLocation;
+}
+void UserLocation::setEutraLocation(EutraLocation const& value) {
+  m_EutraLocation      = value;
   m_EutraLocationIsSet = true;
 }
-bool UserLocation::eutraLocationIsSet() const { return m_EutraLocationIsSet; }
-void UserLocation::unsetEutraLocation() { m_EutraLocationIsSet = false; }
-NrLocation UserLocation::getNrLocation() const { return m_NrLocation; }
-void UserLocation::setNrLocation(NrLocation const &value) {
-  m_NrLocation = value;
+bool UserLocation::eutraLocationIsSet() const {
+  return m_EutraLocationIsSet;
+}
+void UserLocation::unsetEutraLocation() {
+  m_EutraLocationIsSet = false;
+}
+NrLocation UserLocation::getNrLocation() const {
+  return m_NrLocation;
+}
+void UserLocation::setNrLocation(NrLocation const& value) {
+  m_NrLocation      = value;
   m_NrLocationIsSet = true;
 }
-bool UserLocation::nrLocationIsSet() const { return m_NrLocationIsSet; }
-void UserLocation::unsetNrLocation() { m_NrLocationIsSet = false; }
-N3gaLocation UserLocation::getN3gaLocation() const { return m_N3gaLocation; }
-void UserLocation::setN3gaLocation(N3gaLocation const &value) {
-  m_N3gaLocation = value;
+bool UserLocation::nrLocationIsSet() const {
+  return m_NrLocationIsSet;
+}
+void UserLocation::unsetNrLocation() {
+  m_NrLocationIsSet = false;
+}
+N3gaLocation UserLocation::getN3gaLocation() const {
+  return m_N3gaLocation;
+}
+void UserLocation::setN3gaLocation(N3gaLocation const& value) {
+  m_N3gaLocation      = value;
   m_N3gaLocationIsSet = true;
 }
-bool UserLocation::n3gaLocationIsSet() const { return m_N3gaLocationIsSet; }
-void UserLocation::unsetN3gaLocation() { m_N3gaLocationIsSet = false; }
+bool UserLocation::n3gaLocationIsSet() const {
+  return m_N3gaLocationIsSet;
+}
+void UserLocation::unsetN3gaLocation() {
+  m_N3gaLocationIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

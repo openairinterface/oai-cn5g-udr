@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UpuInfo {
-public:
+ public:
   UpuInfo();
   virtual ~UpuInfo();
 
@@ -63,8 +63,8 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<UpuData_2> &getUpuDataList();
-  void setUpuDataList(std::vector<UpuData_2> const &value);
+  std::vector<UpuData_2>& getUpuDataList();
+  void setUpuDataList(std::vector<UpuData_2> const& value);
   /// <summary>
   ///
   /// </summary>
@@ -79,26 +79,26 @@ public:
   ///
   /// </summary>
   std::string getUpuMacIausf() const;
-  void setUpuMacIausf(std::string const &value);
+  void setUpuMacIausf(std::string const& value);
   bool upuMacIausfIsSet() const;
   void unsetUpuMacIausf();
   /// <summary>
   ///
   /// </summary>
   std::string getCounterUpu() const;
-  void setCounterUpu(std::string const &value);
+  void setCounterUpu(std::string const& value);
   bool counterUpuIsSet() const;
   void unsetCounterUpu();
   /// <summary>
   ///
   /// </summary>
   std::string getProvisioningTime() const;
-  void setProvisioningTime(std::string const &value);
+  void setProvisioningTime(std::string const& value);
 
-  friend void to_json(nlohmann::json &j, const UpuInfo &o);
-  friend void from_json(const nlohmann::json &j, UpuInfo &o);
+  friend void to_json(nlohmann::json& j, const UpuInfo& o);
+  friend void from_json(const nlohmann::json& j, UpuInfo& o);
 
-protected:
+ protected:
   std::vector<UpuData_2> m_UpuDataList;
 
   bool m_UpuRegInd;
@@ -112,6 +112,6 @@ protected:
   std::string m_ProvisioningTime;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* UpuInfo_H_ */

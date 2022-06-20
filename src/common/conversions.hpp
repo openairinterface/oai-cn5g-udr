@@ -47,8 +47,8 @@
   (aDDRESS)[0], (aDDRESS)[1], (aDDRESS)[2], (aDDRESS)[3]
 
 class conv {
-public:
-  static std::string toString(const struct in_addr &inaddr);
-  static std::string toString(const struct in6_addr &in6addr);
+ public:
+  static std::string toString(const struct in_addr& inaddr);
+  static std::string toString(const struct in6_addr& in6addr);
 };
 #endif /* FILE_CONVERSIONS_HPP_SEEN */

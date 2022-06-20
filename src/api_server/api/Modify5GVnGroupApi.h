@@ -56,20 +56,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class Modify5GVnGroupApi {
-public:
+ public:
   Modify5GVnGroupApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~Modify5GVnGroupApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void modify5_g_vn_group_handler(const Pistache::Rest::Request &request,
-                                  Pistache::Http::ResponseWriter response);
+  void modify5_g_vn_group_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void modify5_g_vn_group_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -84,13 +85,13 @@ private:
   /// <param name="patchItem"></param>
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
-  virtual void
-  modify5_g_vn_group(const std::string &externalGroupId,
-                     const std::vector<PatchItem> &patchItem,
-                     const Pistache::Optional<std::string> &supportedFeatures,
-                     Pistache::Http::ResponseWriter &response) = 0;
+  virtual void modify5_g_vn_group(
+      const std::string& externalGroupId,
+      const std::vector<PatchItem>& patchItem,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* Modify5GVnGroupApi_H_ */

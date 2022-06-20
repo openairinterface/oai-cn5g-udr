@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PpActiveTime {
-public:
+ public:
   PpActiveTime();
   virtual ~PpActiveTime();
 
@@ -66,7 +66,7 @@ public:
   ///
   /// </summary>
   std::string getAfInstanceId() const;
-  void setAfInstanceId(std::string const &value);
+  void setAfInstanceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
@@ -76,21 +76,21 @@ public:
   ///
   /// </summary>
   std::string getValidityTime() const;
-  void setValidityTime(std::string const &value);
+  void setValidityTime(std::string const& value);
   bool validityTimeIsSet() const;
   void unsetValidityTime();
   /// <summary>
   ///
   /// </summary>
   std::string getMtcProviderInformation() const;
-  void setMtcProviderInformation(std::string const &value);
+  void setMtcProviderInformation(std::string const& value);
   bool mtcProviderInformationIsSet() const;
   void unsetMtcProviderInformation();
 
-  friend void to_json(nlohmann::json &j, const PpActiveTime &o);
-  friend void from_json(const nlohmann::json &j, PpActiveTime &o);
+  friend void to_json(nlohmann::json& j, const PpActiveTime& o);
+  friend void from_json(const nlohmann::json& j, PpActiveTime& o);
 
-protected:
+ protected:
   int32_t m_ActiveTime;
 
   std::string m_AfInstanceId;
@@ -103,6 +103,6 @@ protected:
   bool m_MtcProviderInformationIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PpActiveTime_H_ */

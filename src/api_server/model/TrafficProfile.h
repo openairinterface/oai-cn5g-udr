@@ -57,7 +57,7 @@ namespace oai::udr::model {
 /// packet transmission.
 /// </summary>
 class TrafficProfile {
-public:
+ public:
   TrafficProfile();
   virtual ~TrafficProfile();
 
@@ -66,12 +66,12 @@ public:
   /////////////////////////////////////////////
   /// TrafficProfile members
 
-  friend void to_json(nlohmann::json &j, const TrafficProfile &o);
-  friend void from_json(const nlohmann::json &j, TrafficProfile &o);
+  friend void to_json(nlohmann::json& j, const TrafficProfile& o);
+  friend void from_json(const nlohmann::json& j, TrafficProfile& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* TrafficProfile_H_ */

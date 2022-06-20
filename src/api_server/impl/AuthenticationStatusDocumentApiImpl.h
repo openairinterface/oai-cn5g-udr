@@ -54,29 +54,29 @@ using namespace oai::udr::app;
 
 class AuthenticationStatusDocumentApiImpl
     : public oai::udr::api::AuthenticationStatusDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  AuthenticationStatusDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                      udr_app *udr_app_inst,
-                                      std::string address);
+ public:
+  AuthenticationStatusDocumentApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~AuthenticationStatusDocumentApiImpl() {}
 
-  void create_authentication_status(const std::string &ueId,
-                                    const AuthEvent &authEvent,
-                                    Pistache::Http::ResponseWriter &response);
+  void create_authentication_status(
+      const std::string& ueId, const AuthEvent& authEvent,
+      Pistache::Http::ResponseWriter& response);
 
-  void delete_authentication_status(const std::string &ueId,
-                                    Pistache::Http::ResponseWriter &response);
+  void delete_authentication_status(
+      const std::string& ueId, Pistache::Http::ResponseWriter& response);
   void query_authentication_status(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

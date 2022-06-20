@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class RatType {
-public:
+ public:
   RatType();
   virtual ~RatType();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// RatType members
 
-  friend void to_json(nlohmann::json &j, const RatType &o);
-  friend void from_json(const nlohmann::json &j, RatType &o);
+  friend void to_json(nlohmann::json& j, const RatType& o);
+  friend void from_json(const nlohmann::json& j, RatType& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* RatType_H_ */

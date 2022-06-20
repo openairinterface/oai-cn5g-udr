@@ -42,25 +42,26 @@ using namespace oai::udr::model;
 
 EventExposureGroupSubscriptionsCollectionApiImpl::
     EventExposureGroupSubscriptionsCollectionApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
     : EventExposureGroupSubscriptionsCollectionApi(rtr),
-      m_udr_app(udr_app_inst), m_address(address) {}
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void EventExposureGroupSubscriptionsCollectionApiImpl::
-    create_ee_group_subscriptions(const std::string &ueGroupId,
-                                  const EeSubscription &eeSubscription,
-                                  Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    create_ee_group_subscriptions(
+        const std::string& ueGroupId, const EeSubscription& eeSubscription,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void EventExposureGroupSubscriptionsCollectionApiImpl::
     query_ee_group_subscriptions(
-        const std::string &ueGroupId,
-        const Pistache::Optional<std::string> &supportedFeatures,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& ueGroupId,
+        const Pistache::Optional<std::string>& supportedFeatures,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

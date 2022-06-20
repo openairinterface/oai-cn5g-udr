@@ -3,8 +3,16 @@
 set -euo pipefail
 
 CONFIG_DIR="/openair-udr/etc"
+UDR_NAME=${UDR_NAME:-oai-udr}
 UDR_INTERFACE_PORT_FOR_NUDR=${UDR_INTERFACE_PORT_FOR_NUDR:-80}
 UDR_INTERFACE_HTTP2_PORT_FOR_NUDR=${UDR_INTERFACE_HTTP2_PORT_FOR_NUDR:-8080}
+USE_HTTP2=${USE_HTTP2:-no}
+USE_FQDN_DNS=${USE_FQDN_DNS:-no}
+REGISTER_NRF=${REGISTER_NRF:-no}
+NRF_IPV4_ADDRESS=${NRF_IPV4_ADDRESS:-0.0.0.0}
+NRF_PORT=${NRF_PORT:-80}
+NRF_API_VERSION=${NRF_API_VERSION:-v1}
+NRF_FQDN=${NRF_FQDN:-oai-nrf}
 
 for c in ${CONFIG_DIR}/*.conf; do
     # grep variable names (format: ${VAR}) from template to be rendered

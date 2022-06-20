@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class Ipv6Addr {
-public:
+ public:
   Ipv6Addr();
   virtual ~Ipv6Addr();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// Ipv6Addr members
 
-  friend void to_json(nlohmann::json &j, const Ipv6Addr &o);
-  friend void from_json(const nlohmann::json &j, Ipv6Addr &o);
+  friend void to_json(nlohmann::json& j, const Ipv6Addr& o);
+  friend void from_json(const nlohmann::json& j, Ipv6Addr& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* Ipv6Addr_H_ */

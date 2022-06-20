@@ -40,7 +40,6 @@ RUN git clone https://github.com/vishnubob/wait-for-it.git
 
 # Building UDR
 WORKDIR /openair-udr/build/scripts
-RUN ./build_udr --install-deps --force
 RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
@@ -59,15 +58,16 @@ RUN apt-get update && \
       net-tools \
       tzdata \
       bc \
-      tshark \
       libmysqlclient20 \
       libasan4 \
+      libgssapi-krb5-2 \
       libpsl5 \
       librtmp1 \
       libldap-2.4-2 \
       libnettle6 \
       libnghttp2-14 \
       libhogweed4 \
+      perl \
       libconfig++9v5 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -81,8 +81,10 @@ COPY --from=oai-udr-builder \
 
 COPY --from=oai-udr-builder \
     /usr/local/lib/libpistache.so \
+    /usr/local/lib/libnghttp2.so.14 \
     /usr/local/lib/libnghttp2_asio.so.1 \
-    /usr/lib/x86_64-linux-gnu/libboost_system.so.1.65.1 \
+    /usr/lib/libboost_system.so.1.67.0 \
+    /usr/lib/x86_64-linux-gnu/libcurl-gnutls.so.4 \
     /usr/local/lib/
 
 RUN ldconfig && \

@@ -49,7 +49,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class Area {
-public:
+ public:
   Area();
   virtual ~Area();
 
@@ -61,28 +61,28 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getTacs();
-  void setTacs(std::vector<std::string> const &value);
+  std::vector<std::string>& getTacs();
+  void setTacs(std::vector<std::string> const& value);
   bool tacsIsSet() const;
   void unsetTacs();
   /// <summary>
   ///
   /// </summary>
   std::string getAreaCode() const;
-  void setAreaCode(std::string const &value);
+  void setAreaCode(std::string const& value);
   bool areaCodeIsSet() const;
   void unsetAreaCode();
 
-  friend void to_json(nlohmann::json &j, const Area &o);
-  friend void from_json(const nlohmann::json &j, Area &o);
+  friend void to_json(nlohmann::json& j, const Area& o);
+  friend void from_json(const nlohmann::json& j, Area& o);
 
-protected:
+ protected:
   std::vector<std::string> m_Tacs;
   bool m_TacsIsSet;
   std::string m_AreaCode;
   bool m_AreaCodeIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* Area_H_ */

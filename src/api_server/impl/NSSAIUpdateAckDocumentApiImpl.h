@@ -54,22 +54,23 @@ using namespace oai::udr::app;
 
 class NSSAIUpdateAckDocumentApiImpl
     : public oai::udr::api::NSSAIUpdateAckDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  NSSAIUpdateAckDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                udr_app *udr_app_inst, std::string address);
+ public:
+  NSSAIUpdateAckDocumentApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~NSSAIUpdateAckDocumentApiImpl() {}
 
   void create_nssai_update_ack(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const NssaiAckData &nssaiAckData,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const NssaiAckData& nssaiAckData,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

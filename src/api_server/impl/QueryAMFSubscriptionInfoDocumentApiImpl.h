@@ -54,21 +54,21 @@ using namespace oai::udr::app;
 
 class QueryAMFSubscriptionInfoDocumentApiImpl
     : public oai::udr::api::QueryAMFSubscriptionInfoDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
+ public:
   QueryAMFSubscriptionInfoDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
       std::string address);
   ~QueryAMFSubscriptionInfoDocumentApiImpl() {}
 
-  void get_amf_subscription_info(const std::string &ueId,
-                                 const std::string &subsId,
-                                 Pistache::Http::ResponseWriter &response);
+  void get_amf_subscription_info(
+      const std::string& ueId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

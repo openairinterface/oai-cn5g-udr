@@ -52,7 +52,7 @@ namespace oai::udr::model {
 /// Contains the SM policy data for a given subscriber and S-NSSAI.
 /// </summary>
 class SmPolicySnssaiData {
-public:
+ public:
   SmPolicySnssaiData();
   virtual ~SmPolicySnssaiData();
 
@@ -65,25 +65,25 @@ public:
   ///
   /// </summary>
   Snssai getSnssai() const;
-  void setSnssai(Snssai const &value);
+  void setSnssai(Snssai const& value);
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, SmPolicyDnnData> &getSmPolicyDnnData();
-  void setSmPolicyDnnData(std::map<std::string, SmPolicyDnnData> const &value);
+  std::map<std::string, SmPolicyDnnData>& getSmPolicyDnnData();
+  void setSmPolicyDnnData(std::map<std::string, SmPolicyDnnData> const& value);
   bool smPolicyDnnDataIsSet() const;
   void unsetSmPolicyDnnData();
 
-  friend void to_json(nlohmann::json &j, const SmPolicySnssaiData &o);
-  friend void from_json(const nlohmann::json &j, SmPolicySnssaiData &o);
+  friend void to_json(nlohmann::json& j, const SmPolicySnssaiData& o);
+  friend void from_json(const nlohmann::json& j, SmPolicySnssaiData& o);
 
-protected:
+ protected:
   Snssai m_Snssai;
 
   std::map<std::string, SmPolicyDnnData> m_SmPolicyDnnData;
   bool m_SmPolicyDnnDataIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* SmPolicySnssaiData_H_ */

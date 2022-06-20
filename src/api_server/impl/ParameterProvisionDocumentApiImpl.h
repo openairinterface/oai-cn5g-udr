@@ -54,23 +54,24 @@ using namespace oai::udr::app;
 
 class ParameterProvisionDocumentApiImpl
     : public oai::udr::api::ParameterProvisionDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  ParameterProvisionDocumentApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                    udr_app *udr_app_inst, std::string address);
+ public:
+  ParameterProvisionDocumentApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~ParameterProvisionDocumentApiImpl() {}
 
   void getpp_data(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

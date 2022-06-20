@@ -75,8 +75,14 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
 }
 
 void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
-    get_nidd_au_data_handler(const Pistache::Rest::Request &request,
-                             Pistache::Http::ResponseWriter response) {
+    get_nidd_au_data_handler(
+        const Pistache::Rest::Request& request,
+        Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -102,27 +108,28 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
   Pistache::Optional<std::string> mtcProviderInformation;
   if (!mtcProviderInformationQuery.isEmpty()) {
     std::string valueQuery_instance;
-    if (fromStringValue(mtcProviderInformationQuery.get(),
-                        valueQuery_instance)) {
+    if (fromStringValue(
+            mtcProviderInformationQuery.get(), valueQuery_instance)) {
       mtcProviderInformation = Pistache::Some(valueQuery_instance);
     }
   }
 
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->get_nidd_au_data(ueId, singleNssai, dnn, mtcProviderInformation,
-                           ifNoneMatch, ifModifiedSince, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->get_nidd_au_data(
+        ueId, singleNssai, dnn, mtcProviderInformation, ifNoneMatch,
+        ifModifiedSince, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -131,10 +138,10 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
 
 void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
     query_nidd_authorization_data_gpsi_or_external_group_identifier_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

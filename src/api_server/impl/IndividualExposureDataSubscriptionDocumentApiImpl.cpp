@@ -42,24 +42,25 @@ using namespace oai::udr::model;
 
 IndividualExposureDataSubscriptionDocumentApiImpl::
     IndividualExposureDataSubscriptionDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
     : IndividualExposureDataSubscriptionDocumentApi(rtr),
-      m_udr_app(udr_app_inst), m_address(address) {}
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void IndividualExposureDataSubscriptionDocumentApiImpl::
     delete_individual_exposure_data_subscription(
-        const std::string &subId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& subId, Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void IndividualExposureDataSubscriptionDocumentApiImpl::
     replace_individual_exposure_data_subscription(
-        const std::string &subId,
-        const ExposureDataSubscription &exposureDataSubscription,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& subId,
+        const ExposureDataSubscription& exposureDataSubscription,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

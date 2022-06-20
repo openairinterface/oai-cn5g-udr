@@ -35,7 +35,9 @@
 
 namespace oai::udr::model {
 
-HfcNodeId::HfcNodeId() { m_HfcNId = ""; }
+HfcNodeId::HfcNodeId() {
+  m_HfcNId = "";
+}
 
 HfcNodeId::~HfcNodeId() {}
 
@@ -43,16 +45,20 @@ void HfcNodeId::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const HfcNodeId &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const HfcNodeId& o) {
+  j           = nlohmann::json();
   j["hfcNId"] = o.m_HfcNId;
 }
 
-void from_json(const nlohmann::json &j, HfcNodeId &o) {
+void from_json(const nlohmann::json& j, HfcNodeId& o) {
   j.at("hfcNId").get_to(o.m_HfcNId);
 }
 
-std::string HfcNodeId::getHfcNId() const { return m_HfcNId; }
-void HfcNodeId::setHfcNId(std::string const &value) { m_HfcNId = value; }
+std::string HfcNodeId::getHfcNId() const {
+  return m_HfcNId;
+}
+void HfcNodeId::setHfcNId(std::string const& value) {
+  m_HfcNId = value;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

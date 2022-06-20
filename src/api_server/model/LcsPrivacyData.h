@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class LcsPrivacyData {
-public:
+ public:
   LcsPrivacyData();
   virtual ~LcsPrivacyData();
 
@@ -65,28 +65,28 @@ public:
   ///
   /// </summary>
   Lpi getLpi() const;
-  void setLpi(Lpi const &value);
+  void setLpi(Lpi const& value);
   bool lpiIsSet() const;
   void unsetLpi();
   /// <summary>
   ///
   /// </summary>
   UnrelatedClass getUnrelatedClass() const;
-  void setUnrelatedClass(UnrelatedClass const &value);
+  void setUnrelatedClass(UnrelatedClass const& value);
   bool unrelatedClassIsSet() const;
   void unsetUnrelatedClass();
   /// <summary>
   ///
   /// </summary>
-  std::vector<PlmnOperatorClass> &getPlmnOperatorClasses();
-  void setPlmnOperatorClasses(std::vector<PlmnOperatorClass> const &value);
+  std::vector<PlmnOperatorClass>& getPlmnOperatorClasses();
+  void setPlmnOperatorClasses(std::vector<PlmnOperatorClass> const& value);
   bool plmnOperatorClassesIsSet() const;
   void unsetPlmnOperatorClasses();
 
-  friend void to_json(nlohmann::json &j, const LcsPrivacyData &o);
-  friend void from_json(const nlohmann::json &j, LcsPrivacyData &o);
+  friend void to_json(nlohmann::json& j, const LcsPrivacyData& o);
+  friend void from_json(const nlohmann::json& j, LcsPrivacyData& o);
 
-protected:
+ protected:
   Lpi m_Lpi;
   bool m_LpiIsSet;
   UnrelatedClass m_UnrelatedClass;
@@ -95,6 +95,6 @@ protected:
   bool m_PlmnOperatorClassesIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* LcsPrivacyData_H_ */

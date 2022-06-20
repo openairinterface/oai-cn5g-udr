@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class Arp {
-public:
+ public:
   Arp();
   virtual ~Arp();
 
@@ -68,17 +68,17 @@ public:
   ///
   /// </summary>
   PreemptionCapability getPreemptCap() const;
-  void setPreemptCap(PreemptionCapability const &value);
+  void setPreemptCap(PreemptionCapability const& value);
   /// <summary>
   ///
   /// </summary>
   PreemptionVulnerability getPreemptVuln() const;
-  void setPreemptVuln(PreemptionVulnerability const &value);
+  void setPreemptVuln(PreemptionVulnerability const& value);
 
-  friend void to_json(nlohmann::json &j, const Arp &o);
-  friend void from_json(const nlohmann::json &j, Arp &o);
+  friend void to_json(nlohmann::json& j, const Arp& o);
+  friend void from_json(const nlohmann::json& j, Arp& o);
 
-protected:
+ protected:
   int32_t m_PriorityLevel;
 
   PreemptionCapability m_PreemptCap;
@@ -86,6 +86,6 @@ protected:
   PreemptionVulnerability m_PreemptVuln;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* Arp_H_ */

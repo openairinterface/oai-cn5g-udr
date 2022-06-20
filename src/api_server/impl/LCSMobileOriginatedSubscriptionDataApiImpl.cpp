@@ -42,20 +42,21 @@ using namespace oai::udr::model;
 
 LCSMobileOriginatedSubscriptionDataApiImpl::
     LCSMobileOriginatedSubscriptionDataApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : LCSMobileOriginatedSubscriptionDataApi(rtr), m_udr_app(udr_app_inst),
+    : LCSMobileOriginatedSubscriptionDataApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void LCSMobileOriginatedSubscriptionDataApiImpl::query_lcs_mo_data(
-    const std::string &ueId,
-    const Pistache::Optional<std::vector<std::string>> &fields,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId,
+    const Pistache::Optional<std::vector<std::string>>& fields,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

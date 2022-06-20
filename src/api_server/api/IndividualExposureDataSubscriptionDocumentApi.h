@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualExposureDataSubscriptionDocumentApi {
-public:
+ public:
   IndividualExposureDataSubscriptionDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualExposureDataSubscriptionDocumentApi() {}
@@ -62,17 +62,17 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void delete_individual_exposure_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void replace_individual_exposure_data_subscription_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_exposure_data_subscription_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -85,7 +85,7 @@ private:
   /// </remarks>
   /// <param name="subId">Subscription id</param>
   virtual void delete_individual_exposure_data_subscription(
-      const std::string &subId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subId, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// updates a subscription to receive notifications of exposure data changes
@@ -96,11 +96,11 @@ private:
   /// <param name="subId">Subscription id</param>
   /// <param name="exposureDataSubscription"></param>
   virtual void replace_individual_exposure_data_subscription(
-      const std::string &subId,
-      const ExposureDataSubscription &exposureDataSubscription,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& subId,
+      const ExposureDataSubscription& exposureDataSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IndividualExposureDataSubscriptionDocumentApi_H_ */

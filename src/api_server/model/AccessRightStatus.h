@@ -51,7 +51,7 @@ namespace oai::udr::model {
 /// channel. - NO_ALLOWED: The User is not allowed to access to the channel.
 /// </summary>
 class AccessRightStatus {
-public:
+ public:
   AccessRightStatus();
   virtual ~AccessRightStatus();
 
@@ -60,12 +60,12 @@ public:
   /////////////////////////////////////////////
   /// AccessRightStatus members
 
-  friend void to_json(nlohmann::json &j, const AccessRightStatus &o);
-  friend void from_json(const nlohmann::json &j, AccessRightStatus &o);
+  friend void to_json(nlohmann::json& j, const AccessRightStatus& o);
+  friend void from_json(const nlohmann::json& j, AccessRightStatus& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* AccessRightStatus_H_ */

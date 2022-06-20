@@ -33,11 +33,11 @@
 #include <sstream>
 #include <string>
 
-Logger *Logger::m_singleton = NULL;
+Logger* Logger::m_singleton = NULL;
 
 //------------------------------------------------------------------------------
-void Logger::_init(const char *app, const bool log_stdout,
-                   const bool log_rot_file) {
+void Logger::_init(
+    const char* app, const bool log_stdout, const bool log_rot_file) {
   int num_sinks = 0;
   spdlog::set_async_mode(2048);
 #if TRACE_IS_ON
@@ -65,16 +65,19 @@ void Logger::_init(const char *app, const bool log_stdout,
   std::stringstream ss;
   ss << "[%Y-%m-%dT%H:%M:%S.%f] [" << app << "] [%n] [%l] %v";
 
-  m_udr_app = new _Logger("udr_app", m_sinks, ss.str().c_str());
-  m_system = new _Logger("system ", m_sinks, ss.str().c_str());
-  m_config = new _Logger("configurations", m_sinks, ss.str().c_str());
+  m_udr_app    = new _Logger("udr_app", m_sinks, ss.str().c_str());
+  m_system     = new _Logger("system ", m_sinks, ss.str().c_str());
+  m_config     = new _Logger("configurations", m_sinks, ss.str().c_str());
   m_udr_server = new _Logger("udr_server", m_sinks, ss.str().c_str());
-  m_udr_app = new _Logger("udr_app", m_sinks, ss.str().c_str());
+  m_udr_app    = new _Logger("udr_app", m_sinks, ss.str().c_str());
+  m_udr_nrf    = new _Logger("udr_nrf", m_sinks, ss.str().c_str());
+  m_udr_mysql  = new _Logger("udr_mysql", m_sinks, ss.str().c_str());
 }
 
 //------------------------------------------------------------------------------
-_Logger::_Logger(const char *category, std::vector<spdlog::sink_ptr> &sinks,
-                 const char *pattern)
+_Logger::_Logger(
+    const char* category, std::vector<spdlog::sink_ptr>& sinks,
+    const char* pattern)
     : m_log(category, sinks.begin(), sinks.end()) {
   m_log.set_pattern(pattern);
 #if TRACE_IS_ON
@@ -89,7 +92,7 @@ _Logger::_Logger(const char *category, std::vector<spdlog::sink_ptr> &sinks,
 }
 
 //------------------------------------------------------------------------------
-void _Logger::trace(const char *format, ...) {
+void _Logger::trace(const char* format, ...) {
 #if TRACE_IS_ON
   va_list args;
   va_start(args, format);
@@ -99,7 +102,7 @@ void _Logger::trace(const char *format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::trace(const std::string &format, ...) {
+void _Logger::trace(const std::string& format, ...) {
 #if TRACE_IS_ON
   va_list args;
   va_start(args, format);
@@ -109,7 +112,7 @@ void _Logger::trace(const std::string &format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::debug(const char *format, ...) {
+void _Logger::debug(const char* format, ...) {
 #if DEBUG_IS_ON
   va_list args;
   va_start(args, format);
@@ -119,7 +122,7 @@ void _Logger::debug(const char *format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::debug(const std::string &format, ...) {
+void _Logger::debug(const std::string& format, ...) {
 #if DEBUG_IS_ON
   va_list args;
   va_start(args, format);
@@ -129,7 +132,7 @@ void _Logger::debug(const std::string &format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::info(const char *format, ...) {
+void _Logger::info(const char* format, ...) {
 #if INFO_IS_ON
   va_list args;
   va_start(args, format);
@@ -139,7 +142,7 @@ void _Logger::info(const char *format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::info(const std::string &format, ...) {
+void _Logger::info(const std::string& format, ...) {
 #if INFO_IS_ON
   va_list args;
   va_start(args, format);
@@ -149,7 +152,7 @@ void _Logger::info(const std::string &format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::startup(const char *format, ...) {
+void _Logger::startup(const char* format, ...) {
   va_list args;
   va_start(args, format);
   log(_ltStartup, format, args);
@@ -157,7 +160,7 @@ void _Logger::startup(const char *format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::startup(const std::string &format, ...) {
+void _Logger::startup(const std::string& format, ...) {
   va_list args;
   va_start(args, format);
   log(_ltStartup, format.c_str(), args);
@@ -165,7 +168,7 @@ void _Logger::startup(const std::string &format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::warn(const char *format, ...) {
+void _Logger::warn(const char* format, ...) {
   va_list args;
   va_start(args, format);
   log(_ltWarn, format, args);
@@ -173,7 +176,7 @@ void _Logger::warn(const char *format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::warn(const std::string &format, ...) {
+void _Logger::warn(const std::string& format, ...) {
   va_list args;
   va_start(args, format);
   log(_ltWarn, format.c_str(), args);
@@ -181,7 +184,7 @@ void _Logger::warn(const std::string &format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::error(const char *format, ...) {
+void _Logger::error(const char* format, ...) {
   va_list args;
   va_start(args, format);
   log(_ltError, format, args);
@@ -189,7 +192,7 @@ void _Logger::error(const char *format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::error(const std::string &format, ...) {
+void _Logger::error(const std::string& format, ...) {
   va_list args;
   va_start(args, format);
   log(_ltError, format.c_str(), args);
@@ -197,29 +200,29 @@ void _Logger::error(const std::string &format, ...) {
 }
 
 //------------------------------------------------------------------------------
-void _Logger::log(_LogType lt, const char *format, va_list &args) {
+void _Logger::log(_LogType lt, const char* format, va_list& args) {
   char buffer[2048];
 
   vsnprintf(buffer, sizeof(buffer) - 1, format, args);
 
   switch (lt) {
-  case _ltTrace:
-    m_log.trace(buffer);
-    break;
-  case _ltDebug:
-    m_log.debug(buffer);
-    break;
-  case _ltInfo:
-    m_log.info(buffer);
-    break;
-  case _ltStartup:
-    m_log.warn(buffer);
-    break;
-  case _ltWarn:
-    m_log.error(buffer);
-    break;
-  case _ltError:
-    m_log.critical(buffer);
-    break;
+    case _ltTrace:
+      m_log.trace(buffer);
+      break;
+    case _ltDebug:
+      m_log.debug(buffer);
+      break;
+    case _ltInfo:
+      m_log.info(buffer);
+      break;
+    case _ltStartup:
+      m_log.warn(buffer);
+      break;
+    case _ltWarn:
+      m_log.error(buffer);
+      break;
+    case _ltError:
+      m_log.critical(buffer);
+      break;
   }
 }

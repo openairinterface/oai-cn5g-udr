@@ -43,10 +43,10 @@ void PatchOperation::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PatchOperation &o) {
+void to_json(nlohmann::json& j, const PatchOperation& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, PatchOperation &o) {}
+void from_json(const nlohmann::json& j, PatchOperation& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

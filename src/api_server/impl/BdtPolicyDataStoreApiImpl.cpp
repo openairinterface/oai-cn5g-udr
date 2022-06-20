@@ -41,17 +41,17 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 BdtPolicyDataStoreApiImpl::BdtPolicyDataStoreApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
     : BdtPolicyDataStoreApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void BdtPolicyDataStoreApiImpl::read_bdt_policy_data(
-    const Pistache::Optional<std::vector<std::string>> &bdtPolicyIds,
-    const Pistache::Optional<std::vector<std::string>> &internalGroupIds,
-    const Pistache::Optional<std::vector<std::string>> &supis,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const Pistache::Optional<std::vector<std::string>>& bdtPolicyIds,
+    const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
+    const Pistache::Optional<std::vector<std::string>>& supis,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

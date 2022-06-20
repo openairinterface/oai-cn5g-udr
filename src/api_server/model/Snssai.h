@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class Snssai {
-public:
+ public:
   Snssai();
   virtual ~Snssai();
 
@@ -66,20 +66,20 @@ public:
   ///
   /// </summary>
   std::string getSd() const;
-  void setSd(std::string const &value);
+  void setSd(std::string const& value);
   bool sdIsSet() const;
   void unsetSd();
 
-  friend void to_json(nlohmann::json &j, const Snssai &o);
-  friend void from_json(const nlohmann::json &j, Snssai &o);
+  friend void to_json(nlohmann::json& j, const Snssai& o);
+  friend void from_json(const nlohmann::json& j, Snssai& o);
 
-protected:
+ protected:
   int32_t m_Sst;
 
   std::string m_Sd;
   bool m_SdIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* Snssai_H_ */

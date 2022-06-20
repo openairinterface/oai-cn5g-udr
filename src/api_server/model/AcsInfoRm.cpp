@@ -36,9 +36,9 @@
 namespace oai::udr::model {
 
 AcsInfoRm::AcsInfoRm() {
-  m_AcsUrl = "";
-  m_AcsUrlIsSet = false;
-  m_AcsIpv4Addr = "";
+  m_AcsUrl           = "";
+  m_AcsUrlIsSet      = false;
+  m_AcsIpv4Addr      = "";
   m_AcsIpv4AddrIsSet = false;
   m_AcsIpv6AddrIsSet = false;
 }
@@ -49,17 +49,14 @@ void AcsInfoRm::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const AcsInfoRm &o) {
+void to_json(nlohmann::json& j, const AcsInfoRm& o) {
   j = nlohmann::json();
-  if (o.acsUrlIsSet())
-    j["acsUrl"] = o.m_AcsUrl;
-  if (o.acsIpv4AddrIsSet())
-    j["acsIpv4Addr"] = o.m_AcsIpv4Addr;
-  if (o.acsIpv6AddrIsSet())
-    j["acsIpv6Addr"] = o.m_AcsIpv6Addr;
+  if (o.acsUrlIsSet()) j["acsUrl"] = o.m_AcsUrl;
+  if (o.acsIpv4AddrIsSet()) j["acsIpv4Addr"] = o.m_AcsIpv4Addr;
+  if (o.acsIpv6AddrIsSet()) j["acsIpv6Addr"] = o.m_AcsIpv6Addr;
 }
 
-void from_json(const nlohmann::json &j, AcsInfoRm &o) {
+void from_json(const nlohmann::json& j, AcsInfoRm& o) {
   if (j.find("acsUrl") != j.end()) {
     j.at("acsUrl").get_to(o.m_AcsUrl);
     o.m_AcsUrlIsSet = true;
@@ -74,26 +71,44 @@ void from_json(const nlohmann::json &j, AcsInfoRm &o) {
   }
 }
 
-std::string AcsInfoRm::getAcsUrl() const { return m_AcsUrl; }
-void AcsInfoRm::setAcsUrl(std::string const &value) {
-  m_AcsUrl = value;
+std::string AcsInfoRm::getAcsUrl() const {
+  return m_AcsUrl;
+}
+void AcsInfoRm::setAcsUrl(std::string const& value) {
+  m_AcsUrl      = value;
   m_AcsUrlIsSet = true;
 }
-bool AcsInfoRm::acsUrlIsSet() const { return m_AcsUrlIsSet; }
-void AcsInfoRm::unsetAcsUrl() { m_AcsUrlIsSet = false; }
-std::string AcsInfoRm::getAcsIpv4Addr() const { return m_AcsIpv4Addr; }
-void AcsInfoRm::setAcsIpv4Addr(std::string const &value) {
-  m_AcsIpv4Addr = value;
+bool AcsInfoRm::acsUrlIsSet() const {
+  return m_AcsUrlIsSet;
+}
+void AcsInfoRm::unsetAcsUrl() {
+  m_AcsUrlIsSet = false;
+}
+std::string AcsInfoRm::getAcsIpv4Addr() const {
+  return m_AcsIpv4Addr;
+}
+void AcsInfoRm::setAcsIpv4Addr(std::string const& value) {
+  m_AcsIpv4Addr      = value;
   m_AcsIpv4AddrIsSet = true;
 }
-bool AcsInfoRm::acsIpv4AddrIsSet() const { return m_AcsIpv4AddrIsSet; }
-void AcsInfoRm::unsetAcsIpv4Addr() { m_AcsIpv4AddrIsSet = false; }
-Ipv6Addr AcsInfoRm::getAcsIpv6Addr() const { return m_AcsIpv6Addr; }
-void AcsInfoRm::setAcsIpv6Addr(Ipv6Addr const &value) {
-  m_AcsIpv6Addr = value;
+bool AcsInfoRm::acsIpv4AddrIsSet() const {
+  return m_AcsIpv4AddrIsSet;
+}
+void AcsInfoRm::unsetAcsIpv4Addr() {
+  m_AcsIpv4AddrIsSet = false;
+}
+Ipv6Addr AcsInfoRm::getAcsIpv6Addr() const {
+  return m_AcsIpv6Addr;
+}
+void AcsInfoRm::setAcsIpv6Addr(Ipv6Addr const& value) {
+  m_AcsIpv6Addr      = value;
   m_AcsIpv6AddrIsSet = true;
 }
-bool AcsInfoRm::acsIpv6AddrIsSet() const { return m_AcsIpv6AddrIsSet; }
-void AcsInfoRm::unsetAcsIpv6Addr() { m_AcsIpv6AddrIsSet = false; }
+bool AcsInfoRm::acsIpv6AddrIsSet() const {
+  return m_AcsIpv6AddrIsSet;
+}
+void AcsInfoRm::unsetAcsIpv6Addr() {
+  m_AcsIpv6AddrIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

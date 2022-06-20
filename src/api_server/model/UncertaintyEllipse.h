@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UncertaintyEllipse {
-public:
+ public:
   UncertaintyEllipse();
   virtual ~UncertaintyEllipse();
 
@@ -72,10 +72,10 @@ public:
   int32_t getOrientationMajor() const;
   void setOrientationMajor(int32_t const value);
 
-  friend void to_json(nlohmann::json &j, const UncertaintyEllipse &o);
-  friend void from_json(const nlohmann::json &j, UncertaintyEllipse &o);
+  friend void to_json(nlohmann::json& j, const UncertaintyEllipse& o);
+  friend void from_json(const nlohmann::json& j, UncertaintyEllipse& o);
 
-protected:
+ protected:
   float m_SemiMajor;
 
   float m_SemiMinor;
@@ -83,6 +83,6 @@ protected:
   int32_t m_OrientationMajor;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* UncertaintyEllipse_H_ */

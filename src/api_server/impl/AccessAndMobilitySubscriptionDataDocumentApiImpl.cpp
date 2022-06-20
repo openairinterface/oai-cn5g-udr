@@ -44,28 +44,29 @@ using namespace oai::udr::model;
 
 AccessAndMobilitySubscriptionDataDocumentApiImpl::
     AccessAndMobilitySubscriptionDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
     : AccessAndMobilitySubscriptionDataDocumentApi(rtr),
-      m_udr_app(udr_app_inst), m_address(address) {}
+      m_udr_app(udr_app_inst),
+      m_address(address) {}
 
 void AccessAndMobilitySubscriptionDataDocumentApiImpl::query_am_data(
-    const std::string &ueId, const std::string &servingPlmnId,
-    const Pistache::Optional<std::vector<std::string>> &fields,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const std::string& servingPlmnId,
+    const Pistache::Optional<std::vector<std::string>>& fields,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_query_am_data(ueId, servingPlmnId, response_data,
-                                  http_code);
+  m_udr_app->handle_query_am_data(
+      ueId, servingPlmnId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

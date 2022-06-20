@@ -54,23 +54,24 @@ using namespace oai::udr::app;
 
 class V2XSubscriptionDataApiImpl
     : public oai::udr::api::V2XSubscriptionDataApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  V2XSubscriptionDataApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                             udr_app *udr_app_inst, std::string address);
+ public:
+  V2XSubscriptionDataApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~V2XSubscriptionDataApiImpl() {}
 
   void query_v2x_data(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

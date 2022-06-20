@@ -42,20 +42,21 @@ using namespace oai::udr::model;
 
 SessionManagementSubscriptionDataApiImpl::
     SessionManagementSubscriptionDataApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : SessionManagementSubscriptionDataApi(rtr), m_udr_app(udr_app_inst),
+    : SessionManagementSubscriptionDataApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SessionManagementSubscriptionDataApiImpl::query_sm_data(
-    const std::string &ueId, const std::string &servingPlmnId,
-    const Pistache::Optional<Snssai> &singleNssai,
-    const Pistache::Optional<std::string> &dnn,
-    const Pistache::Optional<std::vector<std::string>> &fields,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw> &ifModifiedSince,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const std::string& servingPlmnId,
+    const Pistache::Optional<Snssai>& singleNssai,
+    const Pistache::Optional<std::string>& dnn,
+    const Pistache::Optional<std::vector<std::string>>& fields,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    Pistache::Http::ResponseWriter& response) {
   // servingPlmnId  pattern: "^[0-9]{5,6}$"
 
   Snssai snssai = {};
@@ -68,11 +69,11 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
   }
   // TODO: DNN and SNSSAI
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_query_sm_data(ueId, servingPlmnId, response_data, http_code,
-                                  snssai, dnn_str);
+  m_udr_app->handle_query_sm_data(
+      ueId, servingPlmnId, response_data, http_code, snssai, dnn_str);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP response code %ld", http_code);
@@ -82,4 +83,4 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
   response.send(code, response_data.dump().c_str());
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

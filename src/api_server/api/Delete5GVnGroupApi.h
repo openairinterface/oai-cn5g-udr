@@ -50,20 +50,21 @@
 namespace oai::udr::api {
 
 class Delete5GVnGroupApi {
-public:
+ public:
   Delete5GVnGroupApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~Delete5GVnGroupApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void delete5_g_vn_group_handler(const Pistache::Rest::Request &request,
-                                  Pistache::Http::ResponseWriter response);
+  void delete5_g_vn_group_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void delete5_g_vn_group_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -75,10 +76,11 @@ private:
   ///
   /// </remarks>
   /// <param name="externalGroupId"></param>
-  virtual void delete5_g_vn_group(const std::string &externalGroupId,
-                                  Pistache::Http::ResponseWriter &response) = 0;
+  virtual void delete5_g_vn_group(
+      const std::string& externalGroupId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* Delete5GVnGroupApi_H_ */

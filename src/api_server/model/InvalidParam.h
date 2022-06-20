@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class InvalidParam {
-public:
+ public:
   InvalidParam();
   virtual ~InvalidParam();
 
@@ -61,25 +61,25 @@ public:
   ///
   /// </summary>
   std::string getParam() const;
-  void setParam(std::string const &value);
+  void setParam(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getReason() const;
-  void setReason(std::string const &value);
+  void setReason(std::string const& value);
   bool reasonIsSet() const;
   void unsetReason();
 
-  friend void to_json(nlohmann::json &j, const InvalidParam &o);
-  friend void from_json(const nlohmann::json &j, InvalidParam &o);
+  friend void to_json(nlohmann::json& j, const InvalidParam& o);
+  friend void from_json(const nlohmann::json& j, InvalidParam& o);
 
-protected:
+ protected:
   std::string m_Param;
 
   std::string m_Reason;
   bool m_ReasonIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* InvalidParam_H_ */

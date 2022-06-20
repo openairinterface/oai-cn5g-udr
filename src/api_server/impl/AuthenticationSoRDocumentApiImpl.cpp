@@ -41,24 +41,25 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 AuthenticationSoRDocumentApiImpl::AuthenticationSoRDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : AuthenticationSoRDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : AuthenticationSoRDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AuthenticationSoRDocumentApiImpl::create_authentication_so_r(
-    const std::string &ueId,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    const SorData &sorData, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    const SorData& sorData, Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void AuthenticationSoRDocumentApiImpl::query_auth_so_r(
-    const std::string &ueId,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UpIntegrity {
-public:
+ public:
   UpIntegrity();
   virtual ~UpIntegrity();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// UpIntegrity members
 
-  friend void to_json(nlohmann::json &j, const UpIntegrity &o);
-  friend void from_json(const nlohmann::json &j, UpIntegrity &o);
+  friend void to_json(nlohmann::json& j, const UpIntegrity& o);
+  friend void from_json(const nlohmann::json& j, UpIntegrity& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* UpIntegrity_H_ */

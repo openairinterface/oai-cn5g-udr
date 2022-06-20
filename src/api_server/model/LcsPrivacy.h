@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class LcsPrivacy {
-public:
+ public:
   LcsPrivacy();
   virtual ~LcsPrivacy();
 
@@ -63,7 +63,7 @@ public:
   ///
   /// </summary>
   std::string getAfInstanceId() const;
-  void setAfInstanceId(std::string const &value);
+  void setAfInstanceId(std::string const& value);
   bool afInstanceIdIsSet() const;
   void unsetAfInstanceId();
   /// <summary>
@@ -77,21 +77,21 @@ public:
   ///
   /// </summary>
   Lpi getLpi() const;
-  void setLpi(Lpi const &value);
+  void setLpi(Lpi const& value);
   bool lpiIsSet() const;
   void unsetLpi();
   /// <summary>
   ///
   /// </summary>
   std::string getMtcProviderInformation() const;
-  void setMtcProviderInformation(std::string const &value);
+  void setMtcProviderInformation(std::string const& value);
   bool mtcProviderInformationIsSet() const;
   void unsetMtcProviderInformation();
 
-  friend void to_json(nlohmann::json &j, const LcsPrivacy &o);
-  friend void from_json(const nlohmann::json &j, LcsPrivacy &o);
+  friend void to_json(nlohmann::json& j, const LcsPrivacy& o);
+  friend void from_json(const nlohmann::json& j, LcsPrivacy& o);
 
-protected:
+ protected:
   std::string m_AfInstanceId;
   bool m_AfInstanceIdIsSet;
   int32_t m_ReferenceId;
@@ -102,6 +102,6 @@ protected:
   bool m_MtcProviderInformationIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* LcsPrivacy_H_ */

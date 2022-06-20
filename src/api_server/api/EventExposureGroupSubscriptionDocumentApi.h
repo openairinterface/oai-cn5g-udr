@@ -58,7 +58,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class EventExposureGroupSubscriptionDocumentApi {
-public:
+ public:
   EventExposureGroupSubscriptionDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~EventExposureGroupSubscriptionDocumentApi() {}
@@ -66,23 +66,23 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  modify_ee_group_subscription_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
-  void
-  query_ee_group_subscription_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
+  void modify_ee_group_subscription_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void query_ee_group_subscription_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void remove_ee_group_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void update_ee_group_subscriptions_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void event_exposure_group_subscription_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -99,10 +99,10 @@ private:
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify_ee_group_subscription(
-      const std::string &ueGroupId, const std::string &subsId,
-      const std::vector<PatchItem> &patchItem,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueGroupId, const std::string& subsId,
+      const std::vector<PatchItem>& patchItem,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieve a individual eeSubscription for a group of UEs or any UE
@@ -112,10 +112,9 @@ private:
   /// </remarks>
   /// <param name="ueGroupId"></param>
   /// <param name="subsId">Unique ID of the subscription to remove</param>
-  virtual void
-  query_ee_group_subscription(const std::string &ueGroupId,
-                              const std::string &subsId,
-                              Pistache::Http::ResponseWriter &response) = 0;
+  virtual void query_ee_group_subscription(
+      const std::string& ueGroupId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Deletes a eeSubscription for a group of UEs or any UE
@@ -125,10 +124,9 @@ private:
   /// </remarks>
   /// <param name="ueGroupId"></param>
   /// <param name="subsId">Unique ID of the subscription to remove</param>
-  virtual void
-  remove_ee_group_subscriptions(const std::string &ueGroupId,
-                                const std::string &subsId,
-                                Pistache::Http::ResponseWriter &response) = 0;
+  virtual void remove_ee_group_subscriptions(
+      const std::string& ueGroupId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Update an individual ee subscription of a group of UEs or any UE
@@ -139,13 +137,12 @@ private:
   /// <param name="ueGroupId"></param>
   /// <param name="subsId"></param>
   /// <param name="eeSubscription"> (optional)</param>
-  virtual void
-  update_ee_group_subscriptions(const std::string &ueGroupId,
-                                const std::string &subsId,
-                                const EeSubscription &eeSubscription,
-                                Pistache::Http::ResponseWriter &response) = 0;
+  virtual void update_ee_group_subscriptions(
+      const std::string& ueGroupId, const std::string& subsId,
+      const EeSubscription& eeSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* EventExposureGroupSubscriptionDocumentApi_H_ */

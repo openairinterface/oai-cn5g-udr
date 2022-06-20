@@ -43,10 +43,10 @@ void ReportIntervalNrMdt::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ReportIntervalNrMdt &o) {
+void to_json(nlohmann::json& j, const ReportIntervalNrMdt& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, ReportIntervalNrMdt &o) {}
+void from_json(const nlohmann::json& j, ReportIntervalNrMdt& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

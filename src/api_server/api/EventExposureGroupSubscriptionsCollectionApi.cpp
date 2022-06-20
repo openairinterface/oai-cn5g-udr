@@ -49,23 +49,29 @@ EventExposureGroupSubscriptionsCollectionApi::
   router = rtr;
 }
 
-void EventExposureGroupSubscriptionsCollectionApi::init() { setupRoutes(); }
+void EventExposureGroupSubscriptionsCollectionApi::init() {
+  setupRoutes();
+}
 
 void EventExposureGroupSubscriptionsCollectionApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Post(*router,
-               base + udr_cfg.nudr.api_version +
-                   "/subscription-data/group-data/:ueGroupId/ee-subscriptions",
-               Routes::bind(&EventExposureGroupSubscriptionsCollectionApi::
-                                create_ee_group_subscriptions_handler,
-                            this));
-  Routes::Get(*router,
-              base + udr_cfg.nudr.api_version +
-                  "/subscription-data/group-data/:ueGroupId/ee-subscriptions",
-              Routes::bind(&EventExposureGroupSubscriptionsCollectionApi::
-                               query_ee_group_subscriptions_handler,
-                           this));
+  Routes::Post(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/group-data/:ueGroupId/ee-subscriptions",
+      Routes::bind(
+          &EventExposureGroupSubscriptionsCollectionApi::
+              create_ee_group_subscriptions_handler,
+          this));
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/group-data/:ueGroupId/ee-subscriptions",
+      Routes::bind(
+          &EventExposureGroupSubscriptionsCollectionApi::
+              query_ee_group_subscriptions_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -76,8 +82,13 @@ void EventExposureGroupSubscriptionsCollectionApi::setupRoutes() {
 
 void EventExposureGroupSubscriptionsCollectionApi::
     create_ee_group_subscriptions_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueGroupId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueGroupId = request.param(":ueGroupId").as<std::string>();
 
@@ -88,14 +99,14 @@ void EventExposureGroupSubscriptionsCollectionApi::
   try {
     nlohmann::json::parse(request.body()).get_to(eeSubscription);
     this->create_ee_group_subscriptions(ueGroupId, eeSubscription, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -103,8 +114,13 @@ void EventExposureGroupSubscriptionsCollectionApi::
 }
 void EventExposureGroupSubscriptionsCollectionApi::
     query_ee_group_subscriptions_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueGroupId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueGroupId = request.param(":ueGroupId").as<std::string>();
 
@@ -120,14 +136,14 @@ void EventExposureGroupSubscriptionsCollectionApi::
 
   try {
     this->query_ee_group_subscriptions(ueGroupId, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -136,10 +152,10 @@ void EventExposureGroupSubscriptionsCollectionApi::
 
 void EventExposureGroupSubscriptionsCollectionApi::
     event_exposure_group_subscriptions_collection_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

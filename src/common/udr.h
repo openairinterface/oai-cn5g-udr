@@ -22,6 +22,16 @@
 #ifndef FILE_UDR_SEEN
 #define FILE_UDR_SEEN
 
+#include <string>
+#include <vector>
+
+#define HEART_BEAT_TIMER 10
+
+#define _unused(x) ((void) (x))
+
+#define NNRF_NFM_BASE "/nnrf-nfm/"
+#define UDR_NF_REGISTER_URL "/nf-instances/"
+
 #define NUDR_DR_BASE "/nudr-dr/"
 #define NUDR_DR_AUTH_STATUS "authentication-status"
 #define NUDR_DR_AUTH_SUBS "authentication-subscription"
@@ -31,5 +41,44 @@
 #define NUDR_DR_SM_DATA "sm-data"
 #define NUDR_DR_SMF_REG "smf-registrations"
 #define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
+
+#define NF_CURL_TIMEOUT_MS 1000L
+
+typedef struct identity_range_s {
+  std::string start;
+  std::string end;
+  std::string pattern;
+} identity_range_t;
+
+typedef struct identity_range_udr_info_item_s {
+  identity_range_t identity_range;
+} identity_range_udr_info_item_t;
+
+typedef struct supi_range_s {
+  std::string start;
+  std::string end;
+  std::string pattern;
+} supi_range_t;
+
+typedef struct supi_range_udr_info_item_s {
+  supi_range_t supi_range;
+} supi_range_udr_info_item_t;
+
+typedef struct udr_info_s {
+  std::string groupid;
+  std::vector<supi_range_udr_info_item_t> supi_ranges;
+  std::vector<identity_range_udr_info_item_t> gpsi_ranges;
+  std::vector<identity_range_udr_info_item_t> ext_grp_id_ranges;
+  std::vector<std::string> data_set_id;
+} udr_info_t;
+
+typedef enum db_type_s {
+  DB_TYPE_UNKNOWN   = 0,
+  DB_TYPE_MYSQL     = 1,
+  DB_TYPE_CASSANDRA = 2
+} db_type_t;
+
+static const std::vector<std::string> db_type_e2str = {"Unknown", "MySQL",
+                                                       "Cassandra"};
 
 #endif

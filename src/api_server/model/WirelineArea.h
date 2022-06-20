@@ -49,7 +49,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class WirelineArea {
-public:
+ public:
   WirelineArea();
   virtual ~WirelineArea();
 
@@ -61,36 +61,36 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getGlobalLineIds();
-  void setGlobalLineIds(std::vector<std::string> const &value);
+  std::vector<std::string>& getGlobalLineIds();
+  void setGlobalLineIds(std::vector<std::string> const& value);
   bool globalLineIdsIsSet() const;
   void unsetGlobalLineIds();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getHfcNIds();
-  void setHfcNIds(std::vector<std::string> const &value);
+  std::vector<std::string>& getHfcNIds();
+  void setHfcNIds(std::vector<std::string> const& value);
   bool hfcNIdsIsSet() const;
   void unsetHfcNIds();
   /// <summary>
   ///
   /// </summary>
   std::string getAreaCodeB() const;
-  void setAreaCodeB(std::string const &value);
+  void setAreaCodeB(std::string const& value);
   bool areaCodeBIsSet() const;
   void unsetAreaCodeB();
   /// <summary>
   ///
   /// </summary>
   std::string getAreaCodeC() const;
-  void setAreaCodeC(std::string const &value);
+  void setAreaCodeC(std::string const& value);
   bool areaCodeCIsSet() const;
   void unsetAreaCodeC();
 
-  friend void to_json(nlohmann::json &j, const WirelineArea &o);
-  friend void from_json(const nlohmann::json &j, WirelineArea &o);
+  friend void to_json(nlohmann::json& j, const WirelineArea& o);
+  friend void from_json(const nlohmann::json& j, WirelineArea& o);
 
-protected:
+ protected:
   std::vector<std::string> m_GlobalLineIds;
   bool m_GlobalLineIdsIsSet;
   std::vector<std::string> m_HfcNIds;
@@ -101,6 +101,6 @@ protected:
   bool m_AreaCodeCIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* WirelineArea_H_ */

@@ -53,7 +53,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class VnGroupData {
-public:
+ public:
   VnGroupData();
   virtual ~VnGroupData();
 
@@ -66,35 +66,35 @@ public:
   ///
   /// </summary>
   PduSessionTypes getPduSessionTypes() const;
-  void setPduSessionTypes(PduSessionTypes const &value);
+  void setPduSessionTypes(PduSessionTypes const& value);
   bool pduSessionTypesIsSet() const;
   void unsetPduSessionTypes();
   /// <summary>
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const &value);
+  void setDnn(std::string const& value);
   bool dnnIsSet() const;
   void unsetDnn();
   /// <summary>
   ///
   /// </summary>
   Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const &value);
+  void setSingleNssai(Snssai const& value);
   bool singleNssaiIsSet() const;
   void unsetSingleNssai();
   /// <summary>
   ///
   /// </summary>
-  std::vector<AppDescriptor> &getAppDescriptors();
-  void setAppDescriptors(std::vector<AppDescriptor> const &value);
+  std::vector<AppDescriptor>& getAppDescriptors();
+  void setAppDescriptors(std::vector<AppDescriptor> const& value);
   bool appDescriptorsIsSet() const;
   void unsetAppDescriptors();
 
-  friend void to_json(nlohmann::json &j, const VnGroupData &o);
-  friend void from_json(const nlohmann::json &j, VnGroupData &o);
+  friend void to_json(nlohmann::json& j, const VnGroupData& o);
+  friend void from_json(const nlohmann::json& j, VnGroupData& o);
 
-protected:
+ protected:
   PduSessionTypes m_PduSessionTypes;
   bool m_PduSessionTypesIsSet;
   std::string m_Dnn;
@@ -105,6 +105,6 @@ protected:
   bool m_AppDescriptorsIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* VnGroupData_H_ */

@@ -54,24 +54,25 @@ using namespace oai::udr::app;
 
 class SDMSubscriptionsCollectionApiImpl
     : public oai::udr::api::SDMSubscriptionsCollectionApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  SDMSubscriptionsCollectionApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                    udr_app *udr_app_inst, std::string address);
+ public:
+  SDMSubscriptionsCollectionApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~SDMSubscriptionsCollectionApiImpl() {}
 
-  void create_sdm_subscriptions(const std::string &ueId,
-                                SdmSubscription &sdmSubscription,
-                                Pistache::Http::ResponseWriter &response);
+  void create_sdm_subscriptions(
+      const std::string& ueId, SdmSubscription& sdmSubscription,
+      Pistache::Http::ResponseWriter& response);
   void querysdmsubscriptions(
-      const std::string &ueId,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

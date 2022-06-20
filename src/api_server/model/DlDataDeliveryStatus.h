@@ -63,7 +63,7 @@ namespace oai::udr::model {
 /// downlink data to be buffered is exceeded.
 /// </summary>
 class DlDataDeliveryStatus {
-public:
+ public:
   DlDataDeliveryStatus();
   virtual ~DlDataDeliveryStatus();
 
@@ -72,12 +72,12 @@ public:
   /////////////////////////////////////////////
   /// DlDataDeliveryStatus members
 
-  friend void to_json(nlohmann::json &j, const DlDataDeliveryStatus &o);
-  friend void from_json(const nlohmann::json &j, DlDataDeliveryStatus &o);
+  friend void to_json(nlohmann::json& j, const DlDataDeliveryStatus& o);
+  friend void from_json(const nlohmann::json& j, DlDataDeliveryStatus& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* DlDataDeliveryStatus_H_ */

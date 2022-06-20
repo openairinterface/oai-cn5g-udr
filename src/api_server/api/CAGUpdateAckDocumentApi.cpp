@@ -48,7 +48,9 @@ CAGUpdateAckDocumentApi::CAGUpdateAckDocumentApi(
   router = rtr;
 }
 
-void CAGUpdateAckDocumentApi::init() { setupRoutes(); }
+void CAGUpdateAckDocumentApi::init() {
+  setupRoutes();
+}
 
 void CAGUpdateAckDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -57,8 +59,8 @@ void CAGUpdateAckDocumentApi::setupRoutes() {
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/ue-update-confirmation-data/subscribed-cag",
-      Routes::bind(&CAGUpdateAckDocumentApi::create_cag_update_ack_handler,
-                   this));
+      Routes::bind(
+          &CAGUpdateAckDocumentApi::create_cag_update_ack_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -67,8 +69,13 @@ void CAGUpdateAckDocumentApi::setupRoutes() {
 }
 
 void CAGUpdateAckDocumentApi::create_cag_update_ack_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -89,14 +96,14 @@ void CAGUpdateAckDocumentApi::create_cag_update_ack_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(cagAckData);
     this->create_cag_update_ack(ueId, supportedFeatures, cagAckData, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -104,9 +111,9 @@ void CAGUpdateAckDocumentApi::create_cag_update_ack_handler(
 }
 
 void CAGUpdateAckDocumentApi::cag_update_ack_document_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

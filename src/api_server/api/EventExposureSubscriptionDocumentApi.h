@@ -58,26 +58,30 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class EventExposureSubscriptionDocumentApi {
-public:
+ public:
   EventExposureSubscriptionDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~EventExposureSubscriptionDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void modify_eesubscription_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
-  void queryee_subscription_handler(const Pistache::Rest::Request &request,
-                                    Pistache::Http::ResponseWriter response);
-  void removeee_subscriptions_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
-  void update_eesubscriptions_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
+  void modify_eesubscription_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void queryee_subscription_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void removeee_subscriptions_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void update_eesubscriptions_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void event_exposure_subscription_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -94,10 +98,10 @@ private:
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify_eesubscription(
-      const std::string &ueId, const std::string &subsId,
-      const std::vector<PatchItem> &patchItem,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const std::string& subsId,
+      const std::vector<PatchItem>& patchItem,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieve a eeSubscription
@@ -107,9 +111,9 @@ private:
   /// </remarks>
   /// <param name="ueId"></param>
   /// <param name="subsId">Unique ID of the subscription to remove</param>
-  virtual void
-  queryee_subscription(const std::string &ueId, const std::string &subsId,
-                       Pistache::Http::ResponseWriter &response) = 0;
+  virtual void queryee_subscription(
+      const std::string& ueId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Deletes a eeSubscription
@@ -119,9 +123,9 @@ private:
   /// </remarks>
   /// <param name="ueId"></param>
   /// <param name="subsId">Unique ID of the subscription to remove</param>
-  virtual void
-  removeee_subscriptions(const std::string &ueId, const std::string &subsId,
-                         Pistache::Http::ResponseWriter &response) = 0;
+  virtual void removeee_subscriptions(
+      const std::string& ueId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Update an individual ee subscriptions of a UE
@@ -132,12 +136,12 @@ private:
   /// <param name="ueId"></param>
   /// <param name="subsId"></param>
   /// <param name="eeSubscription"> (optional)</param>
-  virtual void
-  update_eesubscriptions(const std::string &ueId, const std::string &subsId,
-                         const EeSubscription &eeSubscription,
-                         Pistache::Http::ResponseWriter &response) = 0;
+  virtual void update_eesubscriptions(
+      const std::string& ueId, const std::string& subsId,
+      const EeSubscription& eeSubscription,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* EventExposureSubscriptionDocumentApi_H_ */

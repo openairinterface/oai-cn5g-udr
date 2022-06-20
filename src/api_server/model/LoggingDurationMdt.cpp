@@ -43,10 +43,10 @@ void LoggingDurationMdt::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const LoggingDurationMdt &o) {
+void to_json(nlohmann::json& j, const LoggingDurationMdt& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, LoggingDurationMdt &o) {}
+void from_json(const nlohmann::json& j, LoggingDurationMdt& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

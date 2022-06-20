@@ -37,11 +37,11 @@ namespace oai::udr::model {
 
 WirelineArea::WirelineArea() {
   m_GlobalLineIdsIsSet = false;
-  m_HfcNIdsIsSet = false;
-  m_AreaCodeB = "";
-  m_AreaCodeBIsSet = false;
-  m_AreaCodeC = "";
-  m_AreaCodeCIsSet = false;
+  m_HfcNIdsIsSet       = false;
+  m_AreaCodeB          = "";
+  m_AreaCodeBIsSet     = false;
+  m_AreaCodeC          = "";
+  m_AreaCodeCIsSet     = false;
 }
 
 WirelineArea::~WirelineArea() {}
@@ -50,19 +50,16 @@ void WirelineArea::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const WirelineArea &o) {
+void to_json(nlohmann::json& j, const WirelineArea& o) {
   j = nlohmann::json();
   if (o.globalLineIdsIsSet() || !o.m_GlobalLineIds.empty())
     j["globalLineIds"] = o.m_GlobalLineIds;
-  if (o.hfcNIdsIsSet() || !o.m_HfcNIds.empty())
-    j["hfcNIds"] = o.m_HfcNIds;
-  if (o.areaCodeBIsSet())
-    j["areaCodeB"] = o.m_AreaCodeB;
-  if (o.areaCodeCIsSet())
-    j["areaCodeC"] = o.m_AreaCodeC;
+  if (o.hfcNIdsIsSet() || !o.m_HfcNIds.empty()) j["hfcNIds"] = o.m_HfcNIds;
+  if (o.areaCodeBIsSet()) j["areaCodeB"] = o.m_AreaCodeB;
+  if (o.areaCodeCIsSet()) j["areaCodeC"] = o.m_AreaCodeC;
 }
 
-void from_json(const nlohmann::json &j, WirelineArea &o) {
+void from_json(const nlohmann::json& j, WirelineArea& o) {
   if (j.find("globalLineIds") != j.end()) {
     j.at("globalLineIds").get_to(o.m_GlobalLineIds);
     o.m_GlobalLineIdsIsSet = true;
@@ -81,35 +78,57 @@ void from_json(const nlohmann::json &j, WirelineArea &o) {
   }
 }
 
-std::vector<std::string> &WirelineArea::getGlobalLineIds() {
+std::vector<std::string>& WirelineArea::getGlobalLineIds() {
   return m_GlobalLineIds;
 }
-void WirelineArea::setGlobalLineIds(std::vector<std::string> const &value) {
-  m_GlobalLineIds = value;
+void WirelineArea::setGlobalLineIds(std::vector<std::string> const& value) {
+  m_GlobalLineIds      = value;
   m_GlobalLineIdsIsSet = true;
 }
-bool WirelineArea::globalLineIdsIsSet() const { return m_GlobalLineIdsIsSet; }
-void WirelineArea::unsetGlobalLineIds() { m_GlobalLineIdsIsSet = false; }
-std::vector<std::string> &WirelineArea::getHfcNIds() { return m_HfcNIds; }
-void WirelineArea::setHfcNIds(std::vector<std::string> const &value) {
-  m_HfcNIds = value;
+bool WirelineArea::globalLineIdsIsSet() const {
+  return m_GlobalLineIdsIsSet;
+}
+void WirelineArea::unsetGlobalLineIds() {
+  m_GlobalLineIdsIsSet = false;
+}
+std::vector<std::string>& WirelineArea::getHfcNIds() {
+  return m_HfcNIds;
+}
+void WirelineArea::setHfcNIds(std::vector<std::string> const& value) {
+  m_HfcNIds      = value;
   m_HfcNIdsIsSet = true;
 }
-bool WirelineArea::hfcNIdsIsSet() const { return m_HfcNIdsIsSet; }
-void WirelineArea::unsetHfcNIds() { m_HfcNIdsIsSet = false; }
-std::string WirelineArea::getAreaCodeB() const { return m_AreaCodeB; }
-void WirelineArea::setAreaCodeB(std::string const &value) {
-  m_AreaCodeB = value;
+bool WirelineArea::hfcNIdsIsSet() const {
+  return m_HfcNIdsIsSet;
+}
+void WirelineArea::unsetHfcNIds() {
+  m_HfcNIdsIsSet = false;
+}
+std::string WirelineArea::getAreaCodeB() const {
+  return m_AreaCodeB;
+}
+void WirelineArea::setAreaCodeB(std::string const& value) {
+  m_AreaCodeB      = value;
   m_AreaCodeBIsSet = true;
 }
-bool WirelineArea::areaCodeBIsSet() const { return m_AreaCodeBIsSet; }
-void WirelineArea::unsetAreaCodeB() { m_AreaCodeBIsSet = false; }
-std::string WirelineArea::getAreaCodeC() const { return m_AreaCodeC; }
-void WirelineArea::setAreaCodeC(std::string const &value) {
-  m_AreaCodeC = value;
+bool WirelineArea::areaCodeBIsSet() const {
+  return m_AreaCodeBIsSet;
+}
+void WirelineArea::unsetAreaCodeB() {
+  m_AreaCodeBIsSet = false;
+}
+std::string WirelineArea::getAreaCodeC() const {
+  return m_AreaCodeC;
+}
+void WirelineArea::setAreaCodeC(std::string const& value) {
+  m_AreaCodeC      = value;
   m_AreaCodeCIsSet = true;
 }
-bool WirelineArea::areaCodeCIsSet() const { return m_AreaCodeCIsSet; }
-void WirelineArea::unsetAreaCodeC() { m_AreaCodeCIsSet = false; }
+bool WirelineArea::areaCodeCIsSet() const {
+  return m_AreaCodeCIsSet;
+}
+void WirelineArea::unsetAreaCodeC() {
+  m_AreaCodeCIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
