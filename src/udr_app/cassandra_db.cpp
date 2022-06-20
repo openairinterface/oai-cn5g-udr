@@ -52,6 +52,11 @@ bool cassandra_db::initialize() {
 }
 
 //------------------------------------------------------------------------------
+bool cassandra_db::connect(uint32_t num_retries) {
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool cassandra_db::close_connection() {
   return true;
 }

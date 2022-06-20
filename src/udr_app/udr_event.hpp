@@ -73,13 +73,13 @@ class udr_event {
    * @param [uint64_t] start:
    * @return void
    */
-  bs2::connection subscribe_task_db_connection_reset(
-      const db_connection_sig_t::slot_type& sig, uint64_t period,
-      uint64_t start = 0);
+  // bs2::connection subscribe_task_db_connection_reset(
+  //    const db_connection_sig_t::slot_type& sig, uint64_t period,
+  //    uint64_t start = 0);
 
  private:
   task_sig_t task_tick;
-  db_connection_sig_t db_connection_sig;
+  // db_connection_sig_t db_connection_sig;
 };
 }  // namespace oai::udr::app
 #endif

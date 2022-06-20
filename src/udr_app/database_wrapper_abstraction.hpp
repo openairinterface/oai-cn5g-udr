@@ -41,24 +41,28 @@
 #include "Snssai.h"
 #include "logger.hpp"
 #include "udr.h"
-#include "udr_event.hpp"
 
 namespace oai::udr::app {
 
 class database_wrapper_abstraction {
  public:
-  database_wrapper_abstraction(udr_event& ev) : m_event_sub(ev){};
+  database_wrapper_abstraction(){};
   virtual ~database_wrapper_abstraction(){};
   // virtual std::unique_ptr<database_wrapper_abstraction> clone() const = 0;
 
-  udr_event& m_event_sub;
-
   /*
-   * Initialize the DB and establish the connection between UDR and the DB
+   * Initialize the DB
    * @param void
    * @return true if successful, otherwise return false
    */
   virtual bool initialize() = 0;
+
+  /*
+   * Establish the connection between UDR and the DB
+   * @param [uint32_t] num_retries: Number of retires
+   * @return true if successful, otherwise return false
+   */
+  virtual bool connect(uint32_t num_retries) = 0;
 
   /*
    * Close the connection established to the DB
@@ -66,6 +70,20 @@ class database_wrapper_abstraction {
    * @return true if successful, otherwise return false
    */
   virtual bool close_connection() = 0;
+
+  /*
+   * Start event connection handling procedure
+   * @param [void]
+   * @return void
+   */
+  virtual void start_event_connection_handling() = 0;
+
+  /*
+   * Trigger connection handling procedure (kind of NF Heartbeat)
+   * @param [uint64_t] ms:
+   * @return void
+   */
+  virtual void trigger_connection_handling_procedure(uint64_t ms) = 0;
 
   /*
    * Insert a new item to the DB for the Authentication Subscription
@@ -292,20 +310,6 @@ class database_wrapper_abstraction {
   virtual bool query_smf_select_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data) = 0;
-
-  /*
-   * Start event connection handling procedure
-   * @param [void]
-   * @return void
-   */
-  virtual void start_event_connection_handling() = 0;
-
-  /*
-   * Trigger connection handling procedure (kind of NF Heartbeat)
-   * @param [uint64_t] ms:
-   * @return void
-   */
-  virtual void trigger_connection_handling_procedure(uint64_t ms) = 0;
 };
 }  // namespace oai::udr::app
 

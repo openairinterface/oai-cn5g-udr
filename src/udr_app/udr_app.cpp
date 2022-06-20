@@ -37,7 +37,6 @@
 #include "mysql_db.hpp"
 #include "udr_config.hpp"
 #include "udr_nrf.hpp"
-#include "db_connection_manager.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
@@ -45,8 +44,7 @@ using namespace oai::udr::config;
 
 extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
-udr_nrf* udr_nrf_inst                             = nullptr;
-db_connection_manager* db_connection_manager_inst = nullptr;
+udr_nrf* udr_nrf_inst = nullptr;
 
 //------------------------------------------------------------------------------
 udr_app::udr_app(const std::string& config_file, udr_event& ev)
@@ -57,11 +55,16 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
   if (udr_cfg.db_type == DB_TYPE_CASSANDRA) {
     db_connector = std::make_shared<cassandra_db>();
   } else {
-    db_connector = std::make_shared<mysql_db>();
+    db_connector = std::make_shared<mysql_db>(ev);
   }
+
   if (!db_connector->initialize()) {
     Logger::udr_app().error("Error when initializing a connection with DB");
     return;
+  }
+
+  if (!db_connector->connect(MAX_FIRST_CONNECTION_RETRY)) {
+    Logger::udr_app().warn("Could not establish the connection to the DB");
   }
 
   // Register to NRF
@@ -76,14 +79,6 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
     }
   }
 
-  // DB Connection Manager
-  try {
-    db_connection_manager_inst = new db_connection_manager(ev);
-    Logger::udr_app().info("DB Connection Task Created ");
-  } catch (std::exception& e) {
-    Logger::udr_app().error("Cannot create DB Connection Task: %s", e.what());
-    throw;
-  }
   Logger::udr_app().startup("Started");
 }
 

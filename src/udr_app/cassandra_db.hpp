@@ -40,7 +40,7 @@ class cassandra_db : public database_wrapper<cassandra_db> {
   virtual ~cassandra_db();
 
   bool initialize();
-
+  bool connect(uint32_t num_retries);
   bool close_connection();
 
   bool insert_authentication_subscription(

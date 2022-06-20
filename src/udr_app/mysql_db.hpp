@@ -44,8 +44,11 @@ class mysql_db : public database_wrapper<mysql_db> {
   virtual ~mysql_db();
 
   bool initialize();
-
+  bool connect(uint32_t num_retries);
   bool close_connection();
+
+  void start_event_connection_handling();
+  void trigger_connection_handling_procedure(uint64_t ms);
 
   bool insert_authentication_subscription(
       const std::string& id,
@@ -129,6 +132,7 @@ class mysql_db : public database_wrapper<mysql_db> {
  private:
   MYSQL mysql_connector;
   bs2::connection db_connection;
+  udr_event& m_event_sub;
 };
 }  // namespace oai::udr::app
 

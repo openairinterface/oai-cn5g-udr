@@ -57,10 +57,26 @@ class database_wrapper : public database_wrapper_abstraction {
     return derived->initialize();
   }
 
+  bool connect(uint32_t num_retries) {
+    Logger::udr_app().debug(
+        "Establish the connection to the DB (from database_wrapper)");
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->connect(num_retries);
+  }
   bool close_connection() override {
     Logger::udr_app().debug("Initialize from database_wrapper");
     auto derived = static_cast<DerivedT*>(this);
     return derived->close_connection();
+  }
+
+  void start_event_connection_handling() {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->start_event_connection_handling();
+  }
+
+  void trigger_connection_handling_procedure(uint64_t ms) {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->trigger_connection_handling_procedure(ms);
   }
 
   bool insert_authentication_subscription(
@@ -210,16 +226,6 @@ class database_wrapper : public database_wrapper_abstraction {
       nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_smf_select_data(ue_id, serving_plmn_id, json_data);
-  }
-
-  void start_event_connection_handling() {
-    auto derived = static_cast<DerivedT*>(this);
-    return derived->start_event_connection_handling();
-  }
-
-  void trigger_connection_handling_procedure(uint64_t ms) {
-    auto derived = static_cast<DerivedT*>(this);
-    return derived->trigger_connection_handling_procedure(ms);
   }
 
  protected:

@@ -43,9 +43,9 @@ typedef bs2::signal_type<
     void(uint64_t), bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
     task_sig_t;
 
-typedef bs2::signal_type<
-    void(uint64_t, std::shared_ptr<database_wrapper_abstraction>&),
-    bs2::keywords::mutex_type<bs2::dummy_mutex>>::type db_connection_sig_t;
+// typedef bs2::signal_type<
+//    void(uint64_t, std::shared_ptr<database_wrapper_abstraction>&),
+//    bs2::keywords::mutex_type<bs2::dummy_mutex>>::type db_connection_sig_t;
 
 }  // namespace oai::udr::app
 #endif
