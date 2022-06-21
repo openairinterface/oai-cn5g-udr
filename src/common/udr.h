@@ -27,17 +27,14 @@
 
 #define HEART_BEAT_TIMER 10
 
-#define DB_CONNECTION_TIMER 10
+#define DB_CONNECTION_TIMER 1800  // 30 minutes
+#define MAX_FIRST_CONNECTION_RETRY 100
+#define MAX_CONNECTION_RETRY 1
 
 #define _unused(x) ((void) (x))
 
-#define U64_FMT "%" PRIu64
-
 #define NNRF_NFM_BASE "/nnrf-nfm/"
 #define UDR_NF_REGISTER_URL "/nf-instances/"
-
-#define MAX_FIRST_CONNECTION_RETRY 300
-#define MAX_CONNECTION_RETRY 3
 
 #define NUDR_DR_BASE "/nudr-dr/"
 #define NUDR_DR_AUTH_STATUS "authentication-status"

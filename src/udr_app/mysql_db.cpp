@@ -63,38 +63,6 @@ bool mysql_db::initialize() {
     Logger::udr_mysql().error("Cannot initialize MySQL");
     throw std::runtime_error("Cannot initialize MySQL");
   }
-
-  /*
-  int MAX_RETRY=3;
-  int i=0;
-  while (i < MAX_RETRY) {
-          if (!mysql_real_connect(
-                    &mysql_connector, udr_cfg.mysql.mysql_server.c_str(),
-                    udr_cfg.mysql.mysql_user.c_str(),
-  udr_cfg.mysql.mysql_pass.c_str(), udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
-              Logger::udr_mysql().error(
-                  "An error occurred while connecting to MySQL DB: %s, retry
-  ...", mysql_error(&mysql_connector)); i++;
-             // throw std::runtime_error("Cannot connect to MySQL DB");
-            } else {
-                break;
-            }
-  }
-  if (i==MAX_RETRY){
-          throw std::runtime_error("Cannot connect to MySQL DB");
-  }
-  */
-  /*
-  if (!mysql_real_connect(
-          &mysql_connector, udr_cfg.mysql.mysql_server.c_str(),
-          udr_cfg.mysql.mysql_user.c_str(), udr_cfg.mysql.mysql_pass.c_str(),
-          udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
-    Logger::udr_mysql().error(
-        "An error occurred while connecting to MySQL DB: %s",
-        mysql_error(&mysql_connector));
-    throw std::runtime_error("Cannot connect to MySQL DB");
-  }
-*/
   return true;
 }
 
@@ -155,13 +123,13 @@ void mysql_db::trigger_connection_handling_procedure(uint64_t ms) {
   //  _unused(ms);
   Logger::udr_mysql().debug("Trigger Connection Handling procedure %ld", ms);
 
-  if (!connect(1)) {
+  if (!connect(MAX_CONNECTION_RETRY)) {
     Logger::udr_app().warn("Reset the connection and try again ...");
     // If couldn't connect to the DB
     // Reset the connection and try again
     close_connection();
     initialize();
-    if (!connect(1))
+    if (!connect(MAX_CONNECTION_RETRY))
       Logger::udr_app().warn("Could not establish the connection to the DB");
   } else {
     return;
