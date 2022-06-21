@@ -82,6 +82,8 @@ bool mysql_db::connect(uint32_t num_retries) {
       i++;
       // throw std::runtime_error("Cannot connect to MySQL DB");
     } else {
+      Logger::udr_mysql().info(
+          "Connected to MySQL DB: %s:", mysql_error(&mysql_connector));
       return true;
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
