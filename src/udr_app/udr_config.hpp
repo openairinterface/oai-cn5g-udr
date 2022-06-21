@@ -58,6 +58,7 @@
 #define UDR_CONFIG_STRING_MYSQL_USER "MYSQL_USER"
 #define UDR_CONFIG_STRING_MYSQL_PASS "MYSQL_PASS"
 #define UDR_CONFIG_STRING_MYSQL_DB "MYSQL_DB"
+#define UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT "DB_CONNECTION_TIMEOUT"
 
 using namespace libconfig;
 
@@ -68,6 +69,7 @@ typedef struct {
   std::string mysql_user;
   std::string mysql_pass;
   std::string mysql_db;
+  uint32_t connection_timeout;
 } mysql_conf_t;
 
 typedef struct interface_cfg_s {

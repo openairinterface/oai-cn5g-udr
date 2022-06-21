@@ -110,8 +110,8 @@ void mysql_db::start_event_connection_handling() {
                     std::chrono::system_clock::now().time_since_epoch())
                     .count();
   struct itimerspec its;
-  its.it_value.tv_sec  = DB_CONNECTION_TIMER;  // seconds
-  its.it_value.tv_nsec = 0;                    // 100 * 1000 * 1000; //100ms
+  its.it_value.tv_sec  = udr_cfg.mysql.connection_timeout;  // seconds
+  its.it_value.tv_nsec = 0;  // 100 * 1000 * 1000; //100ms
   const uint64_t interval =
       its.it_value.tv_sec * 1000 +
       its.it_value.tv_nsec / 1000000;  // convert sec, nsec to msec

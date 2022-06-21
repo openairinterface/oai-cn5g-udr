@@ -1,11 +1,10 @@
 /*
- * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The OpenAirInterface Software Alliance licenses this file to You under
- * the OAI Public License, Version 1.1  (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the
- * License at
+ * Licensed to the OpenAirInterface (OAI) Software Alliance mysql_conf_tunder
+ *one or more contributor license agreements.  See the NOTICE file distributed
+ *with this work for additional information regarding copyright ownership. The
+ *OpenAirInterface Software Alliance licenses this file to You under the OAI
+ *Public License, Version 1.1  (the "License"); you may not use this file except
+ *in compliance with the License. You may obtain a copy of the License at
  *
  *      http://www.openairinterface.org/?page_id=698
  *
@@ -223,6 +222,9 @@ int udr_config::load(const std ::string& config_file) {
     mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_USER, mysql.mysql_user);
     mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_PASS, mysql.mysql_pass);
     mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_DB, mysql.mysql_db);
+    mysql_cfg.lookupValue(
+        UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT,
+        mysql.connection_timeout);
   } catch (const SettingNotFoundException& nfex) {
     Logger::udr_app().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
@@ -336,6 +338,8 @@ void udr_config::display() {
         "    Password ..............: %s", mysql.mysql_pass.c_str());
     Logger::config().info(
         "    Database ..............: %s", mysql.mysql_db.c_str());
+    Logger::config().info(
+        "    DB Timeout ............: %d (seconds)", mysql.connection_timeout);
   } else if (db_type == DB_TYPE_CASSANDRA) {
     Logger::config().info("- Cassandra:");
     Logger::config().info(
