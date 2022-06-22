@@ -125,8 +125,10 @@ void mysql_db::trigger_connection_handling_procedure(uint64_t ms) {
   //  _unused(ms);
   Logger::udr_mysql().debug("Trigger Connection Handling procedure %ld", ms);
 
-  if (!connect(MAX_CONNECTION_RETRY)) {
-    Logger::udr_app().warn("Reset the connection and try again ...");
+  if (mysql_ping(&mysql_connector)) {
+    Logger::udr_app().warn(
+        "The connection to the DB is not active, reset the connection and try "
+        "again ...");
     // If couldn't connect to the DB
     // Reset the connection and try again
     close_connection();

@@ -28,7 +28,7 @@
 #define HEART_BEAT_TIMER 10
 
 #define MAX_FIRST_CONNECTION_RETRY 100
-#define MAX_CONNECTION_RETRY 1
+#define MAX_CONNECTION_RETRY 3
 
 #define _unused(x) ((void) (x))
 
