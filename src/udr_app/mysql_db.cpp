@@ -104,11 +104,17 @@ bool mysql_db::close_connection() {
 
 //---------------------------------------------------------------------------------------------
 void mysql_db::start_event_connection_handling() {
-  Logger::udr_mysql().debug("Start Event Connection Handling");
+  std::time_t current_time =
+      std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+  Logger::udr_mysql().debug(
+      "Start Event Connection Handling (current time %s)",
+      std::ctime(&current_time));
+
   // get current time
   uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch())
                     .count();
+
   struct itimerspec its;
   its.it_value.tv_sec  = udr_cfg.mysql.connection_timeout;  // seconds
   its.it_value.tv_nsec = 0;  // 100 * 1000 * 1000; //100ms
@@ -122,9 +128,9 @@ void mysql_db::start_event_connection_handling() {
 }
 //---------------------------------------------------------------------------------------------
 void mysql_db::trigger_connection_handling_procedure(uint64_t ms) {
-  //  _unused(ms);
-  Logger::udr_mysql().debug(
-      "Connection Handling procedure (current time %ld)", ms);
+  _unused(ms);
+  // Logger::udr_mysql().debug(
+  //    "Connection Handling procedure (current time %ld (ms))", ms);
 
   if (mysql_ping(&mysql_connector)) {
     Logger::udr_app().warn(
