@@ -58,17 +58,18 @@ mysql_db::~mysql_db() {
 
 //------------------------------------------------------------------------------
 bool mysql_db::initialize() {
-  Logger::udr_mysql().debug("Initialize MySQL DB");
+  Logger::udr_mysql().debug("Initializing MySQL DB ...");
   if (!mysql_init(&mysql_connector)) {
     Logger::udr_mysql().error("Cannot initialize MySQL");
     throw std::runtime_error("Cannot initialize MySQL");
   }
+  Logger::udr_mysql().debug("Done!");
   return true;
 }
 
 //------------------------------------------------------------------------------
 bool mysql_db::connect(uint32_t num_retries) {
-  Logger::udr_mysql().debug("Connect to MySQL DB");
+  Logger::udr_mysql().debug("Connecting to MySQL DB");
 
   int i = 0;
   while (i < num_retries) {
@@ -77,13 +78,12 @@ bool mysql_db::connect(uint32_t num_retries) {
             udr_cfg.mysql.mysql_user.c_str(), udr_cfg.mysql.mysql_pass.c_str(),
             udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
       Logger::udr_mysql().error(
-          "An error occurred while connecting to MySQL DB: %s, retry ...",
+          "An error occurred when connecting to MySQL DB (%s), retry ...",
           mysql_error(&mysql_connector));
       i++;
       // throw std::runtime_error("Cannot connect to MySQL DB");
     } else {
-      Logger::udr_mysql().info(
-          "Connected to MySQL DB: %s:", mysql_error(&mysql_connector));
+      Logger::udr_mysql().info("Connected to MySQL DB");
       return true;
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -123,7 +123,8 @@ void mysql_db::start_event_connection_handling() {
 //---------------------------------------------------------------------------------------------
 void mysql_db::trigger_connection_handling_procedure(uint64_t ms) {
   //  _unused(ms);
-  Logger::udr_mysql().debug("Trigger Connection Handling procedure %ld", ms);
+  Logger::udr_mysql().debug(
+      "Connection Handling procedure (current time %ld)", ms);
 
   if (mysql_ping(&mysql_connector)) {
     Logger::udr_app().warn(
