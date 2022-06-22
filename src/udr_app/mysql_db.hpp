@@ -21,10 +21,10 @@
 
 /*! \file mysql_db.hpp
  \brief
- \author  Tien-Thinh NGUYEN
+ \author
  \company Eurecom
  \date 2022
- \email: Tien-Thinh.Nguyen@eurecom.fr
+ \email: contact@openairinterface.org
  */
 
 #ifndef MYSQL_DB_HPP
@@ -58,40 +58,40 @@ class mysql_db : public database_wrapper<mysql_db> {
 
   bool delete_authentication_subscription(const std::string& id);
 
-  bool query_authentication_subscription(
-      const std::string& id, nlohmann::json& json_data);
+  bool query_authentication_subscription(const std::string& id,
+                                         nlohmann::json& json_data);
 
   bool update_authentication_subscription(
       const std::string& id,
       const std::vector<oai::udr::model::PatchItem>& patchItem,
       nlohmann::json& json_data);
 
-  bool query_am_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data);
+  bool query_am_data(const std::string& ue_id,
+                     const std::string& serving_plmn_id,
+                     nlohmann::json& json_data);
 
   bool create_amf_context_3gpp(
       const std::string& ue_id,
       oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration);
 
-  bool query_amf_context_3gpp(
-      const std::string& ue_id, nlohmann::json& json_data);
+  bool query_amf_context_3gpp(const std::string& ue_id,
+                              nlohmann::json& json_data);
 
-  bool insert_authentication_status(
-      const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
-      nlohmann::json& json_data);
+  bool insert_authentication_status(const std::string& ue_id,
+                                    const oai::udr::model::AuthEvent& authEvent,
+                                    nlohmann::json& json_data);
 
   bool delete_authentication_status(const std::string& ue_id);
 
-  bool query_authentication_status(
-      const std::string& ue_id, nlohmann::json& json_data);
+  bool query_authentication_status(const std::string& ue_id,
+                                   nlohmann::json& json_data);
 
-  bool query_sdm_subscription(
-      const std::string& ue_id, const std::string& subs_id,
-      nlohmann::json& json_data);
+  bool query_sdm_subscription(const std::string& ue_id,
+                              const std::string& subs_id,
+                              nlohmann::json& json_data);
 
-  bool delete_sdm_subscription(
-      const std::string& ue_id, const std::string& subs_id);
+  bool delete_sdm_subscription(const std::string& ue_id,
+                               const std::string& subs_id);
 
   bool update_sdm_subscription(
       const std::string& ue_id, const std::string& subs_id,
@@ -103,31 +103,32 @@ class mysql_db : public database_wrapper<mysql_db> {
       oai::udr::model::SdmSubscription& sdmSubscription,
       nlohmann::json& json_data);
 
-  bool query_sdm_subscriptions(
-      const std::string& ue_id, nlohmann::json& json_data);
+  bool query_sdm_subscriptions(const std::string& ue_id,
+                               nlohmann::json& json_data);
 
-  bool query_sm_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string dnn = {});
+  bool query_sm_data(const std::string& ue_id,
+                     const std::string& serving_plmn_id,
+                     nlohmann::json& json_data,
+                     const oai::udr::model::Snssai& snssai = {},
+                     const std::string dnn = {});
 
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,
       const oai::udr::model::SmfRegistration& smfRegistration,
       nlohmann::json& json_data);
 
-  bool delete_smf_context(
-      const std::string& ue_id, const int32_t& pdu_session_id);
+  bool delete_smf_context(const std::string& ue_id,
+                          const int32_t& pdu_session_id);
 
-  bool query_smf_registration(
-      const std::string& ue_id, const int32_t& pdu_session_id,
-      nlohmann::json& json_data);
+  bool query_smf_registration(const std::string& ue_id,
+                              const int32_t& pdu_session_id,
+                              nlohmann::json& json_data);
 
   bool query_smf_reg_list(const std::string& ue_id, nlohmann::json& json_data);
 
-  bool query_smf_select_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data);
+  bool query_smf_select_data(const std::string& ue_id,
+                             const std::string& serving_plmn_id,
+                             nlohmann::json& json_data);
 
  private:
   MYSQL mysql_connector;

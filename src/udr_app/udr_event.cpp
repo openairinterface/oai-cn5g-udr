@@ -21,8 +21,8 @@
 
 /*! \file udr_event.cpp
  \brief
- \author Tien-Thinh NGUYEN (EURECOM)
- \company
+ \author
+ \company: eurecom
  \date 2022
  \email: contact@openairinterface.org
  */

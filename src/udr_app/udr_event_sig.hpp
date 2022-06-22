@@ -21,7 +21,7 @@
 
 /*! \file udr_event_sig.hpp
  \brief
- \author  Tien-Thinh NGUYEN (EURECOM)
+ \author
  \company
  \date 2022
  \email: contact@openairinterface.org
@@ -39,8 +39,8 @@ namespace bs2 = boost::signals2;
 
 namespace oai::udr::app {
 
-typedef bs2::signal_type<
-    void(uint64_t), bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
+typedef bs2::signal_type<void(uint64_t),
+                         bs2::keywords::mutex_type<bs2::dummy_mutex>>::type
     task_sig_t;
 
 // typedef bs2::signal_type<

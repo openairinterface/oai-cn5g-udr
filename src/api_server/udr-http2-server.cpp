@@ -28,7 +28,7 @@
  */
 
 #include "udr-http2-server.h"
-#include "string.hpp"
+
 #include <boost/algorithm/string.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/future.hpp>
@@ -38,6 +38,7 @@
 
 #include "3gpp_29.500.h"
 #include "logger.hpp"
+#include "string.hpp"
 #include "udr.h"
 #include "udr_config.hpp"
 
