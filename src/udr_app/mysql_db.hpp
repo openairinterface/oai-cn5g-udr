@@ -48,7 +48,18 @@ class mysql_db : public database_wrapper<mysql_db> {
   bool connect(uint32_t num_retries);
   bool close_connection();
 
+  /*
+   * Set the DB connection status
+   * @param [bool] status: status to be set
+   * @return void
+   */
   void set_db_connection_status(bool status);
+
+  /*
+   * Get the DB connection status
+   * @param void
+   * @return current connection status
+   */
   bool get_db_connection_status() const;
 
   void start_event_connection_handling();
