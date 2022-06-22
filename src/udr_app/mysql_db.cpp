@@ -74,6 +74,7 @@ bool mysql_db::connect(uint32_t num_retries) {
 
   int i = 0;
   while (i < num_retries) {
+    // TODO: use mysql_real_connect_nonblocking (only from MySQL 8.0.16)
     if (!mysql_real_connect(
             &mysql_connector, udr_cfg.mysql.mysql_server.c_str(),
             udr_cfg.mysql.mysql_user.c_str(), udr_cfg.mysql.mysql_pass.c_str(),
