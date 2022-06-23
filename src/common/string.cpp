@@ -19,14 +19,16 @@
  *      contact@openairinterface.org
  */
 #include "string.hpp"
-#include "logger.hpp"
+
+#include <stdarg.h>
 
 #include <algorithm>
 #include <cctype>
 #include <functional>
 #include <locale>
 #include <regex>
-#include <stdarg.h>
+
+#include "logger.hpp"
 
 template<class T>
 class Buffer {

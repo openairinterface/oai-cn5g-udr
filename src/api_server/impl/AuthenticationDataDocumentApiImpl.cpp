@@ -62,6 +62,9 @@ void AuthenticationDataDocumentApiImpl::create_auth_subs_data(
 
   code = static_cast<Pistache::Http::Code>(httpCode);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(code, responseData.dump().c_str());
 }
 
@@ -75,6 +78,9 @@ void AuthenticationDataDocumentApiImpl::delete_auth_subs_data(
 
   code = static_cast<Pistache::Http::Code>(httpCode);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(code, responseData.dump().c_str());
 }
 

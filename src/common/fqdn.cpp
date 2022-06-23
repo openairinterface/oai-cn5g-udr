@@ -20,9 +20,11 @@
  */
 
 #include "fqdn.hpp"
-#include "logger.hpp"
+
 #include <boost/asio.hpp>
 #include <iostream>
+
+#include "logger.hpp"
 
 bool fqdn::resolve(
     const std::string& host_name, std::string& address, uint32_t& port,

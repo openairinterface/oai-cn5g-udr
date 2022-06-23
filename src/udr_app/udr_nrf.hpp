@@ -20,10 +20,10 @@
  */
 
 /*! \file udr_client.hpp
- \author  Tien-Thinh NGUYEN
+ \author
  \company Eurecom
  \date 2020
- \email:
+ \email: contact@openairinterface.org
  */
 
 #ifndef FILE_UDR_NRF_SEEN
@@ -74,8 +74,8 @@ class udr_nrf {
    * @param [void]
    * @return void
    */
-  void generate_udr_profile(
-      udr_profile& udr_nf_profile, std::string& udr_instance_id);
+  void generate_udr_profile(udr_profile& udr_nf_profile,
+                            std::string& udr_instance_id);
 
   /*
    * Trigger NF instance registration to NRF

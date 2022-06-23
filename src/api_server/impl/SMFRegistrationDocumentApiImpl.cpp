@@ -74,6 +74,9 @@ void SMFRegistrationDocumentApiImpl::delete_smf_context(
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(code, response_data.dump().c_str());
 }
 void SMFRegistrationDocumentApiImpl::query_smf_registration(
@@ -90,6 +93,9 @@ void SMFRegistrationDocumentApiImpl::query_smf_registration(
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(code, response_data.dump().c_str());
 }
 

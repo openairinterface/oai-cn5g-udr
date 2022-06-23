@@ -21,10 +21,10 @@
 
 /*! \file databse_wrapper_abstraction.hpp
  \brief
- \author  Tien-Thinh NGUYEN
+ \author
  \company Eurecom
  \date 2022
- \email: Tien-Thinh.Nguyen@eurecom.fr
+ \email: contact@openairinterface.org
  */
 
 #ifndef DATABASE_WRAPPER_ABSTRACTION_HPP
@@ -51,11 +51,18 @@ class database_wrapper_abstraction {
   // virtual std::unique_ptr<database_wrapper_abstraction> clone() const = 0;
 
   /*
-   * Initialize the DB and establish the connection between UDR and the DB
+   * Initialize the DB
    * @param void
    * @return true if successful, otherwise return false
    */
   virtual bool initialize() = 0;
+
+  /*
+   * Establish the connection between UDR and the DB
+   * @param [uint32_t] num_retries: Number of retires
+   * @return true if successful, otherwise return false
+   */
+  virtual bool connect(uint32_t num_retries) = 0;
 
   /*
    * Close the connection established to the DB
@@ -63,6 +70,20 @@ class database_wrapper_abstraction {
    * @return true if successful, otherwise return false
    */
   virtual bool close_connection() = 0;
+
+  /*
+   * Start event connection handling procedure
+   * @param [void]
+   * @return void
+   */
+  virtual void start_event_connection_handling() = 0;
+
+  /*
+   * Trigger connection handling procedure (kind of NF Heartbeat)
+   * @param [uint64_t] ms:
+   * @return void
+   */
+  virtual void trigger_connection_handling_procedure(uint64_t ms) = 0;
 
   /*
    * Insert a new item to the DB for the Authentication Subscription
@@ -91,8 +112,8 @@ class database_wrapper_abstraction {
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
-  virtual bool query_authentication_subscription(
-      const std::string& id, nlohmann::json& json_data) = 0;
+  virtual bool query_authentication_subscription(const std::string& id,
+                                                 nlohmann::json& json_data) = 0;
 
   /*
    * Update an item from the DB for the Authentication Subscription
@@ -114,9 +135,9 @@ class database_wrapper_abstraction {
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
-  virtual bool query_am_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data) = 0;
+  virtual bool query_am_data(const std::string& ue_id,
+                             const std::string& serving_plmn_id,
+                             nlohmann::json& json_data) = 0;
 
   /*
    * Insert an item into DB for AMF3GPPAccessRegistration Context
@@ -136,8 +157,8 @@ class database_wrapper_abstraction {
    * @param [long code] code: HTTP response code
    * @return true if successful, otherwise return false
    */
-  virtual bool query_amf_context_3gpp(
-      const std::string& ue_id, nlohmann::json& json_data) = 0;
+  virtual bool query_amf_context_3gpp(const std::string& ue_id,
+                                      nlohmann::json& json_data) = 0;
 
   /*
    *  Insert a new item into the DB for AuthenticationStatus
@@ -163,8 +184,8 @@ class database_wrapper_abstraction {
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
-  virtual bool query_authentication_status(
-      const std::string& ue_id, nlohmann::json& json_data) = 0;
+  virtual bool query_authentication_status(const std::string& ue_id,
+                                           nlohmann::json& json_data) = 0;
 
   /*
    * Query an item from the DB for SDMSubscription
@@ -173,9 +194,9 @@ class database_wrapper_abstraction {
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
-  virtual bool query_sdm_subscription(
-      const std::string& ue_id, const std::string& subs_id,
-      nlohmann::json& json_data) = 0;
+  virtual bool query_sdm_subscription(const std::string& ue_id,
+                                      const std::string& subs_id,
+                                      nlohmann::json& json_data) = 0;
 
   /*
    * Delete an item from the DB for SDMSubscription
@@ -183,8 +204,8 @@ class database_wrapper_abstraction {
    * @param [const std::string&] subs_id: subscription ID
    * @return true if successful, otherwise return false
    */
-  virtual bool delete_sdm_subscription(
-      const std::string& ue_id, const std::string& subs_id) = 0;
+  virtual bool delete_sdm_subscription(const std::string& ue_id,
+                                       const std::string& subs_id) = 0;
 
   /*
    * Update an item from the DB for SDMSubscription
@@ -219,8 +240,8 @@ class database_wrapper_abstraction {
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
-  virtual bool query_sdm_subscriptions(
-      const std::string& ue_id, nlohmann::json& json_data) = 0;
+  virtual bool query_sdm_subscriptions(const std::string& ue_id,
+                                       nlohmann::json& json_data) = 0;
 
   /*
    * Query an item from the DB for SessionManagementSubscription
@@ -231,10 +252,11 @@ class database_wrapper_abstraction {
    * @param [const std::string&] dnn: DNN
    * @return true if successful, otherwise return false
    */
-  virtual bool query_sm_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string& dnn = {}) = 0;
+  virtual bool query_sm_data(const std::string& ue_id,
+                             const std::string& serving_plmn_id,
+                             nlohmann::json& json_data,
+                             const oai::udr::model::Snssai& snssai = {},
+                             const std::string& dnn = {}) = 0;
 
   /*
    * Insert an item into the DB for SMFRegistration
@@ -256,8 +278,8 @@ class database_wrapper_abstraction {
    * @param [const int32_t&] pdu_session_id: PDU Session ID
    * @return true if successful, otherwise return false
    */
-  virtual bool delete_smf_context(
-      const std::string& ue_id, const int32_t& pdu_session_id) = 0;
+  virtual bool delete_smf_context(const std::string& ue_id,
+                                  const int32_t& pdu_session_id) = 0;
 
   /*
    * Query an item from the DB SMFRegistration
@@ -266,9 +288,9 @@ class database_wrapper_abstraction {
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
-  virtual bool query_smf_registration(
-      const std::string& ue_id, const int32_t& pdu_session_id,
-      nlohmann::json& json_data) = 0;
+  virtual bool query_smf_registration(const std::string& ue_id,
+                                      const int32_t& pdu_session_id,
+                                      nlohmann::json& json_data) = 0;
 
   /*
    * Query an item from the DB for SMFRegistrationsCollection
@@ -276,8 +298,8 @@ class database_wrapper_abstraction {
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
-  virtual bool query_smf_reg_list(
-      const std::string& ue_id, nlohmann::json& json_data) = 0;
+  virtual bool query_smf_reg_list(const std::string& ue_id,
+                                  nlohmann::json& json_data) = 0;
 
   /*
    * Query an item from the DB for SMFSelectionSubscription
@@ -286,9 +308,9 @@ class database_wrapper_abstraction {
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
-  virtual bool query_smf_select_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data) = 0;
+  virtual bool query_smf_select_data(const std::string& ue_id,
+                                     const std::string& serving_plmn_id,
+                                     nlohmann::json& json_data) = 0;
 };
 }  // namespace oai::udr::app
 

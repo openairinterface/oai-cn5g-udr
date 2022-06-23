@@ -14,8 +14,7 @@
  */
 
 #include "if.hpp"
-#include "common_defs.h"
-#include "logger.hpp"
+
 #include <arpa/inet.h>
 #include <errno.h>
 #include <linux/netlink.h>
@@ -27,6 +26,9 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <unistd.h>
+
+#include "common_defs.h"
+#include "logger.hpp"
 
 #define BUFFER_SIZE 4096
 
