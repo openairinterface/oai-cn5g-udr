@@ -1,5 +1,12 @@
 # RELEASE NOTES: #
 
+## v1.4.0 -- July 2022 ##
+
+* Fix sync failure issue
+* Fix issue to support Slice Selection Subscription Data retrieval
+* Official images produced by CI are pushed to `oaisoftwarealliance` Docker-Hub Team account
+* Reduce image size
+
 ## v1.3.0 -- January 2022 ##
 
 * Added HTTP2 support
