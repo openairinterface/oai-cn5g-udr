@@ -41,34 +41,35 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 PduSessionManagementDataApiImpl::PduSessionManagementDataApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : PduSessionManagementDataApi(rtr), m_udr_app(udr_app_inst),
+    : PduSessionManagementDataApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void PduSessionManagementDataApiImpl::create_or_replace_session_management_data(
-    const std::string &ueId, const int32_t &pduSessionId,
-    const PduSessionManagementData &pduSessionManagementData,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const int32_t& pduSessionId,
+    const PduSessionManagementData& pduSessionManagementData,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void PduSessionManagementDataApiImpl::delete_session_management_data(
-    const std::string &ueId, const int32_t &pduSessionId,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const int32_t& pduSessionId,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void PduSessionManagementDataApiImpl::query_session_management_data(
-    const std::string &ueId, const int32_t &pduSessionId,
-    const Pistache::Optional<std::string> &ipv4Addr,
-    const Pistache::Optional<Ipv6Prefix> &ipv6Prefix,
-    const Pistache::Optional<std::string> &dnn,
-    const Pistache::Optional<std::vector<std::string>> &fields,
-    const Pistache::Optional<std::string> &suppFeat,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const int32_t& pduSessionId,
+    const Pistache::Optional<std::string>& ipv4Addr,
+    const Pistache::Optional<Ipv6Prefix>& ipv6Prefix,
+    const Pistache::Optional<std::string>& dnn,
+    const Pistache::Optional<std::vector<std::string>>& fields,
+    const Pistache::Optional<std::string>& suppFeat,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

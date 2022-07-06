@@ -36,9 +36,9 @@
 namespace oai::udr::model {
 
 MbsfnArea::MbsfnArea() {
-  m_MbsfnAreaId = 0;
-  m_MbsfnAreaIdIsSet = false;
-  m_CarrierFrequency = 0;
+  m_MbsfnAreaId           = 0;
+  m_MbsfnAreaIdIsSet      = false;
+  m_CarrierFrequency      = 0;
   m_CarrierFrequencyIsSet = false;
 }
 
@@ -48,15 +48,13 @@ void MbsfnArea::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const MbsfnArea &o) {
+void to_json(nlohmann::json& j, const MbsfnArea& o) {
   j = nlohmann::json();
-  if (o.mbsfnAreaIdIsSet())
-    j["mbsfnAreaId"] = o.m_MbsfnAreaId;
-  if (o.carrierFrequencyIsSet())
-    j["carrierFrequency"] = o.m_CarrierFrequency;
+  if (o.mbsfnAreaIdIsSet()) j["mbsfnAreaId"] = o.m_MbsfnAreaId;
+  if (o.carrierFrequencyIsSet()) j["carrierFrequency"] = o.m_CarrierFrequency;
 }
 
-void from_json(const nlohmann::json &j, MbsfnArea &o) {
+void from_json(const nlohmann::json& j, MbsfnArea& o) {
   if (j.find("mbsfnAreaId") != j.end()) {
     j.at("mbsfnAreaId").get_to(o.m_MbsfnAreaId);
     o.m_MbsfnAreaIdIsSet = true;
@@ -67,21 +65,31 @@ void from_json(const nlohmann::json &j, MbsfnArea &o) {
   }
 }
 
-int32_t MbsfnArea::getMbsfnAreaId() const { return m_MbsfnAreaId; }
+int32_t MbsfnArea::getMbsfnAreaId() const {
+  return m_MbsfnAreaId;
+}
 void MbsfnArea::setMbsfnAreaId(int32_t const value) {
-  m_MbsfnAreaId = value;
+  m_MbsfnAreaId      = value;
   m_MbsfnAreaIdIsSet = true;
 }
-bool MbsfnArea::mbsfnAreaIdIsSet() const { return m_MbsfnAreaIdIsSet; }
-void MbsfnArea::unsetMbsfnAreaId() { m_MbsfnAreaIdIsSet = false; }
-int32_t MbsfnArea::getCarrierFrequency() const { return m_CarrierFrequency; }
+bool MbsfnArea::mbsfnAreaIdIsSet() const {
+  return m_MbsfnAreaIdIsSet;
+}
+void MbsfnArea::unsetMbsfnAreaId() {
+  m_MbsfnAreaIdIsSet = false;
+}
+int32_t MbsfnArea::getCarrierFrequency() const {
+  return m_CarrierFrequency;
+}
 void MbsfnArea::setCarrierFrequency(int32_t const value) {
-  m_CarrierFrequency = value;
+  m_CarrierFrequency      = value;
   m_CarrierFrequencyIsSet = true;
 }
 bool MbsfnArea::carrierFrequencyIsSet() const {
   return m_CarrierFrequencyIsSet;
 }
-void MbsfnArea::unsetCarrierFrequency() { m_CarrierFrequencyIsSet = false; }
+void MbsfnArea::unsetCarrierFrequency() {
+  m_CarrierFrequencyIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

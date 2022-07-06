@@ -805,10 +805,10 @@ class HtmlReport():
 						if section_status:
 							if nfType == 'UDR':
 								if self.git_pull_request:
-									result = re.search('oai-udr *ci-tmp', line)
+									result = re.search('oai-udr *ci-tmp ', line)
 								else:
-									result = re.search('oai-udr *develop', line)
-							if result is not None:
+									result = re.search('oai-udr *develop ', line)
+							if result is not None and not status:
 								if variant == 'docker':
 									result = re.search('ago *([0-9A-Z]+)', line)
 								else:

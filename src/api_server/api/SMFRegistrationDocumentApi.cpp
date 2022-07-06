@@ -49,7 +49,9 @@ SMFRegistrationDocumentApi::SMFRegistrationDocumentApi(
   router = rtr;
 }
 
-void SMFRegistrationDocumentApi::init() { setupRoutes(); }
+void SMFRegistrationDocumentApi::init() {
+  setupRoutes();
+}
 
 void SMFRegistrationDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -67,30 +69,36 @@ void SMFRegistrationDocumentApi::setupRoutes() {
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/context-data/smf-registrations/"
           ":pduSessionId",
-      Routes::bind(&SMFRegistrationDocumentApi::delete_smf_context_handler,
-                   this));
+      Routes::bind(
+          &SMFRegistrationDocumentApi::delete_smf_context_handler, this));
   Routes::Get(
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/context-data/smf-registrations/"
           ":pduSessionId",
-      Routes::bind(&SMFRegistrationDocumentApi::query_smf_registration_handler,
-                   this));
+      Routes::bind(
+          &SMFRegistrationDocumentApi::query_smf_registration_handler, this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&SMFRegistrationDocumentApi::
-                       smf_registration_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &SMFRegistrationDocumentApi::
+          smf_registration_document_api_default_handler,
+      this));
 }
 
 void SMFRegistrationDocumentApi::create_smf_context_non3gpp_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().info("SMFRegistration Method: PUT!");
 
+  if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId         = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   // Getting the body param
@@ -99,52 +107,64 @@ void SMFRegistrationDocumentApi::create_smf_context_non3gpp_handler(
 
   try {
     nlohmann::json::parse(request.body()).get_to(smfRegistration);
-    this->create_smf_context_non3gpp(ueId, pduSessionId, smfRegistration,
-                                     response);
-  } catch (nlohmann::detail::exception &e) {
+    this->create_smf_context_non3gpp(
+        ueId, pduSessionId, smfRegistration, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SMFRegistrationDocumentApi::delete_smf_context_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().debug("Handle Delete SMF Context Request");
 
+  if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId         = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   try {
     this->delete_smf_context(ueId, pduSessionId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void SMFRegistrationDocumentApi::query_smf_registration_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   Logger::udr_server().debug("Handle Query SMF Registration");
 
+  if (!request.hasParam(":ueId") or !request.hasParam(":pduSessionId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId         = request.param(":ueId").as<std::string>();
   auto pduSessionId = request.param(":pduSessionId").as<int32_t>();
 
   // Getting the query params
@@ -166,16 +186,16 @@ void SMFRegistrationDocumentApi::query_smf_registration_handler(
   }
 
   try {
-    this->query_smf_registration(ueId, pduSessionId, fields, supportedFeatures,
-                                 response);
-  } catch (nlohmann::detail::exception &e) {
+    this->query_smf_registration(
+        ueId, pduSessionId, fields, supportedFeatures, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -183,9 +203,9 @@ void SMFRegistrationDocumentApi::query_smf_registration_handler(
 }
 
 void SMFRegistrationDocumentApi::smf_registration_document_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

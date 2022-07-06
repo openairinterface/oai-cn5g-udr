@@ -43,8 +43,10 @@ void NullValue::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const NullValue &o) { j = nlohmann::json(); }
+void to_json(nlohmann::json& j, const NullValue& o) {
+  j = nlohmann::json();
+}
 
-void from_json(const nlohmann::json &j, NullValue &o) {}
+void from_json(const nlohmann::json& j, NullValue& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

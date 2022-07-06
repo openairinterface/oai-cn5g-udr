@@ -41,35 +41,36 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 IndividualBdtDataDocumentApiImpl::IndividualBdtDataDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : IndividualBdtDataDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : IndividualBdtDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void IndividualBdtDataDocumentApiImpl::create_individual_bdt_data(
-    const std::string &bdtReferenceId, const BdtData &bdtData,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& bdtReferenceId, const BdtData& bdtData,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void IndividualBdtDataDocumentApiImpl::delete_individual_bdt_data(
-    const std::string &bdtReferenceId,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& bdtReferenceId,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void IndividualBdtDataDocumentApiImpl::read_individual_bdt_data(
-    const std::string &bdtReferenceId,
-    const Pistache::Optional<std::string> &suppFeat,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& bdtReferenceId,
+    const Pistache::Optional<std::string>& suppFeat,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void IndividualBdtDataDocumentApiImpl::update_individual_bdt_data(
-    const std::string &bdtReferenceId, const BdtDataPatch &bdtDataPatch,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& bdtReferenceId, const BdtDataPatch& bdtDataPatch,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

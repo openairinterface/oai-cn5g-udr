@@ -41,53 +41,63 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 AuthenticationStatusDocumentApiImpl::AuthenticationStatusDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : AuthenticationStatusDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : AuthenticationStatusDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AuthenticationStatusDocumentApiImpl::create_authentication_status(
-    const std::string &ueId, const AuthEvent &authEvent,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, const AuthEvent& authEvent,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_create_authentication_status(ueId, authEvent, response_data,
-                                                 http_code);
+  m_udr_app->handle_create_authentication_status(
+      ueId, authEvent, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(code, response_data.dump().c_str());
 }
 
 void AuthenticationStatusDocumentApiImpl::delete_authentication_status(
-    const std::string &ueId, Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId, Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-  m_udr_app->handle_delete_authentication_status(ueId, response_data,
-                                                 http_code);
+  m_udr_app->handle_delete_authentication_status(
+      ueId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(code, response_data.dump().c_str());
 }
 void AuthenticationStatusDocumentApiImpl::query_authentication_status(
-    const std::string &ueId,
-    const Pistache::Optional<std::vector<std::string>> &fields,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
+    const std::string& ueId,
+    const Pistache::Optional<std::vector<std::string>>& fields,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
-  Pistache::Http::Code code = {};
-  long http_code = 0;
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
   m_udr_app->handle_query_authentication_status(ueId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(code, response_data.dump().c_str());
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

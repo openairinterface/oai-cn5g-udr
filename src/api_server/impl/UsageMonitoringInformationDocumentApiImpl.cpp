@@ -42,33 +42,34 @@ using namespace oai::udr::model;
 
 UsageMonitoringInformationDocumentApiImpl::
     UsageMonitoringInformationDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : UsageMonitoringInformationDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : UsageMonitoringInformationDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void UsageMonitoringInformationDocumentApiImpl::
-    create_usage_monitoring_resource(const std::string &ueId,
-                                     const std::string &usageMonId,
-                                     const UsageMonData &usageMonData,
-                                     Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    create_usage_monitoring_resource(
+        const std::string& ueId, const std::string& usageMonId,
+        const UsageMonData& usageMonData,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void UsageMonitoringInformationDocumentApiImpl::
     delete_usage_monitoring_information(
-        const std::string &ueId, const std::string &usageMonId,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& ueId, const std::string& usageMonId,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void UsageMonitoringInformationDocumentApiImpl::
     read_usage_monitoring_information(
-        const std::string &ueId, const std::string &usageMonId,
-        const Pistache::Optional<std::string> &suppFeat,
-        Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+        const std::string& ueId, const std::string& usageMonId,
+        const Pistache::Optional<std::string>& suppFeat,
+        Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

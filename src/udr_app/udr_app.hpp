@@ -21,10 +21,10 @@
 
 /*! \file udr_app.hpp
  \brief
- \author  Tien-Thinh NGUYEN
+ \author
  \company Eurecom
  \date 2020
- \email: Tien-Thinh.Nguyen@eurecom.fr
+ \email: contact@openairinterface.org
  */
 
 #ifndef FILE_UDR_APP_HPP_SEEN
@@ -38,9 +38,12 @@
 
 #include "Amf3GppAccessRegistration.h"
 #include "AuthEvent.h"
+#include "AuthenticationSubscription.h"
 #include "PatchItem.h"
 #include "SdmSubscription.h"
 #include "SmfRegistration.h"
+#include "database_wrapper.hpp"
+#include "udr_event.hpp"
 
 using namespace oai::udr::model;
 
@@ -49,10 +52,10 @@ namespace udr {
 namespace app {
 
 class udr_app {
-public:
-  explicit udr_app(const std::string &config_file);
-  udr_app(udr_app const &) = delete;
-  void operator=(udr_app const &) = delete;
+ public:
+  explicit udr_app(const std::string& config_file, udr_event& ev);
+  udr_app(udr_app const&) = delete;
+  void operator=(udr_app const&) = delete;
 
   virtual ~udr_app();
 
@@ -65,9 +68,9 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_am_data(const std::string &ue_id,
-                            const std::string &serving_plmn_id,
-                            nlohmann::json &response_data, long &code);
+  void handle_query_am_data(const std::string& ue_id,
+                            const std::string& serving_plmn_id,
+                            nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to create AMF3GPPAccessRegistration Context
@@ -80,9 +83,9 @@ public:
    * @return void
    */
   void handle_create_amf_context_3gpp(
-      const std::string &ue_id,
-      Amf3GppAccessRegistration &amf3GppAccessRegistration,
-      nlohmann::json &response_data, long &code);
+      const std::string& ue_id,
+      Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      nlohmann::json& response_data, long& code);
 
   /*
    * Handle a query for AMF3GPPAccessRegistration
@@ -92,8 +95,8 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_amf_context_3gpp(const std::string &ue_id,
-                                     nlohmann::json &response_data, long &code);
+  void handle_query_amf_context_3gpp(const std::string& ue_id,
+                                     nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to create AuthenticationStatus
@@ -104,10 +107,10 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_create_authentication_status(const std::string &ue_id,
-                                           const AuthEvent &authEvent,
-                                           nlohmann::json &response_data,
-                                           long &code);
+  void handle_create_authentication_status(const std::string& ue_id,
+                                           const AuthEvent& authEvent,
+                                           nlohmann::json& response_data,
+                                           long& code);
 
   /*
    * Handle a request to delete AuthenticationStatus
@@ -117,9 +120,9 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_delete_authentication_status(const std::string &ue_id,
-                                           nlohmann::json &response_data,
-                                           long &code);
+  void handle_delete_authentication_status(const std::string& ue_id,
+                                           nlohmann::json& response_data,
+                                           long& code);
 
   /*
    * Handle a request to retrieve AuthenticationStatus
@@ -129,9 +132,36 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_authentication_status(const std::string &ue_id,
-                                          nlohmann::json &response_data,
-                                          long &code);
+  void handle_query_authentication_status(const std::string& ue_id,
+                                          nlohmann::json& response_data,
+                                          long& code);
+
+  /*
+   * Handle a request to Create an Authentication Subscription
+   * (AuthenticationSubscriptionDocumentApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [const AuthenticationSubscription&] authentication_subscription:
+   * UE's subscription information
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] http_code: HTTP response code
+   * @return void
+   */
+  void handle_create_authentication_data(
+      const std::string& ue_id,
+      const AuthenticationSubscription& authentication_subscription,
+      nlohmann::json& response_data, long& code);
+
+  /*
+   * Handle a request to remove the AuthenticationSubscription
+   * (AuthenticationDataDocumentApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] code: HTTP response code
+   * @return void
+   */
+  void handle_delete_authentication_data(const std::string& ue_id,
+                                         nlohmann::json& response_data,
+                                         long& code);
 
   /*
    * Handle a request to modify AuthenticationSubscription
@@ -143,8 +173,8 @@ public:
    * @return void
    */
   void handle_modify_authentication_subscription(
-      const std::string &ue_id, const std::vector<PatchItem> &patchItem,
-      nlohmann::json &response_data, long &code);
+      const std::string& ue_id, const std::vector<PatchItem>& patchItem,
+      nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to get AuthenticationSubscription
@@ -154,9 +184,9 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_read_authentication_subscription(const std::string &ue_id,
-                                               nlohmann::json &response_data,
-                                               long &code);
+  void handle_read_authentication_subscription(const std::string& ue_id,
+                                               nlohmann::json& response_data,
+                                               long& code);
 
   /*
    * Handle a request to retrieve SDMSubscription
@@ -167,9 +197,9 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_sdm_subscription(const std::string &ue_id,
-                                     const std::string &subs_id,
-                                     nlohmann::json &response_data, long &code);
+  void handle_query_sdm_subscription(const std::string& ue_id,
+                                     const std::string& subs_id,
+                                     nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to remove SDMSubscription (SDMSubscriptionDocumentApiImpl)
@@ -179,10 +209,10 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_remove_sdm_subscription(const std::string &ue_id,
-                                      const std::string &subs_id,
-                                      nlohmann::json &response_data,
-                                      long &code);
+  void handle_remove_sdm_subscription(const std::string& ue_id,
+                                      const std::string& subs_id,
+                                      nlohmann::json& response_data,
+                                      long& code);
 
   /*
    * Handle a request to update SDMSubscription (SDMSubscriptionDocumentApiImpl)
@@ -193,11 +223,11 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_update_sdm_subscription(const std::string &ue_id,
-                                      const std::string &subs_id,
-                                      SdmSubscription &sdmSubscription,
-                                      nlohmann::json &response_data,
-                                      long &code);
+  void handle_update_sdm_subscription(const std::string& ue_id,
+                                      const std::string& subs_id,
+                                      SdmSubscription& sdmSubscription,
+                                      nlohmann::json& response_data,
+                                      long& code);
 
   /*
    * Handle a request to create SDMSubscriptions
@@ -208,10 +238,10 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_create_sdm_subscriptions(const std::string &ue_id,
-                                       SdmSubscription &sdmSubscription,
-                                       nlohmann::json &response_data,
-                                       long &code);
+  void handle_create_sdm_subscriptions(const std::string& ue_id,
+                                       SdmSubscription& sdmSubscription,
+                                       nlohmann::json& response_data,
+                                       long& code);
 
   /*
    * Handle a request to retrieve SDMSubscriptions
@@ -221,9 +251,9 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_sdm_subscriptions(const std::string &ue_id,
-                                      nlohmann::json &response_data,
-                                      long &code);
+  void handle_query_sdm_subscriptions(const std::string& ue_id,
+                                      nlohmann::json& response_data,
+                                      long& code);
 
   /*
    * Handle a request to retrieve SessionManagementSubscription
@@ -231,14 +261,16 @@ public:
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
    * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [const std::string&] dnn: DNN
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_sm_data(const std::string &ue_id,
-                            const std::string &serving_plmn_id,
-                            nlohmann::json &response_data, long &code,
-                            oai::udr::model::Snssai snssai = {},
-                            std::string dnn = {});
+  void handle_query_sm_data(const std::string& ue_id,
+                            const std::string& serving_plmn_id,
+                            nlohmann::json& response_data, long& code,
+                            const oai::udr::model::Snssai& snssai = {},
+                            const std::string& dnn = {});
 
   /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)
@@ -249,11 +281,10 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void
-  handle_create_smf_context_non_3gpp(const std::string &ue_id,
-                                     const int32_t &pdu_session_id,
-                                     const SmfRegistration &smfRegistration,
-                                     nlohmann::json &response_data, long &code);
+  void handle_create_smf_context_non_3gpp(
+      const std::string& ue_id, const int32_t& pdu_session_id,
+      const SmfRegistration& smfRegistration, nlohmann::json& response_data,
+      long& code);
 
   /*
    * Handle a request to delete SMFRegistration (SMFRegistrationDocumentApiImpl)
@@ -263,9 +294,9 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_delete_smf_context(const std::string &ue_id,
-                                 const int32_t &pdu_session_id,
-                                 nlohmann::json &response_data, long &code);
+  void handle_delete_smf_context(const std::string& ue_id,
+                                 const int32_t& pdu_session_id,
+                                 nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to retrieve SMFRegistration
@@ -276,9 +307,9 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_smf_registration(const std::string &ue_id,
-                                     const int32_t &pdu_session_id,
-                                     nlohmann::json &response_data, long &code);
+  void handle_query_smf_registration(const std::string& ue_id,
+                                     const int32_t& pdu_session_id,
+                                     nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to retrieve SMFRegistrationsCollection
@@ -288,8 +319,8 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_smf_reg_list(const std::string &ue_id,
-                                 nlohmann::json &response_data, long &code);
+  void handle_query_smf_reg_list(const std::string& ue_id,
+                                 nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to retrieve SMFSelectionSubscription
@@ -300,16 +331,19 @@ public:
    * @param [long code] code: HTTP response code
    * @return void
    */
-  void handle_query_smf_select_data(const std::string &ue_id,
-                                    const std::string &serving_plmn_id,
-                                    nlohmann::json &response_data, long &code);
+  void handle_query_smf_select_data(const std::string& ue_id,
+                                    const std::string& serving_plmn_id,
+                                    nlohmann::json& response_data, long& code);
 
-private:
+ private:
   MYSQL mysql;
+  udr_event& event_sub;
+  std::shared_ptr<database_wrapper_abstraction> db_connector;
+  // std::shared_ptr<database_wrapper> db_connector_test;
 };
-} // namespace app
-} // namespace udr
-} // namespace oai
+}  // namespace app
+}  // namespace udr
+}  // namespace oai
 #include "udr_config.hpp"
 
 #endif /* FILE_UDR_APP_HPP_SEEN */

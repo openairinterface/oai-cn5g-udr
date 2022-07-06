@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class NullValue {
-public:
+ public:
   NullValue();
   virtual ~NullValue();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// NullValue members
 
-  friend void to_json(nlohmann::json &j, const NullValue &o);
-  friend void from_json(const nlohmann::json &j, NullValue &o);
+  friend void to_json(nlohmann::json& j, const NullValue& o);
+  friend void from_json(const nlohmann::json& j, NullValue& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* NullValue_H_ */

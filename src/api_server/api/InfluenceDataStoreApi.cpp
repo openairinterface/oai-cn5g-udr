@@ -48,7 +48,9 @@ InfluenceDataStoreApi::InfluenceDataStoreApi(
   router = rtr;
 }
 
-void InfluenceDataStoreApi::init() { setupRoutes(); }
+void InfluenceDataStoreApi::init() {
+  setupRoutes();
+}
 
 void InfluenceDataStoreApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -64,7 +66,7 @@ void InfluenceDataStoreApi::setupRoutes() {
 }
 
 void InfluenceDataStoreApi::read_influence_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto influenceIdsQuery = request.query().get("influence-Ids");
@@ -117,16 +119,17 @@ void InfluenceDataStoreApi::read_influence_data_handler(
   }
 
   try {
-    this->read_influence_data(influenceIds, dnns, snssais, internalGroupIds,
-                              supis, suppFeat, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->read_influence_data(
+        influenceIds, dnns, snssais, internalGroupIds, supis, suppFeat,
+        response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -134,9 +137,9 @@ void InfluenceDataStoreApi::read_influence_data_handler(
 }
 
 void InfluenceDataStoreApi::influence_data_store_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

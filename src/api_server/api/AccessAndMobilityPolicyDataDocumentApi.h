@@ -54,7 +54,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class AccessAndMobilityPolicyDataDocumentApi {
-public:
+ public:
   AccessAndMobilityPolicyDataDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~AccessAndMobilityPolicyDataDocumentApi() {}
@@ -62,14 +62,14 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void read_access_and_mobility_policy_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void access_and_mobility_policy_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -82,9 +82,9 @@ private:
   /// </remarks>
   /// <param name="ueId"></param>
   virtual void read_access_and_mobility_policy_data(
-      const std::string &ueId, Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* AccessAndMobilityPolicyDataDocumentApi_H_ */

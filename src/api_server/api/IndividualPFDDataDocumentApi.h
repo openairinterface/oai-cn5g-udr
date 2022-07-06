@@ -54,27 +54,27 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualPFDDataDocumentApi {
-public:
+ public:
   IndividualPFDDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualPFDDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_or_replace_individual_pfd_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
-  void
-  delete_individual_pfd_data_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
-  void
-  read_individual_pfd_data_handler(const Pistache::Rest::Request &request,
-                                   Pistache::Http::ResponseWriter response);
+  void delete_individual_pfd_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void read_individual_pfd_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void individual_pfd_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -90,8 +90,8 @@ private:
   /// pfd(s). It shall apply the format of Data type ApplicationId.</param>
   /// <param name="pfdDataForAppExt"></param>
   virtual void create_or_replace_individual_pfd_data(
-      const std::string &appId, const PfdDataForAppExt &pfdDataForAppExt,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& appId, const PfdDataForAppExt& pfdDataForAppExt,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Delete the corresponding PFDs of the specified application identifier
@@ -101,9 +101,8 @@ private:
   /// </remarks>
   /// <param name="appId">Indicate the application identifier for the request
   /// pfd(s). It shall apply the format of Data type ApplicationId.</param>
-  virtual void
-  delete_individual_pfd_data(const std::string &appId,
-                             Pistache::Http::ResponseWriter &response) = 0;
+  virtual void delete_individual_pfd_data(
+      const std::string& appId, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieve the corresponding PFDs of the specified application identifier
@@ -113,11 +112,10 @@ private:
   /// </remarks>
   /// <param name="appId">Indicate the application identifier for the request
   /// pfd(s). It shall apply the format of Data type ApplicationId.</param>
-  virtual void
-  read_individual_pfd_data(const std::string &appId,
-                           Pistache::Http::ResponseWriter &response) = 0;
+  virtual void read_individual_pfd_data(
+      const std::string& appId, Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IndividualPFDDataDocumentApi_H_ */

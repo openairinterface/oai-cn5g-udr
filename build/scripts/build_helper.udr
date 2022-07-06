@@ -366,17 +366,29 @@ check_install_udr_deps() {
   if [[ $OS_DISTRO == "ubuntu" ]]; then
     case "$(get_distribution_release)" in
       "ubuntu18.04")
+        # Currently Ubuntu18.04 has boost 1.65 as the latest
+        # We need at least 1.66
+        # PPA has 1.67
+        $SUDO add-apt-repository ppa:mhier/libboost-latest --yes
+        $SUDO $INSTALLER update
+        specific_packages="libconfig++-dev"        
+      ;;
+      *)
+        specific_packages="libconfig++-dev libasio-dev libboost-all-dev"
+      ;;
+      "ubuntu20.04")
         specific_packages="libconfig++-dev libasio-dev libboost-all-dev"
       ;;
     esac
     # removed libspdlog-dev
     PACKAGE_LIST="\
       $specific_packages \
+      libconfig++ \
       guile-2.0-dev \
       libcurl4-gnutls-dev \
       libevent-dev \
-      libgcrypt11-dev \
-      libgmp-dev \
+      libgcrypt?-dev \
+      libgmp?-dev \
       libhogweed? \
       libidn2-0-dev \
       libidn11-dev \
@@ -391,10 +403,9 @@ check_install_udr_deps() {
       libcurl4 \
       net-tools \
       pkg-config \
-      mysql-server \
       mysql-client \
       libmysqlclient-dev \
-      libasan2"
+      libasan?"
   elif [[ "$OS_BASEDISTRO" == "fedora" ]]; then
     PACKAGE_LIST="\
       guile-devel \
@@ -423,6 +434,17 @@ check_install_udr_deps() {
   fi
   echo "Install distro libs"
   $SUDO $INSTALLER install $OPTION $PACKAGE_LIST
+  
+  # fix issue with libboost in U18 for a bare metal deployment
+  if [[ $OS_DISTRO == "ubuntu" ]]; then
+    case "$(get_distribution_release)" in
+      "ubuntu18.04")
+        $SUDO $INSTALLER remove $OPTION libboost1.65-dev || true
+        $SUDO $INSTALLER install $OPTION libboost1.67-dev
+        ;;    
+    esac
+  fi  
+
   ret=$?;[[ $ret -ne 0 ]] && return $ret
   echo "distro libs installation complete"
 

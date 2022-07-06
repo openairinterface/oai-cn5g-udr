@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class TraceData {
-public:
+ public:
   TraceData();
   virtual ~TraceData();
 
@@ -64,48 +64,48 @@ public:
   ///
   /// </summary>
   std::string getTraceRef() const;
-  void setTraceRef(std::string const &value);
+  void setTraceRef(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   TraceDepth getTraceDepth() const;
-  void setTraceDepth(TraceDepth const &value);
+  void setTraceDepth(TraceDepth const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getNeTypeList() const;
-  void setNeTypeList(std::string const &value);
+  void setNeTypeList(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getEventList() const;
-  void setEventList(std::string const &value);
+  void setEventList(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getCollectionEntityIpv4Addr() const;
-  void setCollectionEntityIpv4Addr(std::string const &value);
+  void setCollectionEntityIpv4Addr(std::string const& value);
   bool collectionEntityIpv4AddrIsSet() const;
   void unsetCollectionEntityIpv4Addr();
   /// <summary>
   ///
   /// </summary>
   Ipv6Addr getCollectionEntityIpv6Addr() const;
-  void setCollectionEntityIpv6Addr(Ipv6Addr const &value);
+  void setCollectionEntityIpv6Addr(Ipv6Addr const& value);
   bool collectionEntityIpv6AddrIsSet() const;
   void unsetCollectionEntityIpv6Addr();
   /// <summary>
   ///
   /// </summary>
   std::string getInterfaceList() const;
-  void setInterfaceList(std::string const &value);
+  void setInterfaceList(std::string const& value);
   bool interfaceListIsSet() const;
   void unsetInterfaceList();
 
-  friend void to_json(nlohmann::json &j, const TraceData &o);
-  friend void from_json(const nlohmann::json &j, TraceData &o);
+  friend void to_json(nlohmann::json& j, const TraceData& o);
+  friend void from_json(const nlohmann::json& j, TraceData& o);
 
-protected:
+ protected:
   std::string m_TraceRef;
 
   TraceDepth m_TraceDepth;
@@ -122,6 +122,6 @@ protected:
   bool m_InterfaceListIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* TraceData_H_ */

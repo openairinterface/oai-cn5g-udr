@@ -53,7 +53,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class SmfRegistration {
-public:
+ public:
   SmfRegistration();
   virtual ~SmfRegistration();
 
@@ -66,19 +66,19 @@ public:
   ///
   /// </summary>
   std::string getSmfInstanceId() const;
-  void setSmfInstanceId(std::string const &value);
+  void setSmfInstanceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getSmfSetId() const;
-  void setSmfSetId(std::string const &value);
+  void setSmfSetId(std::string const& value);
   bool smfSetIdIsSet() const;
   void unsetSmfSetId();
   /// <summary>
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
@@ -90,12 +90,12 @@ public:
   ///
   /// </summary>
   Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const &value);
+  void setSingleNssai(Snssai const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getDnn() const;
-  void setDnn(std::string const &value);
+  void setDnn(std::string const& value);
   bool dnnIsSet() const;
   void unsetDnn();
   /// <summary>
@@ -109,19 +109,19 @@ public:
   ///
   /// </summary>
   std::string getPcscfRestorationCallbackUri() const;
-  void setPcscfRestorationCallbackUri(std::string const &value);
+  void setPcscfRestorationCallbackUri(std::string const& value);
   bool pcscfRestorationCallbackUriIsSet() const;
   void unsetPcscfRestorationCallbackUri();
   /// <summary>
   ///
   /// </summary>
   PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const &value);
+  void setPlmnId(PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getPgwFqdn() const;
-  void setPgwFqdn(std::string const &value);
+  void setPgwFqdn(std::string const& value);
   bool pgwFqdnIsSet() const;
   void unsetPgwFqdn();
   /// <summary>
@@ -135,35 +135,35 @@ public:
   ///
   /// </summary>
   std::string getDeregCallbackUri() const;
-  void setDeregCallbackUri(std::string const &value);
+  void setDeregCallbackUri(std::string const& value);
   bool deregCallbackUriIsSet() const;
   void unsetDeregCallbackUri();
   /// <summary>
   ///
   /// </summary>
   RegistrationReason getRegistrationReason() const;
-  void setRegistrationReason(RegistrationReason const &value);
+  void setRegistrationReason(RegistrationReason const& value);
   bool registrationReasonIsSet() const;
   void unsetRegistrationReason();
   /// <summary>
   ///
   /// </summary>
   std::string getRegistrationTime() const;
-  void setRegistrationTime(std::string const &value);
+  void setRegistrationTime(std::string const& value);
   bool registrationTimeIsSet() const;
   void unsetRegistrationTime();
   /// <summary>
   ///
   /// </summary>
   ContextInfo getContextInfo() const;
-  void setContextInfo(ContextInfo const &value);
+  void setContextInfo(ContextInfo const& value);
   bool contextInfoIsSet() const;
   void unsetContextInfo();
 
-  friend void to_json(nlohmann::json &j, const SmfRegistration &o);
-  friend void from_json(const nlohmann::json &j, SmfRegistration &o);
+  friend void to_json(nlohmann::json& j, const SmfRegistration& o);
+  friend void from_json(const nlohmann::json& j, SmfRegistration& o);
 
-protected:
+ protected:
   std::string m_SmfInstanceId;
 
   std::string m_SmfSetId;
@@ -196,6 +196,6 @@ protected:
   bool m_ContextInfoIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* SmfRegistration_H_ */

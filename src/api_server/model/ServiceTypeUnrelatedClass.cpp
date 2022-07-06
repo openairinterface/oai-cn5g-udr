@@ -36,12 +36,12 @@
 namespace oai::udr::model {
 
 ServiceTypeUnrelatedClass::ServiceTypeUnrelatedClass() {
-  m_ServiceType = 0;
-  m_AllowedGeographicAreaIsSet = false;
+  m_ServiceType                    = 0;
+  m_AllowedGeographicAreaIsSet     = false;
   m_PrivacyCheckRelatedActionIsSet = false;
-  m_CodeWordIndIsSet = false;
-  m_ValidTimePeriodIsSet = false;
-  m_CodeWordListIsSet = false;
+  m_CodeWordIndIsSet               = false;
+  m_ValidTimePeriodIsSet           = false;
+  m_CodeWordListIsSet              = false;
 }
 
 ServiceTypeUnrelatedClass::~ServiceTypeUnrelatedClass() {}
@@ -50,22 +50,20 @@ void ServiceTypeUnrelatedClass::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ServiceTypeUnrelatedClass &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const ServiceTypeUnrelatedClass& o) {
+  j                = nlohmann::json();
   j["serviceType"] = o.m_ServiceType;
   if (o.allowedGeographicAreaIsSet() || !o.m_AllowedGeographicArea.empty())
     j["allowedGeographicArea"] = o.m_AllowedGeographicArea;
   if (o.privacyCheckRelatedActionIsSet())
     j["privacyCheckRelatedAction"] = o.m_PrivacyCheckRelatedAction;
-  if (o.codeWordIndIsSet())
-    j["codeWordInd"] = o.m_CodeWordInd;
-  if (o.validTimePeriodIsSet())
-    j["validTimePeriod"] = o.m_ValidTimePeriod;
+  if (o.codeWordIndIsSet()) j["codeWordInd"] = o.m_CodeWordInd;
+  if (o.validTimePeriodIsSet()) j["validTimePeriod"] = o.m_ValidTimePeriod;
   if (o.codeWordListIsSet() || !o.m_CodeWordList.empty())
     j["codeWordList"] = o.m_CodeWordList;
 }
 
-void from_json(const nlohmann::json &j, ServiceTypeUnrelatedClass &o) {
+void from_json(const nlohmann::json& j, ServiceTypeUnrelatedClass& o) {
   j.at("serviceType").get_to(o.m_ServiceType);
   if (j.find("allowedGeographicArea") != j.end()) {
     j.at("allowedGeographicArea").get_to(o.m_AllowedGeographicArea);
@@ -95,13 +93,13 @@ int32_t ServiceTypeUnrelatedClass::getServiceType() const {
 void ServiceTypeUnrelatedClass::setServiceType(int32_t const value) {
   m_ServiceType = value;
 }
-std::vector<GeographicArea> &
+std::vector<GeographicArea>&
 ServiceTypeUnrelatedClass::getAllowedGeographicArea() {
   return m_AllowedGeographicArea;
 }
 void ServiceTypeUnrelatedClass::setAllowedGeographicArea(
-    std::vector<GeographicArea> const &value) {
-  m_AllowedGeographicArea = value;
+    std::vector<GeographicArea> const& value) {
+  m_AllowedGeographicArea      = value;
   m_AllowedGeographicAreaIsSet = true;
 }
 bool ServiceTypeUnrelatedClass::allowedGeographicAreaIsSet() const {
@@ -115,8 +113,8 @@ ServiceTypeUnrelatedClass::getPrivacyCheckRelatedAction() const {
   return m_PrivacyCheckRelatedAction;
 }
 void ServiceTypeUnrelatedClass::setPrivacyCheckRelatedAction(
-    PrivacyCheckRelatedAction const &value) {
-  m_PrivacyCheckRelatedAction = value;
+    PrivacyCheckRelatedAction const& value) {
+  m_PrivacyCheckRelatedAction      = value;
   m_PrivacyCheckRelatedActionIsSet = true;
 }
 bool ServiceTypeUnrelatedClass::privacyCheckRelatedActionIsSet() const {
@@ -128,8 +126,8 @@ void ServiceTypeUnrelatedClass::unsetPrivacyCheckRelatedAction() {
 CodeWordInd ServiceTypeUnrelatedClass::getCodeWordInd() const {
   return m_CodeWordInd;
 }
-void ServiceTypeUnrelatedClass::setCodeWordInd(CodeWordInd const &value) {
-  m_CodeWordInd = value;
+void ServiceTypeUnrelatedClass::setCodeWordInd(CodeWordInd const& value) {
+  m_CodeWordInd      = value;
   m_CodeWordIndIsSet = true;
 }
 bool ServiceTypeUnrelatedClass::codeWordIndIsSet() const {
@@ -142,8 +140,8 @@ ValidTimePeriod ServiceTypeUnrelatedClass::getValidTimePeriod() const {
   return m_ValidTimePeriod;
 }
 void ServiceTypeUnrelatedClass::setValidTimePeriod(
-    ValidTimePeriod const &value) {
-  m_ValidTimePeriod = value;
+    ValidTimePeriod const& value) {
+  m_ValidTimePeriod      = value;
   m_ValidTimePeriodIsSet = true;
 }
 bool ServiceTypeUnrelatedClass::validTimePeriodIsSet() const {
@@ -152,12 +150,12 @@ bool ServiceTypeUnrelatedClass::validTimePeriodIsSet() const {
 void ServiceTypeUnrelatedClass::unsetValidTimePeriod() {
   m_ValidTimePeriodIsSet = false;
 }
-std::vector<std::string> &ServiceTypeUnrelatedClass::getCodeWordList() {
+std::vector<std::string>& ServiceTypeUnrelatedClass::getCodeWordList() {
   return m_CodeWordList;
 }
 void ServiceTypeUnrelatedClass::setCodeWordList(
-    std::vector<std::string> const &value) {
-  m_CodeWordList = value;
+    std::vector<std::string> const& value) {
+  m_CodeWordList      = value;
   m_CodeWordListIsSet = true;
 }
 bool ServiceTypeUnrelatedClass::codeWordListIsSet() const {
@@ -167,4 +165,4 @@ void ServiceTypeUnrelatedClass::unsetCodeWordList() {
   m_CodeWordListIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

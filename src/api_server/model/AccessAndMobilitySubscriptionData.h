@@ -73,7 +73,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class AccessAndMobilitySubscriptionData {
-public:
+ public:
   AccessAndMobilitySubscriptionData();
   virtual ~AccessAndMobilitySubscriptionData();
 
@@ -86,71 +86,71 @@ public:
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getGpsis();
-  void setGpsis(std::vector<std::string> const &value);
+  std::vector<std::string>& getGpsis();
+  void setGpsis(std::vector<std::string> const& value);
   bool gpsisIsSet() const;
   void unsetGpsis();
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getInternalGroupIds();
-  void setInternalGroupIds(std::vector<std::string> const &value);
+  std::vector<std::string>& getInternalGroupIds();
+  void setInternalGroupIds(std::vector<std::string> const& value);
   bool internalGroupIdsIsSet() const;
   void unsetInternalGroupIds();
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, std::string> &getSharedVnGroupDataIds();
-  void setSharedVnGroupDataIds(std::map<std::string, std::string> const &value);
+  std::map<std::string, std::string>& getSharedVnGroupDataIds();
+  void setSharedVnGroupDataIds(std::map<std::string, std::string> const& value);
   bool sharedVnGroupDataIdsIsSet() const;
   void unsetSharedVnGroupDataIds();
   /// <summary>
   ///
   /// </summary>
   AmbrRm getSubscribedUeAmbr() const;
-  void setSubscribedUeAmbr(AmbrRm const &value);
+  void setSubscribedUeAmbr(AmbrRm const& value);
   bool subscribedUeAmbrIsSet() const;
   void unsetSubscribedUeAmbr();
   /// <summary>
   ///
   /// </summary>
   Nssai getNssai() const;
-  void setNssai(Nssai const &value);
+  void setNssai(Nssai const& value);
   bool nssaiIsSet() const;
   void unsetNssai();
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType> &getRatRestrictions();
-  void setRatRestrictions(std::vector<RatType> const &value);
+  std::vector<RatType>& getRatRestrictions();
+  void setRatRestrictions(std::vector<RatType> const& value);
   bool ratRestrictionsIsSet() const;
   void unsetRatRestrictions();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Area> &getForbiddenAreas();
-  void setForbiddenAreas(std::vector<Area> const &value);
+  std::vector<Area>& getForbiddenAreas();
+  void setForbiddenAreas(std::vector<Area> const& value);
   bool forbiddenAreasIsSet() const;
   void unsetForbiddenAreas();
   /// <summary>
   ///
   /// </summary>
   ServiceAreaRestriction getServiceAreaRestriction() const;
-  void setServiceAreaRestriction(ServiceAreaRestriction const &value);
+  void setServiceAreaRestriction(ServiceAreaRestriction const& value);
   bool serviceAreaRestrictionIsSet() const;
   void unsetServiceAreaRestriction();
   /// <summary>
   ///
   /// </summary>
-  std::vector<CoreNetworkType> &getCoreNetworkTypeRestrictions();
-  void
-  setCoreNetworkTypeRestrictions(std::vector<CoreNetworkType> const &value);
+  std::vector<CoreNetworkType>& getCoreNetworkTypeRestrictions();
+  void setCoreNetworkTypeRestrictions(
+      std::vector<CoreNetworkType> const& value);
   bool coreNetworkTypeRestrictionsIsSet() const;
   void unsetCoreNetworkTypeRestrictions();
   /// <summary>
@@ -199,7 +199,7 @@ public:
   ///
   /// </summary>
   SorInfo getSorInfo() const;
-  void setSorInfo(SorInfo const &value);
+  void setSorInfo(SorInfo const& value);
   bool sorInfoIsSet() const;
   void unsetSorInfo();
   /// <summary>
@@ -219,15 +219,15 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<SorUpdateIndicator> &getSorUpdateIndicatorList();
-  void setSorUpdateIndicatorList(std::vector<SorUpdateIndicator> const &value);
+  std::vector<SorUpdateIndicator>& getSorUpdateIndicatorList();
+  void setSorUpdateIndicatorList(std::vector<SorUpdateIndicator> const& value);
   bool sorUpdateIndicatorListIsSet() const;
   void unsetSorUpdateIndicatorList();
   /// <summary>
   ///
   /// </summary>
   UpuInfo getUpuInfo() const;
-  void setUpuInfo(UpuInfo const &value);
+  void setUpuInfo(UpuInfo const& value);
   bool upuInfoIsSet() const;
   void unsetUpuInfo();
   /// <summary>
@@ -240,15 +240,15 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<std::string> &getSharedAmDataIds();
-  void setSharedAmDataIds(std::vector<std::string> const &value);
+  std::vector<std::string>& getSharedAmDataIds();
+  void setSharedAmDataIds(std::vector<std::string> const& value);
   bool sharedAmDataIdsIsSet() const;
   void unsetSharedAmDataIds();
   /// <summary>
   ///
   /// </summary>
   OdbPacketServices getOdbPacketServices() const;
-  void setOdbPacketServices(OdbPacketServices const &value);
+  void setOdbPacketServices(OdbPacketServices const& value);
   bool odbPacketServicesIsSet() const;
   void unsetOdbPacketServices();
   /// <summary>
@@ -269,42 +269,42 @@ public:
   ///
   /// </summary>
   MdtUserConsent getMdtUserConsent() const;
-  void setMdtUserConsent(MdtUserConsent const &value);
+  void setMdtUserConsent(MdtUserConsent const& value);
   bool mdtUserConsentIsSet() const;
   void unsetMdtUserConsent();
   /// <summary>
   ///
   /// </summary>
   MdtConfiguration getMdtConfiguration() const;
-  void setMdtConfiguration(MdtConfiguration const &value);
+  void setMdtConfiguration(MdtConfiguration const& value);
   bool mdtConfigurationIsSet() const;
   void unsetMdtConfiguration();
   /// <summary>
   ///
   /// </summary>
   TraceData getTraceData() const;
-  void setTraceData(TraceData const &value);
+  void setTraceData(TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
   /// <summary>
   ///
   /// </summary>
   CagData getCagData() const;
-  void setCagData(CagData const &value);
+  void setCagData(CagData const& value);
   bool cagDataIsSet() const;
   void unsetCagData();
   /// <summary>
   ///
   /// </summary>
   std::string getStnSr() const;
-  void setStnSr(std::string const &value);
+  void setStnSr(std::string const& value);
   bool stnSrIsSet() const;
   void unsetStnSr();
   /// <summary>
   ///
   /// </summary>
   std::string getCMsisdn() const;
-  void setCMsisdn(std::string const &value);
+  void setCMsisdn(std::string const& value);
   bool cMsisdnIsSet() const;
   void unsetCMsisdn();
   /// <summary>
@@ -325,14 +325,14 @@ public:
   ///
   /// </summary>
   std::string getRgWirelineCharacteristics() const;
-  void setRgWirelineCharacteristics(std::string const &value);
+  void setRgWirelineCharacteristics(std::string const& value);
   bool rgWirelineCharacteristicsIsSet() const;
   void unsetRgWirelineCharacteristics();
   /// <summary>
   ///
   /// </summary>
   EcRestrictionDataWb getEcRestrictionDataWb() const;
-  void setEcRestrictionDataWb(EcRestrictionDataWb const &value);
+  void setEcRestrictionDataWb(EcRestrictionDataWb const& value);
   bool ecRestrictionDataWbIsSet() const;
   void unsetEcRestrictionDataWb();
   /// <summary>
@@ -346,35 +346,35 @@ public:
   ///
   /// </summary>
   ExpectedUeBehaviourData getExpectedUeBehaviourList() const;
-  void setExpectedUeBehaviourList(ExpectedUeBehaviourData const &value);
+  void setExpectedUeBehaviourList(ExpectedUeBehaviourData const& value);
   bool expectedUeBehaviourListIsSet() const;
   void unsetExpectedUeBehaviourList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType> &getPrimaryRatRestrictions();
-  void setPrimaryRatRestrictions(std::vector<RatType> const &value);
+  std::vector<RatType>& getPrimaryRatRestrictions();
+  void setPrimaryRatRestrictions(std::vector<RatType> const& value);
   bool primaryRatRestrictionsIsSet() const;
   void unsetPrimaryRatRestrictions();
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType> &getSecondaryRatRestrictions();
-  void setSecondaryRatRestrictions(std::vector<RatType> const &value);
+  std::vector<RatType>& getSecondaryRatRestrictions();
+  void setSecondaryRatRestrictions(std::vector<RatType> const& value);
   bool secondaryRatRestrictionsIsSet() const;
   void unsetSecondaryRatRestrictions();
   /// <summary>
   ///
   /// </summary>
-  std::vector<EdrxParameters> &getEdrxParametersList();
-  void setEdrxParametersList(std::vector<EdrxParameters> const &value);
+  std::vector<EdrxParameters>& getEdrxParametersList();
+  void setEdrxParametersList(std::vector<EdrxParameters> const& value);
   bool edrxParametersListIsSet() const;
   void unsetEdrxParametersList();
   /// <summary>
   ///
   /// </summary>
-  std::vector<PtwParameters> &getPtwParametersList();
-  void setPtwParametersList(std::vector<PtwParameters> const &value);
+  std::vector<PtwParameters>& getPtwParametersList();
+  void setPtwParametersList(std::vector<PtwParameters> const& value);
   bool ptwParametersListIsSet() const;
   void unsetPtwParametersList();
   /// <summary>
@@ -387,8 +387,8 @@ public:
   /// <summary>
   ///
   /// </summary>
-  std::vector<WirelineArea> &getWirelineForbiddenAreas();
-  void setWirelineForbiddenAreas(std::vector<WirelineArea> const &value);
+  std::vector<WirelineArea>& getWirelineForbiddenAreas();
+  void setWirelineForbiddenAreas(std::vector<WirelineArea> const& value);
   bool wirelineForbiddenAreasIsSet() const;
   void unsetWirelineForbiddenAreas();
   /// <summary>
@@ -396,16 +396,16 @@ public:
   /// </summary>
   WirelineServiceAreaRestriction getWirelineServiceAreaRestriction() const;
   void setWirelineServiceAreaRestriction(
-      WirelineServiceAreaRestriction const &value);
+      WirelineServiceAreaRestriction const& value);
   bool wirelineServiceAreaRestrictionIsSet() const;
   void unsetWirelineServiceAreaRestriction();
 
-  friend void to_json(nlohmann::json &j,
-                      const AccessAndMobilitySubscriptionData &o);
-  friend void from_json(const nlohmann::json &j,
-                        AccessAndMobilitySubscriptionData &o);
+  friend void to_json(
+      nlohmann::json& j, const AccessAndMobilitySubscriptionData& o);
+  friend void from_json(
+      const nlohmann::json& j, AccessAndMobilitySubscriptionData& o);
 
-protected:
+ protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
   std::vector<std::string> m_Gpsis;
@@ -498,6 +498,6 @@ protected:
   bool m_WirelineServiceAreaRestrictionIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* AccessAndMobilitySubscriptionData_H_ */

@@ -23,12 +23,16 @@
 #define _UDR_CONFIG_H_
 
 #include <arpa/inet.h>
-#include <libconfig.h++>
 #include <netinet/in.h>
+
+#include <libconfig.h++>
 #include <string>
+
+#include "udr.h"
 
 #define UDR_CONFIG_STRING_UDR_CONFIG "UDR"
 #define UDR_CONFIG_STRING_INSTANCE_ID "INSTANCE_ID"
+#define UDR_CONFIG_STRING_UDR_NAME "UDR_NAME"
 #define UDR_CONFIG_STRING_PID_DIRECTORY "PID_DIRECTORY"
 #define UDR_CONFIG_STRING_INTERFACES "INTERFACES"
 #define UDR_CONFIG_STRING_INTERFACE_NUDR "NUDR"
@@ -38,11 +42,23 @@
 #define UDR_CONFIG_STRING_HTTP2_PORT "HTTP2_PORT"
 #define UDR_CONFIG_STRING_API_VERSION "API_VERSION"
 
+#define UDR_CONFIG_STRING_NRF "NRF"
+#define UDR_CONFIG_STRING_NRF_IPV4_ADDRESS "IPV4_ADDRESS"
+#define UDR_CONFIG_STRING_NRF_PORT "PORT"
+
+#define UDR_CONFIG_STRING_SUPPORT_FEATURES "SUPPORT_FEATURES"
+#define UDR_CONFIG_STRING_SUPPORT_FEATURES_USE_FQDN_DNS "USE_FQDN_DNS"
+#define UDR_CONFIG_STRING_SUPPORTED_FEATURES_REGISTER_NRF "REGISTER_NRF"
+#define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2 "USE_HTTP2"
+#define UDR_CONFIG_STRING_FQDN_DNS "FQDN"
+
+#define UDR_CONFIG_STRING_DATABASE_TYPE "DATABASE"
 #define UDR_CONFIG_STRING_MYSQL "MYSQL"
 #define UDR_CONFIG_STRING_MYSQL_SERVER "MYSQL_SERVER"
 #define UDR_CONFIG_STRING_MYSQL_USER "MYSQL_USER"
 #define UDR_CONFIG_STRING_MYSQL_PASS "MYSQL_PASS"
 #define UDR_CONFIG_STRING_MYSQL_DB "MYSQL_DB"
+#define UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT "DB_CONNECTION_TIMEOUT"
 
 using namespace libconfig;
 
@@ -53,6 +69,7 @@ typedef struct {
   std::string mysql_user;
   std::string mysql_pass;
   std::string mysql_db;
+  uint32_t connection_timeout;
 } mysql_conf_t;
 
 typedef struct interface_cfg_s {
@@ -67,21 +84,34 @@ typedef struct interface_cfg_s {
 } interface_cfg_t;
 
 class udr_config {
-public:
+ public:
   udr_config();
   ~udr_config();
 
-  int load(const std::string &config_file);
-  int load_interface(const Setting &if_cfg, interface_cfg_t &cfg);
+  int load(const std::string& config_file);
+  int load_interface(const Setting& if_cfg, interface_cfg_t& cfg);
   void display();
 
   unsigned int instance;
   std::string pid_dir;
+  std::string udr_name;
   interface_cfg_t nudr;
   unsigned int nudr_http2_port;
 
+  struct {
+    struct in_addr ipv4_addr;
+    unsigned int port;
+    std::string api_version;
+    std::string fqdn;
+  } nrf_addr;
+
+  bool register_nrf;
+  bool use_fqdn_dns;
+  bool use_http2;
+
   mysql_conf_t mysql;
+  db_type_t db_type;
 };
-} // namespace oai::udr::config
+}  // namespace oai::udr::config
 
 #endif

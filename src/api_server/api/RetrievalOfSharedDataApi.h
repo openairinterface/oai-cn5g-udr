@@ -55,20 +55,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class RetrievalOfSharedDataApi {
-public:
+ public:
   RetrievalOfSharedDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~RetrievalOfSharedDataApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void get_shared_data_handler(const Pistache::Rest::Request &request,
-                               Pistache::Http::ResponseWriter response);
+  void get_shared_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void retrieval_of_shared_data_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -87,6 +88,6 @@ private:
   //    &supportedFeatures, Pistache::Http::ResponseWriter &response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* RetrievalOfSharedDataApi_H_ */

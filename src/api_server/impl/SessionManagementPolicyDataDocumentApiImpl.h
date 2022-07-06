@@ -56,27 +56,27 @@ using namespace oai::udr::app;
 
 class SessionManagementPolicyDataDocumentApiImpl
     : public oai::udr::api::SessionManagementPolicyDataDocumentApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
+ public:
   SessionManagementPolicyDataDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
       std::string address);
   ~SessionManagementPolicyDataDocumentApiImpl() {}
 
   void read_session_management_policy_data(
-      const std::string &ueId, const Pistache::Optional<Snssai> &snssai,
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId, const Pistache::Optional<Snssai>& snssai,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response);
   void update_session_management_policy_data(
-      const std::string &ueId, const SmPolicyDataPatch &smPolicyDataPatch,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId, const SmPolicyDataPatch& smPolicyDataPatch,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

@@ -48,7 +48,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class TnapId {
-public:
+ public:
   TnapId();
   virtual ~TnapId();
 
@@ -61,28 +61,28 @@ public:
   ///
   /// </summary>
   std::string getSsId() const;
-  void setSsId(std::string const &value);
+  void setSsId(std::string const& value);
   bool ssIdIsSet() const;
   void unsetSsId();
   /// <summary>
   ///
   /// </summary>
   std::string getBssId() const;
-  void setBssId(std::string const &value);
+  void setBssId(std::string const& value);
   bool bssIdIsSet() const;
   void unsetBssId();
   /// <summary>
   ///
   /// </summary>
   std::string getCivicAddress() const;
-  void setCivicAddress(std::string const &value);
+  void setCivicAddress(std::string const& value);
   bool civicAddressIsSet() const;
   void unsetCivicAddress();
 
-  friend void to_json(nlohmann::json &j, const TnapId &o);
-  friend void from_json(const nlohmann::json &j, TnapId &o);
+  friend void to_json(nlohmann::json& j, const TnapId& o);
+  friend void from_json(const nlohmann::json& j, TnapId& o);
 
-protected:
+ protected:
   std::string m_SsId;
   bool m_SsIdIsSet;
   std::string m_BssId;
@@ -91,6 +91,6 @@ protected:
   bool m_CivicAddressIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* TnapId_H_ */

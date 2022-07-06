@@ -36,11 +36,11 @@
 namespace oai::udr::model {
 
 BatteryIndication::BatteryIndication() {
-  m_BatteryInd = false;
-  m_BatteryIndIsSet = false;
-  m_ReplaceableInd = false;
-  m_ReplaceableIndIsSet = false;
-  m_RechargeableInd = false;
+  m_BatteryInd           = false;
+  m_BatteryIndIsSet      = false;
+  m_ReplaceableInd       = false;
+  m_ReplaceableIndIsSet  = false;
+  m_RechargeableInd      = false;
   m_RechargeableIndIsSet = false;
 }
 
@@ -50,17 +50,14 @@ void BatteryIndication::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const BatteryIndication &o) {
+void to_json(nlohmann::json& j, const BatteryIndication& o) {
   j = nlohmann::json();
-  if (o.batteryIndIsSet())
-    j["batteryInd"] = o.m_BatteryInd;
-  if (o.replaceableIndIsSet())
-    j["replaceableInd"] = o.m_ReplaceableInd;
-  if (o.rechargeableIndIsSet())
-    j["rechargeableInd"] = o.m_RechargeableInd;
+  if (o.batteryIndIsSet()) j["batteryInd"] = o.m_BatteryInd;
+  if (o.replaceableIndIsSet()) j["replaceableInd"] = o.m_ReplaceableInd;
+  if (o.rechargeableIndIsSet()) j["rechargeableInd"] = o.m_RechargeableInd;
 }
 
-void from_json(const nlohmann::json &j, BatteryIndication &o) {
+void from_json(const nlohmann::json& j, BatteryIndication& o) {
   if (j.find("batteryInd") != j.end()) {
     j.at("batteryInd").get_to(o.m_BatteryInd);
     o.m_BatteryIndIsSet = true;
@@ -75,25 +72,37 @@ void from_json(const nlohmann::json &j, BatteryIndication &o) {
   }
 }
 
-bool BatteryIndication::isBatteryInd() const { return m_BatteryInd; }
+bool BatteryIndication::isBatteryInd() const {
+  return m_BatteryInd;
+}
 void BatteryIndication::setBatteryInd(bool const value) {
-  m_BatteryInd = value;
+  m_BatteryInd      = value;
   m_BatteryIndIsSet = true;
 }
-bool BatteryIndication::batteryIndIsSet() const { return m_BatteryIndIsSet; }
-void BatteryIndication::unsetBatteryInd() { m_BatteryIndIsSet = false; }
-bool BatteryIndication::isReplaceableInd() const { return m_ReplaceableInd; }
+bool BatteryIndication::batteryIndIsSet() const {
+  return m_BatteryIndIsSet;
+}
+void BatteryIndication::unsetBatteryInd() {
+  m_BatteryIndIsSet = false;
+}
+bool BatteryIndication::isReplaceableInd() const {
+  return m_ReplaceableInd;
+}
 void BatteryIndication::setReplaceableInd(bool const value) {
-  m_ReplaceableInd = value;
+  m_ReplaceableInd      = value;
   m_ReplaceableIndIsSet = true;
 }
 bool BatteryIndication::replaceableIndIsSet() const {
   return m_ReplaceableIndIsSet;
 }
-void BatteryIndication::unsetReplaceableInd() { m_ReplaceableIndIsSet = false; }
-bool BatteryIndication::isRechargeableInd() const { return m_RechargeableInd; }
+void BatteryIndication::unsetReplaceableInd() {
+  m_ReplaceableIndIsSet = false;
+}
+bool BatteryIndication::isRechargeableInd() const {
+  return m_RechargeableInd;
+}
 void BatteryIndication::setRechargeableInd(bool const value) {
-  m_RechargeableInd = value;
+  m_RechargeableInd      = value;
   m_RechargeableIndIsSet = true;
 }
 bool BatteryIndication::rechargeableIndIsSet() const {
@@ -103,4 +112,4 @@ void BatteryIndication::unsetRechargeableInd() {
   m_RechargeableIndIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

@@ -36,7 +36,7 @@
 namespace oai::udr::model {
 
 LteV2xAuth::LteV2xAuth() {
-  m_VehicleUeAuthIsSet = false;
+  m_VehicleUeAuthIsSet    = false;
   m_PedestrianUeAuthIsSet = false;
 }
 
@@ -46,15 +46,13 @@ void LteV2xAuth::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const LteV2xAuth &o) {
+void to_json(nlohmann::json& j, const LteV2xAuth& o) {
   j = nlohmann::json();
-  if (o.vehicleUeAuthIsSet())
-    j["vehicleUeAuth"] = o.m_VehicleUeAuth;
-  if (o.pedestrianUeAuthIsSet())
-    j["pedestrianUeAuth"] = o.m_PedestrianUeAuth;
+  if (o.vehicleUeAuthIsSet()) j["vehicleUeAuth"] = o.m_VehicleUeAuth;
+  if (o.pedestrianUeAuthIsSet()) j["pedestrianUeAuth"] = o.m_PedestrianUeAuth;
 }
 
-void from_json(const nlohmann::json &j, LteV2xAuth &o) {
+void from_json(const nlohmann::json& j, LteV2xAuth& o) {
   if (j.find("vehicleUeAuth") != j.end()) {
     j.at("vehicleUeAuth").get_to(o.m_VehicleUeAuth);
     o.m_VehicleUeAuthIsSet = true;
@@ -65,21 +63,31 @@ void from_json(const nlohmann::json &j, LteV2xAuth &o) {
   }
 }
 
-UeAuth LteV2xAuth::getVehicleUeAuth() const { return m_VehicleUeAuth; }
-void LteV2xAuth::setVehicleUeAuth(UeAuth const &value) {
-  m_VehicleUeAuth = value;
+UeAuth LteV2xAuth::getVehicleUeAuth() const {
+  return m_VehicleUeAuth;
+}
+void LteV2xAuth::setVehicleUeAuth(UeAuth const& value) {
+  m_VehicleUeAuth      = value;
   m_VehicleUeAuthIsSet = true;
 }
-bool LteV2xAuth::vehicleUeAuthIsSet() const { return m_VehicleUeAuthIsSet; }
-void LteV2xAuth::unsetVehicleUeAuth() { m_VehicleUeAuthIsSet = false; }
-UeAuth LteV2xAuth::getPedestrianUeAuth() const { return m_PedestrianUeAuth; }
-void LteV2xAuth::setPedestrianUeAuth(UeAuth const &value) {
-  m_PedestrianUeAuth = value;
+bool LteV2xAuth::vehicleUeAuthIsSet() const {
+  return m_VehicleUeAuthIsSet;
+}
+void LteV2xAuth::unsetVehicleUeAuth() {
+  m_VehicleUeAuthIsSet = false;
+}
+UeAuth LteV2xAuth::getPedestrianUeAuth() const {
+  return m_PedestrianUeAuth;
+}
+void LteV2xAuth::setPedestrianUeAuth(UeAuth const& value) {
+  m_PedestrianUeAuth      = value;
   m_PedestrianUeAuthIsSet = true;
 }
 bool LteV2xAuth::pedestrianUeAuthIsSet() const {
   return m_PedestrianUeAuthIsSet;
 }
-void LteV2xAuth::unsetPedestrianUeAuth() { m_PedestrianUeAuthIsSet = false; }
+void LteV2xAuth::unsetPedestrianUeAuth() {
+  m_PedestrianUeAuthIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

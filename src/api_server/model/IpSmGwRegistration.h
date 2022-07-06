@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class IpSmGwRegistration {
-public:
+ public:
   IpSmGwRegistration();
   virtual ~IpSmGwRegistration();
 
@@ -63,14 +63,14 @@ public:
   ///
   /// </summary>
   std::string getIpSmGwMapAddress() const;
-  void setIpSmGwMapAddress(std::string const &value);
+  void setIpSmGwMapAddress(std::string const& value);
   bool ipSmGwMapAddressIsSet() const;
   void unsetIpSmGwMapAddress();
   /// <summary>
   ///
   /// </summary>
   NetworkNodeDiameterAddress getIpSmGwDiameterAddress() const;
-  void setIpSmGwDiameterAddress(NetworkNodeDiameterAddress const &value);
+  void setIpSmGwDiameterAddress(NetworkNodeDiameterAddress const& value);
   bool ipSmGwDiameterAddressIsSet() const;
   void unsetIpSmGwDiameterAddress();
   /// <summary>
@@ -81,10 +81,10 @@ public:
   bool unriIndicatorIsSet() const;
   void unsetUnriIndicator();
 
-  friend void to_json(nlohmann::json &j, const IpSmGwRegistration &o);
-  friend void from_json(const nlohmann::json &j, IpSmGwRegistration &o);
+  friend void to_json(nlohmann::json& j, const IpSmGwRegistration& o);
+  friend void from_json(const nlohmann::json& j, IpSmGwRegistration& o);
 
-protected:
+ protected:
   std::string m_IpSmGwMapAddress;
   bool m_IpSmGwMapAddressIsSet;
   NetworkNodeDiameterAddress m_IpSmGwDiameterAddress;
@@ -93,6 +93,6 @@ protected:
   bool m_UnriIndicatorIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* IpSmGwRegistration_H_ */

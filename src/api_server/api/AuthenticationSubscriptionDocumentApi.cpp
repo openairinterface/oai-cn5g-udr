@@ -49,37 +49,48 @@ AuthenticationSubscriptionDocumentApi::AuthenticationSubscriptionDocumentApi(
   router = rtr;
 }
 
-void AuthenticationSubscriptionDocumentApi::init() { setupRoutes(); }
+void AuthenticationSubscriptionDocumentApi::init() {
+  setupRoutes();
+}
 
 void AuthenticationSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
-  Routes::Get(*router,
-              base + udr_cfg.nudr.api_version +
-                  "/subscription-data/:ueId/authentication-data/"
-                  "authentication-subscription",
-              Routes::bind(&AuthenticationSubscriptionDocumentApi::
-                               read_authentication_subscription_handler,
-                           this));
-  Routes::Patch(*router,
-                base + udr_cfg.nudr.api_version +
-                    "/subscription-data/:ueId/authentication-data/"
-                    "authentication-subscription",
-                Routes::bind(&AuthenticationSubscriptionDocumentApi::
-                                 modify_authentication_subscription_handler,
-                             this));
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/authentication-data/"
+          "authentication-subscription",
+      Routes::bind(
+          &AuthenticationSubscriptionDocumentApi::
+              read_authentication_subscription_handler,
+          this));
+  Routes::Patch(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/authentication-data/"
+          "authentication-subscription",
+      Routes::bind(
+          &AuthenticationSubscriptionDocumentApi::
+              modify_authentication_subscription_handler,
+          this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&AuthenticationSubscriptionDocumentApi::
-                       authentication_subscription_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &AuthenticationSubscriptionDocumentApi::
+          authentication_subscription_document_api_default_handler,
+      this));
 }
 
 void AuthenticationSubscriptionDocumentApi::
     modify_authentication_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -98,16 +109,16 @@ void AuthenticationSubscriptionDocumentApi::
 
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);
-    this->modify_authentication_subscription(ueId, patchItem, supportedFeatures,
-                                             response);
-  } catch (nlohmann::detail::exception &e) {
+    this->modify_authentication_subscription(
+        ueId, patchItem, supportedFeatures, response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -116,8 +127,13 @@ void AuthenticationSubscriptionDocumentApi::
 
 void AuthenticationSubscriptionDocumentApi::
     read_authentication_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -133,14 +149,14 @@ void AuthenticationSubscriptionDocumentApi::
 
   try {
     this->read_authentication_subscription(ueId, supportedFeatures, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -149,10 +165,10 @@ void AuthenticationSubscriptionDocumentApi::
 
 void AuthenticationSubscriptionDocumentApi::
     authentication_subscription_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

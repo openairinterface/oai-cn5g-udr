@@ -48,7 +48,9 @@ IndividualBdtDataDocumentApi::IndividualBdtDataDocumentApi(
   router = rtr;
 }
 
-void IndividualBdtDataDocumentApi::init() { setupRoutes(); }
+void IndividualBdtDataDocumentApi::init() {
+  setupRoutes();
+}
 
 void IndividualBdtDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -79,15 +81,20 @@ void IndividualBdtDataDocumentApi::setupRoutes() {
           this));
 
   // Default handler, called when a route is not found
-  router->addCustomHandler(
-      Routes::bind(&IndividualBdtDataDocumentApi::
-                       individual_bdt_data_document_api_default_handler,
-                   this));
+  router->addCustomHandler(Routes::bind(
+      &IndividualBdtDataDocumentApi::
+          individual_bdt_data_document_api_default_handler,
+      this));
 }
 
 void IndividualBdtDataDocumentApi::create_individual_bdt_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtReferenceId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtReferenceId = request.param(":bdtReferenceId").as<std::string>();
 
@@ -98,43 +105,53 @@ void IndividualBdtDataDocumentApi::create_individual_bdt_data_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(bdtData);
     this->create_individual_bdt_data(bdtReferenceId, bdtData, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void IndividualBdtDataDocumentApi::delete_individual_bdt_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtReferenceId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtReferenceId = request.param(":bdtReferenceId").as<std::string>();
 
   try {
     this->delete_individual_bdt_data(bdtReferenceId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void IndividualBdtDataDocumentApi::read_individual_bdt_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtReferenceId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtReferenceId = request.param(":bdtReferenceId").as<std::string>();
 
@@ -150,22 +167,27 @@ void IndividualBdtDataDocumentApi::read_individual_bdt_data_handler(
 
   try {
     this->read_individual_bdt_data(bdtReferenceId, suppFeat, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
   }
 }
 void IndividualBdtDataDocumentApi::update_individual_bdt_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":bdtReferenceId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto bdtReferenceId = request.param(":bdtReferenceId").as<std::string>();
 
@@ -176,14 +198,14 @@ void IndividualBdtDataDocumentApi::update_individual_bdt_data_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(bdtDataPatch);
     this->update_individual_bdt_data(bdtReferenceId, bdtDataPatch, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -192,10 +214,10 @@ void IndividualBdtDataDocumentApi::update_individual_bdt_data_handler(
 
 void IndividualBdtDataDocumentApi::
     individual_bdt_data_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

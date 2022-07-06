@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class AuthEvent {
-public:
+ public:
   AuthEvent();
   virtual ~AuthEvent();
 
@@ -63,7 +63,7 @@ public:
   ///
   /// </summary>
   std::string getNfInstanceId() const;
-  void setNfInstanceId(std::string const &value);
+  void setNfInstanceId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
@@ -73,17 +73,17 @@ public:
   ///
   /// </summary>
   std::string getTimeStamp() const;
-  void setTimeStamp(std::string const &value);
+  void setTimeStamp(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getAuthType() const;
-  void setAuthType(std::string const &value);
+  void setAuthType(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getServingNetworkName() const;
-  void setServingNetworkName(std::string const &value);
+  void setServingNetworkName(std::string const& value);
   /// <summary>
   ///
   /// </summary>
@@ -92,10 +92,10 @@ public:
   bool authRemovalIndIsSet() const;
   void unsetAuthRemovalInd();
 
-  friend void to_json(nlohmann::json &j, const AuthEvent &o);
-  friend void from_json(const nlohmann::json &j, AuthEvent &o);
+  friend void to_json(nlohmann::json& j, const AuthEvent& o);
+  friend void from_json(const nlohmann::json& j, AuthEvent& o);
 
-protected:
+ protected:
   std::string m_NfInstanceId;
 
   bool m_Success;
@@ -110,6 +110,6 @@ protected:
   bool m_AuthRemovalIndIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* AuthEvent_H_ */

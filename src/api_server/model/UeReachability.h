@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class UeReachability {
-public:
+ public:
   UeReachability();
   virtual ~UeReachability();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// UeReachability members
 
-  friend void to_json(nlohmann::json &j, const UeReachability &o);
-  friend void from_json(const nlohmann::json &j, UeReachability &o);
+  friend void to_json(nlohmann::json& j, const UeReachability& o);
+  friend void from_json(const nlohmann::json& j, UeReachability& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* UeReachability_H_ */

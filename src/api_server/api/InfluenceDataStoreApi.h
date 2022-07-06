@@ -55,20 +55,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class InfluenceDataStoreApi {
-public:
+ public:
   InfluenceDataStoreApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~InfluenceDataStoreApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void read_influence_data_handler(const Pistache::Rest::Request &request,
-                                   Pistache::Http::ResponseWriter response);
+  void read_influence_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void influence_data_store_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -91,15 +92,15 @@ private:
   /// std::vector&lt;std::string&gt;())</param> <param name="suppFeat">Supported
   /// Features (optional, default to &quot;&quot;)</param>
   virtual void read_influence_data(
-      const Pistache::Optional<std::vector<std::string>> &influenceIds,
-      const Pistache::Optional<std::vector<std::string>> &dnns,
-      const Pistache::Optional<std::vector<Snssai>> &snssais,
-      const Pistache::Optional<std::vector<std::string>> &internalGroupIds,
-      const Pistache::Optional<std::vector<std::string>> &supis,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::vector<std::string>>& influenceIds,
+      const Pistache::Optional<std::vector<std::string>>& dnns,
+      const Pistache::Optional<std::vector<Snssai>>& snssais,
+      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
+      const Pistache::Optional<std::vector<std::string>>& supis,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* InfluenceDataStoreApi_H_ */

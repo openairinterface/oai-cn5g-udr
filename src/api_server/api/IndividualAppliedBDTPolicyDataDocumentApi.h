@@ -55,7 +55,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IndividualAppliedBDTPolicyDataDocumentApi {
-public:
+ public:
   IndividualAppliedBDTPolicyDataDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IndividualAppliedBDTPolicyDataDocumentApi() {}
@@ -63,17 +63,17 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void delete_individual_applied_bdt_policy_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void update_individual_applied_bdt_policy_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void individual_applied_bdt_policy_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -88,8 +88,8 @@ private:
   /// Policy Data to be updated. It shall apply the format of Data type
   /// string.</param>
   virtual void delete_individual_applied_bdt_policy_data(
-      const std::string &bdtPolicyId,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& bdtPolicyId,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify part of the properties of an individual Applied BDT Policy Data
@@ -102,11 +102,11 @@ private:
   /// Policy Data to be updated. It shall apply the format of Data type
   /// string.</param> <param name="bdtPolicyDataPatch"></param>
   virtual void update_individual_applied_bdt_policy_data(
-      const std::string &bdtPolicyId,
-      const BdtPolicyDataPatch &bdtPolicyDataPatch,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& bdtPolicyId,
+      const BdtPolicyDataPatch& bdtPolicyDataPatch,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IndividualAppliedBDTPolicyDataDocumentApi_H_ */

@@ -56,30 +56,30 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class MessageWaitingDataDocumentApi {
-public:
+ public:
   MessageWaitingDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~MessageWaitingDataDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  create_message_waiting_data_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
-  void
-  delete_message_waiting_data_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
-  void
-  modify_message_waiting_data_handler(const Pistache::Rest::Request &request,
-                                      Pistache::Http::ResponseWriter response);
-  void
-  query_message_waiting_data_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
+  void create_message_waiting_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void delete_message_waiting_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void modify_message_waiting_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void query_message_waiting_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void message_waiting_data_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -92,10 +92,9 @@ private:
   /// </remarks>
   /// <param name="ueId">UE id</param>
   /// <param name="messageWaitingData"> (optional)</param>
-  virtual void
-  create_message_waiting_data(const std::string &ueId,
-                              const MessageWaitingData &messageWaitingData,
-                              Pistache::Http::ResponseWriter &response) = 0;
+  virtual void create_message_waiting_data(
+      const std::string& ueId, const MessageWaitingData& messageWaitingData,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// To remove the Message Waiting Data of the UE
@@ -104,9 +103,8 @@ private:
   ///
   /// </remarks>
   /// <param name="ueId">UE id</param>
-  virtual void
-  delete_message_waiting_data(const std::string &ueId,
-                              Pistache::Http::ResponseWriter &response) = 0;
+  virtual void delete_message_waiting_data(
+      const std::string& ueId, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Modify the Message Waiting Data of the UE
@@ -116,10 +114,9 @@ private:
   /// </remarks>
   /// <param name="ueId">UE id</param>
   /// <param name="patchItem"></param>
-  virtual void
-  modify_message_waiting_data(const std::string &ueId,
-                              const std::vector<PatchItem> &patchItem,
-                              Pistache::Http::ResponseWriter &response) = 0;
+  virtual void modify_message_waiting_data(
+      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the Message Waiting Data of the UE
@@ -133,12 +130,12 @@ private:
   /// name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_message_waiting_data(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* MessageWaitingDataDocumentApi_H_ */

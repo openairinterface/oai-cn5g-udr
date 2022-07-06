@@ -55,21 +55,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class IPTVConfigurationDataStoreApi {
-public:
+ public:
   IPTVConfigurationDataStoreApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~IPTVConfigurationDataStoreApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  read_iptv_congifuration_data_handler(const Pistache::Rest::Request &request,
-                                       Pistache::Http::ResponseWriter response);
+  void read_iptv_congifuration_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void iptv_configuration_data_store_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -91,14 +91,14 @@ private:
   /// element identifies a group of users. (optional, default to
   /// std::vector&lt;std::string&gt;())</param>
   virtual void read_iptv_congifuration_data(
-      const Pistache::Optional<std::vector<std::string>> &configIds,
-      const Pistache::Optional<std::vector<std::string>> &dnns,
-      const Pistache::Optional<std::vector<Snssai>> &snssais,
-      const Pistache::Optional<std::vector<std::string>> &supis,
-      const Pistache::Optional<std::vector<std::string>> &interGroupIds,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const Pistache::Optional<std::vector<std::string>>& configIds,
+      const Pistache::Optional<std::vector<std::string>>& dnns,
+      const Pistache::Optional<std::vector<Snssai>>& snssais,
+      const Pistache::Optional<std::vector<std::string>>& supis,
+      const Pistache::Optional<std::vector<std::string>>& interGroupIds,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* IPTVConfigurationDataStoreApi_H_ */

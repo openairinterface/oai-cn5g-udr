@@ -55,7 +55,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PpData {
-public:
+ public:
   PpData();
   virtual ~PpData();
 
@@ -68,64 +68,64 @@ public:
   ///
   /// </summary>
   CommunicationCharacteristics getCommunicationCharacteristics() const;
-  void
-  setCommunicationCharacteristics(CommunicationCharacteristics const &value);
+  void setCommunicationCharacteristics(
+      CommunicationCharacteristics const& value);
   bool communicationCharacteristicsIsSet() const;
   void unsetCommunicationCharacteristics();
   /// <summary>
   ///
   /// </summary>
   std::string getSupportedFeatures() const;
-  void setSupportedFeatures(std::string const &value);
+  void setSupportedFeatures(std::string const& value);
   bool supportedFeaturesIsSet() const;
   void unsetSupportedFeatures();
   /// <summary>
   ///
   /// </summary>
   ExpectedUeBehaviour getExpectedUeBehaviourParameters() const;
-  void setExpectedUeBehaviourParameters(ExpectedUeBehaviour const &value);
+  void setExpectedUeBehaviourParameters(ExpectedUeBehaviour const& value);
   bool expectedUeBehaviourParametersIsSet() const;
   void unsetExpectedUeBehaviourParameters();
   /// <summary>
   ///
   /// </summary>
   EcRestriction getEcRestriction() const;
-  void setEcRestriction(EcRestriction const &value);
+  void setEcRestriction(EcRestriction const& value);
   bool ecRestrictionIsSet() const;
   void unsetEcRestriction();
   /// <summary>
   ///
   /// </summary>
   AcsInfoRm getAcsInfo() const;
-  void setAcsInfo(AcsInfoRm const &value);
+  void setAcsInfo(AcsInfoRm const& value);
   bool acsInfoIsSet() const;
   void unsetAcsInfo();
   /// <summary>
   ///
   /// </summary>
   std::string getStnSr() const;
-  void setStnSr(std::string const &value);
+  void setStnSr(std::string const& value);
   bool stnSrIsSet() const;
   void unsetStnSr();
   /// <summary>
   ///
   /// </summary>
   LcsPrivacy getLcsPrivacy() const;
-  void setLcsPrivacy(LcsPrivacy const &value);
+  void setLcsPrivacy(LcsPrivacy const& value);
   bool lcsPrivacyIsSet() const;
   void unsetLcsPrivacy();
   /// <summary>
   ///
   /// </summary>
   SorInfo getSorInfo() const;
-  void setSorInfo(SorInfo const &value);
+  void setSorInfo(SorInfo const& value);
   bool sorInfoIsSet() const;
   void unsetSorInfo();
 
-  friend void to_json(nlohmann::json &j, const PpData &o);
-  friend void from_json(const nlohmann::json &j, PpData &o);
+  friend void to_json(nlohmann::json& j, const PpData& o);
+  friend void from_json(const nlohmann::json& j, PpData& o);
 
-protected:
+ protected:
   CommunicationCharacteristics m_CommunicationCharacteristics;
   bool m_CommunicationCharacteristicsIsSet;
   std::string m_SupportedFeatures;
@@ -144,6 +144,6 @@ protected:
   bool m_SorInfoIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PpData_H_ */

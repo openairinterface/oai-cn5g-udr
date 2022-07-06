@@ -55,32 +55,33 @@ using namespace oai::udr::app;
 
 class PduSessionManagementDataApiImpl
     : public oai::udr::api::PduSessionManagementDataApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  PduSessionManagementDataApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                                  udr_app *udr_app_inst, std::string address);
+ public:
+  PduSessionManagementDataApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~PduSessionManagementDataApiImpl() {}
 
   void create_or_replace_session_management_data(
-      const std::string &ueId, const int32_t &pduSessionId,
-      const PduSessionManagementData &pduSessionManagementData,
-      Pistache::Http::ResponseWriter &response);
-  void delete_session_management_data(const std::string &ueId,
-                                      const int32_t &pduSessionId,
-                                      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId, const int32_t& pduSessionId,
+      const PduSessionManagementData& pduSessionManagementData,
+      Pistache::Http::ResponseWriter& response);
+  void delete_session_management_data(
+      const std::string& ueId, const int32_t& pduSessionId,
+      Pistache::Http::ResponseWriter& response);
   void query_session_management_data(
-      const std::string &ueId, const int32_t &pduSessionId,
-      const Pistache::Optional<std::string> &ipv4Addr,
-      const Pistache::Optional<Ipv6Prefix> &ipv6Prefix,
-      const Pistache::Optional<std::string> &dnn,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response);
+      const std::string& ueId, const int32_t& pduSessionId,
+      const Pistache::Optional<std::string>& ipv4Addr,
+      const Pistache::Optional<Ipv6Prefix>& ipv6Prefix,
+      const Pistache::Optional<std::string>& dnn,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

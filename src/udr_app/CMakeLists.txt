@@ -29,6 +29,13 @@ include_directories(${SRC_TOP_DIR}/common/)
 add_library (UDR STATIC
   udr_app.cpp
   udr_config.cpp 
+  udr_profile.cpp
+  udr_nrf.cpp 
+  udr_event.cpp
+  task_manager.cpp
+  udr_client.cpp
+  mysql_db.cpp
+  cassandra_db.cpp
 )
 
 

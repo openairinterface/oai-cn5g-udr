@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class ReportTypeMdt {
-public:
+ public:
   ReportTypeMdt();
   virtual ~ReportTypeMdt();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// ReportTypeMdt members
 
-  friend void to_json(nlohmann::json &j, const ReportTypeMdt &o);
-  friend void from_json(const nlohmann::json &j, ReportTypeMdt &o);
+  friend void to_json(nlohmann::json& j, const ReportTypeMdt& o);
+  friend void from_json(const nlohmann::json& j, ReportTypeMdt& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* ReportTypeMdt_H_ */

@@ -40,33 +40,34 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 AccessAndMobilityDataApiImpl::AccessAndMobilityDataApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
-    : AccessAndMobilityDataApi(rtr), m_udr_app(udr_app_inst),
+    : AccessAndMobilityDataApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AccessAndMobilityDataApiImpl::create_or_replace_access_and_mobility_data(
-    const std::string &ueId, const AccessAndMobilityData &accessAndMobilityData,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const AccessAndMobilityData& accessAndMobilityData,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void AccessAndMobilityDataApiImpl::delete_access_and_mobility_data(
-    const std::string &ueId, Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void AccessAndMobilityDataApiImpl::query_access_and_mobility_data(
-    const std::string &ueId, const Pistache::Optional<std::string> &suppFeat,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const Pistache::Optional<std::string>& suppFeat,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void AccessAndMobilityDataApiImpl::update_access_and_mobility_data(
-    const std::string &ueId, const AccessAndMobilityData &accessAndMobilityData,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const AccessAndMobilityData& accessAndMobilityData,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

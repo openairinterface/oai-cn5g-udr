@@ -49,7 +49,9 @@ IndividualPolicyDataSubscriptionDocumentApi::
   router = rtr;
 }
 
-void IndividualPolicyDataSubscriptionDocumentApi::init() { setupRoutes(); }
+void IndividualPolicyDataSubscriptionDocumentApi::init() {
+  setupRoutes();
+}
 
 void IndividualPolicyDataSubscriptionDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -57,15 +59,17 @@ void IndividualPolicyDataSubscriptionDocumentApi::setupRoutes() {
   Routes::Delete(
       *router,
       base + udr_cfg.nudr.api_version + "/policy-data/subs-to-notify/:subsId",
-      Routes::bind(&IndividualPolicyDataSubscriptionDocumentApi::
-                       delete_individual_policy_data_subscription_handler,
-                   this));
+      Routes::bind(
+          &IndividualPolicyDataSubscriptionDocumentApi::
+              delete_individual_policy_data_subscription_handler,
+          this));
   Routes::Put(
       *router,
       base + udr_cfg.nudr.api_version + "/policy-data/subs-to-notify/:subsId",
-      Routes::bind(&IndividualPolicyDataSubscriptionDocumentApi::
-                       replace_individual_policy_data_subscription_handler,
-                   this));
+      Routes::bind(
+          &IndividualPolicyDataSubscriptionDocumentApi::
+              replace_individual_policy_data_subscription_handler,
+          this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -76,21 +80,26 @@ void IndividualPolicyDataSubscriptionDocumentApi::setupRoutes() {
 
 void IndividualPolicyDataSubscriptionDocumentApi::
     delete_individual_policy_data_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
   try {
     this->delete_individual_policy_data_subscription(subsId, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -98,8 +107,13 @@ void IndividualPolicyDataSubscriptionDocumentApi::
 }
 void IndividualPolicyDataSubscriptionDocumentApi::
     replace_individual_policy_data_subscription_handler(
-        const Pistache::Rest::Request &request,
+        const Pistache::Rest::Request& request,
         Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":subsId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto subsId = request.param(":subsId").as<std::string>();
 
@@ -111,14 +125,14 @@ void IndividualPolicyDataSubscriptionDocumentApi::
     nlohmann::json::parse(request.body()).get_to(policyDataSubscription);
     this->replace_individual_policy_data_subscription(
         subsId, policyDataSubscription, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -127,10 +141,10 @@ void IndividualPolicyDataSubscriptionDocumentApi::
 
 void IndividualPolicyDataSubscriptionDocumentApi::
     individual_policy_data_subscription_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

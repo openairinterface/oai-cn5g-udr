@@ -51,7 +51,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class PfdDataForApp {
-public:
+ public:
   PfdDataForApp();
   virtual ~PfdDataForApp();
 
@@ -64,24 +64,24 @@ public:
   ///
   /// </summary>
   std::string getApplicationId() const;
-  void setApplicationId(std::string const &value);
+  void setApplicationId(std::string const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<PfdContent> &getPfds();
-  void setPfds(std::vector<PfdContent> const &value);
+  std::vector<PfdContent>& getPfds();
+  void setPfds(std::vector<PfdContent> const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getCachingTime() const;
-  void setCachingTime(std::string const &value);
+  void setCachingTime(std::string const& value);
   bool cachingTimeIsSet() const;
   void unsetCachingTime();
 
-  friend void to_json(nlohmann::json &j, const PfdDataForApp &o);
-  friend void from_json(const nlohmann::json &j, PfdDataForApp &o);
+  friend void to_json(nlohmann::json& j, const PfdDataForApp& o);
+  friend void from_json(const nlohmann::json& j, PfdDataForApp& o);
 
-protected:
+ protected:
   std::string m_ApplicationId;
 
   std::vector<PfdContent> m_Pfds;
@@ -90,6 +90,6 @@ protected:
   bool m_CachingTimeIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PfdDataForApp_H_ */

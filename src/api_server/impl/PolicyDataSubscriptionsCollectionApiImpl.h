@@ -54,21 +54,21 @@ using namespace oai::udr::app;
 
 class PolicyDataSubscriptionsCollectionApiImpl
     : public oai::udr::api::PolicyDataSubscriptionsCollectionApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
+ public:
   PolicyDataSubscriptionsCollectionApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app *udr_app_inst,
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
       std::string address);
   ~PolicyDataSubscriptionsCollectionApiImpl() {}
 
   void create_individual_policy_data_subscription(
-      const PolicyDataSubscription &policyDataSubscription,
-      Pistache::Http::ResponseWriter &response);
+      const PolicyDataSubscription& policyDataSubscription,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

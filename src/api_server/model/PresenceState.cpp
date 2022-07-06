@@ -43,10 +43,10 @@ void PresenceState::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PresenceState &o) {
+void to_json(nlohmann::json& j, const PresenceState& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, PresenceState &o) {}
+void from_json(const nlohmann::json& j, PresenceState& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

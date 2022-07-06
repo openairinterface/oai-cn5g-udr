@@ -36,8 +36,8 @@
 namespace oai::udr::model {
 
 ExternalUnrelatedClass::ExternalUnrelatedClass() {
-  m_LcsClientExternalsIsSet = false;
-  m_AfExternalsIsSet = false;
+  m_LcsClientExternalsIsSet      = false;
+  m_AfExternalsIsSet             = false;
   m_LcsClientGroupExternalsIsSet = false;
 }
 
@@ -47,7 +47,7 @@ void ExternalUnrelatedClass::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ExternalUnrelatedClass &o) {
+void to_json(nlohmann::json& j, const ExternalUnrelatedClass& o) {
   j = nlohmann::json();
   if (o.lcsClientExternalsIsSet() || !o.m_LcsClientExternals.empty())
     j["lcsClientExternals"] = o.m_LcsClientExternals;
@@ -57,7 +57,7 @@ void to_json(nlohmann::json &j, const ExternalUnrelatedClass &o) {
     j["lcsClientGroupExternals"] = o.m_LcsClientGroupExternals;
 }
 
-void from_json(const nlohmann::json &j, ExternalUnrelatedClass &o) {
+void from_json(const nlohmann::json& j, ExternalUnrelatedClass& o) {
   if (j.find("lcsClientExternals") != j.end()) {
     j.at("lcsClientExternals").get_to(o.m_LcsClientExternals);
     o.m_LcsClientExternalsIsSet = true;
@@ -72,13 +72,13 @@ void from_json(const nlohmann::json &j, ExternalUnrelatedClass &o) {
   }
 }
 
-std::vector<LcsClientExternal> &
+std::vector<LcsClientExternal>&
 ExternalUnrelatedClass::getLcsClientExternals() {
   return m_LcsClientExternals;
 }
 void ExternalUnrelatedClass::setLcsClientExternals(
-    std::vector<LcsClientExternal> const &value) {
-  m_LcsClientExternals = value;
+    std::vector<LcsClientExternal> const& value) {
+  m_LcsClientExternals      = value;
   m_LcsClientExternalsIsSet = true;
 }
 bool ExternalUnrelatedClass::lcsClientExternalsIsSet() const {
@@ -87,25 +87,27 @@ bool ExternalUnrelatedClass::lcsClientExternalsIsSet() const {
 void ExternalUnrelatedClass::unsetLcsClientExternals() {
   m_LcsClientExternalsIsSet = false;
 }
-std::vector<AfExternal> &ExternalUnrelatedClass::getAfExternals() {
+std::vector<AfExternal>& ExternalUnrelatedClass::getAfExternals() {
   return m_AfExternals;
 }
 void ExternalUnrelatedClass::setAfExternals(
-    std::vector<AfExternal> const &value) {
-  m_AfExternals = value;
+    std::vector<AfExternal> const& value) {
+  m_AfExternals      = value;
   m_AfExternalsIsSet = true;
 }
 bool ExternalUnrelatedClass::afExternalsIsSet() const {
   return m_AfExternalsIsSet;
 }
-void ExternalUnrelatedClass::unsetAfExternals() { m_AfExternalsIsSet = false; }
-std::vector<LcsClientGroupExternal> &
+void ExternalUnrelatedClass::unsetAfExternals() {
+  m_AfExternalsIsSet = false;
+}
+std::vector<LcsClientGroupExternal>&
 ExternalUnrelatedClass::getLcsClientGroupExternals() {
   return m_LcsClientGroupExternals;
 }
 void ExternalUnrelatedClass::setLcsClientGroupExternals(
-    std::vector<LcsClientGroupExternal> const &value) {
-  m_LcsClientGroupExternals = value;
+    std::vector<LcsClientGroupExternal> const& value) {
+  m_LcsClientGroupExternals      = value;
   m_LcsClientGroupExternalsIsSet = true;
 }
 bool ExternalUnrelatedClass::lcsClientGroupExternalsIsSet() const {
@@ -115,4 +117,4 @@ void ExternalUnrelatedClass::unsetLcsClientGroupExternals() {
   m_LcsClientGroupExternalsIsSet = false;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

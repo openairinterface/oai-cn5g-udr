@@ -54,30 +54,30 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class AccessAndMobilityDataApi {
-public:
+ public:
   AccessAndMobilityDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~AccessAndMobilityDataApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
   void create_or_replace_access_and_mobility_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void delete_access_and_mobility_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void query_access_and_mobility_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void update_access_and_mobility_data_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
   void access_and_mobility_data_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -91,9 +91,9 @@ private:
   /// <param name="ueId">UE id</param>
   /// <param name="accessAndMobilityData"></param>
   virtual void create_or_replace_access_and_mobility_data(
-      const std::string &ueId,
-      const AccessAndMobilityData &accessAndMobilityData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const AccessAndMobilityData& accessAndMobilityData,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Deletes the access and mobility exposure data for a UE
@@ -102,9 +102,8 @@ private:
   ///
   /// </remarks>
   /// <param name="ueId">UE id</param>
-  virtual void
-  delete_access_and_mobility_data(const std::string &ueId,
-                                  Pistache::Http::ResponseWriter &response) = 0;
+  virtual void delete_access_and_mobility_data(
+      const std::string& ueId, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the access and mobility exposure data for a UE
@@ -116,8 +115,8 @@ private:
   /// <param name="suppFeat">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_access_and_mobility_data(
-      const std::string &ueId, const Pistache::Optional<std::string> &suppFeat,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId, const Pistache::Optional<std::string>& suppFeat,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Updates the access and mobility exposure data for a UE
@@ -128,11 +127,11 @@ private:
   /// <param name="ueId">UE id</param>
   /// <param name="accessAndMobilityData"></param>
   virtual void update_access_and_mobility_data(
-      const std::string &ueId,
-      const AccessAndMobilityData &accessAndMobilityData,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const AccessAndMobilityData& accessAndMobilityData,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* AccessAndMobilityDataApi_H_ */

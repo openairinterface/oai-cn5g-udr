@@ -43,10 +43,10 @@ void StationaryIndicationRm::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const StationaryIndicationRm &o) {
+void to_json(nlohmann::json& j, const StationaryIndicationRm& o) {
   j = nlohmann::json();
 }
 
-void from_json(const nlohmann::json &j, StationaryIndicationRm &o) {}
+void from_json(const nlohmann::json& j, StationaryIndicationRm& o) {}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

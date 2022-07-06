@@ -53,23 +53,24 @@ using namespace oai::udr::model;
 using namespace oai::udr::app;
 
 class GroupIdentifiersApiImpl : public oai::udr::api::GroupIdentifiersApi {
-private:
-  udr_app *m_udr_app;
+ private:
+  udr_app* m_udr_app;
   std::string m_address;
 
-public:
-  GroupIdentifiersApiImpl(std::shared_ptr<Pistache::Rest::Router>,
-                          udr_app *udr_app_inst, std::string address);
+ public:
+  GroupIdentifiersApiImpl(
+      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
+      std::string address);
   ~GroupIdentifiersApiImpl() {}
 
   void get_group_identifiers(
-      const Pistache::Optional<std::string> &extGroupId,
-      const Pistache::Optional<std::string> &intGroupId,
-      const Pistache::Optional<bool> &ueIdInd,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response);
+      const Pistache::Optional<std::string>& extGroupId,
+      const Pistache::Optional<std::string>& intGroupId,
+      const Pistache::Optional<bool>& ueIdInd,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response);
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif

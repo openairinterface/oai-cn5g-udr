@@ -36,8 +36,8 @@
 namespace oai::udr::model {
 
 InvalidParam::InvalidParam() {
-  m_Param = "";
-  m_Reason = "";
+  m_Param       = "";
+  m_Reason      = "";
   m_ReasonIsSet = false;
 }
 
@@ -47,14 +47,13 @@ void InvalidParam::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const InvalidParam &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const InvalidParam& o) {
+  j          = nlohmann::json();
   j["param"] = o.m_Param;
-  if (o.reasonIsSet())
-    j["reason"] = o.m_Reason;
+  if (o.reasonIsSet()) j["reason"] = o.m_Reason;
 }
 
-void from_json(const nlohmann::json &j, InvalidParam &o) {
+void from_json(const nlohmann::json& j, InvalidParam& o) {
   j.at("param").get_to(o.m_Param);
   if (j.find("reason") != j.end()) {
     j.at("reason").get_to(o.m_Reason);
@@ -62,14 +61,24 @@ void from_json(const nlohmann::json &j, InvalidParam &o) {
   }
 }
 
-std::string InvalidParam::getParam() const { return m_Param; }
-void InvalidParam::setParam(std::string const &value) { m_Param = value; }
-std::string InvalidParam::getReason() const { return m_Reason; }
-void InvalidParam::setReason(std::string const &value) {
-  m_Reason = value;
+std::string InvalidParam::getParam() const {
+  return m_Param;
+}
+void InvalidParam::setParam(std::string const& value) {
+  m_Param = value;
+}
+std::string InvalidParam::getReason() const {
+  return m_Reason;
+}
+void InvalidParam::setReason(std::string const& value) {
+  m_Reason      = value;
   m_ReasonIsSet = true;
 }
-bool InvalidParam::reasonIsSet() const { return m_ReasonIsSet; }
-void InvalidParam::unsetReason() { m_ReasonIsSet = false; }
+bool InvalidParam::reasonIsSet() const {
+  return m_ReasonIsSet;
+}
+void InvalidParam::unsetReason() {
+  m_ReasonIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

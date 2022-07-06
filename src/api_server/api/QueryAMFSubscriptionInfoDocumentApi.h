@@ -53,21 +53,21 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class QueryAMFSubscriptionInfoDocumentApi {
-public:
+ public:
   QueryAMFSubscriptionInfoDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~QueryAMFSubscriptionInfoDocumentApi() {}
   void init();
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void
-  get_amf_subscription_info_handler(const Pistache::Rest::Request &request,
-                                    Pistache::Http::ResponseWriter response);
+  void get_amf_subscription_info_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void query_amf_subscription_info_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -80,11 +80,11 @@ private:
   /// </remarks>
   /// <param name="ueId"></param>
   /// <param name="subsId"></param>
-  virtual void
-  get_amf_subscription_info(const std::string &ueId, const std::string &subsId,
-                            Pistache::Http::ResponseWriter &response) = 0;
+  virtual void get_amf_subscription_info(
+      const std::string& ueId, const std::string& subsId,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* QueryAMFSubscriptionInfoDocumentApi_H_ */

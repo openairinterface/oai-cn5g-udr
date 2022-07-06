@@ -48,7 +48,9 @@ ContextDataDocumentApi::ContextDataDocumentApi(
   router = rtr;
 }
 
-void ContextDataDocumentApi::init() { setupRoutes(); }
+void ContextDataDocumentApi::init() {
+  setupRoutes();
+}
 
 void ContextDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -65,8 +67,13 @@ void ContextDataDocumentApi::setupRoutes() {
 }
 
 void ContextDataDocumentApi::query_context_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
   // Getting the path params
   auto ueId = request.param(":ueId").as<std::string>();
 
@@ -83,14 +90,14 @@ void ContextDataDocumentApi::query_context_data_handler(
 
   try {
     //      this->query_context_data(ueId, contextDatasetNames, response);
-  } catch (nlohmann::detail::exception &e) {
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -98,9 +105,9 @@ void ContextDataDocumentApi::query_context_data_handler(
 }
 
 void ContextDataDocumentApi::context_data_document_api_default_handler(
-    const Pistache::Rest::Request &, Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+    const Pistache::Rest::Request&, Pistache::Http::ResponseWriter response) {
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

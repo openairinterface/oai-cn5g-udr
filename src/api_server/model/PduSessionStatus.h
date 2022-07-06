@@ -47,7 +47,7 @@ namespace oai::udr::model {
 /// Possible values are - \&quot;ACTIVE\&quot; - \&quot;RELEASED\&quot;
 /// </summary>
 class PduSessionStatus {
-public:
+ public:
   PduSessionStatus();
   virtual ~PduSessionStatus();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// PduSessionStatus members
 
-  friend void to_json(nlohmann::json &j, const PduSessionStatus &o);
-  friend void from_json(const nlohmann::json &j, PduSessionStatus &o);
+  friend void to_json(nlohmann::json& j, const PduSessionStatus& o);
+  friend void from_json(const nlohmann::json& j, PduSessionStatus& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* PduSessionStatus_H_ */

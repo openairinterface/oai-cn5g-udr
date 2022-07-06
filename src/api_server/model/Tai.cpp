@@ -36,8 +36,8 @@
 namespace oai::udr::model {
 
 Tai::Tai() {
-  m_Tac = "";
-  m_Nid = "";
+  m_Tac      = "";
+  m_Nid      = "";
   m_NidIsSet = false;
 }
 
@@ -47,15 +47,14 @@ void Tai::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const Tai &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const Tai& o) {
+  j           = nlohmann::json();
   j["plmnId"] = o.m_PlmnId;
-  j["tac"] = o.m_Tac;
-  if (o.nidIsSet())
-    j["nid"] = o.m_Nid;
+  j["tac"]    = o.m_Tac;
+  if (o.nidIsSet()) j["nid"] = o.m_Nid;
 }
 
-void from_json(const nlohmann::json &j, Tai &o) {
+void from_json(const nlohmann::json& j, Tai& o) {
   j.at("plmnId").get_to(o.m_PlmnId);
   j.at("tac").get_to(o.m_Tac);
   if (j.find("nid") != j.end()) {
@@ -64,16 +63,30 @@ void from_json(const nlohmann::json &j, Tai &o) {
   }
 }
 
-PlmnId Tai::getPlmnId() const { return m_PlmnId; }
-void Tai::setPlmnId(PlmnId const &value) { m_PlmnId = value; }
-std::string Tai::getTac() const { return m_Tac; }
-void Tai::setTac(std::string const &value) { m_Tac = value; }
-std::string Tai::getNid() const { return m_Nid; }
-void Tai::setNid(std::string const &value) {
-  m_Nid = value;
+PlmnId Tai::getPlmnId() const {
+  return m_PlmnId;
+}
+void Tai::setPlmnId(PlmnId const& value) {
+  m_PlmnId = value;
+}
+std::string Tai::getTac() const {
+  return m_Tac;
+}
+void Tai::setTac(std::string const& value) {
+  m_Tac = value;
+}
+std::string Tai::getNid() const {
+  return m_Nid;
+}
+void Tai::setNid(std::string const& value) {
+  m_Nid      = value;
   m_NidIsSet = true;
 }
-bool Tai::nidIsSet() const { return m_NidIsSet; }
-void Tai::unsetNid() { m_NidIsSet = false; }
+bool Tai::nidIsSet() const {
+  return m_NidIsSet;
+}
+void Tai::unsetNid() {
+  m_NidIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

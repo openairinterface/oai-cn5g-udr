@@ -35,7 +35,9 @@
 
 namespace oai::udr::model {
 
-ReportItem::ReportItem() { m_Path = ""; }
+ReportItem::ReportItem() {
+  m_Path = "";
+}
 
 ReportItem::~ReportItem() {}
 
@@ -43,16 +45,20 @@ void ReportItem::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const ReportItem &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const ReportItem& o) {
+  j         = nlohmann::json();
   j["path"] = o.m_Path;
 }
 
-void from_json(const nlohmann::json &j, ReportItem &o) {
+void from_json(const nlohmann::json& j, ReportItem& o) {
   j.at("path").get_to(o.m_Path);
 }
 
-std::string ReportItem::getPath() const { return m_Path; }
-void ReportItem::setPath(std::string const &value) { m_Path = value; }
+std::string ReportItem::getPath() const {
+  return m_Path;
+}
+void ReportItem::setPath(std::string const& value) {
+  m_Path = value;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

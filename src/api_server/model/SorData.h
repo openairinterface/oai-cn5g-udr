@@ -50,7 +50,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class SorData {
-public:
+ public:
   SorData();
   virtual ~SorData();
 
@@ -63,31 +63,31 @@ public:
   ///
   /// </summary>
   std::string getProvisioningTime() const;
-  void setProvisioningTime(std::string const &value);
+  void setProvisioningTime(std::string const& value);
   /// <summary>
   ///
   /// </summary>
   UeUpdateStatus getUeUpdateStatus() const;
-  void setUeUpdateStatus(UeUpdateStatus const &value);
+  void setUeUpdateStatus(UeUpdateStatus const& value);
   /// <summary>
   ///
   /// </summary>
   std::string getSorXmacIue() const;
-  void setSorXmacIue(std::string const &value);
+  void setSorXmacIue(std::string const& value);
   bool sorXmacIueIsSet() const;
   void unsetSorXmacIue();
   /// <summary>
   ///
   /// </summary>
   std::string getSorMacIue() const;
-  void setSorMacIue(std::string const &value);
+  void setSorMacIue(std::string const& value);
   bool sorMacIueIsSet() const;
   void unsetSorMacIue();
 
-  friend void to_json(nlohmann::json &j, const SorData &o);
-  friend void from_json(const nlohmann::json &j, SorData &o);
+  friend void to_json(nlohmann::json& j, const SorData& o);
+  friend void from_json(const nlohmann::json& j, SorData& o);
 
-protected:
+ protected:
   std::string m_ProvisioningTime;
 
   UeUpdateStatus m_UeUpdateStatus;
@@ -98,6 +98,6 @@ protected:
   bool m_SorMacIueIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* SorData_H_ */

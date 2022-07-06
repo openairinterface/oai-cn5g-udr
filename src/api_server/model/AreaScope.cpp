@@ -37,9 +37,9 @@ namespace oai::udr::model {
 
 AreaScope::AreaScope() {
   m_EutraCellIdListIsSet = false;
-  m_NrCellIdListIsSet = false;
-  m_TacListIsSet = false;
-  m_TacInfoPerPlmnIsSet = false;
+  m_NrCellIdListIsSet    = false;
+  m_TacListIsSet         = false;
+  m_TacInfoPerPlmnIsSet  = false;
 }
 
 AreaScope::~AreaScope() {}
@@ -48,19 +48,18 @@ void AreaScope::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const AreaScope &o) {
+void to_json(nlohmann::json& j, const AreaScope& o) {
   j = nlohmann::json();
   if (o.eutraCellIdListIsSet() || !o.m_EutraCellIdList.empty())
     j["eutraCellIdList"] = o.m_EutraCellIdList;
   if (o.nrCellIdListIsSet() || !o.m_NrCellIdList.empty())
     j["nrCellIdList"] = o.m_NrCellIdList;
-  if (o.tacListIsSet() || !o.m_TacList.empty())
-    j["tacList"] = o.m_TacList;
+  if (o.tacListIsSet() || !o.m_TacList.empty()) j["tacList"] = o.m_TacList;
   if (o.tacInfoPerPlmnIsSet() || !o.m_TacInfoPerPlmn.empty())
     j["tacInfoPerPlmn"] = o.m_TacInfoPerPlmn;
 }
 
-void from_json(const nlohmann::json &j, AreaScope &o) {
+void from_json(const nlohmann::json& j, AreaScope& o) {
   if (j.find("eutraCellIdList") != j.end()) {
     j.at("eutraCellIdList").get_to(o.m_EutraCellIdList);
     o.m_EutraCellIdListIsSet = true;
@@ -79,39 +78,57 @@ void from_json(const nlohmann::json &j, AreaScope &o) {
   }
 }
 
-std::vector<std::string> &AreaScope::getEutraCellIdList() {
+std::vector<std::string>& AreaScope::getEutraCellIdList() {
   return m_EutraCellIdList;
 }
-void AreaScope::setEutraCellIdList(std::vector<std::string> const &value) {
-  m_EutraCellIdList = value;
+void AreaScope::setEutraCellIdList(std::vector<std::string> const& value) {
+  m_EutraCellIdList      = value;
   m_EutraCellIdListIsSet = true;
 }
-bool AreaScope::eutraCellIdListIsSet() const { return m_EutraCellIdListIsSet; }
-void AreaScope::unsetEutraCellIdList() { m_EutraCellIdListIsSet = false; }
-std::vector<std::string> &AreaScope::getNrCellIdList() {
+bool AreaScope::eutraCellIdListIsSet() const {
+  return m_EutraCellIdListIsSet;
+}
+void AreaScope::unsetEutraCellIdList() {
+  m_EutraCellIdListIsSet = false;
+}
+std::vector<std::string>& AreaScope::getNrCellIdList() {
   return m_NrCellIdList;
 }
-void AreaScope::setNrCellIdList(std::vector<std::string> const &value) {
-  m_NrCellIdList = value;
+void AreaScope::setNrCellIdList(std::vector<std::string> const& value) {
+  m_NrCellIdList      = value;
   m_NrCellIdListIsSet = true;
 }
-bool AreaScope::nrCellIdListIsSet() const { return m_NrCellIdListIsSet; }
-void AreaScope::unsetNrCellIdList() { m_NrCellIdListIsSet = false; }
-std::vector<std::string> &AreaScope::getTacList() { return m_TacList; }
-void AreaScope::setTacList(std::vector<std::string> const &value) {
-  m_TacList = value;
+bool AreaScope::nrCellIdListIsSet() const {
+  return m_NrCellIdListIsSet;
+}
+void AreaScope::unsetNrCellIdList() {
+  m_NrCellIdListIsSet = false;
+}
+std::vector<std::string>& AreaScope::getTacList() {
+  return m_TacList;
+}
+void AreaScope::setTacList(std::vector<std::string> const& value) {
+  m_TacList      = value;
   m_TacListIsSet = true;
 }
-bool AreaScope::tacListIsSet() const { return m_TacListIsSet; }
-void AreaScope::unsetTacList() { m_TacListIsSet = false; }
-std::map<std::string, TacInfo> &AreaScope::getTacInfoPerPlmn() {
+bool AreaScope::tacListIsSet() const {
+  return m_TacListIsSet;
+}
+void AreaScope::unsetTacList() {
+  m_TacListIsSet = false;
+}
+std::map<std::string, TacInfo>& AreaScope::getTacInfoPerPlmn() {
   return m_TacInfoPerPlmn;
 }
-void AreaScope::setTacInfoPerPlmn(std::map<std::string, TacInfo> const &value) {
-  m_TacInfoPerPlmn = value;
+void AreaScope::setTacInfoPerPlmn(std::map<std::string, TacInfo> const& value) {
+  m_TacInfoPerPlmn      = value;
   m_TacInfoPerPlmnIsSet = true;
 }
-bool AreaScope::tacInfoPerPlmnIsSet() const { return m_TacInfoPerPlmnIsSet; }
-void AreaScope::unsetTacInfoPerPlmn() { m_TacInfoPerPlmnIsSet = false; }
+bool AreaScope::tacInfoPerPlmnIsSet() const {
+  return m_TacInfoPerPlmnIsSet;
+}
+void AreaScope::unsetTacInfoPerPlmn() {
+  m_TacInfoPerPlmnIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

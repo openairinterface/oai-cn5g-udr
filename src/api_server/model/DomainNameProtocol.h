@@ -55,7 +55,7 @@ namespace oai::udr::model {
 /// Common Name in TLS ServerCertificate message.
 /// </summary>
 class DomainNameProtocol {
-public:
+ public:
   DomainNameProtocol();
   virtual ~DomainNameProtocol();
 
@@ -64,12 +64,12 @@ public:
   /////////////////////////////////////////////
   /// DomainNameProtocol members
 
-  friend void to_json(nlohmann::json &j, const DomainNameProtocol &o);
-  friend void from_json(const nlohmann::json &j, DomainNameProtocol &o);
+  friend void to_json(nlohmann::json& j, const DomainNameProtocol& o);
+  friend void from_json(const nlohmann::json& j, DomainNameProtocol& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* DomainNameProtocol_H_ */

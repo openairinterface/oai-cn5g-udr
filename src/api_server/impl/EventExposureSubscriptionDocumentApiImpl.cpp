@@ -42,37 +42,38 @@ using namespace oai::udr::model;
 
 EventExposureSubscriptionDocumentApiImpl::
     EventExposureSubscriptionDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : EventExposureSubscriptionDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : EventExposureSubscriptionDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void EventExposureSubscriptionDocumentApiImpl::modify_eesubscription(
-    const std::string &ueId, const std::string &subsId,
-    const std::vector<PatchItem> &patchItem,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::string& subsId,
+    const std::vector<PatchItem>& patchItem,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void EventExposureSubscriptionDocumentApiImpl::queryee_subscription(
-    const std::string &ueId, const std::string &subsId,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::string& subsId,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void EventExposureSubscriptionDocumentApiImpl::removeee_subscriptions(
-    const std::string &ueId, const std::string &subsId,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::string& subsId,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void EventExposureSubscriptionDocumentApiImpl::update_eesubscriptions(
-    const std::string &ueId, const std::string &subsId,
-    const EeSubscription &eeSubscription,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::string& subsId,
+    const EeSubscription& eeSubscription,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

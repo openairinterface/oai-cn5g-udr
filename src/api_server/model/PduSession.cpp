@@ -36,8 +36,8 @@
 namespace oai::udr::model {
 
 PduSession::PduSession() {
-  m_Dnn = "";
-  m_SmfInstanceId = "";
+  m_Dnn              = "";
+  m_SmfInstanceId    = "";
   m_SingleNssaiIsSet = false;
 }
 
@@ -47,16 +47,15 @@ void PduSession::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const PduSession &o) {
-  j = nlohmann::json();
-  j["dnn"] = o.m_Dnn;
+void to_json(nlohmann::json& j, const PduSession& o) {
+  j                  = nlohmann::json();
+  j["dnn"]           = o.m_Dnn;
   j["smfInstanceId"] = o.m_SmfInstanceId;
-  j["plmnId"] = o.m_PlmnId;
-  if (o.singleNssaiIsSet())
-    j["singleNssai"] = o.m_SingleNssai;
+  j["plmnId"]        = o.m_PlmnId;
+  if (o.singleNssaiIsSet()) j["singleNssai"] = o.m_SingleNssai;
 }
 
-void from_json(const nlohmann::json &j, PduSession &o) {
+void from_json(const nlohmann::json& j, PduSession& o) {
   j.at("dnn").get_to(o.m_Dnn);
   j.at("smfInstanceId").get_to(o.m_SmfInstanceId);
   j.at("plmnId").get_to(o.m_PlmnId);
@@ -66,20 +65,36 @@ void from_json(const nlohmann::json &j, PduSession &o) {
   }
 }
 
-std::string PduSession::getDnn() const { return m_Dnn; }
-void PduSession::setDnn(std::string const &value) { m_Dnn = value; }
-std::string PduSession::getSmfInstanceId() const { return m_SmfInstanceId; }
-void PduSession::setSmfInstanceId(std::string const &value) {
+std::string PduSession::getDnn() const {
+  return m_Dnn;
+}
+void PduSession::setDnn(std::string const& value) {
+  m_Dnn = value;
+}
+std::string PduSession::getSmfInstanceId() const {
+  return m_SmfInstanceId;
+}
+void PduSession::setSmfInstanceId(std::string const& value) {
   m_SmfInstanceId = value;
 }
-PlmnId PduSession::getPlmnId() const { return m_PlmnId; }
-void PduSession::setPlmnId(PlmnId const &value) { m_PlmnId = value; }
-Snssai PduSession::getSingleNssai() const { return m_SingleNssai; }
-void PduSession::setSingleNssai(Snssai const &value) {
-  m_SingleNssai = value;
+PlmnId PduSession::getPlmnId() const {
+  return m_PlmnId;
+}
+void PduSession::setPlmnId(PlmnId const& value) {
+  m_PlmnId = value;
+}
+Snssai PduSession::getSingleNssai() const {
+  return m_SingleNssai;
+}
+void PduSession::setSingleNssai(Snssai const& value) {
+  m_SingleNssai      = value;
   m_SingleNssaiIsSet = true;
 }
-bool PduSession::singleNssaiIsSet() const { return m_SingleNssaiIsSet; }
-void PduSession::unsetSingleNssai() { m_SingleNssaiIsSet = false; }
+bool PduSession::singleNssaiIsSet() const {
+  return m_SingleNssaiIsSet;
+}
+void PduSession::unsetSingleNssai() {
+  m_SingleNssaiIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

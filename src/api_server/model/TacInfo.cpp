@@ -43,18 +43,20 @@ void TacInfo::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const TacInfo &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const TacInfo& o) {
+  j            = nlohmann::json();
   j["tacList"] = o.m_TacList;
 }
 
-void from_json(const nlohmann::json &j, TacInfo &o) {
+void from_json(const nlohmann::json& j, TacInfo& o) {
   j.at("tacList").get_to(o.m_TacList);
 }
 
-std::vector<std::string> &TacInfo::getTacList() { return m_TacList; }
-void TacInfo::setTacList(std::vector<std::string> const &value) {
+std::vector<std::string>& TacInfo::getTacList() {
+  return m_TacList;
+}
+void TacInfo::setTacList(std::vector<std::string> const& value) {
   m_TacList = value;
 }
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

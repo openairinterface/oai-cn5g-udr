@@ -52,7 +52,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class LocationArea {
-public:
+ public:
   LocationArea();
   virtual ~LocationArea();
 
@@ -64,29 +64,29 @@ public:
   /// <summary>
   /// Identifies a list of geographic area of the user where the UE is located.
   /// </summary>
-  std::vector<GeographicArea> &getGeographicAreas();
-  void setGeographicAreas(std::vector<GeographicArea> const &value);
+  std::vector<GeographicArea>& getGeographicAreas();
+  void setGeographicAreas(std::vector<GeographicArea> const& value);
   bool geographicAreasIsSet() const;
   void unsetGeographicAreas();
   /// <summary>
   /// Identifies a list of civic addresses of the user where the UE is located.
   /// </summary>
-  std::vector<CivicAddress> &getCivicAddresses();
-  void setCivicAddresses(std::vector<CivicAddress> const &value);
+  std::vector<CivicAddress>& getCivicAddresses();
+  void setCivicAddresses(std::vector<CivicAddress> const& value);
   bool civicAddressesIsSet() const;
   void unsetCivicAddresses();
   /// <summary>
   ///
   /// </summary>
   NetworkAreaInfo getNwAreaInfo() const;
-  void setNwAreaInfo(NetworkAreaInfo const &value);
+  void setNwAreaInfo(NetworkAreaInfo const& value);
   bool nwAreaInfoIsSet() const;
   void unsetNwAreaInfo();
 
-  friend void to_json(nlohmann::json &j, const LocationArea &o);
-  friend void from_json(const nlohmann::json &j, LocationArea &o);
+  friend void to_json(nlohmann::json& j, const LocationArea& o);
+  friend void from_json(const nlohmann::json& j, LocationArea& o);
 
-protected:
+ protected:
   std::vector<GeographicArea> m_GeographicAreas;
   bool m_GeographicAreasIsSet;
   std::vector<CivicAddress> m_CivicAddresses;
@@ -95,6 +95,6 @@ protected:
   bool m_NwAreaInfoIsSet;
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* LocationArea_H_ */

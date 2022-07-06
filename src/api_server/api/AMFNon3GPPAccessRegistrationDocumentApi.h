@@ -58,7 +58,7 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 class AMFNon3GPPAccessRegistrationDocumentApi {
-public:
+ public:
   AMFNon3GPPAccessRegistrationDocumentApi(
       std::shared_ptr<Pistache::Rest::Router>);
   virtual ~AMFNon3GPPAccessRegistrationDocumentApi() {}
@@ -66,19 +66,20 @@ public:
 
   const std::string base = "/nudr-dr/";
 
-private:
+ private:
   void setupRoutes();
 
-  void amf_context_non3gpp_handler(const Pistache::Rest::Request &request,
-                                   Pistache::Http::ResponseWriter response);
-  void
-  create_amf_context_non3gpp_handler(const Pistache::Rest::Request &request,
-                                     Pistache::Http::ResponseWriter response);
-  void
-  query_amf_context_non3gpp_handler(const Pistache::Rest::Request &request,
-                                    Pistache::Http::ResponseWriter response);
+  void amf_context_non3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void create_amf_context_non3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+  void query_amf_context_non3gpp_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
   void amf_non3_gpp_access_registration_document_api_default_handler(
-      const Pistache::Rest::Request &request,
+      const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
   std::shared_ptr<Pistache::Rest::Router> router;
@@ -93,11 +94,10 @@ private:
   /// <param name="patchItem"></param>
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
-  virtual void
-  amf_context_non3gpp(const std::string &ueId,
-                      const std::vector<PatchItem> &patchItem,
-                      const Pistache::Optional<std::string> &supportedFeatures,
-                      Pistache::Http::ResponseWriter &response) = 0;
+  virtual void amf_context_non3gpp(
+      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// To store the AMF context data of a UE using non-3gpp access in the UDR
@@ -108,9 +108,9 @@ private:
   /// <param name="ueId">UE id</param>
   /// <param name="amfNon3GppAccessRegistration"> (optional)</param>
   virtual void create_amf_context_non3gpp(
-      const std::string &ueId,
-      const AmfNon3GppAccessRegistration &amfNon3GppAccessRegistration,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const AmfNon3GppAccessRegistration& amfNon3GppAccessRegistration,
+      Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
   /// Retrieves the AMF context data of a UE using non-3gpp access
@@ -124,12 +124,12 @@ private:
   /// name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_amf_context_non3gpp(
-      const std::string &ueId,
-      const Pistache::Optional<std::vector<std::string>> &fields,
-      const Pistache::Optional<std::string> &supportedFeatures,
-      Pistache::Http::ResponseWriter &response) = 0;
+      const std::string& ueId,
+      const Pistache::Optional<std::vector<std::string>>& fields,
+      const Pistache::Optional<std::string>& supportedFeatures,
+      Pistache::Http::ResponseWriter& response) = 0;
 };
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api
 
 #endif /* AMFNon3GPPAccessRegistrationDocumentApi_H_ */

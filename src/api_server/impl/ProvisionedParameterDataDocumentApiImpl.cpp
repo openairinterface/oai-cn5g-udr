@@ -42,17 +42,18 @@ using namespace oai::udr::model;
 
 ProvisionedParameterDataDocumentApiImpl::
     ProvisionedParameterDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : ProvisionedParameterDataDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : ProvisionedParameterDataDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void ProvisionedParameterDataDocumentApiImpl::modify_pp_data(
-    const std::string &ueId, const std::vector<PatchItem> &patchItem,
-    const Pistache::Optional<std::string> &supportedFeatures,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::vector<PatchItem>& patchItem,
+    const Pistache::Optional<std::string>& supportedFeatures,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

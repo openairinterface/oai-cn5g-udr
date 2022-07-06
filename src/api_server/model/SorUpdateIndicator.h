@@ -47,7 +47,7 @@ namespace oai::udr::model {
 ///
 /// </summary>
 class SorUpdateIndicator {
-public:
+ public:
   SorUpdateIndicator();
   virtual ~SorUpdateIndicator();
 
@@ -56,12 +56,12 @@ public:
   /////////////////////////////////////////////
   /// SorUpdateIndicator members
 
-  friend void to_json(nlohmann::json &j, const SorUpdateIndicator &o);
-  friend void from_json(const nlohmann::json &j, SorUpdateIndicator &o);
+  friend void to_json(nlohmann::json& j, const SorUpdateIndicator& o);
+  friend void from_json(const nlohmann::json& j, SorUpdateIndicator& o);
 
-protected:
+ protected:
 };
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
 
 #endif /* SorUpdateIndicator_H_ */

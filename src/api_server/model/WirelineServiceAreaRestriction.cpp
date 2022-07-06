@@ -37,7 +37,7 @@ namespace oai::udr::model {
 
 WirelineServiceAreaRestriction::WirelineServiceAreaRestriction() {
   m_RestrictionTypeIsSet = false;
-  m_AreasIsSet = false;
+  m_AreasIsSet           = false;
 }
 
 WirelineServiceAreaRestriction::~WirelineServiceAreaRestriction() {}
@@ -46,15 +46,13 @@ void WirelineServiceAreaRestriction::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const WirelineServiceAreaRestriction &o) {
+void to_json(nlohmann::json& j, const WirelineServiceAreaRestriction& o) {
   j = nlohmann::json();
-  if (o.restrictionTypeIsSet())
-    j["restrictionType"] = o.m_RestrictionType;
-  if (o.areasIsSet() || !o.m_Areas.empty())
-    j["areas"] = o.m_Areas;
+  if (o.restrictionTypeIsSet()) j["restrictionType"] = o.m_RestrictionType;
+  if (o.areasIsSet() || !o.m_Areas.empty()) j["areas"] = o.m_Areas;
 }
 
-void from_json(const nlohmann::json &j, WirelineServiceAreaRestriction &o) {
+void from_json(const nlohmann::json& j, WirelineServiceAreaRestriction& o) {
   if (j.find("restrictionType") != j.end()) {
     j.at("restrictionType").get_to(o.m_RestrictionType);
     o.m_RestrictionTypeIsSet = true;
@@ -69,8 +67,8 @@ RestrictionType WirelineServiceAreaRestriction::getRestrictionType() const {
   return m_RestrictionType;
 }
 void WirelineServiceAreaRestriction::setRestrictionType(
-    RestrictionType const &value) {
-  m_RestrictionType = value;
+    RestrictionType const& value) {
+  m_RestrictionType      = value;
   m_RestrictionTypeIsSet = true;
 }
 bool WirelineServiceAreaRestriction::restrictionTypeIsSet() const {
@@ -79,15 +77,19 @@ bool WirelineServiceAreaRestriction::restrictionTypeIsSet() const {
 void WirelineServiceAreaRestriction::unsetRestrictionType() {
   m_RestrictionTypeIsSet = false;
 }
-std::vector<WirelineArea> &WirelineServiceAreaRestriction::getAreas() {
+std::vector<WirelineArea>& WirelineServiceAreaRestriction::getAreas() {
   return m_Areas;
 }
 void WirelineServiceAreaRestriction::setAreas(
-    std::vector<WirelineArea> const &value) {
-  m_Areas = value;
+    std::vector<WirelineArea> const& value) {
+  m_Areas      = value;
   m_AreasIsSet = true;
 }
-bool WirelineServiceAreaRestriction::areasIsSet() const { return m_AreasIsSet; }
-void WirelineServiceAreaRestriction::unsetAreas() { m_AreasIsSet = false; }
+bool WirelineServiceAreaRestriction::areasIsSet() const {
+  return m_AreasIsSet;
+}
+void WirelineServiceAreaRestriction::unsetAreas() {
+  m_AreasIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model

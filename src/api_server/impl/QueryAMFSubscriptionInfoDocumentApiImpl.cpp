@@ -42,16 +42,17 @@ using namespace oai::udr::model;
 
 QueryAMFSubscriptionInfoDocumentApiImpl::
     QueryAMFSubscriptionInfoDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app *udr_app_inst,
+        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
         std::string address)
-    : QueryAMFSubscriptionInfoDocumentApi(rtr), m_udr_app(udr_app_inst),
+    : QueryAMFSubscriptionInfoDocumentApi(rtr),
+      m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void QueryAMFSubscriptionInfoDocumentApiImpl::get_amf_subscription_info(
-    const std::string &ueId, const std::string &subsId,
-    Pistache::Http::ResponseWriter &response) {
-  response.send(Pistache::Http::Code::Ok,
-                "This API has not been implemented yet!\n");
+    const std::string& ueId, const std::string& subsId,
+    Pistache::Http::ResponseWriter& response) {
+  response.send(
+      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

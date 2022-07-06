@@ -49,7 +49,9 @@ SMSManagementSubscriptionDataDocumentApi::
   router = rtr;
 }
 
-void SMSManagementSubscriptionDataDocumentApi::init() { setupRoutes(); }
+void SMSManagementSubscriptionDataDocumentApi::init() {
+  setupRoutes();
+}
 
 void SMSManagementSubscriptionDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
@@ -71,10 +73,16 @@ void SMSManagementSubscriptionDataDocumentApi::setupRoutes() {
 }
 
 void SMSManagementSubscriptionDataDocumentApi::query_sms_mng_data_handler(
-    const Pistache::Rest::Request &request,
+    const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
+  if (!request.hasParam(":ueId") or !request.hasParam(":servingPlmnId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
   // Getting the path params
-  auto ueId = request.param(":ueId").as<std::string>();
+  auto ueId          = request.param(":ueId").as<std::string>();
   auto servingPlmnId = request.param(":servingPlmnId").as<std::string>();
 
   // Getting the query params
@@ -88,20 +96,21 @@ void SMSManagementSubscriptionDataDocumentApi::query_sms_mng_data_handler(
   }
 
   // Getting the header params
-  auto ifNoneMatch = request.headers().tryGetRaw("If-None-Match");
+  auto ifNoneMatch     = request.headers().tryGetRaw("If-None-Match");
   auto ifModifiedSince = request.headers().tryGetRaw("If-Modified-Since");
 
   try {
-    this->query_sms_mng_data(ueId, servingPlmnId, supportedFeatures,
-                             ifNoneMatch, ifModifiedSince, response);
-  } catch (nlohmann::detail::exception &e) {
+    this->query_sms_mng_data(
+        ueId, servingPlmnId, supportedFeatures, ifNoneMatch, ifModifiedSince,
+        response);
+  } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
     return;
-  } catch (Pistache::Http::HttpError &e) {
+  } catch (Pistache::Http::HttpError& e) {
     response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
     return;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     // send a 500 error
     response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
     return;
@@ -110,10 +119,10 @@ void SMSManagementSubscriptionDataDocumentApi::query_sms_mng_data_handler(
 
 void SMSManagementSubscriptionDataDocumentApi::
     sms_management_subscription_data_document_api_default_handler(
-        const Pistache::Rest::Request &,
+        const Pistache::Rest::Request&,
         Pistache::Http::ResponseWriter response) {
-  response.send(Pistache::Http::Code::Not_Found,
-                "The requested method does not exist");
+  response.send(
+      Pistache::Http::Code::Not_Found, "The requested method does not exist");
 }
 
-} // namespace oai::udr::api
+}  // namespace oai::udr::api

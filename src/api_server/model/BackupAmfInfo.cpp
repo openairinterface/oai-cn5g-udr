@@ -36,7 +36,7 @@
 namespace oai::udr::model {
 
 BackupAmfInfo::BackupAmfInfo() {
-  m_BackupAmf = "";
+  m_BackupAmf      = "";
   m_GuamiListIsSet = false;
 }
 
@@ -46,14 +46,14 @@ void BackupAmfInfo::validate() {
   // TODO: implement validation
 }
 
-void to_json(nlohmann::json &j, const BackupAmfInfo &o) {
-  j = nlohmann::json();
+void to_json(nlohmann::json& j, const BackupAmfInfo& o) {
+  j              = nlohmann::json();
   j["backupAmf"] = o.m_BackupAmf;
   if (o.guamiListIsSet() || !o.m_GuamiList.empty())
     j["guamiList"] = o.m_GuamiList;
 }
 
-void from_json(const nlohmann::json &j, BackupAmfInfo &o) {
+void from_json(const nlohmann::json& j, BackupAmfInfo& o) {
   j.at("backupAmf").get_to(o.m_BackupAmf);
   if (j.find("guamiList") != j.end()) {
     j.at("guamiList").get_to(o.m_GuamiList);
@@ -61,16 +61,24 @@ void from_json(const nlohmann::json &j, BackupAmfInfo &o) {
   }
 }
 
-std::string BackupAmfInfo::getBackupAmf() const { return m_BackupAmf; }
-void BackupAmfInfo::setBackupAmf(std::string const &value) {
+std::string BackupAmfInfo::getBackupAmf() const {
+  return m_BackupAmf;
+}
+void BackupAmfInfo::setBackupAmf(std::string const& value) {
   m_BackupAmf = value;
 }
-std::vector<Guami> &BackupAmfInfo::getGuamiList() { return m_GuamiList; }
-void BackupAmfInfo::setGuamiList(std::vector<Guami> const &value) {
-  m_GuamiList = value;
+std::vector<Guami>& BackupAmfInfo::getGuamiList() {
+  return m_GuamiList;
+}
+void BackupAmfInfo::setGuamiList(std::vector<Guami> const& value) {
+  m_GuamiList      = value;
   m_GuamiListIsSet = true;
 }
-bool BackupAmfInfo::guamiListIsSet() const { return m_GuamiListIsSet; }
-void BackupAmfInfo::unsetGuamiList() { m_GuamiListIsSet = false; }
+bool BackupAmfInfo::guamiListIsSet() const {
+  return m_GuamiListIsSet;
+}
+void BackupAmfInfo::unsetGuamiList() {
+  m_GuamiListIsSet = false;
+}
 
-} // namespace oai::udr::model
+}  // namespace oai::udr::model
