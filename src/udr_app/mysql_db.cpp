@@ -1602,6 +1602,15 @@ bool mysql_db::query_sdm_subscriptions(
 }
 
 //------------------------------------------------------------------------------
+bool mysql_db::create_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    const oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
+    nlohmann::json& json_data) {
+  Logger::udr_mysql().debug("Reached function body mysql_db::create_sm_data");
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool mysql_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data, const oai::udr::model::Snssai& snssai,
