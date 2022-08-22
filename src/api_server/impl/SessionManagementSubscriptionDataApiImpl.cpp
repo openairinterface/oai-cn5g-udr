@@ -84,9 +84,9 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
 }
 
 void SessionManagementSubscriptionDataApiImpl::create_sm_data(
-      const std::string& ueId, const std::string& servingPlmnId,
-	  const SessionManagementSubscriptionData&  subscriptionData ,
-      Pistache::Http::ResponseWriter& response){
+    const std::string& ueId, const std::string& servingPlmnId,
+	  SessionManagementSubscriptionData&  subscriptionData ,
+    Pistache::Http::ResponseWriter& response){
 
 	  nlohmann::json response_data = {};
 	  Pistache::Http::Code code    = {};
