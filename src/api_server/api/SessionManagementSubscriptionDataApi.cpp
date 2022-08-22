@@ -95,12 +95,10 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
 
-  // TODO: this generates runtime error
-  // Logger::udr_server().debug(
-      // "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
-
   Pistache::Optional<Snssai> singleNssai;
   if (!singleNssaiQuery.isEmpty()) {
+    Logger::udr_server().debug(
+      "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
     Snssai valueQuery_instance;
     if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
       Logger::udr_server().debug(
