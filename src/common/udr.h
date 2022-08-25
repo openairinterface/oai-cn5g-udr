@@ -4,8 +4,8 @@
  * this work for additional information regarding copyright ownership.
  * The OpenAirInterface Software Alliance licenses this file to You under
  * the OAI Public License, Version 1.1  (the "License"); you may not use this
- *file except in compliance with the License. You may obtain a copy of the
- *License at
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
  *      http://www.openairinterface.org/?page_id=698
  *
@@ -26,6 +26,9 @@
 #include <vector>
 
 #define HEART_BEAT_TIMER 10
+
+#define MAX_FIRST_CONNECTION_RETRY 100
+#define MAX_CONNECTION_RETRY 3
 
 #define _unused(x) ((void) (x))
 
@@ -78,7 +81,7 @@ typedef enum db_type_s {
   DB_TYPE_CASSANDRA = 2
 } db_type_t;
 
-static const std::vector<std::string> db_type_e2str = {"Unknown", "MySQL",
-                                                       "Cassandra"};
+static const std::vector<std::string> db_type_e2str = {
+    "Unknown", "MySQL", "Cassandra"};
 
 #endif

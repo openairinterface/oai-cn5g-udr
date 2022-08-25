@@ -26,12 +26,13 @@
  */
 
 #include "logger.hpp"
-#include "spdlog/sinks/syslog_sink.h"
 
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
+
+#include "spdlog/sinks/syslog_sink.h"
 
 Logger* Logger::m_singleton = NULL;
 
@@ -69,7 +70,6 @@ void Logger::_init(
   m_system     = new _Logger("system ", m_sinks, ss.str().c_str());
   m_config     = new _Logger("configurations", m_sinks, ss.str().c_str());
   m_udr_server = new _Logger("udr_server", m_sinks, ss.str().c_str());
-  m_udr_app    = new _Logger("udr_app", m_sinks, ss.str().c_str());
   m_udr_nrf    = new _Logger("udr_nrf", m_sinks, ss.str().c_str());
   m_udr_mysql  = new _Logger("udr_mysql", m_sinks, ss.str().c_str());
 }

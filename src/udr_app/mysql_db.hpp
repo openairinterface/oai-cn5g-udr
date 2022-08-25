@@ -21,30 +21,49 @@
 
 /*! \file mysql_db.hpp
  \brief
- \author  Tien-Thinh NGUYEN
+ \author
  \company Eurecom
  \date 2022
- \email: Tien-Thinh.Nguyen@eurecom.fr
+ \email: contact@openairinterface.org
  */
 
 #ifndef MYSQL_DB_HPP
 #define MYSQL_DB_HPP
 
 #include <mysql/mysql.h>
+#include <shared_mutex>
 
 #include "Amf3GppAccessRegistration.h"
 #include "database_wrapper.hpp"
+#include "udr_event.hpp"
 
 namespace oai::udr::app {
 
 class mysql_db : public database_wrapper<mysql_db> {
  public:
-  mysql_db();
+  mysql_db(udr_event& ev);
   virtual ~mysql_db();
 
   bool initialize();
-
+  bool connect(uint32_t num_retries);
   bool close_connection();
+
+  /*
+   * Set the DB connection status
+   * @param [bool] status: status to be set
+   * @return void
+   */
+  void set_db_connection_status(bool status);
+
+  /*
+   * Get the DB connection status
+   * @param void
+   * @return current connection status
+   */
+  bool get_db_connection_status() const;
+
+  void start_event_connection_handling();
+  void trigger_connection_handling_procedure(uint64_t ms);
 
   bool insert_authentication_subscription(
       const std::string& id,
@@ -134,6 +153,10 @@ class mysql_db : public database_wrapper<mysql_db> {
 
  private:
   MYSQL mysql_connector;
+  bs2::connection db_connection_event;
+  udr_event& m_event_sub;
+  bool is_db_connection_active;
+  mutable std::shared_mutex m_db_connection_status;
 };
 }  // namespace oai::udr::app
 

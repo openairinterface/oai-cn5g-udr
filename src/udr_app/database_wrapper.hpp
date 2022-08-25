@@ -21,10 +21,10 @@
 
 /*! \file databse_wrapper.hpp
  \brief
- \author  Tien-Thinh NGUYEN
+ \author
  \company Eurecom
  \date 2022
- \email: Tien-Thinh.Nguyen@eurecom.fr
+ \email: contact@openairinterface.org
  */
 
 #ifndef DATABASE_WRAPPER_HPP
@@ -39,7 +39,7 @@
 
 namespace oai::udr::app {
 
-template<class DerivedT>
+template <class DerivedT>
 class database_wrapper : public database_wrapper_abstraction {
  public:
   database_wrapper(){};
@@ -57,10 +57,26 @@ class database_wrapper : public database_wrapper_abstraction {
     return derived->initialize();
   }
 
+  bool connect(uint32_t num_retries) {
+    Logger::udr_app().debug(
+        "Establish the connection to the DB (from database_wrapper)");
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->connect(num_retries);
+  }
   bool close_connection() override {
     Logger::udr_app().debug("Initialize from database_wrapper");
     auto derived = static_cast<DerivedT*>(this);
     return derived->close_connection();
+  }
+
+  void start_event_connection_handling() {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->start_event_connection_handling();
+  }
+
+  void trigger_connection_handling_procedure(uint64_t ms) {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->trigger_connection_handling_procedure(ms);
   }
 
   bool insert_authentication_subscription(
@@ -78,8 +94,8 @@ class database_wrapper : public database_wrapper_abstraction {
     return derived->delete_authentication_subscription(id);
   }
 
-  bool query_authentication_subscription(
-      const std::string& id, nlohmann::json& json_data) override {
+  bool query_authentication_subscription(const std::string& id,
+                                         nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_authentication_subscription(id, json_data);
   }
@@ -89,34 +105,33 @@ class database_wrapper : public database_wrapper_abstraction {
       const std::vector<oai::udr::model::PatchItem>& patchItem,
       nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->update_authentication_subscription(
-        id, patchItem, json_data);
+    return derived->update_authentication_subscription(id, patchItem,
+                                                       json_data);
   }
 
-  bool query_am_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data) override {
+  bool query_am_data(const std::string& ue_id,
+                     const std::string& serving_plmn_id,
+                     nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_am_data(ue_id, serving_plmn_id, json_data);
   }
 
-  bool create_amf_context_3gpp(
-      const std::string& ue_id,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration)
-      override {
+  bool create_amf_context_3gpp(const std::string& ue_id,
+                               oai::udr::model::Amf3GppAccessRegistration&
+                                   amf3GppAccessRegistration) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->create_amf_context_3gpp(ue_id, amf3GppAccessRegistration);
   }
 
-  bool query_amf_context_3gpp(
-      const std::string& ue_id, nlohmann::json& json_data) override {
+  bool query_amf_context_3gpp(const std::string& ue_id,
+                              nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_amf_context_3gpp(ue_id, json_data);
   }
 
-  bool insert_authentication_status(
-      const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
-      nlohmann::json& json_data) override {
+  bool insert_authentication_status(const std::string& ue_id,
+                                    const oai::udr::model::AuthEvent& authEvent,
+                                    nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->insert_authentication_status(ue_id, authEvent, json_data);
   }
@@ -126,21 +141,21 @@ class database_wrapper : public database_wrapper_abstraction {
     return derived->delete_authentication_status(ue_id);
   }
 
-  bool query_authentication_status(
-      const std::string& ue_id, nlohmann::json& json_data) override {
+  bool query_authentication_status(const std::string& ue_id,
+                                   nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_authentication_status(ue_id, json_data);
   }
 
-  bool query_sdm_subscription(
-      const std::string& ue_id, const std::string& subs_id,
-      nlohmann::json& json_data) override {
+  bool query_sdm_subscription(const std::string& ue_id,
+                              const std::string& subs_id,
+                              nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_sdm_subscription(ue_id, subs_id, json_data);
   }
 
-  bool delete_sdm_subscription(
-      const std::string& ue_id, const std::string& subs_id) override {
+  bool delete_sdm_subscription(const std::string& ue_id,
+                               const std::string& subs_id) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->delete_sdm_subscription(ue_id, subs_id);
   }
@@ -150,8 +165,8 @@ class database_wrapper : public database_wrapper_abstraction {
       oai::udr::model::SdmSubscription& sdmSubscription,
       nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->update_sdm_subscription(
-        ue_id, subs_id, sdmSubscription, json_data);
+    return derived->update_sdm_subscription(ue_id, subs_id, sdmSubscription,
+                                            json_data);
   }
 
   bool create_sdm_subscriptions(
@@ -162,19 +177,20 @@ class database_wrapper : public database_wrapper_abstraction {
     return derived->create_sdm_subscriptions(ue_id, sdmSubscription, json_data);
   }
 
-  bool query_sdm_subscriptions(
-      const std::string& ue_id, nlohmann::json& json_data) override {
+  bool query_sdm_subscriptions(const std::string& ue_id,
+                               nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_sdm_subscriptions(ue_id, json_data);
   }
 
-  bool query_sm_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string& dnn = {}) override {
+  bool query_sm_data(const std::string& ue_id,
+                     const std::string& serving_plmn_id,
+                     nlohmann::json& json_data,
+                     const oai::udr::model::Snssai& snssai = {},
+                     const std::string& dnn = {}) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->query_sm_data(
-        ue_id, serving_plmn_id, json_data, snssai, dnn);
+    return derived->query_sm_data(ue_id, serving_plmn_id, json_data, snssai,
+                                  dnn);
   }
 
   bool create_sm_data(
@@ -191,32 +207,32 @@ class database_wrapper : public database_wrapper_abstraction {
       const oai::udr::model::SmfRegistration& smfRegistration,
       nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->insert_smf_context_non_3gpp(
-        ue_id, pdu_session_id, smfRegistration, json_data);
+    return derived->insert_smf_context_non_3gpp(ue_id, pdu_session_id,
+                                                smfRegistration, json_data);
   }
 
-  bool delete_smf_context(
-      const std::string& ue_id, const int32_t& pdu_session_id) override {
+  bool delete_smf_context(const std::string& ue_id,
+                          const int32_t& pdu_session_id) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->delete_smf_context(ue_id, pdu_session_id);
   }
 
-  bool query_smf_registration(
-      const std::string& ue_id, const int32_t& pdu_session_id,
-      nlohmann::json& json_data) override {
+  bool query_smf_registration(const std::string& ue_id,
+                              const int32_t& pdu_session_id,
+                              nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_smf_registration(ue_id, pdu_session_id, json_data);
   }
 
-  bool query_smf_reg_list(
-      const std::string& ue_id, nlohmann::json& json_data) override {
+  bool query_smf_reg_list(const std::string& ue_id,
+                          nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_smf_reg_list(ue_id, json_data);
   }
 
-  bool query_smf_select_data(
-      const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data) override {
+  bool query_smf_select_data(const std::string& ue_id,
+                             const std::string& serving_plmn_id,
+                             nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_smf_select_data(ue_id, serving_plmn_id, json_data);
   }

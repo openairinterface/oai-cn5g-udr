@@ -97,7 +97,14 @@ class Logger {
   }
 
   Logger() {}
-  ~Logger() {}
+  ~Logger() {
+    if (m_udr_app) delete m_udr_app;
+    if (m_config) delete m_config;
+    if (m_system) delete m_system;
+    if (m_udr_server) delete m_udr_server;
+    if (m_udr_nrf) delete m_udr_nrf;
+    if (m_udr_mysql) delete m_udr_mysql;
+  }
 
   void _init(const char* app, const bool log_stdout, const bool log_rot_file);
 

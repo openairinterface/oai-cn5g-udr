@@ -20,10 +20,10 @@
  */
 
 /*! \file udr_client.hpp
- \author  Tien-Thinh NGUYEN
+ \author
  \company Eurecom
  \date 2020
- \email:
+ \email: contact@openairinterface.org
  */
 
 #ifndef FILE_UDR_CLIENT_HPP_SEEN
@@ -49,9 +49,8 @@ class udr_client {
 
   udr_client(udr_client const&) = delete;
 
-  void curl_http_client(
-      std::string remoteUri, std::string method, std::string msgBody,
-      std::string& response);
+  void curl_http_client(std::string remoteUri, std::string method,
+                        std::string msgBody, std::string& response);
 };
 }  // namespace app
 }  // namespace udr

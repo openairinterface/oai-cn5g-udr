@@ -29,6 +29,7 @@
 #define FILE_STRING_HPP_FILE_SEEN
 
 #include <arpa/inet.h>
+
 #include <string>
 
 namespace util {

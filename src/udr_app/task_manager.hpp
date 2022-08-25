@@ -24,7 +24,7 @@
  \author
  \company Eurecom
  \date 2020
- \email:
+ \email: contact@openairinterface.org
  */
 
 #ifndef TASK_MANAGER_H_
