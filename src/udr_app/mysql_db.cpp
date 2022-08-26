@@ -1795,13 +1795,15 @@ bool mysql_db::query_sdm_subscriptions(
 
 //------------------------------------------------------------------------------
 bool mysql_db::create_sm_data(
-    const std::string& ue_id, const std::string& serving_plmn_id,
     oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
     nlohmann::json& json_data) {
   
   MYSQL_RES* res          = nullptr;
   MYSQL_ROW row           = {};
   nlohmann::json json_tmp = {};
+
+  std::string ue_id = sm_subscription.getUeId();
+  std::string serving_plmn_id = sm_subscription.getServingPlmnId();
 
   std::string query =
       "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id + "'" +

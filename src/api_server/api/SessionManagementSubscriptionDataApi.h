@@ -107,7 +107,6 @@ class SessionManagementSubscriptionDataApi {
       Pistache::Http::ResponseWriter& response) = 0;
 
   virtual void create_sm_data(
-      const std::string& ueId, const std::string& servingPlmnId,
 	  SessionManagementSubscriptionData&  subscriptionData ,
       Pistache::Http::ResponseWriter& response) = 0;
 };

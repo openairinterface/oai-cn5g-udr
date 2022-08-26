@@ -84,7 +84,6 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
 }
 
 void SessionManagementSubscriptionDataApiImpl::create_sm_data(
-    const std::string& ueId, const std::string& servingPlmnId,
 	  SessionManagementSubscriptionData&  subscriptionData ,
     Pistache::Http::ResponseWriter& response){
 
@@ -93,7 +92,7 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
 	  long http_code               = 0;
 
 	  m_udr_app->handle_create_sm_data(
-	      ueId, servingPlmnId, subscriptionData, response_data, http_code);
+	      subscriptionData, response_data, http_code);
 
 	  code = static_cast<Pistache::Http::Code>(http_code);
 	  Logger::udr_server().debug("HTTP Response code %d.\n", code);

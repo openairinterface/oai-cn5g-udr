@@ -63,10 +63,10 @@ void SessionManagementSubscriptionDataApi::setupRoutes() {
       Routes::bind(
           &SessionManagementSubscriptionDataApi::query_sm_data_handler, this));
 
-  Routes::Put(
+  Routes::Post(
       *router,
       base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/:servingPlmnId/provisioned-data/sm-data",
+          "/subscription-data/provisioned-data/sm-data",
       Routes::bind(
           &SessionManagementSubscriptionDataApi::create_sm_data_handler, this));
 
@@ -160,22 +160,16 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
 void SessionManagementSubscriptionDataApi::create_sm_data_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
-  Logger::udr_server().info("SessionManagementSubscriptionData Method: PUT!");
-
-  if (!request.hasParam(":ueId") or !request.hasParam(":servingPlmnId")) {
-    // send a 400 error
-    response.send(Pistache::Http::Code::Bad_Request);
-    return;
-  }
-
-  // Getting the path params
-  auto ueId          = request.param(":ueId").as<std::string>();
-  auto servingPlmnId = request.param(":servingPlmnId").as<std::string>();
+  Logger::udr_server().info("SessionManagementSubscriptionData Method: POST!");
 
   SessionManagementSubscriptionData subscriptionData;
   try {
 	    nlohmann::json::parse(request.body()).get_to(subscriptionData);
-	    this->create_sm_data(ueId, servingPlmnId, subscriptionData, response);
+      if (!subscriptionData.ueIdIsSet() or !subscriptionData.servingPlmnIdIsSet()) {
+        response.send(Pistache::Http::Code::Bad_Request);
+        return;
+      }
+	    this->create_sm_data(subscriptionData, response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());
