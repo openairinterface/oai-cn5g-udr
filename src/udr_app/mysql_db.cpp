@@ -1827,8 +1827,9 @@ bool mysql_db::create_sm_data(
 
   row = mysql_fetch_row(res);
   if (row != nullptr) {
-    Logger::udr_mysql().error("SessionManagementSubscriptionData existed!");
     // Existed
+    Logger::udr_mysql().error("SessionManagementSubscriptionData existed!");
+    json_data["error"] = "resource already exists";
     return false;
   }
   mysql_free_result(res);

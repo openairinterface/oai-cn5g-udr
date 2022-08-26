@@ -383,6 +383,13 @@ void udr_app::handle_create_sm_data(
     Logger::udr_app().info(
         "SessionManagementSubscription: %s", response_data.dump().c_str());
   } else {
+    if (response_data.find("error") != response_data.end()) {
+      std::string e = response_data["error"];
+      if (e.find("exists")) {
+        code = HTTP_STATUS_CODE_400_BAD_REQUEST;
+        return;
+      }
+    }
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
