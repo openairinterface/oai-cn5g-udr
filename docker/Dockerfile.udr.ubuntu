@@ -53,7 +53,7 @@ COPY . /openair-udr
 WORKDIR /
 RUN git clone https://github.com/vishnubob/wait-for-it.git
 
-# Installing all the needed libraries/packages to build and run UDM
+# Installing all the needed libraries/packages to build and run UDR
 WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --install-deps --force && \
     cp -Rf /openair-udr/build/ext /openair-udr-ext-ref
