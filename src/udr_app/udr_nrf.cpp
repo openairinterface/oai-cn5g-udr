@@ -45,8 +45,8 @@
 #include "udr_profile.hpp"
 
 using namespace oai::udr::config;
-// using namespace udr;
 using namespace oai::udr::app;
+using namespace boost::placeholders;
 
 using json = nlohmann::json;
 

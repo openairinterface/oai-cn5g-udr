@@ -42,6 +42,8 @@
 using namespace oai::udr::app;
 using namespace oai::udr::model;
 using namespace oai::udr::config;
+using namespace boost::placeholders;
+
 extern udr_config udr_cfg;
 
 //------------------------------------------------------------------------------
