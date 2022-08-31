@@ -51,8 +51,8 @@ extern udr_config udr_cfg;
 
 //------------------------------------------------------------------------------
 // To read content of the response from NF
-static std::size_t callback(const char* in, std::size_t size, std::size_t num,
-                            std::string* out) {
+static std::size_t callback(
+    const char* in, std::size_t size, std::size_t num, std::string* out) {
   const std::size_t totalBytes(size * num);
   out->append(in, totalBytes);
   return totalBytes;
@@ -67,14 +67,15 @@ udr_client::~udr_client() {
 }
 
 //------------------------------------------------------------------------------
-void udr_client::curl_http_client(std::string remoteUri, std::string method,
-                                  std::string msgBody, std::string& response) {
+void udr_client::curl_http_client(
+    std::string remoteUri, std::string method, std::string msgBody,
+    std::string& response) {
   Logger::udr_app().info("Send HTTP message with body %s", msgBody.c_str());
 
   uint32_t str_len = msgBody.length();
-  char* body_data = (char*)malloc(str_len + 1);
+  char* body_data  = (char*) malloc(str_len + 1);
   memset(body_data, 0, str_len + 1);
-  memcpy((void*)body_data, (void*)msgBody.c_str(), str_len);
+  memcpy((void*) body_data, (void*) msgBody.c_str(), str_len);
 
   curl_global_init(CURL_GLOBAL_ALL);
   CURL* curl = curl_easy_init();
@@ -83,7 +84,7 @@ void udr_client::curl_http_client(std::string remoteUri, std::string method,
   if (udr_cfg.use_http2) http_version = 2;
 
   if (curl) {
-    CURLcode res = {};
+    CURLcode res               = {};
     struct curl_slist* headers = nullptr;
     if ((method.compare("POST") == 0) or (method.compare("PUT") == 0) or
         (method.compare("PATCH") == 0)) {
@@ -113,8 +114,8 @@ void udr_client::curl_http_client(std::string remoteUri, std::string method,
       // we use a self-signed test server, skip verification during debugging
       curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
       curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-      curl_easy_setopt(curl, CURLOPT_HTTP_VERSION,
-                       CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE);
+      curl_easy_setopt(
+          curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE);
     }
 
     // Response information.
@@ -136,13 +137,13 @@ void udr_client::curl_http_client(std::string remoteUri, std::string method,
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
 
     // Process the response
-    response = *httpData.get();
+    response            = *httpData.get();
     bool is_response_ok = true;
     Logger::udr_app().info("Get response with HTTP code (%d)", httpCode);
 
     if (httpCode == 0) {
-      Logger::udr_app().info("Cannot get response when calling %s",
-                             remoteUri.c_str());
+      Logger::udr_app().info(
+          "Cannot get response when calling %s", remoteUri.c_str());
       // free curl before returning
       curl_slist_free_all(headers);
       curl_easy_cleanup(curl);
@@ -173,8 +174,8 @@ void udr_client::curl_http_client(std::string remoteUri, std::string method,
         response_data["error"]["cause"] = "504 Gateway Timeout";
       }
 
-      Logger::udr_app().info("Get response with jsonData: %s",
-                             response.c_str());
+      Logger::udr_app().info(
+          "Get response with jsonData: %s", response.c_str());
 
       std::string cause = response_data["error"]["cause"];
       Logger::udr_app().info("Call Network Function services failure");
