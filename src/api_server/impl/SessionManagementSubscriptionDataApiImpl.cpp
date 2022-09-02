@@ -84,19 +84,19 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
 }
 
 void SessionManagementSubscriptionDataApiImpl::create_sm_data(
-	  SessionManagementSubscriptionData&  subscriptionData ,
+    SessionManagementSubscriptionData&  subscriptionData ,
     Pistache::Http::ResponseWriter& response){
 
-	  nlohmann::json response_data = {};
-	  Pistache::Http::Code code    = {};
-	  long http_code               = 0;
+    nlohmann::json response_data = {};
+    Pistache::Http::Code code    = {};
+    long http_code               = 0;
 
-	  m_udr_app->handle_create_sm_data(
-	      subscriptionData, response_data, http_code);
+    m_udr_app->handle_create_sm_data(
+        subscriptionData, response_data, http_code);
 
-	  code = static_cast<Pistache::Http::Code>(http_code);
-	  Logger::udr_server().debug("HTTP Response code %d.\n", code);
-	  response.send(code, response_data.dump().c_str());
+    code = static_cast<Pistache::Http::Code>(http_code);
+    Logger::udr_server().debug("HTTP Response code %d.\n", code);
+    response.send(code, response_data.dump().c_str());
 
 
 }
@@ -107,8 +107,8 @@ void SessionManagementSubscriptionDataApiImpl::put_sm_data(
   Pistache::Http::ResponseWriter& response
 ) {
     nlohmann::json response_data = {};
-	  Pistache::Http::Code code    = {};
-	  long http_code               = 0;
+    Pistache::Http::Code code    = {};
+    long http_code               = 0;
 
     Logger::udr_server().debug("Checking if SessionManagementSubscriptionData resource already exists");
     m_udr_app->handle_query_sm_data(
@@ -119,23 +119,22 @@ void SessionManagementSubscriptionDataApiImpl::put_sm_data(
     if (code == Pistache::Http::Code::Ok) {
       Logger::udr_server().debug("Resource found, updating the existing one");
       m_udr_app->handle_update_sm_data(
-	      ueId, servingPlmnId, subscriptionData, response_data, http_code);
-    } else if (code == Pistache::Http::Code::Not_Found) {  // TODO: Branch on 404
+        ueId, servingPlmnId, subscriptionData, response_data, http_code);
+    } else if (code == Pistache::Http::Code::Not_Found) {
       Logger::udr_server().debug("Resource not found, creating a new one");
       subscriptionData.setUeId(ueId);
       subscriptionData.setServingPlmnId(servingPlmnId);
       m_udr_app->handle_create_sm_data(
-	      subscriptionData, response_data, http_code);
+        subscriptionData, response_data, http_code);
     } else {
       Logger::udr_server().debug("Intermediate GET failure");
     }
 
-    // TODO: JSON problem type depending on the response code (?)
     response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));
-	  code = static_cast<Pistache::Http::Code>(http_code);
-	  Logger::udr_server().debug("HTTP Response code %d.\n", code);
-	  response.send(code, response_data.dump().c_str());
+    code = static_cast<Pistache::Http::Code>(http_code);
+    Logger::udr_server().debug("HTTP Response code %d.\n", code);
+    response.send(code, response_data.dump().c_str());
 }
 
 }  // namespace oai::udr::api
