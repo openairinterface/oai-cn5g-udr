@@ -273,6 +273,18 @@ class udr_app {
                             const std::string& dnn = {});
 
   /*
+   * Handle a request to create a SessionManagementSubscription
+   * (SessionManagementSubscriptionDataApiImpl)
+   * @param [const oai::udr::model::SessionManagementSubscriptionData&] subscriptionData: SM Subscription
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] code: HTTP response code
+   * @return void
+   */
+  void handle_create_sm_data(
+      SessionManagementSubscriptionData&  subscriptionData,
+      nlohmann::json& response_data, long& code);
+
+  /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [const int32_t&] pdu_session_id: PDU Session ID

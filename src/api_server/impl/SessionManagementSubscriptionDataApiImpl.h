@@ -74,6 +74,9 @@ class SessionManagementSubscriptionDataApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
+  void create_sm_data(
+		SessionManagementSubscriptionData&  subscriptionData,
+        Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace oai::udr::api
