@@ -396,6 +396,24 @@ void udr_app::handle_create_sm_data(
 }
 
 //------------------------------------------------------------------------------
+void udr_app::handle_update_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    SessionManagementSubscriptionData&  subscriptionData,
+    nlohmann::json& response_data, long& code) {
+  Logger::udr_app().info("Update a Session Management subscription data of a UE");
+
+  if (db_connector->update_sm_data(
+          ueId, servingPlmnId, subscriptionData, response_data)) {
+    code = HTTP_STATUS_CODE_200_OK;
+    Logger::udr_app().info(
+        "SessionManagementSubscription: %s", response_data.dump().c_str());
+  } else {
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
 void udr_app::handle_create_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
     const SmfRegistration& smfRegistration, nlohmann::json& response_data,

@@ -285,6 +285,21 @@ class udr_app {
       nlohmann::json& response_data, long& code);
 
   /*
+   * Handle a request to update a SessionManagementSubscription
+   * (SessionManagementSubscriptionDataApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [const std::string&] serving_plmn_id: Serving PLMN ID
+   * @param [const oai::udr::model::SessionManagementSubscriptionData&] subscriptionData: SM Subscription
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] code: HTTP response code
+   * @return void
+   */
+  void handle_update_sm_data(
+      const std::string& ueId, const std::string& servingPlmnId,
+      SessionManagementSubscriptionData&  subscriptionData,
+      nlohmann::json& response_data, long& code);
+
+  /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [const int32_t&] pdu_session_id: PDU Session ID
