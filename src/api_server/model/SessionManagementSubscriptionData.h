@@ -69,6 +69,22 @@ class SessionManagementSubscriptionData {
   /// <summary>
   ///
   /// </summary>
+  std::string getUeId() const;
+  void setUeId(std::string const& value);
+  bool ueIdIsSet() const;
+  void unsetUeId();
+
+  /// <summary>
+  ///
+  /// </summary>
+  std::string getServingPlmnId() const;
+  void setServingPlmnId(std::string const& value);
+  bool servingPlmnIdIsSet() const;
+  void unsetServingPlmnId();
+
+  /// <summary>
+  ///
+  /// </summary>
   Snssai getSingleNssai() const;
   void setSingleNssai(Snssai const& value);
   /// <summary>
@@ -154,6 +170,10 @@ class SessionManagementSubscriptionData {
  protected:
   Snssai m_SingleNssai;
 
+  std::string m_ueId;
+  bool m_ueIdIsSet;
+  std::string m_servingPlmnId;
+  bool m_servingPlmnIdIsSet;
   std::map<std::string, DnnConfiguration> m_DnnConfigurations;
   bool m_DnnConfigurationsIsSet;
   std::vector<std::string> m_InternalGroupIds;

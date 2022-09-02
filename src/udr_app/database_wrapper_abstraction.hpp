@@ -258,6 +258,17 @@ class database_wrapper_abstraction {
       const std::string& dnn = {}) = 0;
 
   /*
+   * Insert a new item into the DB for SessionManagementSubscription
+   * @param [const oai::udr::model::SessionManagementSubscriptionData&]
+   * SessionManagementSubscription: subscription
+   * @param [nlohmann::json&] json_data: Data in Json format
+   * @return true if successful, otherwise return false
+   */
+  virtual bool create_sm_data(
+      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      nlohmann::json& json_data) = 0;
+
+  /*
    * Insert an item into the DB for SMFRegistration
    * @param [const std::string&] ue_id: UE Identity
    * @param [const int32_t&] pdu_session_id: PDU Session ID

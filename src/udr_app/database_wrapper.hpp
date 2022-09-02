@@ -193,6 +193,14 @@ class database_wrapper : public database_wrapper_abstraction {
         ue_id, serving_plmn_id, json_data, snssai, dnn);
   }
 
+  bool create_sm_data(
+      oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
+      nlohmann::json& json_data) override {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->create_sm_data(
+        sm_subscription, json_data);
+  }
+
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,
       const oai::udr::model::SmfRegistration& smfRegistration,
