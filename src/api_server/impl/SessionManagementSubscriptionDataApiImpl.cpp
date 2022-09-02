@@ -120,7 +120,7 @@ void SessionManagementSubscriptionDataApiImpl::put_sm_data(
       Logger::udr_server().debug("Resource found, updating the existing one");
       m_udr_app->handle_update_sm_data(
 	      ueId, servingPlmnId, subscriptionData, response_data, http_code);
-    } else if (code == Pistache::Http::Code::Internal_Server_Error) {  // TODO: Branch on 404
+    } else if (code == Pistache::Http::Code::Not_Found) {  // TODO: Branch on 404
       Logger::udr_server().debug("Resource not found, creating a new one");
       subscriptionData.setUeId(ueId);
       subscriptionData.setServingPlmnId(servingPlmnId);
