@@ -265,13 +265,14 @@ class udr_app {
   /*
    * Handle a request to create a SessionManagementSubscription
    * (SessionManagementSubscriptionDataApiImpl)
-   * @param [const oai::udr::model::SessionManagementSubscriptionData&] subscriptionData: SM Subscription
+   * @param [const oai::udr::model::SessionManagementSubscriptionData&]
+   * subscriptionData: SM Subscription
    * @param [nlohmann::json&] response_data: Response in Json format
    * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_create_sm_data(
-      SessionManagementSubscriptionData&  subscriptionData,
+      SessionManagementSubscriptionData& subscriptionData,
       nlohmann::json& response_data, long& code);
 
   /*

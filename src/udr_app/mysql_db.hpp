@@ -122,9 +122,8 @@ class mysql_db : public database_wrapper<mysql_db> {
       const std::string& ue_id, nlohmann::json& json_data);
 
   bool create_sm_data(
-    oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
-    nlohmann::json& json_data
-  );
+      oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
+      nlohmann::json& json_data);
 
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,

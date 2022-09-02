@@ -364,12 +364,12 @@ void udr_app::handle_query_sm_data(
 
 //------------------------------------------------------------------------------
 void udr_app::handle_create_sm_data(
-    SessionManagementSubscriptionData&  subscriptionData,
+    SessionManagementSubscriptionData& subscriptionData,
     nlohmann::json& response_data, long& code) {
-  Logger::udr_app().info("Create a Session Management subscription data of a UE");
+  Logger::udr_app().info(
+      "Create a Session Management subscription data of a UE");
 
-  if (db_connector->create_sm_data(
-          subscriptionData, response_data)) {
+  if (db_connector->create_sm_data(subscriptionData, response_data)) {
     code = HTTP_STATUS_CODE_201_CREATED;
     Logger::udr_app().info(
         "SessionManagementSubscription: %s", response_data.dump().c_str());
