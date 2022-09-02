@@ -52,10 +52,14 @@ bool cassandra_db::initialize() {
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::connect(uint32_t num_retries) { return true; }
+bool cassandra_db::connect(uint32_t num_retries) {
+  return true;
+}
 
 //------------------------------------------------------------------------------
-bool cassandra_db::close_connection() { return true; }
+bool cassandra_db::close_connection() {
+  return true;
+}
 
 //------------------------------------------------------------------------------
 bool cassandra_db::insert_authentication_subscription(
@@ -87,21 +91,21 @@ bool cassandra_db::update_authentication_subscription(
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::query_am_data(const std::string& ue_id,
-                                 const std::string& serving_plmn_id,
-                                 nlohmann::json& json_data) {
+bool cassandra_db::query_am_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& json_data) {
   return true;
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::create_amf_context_3gpp(const std::string& ue_id,
-                                           const nlohmann::json& json_data) {
+bool cassandra_db::create_amf_context_3gpp(
+    const std::string& ue_id, const nlohmann::json& json_data) {
   return true;
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::query_amf_context_3gpp(const std::string& ue_id,
-                                          nlohmann::json& json_data) {
+bool cassandra_db::query_amf_context_3gpp(
+    const std::string& ue_id, nlohmann::json& json_data) {
   return true;
 }
 
@@ -153,17 +157,16 @@ bool cassandra_db::create_sdm_subscriptions(
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::query_sdm_subscriptions(const std::string& ue_id,
-                                           nlohmann::json& json_data) {
+bool cassandra_db::query_sdm_subscriptions(
+    const std::string& ue_id, nlohmann::json& json_data) {
   return true;
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::query_sm_data(const std::string& ue_id,
-                                 const std::string& serving_plmn_id,
-                                 nlohmann::json& json_data,
-                                 const oai::udr::model::Snssai&,
-                                 const std::string& dnn) {
+bool cassandra_db::query_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& json_data, const oai::udr::model::Snssai&,
+    const std::string& dnn) {
   return true;
 }
 
@@ -176,27 +179,27 @@ bool cassandra_db::insert_smf_context_non_3gpp(
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::delete_smf_context(const std::string& ue_id,
-                                      const int32_t& pdu_session_id) {
+bool cassandra_db::delete_smf_context(
+    const std::string& ue_id, const int32_t& pdu_session_id) {
   return true;
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::query_smf_registration(const std::string& ue_id,
-                                          const int32_t& pdu_session_id,
-                                          nlohmann::json& json_data) {
+bool cassandra_db::query_smf_registration(
+    const std::string& ue_id, const int32_t& pdu_session_id,
+    nlohmann::json& json_data) {
   return true;
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::query_smf_reg_list(const std::string& ue_id,
-                                      nlohmann::json& json_data) {
+bool cassandra_db::query_smf_reg_list(
+    const std::string& ue_id, nlohmann::json& json_data) {
   return true;
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::query_smf_select_data(const std::string& ue_id,
-                                         const std::string& serving_plmn_id,
-                                         nlohmann::json& json_data) {
+bool cassandra_db::query_smf_select_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& json_data) {
   return true;
 }

@@ -49,8 +49,9 @@ class udr_client {
 
   udr_client(udr_client const&) = delete;
 
-  void curl_http_client(std::string remoteUri, std::string method,
-                        std::string msgBody, std::string& response);
+  void curl_http_client(
+      std::string remoteUri, std::string method, std::string msgBody,
+      std::string& response);
 };
 }  // namespace app
 }  // namespace udr

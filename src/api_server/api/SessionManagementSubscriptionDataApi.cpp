@@ -98,7 +98,7 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
   Pistache::Optional<Snssai> singleNssai;
   if (!singleNssaiQuery.isEmpty()) {
     Logger::udr_server().debug(
-      "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
+        "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
     Snssai valueQuery_instance;
     if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
       Logger::udr_server().debug(
@@ -156,7 +156,6 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
   }
 }
 
-
 void SessionManagementSubscriptionDataApi::create_sm_data_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
@@ -164,12 +163,13 @@ void SessionManagementSubscriptionDataApi::create_sm_data_handler(
 
   SessionManagementSubscriptionData subscriptionData;
   try {
-	    nlohmann::json::parse(request.body()).get_to(subscriptionData);
-      if (!subscriptionData.ueIdIsSet() or !subscriptionData.servingPlmnIdIsSet()) {
-        response.send(Pistache::Http::Code::Bad_Request);
-        return;
-      }
-	    this->create_sm_data(subscriptionData, response);
+    nlohmann::json::parse(request.body()).get_to(subscriptionData);
+    if (!subscriptionData.ueIdIsSet() or
+        !subscriptionData.servingPlmnIdIsSet()) {
+      response.send(Pistache::Http::Code::Bad_Request);
+      return;
+    }
+    this->create_sm_data(subscriptionData, response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());

@@ -84,20 +84,16 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
 }
 
 void SessionManagementSubscriptionDataApiImpl::create_sm_data(
-	  SessionManagementSubscriptionData&  subscriptionData ,
-    Pistache::Http::ResponseWriter& response){
+    SessionManagementSubscriptionData& subscriptionData,
+    Pistache::Http::ResponseWriter& response) {
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
 
-	  nlohmann::json response_data = {};
-	  Pistache::Http::Code code    = {};
-	  long http_code               = 0;
+  m_udr_app->handle_create_sm_data(subscriptionData, response_data, http_code);
 
-	  m_udr_app->handle_create_sm_data(
-	      subscriptionData, response_data, http_code);
-
-	  code = static_cast<Pistache::Http::Code>(http_code);
-	  Logger::udr_server().debug("HTTP Response code %d.\n", code);
-	  response.send(code, response_data.dump().c_str());
-
-
+  code = static_cast<Pistache::Http::Code>(http_code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
 }
 }  // namespace oai::udr::api

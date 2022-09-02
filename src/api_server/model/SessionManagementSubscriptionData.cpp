@@ -36,10 +36,10 @@
 namespace oai::udr::model {
 
 SessionManagementSubscriptionData::SessionManagementSubscriptionData() {
-  m_ueId                               = "";
-  m_ueIdIsSet                          = false;
-  m_servingPlmnId                      = "";
-  m_servingPlmnIdIsSet                 = false;
+  m_ueId               = "";
+  m_ueIdIsSet          = false;
+  m_servingPlmnId      = "";
+  m_servingPlmnIdIsSet = false;
 
   m_DnnConfigurationsIsSet             = false;
   m_InternalGroupIdsIsSet              = false;
@@ -65,10 +65,8 @@ void SessionManagementSubscriptionData::validate() {
 void to_json(nlohmann::json& j, const SessionManagementSubscriptionData& o) {
   j                = nlohmann::json();
   j["singleNssai"] = o.m_SingleNssai;
-  if (o.ueIdIsSet())
-    j["ueId"] = o.m_ueId;
-  if (o.servingPlmnIdIsSet())
-    j["servingPlmnId"] = o.m_servingPlmnId;
+  if (o.ueIdIsSet()) j["ueId"] = o.m_ueId;
+  if (o.servingPlmnIdIsSet()) j["servingPlmnId"] = o.m_servingPlmnId;
   if (o.dnnConfigurationsIsSet() || !o.m_DnnConfigurations.empty())
     j["dnnConfigurations"] = o.m_DnnConfigurations;
   if (o.internalGroupIdsIsSet() || !o.m_InternalGroupIds.empty())
@@ -145,12 +143,10 @@ void from_json(const nlohmann::json& j, SessionManagementSubscriptionData& o) {
   }
 }
 
-std::string SessionManagementSubscriptionData::getUeId()
-    const {
+std::string SessionManagementSubscriptionData::getUeId() const {
   return m_ueId;
 }
-void SessionManagementSubscriptionData::setUeId(
-    std::string const& value) {
+void SessionManagementSubscriptionData::setUeId(std::string const& value) {
   m_ueId      = value;
   m_ueIdIsSet = true;
 }
@@ -161,8 +157,7 @@ void SessionManagementSubscriptionData::unsetUeId() {
   m_ueIdIsSet = false;
 }
 
-std::string SessionManagementSubscriptionData::getServingPlmnId()
-    const {
+std::string SessionManagementSubscriptionData::getServingPlmnId() const {
   return m_servingPlmnId;
 }
 void SessionManagementSubscriptionData::setServingPlmnId(
@@ -176,7 +171,6 @@ bool SessionManagementSubscriptionData::servingPlmnIdIsSet() const {
 void SessionManagementSubscriptionData::unsetServingPlmnId() {
   m_servingPlmnIdIsSet = false;
 }
-
 
 Snssai SessionManagementSubscriptionData::getSingleNssai() const {
   return m_SingleNssai;
