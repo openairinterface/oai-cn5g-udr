@@ -2031,6 +2031,8 @@ bool mysql_db::query_sm_data(
     Logger::udr_mysql().error(
         "SessionManagementSubscriptionData no data found, SQL query: %s",
         query.c_str());
+    mysql_free_result(res);
+    return false;
   }
   mysql_free_result(res);
 
