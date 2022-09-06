@@ -62,7 +62,16 @@ class mysql_db : public database_wrapper<mysql_db> {
    */
   bool get_db_connection_status() const;
 
+  /*
+   * Verify the DB connection status and try to establish the connection if
+   * necessary
+   * @param void
+   * @return current connection status after trying
+   */
+  bool check_connection_status();
+
   void start_event_connection_handling();
+
   void trigger_connection_handling_procedure(uint64_t ms);
 
   bool insert_authentication_subscription(
