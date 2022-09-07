@@ -1956,7 +1956,11 @@ bool mysql_db::query_sm_data(
 
   if (row != NULL) {
     for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("singleNssai", field->name)) {
+      if (!strcmp("ueid", field->name)) {
+        sessionmanagementsubscriptiondata.setUeId(row[i]);
+      } else if (!strcmp("servingPlmnid", field->name)) {
+        sessionmanagementsubscriptiondata.setServingPlmnId(row[i]);
+      } else if (!strcmp("singleNssai", field->name)) {
         Snssai singlenssai;
         nlohmann::json::parse(row[i]).get_to(singlenssai);
         sessionmanagementsubscriptiondata.setSingleNssai(singlenssai);
@@ -2076,7 +2080,6 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
     for (int i = 0; i < fields.size(); i++) {
       try {
         if (!strcmp("ueid", fields[i].c_str())) {
-          Logger::udr_mysql().debug("UEID for the record: %s", row[i]);
           sessionmanagementsubscriptiondata.setUeId(row[i]);
         } else if (!strcmp("servingPlmnid", fields[i].c_str())) {
           sessionmanagementsubscriptiondata.setServingPlmnId(row[i]);
