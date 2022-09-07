@@ -171,6 +171,21 @@ bool cassandra_db::query_sm_data(
 }
 
 //------------------------------------------------------------------------------
+bool cassandra_db::create_sm_data(
+    oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
+    nlohmann::json& json_data) {
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool cassandra_db::update_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+    nlohmann::json& json_data) {
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool cassandra_db::insert_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
     const oai::udr::model::SmfRegistration& smfRegistration,
