@@ -39,7 +39,8 @@ RUN cp -Rf /openair-udr-ext-ref /openair-udr/build/ext
 
 # wait for it
 WORKDIR /
-RUN git clone https://github.com/vishnubob/wait-for-it.git
+RUN rm -Rf /wait-for-it && \
+    git clone https://github.com/vishnubob/wait-for-it.git
 
 # Building UDR
 WORKDIR /openair-udr/build/scripts
