@@ -356,6 +356,26 @@ void udr_app::handle_query_sm_data(
     Logger::udr_app().info(
         "SessionManagementSubscriptionData: %s", response_data.dump().c_str());
     // TODO: Headers
+  } else if (response_data.is_null()) {
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+  } else {
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_query_sm_data(nlohmann::json& response_data, long& code) {
+  Logger::udr_app().info(
+      "Retrieve the Session Management subscription data of all UEs");
+
+  if (db_connector->query_sm_data(response_data)) {
+    code = HTTP_STATUS_CODE_200_OK;
+    Logger::udr_app().info(
+        "SessionManagementSubscriptionData: %s", response_data.dump().c_str());
+    // TODO: Headers
+  } else if (response_data.is_null()) {
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
   } else {
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
   }

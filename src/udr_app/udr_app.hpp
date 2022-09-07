@@ -54,7 +54,7 @@ namespace app {
 class udr_app {
  public:
   explicit udr_app(const std::string& config_file, udr_event& ev);
-  udr_app(udr_app const&) = delete;
+  udr_app(udr_app const&)        = delete;
   void operator=(udr_app const&) = delete;
 
   virtual ~udr_app();
@@ -261,6 +261,15 @@ class udr_app {
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& response_data, long& code,
       const oai::udr::model::Snssai& snssai = {}, const std::string& dnn = {});
+
+  /*
+   * Handle a request to retrieve all SessionManagementSubscriptions
+   * (SessionManagementSubscriptionDataApiImpl)
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] code: HTTP response code
+   * @return void
+   */
+  void handle_query_sm_data(nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to create a SessionManagementSubscription

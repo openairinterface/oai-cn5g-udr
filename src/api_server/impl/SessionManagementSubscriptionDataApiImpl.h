@@ -74,6 +74,7 @@ class SessionManagementSubscriptionDataApiImpl
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
+  void query_sm_data(Pistache::Http::ResponseWriter& response);
   void create_sm_data(
       SessionManagementSubscriptionData& subscriptionData,
       Pistache::Http::ResponseWriter& response);

@@ -193,6 +193,11 @@ class database_wrapper : public database_wrapper_abstraction {
         ue_id, serving_plmn_id, json_data, snssai, dnn);
   }
 
+  bool query_sm_data(nlohmann::json& json_data) {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->query_sm_data(json_data);
+  }
+
   bool create_sm_data(
       oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
       nlohmann::json& json_data) override {

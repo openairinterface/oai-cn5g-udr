@@ -130,6 +130,8 @@ class mysql_db : public database_wrapper<mysql_db> {
       nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
       const std::string dnn = {});
 
+  bool query_sm_data(nlohmann::json& json_data);
+
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,
       const oai::udr::model::SmfRegistration& smfRegistration,

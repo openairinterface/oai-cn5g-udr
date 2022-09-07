@@ -63,6 +63,14 @@ void SessionManagementSubscriptionDataApi::setupRoutes() {
       Routes::bind(
           &SessionManagementSubscriptionDataApi::query_sm_data_handler, this));
 
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/provisioned-data/sm-data",
+      Routes::bind(
+          &SessionManagementSubscriptionDataApi::query_all_sm_data_handler,
+          this));
+
   Routes::Post(
       *router,
       base + udr_cfg.nudr.api_version +
@@ -142,6 +150,26 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
     this->query_sm_data(
         ueId, servingPlmnId, singleNssai, dnn, fields, supportedFeatures,
         ifNoneMatch, ifModifiedSince, response);
+  } catch (nlohmann::detail::exception& e) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request, e.what());
+    return;
+  } catch (Pistache::Http::HttpError& e) {
+    response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
+    return;
+  } catch (std::exception& e) {
+    // send a 500 error
+    response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
+    return;
+  }
+}
+
+void SessionManagementSubscriptionDataApi::query_all_sm_data_handler(
+    const Pistache::Rest::Request& request,
+    Pistache::Http::ResponseWriter response) {
+  Logger::udr_server().info("SessionManagementSubscriptionData Method: GET!");
+  try {
+    this->query_sm_data(response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());

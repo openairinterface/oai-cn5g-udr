@@ -171,6 +171,11 @@ bool cassandra_db::query_sm_data(
 }
 
 //------------------------------------------------------------------------------
+bool cassandra_db::query_sm_data(nlohmann::json& json_data) {
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool cassandra_db::insert_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
     const oai::udr::model::SmfRegistration& smfRegistration,

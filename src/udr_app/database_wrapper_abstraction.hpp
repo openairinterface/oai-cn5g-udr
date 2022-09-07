@@ -258,6 +258,13 @@ class database_wrapper_abstraction {
       const std::string& dnn = {}) = 0;
 
   /*
+   * Query all items from the DB for SessionManagementSubscription
+   * @param [nlohmann::json&] json_data: Data in Json format
+   * @return true if successful, otherwise return false
+   */
+  virtual bool query_sm_data(nlohmann::json& json_data) = 0;
+
+  /*
    * Insert a new item into the DB for SessionManagementSubscription
    * @param [const oai::udr::model::SessionManagementSubscriptionData&]
    * SessionManagementSubscription: subscription
