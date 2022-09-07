@@ -2182,6 +2182,32 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
 }
 
 //------------------------------------------------------------------------------
+bool mysql_db::delete_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id) {
+  // Check the connection with DB first
+  if (!get_db_connection_status()) {
+    Logger::udr_mysql().info(
+        "The connection to the MySQL is currently inactive");
+    return false;
+  }
+
+  std::string query =
+      "DELETE FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
+      "' AND servingPlmnid='" + serving_plmn_id + "'";
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_mysql().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+    return false;
+  }
+
+  Logger::udr_mysql().debug(
+      "SessionManagementSubscriptionData DELETE - successful");
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool mysql_db::insert_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
     const oai::udr::model::SmfRegistration& smfRegistration,

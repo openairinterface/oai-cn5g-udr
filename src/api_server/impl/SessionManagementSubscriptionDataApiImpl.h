@@ -78,6 +78,9 @@ class SessionManagementSubscriptionDataApiImpl
   void create_sm_data(
       SessionManagementSubscriptionData& subscriptionData,
       Pistache::Http::ResponseWriter& response);
+  void delete_sm_data(
+      const std::string& ueId, const std::string& servingPlmnId,
+      Pistache::Http::ResponseWriter& response);
 };
 
 }  // namespace oai::udr::api

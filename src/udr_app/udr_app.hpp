@@ -272,6 +272,19 @@ class udr_app {
   void handle_query_sm_data(nlohmann::json& response_data, long& code);
 
   /*
+   * Handle a request to delete a SessionManagementSubscription
+   * (SessionManagementSubscriptionDataApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [const std::string&] serving_plmn_id: Serving PLMN ID
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] code: HTTP response code
+   * @return void
+   */
+  void handle_delete_sm_data(
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      nlohmann::json& response_data, long& http_code);
+
+  /*
    * Handle a request to create a SessionManagementSubscription
    * (SessionManagementSubscriptionDataApiImpl)
    * @param [const oai::udr::model::SessionManagementSubscriptionData&]

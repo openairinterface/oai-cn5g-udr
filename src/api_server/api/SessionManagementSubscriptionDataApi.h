@@ -76,6 +76,10 @@ class SessionManagementSubscriptionDataApi {
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
 
+  void delete_sm_data_handler(
+      const Pistache::Rest::Request& request,
+      Pistache::Http::ResponseWriter response);
+
   void session_management_subscription_data_api_default_handler(
       const Pistache::Rest::Request& request,
       Pistache::Http::ResponseWriter response);
@@ -112,6 +116,9 @@ class SessionManagementSubscriptionDataApi {
   virtual void query_sm_data(Pistache::Http::ResponseWriter& response) = 0;
   virtual void create_sm_data(
       SessionManagementSubscriptionData& subscriptionData,
+      Pistache::Http::ResponseWriter& response) = 0;
+  virtual void delete_sm_data(
+      const std::string& ueId, const std::string& servingPlmnId,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

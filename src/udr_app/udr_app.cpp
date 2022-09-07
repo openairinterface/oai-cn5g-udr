@@ -407,6 +407,21 @@ void udr_app::handle_create_sm_data(
 }
 
 //------------------------------------------------------------------------------
+void udr_app::handle_delete_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& response_data, long& code) {
+  Logger::udr_app().info(
+      "Delete a Session Management subscription data of a UE");
+
+  if (db_connector->delete_sm_data(ue_id, serving_plmn_id)) {
+    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+  } else {
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
 void udr_app::handle_create_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
     const SmfRegistration& smfRegistration, nlohmann::json& response_data,

@@ -112,4 +112,23 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   response.send(code, response_data.dump().c_str());
 }
+
+void SessionManagementSubscriptionDataApiImpl::delete_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    Pistache::Http::ResponseWriter& response) {
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
+
+  m_udr_app->handle_delete_sm_data(
+      ueId, servingPlmnId, response_data, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
+  Logger::udr_server().debug("HTTP response code %ld", http_code);
+
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
+  response.send(code, response_data.dump().c_str());
+}
+
 }  // namespace oai::udr::api
