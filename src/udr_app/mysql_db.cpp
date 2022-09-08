@@ -2049,9 +2049,10 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
   MYSQL_ROW row      = {};
   MYSQL_FIELD* field = nullptr;
   std::vector<std::string> fields;
-  nlohmann::json tmp = {};
-  nlohmann::json j   = {};
-  std::string query  = "SELECT * FROM SessionManagementSubscriptionData";
+  nlohmann::json ue_data = {};
+  nlohmann::json j       = {};
+  nlohmann::json tmp     = {};
+  std::string query      = "SELECT * FROM SessionManagementSubscriptionData";
 
   Logger::udr_mysql().debug("MySQL query: %s", query.c_str());
 
@@ -2073,9 +2074,8 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
     fields.push_back(field->name);
   }
 
-  j.clear();
   while (row = mysql_fetch_row(res)) {
-    tmp.clear();
+    ue_data                                                             = {};
     SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
     for (int i = 0; i < fields.size(); i++) {
       try {
@@ -2160,16 +2160,84 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
             e.what());
       }
     }
-    to_json(tmp, sessionmanagementsubscriptiondata);
-    j += tmp;
 
+    to_json(tmp, sessionmanagementsubscriptiondata);
     Logger::udr_mysql().debug(
-        "SessionManagementSubscriptionData: %s", j.dump().c_str());
+        "SessionManagementSubscriptionData: %s", tmp.dump().c_str());
+
+    if (!tmp.is_null()) {
+      ue_data["SessionManagementSubscriptionData"] = tmp;
+      tmp                                          = {};
+
+      query_am_data(
+          sessionmanagementsubscriptiondata.getUeId(),
+          sessionmanagementsubscriptiondata.getServingPlmnId(), tmp);
+      if (!tmp.is_null()) {
+        ue_data["AccessAndMobilitySubscriptionData"] = tmp;
+        tmp                                          = {};
+      } else {
+        Logger::udr_mysql().debug(
+            "No AccessAndMobilitySubscriptionData found for ueId %s and "
+            "servingPlmnId %s",
+            sessionmanagementsubscriptiondata.getUeId().c_str(),
+            sessionmanagementsubscriptiondata.getServingPlmnId().c_str());
+      }
+
+      query_amf_context_3gpp(sessionmanagementsubscriptiondata.getUeId(), tmp);
+      if (!tmp.is_null()) {
+        ue_data["Amf3GppAccessRegistration"] = tmp;
+        tmp                                  = {};
+      } else {
+        Logger::udr_mysql().debug(
+            "No Amf3GppAccessRegistration found for ueId %s",
+            sessionmanagementsubscriptiondata.getUeId().c_str());
+      }
+
+      query_authentication_status(
+          sessionmanagementsubscriptiondata.getUeId(), tmp);
+      if (!tmp.is_null()) {
+        ue_data["AuthenticationStatus"] = tmp;
+        tmp                             = {};
+      } else {
+        Logger::udr_mysql().debug(
+            "No AuthenticationStatus found for ueId %s",
+            sessionmanagementsubscriptiondata.getUeId().c_str());
+      }
+
+      query_authentication_subscription(
+          sessionmanagementsubscriptiondata.getUeId(), tmp);
+      if (!tmp.is_null()) {
+        ue_data["AuthenticationSubscription"] = tmp;
+        tmp                                   = {};
+      } else {
+        Logger::udr_mysql().debug(
+            "No AuthenticationSubscription found for ueId %s",
+            sessionmanagementsubscriptiondata.getUeId().c_str());
+      }
+
+      query_smf_select_data(
+          sessionmanagementsubscriptiondata.getUeId(),
+          sessionmanagementsubscriptiondata.getServingPlmnId(), tmp);
+      if (!tmp.is_null()) {
+        ue_data["SmfSelectionSubscriptionData"] = tmp;
+        tmp                                     = {};
+      } else {
+        Logger::udr_mysql().debug(
+            "No SmfSelectionSubscriptionData found for ueId %s and "
+            "servingPlmnId %s",
+            sessionmanagementsubscriptiondata.getUeId().c_str(),
+            sessionmanagementsubscriptiondata.getServingPlmnId().c_str());
+      }
+
+      // TODO: custom SdmSubscriptions and SmfRegistrations (only by UE)
+    }
+
+    j += ue_data;
   }
 
   if (j.is_null()) {
     Logger::udr_mysql().error(
-        "SessionManagementSubscriptionData no data found, SQL query: %s",
+        "No SessionManagementSubscriptionData data record found, SQL query: %s",
         query.c_str());
     mysql_free_result(res);
     return false;
