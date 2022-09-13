@@ -1931,8 +1931,8 @@ bool mysql_db::query_sm_data(
                   std::to_string(snssai.getSst());
   }
   if (!dnn.empty()) {
-    option_str +=
-        " AND JSON_EXTRACT(dnnConfigurations, \"$." + dnn + "\") IS NOT NULL";
+    option_str += " AND JSON_EXTRACT(dnnConfigurations, \'$.\"" + dnn +
+                  "\"\') IS NOT NULL";
   }
 
   query += option_str;
