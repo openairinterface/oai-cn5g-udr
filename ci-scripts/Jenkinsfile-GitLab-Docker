@@ -182,6 +182,7 @@ pipeline {
                   // Currently this pipeline only runs for pushes to `develop` branch
                   // First clean image registry
                   try {
+                    myShCmd('docker image tag oai-udr:develop oai-udr:develop-previous', rem_u18_host_flag, rem_u18_host_user, rem_u18_host)
                     myShCmd('docker image rm oai-udr:develop', rem_u18_host_flag, rem_u18_host_user, rem_u18_host)
                   } catch (Exception e) {
                     echo "Maybe a previous build went wrong"
@@ -220,9 +221,12 @@ pipeline {
               }
             }
             success {
+              myShCmd('docker image rm oai-udr:develop-previous || true', rem_u18_host_flag, rem_u18_host_user, rem_u18_host)
               sh "echo 'OAI-UDR DOCKER IMAGE BUILD: OK' >> archives/udr_docker_image_build.log"
             }
             unsuccessful {
+              myShCmd('docker image tag oai-udr:develop-previous oai-udr:develop || true', rem_u18_host_flag, rem_u18_host_user, rem_u18_host)
+              myShCmd('docker image rm oai-udr:develop-previous || true', rem_u18_host_flag, rem_u18_host_user, rem_u18_host)
               sh "echo 'OAI-UDR DOCKER IMAGE BUILD: KO' >> archives/udr_docker_image_build.log"
             }
           }
@@ -237,6 +241,7 @@ pipeline {
                     // Currently this pipeline only runs for pushes to `develop` branch
                     // First clean image registry
                     try {
+                      myShCmd('sudo podman image tag oai-udr:develop oai-udr:develop-previous || true', rem_rhel_host_flag, rem_rhel_host_user, rem_rhel_host)
                       myShCmd('sudo podman image rm oai-udr:develop || true', rem_rhel_host_flag, rem_rhel_host_user, rem_rhel_host)
                     } catch (Exception e) {
                       echo "Maybe a previous build went wrong"
@@ -270,9 +275,12 @@ pipeline {
               }
             }
             success {
+              myShCmd('sudo podman image rm oai-udr-previous:develop || true', rem_rhel_host_flag, rem_rhel_host_user, rem_rhel_host)
               sh "echo 'OAI-UDR PODMAN RHEL8 IMAGE BUILD: OK' >> archives/udr_podman_image_build.log"
             }
             unsuccessful {
+              myShCmd('sudo podman image tag oai-udr:develop-previous oai-udr:develop || true', rem_rhel_host_flag, rem_rhel_host_user, rem_rhel_host)
+              myShCmd('sudo podman image rm oai-udr-previous:develop || true', rem_rhel_host_flag, rem_rhel_host_user, rem_rhel_host)
               sh "echo 'OAI-UDR PODMAN RHEL8 IMAGE BUILD: KO' >> archives/udr_podman_image_build.log"
             }
           }

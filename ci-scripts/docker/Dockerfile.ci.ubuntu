@@ -33,9 +33,9 @@
 ARG BASE_IMAGE=ubuntu:bionic
 FROM oai-udr-base:latest as oai-udr-builder
 
+RUN rm -Rf /openair-udr
 WORKDIR /openair-udr
 COPY . /openair-udr
-RUN cp -Rf /openair-udr-ext-ref /openair-udr/build/ext
 
 # wait for it
 WORKDIR /
@@ -45,6 +45,7 @@ RUN rm -Rf /wait-for-it && \
 # Building UDR
 WORKDIR /openair-udr/build/scripts
 RUN ldconfig && \
+    cp -Rf /openair-udr-ext-ref /openair-udr/build/ext && \
     ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
