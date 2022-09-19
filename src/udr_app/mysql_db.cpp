@@ -164,16 +164,24 @@ void mysql_db::trigger_connection_handling_procedure(uint64_t ms) {
 }
 
 //------------------------------------------------------------------------------
+bool mysql_db::check_connection_status() {
+  // Check the connection with DB first
+  if (!get_db_connection_status()) {
+    Logger::udr_mysql().info(
+        "The connection to the MySQL is currently inactive");
+    // Try to re-establish the connection
+    trigger_connection_handling_procedure(0);
+  }
+  return get_db_connection_status();
+}
+
+//------------------------------------------------------------------------------
 bool mysql_db::insert_authentication_subscription(
     const std::string& id,
     const oai::udr::model::AuthenticationSubscription& auth_subscription,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res          = nullptr;
   MYSQL_ROW row           = {};
@@ -266,11 +274,7 @@ bool mysql_db::insert_authentication_subscription(
 //------------------------------------------------------------------------------
 bool mysql_db::delete_authentication_subscription(const std::string& id) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   const std::string query =
       "DELETE FROM AuthenticationSubscription WHERE ueid='" + id + "'";
@@ -294,11 +298,7 @@ bool mysql_db::delete_authentication_subscription(const std::string& id) {
 bool mysql_db::query_authentication_subscription(
     const std::string& id, nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   Logger::udr_mysql().info("Query Authentication Subscription");
   MYSQL_RES* res     = nullptr;
@@ -388,11 +388,7 @@ bool mysql_db::update_authentication_subscription(
     const std::vector<oai::udr::model::PatchItem>& patchItem,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res = nullptr;
   MYSQL_ROW row  = {};
@@ -471,11 +467,7 @@ bool mysql_db::query_am_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
@@ -746,11 +738,7 @@ bool mysql_db::create_amf_context_3gpp(
     const std::string& ue_id,
     Amf3GppAccessRegistration& amf3GppAccessRegistration) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   nlohmann::json json_data = {};
   MYSQL_RES* res           = nullptr;
@@ -993,11 +981,7 @@ bool mysql_db::create_amf_context_3gpp(
 bool mysql_db::query_amf_context_3gpp(
     const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res                                      = nullptr;
   MYSQL_ROW row                                       = {};
@@ -1133,11 +1117,7 @@ bool mysql_db::mysql_db::insert_authentication_status(
     const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res = nullptr;
   MYSQL_ROW row  = {};
@@ -1215,11 +1195,7 @@ bool mysql_db::mysql_db::insert_authentication_status(
 bool mysql_db::mysql_db::delete_authentication_status(
     const std::string& ue_id) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   const std::string query =
       "DELETE FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
@@ -1239,11 +1215,7 @@ bool mysql_db::mysql_db::delete_authentication_status(
 bool mysql_db::mysql_db::query_authentication_status(
     const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res                 = nullptr;
   MYSQL_ROW row                  = {};
@@ -1309,11 +1281,7 @@ bool mysql_db::mysql_db::query_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res                                    = nullptr;
   MYSQL_ROW row                                     = {};
@@ -1404,11 +1372,7 @@ bool mysql_db::mysql_db::query_sdm_subscription(
 bool mysql_db::mysql_db::delete_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res                                 = nullptr;
   nlohmann::json j                               = {};
@@ -1465,11 +1429,7 @@ bool mysql_db::update_sdm_subscription(
     oai::udr::model::SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res = nullptr;
   MYSQL_ROW row  = {};
@@ -1578,11 +1538,7 @@ bool mysql_db::create_sdm_subscriptions(
     const std::string& ue_id, oai::udr::model::SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res   = nullptr;
   MYSQL_ROW row    = {};
@@ -1689,11 +1645,7 @@ bool mysql_db::create_sdm_subscriptions(
 bool mysql_db::query_sdm_subscriptions(
     const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
@@ -1799,6 +1751,9 @@ bool mysql_db::query_sdm_subscriptions(
 bool mysql_db::create_sm_data(
     oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
     nlohmann::json& json_data) {
+  // Check the connection with DB first
+  if (!check_connection_status()) return false;
+
   MYSQL_RES* res          = nullptr;
   MYSQL_ROW row           = {};
   nlohmann::json json_tmp = {};
@@ -1910,11 +1865,7 @@ bool mysql_db::query_sm_data(
     nlohmann::json& json_data, const oai::udr::model::Snssai& snssai,
     const std::string dnn) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res                                                      = nullptr;
   MYSQL_ROW row                                                       = {};
@@ -2037,11 +1988,7 @@ bool mysql_db::insert_smf_context_non_3gpp(
     const oai::udr::model::SmfRegistration& smfRegistration,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res    = nullptr;
   MYSQL_ROW row     = {};
@@ -2195,11 +2142,7 @@ bool mysql_db::insert_smf_context_non_3gpp(
 bool mysql_db::delete_smf_context(
     const std::string& ue_id, const int32_t& pdu_session_id) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   const std::string query =
       "DELETE FROM SmfRegistrations WHERE ueid='" + ue_id +
@@ -2223,11 +2166,7 @@ bool mysql_db::query_smf_registration(
     const std::string& ue_id, const int32_t& pdu_session_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res                  = nullptr;
   MYSQL_ROW row                   = {};
@@ -2329,11 +2268,7 @@ bool mysql_db::query_smf_registration(
 bool mysql_db::query_smf_reg_list(
     const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
@@ -2449,11 +2384,7 @@ bool mysql_db::query_smf_select_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   MYSQL_RES* res                                            = nullptr;
   MYSQL_ROW row                                             = {};
