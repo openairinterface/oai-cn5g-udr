@@ -68,7 +68,7 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     dnn_str = dnn.get();
   }
   // TODO: DNN and SNSSAI
-  nlohmann::json response_data = {};
+  nlohmann::json response_data = nlohmann::json::array();
   Pistache::Http::Code code    = {};
   long http_code               = 0;
 
