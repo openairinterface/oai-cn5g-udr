@@ -39,6 +39,8 @@
 #include "logger.hpp"
 #include "udr_config.hpp"
 
+#include <boost/algorithm/string.hpp>
+
 using namespace oai::udr::app;
 using namespace oai::udr::model;
 using namespace oai::udr::config;
@@ -173,6 +175,39 @@ bool mysql_db::check_connection_status() {
     trigger_connection_handling_procedure(0);
   }
   return get_db_connection_status();
+}
+
+//------------------------------------------------------------------------------
+bool mysql_db::get_snssai_key(
+    const oai::udr::model::Snssai& snssai, uint32_t& key) {
+  uint8_t sst = 0;
+  uint32_t sd = 0;
+  sst         = snssai.getSst() & 0x000000ff;
+
+  std::string sd_str = {};
+  sd_str             = snssai.getSd();
+
+  if (!sd_str.empty()) {
+    uint8_t base = 10;
+    try {
+      if (sd_str.size() > 2) {
+        if (boost::iequals(sd_str.substr(0, 2), "0x")) {
+          base = 16;
+        }
+      }
+      sd = std::stoul(sd_str, nullptr, base);
+    } catch (const std::exception& e) {
+      Logger::udr_mysql().error(
+          "Error when converting from string to int for S-NSSAI SD, error: %s",
+          e.what());
+      return false;
+    }
+  }
+  // Get 3 lower bytes only
+  sd = sd & 0x00ffffff;
+
+  key = (sd << 8 | sst);
+  return true;
 }
 
 //------------------------------------------------------------------------------
@@ -513,9 +548,9 @@ bool mysql_db::query_am_data(
           subscription_data.setInternalGroupIds(internalgroupids);
         } else if (
             !strcmp("sharedVnGroupDataIds", field->name) && row[i] != nullptr) {
-          std::map<std ::string, std::string> sharedvngroupdataids;
-          nlohmann::json::parse(row[i]).get_to(sharedvngroupdataids);
-          subscription_data.setSharedVnGroupDataIds(sharedvngroupdataids);
+          std::map<std ::string, std::string> shared_vn_group_data_ids;
+          nlohmann::json::parse(row[i]).get_to(shared_vn_group_data_ids);
+          subscription_data.setSharedVnGroupDataIds(shared_vn_group_data_ids);
         } else if (
             !strcmp("subscribedUeAmbr", field->name) && row[i] != nullptr) {
           AmbrRm subscribedueambr;
@@ -1760,10 +1795,16 @@ bool mysql_db::create_sm_data(
 
   std::string ue_id           = sm_subscription.getUeId();
   std::string serving_plmn_id = sm_subscription.getServingPlmnId();
+  uint32_t single_nssai_key   = 0;
+  if (!get_snssai_key(sm_subscription.getSingleNssai(), single_nssai_key)) {
+    return false;
+  }
 
   std::string query =
       "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
-      "'" + "AND servingPlmnid='" + serving_plmn_id + "'";
+      "'" + "AND servingPlmnid='" + serving_plmn_id + "'" + ",singleNssai='" +
+      std::to_string(single_nssai_key) + "'";
+
   Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
 
   if (mysql_real_query(
@@ -1791,7 +1832,8 @@ bool mysql_db::create_sm_data(
   mysql_free_result(res);
 
   query = "INSERT INTO SessionManagementSubscriptionData SET ueid='" + ue_id +
-          "'" + ",servingPlmnid='" + serving_plmn_id + "'" +
+          "'" + ",servingPlmnid='" + serving_plmn_id + "'" + ",singleNssai='" +
+          std::to_string(single_nssai_key) + "'" +
           (sm_subscription.sharedDnnConfigurationsIdIsSet() ?
                ",sharedDnnConfigurationsId='" +
                    sm_subscription.getSharedDnnConfigurationsId() + "'" :
@@ -1804,9 +1846,14 @@ bool mysql_db::create_sm_data(
                ",3gppChargingCharacteristics='" +
                    sm_subscription.getR3gppChargingCharacteristics() + "'" :
                "");
-
-  to_json(json_tmp, sm_subscription.getSingleNssai());
-  query += ",singleNssai='" + json_tmp.dump() + "'";
+  /*
+    to_json(json_tmp, sm_subscription.getSingleNssai());
+    uint32_t singleNssaiKey = 0;
+    if (get_snssai_key(sm_subscription.getSingleNssai(), singleNssaiKey)){
+            query += ",singleNssai='" + std::to_string(singleNssaiKey) + "'";
+    }
+    //query += ",singleNssai='" + json_tmp.dump() + "'";
+  */
 
   if (sm_subscription.dnnConfigurationsIsSet()) {
     json_tmp = sm_subscription.getDnnConfigurations();
@@ -1867,20 +1914,27 @@ bool mysql_db::query_sm_data(
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
-  MYSQL_RES* res                                                      = nullptr;
-  MYSQL_ROW row                                                       = {};
-  MYSQL_FIELD* field                                                  = nullptr;
-  nlohmann::json j                                                    = {};
-  SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
+  nlohmann::json j   = {};
+  SessionManagementSubscriptionData session_management_subscription_data = {};
   std::string query =
       "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
       "' AND servingPlmnid='" + serving_plmn_id + "' ";
   std::string option_str = {};
 
   if (snssai.getSst() > 0) {
-    option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
-                  std::to_string(snssai.getSst());
+    /*    option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+                      std::to_string(snssai.getSst());
+    */
+    uint32_t single_nssai_key = 0;
+    if (!get_snssai_key(snssai, single_nssai_key)) {
+      return false;
+    }
+    option_str += ",singleNssai='" + std::to_string(single_nssai_key) + "'";
   }
+
   if (!dnn.empty()) {
     option_str += " AND JSON_EXTRACT(dnnConfigurations, \'$.\"" + dnn +
                   "\"\') IS NOT NULL";
@@ -1903,71 +1957,75 @@ bool mysql_db::query_sm_data(
     return false;
   }
 
+  // TODO: multiple rows
+
   row = mysql_fetch_row(res);
 
   if (row != NULL) {
     for (int i = 0; field = mysql_fetch_field(res); i++) {
       if (!strcmp("singleNssai", field->name)) {
-        Snssai singlenssai;
-        nlohmann::json::parse(row[i]).get_to(singlenssai);
-        sessionmanagementsubscriptiondata.setSingleNssai(singlenssai);
+        Snssai single_nssai = {};
+        nlohmann::json::parse(row[i]).get_to(single_nssai);
+        session_management_subscription_data.setSingleNssai(single_nssai);
       } else if (!strcmp("dnnConfigurations", field->name) && row[i] != NULL) {
-        std ::map<std ::string, DnnConfiguration> dnnconfigurations;
-        nlohmann::json::parse(row[i]).get_to(dnnconfigurations);
-        sessionmanagementsubscriptiondata.setDnnConfigurations(
-            dnnconfigurations);
+        std ::map<std ::string, DnnConfiguration> dnn_configurations;
+        nlohmann::json::parse(row[i]).get_to(dnn_configurations);
+        session_management_subscription_data.setDnnConfigurations(
+            dnn_configurations);
         Logger::udr_mysql().debug("DNN configurations (row %d): %s", i, row[i]);
-        for (auto d : dnnconfigurations) {
+        for (auto d : dnn_configurations) {
           nlohmann::json temp = {};
           to_json(temp, d.second);
           Logger::udr_mysql().debug(
               "DNN configurations: %s", temp.dump().c_str());
         }
       } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
-        std ::vector<std ::string> internalgroupIds;
-        nlohmann::json::parse(row[i]).get_to(internalgroupIds);
-        sessionmanagementsubscriptiondata.setInternalGroupIds(internalgroupIds);
+        std ::vector<std ::string> internal_group_ids;
+        nlohmann::json::parse(row[i]).get_to(internal_group_ids);
+        session_management_subscription_data.setInternalGroupIds(
+            internal_group_ids);
       } else if (
           !strcmp("sharedVnGroupDataIds", field->name) && row[i] != NULL) {
-        std ::map<std ::string, std ::string> sharedvngroupdataids;
-        nlohmann::json::parse(row[i]).get_to(sharedvngroupdataids);
-        sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(
-            sharedvngroupdataids);
+        std ::map<std ::string, std ::string> shared_vn_group_data_ids;
+        nlohmann::json::parse(row[i]).get_to(shared_vn_group_data_ids);
+        session_management_subscription_data.setSharedVnGroupDataIds(
+            shared_vn_group_data_ids);
       } else if (
           !strcmp("sharedDnnConfigurationsId", field->name) && row[i] != NULL) {
-        sessionmanagementsubscriptiondata.setSharedDnnConfigurationsId(row[i]);
+        session_management_subscription_data.setSharedDnnConfigurationsId(
+            row[i]);
       } else if (!strcmp("odbPacketServices", field->name) && row[i] != NULL) {
         OdbPacketServices odbpacketservices;
         nlohmann::json::parse(row[i]).get_to(odbpacketservices);
-        sessionmanagementsubscriptiondata.setOdbPacketServices(
+        session_management_subscription_data.setOdbPacketServices(
             odbpacketservices);
       } else if (!strcmp("traceData", field->name) && row[i] != NULL) {
         TraceData tracedata;
         nlohmann::json::parse(row[i]).get_to(tracedata);
-        sessionmanagementsubscriptiondata.setTraceData(tracedata);
+        session_management_subscription_data.setTraceData(tracedata);
       } else if (!strcmp("sharedTraceDataId", field->name) && row[i] != NULL) {
-        sessionmanagementsubscriptiondata.setSharedTraceDataId(row[i]);
+        session_management_subscription_data.setSharedTraceDataId(row[i]);
       } else if (
           !strcmp("expectedUeBehavioursList", field->name) && row[i] != NULL) {
         std ::map<std ::string, ExpectedUeBehaviourData>
             expecteduebehaviourslist;
         nlohmann::json::parse(row[i]).get_to(expecteduebehaviourslist);
-        sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(
+        session_management_subscription_data.setExpectedUeBehavioursList(
             expecteduebehaviourslist);
       } else if (
           !strcmp("suggestedPacketNumDlList", field->name) && row[i] != NULL) {
         std ::map<std ::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
         nlohmann::json::parse(row[i]).get_to(suggestedpacketnumdllist);
-        sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(
+        session_management_subscription_data.setSuggestedPacketNumDlList(
             suggestedpacketnumdllist);
       } else if (
           !strcmp("3gppChargingCharacteristics", field->name) &&
           row[i] != NULL) {
-        sessionmanagementsubscriptiondata.setR3gppChargingCharacteristics(
+        session_management_subscription_data.setR3gppChargingCharacteristics(
             row[i]);
       }
     }
-    to_json(j, sessionmanagementsubscriptiondata);
+    to_json(j, session_management_subscription_data);
     json_data = j;
 
     Logger::udr_mysql().debug(

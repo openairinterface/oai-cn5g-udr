@@ -36,6 +36,7 @@
 #include "Amf3GppAccessRegistration.h"
 #include "database_wrapper.hpp"
 #include "udr_event.hpp"
+#include "Snssai.h"
 
 namespace oai::udr::app {
 
@@ -73,6 +74,8 @@ class mysql_db : public database_wrapper<mysql_db> {
   void start_event_connection_handling();
 
   void trigger_connection_handling_procedure(uint64_t ms);
+
+  bool get_snssai_key(const oai::udr::model::Snssai& snssai, uint32_t& key);
 
   bool insert_authentication_subscription(
       const std::string& id,
