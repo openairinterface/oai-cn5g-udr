@@ -187,7 +187,7 @@ CREATE TABLE `SdmSubscriptions` (
 CREATE TABLE `SessionManagementSubscriptionData` (
   `ueid` varchar(15) NOT NULL,
   `servingPlmnid` varchar(15) NOT NULL,
-  `singleNssai` json NOT NULL,
+  `singleNssai` int(10) UNSIGNED NOT NULL,
   `dnnConfigurations` json DEFAULT NULL,
   `internalGroupIds` json DEFAULT NULL,
   `sharedVnGroupDataIds` json DEFAULT NULL,
@@ -278,7 +278,7 @@ ALTER TABLE `SdmSubscriptions`
 -- Indexes for table `SessionManagementSubscriptionData`
 --
 ALTER TABLE `SessionManagementSubscriptionData`
-  ADD PRIMARY KEY (`ueid`,`servingPlmnid`) USING BTREE;
+  ADD PRIMARY KEY (`ueid`,`servingPlmnid`, `singleNssai`) USING BTREE;
 
 --
 -- Indexes for table `SmfRegistrations`
