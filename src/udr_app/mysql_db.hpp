@@ -155,8 +155,9 @@ class mysql_db : public database_wrapper<mysql_db> {
 
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string dnn = {});
+      nlohmann::json& json_data,
+      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn);
 
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,

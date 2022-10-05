@@ -59,15 +59,15 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     Pistache::Http::ResponseWriter& response) {
   // servingPlmnId  pattern: "^[0-9]{5,6}$"
 
-  Snssai snssai = {};
+  std::optional<Snssai> snssai = std::nullopt;
   if (!singleNssai.isEmpty()) {
-    snssai = singleNssai.get();
+    snssai = std::optional<Snssai>(singleNssai.get());
   }
-  std::string dnn_str = {};
+  std::optional<std::string> dnn_str = std::nullopt;
   if (!dnn.isEmpty()) {
-    dnn_str = dnn.get();
+    dnn_str = std::optional<std::string>(dnn.get());
   }
-  // TODO: DNN and SNSSAI
+
   nlohmann::json response_data = nlohmann::json::array();
   Pistache::Http::Code code    = {};
   long http_code               = 0;
@@ -94,6 +94,17 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
-  response.send(code, response_data.dump().c_str());
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Ok)) {
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+    // Location?
+    response.send(code, response_data.dump().c_str());
+  } else if (code == Pistache::Http::Code::No_Content) {
+    response.send(code);
+  } else {
+    // TODO:
+    response.send(code);
+  }
 }
 }  // namespace oai::udr::api

@@ -254,8 +254,9 @@ class database_wrapper_abstraction {
    */
   virtual bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string& dnn = {}) = 0;
+      nlohmann::json& json_data,
+      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn) = 0;
 
   /*
    * Insert a new item into the DB for SessionManagementSubscription

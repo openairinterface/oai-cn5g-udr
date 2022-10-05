@@ -186,8 +186,9 @@ class database_wrapper : public database_wrapper_abstraction {
 
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string& dnn = {}) override {
+      nlohmann::json& json_data,
+      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_sm_data(
         ue_id, serving_plmn_id, json_data, snssai, dnn);

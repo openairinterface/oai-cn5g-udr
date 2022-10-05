@@ -1908,8 +1908,9 @@ bool mysql_db::create_sm_data(
 //------------------------------------------------------------------------------
 bool mysql_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& json_data, const oai::udr::model::Snssai& snssai,
-    const std::string dnn) {
+    nlohmann::json& json_data,
+    const std::optional<oai::udr::model::Snssai>& snssai,
+    const std::optional<std::string>& dnn) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
@@ -1923,19 +1924,19 @@ bool mysql_db::query_sm_data(
       "' AND servingPlmnid='" + serving_plmn_id + "' ";
   std::string option_str = {};
 
-  if (snssai.getSst() > 0) {
+  if (snssai.has_value()) {
     /*    option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                       std::to_string(snssai.getSst());
     */
     uint32_t single_nssai_key = 0;
-    if (!get_snssai_key(snssai, single_nssai_key)) {
+    if (!get_snssai_key(snssai.value(), single_nssai_key)) {
       return false;
     }
     option_str += ",singleNssai='" + std::to_string(single_nssai_key) + "'";
   }
 
-  if (!dnn.empty()) {
-    option_str += " AND JSON_EXTRACT(dnnConfigurations, \'$.\"" + dnn +
+  if (dnn.has_value()) {
+    option_str += " AND JSON_EXTRACT(dnnConfigurations, \'$.\"" + dnn.value() +
                   "\"\') IS NOT NULL";
   }
 

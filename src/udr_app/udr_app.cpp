@@ -346,7 +346,8 @@ void udr_app::handle_query_sdm_subscriptions(
 void udr_app::handle_query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& response_data, long& code,
-    const oai::udr::model::Snssai& snssai, const std::string& dnn) {
+    const std::optional<oai::udr::model::Snssai>& snssai,
+    const std::optional<std::string>& dnn) {
   Logger::udr_app().info(
       "Retrieve the Session Management Subscription Data of a UE");
 
