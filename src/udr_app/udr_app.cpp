@@ -348,7 +348,7 @@ void udr_app::handle_query_sm_data(
     nlohmann::json& response_data, long& code,
     const oai::udr::model::Snssai& snssai, const std::string& dnn) {
   Logger::udr_app().info(
-      "Retrieve the Session Management subscription data of a UE");
+      "Retrieve the Session Management Subscription Data of a UE");
 
   if (db_connector->query_sm_data(
           ue_id, serving_plmn_id, response_data, snssai, dnn)) {
@@ -367,7 +367,7 @@ void udr_app::handle_create_sm_data(
     SessionManagementSubscriptionData& subscriptionData,
     nlohmann::json& response_data, long& code) {
   Logger::udr_app().info(
-      "Create a Session Management subscription data of a UE");
+      "Create a Session Management Subscription Data of a UE");
 
   if (db_connector->create_sm_data(subscriptionData, response_data)) {
     code = HTTP_STATUS_CODE_201_CREATED;

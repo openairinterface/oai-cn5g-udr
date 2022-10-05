@@ -1823,8 +1823,7 @@ bool mysql_db::create_sm_data(
   }
 
   row = mysql_fetch_row(res);
-  if (row != nullptr) {
-    // Existed
+  if (row != nullptr) {  // Existed
     Logger::udr_mysql().error("SessionManagementSubscriptionData existed!");
     json_data["error"] = "resource already exists";
     return false;
@@ -1970,85 +1969,75 @@ bool mysql_db::query_sm_data(
   }
 
   while ((row = mysql_fetch_row(res))) {
-      nlohmann::json json_tmp = {};
-      SessionManagementSubscriptionData session_management_subscription_data =
-          {};
-      for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-        if (!strcmp("singleNssai", field->name)) {
-          Snssai single_nssai = {};
-          nlohmann::json::parse(row[i]).get_to(single_nssai);
-          session_management_subscription_data.setSingleNssai(single_nssai);
-        } else if (
-            !strcmp("dnnConfigurations", field->name) && row[i] != NULL) {
-          std ::map<std ::string, DnnConfiguration> dnn_configurations;
-          nlohmann::json::parse(row[i]).get_to(dnn_configurations);
-          session_management_subscription_data.setDnnConfigurations(
-              dnn_configurations);
+    nlohmann::json json_tmp                                                = {};
+    SessionManagementSubscriptionData session_management_subscription_data = {};
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+      if (!strcmp("singleNssai", field->name)) {
+        Snssai single_nssai = {};
+        nlohmann::json::parse(row[i]).get_to(single_nssai);
+        session_management_subscription_data.setSingleNssai(single_nssai);
+      } else if (!strcmp("dnnConfigurations", field->name) && row[i] != NULL) {
+        std ::map<std ::string, DnnConfiguration> dnn_configurations;
+        nlohmann::json::parse(row[i]).get_to(dnn_configurations);
+        session_management_subscription_data.setDnnConfigurations(
+            dnn_configurations);
+        Logger::udr_mysql().debug("DNN configurations (row %d): %s", i, row[i]);
+        for (auto d : dnn_configurations) {
+          nlohmann::json temp = {};
+          to_json(temp, d.second);
           Logger::udr_mysql().debug(
-              "DNN configurations (row %d): %s", i, row[i]);
-          for (auto d : dnn_configurations) {
-            nlohmann::json temp = {};
-            to_json(temp, d.second);
-            Logger::udr_mysql().debug(
-                "DNN configurations: %s", temp.dump().c_str());
-          }
-        } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
-          std ::vector<std ::string> internal_group_ids;
-          nlohmann::json::parse(row[i]).get_to(internal_group_ids);
-          session_management_subscription_data.setInternalGroupIds(
-              internal_group_ids);
-        } else if (
-            !strcmp("sharedVnGroupDataIds", field->name) && row[i] != NULL) {
-          std ::map<std ::string, std ::string> shared_vn_group_data_ids;
-          nlohmann::json::parse(row[i]).get_to(shared_vn_group_data_ids);
-          session_management_subscription_data.setSharedVnGroupDataIds(
-              shared_vn_group_data_ids);
-        } else if (
-            !strcmp("sharedDnnConfigurationsId", field->name) &&
-            row[i] != NULL) {
-          session_management_subscription_data.setSharedDnnConfigurationsId(
-              row[i]);
-        } else if (
-            !strcmp("odbPacketServices", field->name) && row[i] != NULL) {
-          OdbPacketServices odbpacketservices;
-          nlohmann::json::parse(row[i]).get_to(odbpacketservices);
-          session_management_subscription_data.setOdbPacketServices(
-              odbpacketservices);
-        } else if (!strcmp("traceData", field->name) && row[i] != NULL) {
-          TraceData tracedata;
-          nlohmann::json::parse(row[i]).get_to(tracedata);
-          session_management_subscription_data.setTraceData(tracedata);
-        } else if (
-            !strcmp("sharedTraceDataId", field->name) && row[i] != NULL) {
-          session_management_subscription_data.setSharedTraceDataId(row[i]);
-        } else if (
-            !strcmp("expectedUeBehavioursList", field->name) &&
-            row[i] != NULL) {
-          std ::map<std ::string, ExpectedUeBehaviourData>
-              expecteduebehaviourslist;
-          nlohmann::json::parse(row[i]).get_to(expecteduebehaviourslist);
-          session_management_subscription_data.setExpectedUeBehavioursList(
-              expecteduebehaviourslist);
-        } else if (
-            !strcmp("suggestedPacketNumDlList", field->name) &&
-            row[i] != NULL) {
-          std ::map<std ::string, SuggestedPacketNumDl>
-              suggestedpacketnumdllist;
-          nlohmann::json::parse(row[i]).get_to(suggestedpacketnumdllist);
-          session_management_subscription_data.setSuggestedPacketNumDlList(
-              suggestedpacketnumdllist);
-        } else if (
-            !strcmp("3gppChargingCharacteristics", field->name) &&
-            row[i] != NULL) {
-          session_management_subscription_data.setR3gppChargingCharacteristics(
-              row[i]);
+              "DNN configurations: %s", temp.dump().c_str());
         }
+      } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
+        std ::vector<std ::string> internal_group_ids;
+        nlohmann::json::parse(row[i]).get_to(internal_group_ids);
+        session_management_subscription_data.setInternalGroupIds(
+            internal_group_ids);
+      } else if (
+          !strcmp("sharedVnGroupDataIds", field->name) && row[i] != NULL) {
+        std ::map<std ::string, std ::string> shared_vn_group_data_ids;
+        nlohmann::json::parse(row[i]).get_to(shared_vn_group_data_ids);
+        session_management_subscription_data.setSharedVnGroupDataIds(
+            shared_vn_group_data_ids);
+      } else if (
+          !strcmp("sharedDnnConfigurationsId", field->name) && row[i] != NULL) {
+        session_management_subscription_data.setSharedDnnConfigurationsId(
+            row[i]);
+      } else if (!strcmp("odbPacketServices", field->name) && row[i] != NULL) {
+        OdbPacketServices odbpacketservices;
+        nlohmann::json::parse(row[i]).get_to(odbpacketservices);
+        session_management_subscription_data.setOdbPacketServices(
+            odbpacketservices);
+      } else if (!strcmp("traceData", field->name) && row[i] != NULL) {
+        TraceData tracedata;
+        nlohmann::json::parse(row[i]).get_to(tracedata);
+        session_management_subscription_data.setTraceData(tracedata);
+      } else if (!strcmp("sharedTraceDataId", field->name) && row[i] != NULL) {
+        session_management_subscription_data.setSharedTraceDataId(row[i]);
+      } else if (
+          !strcmp("expectedUeBehavioursList", field->name) && row[i] != NULL) {
+        std ::map<std ::string, ExpectedUeBehaviourData>
+            expecteduebehaviourslist;
+        nlohmann::json::parse(row[i]).get_to(expecteduebehaviourslist);
+        session_management_subscription_data.setExpectedUeBehavioursList(
+            expecteduebehaviourslist);
+      } else if (
+          !strcmp("suggestedPacketNumDlList", field->name) && row[i] != NULL) {
+        std ::map<std ::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
+        nlohmann::json::parse(row[i]).get_to(suggestedpacketnumdllist);
+        session_management_subscription_data.setSuggestedPacketNumDlList(
+            suggestedpacketnumdllist);
+      } else if (
+          !strcmp("3gppChargingCharacteristics", field->name) &&
+          row[i] != NULL) {
+        session_management_subscription_data.setR3gppChargingCharacteristics(
+            row[i]);
       }
-      to_json(json_tmp, session_management_subscription_data);
-      json_data += json_tmp;
-      Logger::udr_mysql().debug(
-          "SessionManagementSubscriptionData: %s", j.dump().c_str());
-
+    }
+    to_json(json_tmp, session_management_subscription_data);
+    json_data += json_tmp;
+    Logger::udr_mysql().debug(
+        "SessionManagementSubscriptionData: %s", j.dump().c_str());
   }
 
   mysql_free_result(res);

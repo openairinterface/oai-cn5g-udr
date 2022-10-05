@@ -71,10 +71,26 @@ class mysql_db : public database_wrapper<mysql_db> {
    */
   bool check_connection_status();
 
+  /*
+   * Start the procedure for event connection handling
+   * @param void
+   * @return void
+   */
   void start_event_connection_handling();
 
+  /*
+   * Trigger the procedure for event connection handling when neccessary
+   * @param uint64_t ms
+   * @return void
+   */
   void trigger_connection_handling_procedure(uint64_t ms);
 
+  /*
+   * Get a unique key from a NSSAI (SST, SD) used in MySQL
+   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [uint32_t&] key: generated key
+   * @return void
+   */
   bool get_snssai_key(const oai::udr::model::Snssai& snssai, uint32_t& key);
 
   bool insert_authentication_subscription(
