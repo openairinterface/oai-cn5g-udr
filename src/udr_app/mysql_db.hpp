@@ -89,9 +89,19 @@ class mysql_db : public database_wrapper<mysql_db> {
    * Get a unique key from a NSSAI (SST, SD) used in MySQL
    * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
    * @param [uint32_t&] key: generated key
+   * @return true if success, otherwise return false
+   */
+  bool get_key_from_snssai(
+      const oai::udr::model::Snssai& snssai, uint32_t& key);
+
+  /*
+   * Get NSSAI (SST, SD) from the corresponding key
+   * @param [oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [const uint32_t&] key: key
    * @return void
    */
-  bool get_snssai_key(const oai::udr::model::Snssai& snssai, uint32_t& key);
+  void get_snssai_from_key(
+      oai::udr::model::Snssai& snssai, const uint32_t& key);
 
   bool insert_authentication_subscription(
       const std::string& id,

@@ -188,7 +188,7 @@ CREATE TABLE `SessionManagementSubscriptionData` (
   `subscriptionId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ueid` varchar(15) NOT NULL,
   `servingPlmnid` varchar(15) NOT NULL,
-  `singleNssai` int(10) UNSIGNED NOT NULL,
+  `singleNssai` json NOT NULL,
   `dnnConfigurations` json DEFAULT NULL,
   `internalGroupIds` json DEFAULT NULL,
   `sharedVnGroupDataIds` json DEFAULT NULL,

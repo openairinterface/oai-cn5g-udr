@@ -178,7 +178,7 @@ bool mysql_db::check_connection_status() {
 }
 
 //------------------------------------------------------------------------------
-bool mysql_db::get_snssai_key(
+bool mysql_db::get_key_from_snssai(
     const oai::udr::model::Snssai& snssai, uint32_t& key) {
   uint8_t sst        = 0;
   uint32_t sd        = 0;
@@ -206,6 +206,17 @@ bool mysql_db::get_snssai_key(
   sd  = sd & 0x00ffffff;
   key = (sd << 8 | sst);
   return true;
+}
+
+//------------------------------------------------------------------------------
+void mysql_db::get_snssai_from_key(
+    oai::udr::model::Snssai& snssai, const uint32_t& key) {
+  uint8_t sst = 0;
+  uint32_t sd = 0;
+  sst         = key & 0x000000ff;
+  sd          = (key >> 8) & 0x00ffffff;
+  snssai.setSst(sst);
+  snssai.setSd(std::to_string(sd));
 }
 
 //------------------------------------------------------------------------------
@@ -1873,15 +1884,32 @@ bool mysql_db::create_sm_data(
 
   std::string ue_id           = sm_subscription.getUeId();
   std::string serving_plmn_id = sm_subscription.getServingPlmnId();
-  uint32_t single_nssai_key   = 0;
-  if (!get_snssai_key(sm_subscription.getSingleNssai(), single_nssai_key)) {
-    return false;
+  Snssai single_nssai         = sm_subscription.getSingleNssai();
+  // to_json(json_tmp, sm_subscription.getSingleNssai());
+  //  query += ",singleNssai='" + json_tmp.dump() + "'";
+
+  /*  uint32_t single_nssai_key   = 0;
+    if (!get_key_from_snssai(sm_subscription.getSingleNssai(),
+    single_nssai_key)) { return false;
+    }
+  */
+  std::string nssai_query = nssai_query =
+      " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+      std::to_string(single_nssai.getSst());
+
+  if (!single_nssai.getSd().empty()) {
+    nssai_query +=
+        " AND JSON_EXTRACT(singleNssai, \"$.sd\")=" + single_nssai.getSd();
   }
 
   std::string query =
       "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
-      "'" + "AND servingPlmnid='" + serving_plmn_id + "'" +
-      " AND singleNssai='" + std::to_string(single_nssai_key) + "'";
+      "'" + "AND servingPlmnid='" + serving_plmn_id + "'" + nssai_query;
+
+  if (sm_subscription.dnnConfigurationsIsSet()) {
+    json_tmp = sm_subscription.getDnnConfigurations();
+    query += ",dnnConfigurations='" + json_tmp.dump() + "'";
+  }
 
   Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
 
@@ -1909,8 +1937,7 @@ bool mysql_db::create_sm_data(
   mysql_free_result(res);
 
   query = "INSERT INTO SessionManagementSubscriptionData SET ueid='" + ue_id +
-          "'" + ",servingPlmnid='" + serving_plmn_id + "'" + ",singleNssai='" +
-          std::to_string(single_nssai_key) + "'" +
+          "'" + ",servingPlmnid='" + serving_plmn_id + "'" +
           (sm_subscription.sharedDnnConfigurationsIdIsSet() ?
                ",sharedDnnConfigurationsId='" +
                    sm_subscription.getSharedDnnConfigurationsId() + "'" :
@@ -1923,10 +1950,13 @@ bool mysql_db::create_sm_data(
                ",3gppChargingCharacteristics='" +
                    sm_subscription.getR3gppChargingCharacteristics() + "'" :
                "");
+  to_json(json_tmp, sm_subscription.getSingleNssai());
+  query += ",singleNssai='" + json_tmp.dump() + "'";
+
   /*
     to_json(json_tmp, sm_subscription.getSingleNssai());
     uint32_t singleNssaiKey = 0;
-    if (get_snssai_key(sm_subscription.getSingleNssai(), singleNssaiKey)){
+    if (get_key_from_snssai(sm_subscription.getSingleNssai(), singleNssaiKey)){
             query += ",singleNssai='" + std::to_string(singleNssaiKey) + "'";
     }
     //query += ",singleNssai='" + json_tmp.dump() + "'";
@@ -2007,7 +2037,7 @@ bool mysql_db::query_sm_data(
                       std::to_string(snssai.getSst());
     */
     uint32_t single_nssai_key = 0;
-    if (!get_snssai_key(snssai.value(), single_nssai_key)) {
+    if (!get_key_from_snssai(snssai.value(), single_nssai_key)) {
       return false;
     }
     option_str += "AND singleNssai='" + std::to_string(single_nssai_key) + "'";
@@ -2051,9 +2081,11 @@ bool mysql_db::query_sm_data(
     nlohmann::json json_tmp                                                = {};
     SessionManagementSubscriptionData session_management_subscription_data = {};
     for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-      if (boost::iequals("singleNssai", field->name)) {
+      if (boost::iequals("singleNssai", field->name) && row[i] != nullptr) {
         Snssai single_nssai = {};
+        // uint32_t nssai_key = 0;
         nlohmann::json::parse(row[i]).get_to(single_nssai);
+        // get_snssai_from_key(nssai_key, single_nssai);
         session_management_subscription_data.setSingleNssai(single_nssai);
       } else if (
           boost::iequals("dnnConfigurations", field->name) &&
@@ -2129,7 +2161,7 @@ bool mysql_db::query_sm_data(
     to_json(json_tmp, session_management_subscription_data);
     json_data += json_tmp;
     Logger::udr_mysql().debug(
-        "SessionManagementSubscriptionData: %s", j.dump().c_str());
+        "SessionManagementSubscriptionData: %s", json_data.dump().c_str());
   }
 
   mysql_free_result(res);
