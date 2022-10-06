@@ -1880,8 +1880,8 @@ bool mysql_db::create_sm_data(
 
   std::string query =
       "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
-      "'" + "AND servingPlmnid='" + serving_plmn_id + "'" + ",singleNssai='" +
-      std::to_string(single_nssai_key) + "'";
+      "'" + "AND servingPlmnid='" + serving_plmn_id + "'" +
+      " AND singleNssai='" + std::to_string(single_nssai_key) + "'";
 
   Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
 
@@ -2010,7 +2010,7 @@ bool mysql_db::query_sm_data(
     if (!get_snssai_key(snssai.value(), single_nssai_key)) {
       return false;
     }
-    option_str += ",singleNssai='" + std::to_string(single_nssai_key) + "'";
+    option_str += "AND singleNssai='" + std::to_string(single_nssai_key) + "'";
   }
 
   if (dnn.has_value()) {
