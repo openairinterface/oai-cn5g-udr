@@ -185,6 +185,7 @@ CREATE TABLE `SdmSubscriptions` (
 --
 
 CREATE TABLE `SessionManagementSubscriptionData` (
+  `subscriptionId` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ueid` varchar(15) NOT NULL,
   `servingPlmnid` varchar(15) NOT NULL,
   `singleNssai` int(10) UNSIGNED NOT NULL,
@@ -197,7 +198,8 @@ CREATE TABLE `SessionManagementSubscriptionData` (
   `sharedTraceDataId` varchar(50) DEFAULT NULL,
   `expectedUeBehavioursList` json DEFAULT NULL,
   `suggestedPacketNumDlList` json DEFAULT NULL,
-  `3gppChargingCharacteristics` varchar(50) DEFAULT NULL
+  `3gppChargingCharacteristics` varchar(50) DEFAULT NULL,
+   PRIMARY KEY (subscriptionId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -277,8 +279,8 @@ ALTER TABLE `SdmSubscriptions`
 --
 -- Indexes for table `SessionManagementSubscriptionData`
 --
-ALTER TABLE `SessionManagementSubscriptionData`
-  ADD PRIMARY KEY (`ueid`,`servingPlmnid`, `singleNssai`) USING BTREE;
+ALTER TABLE `SessionManagementSubscriptionData` AUTO_INCREMENT=1;
+
 
 --
 -- Indexes for table `SmfRegistrations`
