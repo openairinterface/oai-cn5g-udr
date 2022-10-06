@@ -2064,14 +2064,16 @@ bool mysql_db::query_sm_data(
   while ((row = mysql_fetch_row(res))) {
     nlohmann::json json_tmp                                                = {};
     SessionManagementSubscriptionData session_management_subscription_data = {};
-    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-      if (boost::iequals("singleNssai", field->name) && row[i] != nullptr) {
+    for (int i = 0; i < fields.size(); i++) {
+      Logger::udr_mysql().debug(
+          "SessionManagementSubscriptionData, Field name: %s",
+          fields[i].c_str());
+      if (boost::iequals("singleNssai", fields[i]) && row[i] != nullptr) {
         Snssai single_nssai = {};
         nlohmann::json::parse(row[i]).get_to(single_nssai);
         session_management_subscription_data.setSingleNssai(single_nssai);
       } else if (
-          boost::iequals("dnnConfigurations", field->name) &&
-          row[i] != nullptr) {
+          boost::iequals("dnnConfigurations", fields[i]) && row[i] != nullptr) {
         std ::map<std ::string, DnnConfiguration> dnn_configurations;
         nlohmann::json::parse(row[i]).get_to(dnn_configurations);
         session_management_subscription_data.setDnnConfigurations(
@@ -2084,42 +2086,38 @@ bool mysql_db::query_sm_data(
               "DNN configurations: %s", temp.dump().c_str());
         }
       } else if (
-          boost::iequals("internalGroupIds", field->name) &&
-          row[i] != nullptr) {
+          boost::iequals("internalGroupIds", fields[i]) && row[i] != nullptr) {
         std ::vector<std ::string> internal_group_ids;
         nlohmann::json::parse(row[i]).get_to(internal_group_ids);
         session_management_subscription_data.setInternalGroupIds(
             internal_group_ids);
       } else if (
-          boost::iequals("sharedVnGroupDataIds", field->name) &&
+          boost::iequals("sharedVnGroupDataIds", fields[i]) &&
           row[i] != nullptr) {
         std ::map<std ::string, std ::string> shared_vn_group_data_ids;
         nlohmann::json::parse(row[i]).get_to(shared_vn_group_data_ids);
         session_management_subscription_data.setSharedVnGroupDataIds(
             shared_vn_group_data_ids);
       } else if (
-          boost::iequals("sharedDnnConfigurationsId", field->name) &&
+          boost::iequals("sharedDnnConfigurationsId", fields[i]) &&
           row[i] != nullptr) {
         session_management_subscription_data.setSharedDnnConfigurationsId(
             row[i]);
       } else if (
-          boost::iequals("odbPacketServices", field->name) &&
-          row[i] != nullptr) {
+          boost::iequals("odbPacketServices", fields[i]) && row[i] != nullptr) {
         OdbPacketServices odbpacketservices;
         nlohmann::json::parse(row[i]).get_to(odbpacketservices);
         session_management_subscription_data.setOdbPacketServices(
             odbpacketservices);
-      } else if (
-          boost::iequals("traceData", field->name) && row[i] != nullptr) {
+      } else if (boost::iequals("traceData", fields[i]) && row[i] != nullptr) {
         TraceData tracedata;
         nlohmann::json::parse(row[i]).get_to(tracedata);
         session_management_subscription_data.setTraceData(tracedata);
       } else if (
-          boost::iequals("sharedTraceDataId", field->name) &&
-          row[i] != nullptr) {
+          boost::iequals("sharedTraceDataId", fields[i]) && row[i] != nullptr) {
         session_management_subscription_data.setSharedTraceDataId(row[i]);
       } else if (
-          boost::iequals("expectedUeBehavioursList", field->name) &&
+          boost::iequals("expectedUeBehavioursList", fields[i]) &&
           row[i] != nullptr) {
         std ::map<std ::string, ExpectedUeBehaviourData>
             expecteduebehaviourslist;
@@ -2127,14 +2125,14 @@ bool mysql_db::query_sm_data(
         session_management_subscription_data.setExpectedUeBehavioursList(
             expecteduebehaviourslist);
       } else if (
-          boost::iequals("suggestedPacketNumDlList", field->name) &&
+          boost::iequals("suggestedPacketNumDlList", fields[i]) &&
           row[i] != nullptr) {
         std ::map<std ::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
         nlohmann::json::parse(row[i]).get_to(suggestedpacketnumdllist);
         session_management_subscription_data.setSuggestedPacketNumDlList(
             suggestedpacketnumdllist);
       } else if (
-          boost::iequals("3gppChargingCharacteristics", field->name) &&
+          boost::iequals("3gppChargingCharacteristics", fields[i]) &&
           row[i] != nullptr) {
         session_management_subscription_data.setR3gppChargingCharacteristics(
             row[i]);
