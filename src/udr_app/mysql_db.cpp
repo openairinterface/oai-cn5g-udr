@@ -1885,14 +1885,7 @@ bool mysql_db::create_sm_data(
   std::string ue_id           = sm_subscription.getUeId();
   std::string serving_plmn_id = sm_subscription.getServingPlmnId();
   Snssai single_nssai         = sm_subscription.getSingleNssai();
-  // to_json(json_tmp, sm_subscription.getSingleNssai());
-  //  query += ",singleNssai='" + json_tmp.dump() + "'";
 
-  /*  uint32_t single_nssai_key   = 0;
-    if (!get_key_from_snssai(sm_subscription.getSingleNssai(),
-    single_nssai_key)) { return false;
-    }
-  */
   std::string nssai_query = " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                             std::to_string(single_nssai.getSst());
 
@@ -1944,22 +1937,15 @@ bool mysql_db::create_sm_data(
                ",3gppChargingCharacteristics='" +
                    sm_subscription.getR3gppChargingCharacteristics() + "'" :
                "");
+
   to_json(json_tmp, sm_subscription.getSingleNssai());
   query += ",singleNssai='" + json_tmp.dump() + "'";
-
-  /*
-    to_json(json_tmp, sm_subscription.getSingleNssai());
-    uint32_t singleNssaiKey = 0;
-    if (get_key_from_snssai(sm_subscription.getSingleNssai(), singleNssaiKey)){
-            query += ",singleNssai='" + std::to_string(singleNssaiKey) + "'";
-    }
-    //query += ",singleNssai='" + json_tmp.dump() + "'";
-  */
 
   if (sm_subscription.dnnConfigurationsIsSet()) {
     json_tmp = sm_subscription.getDnnConfigurations();
     query += ",dnnConfigurations='" + json_tmp.dump() + "'";
   }
+
   if (sm_subscription.internalGroupIdsIsSet()) {
     nlohmann::json j;
     std::vector<std::string> internalGroupIds =
@@ -1970,22 +1956,27 @@ bool mysql_db::create_sm_data(
     }
     query += ",internalGroupIds='" + json_tmp.dump() + "'";
   }
+
   if (sm_subscription.sharedVnGroupDataIdsIsSet()) {
     json_tmp = sm_subscription.getSharedVnGroupDataIds();
     query += ",sharedVnGroupDataIds='" + json_tmp.dump() + "'";
   }
+
   if (sm_subscription.odbPacketServicesIsSet()) {
     to_json(json_tmp, sm_subscription.getOdbPacketServices());
     query += ",odbPacketServices='" + json_tmp.dump() + "'";
   }
+
   if (sm_subscription.traceDataIsSet()) {
     to_json(json_tmp, sm_subscription.getTraceData());
     query += ",traceData='" + json_tmp.dump() + "'";
   }
+
   if (sm_subscription.expectedUeBehavioursListIsSet()) {
     json_tmp = sm_subscription.getExpectedUeBehavioursList();
     query += ",expectedUeBehavioursList='" + json_tmp.dump() + "'";
   }
+
   if (sm_subscription.suggestedPacketNumDlListIsSet()) {
     json_tmp = sm_subscription.getSuggestedPacketNumDlList();
     query += ",suggestedPacketNumDlList='" + json_tmp.dump() + "'";
@@ -2031,16 +2022,9 @@ bool mysql_db::query_sm_data(
                   std::to_string(snssai.value().getSst());
 
     if (!snssai.value().getSd().empty()) {
-      option_str +=
-          " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" + snssai.getSd() + "'";
+      option_str += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
+                    snssai.value().getSd() + "'";
     }
-
-    // uint32_t single_nssai_key = 0;
-    // if (!get_key_from_snssai(snssai.value(), single_nssai_key)) {
-    //   return false;
-    // }
-    // option_str += "AND singleNssai='" + std::to_string(single_nssai_key) +
-    // "'";
   }
 
   if (dnn.has_value()) {
@@ -2083,9 +2067,7 @@ bool mysql_db::query_sm_data(
     for (int i = 0; (field = mysql_fetch_field(res)); i++) {
       if (boost::iequals("singleNssai", field->name) && row[i] != nullptr) {
         Snssai single_nssai = {};
-        // uint32_t nssai_key = 0;
         nlohmann::json::parse(row[i]).get_to(single_nssai);
-        // get_snssai_from_key(nssai_key, single_nssai);
         session_management_subscription_data.setSingleNssai(single_nssai);
       } else if (
           boost::iequals("dnnConfigurations", field->name) &&
