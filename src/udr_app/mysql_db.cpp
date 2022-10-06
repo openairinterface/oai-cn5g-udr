@@ -180,10 +180,9 @@ bool mysql_db::check_connection_status() {
 //------------------------------------------------------------------------------
 bool mysql_db::get_snssai_key(
     const oai::udr::model::Snssai& snssai, uint32_t& key) {
-  uint8_t sst = 0;
-  uint32_t sd = 0;
-  sst         = snssai.getSst() & 0x000000ff;
-
+  uint8_t sst        = 0;
+  uint32_t sd        = 0;
+  sst                = snssai.getSst() & 0x000000ff;
   std::string sd_str = {};
   sd_str             = snssai.getSd();
 
@@ -204,8 +203,7 @@ bool mysql_db::get_snssai_key(
     }
   }
   // Get 3 lower bytes only
-  sd = sd & 0x00ffffff;
-
+  sd  = sd & 0x00ffffff;
   key = (sd << 8 | sst);
   return true;
 }
@@ -365,44 +363,53 @@ bool mysql_db::query_authentication_subscription(
   row = mysql_fetch_row(res);
 
   if (row != nullptr) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
       Logger::udr_mysql().debug("Row [%d]: %s ", i, field->name);
-      if (!strcmp("authenticationMethod", field->name)) {
+      if (boost::iequals("authenticationMethod", field->name)) {
         authentication_subscription.setAuthenticationMethod(row[i]);
-      } else if (!strcmp("encPermanentKey", field->name) && row[i] != nullptr) {
+      } else if (
+          boost::iequals("encPermanentKey", field->name) && row[i] != nullptr) {
         authentication_subscription.setEncPermanentKey(row[i]);
       } else if (
-          !strcmp("protectionParameterId", field->name) && row[i] != nullptr) {
+          boost::iequals("protectionParameterId", field->name) &&
+          row[i] != nullptr) {
         authentication_subscription.setProtectionParameterId(row[i]);
-      } else if (!strcmp("sequenceNumber", field->name) && row[i] != nullptr) {
+      } else if (
+          boost::iequals("sequenceNumber", field->name) && row[i] != nullptr) {
         SequenceNumber sequencenumber = {};
         nlohmann::json::parse(row[i]).get_to(sequencenumber);
         authentication_subscription.setSequenceNumber(sequencenumber);
       } else if (
-          !strcmp("authenticationManagementField", field->name) &&
+          boost::iequals("authenticationManagementField", field->name) &&
           row[i] != nullptr) {
         authentication_subscription.setAuthenticationManagementField(row[i]);
-      } else if (!strcmp("algorithmId", field->name) && row[i] != nullptr) {
+      } else if (
+          boost::iequals("algorithmId", field->name) && row[i] != nullptr) {
         authentication_subscription.setAlgorithmId(row[i]);
-      } else if (!strcmp("encOpcKey", field->name) && row[i] != nullptr) {
+      } else if (
+          boost::iequals("encOpcKey", field->name) && row[i] != nullptr) {
         authentication_subscription.setEncOpcKey(row[i]);
-      } else if (!strcmp("encTopcKey", field->name) && row[i] != nullptr) {
+      } else if (
+          boost::iequals("encTopcKey", field->name) && row[i] != nullptr) {
         authentication_subscription.setEncTopcKey(row[i]);
       } else if (
-          !strcmp("vectorGenerationInHss", field->name) && row[i] != nullptr) {
+          boost::iequals("vectorGenerationInHss", field->name) &&
+          row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           authentication_subscription.setVectorGenerationInHss(true);
         else
           authentication_subscription.setVectorGenerationInHss(false);
-      } else if (!strcmp("n5gcAuthMethod", field->name) && row[i] != nullptr) {
+      } else if (
+          boost::iequals("n5gcAuthMethod", field->name) && row[i] != nullptr) {
         authentication_subscription.setN5gcAuthMethod(row[i]);
       } else if (
-          !strcmp("rgAuthenticationInd", field->name) && row[i] != nullptr) {
+          boost::iequals("rgAuthenticationInd", field->name) &&
+          row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           authentication_subscription.setRgAuthenticationInd(true);
         else
           authentication_subscription.setRgAuthenticationInd(false);
-      } else if (!strcmp("supi", field->name) && row[i] != nullptr) {
+      } else if (boost::iequals("supi", field->name) && row[i] != nullptr) {
         authentication_subscription.setSupi(row[i]);
       }
     }
@@ -437,7 +444,8 @@ bool mysql_db::update_authentication_subscription(
   nlohmann::json tmp_j = {};
 
   for (int i = 0; i < patchItem.size(); i++) {
-    if ((!strcmp(patchItem[i].getOp().c_str(), PATCH_OPERATION_REPLACE)) &&
+    if ((boost::iequals(
+            patchItem[i].getOp().c_str(), PATCH_OPERATION_REPLACE)) &&
         patchItem[i].valueIsSet()) {
       patchItem[i].getValue();
       SequenceNumber sequencenumber;
@@ -454,7 +462,7 @@ bool mysql_db::update_authentication_subscription(
       }
 
       res = mysql_store_result(&mysql_connector);
-      if (res == NULL) {
+      if (res == nullptr) {
         Logger::udr_mysql().error(
             "mysql_store_result failure！SQL Query: %s",
             select_Authenticationsubscription.c_str());
@@ -533,214 +541,245 @@ bool mysql_db::query_am_data(
   row = mysql_fetch_row(res);
 
   if (row != nullptr) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
       try {
-        if (!strcmp("supportedFeatures", field->name) && row[i] != nullptr) {
+        if (boost::iequals("supportedFeatures", field->name) &&
+            row[i] != nullptr) {
           subscription_data.setSupportedFeatures(row[i]);
-        } else if (!strcmp("gpsis", field->name) && row[i] != nullptr) {
+        } else if (boost::iequals("gpsis", field->name) && row[i] != nullptr) {
           std::vector<std ::string> gpsis;
           nlohmann::json::parse(row[i]).get_to(gpsis);
           subscription_data.setGpsis(gpsis);
         } else if (
-            !strcmp("internalGroupIds", field->name) && row[i] != nullptr) {
+            boost::iequals("internalGroupIds", field->name) &&
+            row[i] != nullptr) {
           std::vector<std ::string> internalgroupids;
           nlohmann::json::parse(row[i]).get_to(internalgroupids);
           subscription_data.setInternalGroupIds(internalgroupids);
         } else if (
-            !strcmp("sharedVnGroupDataIds", field->name) && row[i] != nullptr) {
+            boost::iequals("sharedVnGroupDataIds", field->name) &&
+            row[i] != nullptr) {
           std::map<std ::string, std::string> shared_vn_group_data_ids;
           nlohmann::json::parse(row[i]).get_to(shared_vn_group_data_ids);
           subscription_data.setSharedVnGroupDataIds(shared_vn_group_data_ids);
         } else if (
-            !strcmp("subscribedUeAmbr", field->name) && row[i] != nullptr) {
+            boost::iequals("subscribedUeAmbr", field->name) &&
+            row[i] != nullptr) {
           AmbrRm subscribedueambr;
           nlohmann::json::parse(row[i]).get_to(subscribedueambr);
           subscription_data.setSubscribedUeAmbr(subscribedueambr);
-        } else if (!strcmp("nssai", field->name) && row[i] != nullptr) {
+        } else if (boost::iequals("nssai", field->name) && row[i] != nullptr) {
           Nssai nssai = {};
           nlohmann::json::parse(row[i]).get_to(nssai);
           subscription_data.setNssai(nssai);
         } else if (
-            !strcmp("ratRestrictions", field->name) && row[i] != nullptr) {
+            boost::iequals("ratRestrictions", field->name) &&
+            row[i] != nullptr) {
           std ::vector<RatType> ratrestrictions;
           nlohmann::json::parse(row[i]).get_to(ratrestrictions);
           subscription_data.setRatRestrictions(ratrestrictions);
         } else if (
-            !strcmp("forbiddenAreas", field->name) && row[i] != nullptr) {
+            boost::iequals("forbiddenAreas", field->name) &&
+            row[i] != nullptr) {
           std ::vector<Area> forbiddenareas;
           nlohmann::json::parse(row[i]).get_to(forbiddenareas);
           subscription_data.setForbiddenAreas(forbiddenareas);
         } else if (
-            !strcmp("serviceAreaRestriction", field->name) &&
+            boost::iequals("serviceAreaRestriction", field->name) &&
             row[i] != nullptr) {
           ServiceAreaRestriction servicearearestriction;
           nlohmann::json::parse(row[i]).get_to(servicearearestriction);
           subscription_data.setServiceAreaRestriction(servicearearestriction);
         } else if (
-            !strcmp("coreNetworkTypeRestrictions", field->name) &&
+            boost::iequals("coreNetworkTypeRestrictions", field->name) &&
             row[i] != nullptr) {
           std ::vector<CoreNetworkType> corenetworktyperestrictions;
           nlohmann::json::parse(row[i]).get_to(corenetworktyperestrictions);
           subscription_data.setCoreNetworkTypeRestrictions(
               corenetworktyperestrictions);
-        } else if (!strcmp("rfspIndex", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("rfspIndex", field->name) && row[i] != nullptr) {
           int32_t a = std::stoi(row[i]);
           subscription_data.setRfspIndex(a);
-        } else if (!strcmp("subsRegTimer", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("subsRegTimer", field->name) && row[i] != nullptr) {
           int32_t a = std::stoi(row[i]);
           subscription_data.setSubsRegTimer(a);
-        } else if (!strcmp("ueUsageType", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("ueUsageType", field->name) && row[i] != nullptr) {
           int32_t a = std::stoi(row[i]);
           subscription_data.setUeUsageType(a);
-        } else if (!strcmp("mpsPriority", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("mpsPriority", field->name) && row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             subscription_data.setMpsPriority(true);
           else
             subscription_data.setMpsPriority(false);
-        } else if (!strcmp("mcsPriority", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("mcsPriority", field->name) && row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             subscription_data.setMcsPriority(true);
           else
             subscription_data.setMcsPriority(false);
-        } else if (!strcmp("activeTime", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("activeTime", field->name) && row[i] != nullptr) {
           int32_t a = std::stoi(row[i]);
           subscription_data.setActiveTime(a);
-        } else if (!strcmp("sorInfo", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("sorInfo", field->name) && row[i] != nullptr) {
           SorInfo sorinfo;
           nlohmann::json::parse(row[i]).get_to(sorinfo);
           subscription_data.setSorInfo(sorinfo);
         } else if (
-            !strcmp("sorInfoExpectInd", field->name) && row[i] != nullptr) {
+            boost::iequals("sorInfoExpectInd", field->name) &&
+            row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             subscription_data.setSorInfoExpectInd(true);
           else
             subscription_data.setSorInfoExpectInd(false);
         } else if (
-            !strcmp("sorafRetrieval", field->name) && row[i] != nullptr) {
+            boost::iequals("sorafRetrieval", field->name) &&
+            row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             subscription_data.setSorafRetrieval(true);
           else
             subscription_data.setSorafRetrieval(false);
         } else if (
-            !strcmp("sorUpdateIndicatorList", field->name) &&
+            boost::iequals("sorUpdateIndicatorList", field->name) &&
             row[i] != nullptr) {
           std ::vector<SorUpdateIndicator> sorupdateindicatorlist;
           nlohmann::json::parse(row[i]).get_to(sorupdateindicatorlist);
           subscription_data.setSorUpdateIndicatorList(sorupdateindicatorlist);
-        } else if (!strcmp("upuInfo", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("upuInfo", field->name) && row[i] != nullptr) {
           UpuInfo upuinfo;
           nlohmann::json::parse(row[i]).get_to(upuinfo);
           subscription_data.setUpuInfo(upuinfo);
-        } else if (!strcmp("micoAllowed", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("micoAllowed", field->name) && row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             subscription_data.setMicoAllowed(true);
           else
             subscription_data.setMicoAllowed(false);
         } else if (
-            !strcmp("sharedAmDataIds", field->name) && row[i] != nullptr) {
+            boost::iequals("sharedAmDataIds", field->name) &&
+            row[i] != nullptr) {
           std ::vector<std ::string> sharedamdataids;
           nlohmann::json::parse(row[i]).get_to(sharedamdataids);
           subscription_data.setSharedAmDataIds(sharedamdataids);
         } else if (
-            !strcmp("odbPacketServices", field->name) && row[i] != nullptr) {
+            boost::iequals("odbPacketServices", field->name) &&
+            row[i] != nullptr) {
           OdbPacketServices odbpacketservices;
           nlohmann::json::parse(row[i]).get_to(odbpacketservices);
           subscription_data.setOdbPacketServices(odbpacketservices);
         } else if (
-            !strcmp("serviceGapTime", field->name) && row[i] != nullptr) {
+            boost::iequals("serviceGapTime", field->name) &&
+            row[i] != nullptr) {
           int32_t a = std::stoi(row[i]);
           subscription_data.setServiceGapTime(a);
         } else if (
-            !strcmp("mdtUserConsent", field->name) && row[i] != nullptr) {
+            boost::iequals("mdtUserConsent", field->name) &&
+            row[i] != nullptr) {
           MdtUserConsent mdtuserconsent;
           nlohmann::json::parse(row[i]).get_to(mdtuserconsent);
           subscription_data.setMdtUserConsent(mdtuserconsent);
         } else if (
-            !strcmp("mdtConfiguration", field->name) && row[i] != nullptr) {
+            boost::iequals("mdtConfiguration", field->name) &&
+            row[i] != nullptr) {
           MdtConfiguration mdtconfiguration;
           nlohmann::json::parse(row[i]).get_to(mdtconfiguration);
           subscription_data.setMdtConfiguration(mdtconfiguration);
-        } else if (!strcmp("traceData", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("traceData", field->name) && row[i] != nullptr) {
           TraceData tracedata;
           nlohmann::json::parse(row[i]).get_to(tracedata);
           subscription_data.setTraceData(tracedata);
-        } else if (!strcmp("cagData", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("cagData", field->name) && row[i] != nullptr) {
           CagData cagdata;
           nlohmann::json::parse(row[i]).get_to(cagdata);
           subscription_data.setCagData(cagdata);
-        } else if (!strcmp("stnSr", field->name) && row[i] != nullptr) {
+        } else if (boost::iequals("stnSr", field->name) && row[i] != nullptr) {
           subscription_data.setStnSr(row[i]);
-        } else if (!strcmp("cMsisdn", field->name) && row[i] != nullptr) {
+        } else if (
+            boost::iequals("cMsisdn", field->name) && row[i] != nullptr) {
           subscription_data.setCMsisdn(row[i]);
         } else if (
-            !strcmp("nbIoTUePriority", field->name) && row[i] != nullptr) {
+            boost::iequals("nbIoTUePriority", field->name) &&
+            row[i] != nullptr) {
           int32_t a = std::stoi(row[i]);
           subscription_data.setNbIoTUePriority(a);
         } else if (
-            !strcmp("nssaiInclusionAllowed", field->name) &&
+            boost::iequals("nssaiInclusionAllowed", field->name) &&
             row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             subscription_data.setNssaiInclusionAllowed(true);
           else
             subscription_data.setNssaiInclusionAllowed(false);
         } else if (
-            !strcmp("rgWirelineCharacteristics", field->name) &&
+            boost::iequals("rgWirelineCharacteristics", field->name) &&
             row[i] != nullptr) {
           subscription_data.setRgWirelineCharacteristics(row[i]);
         } else if (
-            !strcmp("ecRestrictionDataWb", field->name) && row[i] != nullptr) {
+            boost::iequals("ecRestrictionDataWb", field->name) &&
+            row[i] != nullptr) {
           EcRestrictionDataWb ecrestrictiondatawb;
           nlohmann::json::parse(row[i]).get_to(ecrestrictiondatawb);
           subscription_data.setEcRestrictionDataWb(ecrestrictiondatawb);
         } else if (
-            !strcmp("ecRestrictionDataNb", field->name) && row[i] != nullptr) {
+            boost::iequals("ecRestrictionDataNb", field->name) &&
+            row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             subscription_data.setEcRestrictionDataNb(true);
           else
             subscription_data.setEcRestrictionDataNb(false);
         } else if (
-            !strcmp("expectedUeBehaviourList", field->name) &&
+            boost::iequals("expectedUeBehaviourList", field->name) &&
             row[i] != nullptr) {
           ExpectedUeBehaviourData expecteduebehaviourlist;
           nlohmann::json::parse(row[i]).get_to(expecteduebehaviourlist);
           subscription_data.setExpectedUeBehaviourList(expecteduebehaviourlist);
         } else if (
-            !strcmp("primaryRatRestrictions", field->name) &&
+            boost::iequals("primaryRatRestrictions", field->name) &&
             row[i] != nullptr) {
           std ::vector<RatType> primaryratrestrictions;
           nlohmann::json::parse(row[i]).get_to(primaryratrestrictions);
           subscription_data.setPrimaryRatRestrictions(primaryratrestrictions);
         } else if (
-            !strcmp("secondaryRatRestrictions", field->name) &&
+            boost::iequals("secondaryRatRestrictions", field->name) &&
             row[i] != nullptr) {
           std ::vector<RatType> secondaryratrestrictions;
           nlohmann::json::parse(row[i]).get_to(secondaryratrestrictions);
           subscription_data.setSecondaryRatRestrictions(
               secondaryratrestrictions);
         } else if (
-            !strcmp("edrxParametersList", field->name) && row[i] != nullptr) {
+            boost::iequals("edrxParametersList", field->name) &&
+            row[i] != nullptr) {
           std ::vector<EdrxParameters> edrxparameterslist;
           nlohmann::json::parse(row[i]).get_to(edrxparameterslist);
           subscription_data.setEdrxParametersList(edrxparameterslist);
         } else if (
-            !strcmp("ptwParametersList", field->name) && row[i] != nullptr) {
+            boost::iequals("ptwParametersList", field->name) &&
+            row[i] != nullptr) {
           std ::vector<PtwParameters> ptwparameterslist;
           nlohmann::json::parse(row[i]).get_to(ptwparameterslist);
           subscription_data.setPtwParametersList(ptwparameterslist);
         } else if (
-            !strcmp("iabOperationAllowed", field->name) && row[i] != nullptr) {
+            boost::iequals("iabOperationAllowed", field->name) &&
+            row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             subscription_data.setIabOperationAllowed(true);
           else
             subscription_data.setIabOperationAllowed(false);
         } else if (
-            !strcmp("wirelineForbiddenAreas", field->name) &&
+            boost::iequals("wirelineForbiddenAreas", field->name) &&
             row[i] != nullptr) {
           std ::vector<WirelineArea> wirelineforbiddenareas;
           nlohmann::json::parse(row[i]).get_to(wirelineforbiddenareas);
           subscription_data.setWirelineForbiddenAreas(wirelineforbiddenareas);
         } else if (
-            !strcmp("wirelineServiceAreaRestriction", field->name) &&
+            boost::iequals("wirelineServiceAreaRestriction", field->name) &&
             row[i] != nullptr) {
           WirelineServiceAreaRestriction wirelineservicearearestriction;
           nlohmann::json::parse(row[i]).get_to(wirelineservicearearestriction);
@@ -795,7 +834,7 @@ bool mysql_db::create_amf_context_3gpp(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！ SQL Query: %s",
         select_AMF3GPPAccessRegistration.c_str());
@@ -1033,7 +1072,7 @@ bool mysql_db::query_amf_context_3gpp(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_real_query failure！ SQL Query %s", query.c_str());
     return false;
@@ -1041,93 +1080,110 @@ bool mysql_db::query_amf_context_3gpp(
 
   row = mysql_fetch_row(res);
 
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("amfInstanceId", field->name)) {
+  if (row != nullptr) {
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+      if (boost::iequals("amfInstanceId", field->name)) {
         amf3gppaccessregistration.setAmfInstanceId(row[i]);
-      } else if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("supportedFeatures", field->name) &&
+          row[i] != nullptr) {
         amf3gppaccessregistration.setSupportedFeatures(row[i]);
-      } else if (!strcmp("purgeFlag", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("purgeFlag", field->name) && row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           amf3gppaccessregistration.setPurgeFlag(true);
         else
           amf3gppaccessregistration.setPurgeFlag(false);
-      } else if (!strcmp("pei", field->name) && row[i] != NULL) {
+      } else if (boost::iequals("pei", field->name) && row[i] != nullptr) {
         amf3gppaccessregistration.setPei(row[i]);
-      } else if (!strcmp("imsVoPs", field->name) && row[i] != NULL) {
+      } else if (boost::iequals("imsVoPs", field->name) && row[i] != nullptr) {
         ImsVoPs imsvops;
         nlohmann::json::parse(row[i]).get_to(imsvops);
         amf3gppaccessregistration.setImsVoPs(imsvops);
-      } else if (!strcmp("deregCallbackUri", field->name)) {
+      } else if (boost::iequals("deregCallbackUri", field->name)) {
         amf3gppaccessregistration.setDeregCallbackUri(row[i]);
       } else if (
-          !strcmp("amfServiceNameDereg", field->name) && row[i] != NULL) {
+          boost::iequals("amfServiceNameDereg", field->name) &&
+          row[i] != nullptr) {
         ServiceName amfservicenamedereg;
         nlohmann::json::parse(row[i]).get_to(amfservicenamedereg);
         amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
       } else if (
-          !strcmp("pcscfRestorationCallbackUri", field->name) &&
-          row[i] != NULL) {
+          boost::iequals("pcscfRestorationCallbackUri", field->name) &&
+          row[i] != nullptr) {
         amf3gppaccessregistration.setPcscfRestorationCallbackUri(row[i]);
       } else if (
-          !strcmp("amfServiceNamePcscfRest", field->name) && row[i] != NULL) {
+          boost::iequals("amfServiceNamePcscfRest", field->name) &&
+          row[i] != nullptr) {
         ServiceName amfservicenamepcscfrest;
         nlohmann::json::parse(row[i]).get_to(amfservicenamepcscfrest);
         amf3gppaccessregistration.setAmfServiceNamePcscfRest(
             amfservicenamepcscfrest);
       } else if (
-          !strcmp("initialRegistrationInd", field->name) && row[i] != NULL) {
+          boost::iequals("initialRegistrationInd", field->name) &&
+          row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           amf3gppaccessregistration.setInitialRegistrationInd(true);
         else
           amf3gppaccessregistration.setInitialRegistrationInd(false);
-      } else if (!strcmp("guami", field->name)) {
+      } else if (boost::iequals("guami", field->name)) {
         Guami guami;
         nlohmann::json::parse(row[i]).get_to(guami);
         amf3gppaccessregistration.setGuami(guami);
-      } else if (!strcmp("backupAmfInfo", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("backupAmfInfo", field->name) && row[i] != nullptr) {
         std ::vector<BackupAmfInfo> backupamfinfo;
         nlohmann::json::parse(row[i]).get_to(backupamfinfo);
         amf3gppaccessregistration.setBackupAmfInfo(backupamfinfo);
-      } else if (!strcmp("drFlag", field->name) && row[i] != NULL) {
+      } else if (boost::iequals("drFlag", field->name) && row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           amf3gppaccessregistration.setDrFlag(true);
         else
           amf3gppaccessregistration.setDrFlag(false);
-      } else if (!strcmp("ratType", field->name)) {
+      } else if (boost::iequals("ratType", field->name)) {
         RatType rattype;
         nlohmann::json::parse(row[i]).get_to(rattype);
         amf3gppaccessregistration.setRatType(rattype);
-      } else if (!strcmp("urrpIndicator", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("urrpIndicator", field->name) && row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           amf3gppaccessregistration.setUrrpIndicator(true);
         else
           amf3gppaccessregistration.setUrrpIndicator(false);
       } else if (
-          !strcmp("amfEeSubscriptionId", field->name) && row[i] != NULL) {
+          boost::iequals("amfEeSubscriptionId", field->name) &&
+          row[i] != nullptr) {
         amf3gppaccessregistration.setAmfEeSubscriptionId(row[i]);
       } else if (
-          !strcmp("epsInterworkingInfo", field->name) && row[i] != NULL) {
+          boost::iequals("epsInterworkingInfo", field->name) &&
+          row[i] != nullptr) {
         EpsInterworkingInfo epsinterworkinginfo;
         nlohmann::json::parse(row[i]).get_to(epsinterworkinginfo);
         amf3gppaccessregistration.setEpsInterworkingInfo(epsinterworkinginfo);
-      } else if (!strcmp("ueSrvccCapability", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("ueSrvccCapability", field->name) &&
+          row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           amf3gppaccessregistration.setUeSrvccCapability(true);
         else
           amf3gppaccessregistration.setUeSrvccCapability(false);
-      } else if (!strcmp("registrationTime", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("registrationTime", field->name) &&
+          row[i] != nullptr) {
         amf3gppaccessregistration.setRegistrationTime(row[i]);
-      } else if (!strcmp("vgmlcAddress", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("vgmlcAddress", field->name) && row[i] != nullptr) {
         VgmlcAddress vgmlcaddress;
         nlohmann::json::parse(row[i]).get_to(vgmlcaddress);
         amf3gppaccessregistration.setVgmlcAddress(vgmlcaddress);
-      } else if (!strcmp("contextInfo", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("contextInfo", field->name) && row[i] != nullptr) {
         ContextInfo contextinfo;
         nlohmann::json::parse(row[i]).get_to(contextinfo);
         amf3gppaccessregistration.setContextInfo(contextinfo);
       } else if (
-          !strcmp("noEeSubscriptionInd", field->name) && row[i] != NULL) {
+          boost::iequals("noEeSubscriptionInd", field->name) &&
+          row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           amf3gppaccessregistration.setNoEeSubscriptionInd(true);
         else
@@ -1174,7 +1230,7 @@ bool mysql_db::mysql_db::insert_authentication_status(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！ SQL Query %s",
         select_AuthenticationStatus.c_str());
@@ -1268,30 +1324,31 @@ bool mysql_db::mysql_db::query_authentication_status(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error("mysql_store_result failure！");
     return false;
   }
 
   row = mysql_fetch_row(res);
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("nfInstanceId", field->name)) {
+  if (row != nullptr) {
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+      if (boost::iequals("nfInstanceId", field->name)) {
         authenticationstatus.setNfInstanceId(row[i]);
-      } else if (!strcmp("success", field->name)) {
+      } else if (boost::iequals("success", field->name)) {
         if (strcmp(row[i], "0"))
           authenticationstatus.setSuccess(true);
         else
           authenticationstatus.setSuccess(false);
-      } else if (!strcmp("timeStamp", field->name)) {
+      } else if (boost::iequals("timeStamp", field->name)) {
         authenticationstatus.setTimeStamp(row[i]);
-      } else if (!strcmp("authType", field->name)) {
+      } else if (boost::iequals("authType", field->name)) {
         //                AuthType authtype;
         //                nlohmann::json::parse(row[i]).get_to(authtype);
         authenticationstatus.setAuthType(row[i]);
-      } else if (!strcmp("servingNetworkName", field->name)) {
+      } else if (boost::iequals("servingNetworkName", field->name)) {
         authenticationstatus.setServingNetworkName(row[i]);
-      } else if (!strcmp("authRemovalInd", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("authRemovalInd", field->name) && row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           authenticationstatus.setAuthRemovalInd(true);
         else
@@ -1333,59 +1390,67 @@ bool mysql_db::mysql_db::query_sdm_subscription(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！ SQL Query: %s", query.c_str());
     return false;
   }
 
   row = mysql_fetch_row(res);
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("nfInstanceId", field->name)) {
+  if (row != nullptr) {
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+      if (boost::iequals("nfInstanceId", field->name)) {
         SdmSubscriptions.setNfInstanceId(row[i]);
       } else if (
-          !strcmp("implicitUnsubscribe", field->name) && row[i] != NULL) {
+          boost::iequals("implicitUnsubscribe", field->name) &&
+          row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           SdmSubscriptions.setImplicitUnsubscribe(true);
         else
           SdmSubscriptions.setImplicitUnsubscribe(false);
-      } else if (!strcmp("expires", field->name) && row[i] != NULL) {
+      } else if (boost::iequals("expires", field->name) && row[i] != nullptr) {
         SdmSubscriptions.setExpires(row[i]);
-      } else if (!strcmp("callbackReference", field->name)) {
+      } else if (boost::iequals("callbackReference", field->name)) {
         SdmSubscriptions.setCallbackReference(row[i]);
-      } else if (!strcmp("amfServiceName", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("amfServiceName", field->name) && row[i] != nullptr) {
         ServiceName amfservicename;
         nlohmann::json::parse(row[i]).get_to(amfservicename);
         SdmSubscriptions.setAmfServiceName(amfservicename);
-      } else if (!strcmp("monitoredResourceUris", field->name)) {
+      } else if (boost::iequals("monitoredResourceUris", field->name)) {
         std::vector<std::string> monitoredresourceuris;
         nlohmann::json::parse(row[i]).get_to(monitoredresourceuris);
         SdmSubscriptions.setMonitoredResourceUris(monitoredresourceuris);
-      } else if (!strcmp("singleNssai", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("singleNssai", field->name) && row[i] != nullptr) {
         Snssai singlenssai;
         nlohmann::json::parse(row[i]).get_to(singlenssai);
         SdmSubscriptions.setSingleNssai(singlenssai);
-      } else if (!strcmp("dnn", field->name) && row[i] != NULL) {
+      } else if (boost::iequals("dnn", field->name) && row[i] != nullptr) {
         SdmSubscriptions.setDnn(row[i]);
-      } else if (!strcmp("subscriptionId", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("subscriptionId", field->name) && row[i] != nullptr) {
         SdmSubscriptions.setSubscriptionId(row[i]);
-      } else if (!strcmp("plmnId", field->name) && row[i] != NULL) {
+      } else if (boost::iequals("plmnId", field->name) && row[i] != nullptr) {
         PlmnId plmnid;
         nlohmann::json::parse(row[i]).get_to(plmnid);
         SdmSubscriptions.setPlmnId(plmnid);
-      } else if (!strcmp("immediateReport", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("immediateReport", field->name) && row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           SdmSubscriptions.setImmediateReport(true);
         else
           SdmSubscriptions.setImmediateReport(false);
-      } else if (!strcmp("report", field->name) && row[i] != NULL) {
+      } else if (boost::iequals("report", field->name) && row[i] != nullptr) {
         SubscriptionDataSets report;
         nlohmann::json::parse(row[i]).get_to(report);
         SdmSubscriptions.setReport(report);
-      } else if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("supportedFeatures", field->name) &&
+          row[i] != nullptr) {
         SdmSubscriptions.setSupportedFeatures(row[i]);
-      } else if (!strcmp("contextInfo", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("contextInfo", field->name) && row[i] != nullptr) {
         ContextInfo contextinfo;
         nlohmann::json::parse(row[i]).get_to(contextinfo);
         SdmSubscriptions.setContextInfo(contextinfo);
@@ -1431,7 +1496,7 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
     Logger::udr_mysql().error(
@@ -1485,7 +1550,7 @@ bool mysql_db::update_sdm_subscription(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！SQL Query: %s", query.c_str());
     return false;
@@ -1591,7 +1656,7 @@ bool mysql_db::create_sdm_subscriptions(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！ SQL Query %s", query.c_str());
     return false;
@@ -1700,13 +1765,13 @@ bool mysql_db::query_sdm_subscriptions(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！ SQL Query: %s", query.c_str());
     return false;
   }
 
-  while (field = mysql_fetch_field(res)) {
+  while ((field = mysql_fetch_field(res))) {
     fields.push_back(field->name);
   }
 
@@ -1717,54 +1782,67 @@ bool mysql_db::query_sdm_subscriptions(
     tmp.clear();
 
     for (int i = 0; i < fields.size(); i++) {
-      if (!strcmp("nfInstanceId", fields[i].c_str())) {
+      if (boost::iequals("nfInstanceId", fields[i].c_str())) {
         sdmsubscriptions.setNfInstanceId(row[i]);
       } else if (
-          !strcmp("implicitUnsubscribe", fields[i].c_str()) && row[i] != NULL) {
+          boost::iequals("implicitUnsubscribe", fields[i].c_str()) &&
+          row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           sdmsubscriptions.setImplicitUnsubscribe(true);
         else
           sdmsubscriptions.setImplicitUnsubscribe(false);
-      } else if (!strcmp("expires", fields[i].c_str()) && row[i] != NULL) {
+      } else if (
+          boost::iequals("expires", fields[i].c_str()) && row[i] != nullptr) {
         sdmsubscriptions.setExpires(row[i]);
-      } else if (!strcmp("callbackReference", fields[i].c_str())) {
+      } else if (boost::iequals("callbackReference", fields[i].c_str())) {
         sdmsubscriptions.setCallbackReference(row[i]);
       } else if (
-          !strcmp("amfServiceName", fields[i].c_str()) && row[i] != NULL) {
+          boost::iequals("amfServiceName", fields[i].c_str()) &&
+          row[i] != nullptr) {
         ServiceName amfservicename;
         nlohmann::json::parse(row[i]).get_to(amfservicename);
         sdmsubscriptions.setAmfServiceName(amfservicename);
-      } else if (!strcmp("monitoredResourceUris", fields[i].c_str())) {
+      } else if (boost::iequals("monitoredResourceUris", fields[i].c_str())) {
         std::vector<std::string> monitoredresourceuris;
         nlohmann::json::parse(row[i]).get_to(monitoredresourceuris);
         sdmsubscriptions.setMonitoredResourceUris(monitoredresourceuris);
-      } else if (!strcmp("singleNssai", fields[i].c_str()) && row[i] != NULL) {
+      } else if (
+          boost::iequals("singleNssai", fields[i].c_str()) &&
+          row[i] != nullptr) {
         Snssai singlenssai;
         nlohmann::json::parse(row[i]).get_to(singlenssai);
         sdmsubscriptions.setSingleNssai(singlenssai);
-      } else if (!strcmp("dnn", fields[i].c_str()) && row[i] != NULL) {
+      } else if (
+          boost::iequals("dnn", fields[i].c_str()) && row[i] != nullptr) {
         sdmsubscriptions.setDnn(row[i]);
       } else if (
-          !strcmp("subscriptionId", fields[i].c_str()) && row[i] != NULL) {
+          boost::iequals("subscriptionId", fields[i].c_str()) &&
+          row[i] != nullptr) {
         sdmsubscriptions.setSubscriptionId(row[i]);
-      } else if (!strcmp("plmnId", fields[i].c_str()) && row[i] != NULL) {
+      } else if (
+          boost::iequals("plmnId", fields[i].c_str()) && row[i] != nullptr) {
         PlmnId plmnid;
         nlohmann::json::parse(row[i]).get_to(plmnid);
         sdmsubscriptions.setPlmnId(plmnid);
       } else if (
-          !strcmp("immediateReport", fields[i].c_str()) && row[i] != NULL) {
+          boost::iequals("immediateReport", fields[i].c_str()) &&
+          row[i] != nullptr) {
         if (strcmp(row[i], "0"))
           sdmsubscriptions.setImmediateReport(true);
         else
           sdmsubscriptions.setImmediateReport(false);
-      } else if (!strcmp("report", fields[i].c_str()) && row[i] != NULL) {
+      } else if (
+          boost::iequals("report", fields[i].c_str()) && row[i] != nullptr) {
         SubscriptionDataSets report;
         nlohmann::json::parse(row[i]).get_to(report);
         sdmsubscriptions.setReport(report);
       } else if (
-          !strcmp("supportedFeatures", fields[i].c_str()) && row[i] != NULL) {
+          boost::iequals("supportedFeatures", fields[i].c_str()) &&
+          row[i] != nullptr) {
         sdmsubscriptions.setSupportedFeatures(row[i]);
-      } else if (!strcmp("contextInfo", fields[i].c_str()) && row[i] != NULL) {
+      } else if (
+          boost::iequals("contextInfo", fields[i].c_str()) &&
+          row[i] != nullptr) {
         ContextInfo contextinfo;
         nlohmann::json::parse(row[i]).get_to(contextinfo);
         sdmsubscriptions.setContextInfo(contextinfo);
@@ -1951,7 +2029,7 @@ bool mysql_db::query_sm_data(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure, SQL Query: %s", query.c_str());
     return false;
@@ -1960,7 +2038,7 @@ bool mysql_db::query_sm_data(
   // TODO: multiple rows
   std::vector<std::string> fields;
 
-  while (field = mysql_fetch_field(res)) {
+  while ((field = mysql_fetch_field(res))) {
     fields.push_back(field->name);
   }
   if (fields.size() == 0) {
@@ -1973,11 +2051,13 @@ bool mysql_db::query_sm_data(
     nlohmann::json json_tmp                                                = {};
     SessionManagementSubscriptionData session_management_subscription_data = {};
     for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-      if (!strcmp("singleNssai", field->name)) {
+      if (boost::iequals("singleNssai", field->name)) {
         Snssai single_nssai = {};
         nlohmann::json::parse(row[i]).get_to(single_nssai);
         session_management_subscription_data.setSingleNssai(single_nssai);
-      } else if (!strcmp("dnnConfigurations", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("dnnConfigurations", field->name) &&
+          row[i] != nullptr) {
         std ::map<std ::string, DnnConfiguration> dnn_configurations;
         nlohmann::json::parse(row[i]).get_to(dnn_configurations);
         session_management_subscription_data.setDnnConfigurations(
@@ -1989,48 +2069,59 @@ bool mysql_db::query_sm_data(
           Logger::udr_mysql().debug(
               "DNN configurations: %s", temp.dump().c_str());
         }
-      } else if (!strcmp("internalGroupIds", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("internalGroupIds", field->name) &&
+          row[i] != nullptr) {
         std ::vector<std ::string> internal_group_ids;
         nlohmann::json::parse(row[i]).get_to(internal_group_ids);
         session_management_subscription_data.setInternalGroupIds(
             internal_group_ids);
       } else if (
-          !strcmp("sharedVnGroupDataIds", field->name) && row[i] != NULL) {
+          boost::iequals("sharedVnGroupDataIds", field->name) &&
+          row[i] != nullptr) {
         std ::map<std ::string, std ::string> shared_vn_group_data_ids;
         nlohmann::json::parse(row[i]).get_to(shared_vn_group_data_ids);
         session_management_subscription_data.setSharedVnGroupDataIds(
             shared_vn_group_data_ids);
       } else if (
-          !strcmp("sharedDnnConfigurationsId", field->name) && row[i] != NULL) {
+          boost::iequals("sharedDnnConfigurationsId", field->name) &&
+          row[i] != nullptr) {
         session_management_subscription_data.setSharedDnnConfigurationsId(
             row[i]);
-      } else if (!strcmp("odbPacketServices", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("odbPacketServices", field->name) &&
+          row[i] != nullptr) {
         OdbPacketServices odbpacketservices;
         nlohmann::json::parse(row[i]).get_to(odbpacketservices);
         session_management_subscription_data.setOdbPacketServices(
             odbpacketservices);
-      } else if (!strcmp("traceData", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("traceData", field->name) && row[i] != nullptr) {
         TraceData tracedata;
         nlohmann::json::parse(row[i]).get_to(tracedata);
         session_management_subscription_data.setTraceData(tracedata);
-      } else if (!strcmp("sharedTraceDataId", field->name) && row[i] != NULL) {
+      } else if (
+          boost::iequals("sharedTraceDataId", field->name) &&
+          row[i] != nullptr) {
         session_management_subscription_data.setSharedTraceDataId(row[i]);
       } else if (
-          !strcmp("expectedUeBehavioursList", field->name) && row[i] != NULL) {
+          boost::iequals("expectedUeBehavioursList", field->name) &&
+          row[i] != nullptr) {
         std ::map<std ::string, ExpectedUeBehaviourData>
             expecteduebehaviourslist;
         nlohmann::json::parse(row[i]).get_to(expecteduebehaviourslist);
         session_management_subscription_data.setExpectedUeBehavioursList(
             expecteduebehaviourslist);
       } else if (
-          !strcmp("suggestedPacketNumDlList", field->name) && row[i] != NULL) {
+          boost::iequals("suggestedPacketNumDlList", field->name) &&
+          row[i] != nullptr) {
         std ::map<std ::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
         nlohmann::json::parse(row[i]).get_to(suggestedpacketnumdllist);
         session_management_subscription_data.setSuggestedPacketNumDlList(
             suggestedpacketnumdllist);
       } else if (
-          !strcmp("3gppChargingCharacteristics", field->name) &&
-          row[i] != NULL) {
+          boost::iequals("3gppChargingCharacteristics", field->name) &&
+          row[i] != nullptr) {
         session_management_subscription_data.setR3gppChargingCharacteristics(
             row[i]);
       }
@@ -2073,7 +2164,7 @@ bool mysql_db::insert_smf_context_non_3gpp(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！ SQL Query: %s",
         select_SmfRegistration.c_str());
@@ -2249,63 +2340,74 @@ bool mysql_db::query_smf_registration(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！SQL Query: %s", query.c_str());
     return false;
   }
 
   row = mysql_fetch_row(res);
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
+  if (row != nullptr) {
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
       try {
-        if (!strcmp("smfInstanceId", field->name)) {
+        if (boost::iequals("smfInstanceId", field->name)) {
           smfregistration.setSmfInstanceId(row[i]);
-        } else if (!strcmp("smfSetId", field->name) && row[i] != NULL) {
+        } else if (
+            boost::iequals("smfSetId", field->name) && row[i] != nullptr) {
           smfregistration.setSmfSetId(row[i]);
         } else if (
-            !strcmp("supportedFeatures", field->name) && row[i] != NULL) {
+            boost::iequals("supportedFeatures", field->name) &&
+            row[i] != nullptr) {
           smfregistration.setSupportedFeatures(row[i]);
-        } else if (!strcmp("pduSessionId", field->name)) {
+        } else if (boost::iequals("pduSessionId", field->name)) {
           int32_t a = std::stoi(row[i]);
           smfregistration.setPduSessionId(a);
-        } else if (!strcmp("singleNssai", field->name)) {
+        } else if (boost::iequals("singleNssai", field->name)) {
           Snssai singlenssai;
           nlohmann::json::parse(row[i]).get_to(singlenssai);
           smfregistration.setSingleNssai(singlenssai);
-        } else if (!strcmp("dnn", field->name) && row[i] != NULL) {
+        } else if (boost::iequals("dnn", field->name) && row[i] != nullptr) {
           smfregistration.setDnn(row[i]);
         } else if (
-            !strcmp("emergencyServices", field->name) && row[i] != NULL) {
+            boost::iequals("emergencyServices", field->name) &&
+            row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             smfregistration.setEmergencyServices(true);
           else
             smfregistration.setEmergencyServices(false);
         } else if (
-            !strcmp("pcscfRestorationCallbackUri", field->name) &&
-            row[i] != NULL) {
+            boost::iequals("pcscfRestorationCallbackUri", field->name) &&
+            row[i] != nullptr) {
           smfregistration.setPcscfRestorationCallbackUri(row[i]);
-        } else if (!strcmp("plmnId", field->name)) {
+        } else if (boost::iequals("plmnId", field->name)) {
           PlmnId plmnid;
           nlohmann::json::parse(row[i]).get_to(plmnid);
           smfregistration.setPlmnId(plmnid);
-        } else if (!strcmp("pgwFqdn", field->name) && row[i] != NULL) {
+        } else if (
+            boost::iequals("pgwFqdn", field->name) && row[i] != nullptr) {
           smfregistration.setPgwFqdn(row[i]);
-        } else if (!strcmp("epdgInd", field->name) && row[i] != NULL) {
+        } else if (
+            boost::iequals("epdgInd", field->name) && row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             smfregistration.setEpdgInd(true);
           else
             smfregistration.setEpdgInd(false);
-        } else if (!strcmp("deregCallbackUri", field->name) && row[i] != NULL) {
+        } else if (
+            boost::iequals("deregCallbackUri", field->name) &&
+            row[i] != nullptr) {
           smfregistration.setDeregCallbackUri(row[i]);
         } else if (
-            !strcmp("registrationReason", field->name) && row[i] != NULL) {
+            boost::iequals("registrationReason", field->name) &&
+            row[i] != nullptr) {
           RegistrationReason registrationreason;
           nlohmann::json::parse(row[i]).get_to(registrationreason);
           smfregistration.setRegistrationReason(registrationreason);
-        } else if (!strcmp("registrationTime", field->name) && row[i] != NULL) {
+        } else if (
+            boost::iequals("registrationTime", field->name) &&
+            row[i] != nullptr) {
           smfregistration.setRegistrationTime(row[i]);
-        } else if (!strcmp("contextInfo", field->name) && row[i] != NULL) {
+        } else if (
+            boost::iequals("contextInfo", field->name) && row[i] != nullptr) {
           ContextInfo contextinfo;
           nlohmann::json::parse(row[i]).get_to(contextinfo);
           smfregistration.setContextInfo(contextinfo);
@@ -2352,13 +2454,13 @@ bool mysql_db::query_smf_reg_list(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！SQL Query: %s", query.c_str());
     return false;
   }
 
-  while (field = mysql_fetch_field(res)) {
+  while ((field = mysql_fetch_field(res))) {
     fields.push_back(field->name);
   }
 
@@ -2370,57 +2472,67 @@ bool mysql_db::query_smf_reg_list(
 
     for (int i = 0; i < fields.size(); i++) {
       try {
-        if (!strcmp("smfInstanceId", fields[i].c_str())) {
+        if (boost::iequals("smfInstanceId", fields[i].c_str())) {
           smfregistration.setSmfInstanceId(row[i]);
-        } else if (!strcmp("smfSetId", fields[i].c_str()) && row[i] != NULL) {
+        } else if (
+            boost::iequals("smfSetId", fields[i].c_str()) &&
+            row[i] != nullptr) {
           smfregistration.setSmfSetId(row[i]);
         } else if (
-            !strcmp("supportedFeatures", fields[i].c_str()) && row[i] != NULL) {
+            boost::iequals("supportedFeatures", fields[i].c_str()) &&
+            row[i] != nullptr) {
           smfregistration.setSupportedFeatures(row[i]);
-        } else if (!strcmp("pduSessionId", fields[i].c_str())) {
+        } else if (boost::iequals("pduSessionId", fields[i].c_str())) {
           int32_t a = std::stoi(row[i]);
           smfregistration.setPduSessionId(a);
-        } else if (!strcmp("singleNssai", fields[i].c_str())) {
+        } else if (boost::iequals("singleNssai", fields[i].c_str())) {
           Snssai singlenssai;
           nlohmann::json::parse(row[i]).get_to(singlenssai);
           smfregistration.setSingleNssai(singlenssai);
-        } else if (!strcmp("dnn", fields[i].c_str()) && row[i] != NULL) {
+        } else if (
+            boost::iequals("dnn", fields[i].c_str()) && row[i] != nullptr) {
           smfregistration.setDnn(row[i]);
         } else if (
-            !strcmp("emergencyServices", fields[i].c_str()) && row[i] != NULL) {
+            boost::iequals("emergencyServices", fields[i].c_str()) &&
+            row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             smfregistration.setEmergencyServices(true);
           else
             smfregistration.setEmergencyServices(false);
         } else if (
-            !strcmp("pcscfRestorationCallbackUri", fields[i].c_str()) &&
-            row[i] != NULL) {
+            boost::iequals("pcscfRestorationCallbackUri", fields[i].c_str()) &&
+            row[i] != nullptr) {
           smfregistration.setPcscfRestorationCallbackUri(row[i]);
-        } else if (!strcmp("plmnId", fields[i].c_str())) {
+        } else if (boost::iequals("plmnId", fields[i].c_str())) {
           PlmnId plmnid;
           nlohmann::json::parse(row[i]).get_to(plmnid);
           smfregistration.setPlmnId(plmnid);
-        } else if (!strcmp("pgwFqdn", fields[i].c_str()) && row[i] != NULL) {
+        } else if (
+            boost::iequals("pgwFqdn", fields[i].c_str()) && row[i] != nullptr) {
           smfregistration.setPgwFqdn(row[i]);
-        } else if (!strcmp("epdgInd", fields[i].c_str()) && row[i] != NULL) {
+        } else if (
+            boost::iequals("epdgInd", fields[i].c_str()) && row[i] != nullptr) {
           if (strcmp(row[i], "0"))
             smfregistration.setEpdgInd(true);
           else
             smfregistration.setEpdgInd(false);
         } else if (
-            !strcmp("deregCallbackUri", fields[i].c_str()) && row[i] != NULL) {
+            boost::iequals("deregCallbackUri", fields[i].c_str()) &&
+            row[i] != nullptr) {
           smfregistration.setDeregCallbackUri(row[i]);
         } else if (
-            !strcmp("registrationReason", fields[i].c_str()) &&
-            row[i] != NULL) {
+            boost::iequals("registrationReason", fields[i].c_str()) &&
+            row[i] != nullptr) {
           RegistrationReason registrationreason;
           nlohmann::json::parse(row[i]).get_to(registrationreason);
           smfregistration.setRegistrationReason(registrationreason);
         } else if (
-            !strcmp("registrationTime", fields[i].c_str()) && row[i] != NULL) {
+            boost::iequals("registrationTime", fields[i].c_str()) &&
+            row[i] != nullptr) {
           smfregistration.setRegistrationTime(row[i]);
         } else if (
-            !strcmp("contextInfo", fields[i].c_str()) && row[i] != NULL) {
+            boost::iequals("contextInfo", fields[i].c_str()) &&
+            row[i] != nullptr) {
           ContextInfo contextinfo;
           nlohmann::json::parse(row[i]).get_to(contextinfo);
           smfregistration.setContextInfo(contextinfo);
@@ -2467,7 +2579,7 @@ bool mysql_db::query_smf_select_data(
   }
 
   res = mysql_store_result(&mysql_connector);
-  if (res == NULL) {
+  if (res == nullptr) {
     Logger::udr_mysql().error(
         "mysql_store_result failure！SQL Query: %s", query.c_str());
     return false;
@@ -2475,18 +2587,21 @@ bool mysql_db::query_smf_select_data(
 
   row = mysql_fetch_row(res);
 
-  if (row != NULL) {
-    for (int i = 0; field = mysql_fetch_field(res); i++) {
-      if (!strcmp("supportedFeatures", field->name) && row[i] != NULL) {
+  if (row != nullptr) {
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+      if (boost::iequals("supportedFeatures", field->name) &&
+          row[i] != nullptr) {
         smfselectionsubscriptiondata.setSupportedFeatures(row[i]);
       } else if (
-          !strcmp("subscribedSnssaiInfos", field->name) && row[i] != NULL) {
+          boost::iequals("subscribedSnssaiInfos", field->name) &&
+          row[i] != nullptr) {
         std ::map<std ::string, SnssaiInfo> subscribedsnssaiinfos;
         nlohmann::json::parse(row[i]).get_to(subscribedsnssaiinfos);
         smfselectionsubscriptiondata.setSubscribedSnssaiInfos(
             subscribedsnssaiinfos);
       } else if (
-          !strcmp("sharedSnssaiInfosId", field->name) && row[i] != NULL) {
+          boost::iequals("sharedSnssaiInfosId", field->name) &&
+          row[i] != nullptr) {
         smfselectionsubscriptiondata.setSharedSnssaiInfosId(row[i]);
       }
     }
