@@ -1897,8 +1897,8 @@ bool mysql_db::create_sm_data(
                             std::to_string(single_nssai.getSst());
 
   if (!single_nssai.getSd().empty()) {
-    nssai_query +=
-        " AND JSON_EXTRACT(singleNssai, \"$.sd\")=" + single_nssai.getSd();
+    nssai_query += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
+                   single_nssai.getSd() + "'";
   }
 
   std::string query =
@@ -2027,14 +2027,20 @@ bool mysql_db::query_sm_data(
   std::string option_str = {};
 
   if (snssai.has_value()) {
-    /*    option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
-                      std::to_string(snssai.getSst());
-    */
-    uint32_t single_nssai_key = 0;
-    if (!get_key_from_snssai(snssai.value(), single_nssai_key)) {
-      return false;
+    option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+                  std::to_string(snssai.value().getSst());
+
+    if (!snssai.value().getSd().empty()) {
+      option_str +=
+          " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" + snssai.getSd() + "'";
     }
-    option_str += "AND singleNssai='" + std::to_string(single_nssai_key) + "'";
+
+    // uint32_t single_nssai_key = 0;
+    // if (!get_key_from_snssai(snssai.value(), single_nssai_key)) {
+    //   return false;
+    // }
+    // option_str += "AND singleNssai='" + std::to_string(single_nssai_key) +
+    // "'";
   }
 
   if (dnn.has_value()) {
