@@ -1893,9 +1893,8 @@ bool mysql_db::create_sm_data(
     single_nssai_key)) { return false;
     }
   */
-  std::string nssai_query = nssai_query =
-      " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
-      std::to_string(single_nssai.getSst());
+  std::string nssai_query = " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+                            std::to_string(single_nssai.getSst());
 
   if (!single_nssai.getSd().empty()) {
     nssai_query +=
