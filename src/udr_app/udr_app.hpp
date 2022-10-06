@@ -270,11 +270,12 @@ class udr_app {
    * subscriptionData: SM Subscription
    * @param [nlohmann::json&] response_data: Response in Json format
    * @param [long code] code: HTTP response code
+   * @param [uint32_t&] resource_id: Resource ID
    * @return void
    */
   void handle_create_sm_data(
       SessionManagementSubscriptionData& subscriptionData,
-      nlohmann::json& response_data, long& code);
+      nlohmann::json& response_data, long& code, uint32_t& resource_id);
 
   /*
    * Handle a request to create SMFRegistration (SMFRegistrationDocumentApiImpl)

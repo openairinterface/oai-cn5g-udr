@@ -1874,7 +1874,7 @@ bool mysql_db::query_sdm_subscriptions(
 //------------------------------------------------------------------------------
 bool mysql_db::create_sm_data(
     oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
-    nlohmann::json& json_data) {
+    nlohmann::json& json_data, uint32_t& resource_id) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
@@ -1904,11 +1904,6 @@ bool mysql_db::create_sm_data(
   std::string query =
       "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
       "'" + "AND servingPlmnid='" + serving_plmn_id + "'" + nssai_query;
-
-  if (sm_subscription.dnnConfigurationsIsSet()) {
-    json_tmp = sm_subscription.getDnnConfigurations();
-    query += ",dnnConfigurations='" + json_tmp.dump() + "'";
-  }
 
   Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
 

@@ -263,11 +263,12 @@ class database_wrapper_abstraction {
    * @param [const oai::udr::model::SessionManagementSubscriptionData&]
    * SessionManagementSubscription: subscription
    * @param [nlohmann::json&] json_data: Data in Json format
+   * @param [uint32_t&] resource_id: ID represent the resource location
    * @return true if successful, otherwise return false
    */
   virtual bool create_sm_data(
       oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
-      nlohmann::json& json_data) = 0;
+      nlohmann::json& json_data, uint32_t& resource_id) = 0;
 
   /*
    * Insert an item into the DB for SMFRegistration
