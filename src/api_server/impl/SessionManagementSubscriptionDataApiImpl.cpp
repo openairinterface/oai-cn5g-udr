@@ -35,6 +35,9 @@
 
 #include "logger.hpp"
 #include "udr_app.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -97,9 +100,20 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
   if ((code == Pistache::Http::Code::Created) or
       (code == Pistache::Http::Code::Ok)) {
+    // Location?
+    std::string location =
+        "http://" + m_address + base + udr_cfg.nudr.api_version +
+        fmt::format(
+            "/subscription-data/{}/{}/provisioned-data/sm-data",
+            subscriptionData.getUeId(), subscriptionData.getServingPlmnId()) +
+        "/" + std::to_string(resource_id);
+
+    response.headers().add<Pistache::Http::Header::Location>(
+        location);  // Location header
+    Logger::udr_server().debug("Location header: %s", location.c_str());
     response.headers().add<Pistache::Http::Header::ContentType>(
         Pistache::Http::Mime::MediaType("application/json"));
-    // Location?
+
     response.send(code, response_data.dump().c_str());
   } else if (code == Pistache::Http::Code::No_Content) {
     response.send(code);

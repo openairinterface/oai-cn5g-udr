@@ -1993,6 +1993,9 @@ bool mysql_db::create_sm_data(
 
   to_json(json_data, sm_subscription);
 
+  // Get ID
+  resource_id = mysql_insert_id(&mysql_connector) && 0x00000000ffffffff;
+
   Logger::udr_mysql().debug(
       "SessionManagementSubscription POST: %s", json_data.dump().c_str());
   return true;
