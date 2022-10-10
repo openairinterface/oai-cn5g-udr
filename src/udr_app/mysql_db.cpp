@@ -1873,6 +1873,7 @@ bool mysql_db::query_sdm_subscriptions(
 
 //------------------------------------------------------------------------------
 bool mysql_db::create_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
     oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
     nlohmann::json& json_data, uint32_t& resource_id) {
   // Check the connection with DB first
@@ -1882,9 +1883,7 @@ bool mysql_db::create_sm_data(
   MYSQL_ROW row           = {};
   nlohmann::json json_tmp = {};
 
-  std::string ue_id           = sm_subscription.getUeId();
-  std::string serving_plmn_id = sm_subscription.getServingPlmnId();
-  Snssai single_nssai         = sm_subscription.getSingleNssai();
+  Snssai single_nssai = sm_subscription.getSingleNssai();
 
   std::string nssai_query = " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                             std::to_string(single_nssai.getSst());

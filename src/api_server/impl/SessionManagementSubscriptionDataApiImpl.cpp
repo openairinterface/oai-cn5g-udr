@@ -87,6 +87,7 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
 }
 
 void SessionManagementSubscriptionDataApiImpl::create_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
     SessionManagementSubscriptionData& subscriptionData,
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
@@ -94,7 +95,8 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
   long http_code               = 0;
   uint32_t resource_id         = 0;
   m_udr_app->handle_create_sm_data(
-      subscriptionData, response_data, http_code, resource_id);
+      ueId, servingPlmnId, subscriptionData, response_data, http_code,
+      resource_id);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", code);
@@ -104,8 +106,8 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
     std::string location =
         "http://" + m_address + base + udr_cfg.nudr.api_version +
         fmt::format(
-            "/subscription-data/{}/{}/provisioned-data/sm-data",
-            subscriptionData.getUeId(), subscriptionData.getServingPlmnId()) +
+            "/subscription-data/{}/{}/provisioned-data/sm-data", ueId,
+            servingPlmnId) +
         "/" + std::to_string(resource_id);
 
     response.headers().add<Pistache::Http::Header::Location>(

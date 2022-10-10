@@ -260,14 +260,17 @@ class database_wrapper_abstraction {
 
   /*
    * Insert a new item into the DB for SessionManagementSubscription
+   * @param [const std::string&] ue_id: User Id (Imsi/supi)
+   * @param [const std::string&] serving_plmn_id: Serving PLMN
    * @param [const oai::udr::model::SessionManagementSubscriptionData&]
-   * SessionManagementSubscription: subscription
+   * subscription_data: subscription
    * @param [nlohmann::json&] json_data: Data in Json format
    * @param [uint32_t&] resource_id: ID represent the resource location
    * @return true if successful, otherwise return false
    */
   virtual bool create_sm_data(
-      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      oai::udr::model::SessionManagementSubscriptionData& subscription_data,
       nlohmann::json& json_data, uint32_t& resource_id) = 0;
 
   /*

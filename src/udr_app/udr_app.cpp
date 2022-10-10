@@ -365,13 +365,15 @@ void udr_app::handle_query_sm_data(
 
 //------------------------------------------------------------------------------
 void udr_app::handle_create_sm_data(
-    SessionManagementSubscriptionData& subscriptionData,
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    SessionManagementSubscriptionData& subscription_data,
     nlohmann::json& response_data, long& code, uint32_t& resource_id) {
   Logger::udr_app().info(
       "Create a Session Management Subscription Data of a UE");
 
   if (db_connector->create_sm_data(
-          subscriptionData, response_data, resource_id)) {
+          ue_id, serving_plmn_id, subscription_data, response_data,
+          resource_id)) {
     code = HTTP_STATUS_CODE_201_CREATED;
     Logger::udr_app().info(
         "SessionManagementSubscription: %s", response_data.dump().c_str());

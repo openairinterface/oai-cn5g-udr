@@ -266,15 +266,18 @@ class udr_app {
   /*
    * Handle a request to create a SessionManagementSubscription
    * (SessionManagementSubscriptionDataApiImpl)
+   * @param [const std::string&] ue_id: User Id (Imsi/supi)
+   * @param [const std::string&] serving_plmn_id: Serving PLMN
    * @param [const oai::udr::model::SessionManagementSubscriptionData&]
-   * subscriptionData: SM Subscription
+   * subscription_data: SM Subscription
    * @param [nlohmann::json&] response_data: Response in Json format
    * @param [long code] code: HTTP response code
    * @param [uint32_t&] resource_id: Resource ID
    * @return void
    */
   void handle_create_sm_data(
-      SessionManagementSubscriptionData& subscriptionData,
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      SessionManagementSubscriptionData& subscription_data,
       nlohmann::json& response_data, long& code, uint32_t& resource_id);
 
   /*
