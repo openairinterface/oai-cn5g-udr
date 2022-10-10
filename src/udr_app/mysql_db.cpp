@@ -1922,6 +1922,7 @@ bool mysql_db::create_sm_data(
   }
   mysql_free_result(res);
 
+  // Insert a new row into DB
   query = "INSERT INTO SessionManagementSubscriptionData SET ueid='" + ue_id +
           "'" + ",servingPlmnid='" + serving_plmn_id + "'" +
           (sm_subscription.sharedDnnConfigurationsIdIsSet() ?
@@ -1990,7 +1991,7 @@ bool mysql_db::create_sm_data(
     return false;
   }
 
-  // Get SubscriptionId
+  // Get SubscriptionId (used as part of the created resource's URI)
   // TODO: use LAST_INSERT_ID()
   // resource_id = mysql_insert_id(&mysql_connector) && 0x00000000ffffffff;
 
@@ -2032,7 +2033,7 @@ bool mysql_db::create_sm_data(
   to_json(json_data, sm_subscription);
 
   Logger::udr_mysql().debug(
-      "SessionManagementSubscription POST: %s", json_data.dump().c_str());
+      "Inserted SessionManagementSubscription: %s", json_data.dump().c_str());
   return true;
 }
 
@@ -2087,7 +2088,6 @@ bool mysql_db::query_sm_data(
     return false;
   }
 
-  // TODO: multiple rows
   std::vector<std::string> fields;
 
   while ((field = mysql_fetch_field(res))) {
