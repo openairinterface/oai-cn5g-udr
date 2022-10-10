@@ -1788,7 +1788,7 @@ bool mysql_db::query_sdm_subscriptions(
 
   j.clear();
 
-  while (row = mysql_fetch_row(res)) {
+  while ((row = mysql_fetch_row(res))) {
     SdmSubscription sdmsubscriptions = {};
     tmp.clear();
 
@@ -1991,10 +1991,46 @@ bool mysql_db::create_sm_data(
     return false;
   }
 
-  to_json(json_data, sm_subscription);
+  // Get SubscriptionId
+  // TODO: use LAST_INSERT_ID()
+  // resource_id = mysql_insert_id(&mysql_connector) && 0x00000000ffffffff;
 
-  // Get ID
-  resource_id = mysql_insert_id(&mysql_connector) && 0x00000000ffffffff;
+  std::string query_sub_id =
+      "SELECT subscriptionId FROM SessionManagementSubscriptionData WHERE "
+      "ueid='" +
+      ue_id + "'" + "AND servingPlmnid='" + serving_plmn_id + "'" + nssai_query;
+
+  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+  if (mysql_real_query(
+          &mysql_connector, query_sub_id.c_str(),
+          (unsigned long) query_sub_id.size()) != 0) {
+    Logger::udr_mysql().error(
+        "Failed when executing mysql_real_query with SQL Query: %s",
+        query_sub_id.c_str());
+    return false;
+  }
+
+  res = mysql_store_result(&mysql_connector);
+
+  if (res == nullptr) {
+    Logger::udr_mysql().error(
+        "mysql_store_result failure！ SQL Query: %s", query_sub_id.c_str());
+    return false;
+  }
+
+  row = mysql_fetch_row(res);
+
+  if (row != nullptr and row[0] != nullptr) {
+    try {
+      resource_id = std::stoi(row[0]);
+    } catch (const std::exception& err) {
+      Logger::udr_mysql().error("Couldn't get SubscriptionId");
+      return false;
+    }
+    Logger::udr_mysql().debug("SubscriptionId: %u", resource_id);
+  }
+
+  to_json(json_data, sm_subscription);
 
   Logger::udr_mysql().debug(
       "SessionManagementSubscription POST: %s", json_data.dump().c_str());
