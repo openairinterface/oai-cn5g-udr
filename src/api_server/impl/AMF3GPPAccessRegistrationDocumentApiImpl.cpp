@@ -51,14 +51,16 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::amf_context3gpp(
     const std::string& ueId, const std::vector<PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
-  /************************ test ************************/
+  // TODO: verify
   nlohmann::json j, j1;
   for (int i = 0; i < patchItem.size(); i++) {
     to_json(j1, patchItem[i]);
     j += j1;
   }
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(Pistache::Http::Code::Ok, j.dump());
-  /******************************************************/
 }
 void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
     const std::string& ueId,
