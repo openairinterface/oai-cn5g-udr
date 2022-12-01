@@ -30,6 +30,7 @@
 #ifndef DATABASE_WRAPPER_ABSTRACTION_HPP
 #define DATABASE_WRAPPER_ABSTRACTION_HPP
 
+#include <optional>
 #include <nlohmann/json.hpp>
 
 #include "Amf3GppAccessRegistration.h"
