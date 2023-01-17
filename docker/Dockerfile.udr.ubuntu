@@ -122,8 +122,8 @@ RUN apt-get update && \
 WORKDIR /openair-udr/bin
 COPY --from=oai-udr-builder \
     /openair-udr/build/udr/build/oai_udr \
-    /openair-udr/scripts/entrypoint.sh \
-    /openair-udr/scripts/healthcheck.py \
+    /openair-udr/scripts/entrypoint.py \
+    /openair-udr/scripts/healthcheck.sh \
     /wait-for-it/wait-for-it.sh \
     ./
 
