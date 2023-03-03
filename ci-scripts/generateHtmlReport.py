@@ -810,7 +810,7 @@ class HtmlReport():
 			if os.path.isfile(cwd + '/archives/' + logFileName):
 				if nfType == 'UDR':
 					if variant == 'docker':
-						section_start_pattern = 'Successfully tagged oai-udr'
+						section_start_pattern = 'naming to docker.io/library/oai-udr:'
 						section_end_pattern = 'OAI-UDR DOCKER IMAGE BUILD'
 					else:
 						section_start_pattern = 'COMMIT oai-udr:'
