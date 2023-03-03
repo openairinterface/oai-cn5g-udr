@@ -34,6 +34,7 @@ ARG BASE_IMAGE=ubuntu:bionic
 FROM $BASE_IMAGE as oai-udr-base
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Paris
 ENV IS_DOCKERFILE=1
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
@@ -48,7 +49,8 @@ RUN git config --global https.postBuffer 123289600 && \
 
 # Copying source code
 WORKDIR /openair-udr
-COPY . /openair-udr
+COPY ./build/scripts /openair-udr/build/scripts/
+COPY ./build/udr/CMakeLists.txt /openair-udr/build/udr/CMakeLists.txt
 
 # wait for it
 WORKDIR /
@@ -57,16 +59,17 @@ RUN git clone https://github.com/vishnubob/wait-for-it.git
 # Installing all the needed libraries/packages to build and run UDR
 WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --install-deps --force && \
-    cp -Rf /openair-udr/build/ext /openair-udr-ext-ref
+    ldconfig
 
 #---------------------------------------------------------------------
 # BUILDER IMAGE
 #---------------------------------------------------------------------
 FROM oai-udr-base as oai-udr-builder
+# Copying source code
+COPY . /openair-udr
 # Building UDR
 WORKDIR /openair-udr/build/scripts
-RUN ldconfig && \
-    ./build_udr --clean --Verbose --build-type Release --jobs && \
+RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
 
