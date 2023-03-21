@@ -157,22 +157,22 @@ void udr_client::curl_http_client(
     }
 
     // Process the response
-    Logger::udr_app().info(
-        "Get response with HTTP code (%d)", http_response_code);
     response = *httpData.get();
-    Logger::udr_app().info("Get response with jsonData: %s", response.c_str());
+    if (!response.empty())
+      Logger::udr_app().info(
+          "Get response with Json data: %s", response.c_str());
     nlohmann::json response_data = {};
 
     if (!is_response_ok) {
       try {
         response_data = nlohmann::json::parse(response);
       } catch (nlohmann::json::exception& e) {
-        Logger::udr_app().info("Could not get JSON content from the response");
+        Logger::udr_app().info("Could not get Json content from the response");
         // Set the default Cause
         response_data["error"]["cause"] = "504 Gateway Timeout";
       }
       std::string cause = response_data["error"]["cause"];
-      Logger::udr_app().warn("Call Network Function services failure");
+      Logger::udr_app().warn("Curl Request failure ");
       Logger::udr_app().info("Cause value: %s", cause.c_str());
       // TODO:
     }
