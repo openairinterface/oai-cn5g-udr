@@ -134,15 +134,17 @@ void udr_client::curl_http_client(
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body_data);
     }
 
-    int num_retries      = 0;
+    int num_retries     = 0;
     bool is_response_ok = false;
     while (num_retries < CURL_NUMBER_RETRIES) {
+      num_retries++;
       res = curl_easy_perform(curl);
       if (res != CURLE_OK) {
         continue;
       }
       curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_response_code);
-      Logger::udr_app().debug("Get response with HTTP code (%d)", http_response_code);
+      Logger::udr_app().debug(
+          "Get response with HTTP code (%d)", http_response_code);
 
       if (http_response_code == HTTP_STATUS_CODE_200_OK or
           http_response_code == HTTP_STATUS_CODE_201_CREATED or
@@ -151,11 +153,12 @@ void udr_client::curl_http_client(
         is_response_ok = true;
         break;
       }
-      Logger::udr_app().debug("Retry %d ...", num_retries + 1);
+      Logger::udr_app().debug("Retry %d ...", num_retries);
     }
 
     // Process the response
-    Logger::udr_app().info("Get response with HTTP code (%d)", http_response_code);
+    Logger::udr_app().info(
+        "Get response with HTTP code (%d)", http_response_code);
     response = *httpData.get();
     Logger::udr_app().info("Get response with jsonData: %s", response.c_str());
     nlohmann::json response_data = {};
