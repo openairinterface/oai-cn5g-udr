@@ -54,6 +54,7 @@ extern udr_config udr_cfg;
 static std::size_t callback(
     const char* in, std::size_t size, std::size_t num, std::string* out) {
   const std::size_t totalBytes(size * num);
+  out->clear();
   out->append(in, totalBytes);
   return totalBytes;
 }
@@ -162,18 +163,20 @@ void udr_client::curl_http_client(
       Logger::udr_app().info(
           "Get response with Json data: %s", response.c_str());
     nlohmann::json response_data = {};
-
+    //    std::string cause = {};
     if (!is_response_ok) {
       try {
         response_data = nlohmann::json::parse(response);
+        //      cause = response_data["error"]["cause"];
       } catch (nlohmann::json::exception& e) {
         Logger::udr_app().info("Could not get Json content from the response");
         // Set the default Cause
-        response_data["error"]["cause"] = "504 Gateway Timeout";
+        //  response_data["error"]["cause"] = "504 Gateway Timeout";
+        //    cause = response_data["error"]["cause"];
       }
-      std::string cause = response_data["error"]["cause"];
+
       Logger::udr_app().warn("Curl Request failure ");
-      Logger::udr_app().info("Cause value: %s", cause.c_str());
+      // Logger::udr_app().info("Cause value: %s", cause.c_str());
       // TODO:
     }
     curl_slist_free_all(headers);
