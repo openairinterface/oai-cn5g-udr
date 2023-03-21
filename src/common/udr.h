@@ -29,6 +29,7 @@
 
 #define MAX_FIRST_CONNECTION_RETRY 100
 #define MAX_CONNECTION_RETRY 3
+#define CURL_NUMBER_RETRIES 3
 
 #define _unused(x) ((void) (x))
 

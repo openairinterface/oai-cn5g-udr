@@ -68,14 +68,14 @@ udr_client::~udr_client() {
 
 //------------------------------------------------------------------------------
 void udr_client::curl_http_client(
-    std::string remoteUri, std::string method, std::string msgBody,
+    std::string remote_uri, std::string method, std::string msg_body,
     std::string& response) {
-  Logger::udr_app().info("Send HTTP message with body %s", msgBody.c_str());
+  Logger::udr_app().info("Send HTTP message with body %s", msg_body.c_str());
 
-  uint32_t str_len = msgBody.length();
+  uint32_t str_len = msg_body.length();
   char* body_data  = (char*) malloc(str_len + 1);
   memset(body_data, 0, str_len + 1);
-  memcpy((void*) body_data, (void*) msgBody.c_str(), str_len);
+  memcpy((void*) body_data, (void*) msg_body.c_str(), str_len);
 
   curl_global_init(CURL_GLOBAL_ALL);
   CURL* curl = curl_easy_init();
@@ -93,7 +93,7 @@ void udr_client::curl_http_client(
       curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     }
 
-    curl_easy_setopt(curl, CURLOPT_URL, remoteUri.c_str());
+    curl_easy_setopt(curl, CURLOPT_URL, remote_uri.c_str());
     if (method.compare("POST") == 0)
       curl_easy_setopt(curl, CURLOPT_HTTPPOST, 1);
     else if (method.compare("PUT") == 0)
@@ -119,7 +119,7 @@ void udr_client::curl_http_client(
     }
 
     // Response information.
-    long httpCode = {0};
+    long http_response_code = {0};
     std::unique_ptr<std::string> httpData(new std::string());
     std::unique_ptr<std::string> httpHeaderData(new std::string());
 
@@ -130,40 +130,35 @@ void udr_client::curl_http_client(
 
     if ((method.compare("POST") == 0) or (method.compare("PUT") == 0) or
         (method.compare("PATCH") == 0)) {
-      curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, msgBody.length());
+      curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, msg_body.length());
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body_data);
     }
-    res = curl_easy_perform(curl);
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+
+    int num_retries      = 0;
+    bool is_response_ok = false;
+    while (num_retries < CURL_NUMBER_RETRIES) {
+      res = curl_easy_perform(curl);
+      if (res != CURLE_OK) {
+        continue;
+      }
+      curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_response_code);
+      Logger::udr_app().debug("Get response with HTTP code (%d)", http_response_code);
+
+      if (http_response_code == HTTP_STATUS_CODE_200_OK or
+          http_response_code == HTTP_STATUS_CODE_201_CREATED or
+          http_response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
+        // TODO
+        is_response_ok = true;
+        break;
+      }
+      Logger::udr_app().debug("Retry %d ...", num_retries + 1);
+    }
 
     // Process the response
-    response            = *httpData.get();
-    bool is_response_ok = true;
-    Logger::udr_app().info("Get response with HTTP code (%d)", httpCode);
-
-    if (httpCode == 0) {
-      Logger::udr_app().info(
-          "Cannot get response when calling %s", remoteUri.c_str());
-      // free curl before returning
-      curl_slist_free_all(headers);
-      curl_easy_cleanup(curl);
-      return;
-    }
-
+    Logger::udr_app().info("Get response with HTTP code (%d)", http_response_code);
+    response = *httpData.get();
+    Logger::udr_app().info("Get response with jsonData: %s", response.c_str());
     nlohmann::json response_data = {};
-
-    if (httpCode != HTTP_STATUS_CODE_200_OK &&
-        httpCode != HTTP_STATUS_CODE_201_CREATED &&
-        httpCode != HTTP_STATUS_CODE_204_NO_CONTENT) {
-      is_response_ok = false;
-      if (response.size() < 1) {
-        Logger::udr_app().info("There's no content in the response");
-        // TODO: send context response error
-        return;
-      }
-      Logger::udr_app().warn("Receive response with HTTP code %d", httpCode);
-      return;
-    }
 
     if (!is_response_ok) {
       try {
@@ -173,13 +168,10 @@ void udr_client::curl_http_client(
         // Set the default Cause
         response_data["error"]["cause"] = "504 Gateway Timeout";
       }
-
-      Logger::udr_app().info(
-          "Get response with jsonData: %s", response.c_str());
-
       std::string cause = response_data["error"]["cause"];
-      Logger::udr_app().info("Call Network Function services failure");
+      Logger::udr_app().warn("Call Network Function services failure");
       Logger::udr_app().info("Cause value: %s", cause.c_str());
+      // TODO:
     }
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
@@ -189,7 +181,7 @@ void udr_client::curl_http_client(
 
   if (body_data) {
     free(body_data);
-    body_data = NULL;
+    body_data = nullptr;
   }
   return;
 }
