@@ -30,9 +30,6 @@
 #include "udr_client.hpp"
 
 #include <curl/curl.h>
-#include <pistache/http.h>
-#include <pistache/mime.h>
-
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 
@@ -40,13 +37,9 @@
 #include "logger.hpp"
 #include "udr.h"
 
-using namespace Pistache::Http;
-using namespace Pistache::Http::Mime;
 using namespace oai::udr::app;
 using namespace oai::udr::config;
-using json = nlohmann::json;
 
-extern udr_client* udr_client_inst;
 extern udr_config udr_cfg;
 
 //------------------------------------------------------------------------------
@@ -68,7 +61,7 @@ udr_client::~udr_client() {
 }
 
 //------------------------------------------------------------------------------
-void udr_client::curl_http_client(
+bool udr_client::curl_http_client(
     std::string remote_uri, std::string method, std::string msg_body,
     std::string& response) {
   Logger::udr_app().info("Send HTTP message with body %s", msg_body.c_str());
@@ -83,6 +76,8 @@ void udr_client::curl_http_client(
 
   uint8_t http_version = 1;
   if (udr_cfg.use_http2) http_version = 2;
+
+  bool is_response_ok = false;
 
   if (curl) {
     CURLcode res               = {};
@@ -119,12 +114,12 @@ void udr_client::curl_http_client(
           curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE);
     }
 
-    // Response information.
+    // Response information
     long http_response_code = {0};
     std::unique_ptr<std::string> httpData(new std::string());
     std::unique_ptr<std::string> httpHeaderData(new std::string());
 
-    // Hook up data handling function.
+    // Hook up data handling function
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &callback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, httpData.get());
     curl_easy_setopt(curl, CURLOPT_HEADERDATA, httpHeaderData.get());
@@ -135,8 +130,7 @@ void udr_client::curl_http_client(
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body_data);
     }
 
-    int num_retries     = 0;
-    bool is_response_ok = false;
+    int num_retries = 0;
     while (num_retries < CURL_NUMBER_RETRIES) {
       num_retries++;
       res = curl_easy_perform(curl);
@@ -167,12 +161,12 @@ void udr_client::curl_http_client(
     if (!is_response_ok) {
       try {
         response_data = nlohmann::json::parse(response);
-        //      cause = response_data["error"]["cause"];
+        // cause = response_data["error"]["cause"];
       } catch (nlohmann::json::exception& e) {
         Logger::udr_app().info("Could not get Json content from the response");
         // Set the default Cause
-        //  response_data["error"]["cause"] = "504 Gateway Timeout";
-        //    cause = response_data["error"]["cause"];
+        // response_data["error"]["cause"] = "504 Gateway Timeout";
+        // cause = response_data["error"]["cause"];
       }
 
       Logger::udr_app().warn("Curl Request failure ");
@@ -180,6 +174,8 @@ void udr_client::curl_http_client(
       // TODO:
     }
     curl_slist_free_all(headers);
+    curl_easy_cleanup(curl);
+  } else {
     curl_easy_cleanup(curl);
   }
 
@@ -189,5 +185,5 @@ void udr_client::curl_http_client(
     free(body_data);
     body_data = nullptr;
   }
-  return;
+  return is_response_ok;
 }

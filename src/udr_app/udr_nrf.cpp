@@ -120,25 +120,28 @@ void udr_nrf::register_to_nrf() {
   std::string response     = {};
   std::string method       = {"PUT"};
   get_udr_api_root(udr_api_root);
-  std::string remoteUri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  std::string remote_uri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
   nlohmann::json json_data = {};
   udr_nf_profile.to_json(json_data);
 
-  Logger::udr_nrf().info("Sending NF registeration request");
-  udr_client_instance->curl_http_client(
-      remoteUri, method, json_data.dump().c_str(), response);
-
-  try {
-    response_data = nlohmann::json::parse(response);
-    if (response.find("REGISTERED") != 0) {
-      start_event_nf_heartbeat(remoteUri);
+  Logger::udr_nrf().info("Sending NF Registration request");
+  if (udr_client_instance->curl_http_client(
+          remote_uri, method, json_data.dump().c_str(), response)) {
+    try {
+      response_data = nlohmann::json::parse(response);
+      if (response.find("REGISTERED") != 0) {
+        start_event_nf_heartbeat(remote_uri);
+      }
+    } catch (nlohmann::json::exception& e) {
+      Logger::udr_nrf().info("NF Registration procedure failed");
     }
-  } catch (nlohmann::json::exception& e) {
-    Logger::udr_nrf().info("NF registeration procedure failed");
+  } else {
+    Logger::udr_nrf().info("NF Registration procedure failed");
+    // TODO:
   }
 }
 //---------------------------------------------------------------------------------------------
-void udr_nrf::start_event_nf_heartbeat(std::string& remoteURI) {
+void udr_nrf::start_event_nf_heartbeat(std::string& remote_uri) {
   // get current time
   uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch())
@@ -164,7 +167,7 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   patch_item.setPath("/nfStatus");
   patch_item.setValue("REGISTERED");
   patch_items.push_back(patch_item);
-  Logger::udr_nrf().info("Sending NF heartbeat request");
+  Logger::udr_nrf().info("Sending NF Heartbeat Request");
 
   std::string response     = {};
   std::string method       = {"PATCH"};
@@ -177,8 +180,8 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
 
   std::string udr_api_root = {};
   get_udr_api_root(udr_api_root);
-  std::string remoteUri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  std::string remote_uri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
   udr_client_instance->curl_http_client(
-      remoteUri, method, json_data.dump().c_str(), response);
+      remote_uri, method, json_data.dump().c_str(), response);
   if (!response.empty()) task_connection.disconnect();
 }
