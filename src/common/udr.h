@@ -29,7 +29,10 @@
 
 #define MAX_FIRST_CONNECTION_RETRY 100
 #define MAX_CONNECTION_RETRY 3
-#define CURL_NUMBER_RETRIES 3
+
+#define NF_CURL_TIMEOUT_MS 1000L
+#define MAX_CURL_RETRY 3
+#define TIME_INTERVAL_CURL_RETRY 1000  // in microsecond
 
 #define _unused(x) ((void) (x))
 
@@ -45,8 +48,6 @@
 #define NUDR_DR_SM_DATA "sm-data"
 #define NUDR_DR_SMF_REG "smf-registrations"
 #define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
-
-#define NF_CURL_TIMEOUT_MS 1000L
 
 typedef struct identity_range_s {
   std::string start;

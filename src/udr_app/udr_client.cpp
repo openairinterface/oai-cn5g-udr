@@ -131,12 +131,22 @@ bool udr_client::curl_http_client(
     }
 
     int num_retries = 0;
-    while (num_retries < CURL_NUMBER_RETRIES) {
+    while (num_retries < MAX_CURL_RETRY) {
       num_retries++;
       res = curl_easy_perform(curl);
       if (res != CURLE_OK) {
+        // Sleep between two consecutive retries
+        usleep(TIME_INTERVAL_CURL_RETRY * pow(2, num_retries - 1));
+        Logger::udr_app().debug("Retry %d ...", num_retries);
         continue;
       }
+    }
+
+    if (res != CURLE_OK) {
+      Logger::udr_app().debug(
+          "Still could not reach the destination after %d retries",
+          MAX_CURL_RETRY);
+    } else {
       curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_response_code);
       Logger::udr_app().debug(
           "Get response with HTTP code (%d)", http_response_code);
@@ -146,32 +156,31 @@ bool udr_client::curl_http_client(
           http_response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
         // TODO
         is_response_ok = true;
-        break;
-      }
-      Logger::udr_app().debug("Retry %d ...", num_retries);
-    }
-
-    // Process the response
-    response = *httpData.get();
-    if (!response.empty())
-      Logger::udr_app().info(
-          "Get response with Json data: %s", response.c_str());
-    nlohmann::json response_data = {};
-    //    std::string cause = {};
-    if (!is_response_ok) {
-      try {
-        response_data = nlohmann::json::parse(response);
-        // cause = response_data["error"]["cause"];
-      } catch (nlohmann::json::exception& e) {
-        Logger::udr_app().info("Could not get Json content from the response");
-        // Set the default Cause
-        // response_data["error"]["cause"] = "504 Gateway Timeout";
-        // cause = response_data["error"]["cause"];
       }
 
-      Logger::udr_app().warn("Curl Request failure ");
-      // Logger::udr_app().info("Cause value: %s", cause.c_str());
-      // TODO:
+      // Process the response
+      response = *httpData.get();
+      if (!response.empty())
+        Logger::udr_app().info(
+            "Get response with Json data: %s", response.c_str());
+      nlohmann::json response_data = {};
+      //    std::string cause = {};
+      if (!is_response_ok) {
+        try {
+          response_data = nlohmann::json::parse(response);
+          // cause = response_data["error"]["cause"];
+        } catch (nlohmann::json::exception& e) {
+          Logger::udr_app().info(
+              "Could not get Json content from the response");
+          // Set the default Cause
+          // response_data["error"]["cause"] = "504 Gateway Timeout";
+          // cause = response_data["error"]["cause"];
+        }
+
+        Logger::udr_app().warn("Curl Request failed");
+        // Logger::udr_app().info("Cause value: %s", cause.c_str());
+        // TODO:
+      }
     }
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
