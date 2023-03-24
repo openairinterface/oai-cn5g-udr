@@ -233,26 +233,29 @@ bool mysql_db::insert_authentication_subscription(
 
   std::string query =
       "SELECT * FROM AuthenticationSubscription WHERE ueid='" + id + "'";
-  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL Query: %s", id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size()) != 0) {
     Logger::udr_mysql().error(
-        "Failed when executing mysql_real_query with SQL Query: %s",
-        query.c_str());
+        "[UE Id %s] Failed when executing mysql_real_query with SQL Query: %s",
+        id.c_str(), query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", id.c_str(),
+        query.c_str());
     return false;
   }
 
   row = mysql_fetch_row(res);
   if (row != nullptr) {
-    Logger::udr_mysql().error("AuthenticationSubscription existed!");
+    Logger::udr_mysql().error(
+        "[UE Id %s] AuthenticationSubscription existed!", id.c_str());
     // Existed
     return false;
   }
@@ -299,19 +302,22 @@ bool mysql_db::insert_authentication_subscription(
     query += ",sequenceNumber='" + json_tmp.dump() + "'";
   }
 
-  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL Query: %s", id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", id.c_str(),
+        query.c_str());
     return false;
   }
 
   to_json(json_data, auth_subscription);
 
   Logger::udr_mysql().debug(
-      "AuthenticationSubscription POST: %s", json_data.dump().c_str());
+      "[UE Id %s] AuthenticationSubscription POST: %s", id.c_str(),
+      json_data.dump().c_str());
   return true;
 }
 
@@ -323,17 +329,20 @@ bool mysql_db::delete_authentication_subscription(const std::string& id) {
   const std::string query =
       "DELETE FROM AuthenticationSubscription WHERE ueid='" + id + "'";
 
-  Logger::udr_mysql().debug("MySQL Query %s: ", query.c_str());
+  Logger::udr_mysql().debug(
+      "[UE Id %s] MySQL Query %s: ", id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", id.c_str(),
+        query.c_str());
     return false;
   }
 
   Logger::udr_mysql().debug(
-      "Deleted AuthenticationSubscription (with UE ID %s) successfully",
+      "[UE Id %s] Deleted AuthenticationSubscription (with UE ID %s) "
+      "successfully",
       id.c_str());
   return true;
 }
@@ -344,7 +353,8 @@ bool mysql_db::query_authentication_subscription(
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
-  Logger::udr_mysql().info("Query Authentication Subscription");
+  Logger::udr_mysql().info(
+      "[UE Id %s] Query Authentication Subscription", id.c_str());
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
   MYSQL_FIELD* field = nullptr;
@@ -353,13 +363,14 @@ bool mysql_db::query_authentication_subscription(
   AuthenticationSubscription authentication_subscription = {};
   const std::string query =
       "SELECT * FROM AuthenticationSubscription WHERE ueid='" + id + "'";
-  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL Query: %s", id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size()) != 0) {
     Logger::udr_mysql().error(
-        "Failed when executing mysql_real_query with SQL Query: %s",
-        query.c_str());
+        "[UE Id %s] Failed when executing mysql_real_query with SQL Query: %s",
+        id.c_str(), query.c_str());
     return false;
   }
 
@@ -367,7 +378,8 @@ bool mysql_db::query_authentication_subscription(
 
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -375,7 +387,8 @@ bool mysql_db::query_authentication_subscription(
 
   if (row != nullptr) {
     for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-      Logger::udr_mysql().debug("Row [%d]: %s ", i, field->name);
+      Logger::udr_mysql().debug(
+          "[UE Id %s] Row [%d]: %s ", id.c_str(), i, field->name);
       if (boost::iequals("authenticationMethod", field->name)) {
         authentication_subscription.setAuthenticationMethod(row[i]);
       } else if (
@@ -428,7 +441,8 @@ bool mysql_db::query_authentication_subscription(
     to_json(json_data, authentication_subscription);
   } else {
     Logger::udr_mysql().error(
-        "AuthenticationSubscription no data！ SQL Query: %s", query.c_str());
+        "[UE Id %s] AuthenticationSubscription no data！ SQL Query: %s",
+        id.c_str(), query.c_str());
   }
 
   mysql_free_result(res);
@@ -449,7 +463,8 @@ bool mysql_db::update_authentication_subscription(
       "SELECT * from AuthenticationSubscription WHERE ueid='" + ue_id + "'";
 
   Logger::udr_mysql().info(
-      "MySQL Query: %s", select_Authenticationsubscription.c_str());
+      "[UE Id %s] MySQL Query: %s", ue_id.c_str(),
+      select_Authenticationsubscription.c_str());
 
   std::string query    = {};
   nlohmann::json tmp_j = {};
@@ -467,7 +482,7 @@ bool mysql_db::update_authentication_subscription(
               &mysql_connector, select_Authenticationsubscription.c_str(),
               (unsigned long) select_Authenticationsubscription.size())) {
         Logger::udr_mysql().error(
-            "mysql_real_query failure！SQL Query: %s",
+            "[UE Id %s] mysql_real_query failure！SQL Query: %s", ue_id.c_str(),
             select_Authenticationsubscription.c_str());
         return false;
       }
@@ -475,8 +490,8 @@ bool mysql_db::update_authentication_subscription(
       res = mysql_store_result(&mysql_connector);
       if (res == nullptr) {
         Logger::udr_mysql().error(
-            "mysql_store_result failure！SQL Query: %s",
-            select_Authenticationsubscription.c_str());
+            "[UE Id %s] mysql_store_result failure！SQL Query: %s",
+            ue_id.c_str(), select_Authenticationsubscription.c_str());
         return false;
       }
       if (mysql_num_rows(res)) {
@@ -488,18 +503,20 @@ bool mysql_db::update_authentication_subscription(
         query += " WHERE ueid='" + ue_id + "'";
       } else {
         Logger::udr_mysql().error(
-            "AuthenticationSubscription no data！ SQL Query %s",
-            select_Authenticationsubscription.c_str());
+            "[UE Id %s] AuthenticationSubscription no data！ SQL Query %s",
+            ue_id.c_str(), select_Authenticationsubscription.c_str());
       }
 
-      Logger::udr_mysql().info("MySQL Update Cmd %s", query.c_str());
+      Logger::udr_mysql().info(
+          "[UE Id %s] MySQL Update command %s", ue_id.c_str(), query.c_str());
       mysql_free_result(res);
 
       if (mysql_real_query(
               &mysql_connector, query.c_str(), (unsigned long) query.size()) !=
           0) {
         Logger::udr_mysql().error(
-            "update mysql failure！ SQL Cmd: %s", query.c_str());
+            "[UE Id %s]  Update mysql failure！ SQL command: %s", ue_id.c_str(),
+            query.c_str());
         // TODO: Problem details
         return false;
       }
@@ -510,7 +527,8 @@ bool mysql_db::update_authentication_subscription(
   }
 
   Logger::udr_mysql().info(
-      "AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
+      "[UE Id %s] AuthenticationSubscription PATCH: %s", ue_id.c_str(),
+      json_data.dump().c_str());
 
   //	  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
   return true;
@@ -528,24 +546,27 @@ bool mysql_db::query_am_data(
   MYSQL_FIELD* field = nullptr;
 
   oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
-  Logger::udr_mysql().debug("Handle Query AM Data");
+  Logger::udr_mysql().debug("[UE Id %s] Handle Query AM Data", ue_id.c_str());
 
   // TODO: Define query template in a header file
   const std::string query =
       "SELECT * from AccessAndMobilitySubscriptionData WHERE ueid='" + ue_id +
       "' AND servingPlmnid='" + serving_plmn_id + "'";
 
-  Logger::udr_mysql().debug("SQL Query: %s", query.c_str());
+  Logger::udr_mysql().debug(
+      "[UE Id %s] SQL Query: %s", ue_id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
-    Logger::udr_mysql().error("mysql_real_query failure！");
+    Logger::udr_mysql().error(
+        "[UE Id %s] mysql_real_query failure！", ue_id.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
-    Logger::udr_mysql().error("mysql_store_result failure！");
+    Logger::udr_mysql().error(
+        "[UE Id %s] mysql_store_result failure！", ue_id.c_str());
     return false;
   }
 
@@ -799,18 +820,20 @@ bool mysql_db::query_am_data(
         }
       } catch (std::exception e) {
         Logger::udr_mysql().error(
-            " Cannot set values for Subscription Data: %s", e.what());
+            "[UE Id %s] Cannot set values for Subscription Data: %s",
+            ue_id.c_str(), e.what());
         return false;
       }
     }
 
     to_json(json_data, subscription_data);
     Logger::udr_mysql().debug(
-        "AccessAndMobilitySubscriptionData GET (JSON): %s",
-        json_data.dump().c_str());
+        "[UE Id %s] AccessAndMobilitySubscriptionData GET (JSON): %s",
+        ue_id.c_str(), json_data.dump().c_str());
   } else {
     Logger::udr_mysql().error(
-        "No data available for AccessAndMobilitySubscriptionData!");
+        "[UE Id %s] No data available for AccessAndMobilitySubscriptionData!",
+        ue_id.c_str());
     return false;
   }
 
@@ -839,7 +862,7 @@ bool mysql_db::create_amf_context_3gpp(
           &mysql_connector, select_AMF3GPPAccessRegistration.c_str(),
           (unsigned long) select_AMF3GPPAccessRegistration.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s",
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
         select_AMF3GPPAccessRegistration.c_str());
     return false;
   }
@@ -847,7 +870,7 @@ bool mysql_db::create_amf_context_3gpp(
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s",
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
         select_AMF3GPPAccessRegistration.c_str());
     return false;
   }
@@ -1050,14 +1073,16 @@ bool mysql_db::create_amf_context_3gpp(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s]  mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   to_json(json_data, amf3GppAccessRegistration);
 
   Logger::udr_mysql().debug(
-      "Amf3GppAccessRegistration PUT: %s", json_data.dump().c_str());
+      "[UE Id %s] Amf3GppAccessRegistration PUT: %s", ue_id.c_str(),
+      json_data.dump().c_str());
 
   return true;
 }
@@ -1078,14 +1103,16 @@ bool mysql_db::query_amf_context_3gpp(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1204,10 +1231,12 @@ bool mysql_db::query_amf_context_3gpp(
     to_json(json_data, amf3gppaccessregistration);
 
     Logger::udr_mysql().debug(
-        "Amf3GppAccessRegistration GET %s", json_data.dump().c_str());
+        "[UE Id %s] Amf3GppAccessRegistration GET %s", ue_id.c_str(),
+        json_data.dump().c_str());
   } else {
     Logger::udr_mysql().error(
-        "Amf3GppAccessRegistration no data！ SQL Query %s", query.c_str());
+        "[UE Id %s] Amf3GppAccessRegistration no data！ SQL Query %s",
+        ue_id.c_str(), query.c_str());
   }
 
   mysql_free_result(res);
@@ -1229,13 +1258,14 @@ bool mysql_db::mysql_db::insert_authentication_status(
   std::string query = {};
 
   Logger::udr_mysql().info(
-      "MySQL query: %s", select_AuthenticationStatus.c_str());
+      "[UE Id %s] MySQL query: %s", ue_id.c_str(),
+      select_AuthenticationStatus.c_str());
 
   if (mysql_real_query(
           &mysql_connector, select_AuthenticationStatus.c_str(),
           (unsigned long) select_AuthenticationStatus.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s",
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
         select_AuthenticationStatus.c_str());
     return false;
   }
@@ -1243,7 +1273,7 @@ bool mysql_db::mysql_db::insert_authentication_status(
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query %s",
+        "[UE Id %s] mysql_store_result failure！ SQL Query %s", ue_id.c_str(),
         select_AuthenticationStatus.c_str());
     return false;
   }
@@ -1277,19 +1307,23 @@ bool mysql_db::mysql_db::insert_authentication_status(
     //        query += ",authType='"+j.dump()+"'";
   }
 
-  Logger::udr_mysql().info("MySQL query: %s", query.c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL query: %s", ue_id.c_str(), query.c_str());
 
   mysql_free_result(res);
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql create failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql create failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   nlohmann::json tmp = {};
   to_json(tmp, authEvent);
-  Logger::udr_mysql().info("AuthenticationStatus PUT: %s", tmp.dump().c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] AuthenticationStatus PUT: %s", ue_id.c_str(),
+      tmp.dump().c_str());
   return true;
 }
 
@@ -1305,11 +1339,13 @@ bool mysql_db::mysql_db::delete_authentication_status(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
-  Logger::udr_mysql().debug("AuthenticationStatus DELETE - successful");
+  Logger::udr_mysql().debug(
+      "[UE Id %s] AuthenticationStatus DELETE - successful", ue_id.c_str());
   return true;
 }
 
@@ -1326,17 +1362,20 @@ bool mysql_db::mysql_db::query_authentication_status(
   const std::string query =
       "SELECT * FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
 
-  Logger::udr_mysql().info("MySQL query: %s", query.c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL query: %s", ue_id.c_str(), query.c_str());
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
-    Logger::udr_mysql().error("mysql_store_result failure！");
+    Logger::udr_mysql().error(
+        "[UE Id %s] mysql_store_result failure！", ue_id.c_str());
     return false;
   }
 
@@ -1369,10 +1408,12 @@ bool mysql_db::mysql_db::query_authentication_status(
 
     to_json(json_data, authenticationstatus);
     Logger::udr_mysql().info(
-        "AuthenticationStatus GET: %s", json_data.dump().c_str());
+        "[UE Id %s] AuthenticationStatus GET: %s", ue_id.c_str(),
+        json_data.dump().c_str());
   } else {
     Logger::udr_mysql().error(
-        "AuthenticationStatus no data！ SQL Query %s", query.c_str());
+        "[UE Id %s] AuthenticationStatus no data！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
   }
 
   mysql_free_result(res);
@@ -1396,14 +1437,16 @@ bool mysql_db::mysql_db::query_sdm_subscription(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1469,10 +1512,12 @@ bool mysql_db::mysql_db::query_sdm_subscription(
     }
     to_json(json_data, SdmSubscriptions);
     Logger::udr_mysql().debug(
-        "SdmSubscription GET: %s", json_data.dump().c_str());
+        "[UE Id %s] SdmSubscription GET: %s", ue_id.c_str(),
+        json_data.dump().c_str());
   } else {
     Logger::udr_mysql().error(
-        "SdmSubscription no data！ SQL Query: %s", query.c_str());
+        "[UE Id %s] SdmSubscription no data！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
   }
 
   mysql_free_result(res);
@@ -1502,7 +1547,8 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1511,7 +1557,8 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1527,7 +1574,8 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
     problemdetails.setCause("USER_NOT_FOUND");
     to_json(j, problemdetails);
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1556,14 +1604,16 @@ bool mysql_db::update_sdm_subscription(
           &mysql_connector, select_query.c_str(),
           (unsigned long) select_query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1633,14 +1683,17 @@ bool mysql_db::update_sdm_subscription(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   nlohmann::json json_tmp = {};
   to_json(json_tmp, sdmSubscription);
 
-  Logger::udr_mysql().debug("SdmSubscription PUT: %s", json_tmp.dump().c_str());
+  Logger::udr_mysql().debug(
+      "[UE Id %s] SdmSubscription PUT: %s", ue_id.c_str(),
+      json_tmp.dump().c_str());
   return true;
 }
 
@@ -1662,14 +1715,16 @@ bool mysql_db::create_sdm_subscriptions(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1740,7 +1795,8 @@ bool mysql_db::create_sdm_subscriptions(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1748,7 +1804,8 @@ bool mysql_db::create_sdm_subscriptions(
   json_data = j;
 
   Logger::udr_mysql().debug(
-      "SdmSubscriptions POST: %s", json_data.dump().c_str());
+      "[UE Id %s] SdmSubscriptions POST: %s", ue_id.c_str(),
+      json_data.dump().c_str());
   return true;
 }
 
@@ -1771,14 +1828,16 @@ bool mysql_db::query_sdm_subscriptions(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -1867,7 +1926,8 @@ bool mysql_db::query_sdm_subscriptions(
   json_data = j;
 
   Logger::udr_mysql().debug(
-      "SdmSubscriptions GET: %s", json_data.dump().c_str());
+      "[UE Id %s] SdmSubscriptions GET: %s", ue_id.c_str(),
+      json_data.dump().c_str());
   return true;
 }
 
@@ -1897,26 +1957,29 @@ bool mysql_db::create_sm_data(
       "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
       "'" + "AND servingPlmnid='" + serving_plmn_id + "'" + nssai_query;
 
-  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL Query: %s", ue_id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size()) != 0) {
     Logger::udr_mysql().error(
-        "Failed when executing mysql_real_query with SQL Query: %s",
-        query.c_str());
+        "[UE Id %s] Failed when executing mysql_real_query with SQL Query: %s",
+        ue_id.c_str(), query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   row = mysql_fetch_row(res);
   if (row != nullptr) {  // Existed
-    Logger::udr_mysql().error("SessionManagementSubscriptionData existed!");
+    Logger::udr_mysql().error(
+        "[UE Id %s] SessionManagementSubscriptionData existed!", ue_id.c_str());
     json_data["error"] = "resource already exists";
     return false;
   }
@@ -1982,12 +2045,14 @@ bool mysql_db::create_sm_data(
     query += ",suggestedPacketNumDlList='" + json_tmp.dump() + "'";
   }
 
-  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL Query: %s", ue_id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -2000,13 +2065,14 @@ bool mysql_db::create_sm_data(
       "ueid='" +
       ue_id + "'" + "AND servingPlmnid='" + serving_plmn_id + "'" + nssai_query;
 
-  Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL Query: %s", ue_id.c_str(), query.c_str());
   if (mysql_real_query(
           &mysql_connector, query_sub_id.c_str(),
           (unsigned long) query_sub_id.size()) != 0) {
     Logger::udr_mysql().error(
-        "Failed when executing mysql_real_query with SQL Query: %s",
-        query_sub_id.c_str());
+        "[UE Id %s] Failed when executing mysql_real_query with SQL Query: %s",
+        ue_id.c_str(), query_sub_id.c_str());
     return false;
   }
 
@@ -2014,7 +2080,8 @@ bool mysql_db::create_sm_data(
 
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s", query_sub_id.c_str());
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
+        query_sub_id.c_str());
     return false;
   }
 
@@ -2024,16 +2091,19 @@ bool mysql_db::create_sm_data(
     try {
       resource_id = std::stoi(row[0]);
     } catch (const std::exception& err) {
-      Logger::udr_mysql().error("Couldn't get SubscriptionId");
+      Logger::udr_mysql().error(
+          "[UE Id %s] Couldn't get SubscriptionId", ue_id.c_str());
       return false;
     }
-    Logger::udr_mysql().debug("SubscriptionId: %u", resource_id);
+    Logger::udr_mysql().debug(
+        "[UE Id %s] SubscriptionId: %u", ue_id.c_str(), resource_id);
   }
 
   to_json(json_data, sm_subscription);
 
   Logger::udr_mysql().debug(
-      "Inserted SessionManagementSubscription: %s", json_data.dump().c_str());
+      "[UE Id %s] Inserted SessionManagementSubscription: %s", ue_id.c_str(),
+      json_data.dump().c_str());
   return true;
 }
 
@@ -2072,19 +2142,22 @@ bool mysql_db::query_sm_data(
   }
 
   query += option_str;
-  Logger::udr_mysql().debug("MySQL query: %s", query.c_str());
+  Logger::udr_mysql().debug(
+      "[UE Id %s] MySQL query: %s", ue_id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure, SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure, SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure, SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure, SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -2095,8 +2168,9 @@ bool mysql_db::query_sm_data(
   }
   if (fields.size() == 0) {
     Logger::udr_mysql().debug(
-        "SessionManagementSubscriptionData no data found, SQL query: %s",
-        query.c_str());
+        "[UE Id %s] SessionManagementSubscriptionData no data found, SQL "
+        "query: %s",
+        ue_id.c_str(), query.c_str());
   }
 
   while ((row = mysql_fetch_row(res))) {
@@ -2104,8 +2178,8 @@ bool mysql_db::query_sm_data(
     SessionManagementSubscriptionData session_management_subscription_data = {};
     for (int i = 0; i < fields.size(); i++) {
       Logger::udr_mysql().debug(
-          "SessionManagementSubscriptionData, Field name: %s",
-          fields[i].c_str());
+          "[UE Id %s] SessionManagementSubscriptionData, Field name: %s",
+          ue_id.c_str(), fields[i].c_str());
       if (boost::iequals("singleNssai", fields[i]) && row[i] != nullptr) {
         Snssai single_nssai = {};
         nlohmann::json::parse(row[i]).get_to(single_nssai);
@@ -2116,12 +2190,15 @@ bool mysql_db::query_sm_data(
         nlohmann::json::parse(row[i]).get_to(dnn_configurations);
         session_management_subscription_data.setDnnConfigurations(
             dnn_configurations);
-        Logger::udr_mysql().debug("DNN configurations (row %d): %s", i, row[i]);
+        Logger::udr_mysql().debug(
+            "[UE Id %s] DNN configurations (row %d): %s", ue_id.c_str(), i,
+            row[i]);
         for (auto d : dnn_configurations) {
           nlohmann::json temp = {};
           to_json(temp, d.second);
           Logger::udr_mysql().debug(
-              "DNN configurations: %s", temp.dump().c_str());
+              "[UE Id %s] DNN configurations: %s", ue_id.c_str(),
+              temp.dump().c_str());
         }
       } else if (
           boost::iequals("internalGroupIds", fields[i]) && row[i] != nullptr) {
@@ -2179,7 +2256,8 @@ bool mysql_db::query_sm_data(
     to_json(json_tmp, session_management_subscription_data);
     json_data += json_tmp;
     Logger::udr_mysql().debug(
-        "SessionManagementSubscriptionData: %s", json_data.dump().c_str());
+        "[UE Id %s] SessionManagementSubscriptionData: %s", ue_id.c_str(),
+        json_data.dump().c_str());
   }
 
   mysql_free_result(res);
@@ -2208,7 +2286,7 @@ bool mysql_db::insert_smf_context_non_3gpp(
           &mysql_connector, select_SmfRegistration.c_str(),
           (unsigned long) select_SmfRegistration.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s",
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
         select_SmfRegistration.c_str());
     return false;
   }
@@ -2216,7 +2294,7 @@ bool mysql_db::insert_smf_context_non_3gpp(
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！ SQL Query: %s",
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
         select_SmfRegistration.c_str());
     return false;
   }
@@ -2332,14 +2410,16 @@ bool mysql_db::insert_smf_context_non_3gpp(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   to_json(j, smfRegistration);
   json_data = j;
 
-  Logger::udr_mysql().debug("SmfRegistration PUT: %s", j.dump().c_str());
+  Logger::udr_mysql().debug(
+      "[UE Id %s] SmfRegistration PUT: %s", ue_id.c_str(), j.dump().c_str());
   return true;
 }
 
@@ -2356,13 +2436,15 @@ bool mysql_db::delete_smf_context(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   // r_data = {};
   // code          = HTTP_STATUS_CODE_204_NO_CONTENT;
-  Logger::udr_mysql().debug("SmfRegistration DELETE - successful");
+  Logger::udr_mysql().debug(
+      "[UE Id %s] SmfRegistration DELETE - successful", ue_id.c_str());
   return true;
 }
 
@@ -2385,14 +2467,16 @@ bool mysql_db::query_smf_registration(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -2464,16 +2548,19 @@ bool mysql_db::query_smf_registration(
         }
       } catch (std::exception e) {
         Logger::udr_mysql().error(
-            " Cannot set values for SMF Registration: %s", e.what());
+            "[UE Id %s] Cannot set values for SMF Registration: %s",
+            ue_id.c_str(), e.what());
       }
     }
     to_json(j, smfregistration);
     json_data = j;
 
-    Logger::udr_mysql().debug("SmfRegistration GET: %s", j.dump().c_str());
+    Logger::udr_mysql().debug(
+        "[UE Id %s] SmfRegistration GET: %s", ue_id.c_str(), j.dump().c_str());
   } else {
     Logger::udr_mysql().error(
-        "SmfRegistration no data！ SQL Query: %s", query.c_str());
+        "[UE Id %s] SmfRegistration no data！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
   }
   mysql_free_result(res);
 
@@ -2499,14 +2586,16 @@ bool mysql_db::query_smf_reg_list(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -2589,7 +2678,8 @@ bool mysql_db::query_smf_reg_list(
         }
       } catch (std::exception e) {
         Logger::udr_mysql().error(
-            " Cannot set values for SMF Registration: %s", e.what());
+            "[UE Id %s] Cannot set values for SMF Registration: %s",
+            ue_id.c_str(), e.what());
       }
     }
     to_json(tmp, smfregistration);
@@ -2601,7 +2691,8 @@ bool mysql_db::query_smf_reg_list(
   json_data = j;
   // code          = HTTP_STATUS_CODE_200_OK;
 
-  Logger::udr_mysql().debug("SmfRegistrations GET: %s", j.dump().c_str());
+  Logger::udr_mysql().debug(
+      "[UE Id %s] SmfRegistrations GET: %s", ue_id.c_str(), j.dump().c_str());
   return true;
 }
 
@@ -2624,14 +2715,16 @@ bool mysql_db::query_smf_select_data(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_mysql().error(
-        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_mysql().error(
-        "mysql_store_result failure！SQL Query: %s", query.c_str());
+        "[UE Id %s] mysql_store_result failure！SQL Query: %s", ue_id.c_str(),
+        query.c_str());
     return false;
   }
 
@@ -2659,10 +2752,12 @@ bool mysql_db::query_smf_select_data(
     json_data = j;
 
     Logger::udr_mysql().debug(
-        "SmfSelectionSubscriptionData GET: %s", j.dump().c_str());
+        "[UE Id %s] SmfSelectionSubscriptionData GET: %s", ue_id.c_str(),
+        j.dump().c_str());
   } else {
     Logger::udr_mysql().error(
-        "SmfSelectionSubscriptionData no data！SQL Query: %s", query.c_str());
+        "[UE Id %s] SmfSelectionSubscriptionData no data！SQL Query: %s",
+        ue_id.c_str(), query.c_str());
   }
 
   mysql_free_result(res);
