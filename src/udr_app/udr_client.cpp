@@ -137,7 +137,7 @@ bool udr_client::curl_http_client(
       if (res != CURLE_OK) {
         // Sleep between two consecutive retries
         usleep(TIME_INTERVAL_CURL_RETRY * pow(2, num_retries - 1));
-        Logger::udr_app().debug("Curl retry %d ...", num_retries);
+        Logger::udr_app().debug("Curl retry %d ...", num_retries + 1);
         continue;
       } else {
         break;

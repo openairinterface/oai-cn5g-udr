@@ -29,6 +29,7 @@
 #include "udr-api-server.h"
 #include "udr-http2-server.h"
 #include "udr_app.hpp"
+#include "udr_nrf.hpp"
 #include "udr_config.hpp"
 
 using namespace util;
@@ -38,6 +39,7 @@ using namespace oai::udr::config;
 
 udr_config udr_cfg;
 udr_app* udr_app_inst              = nullptr;
+udr_nrf* udr_nrf_inst              = nullptr;
 UDRApiServer* api_server           = nullptr;
 udr_http2_server* udr_api_server_2 = nullptr;
 
@@ -94,6 +96,10 @@ int main(int argc, char** argv) {
   // Task Manager
   task_manager tm(ev);
   std::thread task_manager_thread(&task_manager::run, &tm);
+
+  // UDR NRF
+  udr_nrf_inst = new udr_nrf(ev);
+  std::thread udr_nrf_manager(&udr_nrf::start, udr_nrf_inst);
 
   // PID file
   // Currently hard-coded value. TODO: add as config option.

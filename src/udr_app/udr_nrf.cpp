@@ -52,12 +52,27 @@ using json = nlohmann::json;
 
 extern udr_config udr_cfg;
 extern udr_nrf* udr_nrf_inst;
-udr_client* udr_client_instance = nullptr;
+udr_client* udr_client_inst = nullptr;
 
 //------------------------------------------------------------------------------
 udr_nrf::udr_nrf(udr_event& ev) : m_event_sub(ev) {
   // generate UUID
   udr_instance_id = to_string(boost::uuids::random_generator()());
+}
+
+//------------------------------------------------------------------------------
+void udr_nrf::start() {
+  // Register to NRF
+  if (udr_cfg.register_nrf) {
+    try {
+      // udr_nrf_inst = new udr_nrf(ev);
+      register_to_nrf();
+      Logger::udr_app().info("NRF TASK Created ");
+    } catch (std::exception& e) {
+      Logger::udr_app().error("Cannot create NRF TASK: %s", e.what());
+      throw;
+    }
+  }
 }
 //---------------------------------------------------------------------------------------------
 void udr_nrf::get_udr_api_root(std::string& api_root) {
@@ -132,7 +147,7 @@ void udr_nrf::register_to_nrf() {
   int num_retries          = 0;
   while (num_retries < MAX_NF_REGISTER_RETRY) {
     num_retries++;
-    if (!udr_client_instance->curl_http_client(
+    if (!udr_client_inst->curl_http_client(
             remote_uri, method, json_data.dump().c_str(), response,
             response_code)) {
       sleep(TIME_INTERVAL_NF_REGISTER_RETRY * pow(2, num_retries - 1));
@@ -202,7 +217,7 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   std::string udr_api_root = {};
   get_udr_api_root(udr_api_root);
   std::string remote_uri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
-  if (!udr_client_instance->curl_http_client(
+  if (!udr_client_inst->curl_http_client(
           remote_uri, method, json_data.dump().c_str(), response,
           response_code)) {
     Logger::udr_nrf().info("NF Heartbeat procedure failed");
