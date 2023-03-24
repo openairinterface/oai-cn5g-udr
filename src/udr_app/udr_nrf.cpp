@@ -136,6 +136,8 @@ void udr_nrf::register_to_nrf() {
             remote_uri, method, json_data.dump().c_str(), response,
             response_code)) {
       Logger::udr_app().debug("Retry %d ...", num_retries);
+      sleep(TIME_INTERVAL_NF_REGISTER_RETRY * pow(2, num_retries - 1));
+      Logger::udr_app().debug("Retry %d ...", num_retries);
       continue;
     } else {
       registration_result = true;

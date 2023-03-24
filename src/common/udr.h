@@ -34,7 +34,7 @@
 #define MAX_CURL_RETRY 3
 #define TIME_INTERVAL_CURL_RETRY 1000  // in microsecond
 #define MAX_NF_REGISTER_RETRY 3
-#define TIME_INTERVAL_NF_REGISTER_RETRY 10  // in seconds
+#define TIME_INTERVAL_NF_REGISTER_RETRY 5  // in seconds
 
 #define _unused(x) ((void) (x))
 
