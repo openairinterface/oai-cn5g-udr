@@ -59,7 +59,7 @@ void SMFRegistrationDocumentApiImpl::create_smf_context_non3gpp(
       ueId, pduSessionId, smfRegistration, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   response.send(code, response_data.dump().c_str());
 }
 void SMFRegistrationDocumentApiImpl::delete_smf_context(
@@ -73,7 +73,7 @@ void SMFRegistrationDocumentApiImpl::delete_smf_context(
       ueId, pduSessionId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));
@@ -92,7 +92,7 @@ void SMFRegistrationDocumentApiImpl::query_smf_registration(
       ueId, pduSessionId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));

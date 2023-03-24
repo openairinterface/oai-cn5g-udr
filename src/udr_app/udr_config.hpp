@@ -29,6 +29,7 @@
 #include <string>
 
 #include "udr.h"
+#include "logger.hpp"
 
 #define UDR_CONFIG_STRING_UDR_CONFIG "UDR"
 #define UDR_CONFIG_STRING_INSTANCE_ID "INSTANCE_ID"
@@ -59,6 +60,8 @@
 #define UDR_CONFIG_STRING_MYSQL_PASS "MYSQL_PASS"
 #define UDR_CONFIG_STRING_MYSQL_DB "MYSQL_DB"
 #define UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT "DB_CONNECTION_TIMEOUT"
+
+#define UDR_CONFIG_STRING_LOG_LEVEL "LOG_LEVEL"
 
 using namespace libconfig;
 
@@ -95,6 +98,7 @@ class udr_config {
   unsigned int instance;
   std::string pid_dir;
   std::string udr_name;
+  spdlog::level::level_enum log_level;
   interface_cfg_t nudr;
   unsigned int nudr_http2_port;
 

@@ -19,12 +19,12 @@
 #      contact@openairinterface.org
 ################################################################################
 
-include_directories(${SRC_TOP_DIR}/../build/ext/spdlog/include)
 include_directories(${SRC_TOP_DIR}/api_server/api)
 include_directories(${SRC_TOP_DIR}/api_server/impl)
 include_directories(${SRC_TOP_DIR}/api_server/model)
 include_directories(${SRC_TOP_DIR}/api_server/)
 include_directories(${SRC_TOP_DIR}/common/)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 
 add_library (UDR STATIC
   udr_app.cpp
