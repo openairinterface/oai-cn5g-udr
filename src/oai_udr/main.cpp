@@ -38,31 +38,34 @@ using namespace oai::udr::app;
 using namespace oai::udr::config;
 
 udr_config udr_cfg;
-udr_app* udr_app_inst              = nullptr;
-udr_nrf* udr_nrf_inst              = nullptr;
-UDRApiServer* api_server           = nullptr;
-udr_http2_server* udr_api_server_2 = nullptr;
+udr_app* udr_app_inst          = nullptr;
+udr_nrf* udr_nrf_inst          = nullptr;
+UDRApiServer* http_server1     = nullptr;
+udr_http2_server* http_server2 = nullptr;
 
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
   std::cout << "Caught signal " << s << std::endl;
   Logger::system().startup("exiting");
   std::cout << "Freeing Allocated memory..." << std::endl;
-  if (api_server) {
-    api_server->shutdown();
-    delete api_server;
-    api_server = nullptr;
+  std::cout << "Shutting down HTTP servers..." << std::endl;
+  if (http_server1) {
+    http_server1->shutdown();
+    delete http_server1;
+    http_server1 = nullptr;
   }
-  std::cout << "UDR API Server memory done" << std::endl;
+  if (http_server2) {
+    http_server2->stop();
+    delete http_server2;
+    http_server2 = nullptr;
+  }
 
   if (udr_app_inst) {
     delete udr_app_inst;
     udr_app_inst = nullptr;
   }
-
   std::cout << "UDR APP memory done" << std::endl;
   std::cout << "Freeing allocated memory done" << std::endl;
-
   exit(0);
 }
 
@@ -115,17 +118,19 @@ int main(int argc, char** argv) {
       std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
       Pistache::Port(udr_cfg.nudr.port));
 
-  api_server = new UDRApiServer(addr, udr_app_inst);
-  api_server->init(2);
-  std::thread udr_manager(&UDRApiServer::start, api_server);
+  http_server1 = new UDRApiServer(addr, udr_app_inst);
+  http_server1->init(2);
+  std::thread udr_http1_manager(&UDRApiServer::start, http_server1);
 
   // UDM NGHTTP API server (HTTP2)
-  udr_api_server_2 = new udr_http2_server(
+  http_server2 = new udr_http2_server(
       conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr_http2_port,
       udr_app_inst);
-  std::thread udr_http2_manager(&udr_http2_server::start, udr_api_server_2);
+  std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
 
-  udr_manager.join();
+  task_manager_thread.join();
+  udr_nrf_manager.join();
+  udr_http1_manager.join();
   udr_http2_manager.join();
 
   FILE* fp             = NULL;

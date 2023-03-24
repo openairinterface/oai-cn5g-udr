@@ -64,14 +64,8 @@ udr_nrf::udr_nrf(udr_event& ev) : m_event_sub(ev) {
 void udr_nrf::start() {
   // Register to NRF
   if (udr_cfg.register_nrf) {
-    try {
-      // udr_nrf_inst = new udr_nrf(ev);
-      register_to_nrf();
-      Logger::udr_app().info("NRF TASK Created ");
-    } catch (std::exception& e) {
-      Logger::udr_app().error("Cannot create NRF TASK: %s", e.what());
-      throw;
-    }
+    Logger::udr_app().info("NRF TASK Created ");
+    register_to_nrf();
   }
 }
 //---------------------------------------------------------------------------------------------
