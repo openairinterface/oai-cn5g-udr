@@ -99,7 +99,7 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
       resource_id);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   if ((code == Pistache::Http::Code::Created) or
       (code == Pistache::Http::Code::Ok)) {
     // Location?

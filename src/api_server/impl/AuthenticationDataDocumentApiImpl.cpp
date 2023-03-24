@@ -61,7 +61,7 @@ void AuthenticationDataDocumentApiImpl::create_auth_subs_data(
       ueId, authenticationSubscription, responseData, httpCode);
 
   code = static_cast<Pistache::Http::Code>(httpCode);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));
@@ -77,7 +77,7 @@ void AuthenticationDataDocumentApiImpl::delete_auth_subs_data(
   m_udr_app->handle_delete_authentication_data(ueId, responseData, httpCode);
 
   code = static_cast<Pistache::Http::Code>(httpCode);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));

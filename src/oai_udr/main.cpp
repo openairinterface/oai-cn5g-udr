@@ -87,6 +87,7 @@ int main(int argc, char** argv) {
   // Config
   udr_cfg.load(Options::getlibconfigConfig());
   udr_cfg.display();
+  Logger::set_level(udr_cfg.log_level);
 
   // UDR application layer
   udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);

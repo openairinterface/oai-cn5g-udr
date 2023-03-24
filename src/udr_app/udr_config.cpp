@@ -44,6 +44,7 @@ udr_config::udr_config() : mysql(), instance(), udr_name(), pid_dir(), nudr() {
   use_http2        = false;
   register_nrf     = false;
   use_fqdn_dns     = false;
+  log_level        = spdlog::level::debug;
 }
 
 //------------------------------------------------------------------------------
@@ -97,6 +98,17 @@ int udr_config::load(const std ::string& config_file) {
     Logger::config().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
   }
+
+  // Log Level
+  try {
+    std::string string_level;
+    udr_cfg.lookupValue(UDR_CONFIG_STRING_LOG_LEVEL, string_level);
+    log_level = spdlog::level::from_str(string_level);
+  } catch (const SettingNotFoundException& nfex) {
+    Logger::config().error(
+        "%s : %s, using defaults", nfex.what(), nfex.getPath());
+  }
+
   try {
     const Setting& new_if_cfg = udr_cfg[UDR_CONFIG_STRING_INTERFACES];
     const Setting& nudr_cfg   = new_if_cfg[UDR_CONFIG_STRING_INTERFACE_NUDR];
@@ -349,6 +361,10 @@ void udr_config::display() {
         "    Cassandra DB ..........: not "
         "supported!");
   }
+
+  Logger::config().info(
+      "- Log Level will be .......: %s",
+      spdlog::level::to_string_view(log_level));
 }
 
 }  // namespace oai::udr::config
