@@ -55,7 +55,10 @@ extern udr_nrf* udr_nrf_inst;
 udr_client* udr_client_instance = nullptr;
 
 //------------------------------------------------------------------------------
-udr_nrf::udr_nrf(udr_event& ev) : m_event_sub(ev) {}
+udr_nrf::udr_nrf(udr_event& ev) : m_event_sub(ev) {
+  // generate UUID
+  udr_instance_id = to_string(boost::uuids::random_generator()());
+}
 //---------------------------------------------------------------------------------------------
 void udr_nrf::get_udr_api_root(std::string& api_root) {
   api_root =
@@ -107,8 +110,6 @@ void udr_nrf::generate_udr_profile(
 }
 //---------------------------------------------------------------------------------------------
 void udr_nrf::register_to_nrf() {
-  // generate UUID
-  udr_instance_id              = to_string(boost::uuids::random_generator()());
   nlohmann::json response_data = {};
 
   // Generate NF Profile
@@ -126,9 +127,23 @@ void udr_nrf::register_to_nrf() {
   udr_nf_profile.to_json(json_data);
 
   Logger::udr_nrf().info("Sending NF Registration request");
-  if (udr_client_instance->curl_http_client(
-          remote_uri, method, json_data.dump().c_str(), response,
-          response_code)) {
+
+  bool registration_result = false;
+  int num_retries          = 0;
+  while (num_retries < MAX_NF_REGISTER_RETRY) {
+    num_retries++;
+    if (!udr_client_instance->curl_http_client(
+            remote_uri, method, json_data.dump().c_str(), response,
+            response_code)) {
+      Logger::udr_app().debug("Retry %d ...", num_retries);
+      continue;
+    } else {
+      registration_result = true;
+      break;
+    }
+  }
+
+  if (registration_result) {
     try {
       response_data = nlohmann::json::parse(response);
       // TODO: use Heart-beart timer interval returned from NRF

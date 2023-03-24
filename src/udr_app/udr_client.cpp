@@ -139,6 +139,8 @@ bool udr_client::curl_http_client(
         usleep(TIME_INTERVAL_CURL_RETRY * pow(2, num_retries - 1));
         Logger::udr_app().debug("Retry %d ...", num_retries);
         continue;
+      } else {
+        break;
       }
     }
 
@@ -178,7 +180,7 @@ bool udr_client::curl_http_client(
           // cause = response_data["error"]["cause"];
         }
 
-        Logger::udr_app().warn("Curl Request failed");
+        // Logger::udr_app().warn("Curl Request failed");
         // Logger::udr_app().info("Cause value: %s", cause.c_str());
         // TODO:
       }
