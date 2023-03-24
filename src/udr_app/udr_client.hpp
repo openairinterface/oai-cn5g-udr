@@ -51,7 +51,7 @@ class udr_client {
 
   bool curl_http_client(
       std::string remoteUri, std::string method, std::string msgBody,
-      std::string& response);
+      std::string& response, long& response_code);
 };
 }  // namespace app
 }  // namespace udr

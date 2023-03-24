@@ -63,8 +63,9 @@ udr_client::~udr_client() {
 //------------------------------------------------------------------------------
 bool udr_client::curl_http_client(
     std::string remote_uri, std::string method, std::string msg_body,
-    std::string& response) {
+    std::string& response, long& response_code) {
   Logger::udr_app().info("Send HTTP message with body %s", msg_body.c_str());
+  bool result = false;
 
   uint32_t str_len = msg_body.length();
   char* body_data  = (char*) malloc(str_len + 1);
@@ -115,7 +116,6 @@ bool udr_client::curl_http_client(
     }
 
     // Response information
-    long http_response_code = {0};
     std::unique_ptr<std::string> httpData(new std::string());
     std::unique_ptr<std::string> httpHeaderData(new std::string());
 
@@ -147,13 +147,14 @@ bool udr_client::curl_http_client(
           "Still could not reach the destination after %d retries",
           MAX_CURL_RETRY);
     } else {
-      curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_response_code);
+      result = true;
+      curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
       Logger::udr_app().debug(
-          "Get response with HTTP code (%d)", http_response_code);
+          "Get response with HTTP code (%d)", response_code);
 
-      if (http_response_code == HTTP_STATUS_CODE_200_OK or
-          http_response_code == HTTP_STATUS_CODE_201_CREATED or
-          http_response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
+      if (response_code == HTTP_STATUS_CODE_200_OK or
+          response_code == HTTP_STATUS_CODE_201_CREATED or
+          response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
         // TODO
         is_response_ok = true;
       }
@@ -194,5 +195,5 @@ bool udr_client::curl_http_client(
     free(body_data);
     body_data = nullptr;
   }
-  return is_response_ok;
+  return result;
 }
