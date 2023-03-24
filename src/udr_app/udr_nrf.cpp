@@ -135,9 +135,8 @@ void udr_nrf::register_to_nrf() {
     if (!udr_client_instance->curl_http_client(
             remote_uri, method, json_data.dump().c_str(), response,
             response_code)) {
-      Logger::udr_app().debug("Retry %d ...", num_retries);
       sleep(TIME_INTERVAL_NF_REGISTER_RETRY * pow(2, num_retries - 1));
-      Logger::udr_app().debug("Retry %d ...", num_retries);
+      Logger::udr_app().debug("NF Register Retry %d ...", num_retries);
       continue;
     } else {
       registration_result = true;
@@ -156,7 +155,8 @@ void udr_nrf::register_to_nrf() {
       Logger::udr_nrf().info("NF Registration procedure failed");
     }
   } else {
-    Logger::udr_nrf().info("NF Registration procedure failed");
+    Logger::udr_nrf().info(
+        "NF Registration procedure failed after %d retries", num_retries);
     // TODO:
   }
 }
@@ -205,6 +205,7 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   if (!udr_client_instance->curl_http_client(
           remote_uri, method, json_data.dump().c_str(), response,
           response_code)) {
+    Logger::udr_nrf().info("NF Heartbeat procedure failed");
     task_connection.disconnect();
   } else {
     // TODO: process the response
