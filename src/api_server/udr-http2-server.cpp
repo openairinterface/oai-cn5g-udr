@@ -220,6 +220,11 @@ void udr_http2_server::start() {
 }
 
 //------------------------------------------------------------------------------
+void udr_http2_server::stop() {
+  server.stop();
+}
+
+//------------------------------------------------------------------------------
 void udr_http2_server::query_am_data_handler(
     const std::string& ue_id, const std::string& serving_plmn_id,
     const response& response) {

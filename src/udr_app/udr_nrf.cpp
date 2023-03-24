@@ -29,10 +29,6 @@
 
 #include "udr_nrf.hpp"
 
-#include <curl/curl.h>
-#include <pistache/http.h>
-#include <pistache/mime.h>
-
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <nlohmann/json.hpp>

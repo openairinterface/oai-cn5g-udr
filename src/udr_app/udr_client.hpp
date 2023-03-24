@@ -31,9 +31,6 @@
 
 #include <curl/curl.h>
 
-#include <map>
-#include <thread>
-
 #include "logger.hpp"
 #include "udr_config.hpp"
 
