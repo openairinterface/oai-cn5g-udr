@@ -359,6 +359,7 @@ bool mysql_db::query_authentication_subscription(
   MYSQL_ROW row      = {};
   MYSQL_FIELD* field = nullptr;
   nlohmann::json j   = {};
+  bool result        = false;
 
   AuthenticationSubscription authentication_subscription = {};
   const std::string query =
@@ -439,14 +440,16 @@ bool mysql_db::query_authentication_subscription(
     }
 
     to_json(json_data, authentication_subscription);
+    result = true;
   } else {
     Logger::udr_mysql().error(
         "[UE Id %s] AuthenticationSubscription no data！ SQL Query: %s",
         id.c_str(), query.c_str());
+    result = false;
   }
 
   mysql_free_result(res);
-  return true;
+  return result;
 }
 
 //------------------------------------------------------------------------------
