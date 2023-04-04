@@ -44,7 +44,6 @@ using namespace oai::udr::config;
 
 extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
-udr_nrf* udr_nrf_inst = nullptr;
 
 //------------------------------------------------------------------------------
 udr_app::udr_app(const std::string& config_file, udr_event& ev)
@@ -65,18 +64,6 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
 
   if (!db_connector->connect(MAX_FIRST_CONNECTION_RETRY)) {
     Logger::udr_app().warn("Could not establish the connection to the DB");
-  }
-
-  // Register to NRF
-  if (udr_cfg.register_nrf) {
-    try {
-      udr_nrf_inst = new udr_nrf(ev);
-      udr_nrf_inst->register_to_nrf();
-      Logger::udr_app().info("NRF TASK Created ");
-    } catch (std::exception& e) {
-      Logger::udr_app().error("Cannot create NRF TASK: %s", e.what());
-      throw;
-    }
   }
 
   Logger::udr_app().startup("Started");
