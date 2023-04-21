@@ -50,6 +50,7 @@ RUN git config --global https.postBuffer 123289600 && \
 # Copying source code
 WORKDIR /openair-udr
 COPY ./build/scripts /openair-udr/build/scripts/
+COPY ./build/common-build /openair-udr/build/common-build
 COPY ./build/udr/CMakeLists.txt /openair-udr/build/udr/CMakeLists.txt
 
 # wait for it
@@ -71,7 +72,9 @@ COPY . /openair-udr
 WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
-    mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
+    mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr && \
+    sed -i -e "s@nf-root-folder@udr@" -e "s@nf-config-file@udr.conf@" \
+      ../common-build/docker-scripts/entrypoint.py
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
@@ -125,7 +128,7 @@ RUN apt-get update && \
 WORKDIR /openair-udr/bin
 COPY --from=oai-udr-builder \
     /openair-udr/build/udr/build/oai_udr \
-    /openair-udr/scripts/entrypoint.py \
+    /openair-udr/build/common-build/docker-scripts/entrypoint.py \
     /openair-udr/scripts/healthcheck.sh \
     /wait-for-it/wait-for-it.sh \
     ./
@@ -157,4 +160,4 @@ HEALTHCHECK --interval=10s \
     CMD /openair-udr/bin/healthcheck.sh
 
 ENTRYPOINT ["python3","/openair-udr/bin/entrypoint.py"]
-CMD ["/openair-udr/bin/oai_udr", "-c" , "/openair-udr/etc/udr.conf", "-o"]
+CMD ["/openair-udr/bin/oai_udr", "-c", "/openair-udr/etc/udr.conf", "-o"]
