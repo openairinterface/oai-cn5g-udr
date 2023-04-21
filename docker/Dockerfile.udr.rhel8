@@ -74,18 +74,21 @@ RUN sed -i -e "s@-lmysqlclient@-L/usr/lib64/mysql -lmysqlclient@" ../../src/oai_
     ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr && \
+    sed -i -e "s@nf-root-folder@udr@" -e "s@nf-config-file@udr.conf@" \
+      ../common-build/docker-scripts/entrypoint.py && \
     # Remove entitlements and Subscription Manager configs
     rm -rf /etc/pki/entitlement && \
     rm -rf /etc/rhsm
+
 #---------------------------------------------------------------------
 # TARGET IMAGE
 #---------------------------------------------------------------------
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest as oai-udr
 ENV TZ=Europe/Paris
+# We install some debug tools for the moment in addition of mandatory libraries
 
 # Copy the entitlements
 COPY ./etc-pki-entitlement /etc/pki/entitlement
-
 # Copy the subscription manager configurations
 COPY ./rhsm-conf /etc/rhsm
 COPY ./rhsm-ca /etc/rhsm/ca
@@ -118,7 +121,7 @@ RUN rm -f /etc/rhsm-host && \
 WORKDIR /openair-udr/bin
 COPY --from=oai-udr-builder \
     /openair-udr/build/udr/build/oai_udr \
-    /openair-udr/scripts/entrypoint.py \
+    /openair-udr/build/common-build/docker-scripts/entrypoint.py \
     /openair-udr/scripts/healthcheck.sh \
     /wait-for-it/wait-for-it.sh \
     ./
@@ -149,4 +152,4 @@ HEALTHCHECK --interval=10s \
     CMD /openair-udr/bin/healthcheck.sh
 
 ENTRYPOINT ["python3","/openair-udr/bin/entrypoint.py"]
-CMD ["/openair-udr/bin/oai_udr", "-c" , "/openair-udr/etc/udr.conf", "-o"]
+CMD ["/openair-udr/bin/oai_udr", "-c", "/openair-udr/etc/udr.conf", "-o"]
