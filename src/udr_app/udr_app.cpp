@@ -446,7 +446,8 @@ void udr_app::handle_delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& response_data, long& code) {
   Logger::udr_app().info(
-      "Delete a Session Management subscription data of a UE");
+      "[UE Id %s]  Delete a Session Management subscription data of a UE",
+      ue_id.c_str());
 
   if (db_connector->delete_sm_data(ue_id, serving_plmn_id)) {
     code = HTTP_STATUS_CODE_204_NO_CONTENT;

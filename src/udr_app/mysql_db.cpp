@@ -2409,11 +2409,7 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
 bool mysql_db::delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id) {
   // Check the connection with DB first
-  if (!get_db_connection_status()) {
-    Logger::udr_mysql().info(
-        "The connection to the MySQL is currently inactive");
-    return false;
-  }
+  if (!check_connection_status()) return false;
 
   std::string query =
       "DELETE FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
@@ -2427,7 +2423,8 @@ bool mysql_db::delete_sm_data(
   }
 
   Logger::udr_mysql().debug(
-      "SessionManagementSubscriptionData DELETE - successful");
+      "[UE Id %s]  SessionManagementSubscriptionData DELETE - successful",
+      ue_id.c_str());
   return true;
 }
 
