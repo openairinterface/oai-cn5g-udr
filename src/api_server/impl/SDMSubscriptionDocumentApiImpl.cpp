@@ -66,7 +66,7 @@ void SDMSubscriptionDocumentApiImpl::querysdm_subscription(
       ueId, subsId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   response.send(code, response_data.dump().c_str());
 }
 void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(
@@ -80,7 +80,7 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(
       ueId, subsId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));
@@ -98,7 +98,7 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(
       ueId, subsId, sdmSubscription, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));

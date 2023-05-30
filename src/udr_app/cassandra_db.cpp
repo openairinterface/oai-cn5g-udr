@@ -165,8 +165,8 @@ bool cassandra_db::query_sdm_subscriptions(
 //------------------------------------------------------------------------------
 bool cassandra_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& json_data, const oai::udr::model::Snssai&,
-    const std::string& dnn) {
+    nlohmann::json& json_data, const std::optional<oai::udr::model::Snssai>&,
+    const std::optional<std::string>& dnn) {
   return true;
 }
 
@@ -177,8 +177,10 @@ bool cassandra_db::query_sm_data(nlohmann::json& json_data) {
 
 //------------------------------------------------------------------------------
 bool cassandra_db::create_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
     oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
-    nlohmann::json& json_data) {
+    nlohmann::json& json_data, uint32_t& resource_id) {
+  // TODO:
   return true;
 }
 

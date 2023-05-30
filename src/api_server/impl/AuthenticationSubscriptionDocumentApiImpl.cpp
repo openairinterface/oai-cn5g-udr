@@ -64,7 +64,7 @@ void AuthenticationSubscriptionDocumentApiImpl::
       ueId, patchItem, response_data, http_code);
   code = static_cast<Pistache::Http::Code>(http_code);
 
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));
@@ -84,7 +84,7 @@ void AuthenticationSubscriptionDocumentApiImpl::
       ueId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));

@@ -54,6 +54,8 @@ class udr_nrf {
   udr_nrf(udr_nrf const&) = delete;
   void operator=(udr_nrf const&) = delete;
 
+  void start();
+
   void generate_uuid();
 
   /*

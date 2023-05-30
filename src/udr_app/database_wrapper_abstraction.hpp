@@ -30,6 +30,7 @@
 #ifndef DATABASE_WRAPPER_ABSTRACTION_HPP
 #define DATABASE_WRAPPER_ABSTRACTION_HPP
 
+#include <optional>
 #include <nlohmann/json.hpp>
 
 #include "Amf3GppAccessRegistration.h"
@@ -254,8 +255,9 @@ class database_wrapper_abstraction {
    */
   virtual bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string& dnn = {}) = 0;
+      nlohmann::json& json_data,
+      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn) = 0;
 
   /*
    * Query all items from the DB for SessionManagementSubscription
@@ -276,14 +278,18 @@ class database_wrapper_abstraction {
 
   /*
    * Insert a new item into the DB for SessionManagementSubscription
+   * @param [const std::string&] ue_id: User Id (Imsi/supi)
+   * @param [const std::string&] serving_plmn_id: Serving PLMN
    * @param [const oai::udr::model::SessionManagementSubscriptionData&]
-   * SessionManagementSubscription: subscription
+   * subscription_data: subscription
    * @param [nlohmann::json&] json_data: Data in Json format
+   * @param [uint32_t&] resource_id: ID represent the resource location
    * @return true if successful, otherwise return false
    */
   virtual bool create_sm_data(
-      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
-      nlohmann::json& json_data) = 0;
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      oai::udr::model::SessionManagementSubscriptionData& subscription_data,
+      nlohmann::json& json_data, uint32_t& resource_id) = 0;
 
   /*
    * Insert an item into the DB for SMFRegistration

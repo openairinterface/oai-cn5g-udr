@@ -27,7 +27,7 @@ include_directories(${UDR_API_SERVER_DIR}/model)
 include_directories(${UDR_API_SERVER_DIR}/)
 include_directories(${SRC_TOP_DIR}/udr_app)
 include_directories(${SRC_TOP_DIR}/common)
-include_directories(${SRC_TOP_DIR}/../build/ext/spdlog/include)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 
 file(GLOB UDR_API_SERVER_src_files
     ${UDR_API_SERVER_DIR}/udr-api-server.cpp

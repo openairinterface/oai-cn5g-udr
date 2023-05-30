@@ -154,12 +154,13 @@ void udr_http2_server::start() {
             if (split_q[split_q.size() - 1].compare(NUDR_DR_SM_DATA) == 0) {
               if (request.method().compare("GET") == 0 && len == 0) {
                 Snssai singleNssai;
-                std::string ueId = split_q[split_q.size() - 4].c_str();
-                std::string qs   = request.uri().raw_query;
+                std::string ueId          = split_q[split_q.size() - 4].c_str();
+                std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
+                std::string qs            = request.uri().raw_query;
                 Logger::udr_server().debug("QueryString: %s", qs.c_str());
 
-                std::string servingPlmnId =
-                    util::get_query_param(qs, "servingPlmnId");
+                // std::string servingPlmnId =
+                // util::get_query_param(qs, "servingPlmnId");
                 std::string dnn    = util::get_query_param(qs, "dnn");
                 std::string snssai = util::get_query_param(qs, "single-nssai");
                 nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
@@ -217,6 +218,11 @@ void udr_http2_server::start() {
   if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
     std::cerr << "HTTP Server error: " << ec.message() << std::endl;
   }
+}
+
+//------------------------------------------------------------------------------
+void udr_http2_server::stop() {
+  server.stop();
 }
 
 //------------------------------------------------------------------------------

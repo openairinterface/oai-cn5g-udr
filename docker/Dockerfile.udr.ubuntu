@@ -30,10 +30,12 @@
 #---------------------------------------------------------------------
 # BASE IMAGE
 #---------------------------------------------------------------------
-ARG BASE_IMAGE=ubuntu:bionic
+ARG BASE_IMAGE=ubuntu:focal
 FROM $BASE_IMAGE as oai-udr-base
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Paris
+ENV IS_DOCKERFILE=1
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
@@ -47,7 +49,9 @@ RUN git config --global https.postBuffer 123289600 && \
 
 # Copying source code
 WORKDIR /openair-udr
-COPY . /openair-udr
+COPY ./build/scripts /openair-udr/build/scripts/
+COPY ./build/common-build /openair-udr/build/common-build
+COPY ./build/udr/CMakeLists.txt /openair-udr/build/udr/CMakeLists.txt
 
 # wait for it
 WORKDIR /
@@ -56,18 +60,21 @@ RUN git clone https://github.com/vishnubob/wait-for-it.git
 # Installing all the needed libraries/packages to build and run UDR
 WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --install-deps --force && \
-    cp -Rf /openair-udr/build/ext /openair-udr-ext-ref
+    ldconfig
 
 #---------------------------------------------------------------------
 # BUILDER IMAGE
 #---------------------------------------------------------------------
 FROM oai-udr-base as oai-udr-builder
+# Copying source code
+COPY . /openair-udr
 # Building UDR
 WORKDIR /openair-udr/build/scripts
-RUN ldconfig && \
-    ./build_udr --clean --Verbose --build-type Release --jobs && \
+RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
-    mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
+    mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr && \
+    sed -i -e "s@nf-root-folder@udr@" -e "s@nf-config-file@udr.conf@" \
+      ../common-build/docker-scripts/entrypoint.py
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
@@ -79,6 +86,8 @@ ENV TZ=Europe/Paris
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
+      python3 \
+      python3-jinja2 \
       psmisc \
       net-tools \
       iputils-ping \
@@ -89,7 +98,7 @@ RUN apt-get update && \
 # Ubuntu 18 --> libasan4
 # Ubuntu 20 --> libasan5
 # Ubuntu 22 --> libasan6
-      libasan? \
+#      libasan? \
       libconfig++9v5 \
 # Ubuntu 18 --> libnettle6
 # Ubuntu 20 --> libnettle7
@@ -119,7 +128,7 @@ RUN apt-get update && \
 WORKDIR /openair-udr/bin
 COPY --from=oai-udr-builder \
     /openair-udr/build/udr/build/oai_udr \
-    /openair-udr/scripts/entrypoint.sh \
+    /openair-udr/build/common-build/docker-scripts/entrypoint.py \
     /openair-udr/scripts/healthcheck.sh \
     /wait-for-it/wait-for-it.sh \
     ./
@@ -129,6 +138,7 @@ COPY --from=oai-udr-builder \
     /usr/local/lib/libnghttp2.so.14 \
     /usr/local/lib/libnghttp2_asio.so.1 \
     /usr/local/lib/libpistache.so \
+    /usr/local/lib/libfmt.so \
 # Ubuntu 18 --> boost 67 will be copied
     /usr/lib/libboost_system.so.1.* \
     /usr/local/lib/
@@ -149,5 +159,5 @@ HEALTHCHECK --interval=10s \
             --retries=6 \
     CMD /openair-udr/bin/healthcheck.sh
 
-ENTRYPOINT ["/bin/bash","/openair-udr/bin/entrypoint.sh"]
-CMD ["/openair-udr/bin/oai_udr", "-c" , "/openair-udr/etc/udr.conf", "-o"]
+ENTRYPOINT ["python3","/openair-udr/bin/entrypoint.py"]
+CMD ["/openair-udr/bin/oai_udr", "-c", "/openair-udr/etc/udr.conf", "-o"]

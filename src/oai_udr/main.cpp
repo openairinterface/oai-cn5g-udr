@@ -29,6 +29,7 @@
 #include "udr-api-server.h"
 #include "udr-http2-server.h"
 #include "udr_app.hpp"
+#include "udr_nrf.hpp"
 #include "udr_config.hpp"
 
 using namespace util;
@@ -37,30 +38,34 @@ using namespace oai::udr::app;
 using namespace oai::udr::config;
 
 udr_config udr_cfg;
-udr_app* udr_app_inst              = nullptr;
-UDRApiServer* api_server           = nullptr;
-udr_http2_server* udr_api_server_2 = nullptr;
+udr_app* udr_app_inst          = nullptr;
+udr_nrf* udr_nrf_inst          = nullptr;
+UDRApiServer* http_server1     = nullptr;
+udr_http2_server* http_server2 = nullptr;
 
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
   std::cout << "Caught signal " << s << std::endl;
   Logger::system().startup("exiting");
   std::cout << "Freeing Allocated memory..." << std::endl;
-  if (api_server) {
-    api_server->shutdown();
-    delete api_server;
-    api_server = nullptr;
+  std::cout << "Shutting down HTTP servers..." << std::endl;
+  if (http_server1) {
+    http_server1->shutdown();
+    delete http_server1;
+    http_server1 = nullptr;
   }
-  std::cout << "UDR API Server memory done" << std::endl;
+  if (http_server2) {
+    http_server2->stop();
+    delete http_server2;
+    http_server2 = nullptr;
+  }
 
   if (udr_app_inst) {
     delete udr_app_inst;
     udr_app_inst = nullptr;
   }
-
   std::cout << "UDR APP memory done" << std::endl;
   std::cout << "Freeing allocated memory done" << std::endl;
-
   exit(0);
 }
 
@@ -78,11 +83,8 @@ int main(int argc, char** argv) {
   Logger::init("udr", Options::getlogStdout(), Options::getlogRotFilelog());
   Logger::udr_server().startup("Options parsed");
 
-  struct sigaction sigIntHandler;
-  sigIntHandler.sa_handler = my_app_signal_handler;
-  sigemptyset(&sigIntHandler.sa_mask);
-  sigIntHandler.sa_flags = 0;
-  sigaction(SIGINT, &sigIntHandler, NULL);
+  std::signal(SIGTERM, my_app_signal_handler);
+  std::signal(SIGINT, my_app_signal_handler);
 
   // Event subsystem
   udr_event ev;
@@ -90,6 +92,7 @@ int main(int argc, char** argv) {
   // Config
   udr_cfg.load(Options::getlibconfigConfig());
   udr_cfg.display();
+  Logger::set_level(udr_cfg.log_level);
 
   // UDR application layer
   udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);
@@ -97,6 +100,10 @@ int main(int argc, char** argv) {
   // Task Manager
   task_manager tm(ev);
   std::thread task_manager_thread(&task_manager::run, &tm);
+
+  // UDR NRF
+  udr_nrf_inst = new udr_nrf(ev);
+  std::thread udr_nrf_manager(&udr_nrf::start, udr_nrf_inst);
 
   // PID file
   // Currently hard-coded value. TODO: add as config option.
@@ -112,17 +119,19 @@ int main(int argc, char** argv) {
       std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
       Pistache::Port(udr_cfg.nudr.port));
 
-  api_server = new UDRApiServer(addr, udr_app_inst);
-  api_server->init(2);
-  std::thread udr_manager(&UDRApiServer::start, api_server);
+  http_server1 = new UDRApiServer(addr, udr_app_inst);
+  http_server1->init(2);
+  std::thread udr_http1_manager(&UDRApiServer::start, http_server1);
 
   // UDM NGHTTP API server (HTTP2)
-  udr_api_server_2 = new udr_http2_server(
+  http_server2 = new udr_http2_server(
       conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr_http2_port,
       udr_app_inst);
-  std::thread udr_http2_manager(&udr_http2_server::start, udr_api_server_2);
+  std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
 
-  udr_manager.join();
+  task_manager_thread.join();
+  udr_nrf_manager.join();
+  udr_http1_manager.join();
   udr_http2_manager.join();
 
   FILE* fp             = NULL;
