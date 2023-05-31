@@ -194,6 +194,17 @@ class database_wrapper : public database_wrapper_abstraction {
         ue_id, serving_plmn_id, json_data, snssai, dnn);
   }
 
+  bool query_sm_data(nlohmann::json& json_data) {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->query_sm_data(json_data);
+  }
+
+  bool delete_sm_data(
+      const std::string& ue_id, const std::string& serving_plmn_id) {
+    auto derived = static_cast<DerivedT*>(this);
+    return derived->delete_sm_data(ue_id, serving_plmn_id);
+  }
+
   bool create_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       oai::udr::model::SessionManagementSubscriptionData& sm_subscription,

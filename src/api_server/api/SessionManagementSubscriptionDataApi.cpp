@@ -63,12 +63,27 @@ void SessionManagementSubscriptionDataApi::setupRoutes() {
       Routes::bind(
           &SessionManagementSubscriptionDataApi::query_sm_data_handler, this));
 
+  Routes::Get(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/provisioned-data/sm-data",
+      Routes::bind(
+          &SessionManagementSubscriptionDataApi::query_all_sm_data_handler,
+          this));
+
   Routes::Post(
       *router,
       base + udr_cfg.nudr.api_version +
           "/subscription-data/:ueId/:servingPlmnId/provisioned-data/sm-data",
       Routes::bind(
           &SessionManagementSubscriptionDataApi::create_sm_data_handler, this));
+
+  Routes::Delete(
+      *router,
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/:servingPlmnId/provisioned-data/sm-data",
+      Routes::bind(
+          &SessionManagementSubscriptionDataApi::delete_sm_data_handler, this));
 
   // Default handler, called when a route is not found
   router->addCustomHandler(Routes::bind(
@@ -156,6 +171,26 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
   }
 }
 
+void SessionManagementSubscriptionDataApi::query_all_sm_data_handler(
+    const Pistache::Rest::Request& request,
+    Pistache::Http::ResponseWriter response) {
+  Logger::udr_server().info("SessionManagementSubscriptionData Method: GET!");
+  try {
+    this->query_sm_data(response);
+  } catch (nlohmann::detail::exception& e) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request, e.what());
+    return;
+  } catch (Pistache::Http::HttpError& e) {
+    response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
+    return;
+  } catch (std::exception& e) {
+    // send a 500 error
+    response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
+    return;
+  }
+}
+
 void SessionManagementSubscriptionDataApi::create_sm_data_handler(
     const Pistache::Rest::Request& request,
     Pistache::Http::ResponseWriter response) {
@@ -175,6 +210,38 @@ void SessionManagementSubscriptionDataApi::create_sm_data_handler(
   try {
     nlohmann::json::parse(request.body()).get_to(subscriptionData);
     this->create_sm_data(ueId, servingPlmnId, subscriptionData, response);
+  } catch (nlohmann::detail::exception& e) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request, e.what());
+    return;
+  } catch (Pistache::Http::HttpError& e) {
+    response.send(static_cast<Pistache::Http::Code>(e.code()), e.what());
+    return;
+  } catch (std::exception& e) {
+    // send a 500 error
+    response.send(Pistache::Http::Code::Internal_Server_Error, e.what());
+    return;
+  }
+}
+
+void SessionManagementSubscriptionDataApi::delete_sm_data_handler(
+    const Pistache::Rest::Request& request,
+    Pistache::Http::ResponseWriter response) {
+  Logger::udr_server().info(
+      "SessionManagementSubscriptionData Method: DELETE!");
+
+  if (!request.hasParam(":ueId") or !request.hasParam(":servingPlmnId")) {
+    // send a 400 error
+    response.send(Pistache::Http::Code::Bad_Request);
+    return;
+  }
+
+  // Getting the path params
+  auto ueId          = request.param(":ueId").as<std::string>();
+  auto servingPlmnId = request.param(":servingPlmnId").as<std::string>();
+
+  try {
+    this->delete_sm_data(ueId, servingPlmnId, response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());

@@ -386,6 +386,26 @@ void udr_app::handle_query_sm_data(
         "[UE Id %s] SessionManagementSubscriptionData: %s", ue_id.c_str(),
         response_data.dump().c_str());
     // TODO: Headers
+  } else if (response_data.is_null()) {
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+  } else {
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_query_sm_data(nlohmann::json& response_data, long& code) {
+  Logger::udr_app().info(
+      "Retrieve the Session Management subscription data of all UEs");
+
+  if (db_connector->query_sm_data(response_data)) {
+    code = HTTP_STATUS_CODE_200_OK;
+    Logger::udr_app().info(
+        "SessionManagementSubscriptionData: %s", response_data.dump().c_str());
+    // TODO: Headers
+  } else if (response_data.is_null()) {
+    code = HTTP_STATUS_CODE_404_NOT_FOUND;
   } else {
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
   }
@@ -416,6 +436,22 @@ void udr_app::handle_create_sm_data(
         return;
       }
     }
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_delete_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& response_data, long& code) {
+  Logger::udr_app().info(
+      "[UE Id %s]  Delete a Session Management subscription data of a UE",
+      ue_id.c_str());
+
+  if (db_connector->delete_sm_data(ue_id, serving_plmn_id)) {
+    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+  } else {
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
   }
   return;

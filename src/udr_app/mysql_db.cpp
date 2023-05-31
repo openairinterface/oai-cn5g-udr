@@ -2262,9 +2262,169 @@ bool mysql_db::query_sm_data(
         "[UE Id %s] SessionManagementSubscriptionData: %s", ue_id.c_str(),
         json_data.dump().c_str());
   }
+  mysql_free_result(res);
+
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool mysql_db::query_sm_data(nlohmann::json& json_data) {
+  // Check the connection with DB first
+  if (!check_connection_status()) return false;
+
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
+  std::vector<std::string> fields;
+  nlohmann::json ue_data = {};
+  nlohmann::json j       = {};
+  nlohmann::json tmp     = {};
+  std::string query      = "SELECT * FROM SessionManagementSubscriptionData";
+
+  Logger::udr_mysql().debug("MySQL query: %s", query.c_str());
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_mysql().error(
+        "mysql_real_query failure, SQL Query: %s", query.c_str());
+    return false;
+  }
+
+  res = mysql_store_result(&mysql_connector);
+  if (res == NULL) {
+    Logger::udr_mysql().error(
+        "mysql_store_result failure, SQL Query: %s", query.c_str());
+    return false;
+  }
+
+  while ((field = mysql_fetch_field(res))) {
+    fields.push_back(field->name);
+  }
+
+  if (fields.size() == 0) {
+    Logger::udr_mysql().debug(
+        "SessionManagementSubscriptionData no data found, SQL "
+        "query: %s",
+        query.c_str());
+  }
+
+  while ((row = mysql_fetch_row(res))) {
+    nlohmann::json json_tmp                                                = {};
+    SessionManagementSubscriptionData session_management_subscription_data = {};
+    std::string ue_id                                                      = {};
+    for (int i = 0; i < fields.size(); i++) {
+      Logger::udr_mysql().debug(
+          "SessionManagementSubscriptionData, Field name: %s",
+          fields[i].c_str());
+      if (boost::iequals("ueid", fields[i]) && row[i] != nullptr) {
+        // session_management_subscription_data.setUeId(row[i]);
+        ue_id = row[i];
+      } else if (
+          boost::iequals("singleNssai", fields[i]) && row[i] != nullptr) {
+        Snssai single_nssai = {};
+        nlohmann::json::parse(row[i]).get_to(single_nssai);
+        session_management_subscription_data.setSingleNssai(single_nssai);
+      } else if (
+          boost::iequals("dnnConfigurations", fields[i]) && row[i] != nullptr) {
+        std ::map<std ::string, DnnConfiguration> dnn_configurations;
+        nlohmann::json::parse(row[i]).get_to(dnn_configurations);
+        session_management_subscription_data.setDnnConfigurations(
+            dnn_configurations);
+        Logger::udr_mysql().debug(
+            "[UE Id %s] DNN configurations (row %d): %s", ue_id.c_str(), i,
+            row[i]);
+        for (auto d : dnn_configurations) {
+          nlohmann::json temp = {};
+          to_json(temp, d.second);
+          Logger::udr_mysql().debug(
+              "[UE Id %s] DNN configurations: %s", ue_id.c_str(),
+              temp.dump().c_str());
+        }
+      } else if (
+          boost::iequals("internalGroupIds", fields[i]) && row[i] != nullptr) {
+        std ::vector<std ::string> internal_group_ids;
+        nlohmann::json::parse(row[i]).get_to(internal_group_ids);
+        session_management_subscription_data.setInternalGroupIds(
+            internal_group_ids);
+      } else if (
+          boost::iequals("sharedVnGroupDataIds", fields[i]) &&
+          row[i] != nullptr) {
+        std ::map<std ::string, std ::string> shared_vn_group_data_ids;
+        nlohmann::json::parse(row[i]).get_to(shared_vn_group_data_ids);
+        session_management_subscription_data.setSharedVnGroupDataIds(
+            shared_vn_group_data_ids);
+      } else if (
+          boost::iequals("sharedDnnConfigurationsId", fields[i]) &&
+          row[i] != nullptr) {
+        session_management_subscription_data.setSharedDnnConfigurationsId(
+            row[i]);
+      } else if (
+          boost::iequals("odbPacketServices", fields[i]) && row[i] != nullptr) {
+        OdbPacketServices odbpacketservices;
+        nlohmann::json::parse(row[i]).get_to(odbpacketservices);
+        session_management_subscription_data.setOdbPacketServices(
+            odbpacketservices);
+      } else if (boost::iequals("traceData", fields[i]) && row[i] != nullptr) {
+        TraceData tracedata;
+        nlohmann::json::parse(row[i]).get_to(tracedata);
+        session_management_subscription_data.setTraceData(tracedata);
+      } else if (
+          boost::iequals("sharedTraceDataId", fields[i]) && row[i] != nullptr) {
+        session_management_subscription_data.setSharedTraceDataId(row[i]);
+      } else if (
+          boost::iequals("expectedUeBehavioursList", fields[i]) &&
+          row[i] != nullptr) {
+        std ::map<std ::string, ExpectedUeBehaviourData>
+            expecteduebehaviourslist;
+        nlohmann::json::parse(row[i]).get_to(expecteduebehaviourslist);
+        session_management_subscription_data.setExpectedUeBehavioursList(
+            expecteduebehaviourslist);
+      } else if (
+          boost::iequals("suggestedPacketNumDlList", fields[i]) &&
+          row[i] != nullptr) {
+        std ::map<std ::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
+        nlohmann::json::parse(row[i]).get_to(suggestedpacketnumdllist);
+        session_management_subscription_data.setSuggestedPacketNumDlList(
+            suggestedpacketnumdllist);
+      } else if (
+          boost::iequals("3gppChargingCharacteristics", fields[i]) &&
+          row[i] != nullptr) {
+        session_management_subscription_data.setR3gppChargingCharacteristics(
+            row[i]);
+      }
+    }
+    to_json(json_tmp, session_management_subscription_data);
+    json_tmp["ueid"] = ue_id;
+    json_data += json_tmp;
+    Logger::udr_mysql().debug(
+        "SessionManagementSubscriptionData: %s", json_data.dump().c_str());
+  }
 
   mysql_free_result(res);
 
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool mysql_db::delete_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id) {
+  // Check the connection with DB first
+  if (!check_connection_status()) return false;
+
+  std::string query =
+      "DELETE FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
+      "' AND servingPlmnid='" + serving_plmn_id + "'";
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_mysql().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+    return false;
+  }
+
+  Logger::udr_mysql().debug(
+      "[UE Id %s]  SessionManagementSubscriptionData DELETE - successful",
+      ue_id.c_str());
   return true;
 }
 
