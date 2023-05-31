@@ -277,12 +277,14 @@ class udr_app {
    * (SessionManagementSubscriptionDataApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
+   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
    * @param [nlohmann::json&] response_data: Response in Json format
    * @param [long code] code: HTTP response code
    * @return void
    */
   void handle_delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
+      const std::optional<oai::udr::model::Snssai>& snssai,
       nlohmann::json& response_data, long& http_code);
 
   /*
@@ -300,6 +302,22 @@ class udr_app {
   void handle_create_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       SessionManagementSubscriptionData& subscription_data,
+      nlohmann::json& response_data, long& code, uint32_t& resource_id);
+  /*
+   * Handle a request to update a SessionManagementSubscription
+   * (SessionManagementSubscriptionDataApiImpl)
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [const std::string&] serving_plmn_id: Serving PLMN ID
+   * @param [const oai::udr::model::SessionManagementSubscriptionData&]
+   * subscriptionData: SM Subscription
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [long code] code: HTTP response code
+   * @param [uint32_t&] resource_id: Resource ID if new resource is created
+   * @return void
+   */
+  void handle_update_sm_data(
+      const std::string& ueId, const std::string& servingPlmnId,
+      SessionManagementSubscriptionData& subscriptionData,
       nlohmann::json& response_data, long& code, uint32_t& resource_id);
 
   /*

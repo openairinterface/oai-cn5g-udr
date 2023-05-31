@@ -442,14 +442,38 @@ void udr_app::handle_create_sm_data(
 }
 
 //------------------------------------------------------------------------------
+void udr_app::handle_update_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    SessionManagementSubscriptionData& subscriptionData,
+    nlohmann::json& response_data, long& code, uint32_t& resource_id) {
+  Logger::udr_app().info(
+      "Update a Session Management subscription data of a UE");
+
+  if (db_connector->update_sm_data(
+          ueId, servingPlmnId, subscriptionData, response_data, resource_id)) {
+    if (resource_id > 0) {
+      code = HTTP_STATUS_CODE_201_CREATED;
+    } else {
+      code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    }
+    Logger::udr_app().info(
+        "SessionManagementSubscription: %s", response_data.dump().c_str());
+  } else {
+    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
 void udr_app::handle_delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
+    const std::optional<oai::udr::model::Snssai>& snssai,
     nlohmann::json& response_data, long& code) {
   Logger::udr_app().info(
       "[UE Id %s]  Delete a Session Management subscription data of a UE",
       ue_id.c_str());
 
-  if (db_connector->delete_sm_data(ue_id, serving_plmn_id)) {
+  if (db_connector->delete_sm_data(ue_id, serving_plmn_id, snssai)) {
     code = HTTP_STATUS_CODE_204_NO_CONTENT;
   } else {
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO

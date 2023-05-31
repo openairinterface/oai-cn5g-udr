@@ -2111,6 +2111,121 @@ bool mysql_db::create_sm_data(
 }
 
 //------------------------------------------------------------------------------
+bool mysql_db::update_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    oai::udr::model::SessionManagementSubscriptionData& subscription_data,
+    nlohmann::json& json_data, uint32_t& resource_id) {
+  // Check the connection with DB first
+  if (!check_connection_status()) return false;
+
+  MYSQL_RES* res                = nullptr;
+  MYSQL_ROW row                 = {};
+  std::string query             = {};
+  ProblemDetails problemdetails = {};
+  nlohmann::json j              = {};
+
+  Snssai single_nssai = subscription_data.getSingleNssai();
+
+  std::string nssai_query = " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+                            std::to_string(single_nssai.getSst());
+
+  if (!single_nssai.getSd().empty()) {
+    nssai_query += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
+                   single_nssai.getSd() + "'";
+  }
+
+  query = "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" +
+          ue_id + "'" + "AND servingPlmnid='" + serving_plmn_id + "'" +
+          nssai_query;
+
+  Logger::udr_mysql().info(
+      "[UE Id %s] MySQL Query: %s", ue_id.c_str(), query.c_str());
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size()) != 0) {
+    Logger::udr_mysql().error(
+        "[UE Id %s] Failed when executing mysql_real_query with SQL Query: %s",
+        ue_id.c_str(), query.c_str());
+    return false;
+  }
+
+  res = mysql_store_result(&mysql_connector);
+  if (res == nullptr) {
+    Logger::udr_mysql().error(
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
+        query.c_str());
+    return false;
+  }
+  row = mysql_fetch_row(res);
+  if (row != nullptr) {  // if the row is existed, then update the UE's info
+    Logger::udr_mysql().debug(
+        "[UE Id %s] SessionManagementSubscriptionData existed!", ue_id.c_str());
+    query =
+        "UPDATE SessionManagementSubscriptionData "
+        "SET " +
+        (subscription_data.sharedDnnConfigurationsIdIsSet() ?
+             "'sharedDnnConfigurationsId='" +
+                 subscription_data.getSharedDnnConfigurationsId() + "'" :
+             "") +
+        (subscription_data.sharedTraceDataIdIsSet() ?
+             ",sharedTraceDataId='" + subscription_data.getSharedTraceDataId() +
+                 "'" :
+             "") +
+        (subscription_data.r3gppChargingCharacteristicsIsSet() ?
+             ",3gppChargingCharacteristics='" +
+                 subscription_data.getR3gppChargingCharacteristics() + "'" :
+             "");
+
+    if (subscription_data.dnnConfigurationsIsSet()) {
+      j = subscription_data.getDnnConfigurations();
+      query += "dnnConfigurations='" + j.dump() + "'";
+    }
+    if (subscription_data.internalGroupIdsIsSet()) {
+      j = subscription_data.getInternalGroupIds();
+      query += ",internalGroupIds='" + j.dump() + "'";
+    }
+    if (subscription_data.sharedVnGroupDataIdsIsSet()) {
+      j = subscription_data.getSharedVnGroupDataIds();
+      query += ",sharedVnGroupDataIds='" + j.dump() + "'";
+    }
+    if (subscription_data.odbPacketServicesIsSet()) {
+      j = subscription_data.getOdbPacketServices();
+      query += ",odbPacketServices='" + j.dump() + "'";
+    }
+    if (subscription_data.traceDataIsSet()) {
+      j = subscription_data.getTraceData();
+      query += ",traceData='" + j.dump() + "'";
+    }
+    if (subscription_data.expectedUeBehavioursListIsSet()) {
+      j = subscription_data.getExpectedUeBehavioursList();
+      query += ",expectedUeBehavioursList='" + j.dump() + "'";
+    }
+    if (subscription_data.suggestedPacketNumDlListIsSet()) {
+      j = subscription_data.getSuggestedPacketNumDlList();
+      query += ",suggestedPacketNumDlList='" + j.dump() + "'";
+    }
+
+    query += " WHERE ueId='" + ue_id + "' AND servingPlmnId='" +
+             serving_plmn_id + "'" + nssai_query;
+
+    if (mysql_real_query(
+            &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+      Logger::udr_mysql().error(
+          "mysql_real_query failure！ SQL Query: %s", query.c_str());
+      return false;
+    }
+
+    to_json(json_data, subscription_data);
+    Logger::udr_mysql().debug(
+        "SessionManagementSubscriptionData PUT: %s", json_data.dump().c_str());
+    return true;
+  } else {  // Create a new row
+    return create_sm_data(
+        ue_id, serving_plmn_id, subscription_data, json_data, resource_id);
+  }
+}
+
+//------------------------------------------------------------------------------
 bool mysql_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data,
@@ -2407,13 +2522,28 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
 
 //------------------------------------------------------------------------------
 bool mysql_db::delete_sm_data(
-    const std::string& ue_id, const std::string& serving_plmn_id) {
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    const std::optional<oai::udr::model::Snssai>& snssai) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
+  std::string option_str = {};
+
+  if (snssai.has_value()) {
+    option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
+                  std::to_string(snssai.value().getSst());
+
+    if (!snssai.value().getSd().empty()) {
+      option_str += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
+                    snssai.value().getSd() + "'";
+    }
+  }
+
   std::string query =
       "DELETE FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
-      "' AND servingPlmnid='" + serving_plmn_id + "'";
+      "' AND servingPlmnid='" + serving_plmn_id + "'" + option_str;
+
+  Logger::udr_mysql().debug("MySQL query: %s", query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
