@@ -128,6 +128,7 @@ class SessionManagementSubscriptionDataApi {
       Pistache::Http::ResponseWriter& response) = 0;
   virtual void delete_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
+      const Pistache::Optional<Snssai>& singleNssai,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

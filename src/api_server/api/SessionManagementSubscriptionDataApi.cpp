@@ -280,8 +280,24 @@ void SessionManagementSubscriptionDataApi::delete_sm_data_handler(
   auto ueId          = request.param(":ueId").as<std::string>();
   auto servingPlmnId = request.param(":servingPlmnId").as<std::string>();
 
+  // Getting the query params
+  auto singleNssaiQuery = request.query().get("single-nssai");
+
+  Pistache::Optional<Snssai> singleNssai;
+  if (!singleNssaiQuery.isEmpty()) {
+    Logger::udr_server().debug(
+        "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
+    Snssai valueQuery_instance;
+    if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
+      Logger::udr_server().debug(
+          "SNSSAI SST %d, SD %s", valueQuery_instance.getSst(),
+          valueQuery_instance.getSd().c_str());
+      singleNssai = Pistache::Some(valueQuery_instance);
+    }
+  }
+
   try {
-    this->delete_sm_data(ueId, servingPlmnId, response);
+    this->delete_sm_data(ueId, servingPlmnId, singleNssai, response);
   } catch (nlohmann::detail::exception& e) {
     // send a 400 error
     response.send(Pistache::Http::Code::Bad_Request, e.what());

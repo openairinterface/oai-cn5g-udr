@@ -270,11 +270,13 @@ class database_wrapper_abstraction {
    * Delete an item from the DB for SessionManagementSubscription
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
+   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
    * @param [nlohmann::json&] json_data: Data in Json format
    * @return true if successful, otherwise return false
    */
   virtual bool delete_sm_data(
-      const std::string& ue_id, const std::string& serving_plmn_id) = 0;
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      const std::optional<oai::udr::model::Snssai>& snssai) = 0;
 
   /*
    * Insert a new item into the DB for SessionManagementSubscription
@@ -303,7 +305,7 @@ class database_wrapper_abstraction {
   virtual bool update_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
       oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
-      nlohmann::json& json_data) = 0;
+      nlohmann::json& json_data, uint32_t& resource_id) = 0;
 
   /*
    * Insert an item into the DB for SMFRegistration

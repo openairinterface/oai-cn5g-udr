@@ -200,9 +200,10 @@ class database_wrapper : public database_wrapper_abstraction {
   }
 
   bool delete_sm_data(
-      const std::string& ue_id, const std::string& serving_plmn_id) {
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      const std::optional<oai::udr::model::Snssai>& snssai) {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->delete_sm_data(ue_id, serving_plmn_id);
+    return derived->delete_sm_data(ue_id, serving_plmn_id, snssai);
   }
 
   bool create_sm_data(
@@ -217,10 +218,10 @@ class database_wrapper : public database_wrapper_abstraction {
   bool update_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
       oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
-      nlohmann::json& json_data) override {
+      nlohmann::json& json_data, uint32_t& resource_id) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->update_sm_data(
-        ueId, servingPlmnId, subscriptionData, json_data);
+        ueId, servingPlmnId, subscriptionData, json_data, resource_id);
   }
 
   bool insert_smf_context_non_3gpp(
