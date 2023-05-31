@@ -141,6 +141,73 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
   }
 }
 
+void SessionManagementSubscriptionDataApiImpl::put_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    SessionManagementSubscriptionData& subscriptionData,
+    Pistache::Http::ResponseWriter& response) {
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
+  uint32_t resource_id         = 0;
+
+  /*  m_udr_app->handle_update_sm_data(
+        ueId, servingPlmnId, subscriptionData, response_data, http_code,
+        resource_id);
+
+    code = static_cast<Pistache::Http::Code>(http_code);
+    Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
+    if (resource_id >0 ) {
+      std::string location =
+          "http://" + m_address + base + udr_cfg.nudr.api_version +
+          fmt::format(
+              "/subscription-data/{}/{}/provisioned-data/sm-data", ueId,
+              servingPlmnId) +
+          "/" + std::to_string(resource_id);
+
+      response.headers().add<Pistache::Http::Header::Location>(
+          location);  // Location header
+      Logger::udr_server().debug("Location header: %s", location.c_str());
+      response.headers().add<Pistache::Http::Header::ContentType>(
+          Pistache::Http::Mime::MediaType("application/json"));
+
+      response.send(code, response_data.dump().c_str());
+    } else if (code == Pistache::Http::Code::No_Content) {
+      response.send(code);
+    } else {
+      // TODO:
+      response.send(code);
+    }
+  */
+
+  // TODO: To be removed
+  Logger::udr_server().debug(
+      "Checking if SessionManagementSubscriptionData resource already exists");
+  m_udr_app->handle_query_sm_data(
+      ueId, servingPlmnId, response_data, http_code);
+  code = static_cast<Pistache::Http::Code>(http_code);
+  Logger::udr_server().debug("HTTP response code %ld", http_code);
+
+  if (code == Pistache::Http::Code::Ok) {
+    Logger::udr_server().debug("Resource found, updating the existing one");
+    m_udr_app->handle_update_sm_data(
+        ueId, servingPlmnId, subscriptionData, response_data, http_code);
+  } else if (code == Pistache::Http::Code::Not_Found) {
+    Logger::udr_server().debug("Resource not found, creating a new one");
+    subscriptionData.setUeId(ueId);
+    subscriptionData.setServingPlmnId(servingPlmnId);
+    m_udr_app->handle_create_sm_data(
+        subscriptionData, response_data, http_code);
+  } else {
+    Logger::udr_server().debug("Intermediate GET failure");
+  }
+
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
+  code = static_cast<Pistache::Http::Code>(http_code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  response.send(code, response_data.dump().c_str());
+}
+
 void SessionManagementSubscriptionDataApiImpl::delete_sm_data(
     const std::string& ueId, const std::string& servingPlmnId,
     Pistache::Http::ResponseWriter& response) {

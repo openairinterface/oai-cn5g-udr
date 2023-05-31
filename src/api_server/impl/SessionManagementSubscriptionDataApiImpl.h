@@ -79,6 +79,10 @@ class SessionManagementSubscriptionDataApiImpl
       const std::string& ueId, const std::string& servingPlmnId,
       SessionManagementSubscriptionData& subscriptionData,
       Pistache::Http::ResponseWriter& response);
+  void put_sm_data(
+      const std::string& ueId, const std::string& servingPlmnId,
+      SessionManagementSubscriptionData& subscriptionData,
+      Pistache::Http::ResponseWriter& response);
   void delete_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
       Pistache::Http::ResponseWriter& response);

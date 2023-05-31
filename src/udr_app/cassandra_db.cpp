@@ -185,6 +185,14 @@ bool cassandra_db::create_sm_data(
 }
 
 //------------------------------------------------------------------------------
+bool cassandra_db::update_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+    nlohmann::json& json_data) {
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool cassandra_db::delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id) {
   return true;

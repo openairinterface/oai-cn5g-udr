@@ -2111,6 +2111,87 @@ bool mysql_db::create_sm_data(
 }
 
 //------------------------------------------------------------------------------
+bool mysql_db::update_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+    nlohmann::json& json_data) {
+  // Check the connection with DB first
+  if (!get_db_connection_status()) {
+    Logger::udr_mysql().info(
+        "The connection to the MySQL is currently inactive");
+    return false;
+  }
+
+  MYSQL_RES* res                = nullptr;
+  MYSQL_ROW row                 = {};
+  std::string query             = {};
+  nlohmann::json j              = {};
+  ProblemDetails problemdetails = {};
+
+  nlohmann::json snssai_json(subscriptionData.getSingleNssai());
+
+  query =
+      "UPDATE SessionManagementSubscriptionData "
+      "SET singleNssai='" +
+      snssai_json.dump() + "'" +
+      (subscriptionData.sharedDnnConfigurationsIdIsSet() ?
+           ",sharedDnnConfigurationsId='" +
+               subscriptionData.getSharedDnnConfigurationsId() + "'" :
+           "") +
+      (subscriptionData.sharedTraceDataIdIsSet() ?
+           ",sharedTraceDataId='" + subscriptionData.getSharedTraceDataId() +
+               "'" :
+           "") +
+      (subscriptionData.r3gppChargingCharacteristicsIsSet() ?
+           ",3gppChargingCharacteristics='" +
+               subscriptionData.getR3gppChargingCharacteristics() + "'" :
+           "");
+
+  if (subscriptionData.dnnConfigurationsIsSet()) {
+    j = subscriptionData.getDnnConfigurations();
+    query += ",dnnConfigurations='" + j.dump() + "'";
+  }
+  if (subscriptionData.internalGroupIdsIsSet()) {
+    j = subscriptionData.getInternalGroupIds();
+    query += ",internalGroupIds='" + j.dump() + "'";
+  }
+  if (subscriptionData.sharedVnGroupDataIdsIsSet()) {
+    j = subscriptionData.getSharedVnGroupDataIds();
+    query += ",sharedVnGroupDataIds='" + j.dump() + "'";
+  }
+  if (subscriptionData.odbPacketServicesIsSet()) {
+    j = subscriptionData.getOdbPacketServices();
+    query += ",odbPacketServices='" + j.dump() + "'";
+  }
+  if (subscriptionData.traceDataIsSet()) {
+    j = subscriptionData.getTraceData();
+    query += ",traceData='" + j.dump() + "'";
+  }
+  if (subscriptionData.expectedUeBehavioursListIsSet()) {
+    j = subscriptionData.getExpectedUeBehavioursList();
+    query += ",expectedUeBehavioursList='" + j.dump() + "'";
+  }
+  if (subscriptionData.suggestedPacketNumDlListIsSet()) {
+    j = subscriptionData.getSuggestedPacketNumDlList();
+    query += ",suggestedPacketNumDlList='" + j.dump() + "'";
+  }
+
+  query += " WHERE ueId='" + ueId + "' AND servingPlmnId=" + servingPlmnId;
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_mysql().error(
+        "mysql_real_query failure！ SQL Query: %s", query.c_str());
+    return false;
+  }
+
+  to_json(json_data, subscriptionData);
+  Logger::udr_mysql().debug(
+      "SessionManagementSubscriptionData PUT: %s", json_data.dump().c_str());
+  return true;
+}
+
+//------------------------------------------------------------------------------
 bool mysql_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data,

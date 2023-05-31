@@ -292,6 +292,20 @@ class database_wrapper_abstraction {
       nlohmann::json& json_data, uint32_t& resource_id) = 0;
 
   /*
+   * Update an item from the DB for SessionManagementSubscription
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [const std::string&] serving_plmn_id: Serving PLMN ID
+   * @param [const oai::udr::model::SessionManagementSubscriptionData&]
+   * SessionManagementSubscription: subscription
+   * @param [nlohmann::json&] json_data: Data in Json format
+   * @return true if successful, otherwise return false
+   */
+  virtual bool update_sm_data(
+      const std::string& ueId, const std::string& servingPlmnId,
+      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      nlohmann::json& json_data) = 0;
+
+  /*
    * Insert an item into the DB for SMFRegistration
    * @param [const std::string&] ue_id: UE Identity
    * @param [const int32_t&] pdu_session_id: PDU Session ID

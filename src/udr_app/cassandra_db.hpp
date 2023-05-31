@@ -109,6 +109,11 @@ class cassandra_db : public database_wrapper<cassandra_db> {
       oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
       nlohmann::json& json_data, uint32_t& resource_id);
 
+  bool update_sm_data(
+      const std::string& ueId, const std::string& servingPlmnId,
+      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      nlohmann::json& json_data);
+
   bool delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id);
 
