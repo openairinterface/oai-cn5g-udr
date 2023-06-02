@@ -67,9 +67,7 @@ void udr_nrf::start() {
 //---------------------------------------------------------------------------------------------
 void udr_nrf::get_udr_api_root(std::string& api_root) {
   api_root =
-      std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nrf_addr.ipv4_addr))) +
-      ":" + std::to_string(udr_cfg.nrf_addr.port) + NNRF_NFM_BASE +
-      udr_cfg.nrf_addr.api_version;
+      udr_cfg.nrf_addr.uri_root + NNRF_NFM_BASE + udr_cfg.nrf_addr.api_version;
 }
 
 //---------------------------------------------------------------------------------------------

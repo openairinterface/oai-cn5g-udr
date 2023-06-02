@@ -31,17 +31,21 @@
 #include "udr_app.hpp"
 #include "udr_nrf.hpp"
 #include "udr_config.hpp"
+#include "udr_config_yaml.hpp"
 
 using namespace util;
 using namespace std;
 using namespace oai::udr::app;
 using namespace oai::udr::config;
+using namespace oai::config;
 
 udr_config udr_cfg;
 udr_app* udr_app_inst          = nullptr;
 udr_nrf* udr_nrf_inst          = nullptr;
 UDRApiServer* http_server1     = nullptr;
 udr_http2_server* http_server2 = nullptr;
+
+std::unique_ptr<udr_config_yaml> udr_cfg_yaml;
 
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
@@ -90,9 +94,29 @@ int main(int argc, char** argv) {
   udr_event ev;
 
   // Config
-  udr_cfg.load(Options::getlibconfigConfig());
-  udr_cfg.display();
-  Logger::set_level(udr_cfg.log_level);
+  std::string conf_file_name = Options::getlibconfigConfig();
+  std::string file_ext       = ".conf";
+  if (conf_file_name.find(file_ext) != std::string::npos) {
+    Logger::udr_server().debug(
+        "Parsing the configuration file, file type CONF.");
+    udr_cfg.load(conf_file_name);
+    Logger::set_level(udr_cfg.log_level);
+    udr_cfg.display();
+  } else {
+    // By default, considering the config file as yaml
+    Logger::system().debug("Parsing the configuration file, file type YAML.");
+    udr_cfg_yaml = std::make_unique<udr_config_yaml>(
+        conf_file_name, Options::getlogStdout(), Options::getlogRotFilelog());
+    if (!udr_cfg_yaml->init()) {
+      Logger::udr_server().error("Reading the configuration failed. Exiting.");
+      return 1;
+    }
+    udr_cfg_yaml->pre_process();
+    udr_cfg_yaml->display();
+    // Convert from YAML to internal structure
+    udr_cfg_yaml->to_udr_config(udr_cfg);
+    udr_cfg.display();
+  }
 
   // UDR application layer
   udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);

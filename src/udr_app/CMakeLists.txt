@@ -25,10 +25,12 @@ include_directories(${SRC_TOP_DIR}/api_server/model)
 include_directories(${SRC_TOP_DIR}/api_server/)
 include_directories(${SRC_TOP_DIR}/common/)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config)
 
 add_library (UDR STATIC
   udr_app.cpp
   udr_config.cpp 
+  udr_config_yaml.cpp 
   udr_profile.cpp
   udr_nrf.cpp 
   udr_event.cpp

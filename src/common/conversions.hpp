@@ -48,5 +48,7 @@ class conv {
  public:
   static std::string toString(const struct in_addr& inaddr);
   static std::string toString(const struct in6_addr& in6addr);
+  static struct in_addr fromString(const std::string addr4);
+  static struct in6_addr fromStringV6(const std::string& addr6);
 };
 #endif /* FILE_CONVERSIONS_HPP_SEEN */
