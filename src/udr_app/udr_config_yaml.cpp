@@ -136,20 +136,22 @@ udr_config_yaml::udr_config_yaml(
           config_path, oai::config::UDR_CONFIG_NAME, log_stdout, log_rot_file) {
   m_used_sbi_values    = {oai::config::UDR_CONFIG_NAME,
                        oai::config::NRF_CONFIG_NAME};
-  m_used_config_values = {
-      oai::config::LOG_LEVEL_CONFIG_NAME, oai::config::REGISTER_NF_CONFIG_NAME,
-      oai::config::NF_LIST_CONFIG_NAME, oai::config::UDR_CONFIG_NAME,
-      oai::config::DATABASE_CONFIG};
+  m_used_config_values = {oai::config::LOG_LEVEL_CONFIG_NAME,
+                          oai::config::REGISTER_NF_CONFIG_NAME,
+                          NF_CONFIG_HTTP_NAME,
+                          oai::config::NF_LIST_CONFIG_NAME,
+                          oai::config::UDR_CONFIG_NAME,
+                          oai::config::DATABASE_CONFIG};
 
   // TODO with NF_Type and switch
   // TODO: Still we need to add default NFs even we don't use this in all_in_one
   // use case
   auto m_udr = std::make_shared<udr>(
-      "UDR", "oai-udr", sbi_interface("SBI", "oai-udr1", 80, 0, "v1", "eth0"));
+      "UDR", "oai-udr", sbi_interface("SBI", "oai-udr1", 80, "v1", "eth0"));
   add_nf("udr", m_udr);
 
   auto m_nrf = std::make_shared<nf>(
-      "NRF", "oai-nrf", sbi_interface("SBI", "oai-nrf", 80, 0, "v1", "eth0"));
+      "NRF", "oai-nrf", sbi_interface("SBI", "oai-nrf", 80, "v1", "eth0"));
   add_nf("nrf", m_nrf);
 
   update_used_nfs();
@@ -175,6 +177,7 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
 
   // TODO:
   // cfg.support_features.use_fqdn_dns = true;
+  if (get_http_version() == 2) cfg.use_http2 = true;
 
   // Database
   if (get_database_config().is_set()) {
@@ -196,8 +199,8 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
   }
 
   cfg.nudr.api_version = local().get_sbi().get_api_version();
-  cfg.nudr_http2_port  = local().get_sbi().get_port_http2();
-  cfg.nudr.port        = local().get_sbi().get_port_http1();
+  cfg.nudr_http2_port  = local().get_sbi().get_port_http();
+  cfg.nudr.port        = local().get_sbi().get_port_http();
   cfg.nudr.addr4       = local().get_sbi().get_addr4();
   cfg.nudr.if_name     = local().get_sbi().get_if_name();
 

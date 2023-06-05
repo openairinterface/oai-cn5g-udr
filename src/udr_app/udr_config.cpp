@@ -317,7 +317,7 @@ void udr_config::display() {
   Logger::config().info("- PID dir .................: %s", pid_dir.c_str());
   Logger::config().info("- UDR Name ................: %s", udr_name.c_str());
 
-  Logger::config().info("- Nudr Networking:");
+  Logger::config().info("- Nudr:");
   Logger::config().info(
       "    Interface name ........: %s", nudr.if_name.c_str());
   Logger::config().info(
