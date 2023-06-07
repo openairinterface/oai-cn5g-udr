@@ -130,6 +130,7 @@ int main(int argc, char** argv) {
   std::thread udr_nrf_manager(&udr_nrf::start, udr_nrf_inst);
 
   // PID file
+  udr_cfg.instance = 1;
   // Currently hard-coded value. TODO: add as config option.
   string pid_file_name = get_exe_absolute_path("/var/run", udr_cfg.instance);
   if (!is_pid_file_lock_success(pid_file_name.c_str())) {
@@ -138,33 +139,34 @@ int main(int argc, char** argv) {
     exit(-EDEADLK);
   }
 
-  // UDR Pistache API server (HTTP1)
-  Pistache::Address addr(
-      std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
-      Pistache::Port(udr_cfg.nudr.port));
-
-  http_server1 = new UDRApiServer(addr, udr_app_inst);
-  http_server1->init(2);
-  std::thread udr_http1_manager(&UDRApiServer::start, http_server1);
-
-  // UDM NGHTTP API server (HTTP2)
-  http_server2 = new udr_http2_server(
-      conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr_http2_port,
-      udr_app_inst);
-  std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
-
-  task_manager_thread.join();
-  udr_nrf_manager.join();
-  udr_http1_manager.join();
-  udr_http2_manager.join();
-
   FILE* fp             = NULL;
   std::string filename = fmt::format("/tmp/udr_{}.status", getpid());
   fp                   = fopen(filename.c_str(), "w+");
   fprintf(fp, "STARTED\n");
+
+  if (!udr_cfg.use_http2) {
+    // UDR Pistache API server (HTTP1)
+    Pistache::Address addr(
+        std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
+        Pistache::Port(udr_cfg.nudr.port));
+
+    http_server1 = new UDRApiServer(addr, udr_app_inst);
+    http_server1->init(2);
+    std::thread udr_http1_manager(&UDRApiServer::start, http_server1);
+    udr_http1_manager.join();
+  } else {
+    // UDM NGHTTP API server (HTTP2)
+    http_server2 = new udr_http2_server(
+        conv::toString(udr_cfg.nudr.addr4), 8080, udr_app_inst);
+    std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
+    udr_http2_manager.join();
+  }
+
+  task_manager_thread.join();
+  udr_nrf_manager.join();
+
   fflush(fp);
   fclose(fp);
-
   pause();
   return 0;
 }
