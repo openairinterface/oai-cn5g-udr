@@ -115,7 +115,6 @@ int main(int argc, char** argv) {
     udr_cfg_yaml->display();
     // Convert from YAML to internal structure
     udr_cfg_yaml->to_udr_config(udr_cfg);
-    udr_cfg.display();
   }
 
   // UDR application layer
@@ -130,9 +129,8 @@ int main(int argc, char** argv) {
   std::thread udr_nrf_manager(&udr_nrf::start, udr_nrf_inst);
 
   // PID file
-  udr_cfg.instance = 1;
-  // Currently hard-coded value. TODO: add as config option.
-  string pid_file_name = get_exe_absolute_path("/var/run", udr_cfg.instance);
+  string pid_file_name =
+      get_exe_absolute_path(udr_cfg.pid_dir, udr_cfg.instance);
   if (!is_pid_file_lock_success(pid_file_name.c_str())) {
     Logger::udr_server().error(
         "Lock PID file %s failed\n", pid_file_name.c_str());
