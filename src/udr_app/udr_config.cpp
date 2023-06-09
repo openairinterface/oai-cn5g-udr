@@ -193,6 +193,8 @@ int udr_config::load(const std ::string& config_file) {
           throw(UDR_CONFIG_STRING_NRF_PORT "failed");
         }
         nrf_addr.port = nrf_port;
+        nrf_addr.uri_root =
+            util::trim(astring) + ":" + std::to_string(nrf_port);
 
         if (!(nrf_cfg.lookupValue(
                 UDR_CONFIG_STRING_API_VERSION, nrf_api_version))) {
@@ -219,9 +221,12 @@ int udr_config::load(const std ::string& config_file) {
             Logger::udr_app().error(UDR_CONFIG_STRING_NRF_PORT "failed");
             throw(UDR_CONFIG_STRING_NRF_PORT "failed");
           }
-          nrf_addr.port        = nrf_port;
-          nrf_addr.api_version = "v1";  // TODO: to get API version from DNS
-          nrf_addr.fqdn        = astring;
+          nrf_addr.port = nrf_port;
+          nrf_addr.api_version =
+              DEFAULT_SBI_API_VERSION;  // TODO: to get API version from DNS
+          nrf_addr.fqdn = astring;
+          nrf_addr.uri_root =
+              util::trim(address) + ":" + std::to_string(nrf_port);
         }
       }
     } catch (const SettingNotFoundException& nfex) {
@@ -312,7 +317,7 @@ void udr_config::display() {
   Logger::config().info("- PID dir .................: %s", pid_dir.c_str());
   Logger::config().info("- UDR Name ................: %s", udr_name.c_str());
 
-  Logger::config().info("- Nudr Networking:");
+  Logger::config().info("- Nudr:");
   Logger::config().info(
       "    Interface name ........: %s", nudr.if_name.c_str());
   Logger::config().info(
@@ -332,6 +337,8 @@ void udr_config::display() {
       "    Database ..............: %s", db_type_e2str[db_type].c_str());
   if (register_nrf) {
     Logger::config().info("- NRF:");
+    Logger::config().info(
+        "    URI root ...............: %s", nrf_addr.uri_root);
     Logger::config().info(
         "    IPv4 Addr .............: %s",
         inet_ntoa(*((struct in_addr*) &nrf_addr.ipv4_addr)));

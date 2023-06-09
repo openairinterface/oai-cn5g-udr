@@ -65,6 +65,8 @@ bool udr_client::curl_http_client(
     std::string remote_uri, std::string method, std::string msg_body,
     std::string& response, long& response_code) {
   Logger::udr_app().info("Send HTTP message with body %s", msg_body.c_str());
+  Logger::udr_app().info("Server URI %s", remote_uri.c_str());
+
   bool result = false;
 
   uint32_t str_len = msg_body.length();

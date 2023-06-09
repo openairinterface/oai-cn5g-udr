@@ -107,6 +107,7 @@ class udr_config {
     unsigned int port;
     std::string api_version;
     std::string fqdn;
+    std::string uri_root;
   } nrf_addr;
 
   bool register_nrf;

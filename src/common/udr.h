@@ -88,4 +88,6 @@ typedef enum db_type_s {
 static const std::vector<std::string> db_type_e2str = {"Unknown", "MySQL",
                                                        "Cassandra"};
 
+constexpr auto DEFAULT_SBI_API_VERSION = "v1";
+
 #endif
