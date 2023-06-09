@@ -21,26 +21,33 @@
 #---------------------------------------------------------------------
 #
 # Dockerfile for the Open-Air-Interface UDR service
-#   Valid for Ubuntu-20.04 (focal),
-#             Ubuntu-22.04 (jammy)
+#   Valid for Rocky Linux 8.7+
 #
 #---------------------------------------------------------------------
 
 #---------------------------------------------------------------------
-# BASE IMAGE
+# BUILDER IMAGE
 #---------------------------------------------------------------------
-ARG BASE_IMAGE=ubuntu:focal
-FROM $BASE_IMAGE as oai-udr-base
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Europe/Paris
+FROM docker.io/rockylinux:8 AS oai-udr-builder
+
 ENV IS_DOCKERFILE=1
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
-      psmisc \
-      git \
-  && rm -rf /var/lib/apt/lists/*
+
+RUN dnf install 'dnf-command(config-manager)' -y && \
+    dnf config-manager --set-enabled powertools && \
+    dnf install epel-release -y && crb enable && \
+    dnf update -y && \
+    # here just to display the current version
+    cat /etc/os-release && \
+    dnf install -y \
+        psmisc \
+        git \
+        diffutils \
+        libasan \
+        wget \
+        file && \
+    echo "/usr/local/lib" > /etc/ld.so.conf.d/local-lib.conf && \
+    echo "/usr/local/lib64" >> /etc/ld.so.conf.d/local-lib.conf
 
 # Some GIT configuration command quite useful
 RUN git config --global https.postBuffer 123289600 && \
@@ -48,28 +55,18 @@ RUN git config --global https.postBuffer 123289600 && \
 
 # Copying source code
 WORKDIR /openair-udr
-COPY ./build/scripts /openair-udr/build/scripts/
-COPY ./build/common-build /openair-udr/build/common-build
-COPY ./build/udr/CMakeLists.txt /openair-udr/build/udr/CMakeLists.txt
+COPY . /openair-udr
 
 # wait for it
 WORKDIR /
 RUN git clone https://github.com/vishnubob/wait-for-it.git
 
-# Installing all the needed libraries/packages to build and run UDR
+# Installing and Building UDR
 WORKDIR /openair-udr/build/scripts
-RUN ./build_udr --install-deps --force && \
-    ldconfig
-
-#---------------------------------------------------------------------
-# BUILDER IMAGE
-#---------------------------------------------------------------------
-FROM oai-udr-base as oai-udr-builder
-# Copying source code
-COPY . /openair-udr
-# Building UDR
-WORKDIR /openair-udr/build/scripts
-RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
+RUN ./build_udr --install-deps --force
+# Patching the CMakefile to link mysqlclient
+RUN sed -i -e "s@-lmysqlclient@-L/usr/lib64/mysql -lmysqlclient@" ../../src/oai_udr/CMakeLists.txt && \
+    ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr && \
     sed -i -e "s@nf-root-folder@udr@" -e "s@nf-config-file@udr.conf@" \
@@ -78,44 +75,28 @@ RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
 #---------------------------------------------------------------------
 # TARGET IMAGE
 #---------------------------------------------------------------------
-FROM $BASE_IMAGE as oai-udr
-ENV DEBIAN_FRONTEND=noninteractive
+FROM docker.io/rockylinux:8-minimal as oai-udr
 ENV TZ=Europe/Paris
+
 # We install some debug tools for the moment in addition of mandatory libraries
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
+RUN microdnf update -y && \
+    microdnf install -y \
       python3 \
-      python3-jinja2 \
+      python3-pip \
+      tzdata \
+      #libasan \
+      procps-ng \
       psmisc \
       net-tools \
-      iputils-ping \
-      bc \
-      tzdata \
-      libmysqlclient2? \
-      netbase \
-# Ubuntu 20 --> libasan5
-# Ubuntu 22 --> libasan6
-#      libasan? \
-      libconfig++9v5 \
-# Ubuntu 20 --> libnettle7
-# Ubuntu 22 --> libnettle8
-      libnettle? \
-# Ubuntu 20 --> libhogweed5
-# Ubuntu 22 --> libhogweed6
-      libhogweed? \
-# Ubuntu 20 --> libldap-2.4-2
-# Ubuntu 22 --> libldap-2.5-0
-      libldap-2.?-? \
-      libkrb5-3 \
-      libgssapi-krb5-2 \
-      libcurl?-gnutls \
-      librtmp1 \
-      libpsl5 \
-# Ubuntu 20 --> boost71
-# Ubuntu 22 --> boost74
-      libboost-thread1.7?.0 \
-  && rm -rf /var/lib/apt/lists/*
+      libicu \
+      boost \
+      libevent \
+      mysql-libs \
+      findutils \
+      libconfig && \
+    pip3 install jinja2 && \
+    microdnf clean all -y && \
+    rm -rf /var/cache/yum /var/cache/dnf
 
 # Copying executable and generated libraries
 WORKDIR /openair-udr/bin
@@ -128,11 +109,12 @@ COPY --from=oai-udr-builder \
 
 COPY --from=oai-udr-builder \
 # Copying only the packages built from source
-    /usr/local/lib/libnghttp2.so.14 \
+    /usr/local/lib64/libpistache.so.0 \
+    /usr/local/lib/libnghttp2_asio.so \
     /usr/local/lib/libnghttp2_asio.so.1 \
-    /usr/local/lib/libpistache.so \
-    /usr/local/lib/libfmt.so \
-    /usr/local/lib/
+    /usr/local/lib64/libspdlog.so \
+    /usr/local/lib64/libfmt.so \
+    /usr/lib64/
 
 RUN ldconfig && \
     ldd /openair-udr/bin/oai_udr
