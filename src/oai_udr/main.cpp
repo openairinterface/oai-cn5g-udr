@@ -153,9 +153,9 @@ int main(int argc, char** argv) {
     std::thread udr_http1_manager(&UDRApiServer::start, http_server1);
     udr_http1_manager.join();
   } else {
-    // UDM NGHTTP API server (HTTP2)
+    // UDR NGHTTP API server (HTTP2)
     http_server2 = new udr_http2_server(
-        conv::toString(udr_cfg.nudr.addr4), 8080, udr_app_inst);
+        conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr.port, udr_app_inst);
     std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
     udr_http2_manager.join();
   }
