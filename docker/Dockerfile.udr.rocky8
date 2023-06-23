@@ -68,9 +68,9 @@ RUN ./build_udr --install-deps --force
 RUN sed -i -e "s@-lmysqlclient@-L/usr/lib64/mysql -lmysqlclient@" ../../src/oai_udr/CMakeLists.txt && \
     ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
-    mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr && \
-    sed -i -e "s@nf-root-folder@udr@" -e "s@nf-config-file@udr.conf@" \
-      ../common-build/docker-scripts/entrypoint.py
+    mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
+
+FROM mikefarah/yq:latest as yq-source
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
@@ -81,8 +81,6 @@ ENV TZ=Europe/Paris
 # We install some debug tools for the moment in addition of mandatory libraries
 RUN microdnf update -y && \
     microdnf install -y \
-      python3 \
-      python3-pip \
       tzdata \
       #libasan \
       procps-ng \
@@ -94,7 +92,6 @@ RUN microdnf update -y && \
       mysql-libs \
       findutils \
       libconfig && \
-    pip3 install jinja2 && \
     microdnf clean all -y && \
     rm -rf /var/cache/yum /var/cache/dnf
 
@@ -102,10 +99,10 @@ RUN microdnf update -y && \
 WORKDIR /openair-udr/bin
 COPY --from=oai-udr-builder \
     /openair-udr/build/udr/build/oai_udr \
-    /openair-udr/build/common-build/docker-scripts/entrypoint.py \
     /openair-udr/scripts/healthcheck.sh \
     /wait-for-it/wait-for-it.sh \
     ./
+COPY --from=yq-source /usr/bin/yq /usr/bin
 
 COPY --from=oai-udr-builder \
 # Copying only the packages built from source
@@ -114,6 +111,7 @@ COPY --from=oai-udr-builder \
     /usr/local/lib/libnghttp2_asio.so.1 \
     /usr/local/lib64/libspdlog.so \
     /usr/local/lib64/libfmt.so \
+    /usr/local/lib64/libyaml-cpp.so.0.* \
     /usr/lib64/
 
 RUN ldconfig && \
@@ -132,5 +130,4 @@ HEALTHCHECK --interval=10s \
             --retries=6 \
     CMD /openair-udr/bin/healthcheck.sh
 
-ENTRYPOINT ["python3","/openair-udr/bin/entrypoint.py"]
-CMD ["/openair-udr/bin/oai_udr", "-c", "/openair-udr/etc/udr.conf", "-o"]
+CMD ["/openair-udr/bin/oai_udr", "-c", "/openair-udr/etc/config.yaml", "-o"]
