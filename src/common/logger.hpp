@@ -88,6 +88,7 @@ class Logger {
   static _Logger& udr_server() { return *singleton().m_udr_server; }
   static _Logger& udr_nrf() { return *singleton().m_udr_nrf; }
   static _Logger& udr_mysql() { return *singleton().m_udr_mysql; }
+  static _Logger& udr_mongo() { return *singleton().m_udr_mongo; }
 
  private:
   static Logger* m_singleton;
@@ -104,6 +105,7 @@ class Logger {
     if (m_udr_server) delete m_udr_server;
     if (m_udr_nrf) delete m_udr_nrf;
     if (m_udr_mysql) delete m_udr_mysql;
+    if (m_udr_mongo) delete m_udr_mongo;
   }
 
   void _init(const char* app, const bool log_stdout, const bool log_rot_file);
@@ -118,6 +120,7 @@ class Logger {
   _Logger* m_udr_server;
   _Logger* m_udr_nrf;
   _Logger* m_udr_mysql;
+  _Logger* m_udr_mongo;
 };
 
 #endif

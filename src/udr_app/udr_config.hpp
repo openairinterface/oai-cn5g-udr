@@ -59,6 +59,12 @@
 #define UDR_CONFIG_STRING_MYSQL_PASS "MYSQL_PASS"
 #define UDR_CONFIG_STRING_MYSQL_DB "MYSQL_DB"
 #define UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT "DB_CONNECTION_TIMEOUT"
+#define UDR_CONFIG_STRING_MONGO "MONGO"
+#define UDR_CONFIG_STRING_MONGO_SERVER "MONGO_SERVER"
+#define UDR_CONFIG_STRING_MONGO_USER "MONGO_USER"
+#define UDR_CONFIG_STRING_MONGO_PASS "MONGO_PASS"
+#define UDR_CONFIG_STRING_MONGO_DB "MONGO_DB"
+#define UDR_CONFIG_STRING_MONGO_DB_CONNECTION_TIMEOUT "DB_CONNECTION_TIMEOUT"
 
 using namespace libconfig;
 
@@ -68,9 +74,17 @@ typedef struct {
   std::string mysql_server;
   std::string mysql_user;
   std::string mysql_pass;
-  std::string mysql_db;
+  std::string mysql_db;  
   uint32_t connection_timeout;
-} mysql_conf_t;
+}mysql_conf_t;
+
+typedef struct{
+  std::string mongo_server;
+  std::string mongo_user;
+  std::string mongo_pass;
+  std::string mongo_db;
+  uint32_t connection_timeout;
+} mongo_conf_t;
 
 typedef struct interface_cfg_s {
   std::string if_name;
@@ -110,6 +124,7 @@ class udr_config {
   bool use_http2;
 
   mysql_conf_t mysql;
+  mongo_conf_t mongo;
   db_type_t db_type;
 };
 }  // namespace oai::udr::config

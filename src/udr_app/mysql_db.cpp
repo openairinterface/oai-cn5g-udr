@@ -309,6 +309,9 @@ bool mysql_db::query_authentication_subscription(
       "SELECT * FROM AuthenticationSubscription WHERE ueid='" + id + "'";
   Logger::udr_mysql().info("MySQL Query: %s", query.c_str());
 
+  // Start the timer
+  auto start_time = std::chrono::steady_clock::now();
+
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size()) != 0) {
     Logger::udr_mysql().error(
@@ -318,6 +321,16 @@ bool mysql_db::query_authentication_subscription(
   }
 
   res = mysql_store_result(&mysql_connector);
+
+
+  // Stop the timer
+  auto end_time = std::chrono::steady_clock::now();
+
+  // Calculate the duration
+  auto operation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+  // Log the duration
+  Logger::udr_mysql().info("Query Duration: %lld milliseconds", operation_duration.count());
 
   if (res == nullptr) {
     Logger::udr_mysql().error(
@@ -403,6 +416,10 @@ bool mysql_db::update_authentication_subscription(
   std::string query    = {};
   nlohmann::json tmp_j = {};
 
+  
+  // Start the timer
+  auto start_time = std::chrono::steady_clock::now();
+
   for (int i = 0; i < patchItem.size(); i++) {
     if ((!strcmp(patchItem[i].getOp().c_str(), PATCH_OPERATION_REPLACE)) &&
         patchItem[i].valueIsSet()) {
@@ -456,6 +473,17 @@ bool mysql_db::update_authentication_subscription(
     to_json(tmp_j, patchItem[i]);
     json_data += tmp_j;
   }
+  // Stop the timer
+  auto end_time = std::chrono::steady_clock::now();
+
+  // Calculate the duration
+  auto operation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+  // Log the duration
+  Logger::udr_mysql().info("Update Duration: %lld milliseconds", operation_duration.count());
+
+  Logger::udr_mysql().info("AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
+
 
   Logger::udr_mysql().info(
       "AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
@@ -463,6 +491,7 @@ bool mysql_db::update_authentication_subscription(
   //	  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
   return true;
 }
+
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_am_data(
@@ -1147,6 +1176,10 @@ bool mysql_db::mysql_db::insert_authentication_status(
   Logger::udr_mysql().info(
       "MySQL query: %s", select_AuthenticationStatus.c_str());
 
+
+  // Start the timer
+  auto start_time = std::chrono::steady_clock::now();    
+
   if (mysql_real_query(
           &mysql_connector, select_AuthenticationStatus.c_str(),
           (unsigned long) select_AuthenticationStatus.size())) {
@@ -1202,6 +1235,17 @@ bool mysql_db::mysql_db::insert_authentication_status(
         "mysql create failure！ SQL Query %s", query.c_str());
     return false;
   }
+  
+  // Stop the timer
+  auto end_time = std::chrono::steady_clock::now();
+
+  // Calculate the duration
+  auto operation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+  
+  // Log the duration
+  Logger::udr_mysql().info("Insertion Duration: %lld milliseconds", operation_duration.count());
+
 
   nlohmann::json tmp = {};
   to_json(tmp, authEvent);

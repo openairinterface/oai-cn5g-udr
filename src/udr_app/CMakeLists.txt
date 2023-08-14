@@ -36,6 +36,7 @@ add_library (UDR STATIC
   udr_client.cpp
   mysql_db.cpp
   cassandra_db.cpp
+  mongo_db.cpp
 )
 
 

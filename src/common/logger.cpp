@@ -72,6 +72,7 @@ void Logger::_init(
   m_udr_server = new _Logger("udr_server", m_sinks, ss.str().c_str());
   m_udr_nrf    = new _Logger("udr_nrf", m_sinks, ss.str().c_str());
   m_udr_mysql  = new _Logger("udr_mysql", m_sinks, ss.str().c_str());
+  m_udr_mongo  = new _Logger("udr_mongo", m_sinks, ss.str().c_str());
 }
 
 //------------------------------------------------------------------------------

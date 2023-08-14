@@ -37,10 +37,10 @@ using namespace libconfig;
 namespace oai::udr::config {
 
 //------------------------------------------------------------------------------
-udr_config::udr_config() : mysql(), instance(), udr_name(), pid_dir(), nudr() {
+udr_config::udr_config() : mysql(), instance(), udr_name(), pid_dir(), nudr(), mongo() {
   nudr_http2_port = 8080;
   nudr.api_version = "v1";
-  db_type = DB_TYPE_MYSQL;
+  db_type = DB_TYPE_MONGO;
 }
 
 //------------------------------------------------------------------------------
@@ -146,7 +146,7 @@ int udr_config::load(const std ::string& config_file) {
     } else if (boost::iequals(opt, "mysql")) {
       db_type = DB_TYPE_MYSQL;
     } else {
-      db_type = DB_TYPE_MYSQL;  // Default for now
+      db_type = DB_TYPE_MONGO;  // Default for now
     }
 
   } catch (const SettingNotFoundException& nfex) {
@@ -220,6 +220,20 @@ int udr_config::load(const std ::string& config_file) {
     mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_DB, mysql.mysql_db);
     mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT,
                           mysql.connection_timeout);
+  } catch (const SettingNotFoundException& nfex) {
+    Logger::udr_app().error("%s : %s, using defaults", nfex.what(),
+                            nfex.getPath());
+    return RETURNerror;
+  }
+  // Mongo
+  try {
+    const Setting& mongo_cfg = udr_cfg[UDR_CONFIG_STRING_MONGO];
+    mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_SERVER, mongo.mongo_server);
+    mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_USER, mongo.mongo_user);
+    mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_PASS, mongo.mongo_pass);
+    mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_DB, mongo.mongo_db);
+    mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_DB_CONNECTION_TIMEOUT,
+                          mongo.connection_timeout);
   } catch (const SettingNotFoundException& nfex) {
     Logger::udr_app().error("%s : %s, using defaults", nfex.what(),
                             nfex.getPath());
@@ -339,6 +353,18 @@ void udr_config::display() {
     Logger::config().info(
         "    Cassandra DB ..........: not "
         "supported!");
+  } else{
+    Logger::config().info("- Mongo:");
+    Logger::config().info("    Server Addr ...........: %s",
+                          mongo.mongo_server.c_str());
+    Logger::config().info("    Username ..............: %s",
+                          mongo.mongo_user.c_str());
+    Logger::config().info("    Password ..............: %s",
+                          mongo.mongo_pass.c_str());
+    Logger::config().info("    Database ..............: %s",
+                          mongo.mongo_db.c_str());
+    Logger::config().info("    DB Timeout ............: %d (seconds)",
+                          mongo.connection_timeout);
   }
 }
 

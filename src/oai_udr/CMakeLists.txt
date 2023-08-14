@@ -249,6 +249,9 @@ add_boolean_option( LOG_OAI                         False    "Thread safe loggin
 
 pkg_search_module(CONFIG REQUIRED libconfig++)
 include_directories(${CONFIG_INCLUDE_DIRS})
+include_directories(/usr/local/include/bsoncxx/v_noabi)
+include_directories(/usr/local/include/mongocxx/v_noabi)
+
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 #find_package(Threads REQUIRED)
@@ -290,5 +293,5 @@ IF(STATIC_LINKING)
 ENDIF(STATIC_LINKING)   
 
 target_link_libraries (udr ${ASAN} 
-    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl)
+    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle  ${NETTLE_LIBRARIES} /tmp/mongo-cxx-driver/src /usr/local/lib/libmongoc-1.0.so.0 bsoncxx ${CRYPTO_LIBRARIES} -lmongocxx  -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl)
     

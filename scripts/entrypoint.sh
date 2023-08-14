@@ -45,4 +45,10 @@ pushd /openair-udr/bin
 ./wait-for-it.sh ${MYSQL_IPV4_ADDRESS}:3306 -t 120
 popd
 
+#check the mongo is ready
+pushd /openair-udr/build/udr/build/
+/wait-for-it/wait-for-it.sh ${MONGO_IPV4_ADDRESS}:27017 -t 120
+popd
+
+
 exec "$@"
