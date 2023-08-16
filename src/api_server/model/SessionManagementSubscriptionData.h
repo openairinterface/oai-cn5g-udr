@@ -153,7 +153,6 @@ class SessionManagementSubscriptionData {
 
  protected:
   Snssai m_SingleNssai;
-
   std::map<std::string, DnnConfiguration> m_DnnConfigurations;
   bool m_DnnConfigurationsIsSet;
   std::vector<std::string> m_InternalGroupIds;

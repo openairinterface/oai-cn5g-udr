@@ -51,14 +51,16 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::amf_context3gpp(
     const std::string& ueId, const std::vector<PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
-  /************************ test ************************/
+  // TODO: verify
   nlohmann::json j, j1;
   for (int i = 0; i < patchItem.size(); i++) {
     to_json(j1, patchItem[i]);
     j += j1;
   }
+  // content type
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
   response.send(Pistache::Http::Code::Ok, j.dump());
-  /******************************************************/
 }
 void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
     const std::string& ueId,
@@ -72,7 +74,7 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
       ueId, amf3GppAccessRegistration, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));
@@ -90,7 +92,7 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
   m_udr_app->handle_query_amf_context_3gpp(ueId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));

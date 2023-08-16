@@ -63,7 +63,7 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
       ueId, servingPlmnId, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
-  Logger::udr_server().debug("HTTP Response code %d.\n", code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   // content type
   response.headers().add<Pistache::Http::Header::ContentType>(
       Pistache::Http::Mime::MediaType("application/json"));

@@ -35,6 +35,9 @@
 
 #include "logger.hpp"
 #include "udr_app.hpp"
+#include "udr_config.hpp"
+
+extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
@@ -59,21 +62,138 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     Pistache::Http::ResponseWriter& response) {
   // servingPlmnId  pattern: "^[0-9]{5,6}$"
 
-  Snssai snssai = {};
+  std::optional<Snssai> snssai = std::nullopt;
   if (!singleNssai.isEmpty()) {
-    snssai = singleNssai.get();
+    snssai = std::optional<Snssai>(singleNssai.get());
   }
-  std::string dnn_str = {};
+  std::optional<std::string> dnn_str = std::nullopt;
   if (!dnn.isEmpty()) {
-    dnn_str = dnn.get();
+    dnn_str = std::optional<std::string>(dnn.get());
   }
-  // TODO: DNN and SNSSAI
-  nlohmann::json response_data = {};
+
+  nlohmann::json response_data = nlohmann::json::array();
   Pistache::Http::Code code    = {};
   long http_code               = 0;
 
   m_udr_app->handle_query_sm_data(
       ueId, servingPlmnId, response_data, http_code, snssai, dnn_str);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
+  Logger::udr_server().debug("HTTP response code %ld", http_code);
+
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
+  response.send(code, response_data.dump().c_str());
+}
+
+void SessionManagementSubscriptionDataApiImpl::query_sm_data(
+    Pistache::Http::ResponseWriter& response) {
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
+
+  m_udr_app->handle_query_sm_data(response_data, http_code);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
+  Logger::udr_server().debug("HTTP response code %ld", http_code);
+
+  response.headers().add<Pistache::Http::Header::ContentType>(
+      Pistache::Http::Mime::MediaType("application/json"));
+  response.send(code, response_data.dump().c_str());
+}
+
+void SessionManagementSubscriptionDataApiImpl::create_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    SessionManagementSubscriptionData& subscriptionData,
+    Pistache::Http::ResponseWriter& response) {
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
+  uint32_t resource_id         = 0;
+  m_udr_app->handle_create_sm_data(
+      ueId, servingPlmnId, subscriptionData, response_data, http_code,
+      resource_id);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
+  if ((code == Pistache::Http::Code::Created) or
+      (code == Pistache::Http::Code::Ok)) {
+    // Location?
+    std::string location =
+        "http://" + m_address + base + udr_cfg.nudr.api_version +
+        fmt::format(
+            "/subscription-data/{}/{}/provisioned-data/sm-data", ueId,
+            servingPlmnId) +
+        "/" + std::to_string(resource_id);
+
+    response.headers().add<Pistache::Http::Header::Location>(
+        location);  // Location header
+    Logger::udr_server().debug("Location header: %s", location.c_str());
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+
+    response.send(code, response_data.dump().c_str());
+  } else if (code == Pistache::Http::Code::No_Content) {
+    response.send(code);
+  } else {
+    // TODO:
+    response.send(code);
+  }
+}
+
+void SessionManagementSubscriptionDataApiImpl::put_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    SessionManagementSubscriptionData& subscriptionData,
+    Pistache::Http::ResponseWriter& response) {
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
+  uint32_t resource_id         = 0;
+
+  m_udr_app->handle_update_sm_data(
+      ueId, servingPlmnId, subscriptionData, response_data, http_code,
+      resource_id);
+
+  code = static_cast<Pistache::Http::Code>(http_code);
+  Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
+  if (code == Pistache::Http::Code::Created) {
+    std::string location =
+        "http://" + m_address + base + udr_cfg.nudr.api_version +
+        fmt::format(
+            "/subscription-data/{}/{}/provisioned-data/sm-data", ueId,
+            servingPlmnId) +
+        "/" + std::to_string(resource_id);
+
+    response.headers().add<Pistache::Http::Header::Location>(
+        location);  // Location header
+    Logger::udr_server().debug("Location header: %s", location.c_str());
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+
+    response.send(code, response_data.dump().c_str());
+  } else if (code == Pistache::Http::Code::No_Content) {
+    response.send(code);
+  } else {
+    // TODO:
+    response.send(code);
+  }
+}
+
+void SessionManagementSubscriptionDataApiImpl::delete_sm_data(
+    const std::string& ueId, const std::string& servingPlmnId,
+    const Pistache::Optional<Snssai>& singleNssai,
+    Pistache::Http::ResponseWriter& response) {
+  nlohmann::json response_data = {};
+  Pistache::Http::Code code    = {};
+  long http_code               = 0;
+
+  std::optional<Snssai> snssai = std::nullopt;
+  if (!singleNssai.isEmpty()) {
+    snssai = std::optional<Snssai>(singleNssai.get());
+  }
+
+  m_udr_app->handle_delete_sm_data(
+      ueId, servingPlmnId, snssai, response_data, http_code);
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP response code %ld", http_code);

@@ -31,8 +31,6 @@
 #include <netinet/in.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
-
 #include <string>
 
 /* Used to format an uint32_t containing an ipv4 address */
@@ -50,5 +48,7 @@ class conv {
  public:
   static std::string toString(const struct in_addr& inaddr);
   static std::string toString(const struct in6_addr& in6addr);
+  static struct in_addr fromString(const std::string addr4);
+  static struct in6_addr fromStringV6(const std::string& addr6);
 };
 #endif /* FILE_CONVERSIONS_HPP_SEEN */

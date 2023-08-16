@@ -125,7 +125,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
   SET(ASAN asan)
 endif()
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-  SET(ASAN asan)
+  Message("no more asan in Release Mode")
 endif()
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_boolean_option(LOG_OAI True "Thread safe logging API")
@@ -142,7 +142,12 @@ endif()
 Message("Architecture is ${CMAKE_SYSTEM_PROCESSOR}")
 if (CMAKE_SYSTEM_PROCESSOR STREQUAL "armv7l")
   set(C_FLAGS_PROCESSOR "-gdwarf-2 -mfloat-abi=hard -mfpu=neon -lgcc -lrt")
-else (CMAKE_SYSTEM_PROCESSOR STREQUAL "armv7l")
+elseif (CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  # Tested on aarch64 system in Little Endian
+  # Model ARM-Neoverse-N1
+  #   flags: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp ssbs
+  set(C_FLAGS_PROCESSOR "-gdwarf-2 -lgcc -lrt")
+else ()
   set(C_FLAGS_PROCESSOR "-msse4.2")
 endif()
 #
@@ -159,21 +164,21 @@ add_definitions(-DBSTRLIB_CAN_USE_STL=1 -DBSTRLIB_CAN_USE_IOSTREAM=1 -DBSTRLIB_T
 
 
 if(STATIC_LINKING)
-  set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g -fstack-protector-all -DMALLOC_CHECK_=3 -DINFO_IS_ON=1 -DDEBUG_IS_ON=1 -DTRACE_IS_ON=1 -O0  -fno-omit-frame-pointer")
+  set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g -fstack-protector-all -DMALLOC_CHECK_=3 -O0 -fno-omit-frame-pointer")
 else (STATIC_LINKING)
-  set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g -fstack-protector-all -DMALLOC_CHECK_=3 -DINFO_IS_ON=1 -DDEBUG_IS_ON=1 -DTRACE_IS_ON=1 -O0 -fsanitize=address -fno-omit-frame-pointer")
+  set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g -fstack-protector-all -DMALLOC_CHECK_=3 -O0 -fsanitize=address -fno-omit-frame-pointer")
 endif(STATIC_LINKING)
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -O2 -fno-omit-frame-pointer -s -DINFO_IS_ON=1 ")
-set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS} -g  -O2 -DINFO_IS_ON=1 ")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -O2 -fno-omit-frame-pointer -s ")
+set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS} -g  -O2 ")
 set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS} -Os -s")
 
 if(STATIC_LINKING)
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++17  -g -fstack-protector-all -DMALLOC_CHECK_=3 -DINFO_IS_ON=1 -DDEBUG_IS_ON=1 -DTRACE_IS_ON=1 -O0 -fno-omit-frame-pointer")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++17  -g -fstack-protector-all -DMALLOC_CHECK_=3 -O0 -fno-omit-frame-pointer")
 else(STATIC_LINKING)
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++17  -g -fstack-protector-all -DMALLOC_CHECK_=3 -DINFO_IS_ON=1 -DDEBUG_IS_ON=1 -DTRACE_IS_ON=1 -O0 -fsanitize=address -fno-omit-frame-pointer")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -std=c++17  -g -fstack-protector-all -DMALLOC_CHECK_=3 -O0 -fsanitize=address -fno-omit-frame-pointer")
 endif(STATIC_LINKING)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -std=c++17  -O2 -fno-omit-frame-pointer -s -DINFO_IS_ON=1")
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS} -std=c++17 -g -O2 -DINFO_IS_ON=1")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -std=c++17  -O2 -fno-omit-frame-pointer -s ")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS} -std=c++17 -g -O2 ")
 set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS} -std=c++17 -Os -s")
 
 
@@ -219,7 +224,7 @@ add_definitions("-DPACKAGE_BUGREPORT=\"openaircn-user@lists.eurecom.fr\"")
 # Include CMake modules to find other library
 ###############################################################################
 
-set(CMAKE_MODULE_PATH "${OPENAIRCN_DIR}/build/cmake_modules" "${CMAKE_MODULE_PATH}")
+set(CMAKE_MODULE_PATH "${OPENAIRCN_DIR}/build/common-build/cmake_modules" "${CMAKE_MODULE_PATH}")
 include(FindPkgConfig)
 
 ###############################################################################
@@ -249,6 +254,8 @@ add_boolean_option( LOG_OAI                         False    "Thread safe loggin
 
 pkg_search_module(CONFIG REQUIRED libconfig++)
 include_directories(${CONFIG_INCLUDE_DIRS})
+
+# TODO: is there a better not-hardcoded way to do this
 include_directories(/usr/local/include/bsoncxx/v_noabi)
 include_directories(/usr/local/include/mongocxx/v_noabi)
 
@@ -274,16 +281,20 @@ add_definitions("-DPACKAGE_NAME=\"UDR\"")
 include_directories(${SRC_TOP_DIR}/udr_app)
 include_directories(${SRC_TOP_DIR}/oai_udr)
 include_directories(${SRC_TOP_DIR}/common)
-include_directories(${SRC_TOP_DIR}/../build/ext/spdlog/include)
 include_directories(${SRC_TOP_DIR}/api_server)
 include_directories(${SRC_TOP_DIR}/api_server/api)
 include_directories(${SRC_TOP_DIR}/api_server/impl)
 include_directories(${SRC_TOP_DIR}/api_server/model)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 
 add_executable(udr
   ${SRC_TOP_DIR}/oai_udr/main.cpp
   ${SRC_TOP_DIR}/oai_udr/options.cpp
   )
+
+## Common modules
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger/logger.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config/config.cmake)
 
 IF(STATIC_LINKING)
     SET(CMAKE_EXE_LINKER_FLAGS "-static")
@@ -292,6 +303,8 @@ IF(STATIC_LINKING)
     SET(ASAN)
 ENDIF(STATIC_LINKING)   
 
+# TODO: Commented out also for hard-coded paths
+#    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle  ${NETTLE_LIBRARIES} /tmp/mongo-cxx-driver/src /usr/local/lib/libmongoc-1.0.so.0 bsoncxx ${CRYPTO_LIBRARIES} -lmongocxx  -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl)
+#
 target_link_libraries (udr ${ASAN} 
-    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle  ${NETTLE_LIBRARIES} /tmp/mongo-cxx-driver/src /usr/local/lib/libmongoc-1.0.so.0 bsoncxx ${CRYPTO_LIBRARIES} -lmongocxx  -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl)
-    
+    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl yaml-cpp)

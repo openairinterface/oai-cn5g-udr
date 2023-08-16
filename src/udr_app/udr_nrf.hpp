@@ -54,6 +54,8 @@ class udr_nrf {
   udr_nrf(udr_nrf const&) = delete;
   void operator=(udr_nrf const&) = delete;
 
+  void start();
+
   void generate_uuid();
 
   /*
@@ -74,8 +76,8 @@ class udr_nrf {
    * @param [void]
    * @return void
    */
-  void generate_udr_profile(udr_profile& udr_nf_profile,
-                            std::string& udr_instance_id);
+  void generate_udr_profile(
+      udr_profile& udr_nf_profile, std::string& udr_instance_id);
 
   /*
    * Trigger NF instance registration to NRF

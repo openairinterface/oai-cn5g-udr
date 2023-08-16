@@ -36,6 +36,7 @@
 #include "Amf3GppAccessRegistration.h"
 #include "database_wrapper.hpp"
 #include "udr_event.hpp"
+#include "Snssai.h"
 
 namespace oai::udr::app {
 
@@ -62,8 +63,45 @@ class mysql_db : public database_wrapper<mysql_db> {
    */
   bool get_db_connection_status() const;
 
+  /*
+   * Verify the DB connection status and try to establish the connection if
+   * necessary
+   * @param void
+   * @return current connection status after trying
+   */
+  bool check_connection_status();
+
+  /*
+   * Start the procedure for event connection handling
+   * @param void
+   * @return void
+   */
   void start_event_connection_handling();
+
+  /*
+   * Trigger the procedure for event connection handling when neccessary
+   * @param uint64_t ms
+   * @return void
+   */
   void trigger_connection_handling_procedure(uint64_t ms);
+
+  /*
+   * Get a unique key from a NSSAI (SST, SD) used in MySQL
+   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [uint32_t&] key: generated key
+   * @return true if success, otherwise return false
+   */
+  bool get_key_from_snssai(
+      const oai::udr::model::Snssai& snssai, uint32_t& key);
+
+  /*
+   * Get NSSAI (SST, SD) from the corresponding key
+   * @param [oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [const uint32_t&] key: key
+   * @return void
+   */
+  void get_snssai_from_key(
+      oai::udr::model::Snssai& snssai, const uint32_t& key);
 
   bool insert_authentication_subscription(
       const std::string& id,
@@ -121,10 +159,27 @@ class mysql_db : public database_wrapper<mysql_db> {
   bool query_sdm_subscriptions(
       const std::string& ue_id, nlohmann::json& json_data);
 
+  bool create_sm_data(
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
+      nlohmann::json& json_data, uint32_t& resource_id);
+
+  bool update_sm_data(
+      const std::string& ueId, const std::string& servingPlmnId,
+      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      nlohmann::json& json_data, uint32_t& resource_id);
+
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string dnn = {});
+      nlohmann::json& json_data,
+      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn);
+
+  bool query_sm_data(nlohmann::json& json_data);
+
+  bool delete_sm_data(
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      const std::optional<oai::udr::model::Snssai>& snssai);
 
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,

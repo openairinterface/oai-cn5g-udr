@@ -30,9 +30,6 @@
 #include "udr_client.hpp"
 
 #include <curl/curl.h>
-#include <pistache/http.h>
-#include <pistache/mime.h>
-
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 
@@ -40,20 +37,17 @@
 #include "logger.hpp"
 #include "udr.h"
 
-using namespace Pistache::Http;
-using namespace Pistache::Http::Mime;
 using namespace oai::udr::app;
 using namespace oai::udr::config;
-using json = nlohmann::json;
 
-extern udr_client* udr_client_inst;
 extern udr_config udr_cfg;
 
 //------------------------------------------------------------------------------
 // To read content of the response from NF
-static std::size_t callback(const char* in, std::size_t size, std::size_t num,
-                            std::string* out) {
+static std::size_t callback(
+    const char* in, std::size_t size, std::size_t num, std::string* out) {
   const std::size_t totalBytes(size * num);
+  out->clear();
   out->append(in, totalBytes);
   return totalBytes;
 }
@@ -67,14 +61,18 @@ udr_client::~udr_client() {
 }
 
 //------------------------------------------------------------------------------
-void udr_client::curl_http_client(std::string remoteUri, std::string method,
-                                  std::string msgBody, std::string& response) {
-  Logger::udr_app().info("Send HTTP message with body %s", msgBody.c_str());
+bool udr_client::curl_http_client(
+    std::string remote_uri, std::string method, std::string msg_body,
+    std::string& response, long& response_code) {
+  Logger::udr_app().info("Send HTTP message with body %s", msg_body.c_str());
+  Logger::udr_app().info("Server URI %s", remote_uri.c_str());
 
-  uint32_t str_len = msgBody.length();
-  char* body_data = (char*)malloc(str_len + 1);
+  bool result = false;
+
+  uint32_t str_len = msg_body.length();
+  char* body_data  = (char*) malloc(str_len + 1);
   memset(body_data, 0, str_len + 1);
-  memcpy((void*)body_data, (void*)msgBody.c_str(), str_len);
+  memcpy((void*) body_data, (void*) msg_body.c_str(), str_len);
 
   curl_global_init(CURL_GLOBAL_ALL);
   CURL* curl = curl_easy_init();
@@ -82,8 +80,10 @@ void udr_client::curl_http_client(std::string remoteUri, std::string method,
   uint8_t http_version = 1;
   if (udr_cfg.use_http2) http_version = 2;
 
+  bool is_response_ok = false;
+
   if (curl) {
-    CURLcode res = {};
+    CURLcode res               = {};
     struct curl_slist* headers = nullptr;
     if ((method.compare("POST") == 0) or (method.compare("PUT") == 0) or
         (method.compare("PATCH") == 0)) {
@@ -92,7 +92,7 @@ void udr_client::curl_http_client(std::string remoteUri, std::string method,
       curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     }
 
-    curl_easy_setopt(curl, CURLOPT_URL, remoteUri.c_str());
+    curl_easy_setopt(curl, CURLOPT_URL, remote_uri.c_str());
     if (method.compare("POST") == 0)
       curl_easy_setopt(curl, CURLOPT_HTTPPOST, 1);
     else if (method.compare("PUT") == 0)
@@ -109,78 +109,88 @@ void udr_client::curl_http_client(std::string remoteUri, std::string method,
     curl_easy_setopt(curl, CURLOPT_INTERFACE, udr_cfg.nudr.if_name.c_str());
 
     if (http_version == 2) {
-      curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+      if (Logger::should_log(spdlog::level::debug))
+        curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
       // we use a self-signed test server, skip verification during debugging
       curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
       curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-      curl_easy_setopt(curl, CURLOPT_HTTP_VERSION,
-                       CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE);
+      curl_easy_setopt(
+          curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE);
     }
 
-    // Response information.
-    long httpCode = {0};
+    // Response information
     std::unique_ptr<std::string> httpData(new std::string());
     std::unique_ptr<std::string> httpHeaderData(new std::string());
 
-    // Hook up data handling function.
+    // Hook up data handling function
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &callback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, httpData.get());
     curl_easy_setopt(curl, CURLOPT_HEADERDATA, httpHeaderData.get());
 
     if ((method.compare("POST") == 0) or (method.compare("PUT") == 0) or
         (method.compare("PATCH") == 0)) {
-      curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, msgBody.length());
+      curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, msg_body.length());
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body_data);
     }
-    res = curl_easy_perform(curl);
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
 
-    // Process the response
-    response = *httpData.get();
-    bool is_response_ok = true;
-    Logger::udr_app().info("Get response with HTTP code (%d)", httpCode);
-
-    if (httpCode == 0) {
-      Logger::udr_app().info("Cannot get response when calling %s",
-                             remoteUri.c_str());
-      // free curl before returning
-      curl_slist_free_all(headers);
-      curl_easy_cleanup(curl);
-      return;
+    int num_retries = 0;
+    while (num_retries < MAX_CURL_RETRY) {
+      num_retries++;
+      res = curl_easy_perform(curl);
+      if (res != CURLE_OK) {
+        // Sleep between two consecutive retries
+        usleep(TIME_INTERVAL_CURL_RETRY * pow(2, num_retries - 1));
+        Logger::udr_app().debug("Curl retry %d ...", num_retries);
+        continue;
+      } else {
+        break;
+      }
     }
 
-    nlohmann::json response_data = {};
+    if (res != CURLE_OK) {
+      Logger::udr_app().debug(
+          "Still could not reach the destination after %d retries",
+          MAX_CURL_RETRY);
+    } else {
+      result = true;
+      curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+      Logger::udr_app().debug(
+          "Get response with HTTP code (%d)", response_code);
 
-    if (httpCode != HTTP_STATUS_CODE_200_OK &&
-        httpCode != HTTP_STATUS_CODE_201_CREATED &&
-        httpCode != HTTP_STATUS_CODE_204_NO_CONTENT) {
-      is_response_ok = false;
-      if (response.size() < 1) {
-        Logger::udr_app().info("There's no content in the response");
-        // TODO: send context response error
-        return;
-      }
-      Logger::udr_app().warn("Receive response with HTTP code %d", httpCode);
-      return;
-    }
-
-    if (!is_response_ok) {
-      try {
-        response_data = nlohmann::json::parse(response);
-      } catch (nlohmann::json::exception& e) {
-        Logger::udr_app().info("Could not get JSON content from the response");
-        // Set the default Cause
-        response_data["error"]["cause"] = "504 Gateway Timeout";
+      if (response_code == HTTP_STATUS_CODE_200_OK or
+          response_code == HTTP_STATUS_CODE_201_CREATED or
+          response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
+        // TODO
+        is_response_ok = true;
       }
 
-      Logger::udr_app().info("Get response with jsonData: %s",
-                             response.c_str());
+      // Process the response
+      response = *httpData.get();
+      if (!response.empty())
+        Logger::udr_app().info(
+            "Get response with Json data: %s", response.c_str());
+      nlohmann::json response_data = {};
+      //    std::string cause = {};
+      if (!is_response_ok) {
+        try {
+          response_data = nlohmann::json::parse(response);
+          // cause = response_data["error"]["cause"];
+        } catch (nlohmann::json::exception& e) {
+          Logger::udr_app().info(
+              "Could not get Json content from the response");
+          // Set the default Cause
+          // response_data["error"]["cause"] = "504 Gateway Timeout";
+          // cause = response_data["error"]["cause"];
+        }
 
-      std::string cause = response_data["error"]["cause"];
-      Logger::udr_app().info("Call Network Function services failure");
-      Logger::udr_app().info("Cause value: %s", cause.c_str());
+        // Logger::udr_app().warn("Curl Request failed");
+        // Logger::udr_app().info("Cause value: %s", cause.c_str());
+        // TODO:
+      }
     }
     curl_slist_free_all(headers);
+    curl_easy_cleanup(curl);
+  } else {
     curl_easy_cleanup(curl);
   }
 
@@ -188,7 +198,7 @@ void udr_client::curl_http_client(std::string remoteUri, std::string method,
 
   if (body_data) {
     free(body_data);
-    body_data = NULL;
+    body_data = nullptr;
   }
-  return;
+  return result;
 }

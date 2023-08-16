@@ -56,7 +56,7 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
         priority(0),
         capacity(0) {
     nf_instance_name = {};
-    nf_status = {};
+    nf_status        = {};
   }
 
   udr_profile(const std::string& id)
@@ -69,21 +69,21 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
         capacity(0),
         nf_type("NF_TYPE_UNKNOWN") {
     nf_instance_name = {};
-    nf_status = {};
+    nf_status        = {};
   }
 
   udr_profile& operator=(const udr_profile& s) {
-    nf_instance_id = s.nf_instance_id;
-    heartBeat_timer = s.heartBeat_timer;
-    snssais = s.snssais;
-    fqdn = s.fqdn;
-    ipv4_addresses = s.ipv4_addresses;
-    priority = s.priority;
-    capacity = s.capacity;
-    nf_type = s.nf_type;
+    nf_instance_id   = s.nf_instance_id;
+    heartBeat_timer  = s.heartBeat_timer;
+    snssais          = s.snssais;
+    fqdn             = s.fqdn;
+    ipv4_addresses   = s.ipv4_addresses;
+    priority         = s.priority;
+    capacity         = s.capacity;
+    nf_type          = s.nf_type;
     nf_instance_name = s.nf_instance_name;
-    nf_status = s.nf_status;
-    udr_info = s.udr_info;
+    nf_status        = s.nf_status;
+    udr_info         = s.udr_info;
     return *this;
   }
   // udr_profile(udr_profile &b) = delete;
