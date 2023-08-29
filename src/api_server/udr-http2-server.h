@@ -126,6 +126,11 @@ class udr_http2_server {
       const std::string& ue_id, const std::string& serving_plmn_id,
       const response& response);
 
+  void get_configuration_handler(const response& response);
+
+  void update_configuration_handler(
+      nlohmann::json& configuration_info, const response& response);
+
   void stop();
 
  private:
