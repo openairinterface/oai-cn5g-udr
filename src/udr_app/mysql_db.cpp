@@ -256,15 +256,21 @@ bool mysql_db::insert_authentication_subscription(
   if (row != nullptr) {
     Logger::udr_mysql().error(
         "[UE Id %s] AuthenticationSubscription existed!", id.c_str());
-    // Existed
-    return false;
+    // Update accordingly
+    mysql_free_result(res);
+    query = "UPDATE AuthenticationSubscription WHERE ueid='" + id + "' SET" +
+            ",authenticationMethod='" +
+            auth_subscription.getAuthenticationMethod() + "'";
+    return true;
+  } else {
+    // Insert/create new record
+    mysql_free_result(res);
+    query = "INSERT INTO AuthenticationSubscription SET ueid='" + id + "'";
+    ",authenticationMethod='" + auth_subscription.getAuthenticationMethod() +
+        "'";
   }
-  mysql_free_result(res);
 
-  query =
-      "INSERT INTO AuthenticationSubscription SET ueid='" + id + "'" +
-      ",authenticationMethod='" + auth_subscription.getAuthenticationMethod() +
-      "'" +
+  query +=
       (auth_subscription.encPermanentKeyIsSet() ?
            ",encPermanentKey='" + auth_subscription.getEncPermanentKey() + "'" :
            "") +
@@ -285,14 +291,9 @@ bool mysql_db::insert_authentication_subscription(
       (auth_subscription.encTopcKeyIsSet() ?
            ",encTopcKey='" + auth_subscription.getEncTopcKey() + "'" :
            "") +
-      //   (auth_subscription.vectorGenerationInHssIsSet() ?
-      //   ",vectorGenerationInHss='" +
-      //   auth_subscription.isVectorGenerationInHss() + "'" : "") +
       (auth_subscription.n5gcAuthMethodIsSet() ?
            ",n5gcAuthMethod='" + auth_subscription.getN5gcAuthMethod() + "'" :
            "") +
-      // auth_subscription.rgAuthenticationIndIsSet() ? ",rgAuthenticationInd='"
-      // + auth_subscription.() + "'" : "") +
       (auth_subscription.supiIsSet() ?
            ",supi='" + auth_subscription.getSupi() + "'" :
            "");
@@ -316,7 +317,7 @@ bool mysql_db::insert_authentication_subscription(
   to_json(json_data, auth_subscription);
 
   Logger::udr_mysql().debug(
-      "[UE Id %s] AuthenticationSubscription POST: %s", id.c_str(),
+      "[UE Id %s] AuthenticationSubscription: %s", id.c_str(),
       json_data.dump().c_str());
   return true;
 }

@@ -79,6 +79,14 @@ class udr_http2_server {
   void read_authentication_subscription_handler(
       const std::string& ue_id, const response& response);
 
+  void create_authentication_subscription_handler(
+      const std::string& ue_id,
+      const AuthenticationSubscription& authentication_subscription,
+      const response& response);
+
+  void delete_authentication_subscription_handler(
+      const std::string& ue_id, const response& response);
+
   void query_sdm_subscription_handler(
       const std::string& ue_id, const std::string& subs_id,
       const response& response);
@@ -106,6 +114,22 @@ class udr_http2_server {
       const std::string& ue_id, const std::string& serving_plmn_id,
       const response& response, oai::udr::model::Snssai snssai = {},
       std::string dnn = {});
+
+  void query_sm_data_handler(const response& response);
+
+  void create_sm_data_handler(
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      SessionManagementSubscriptionData& subscription_data,
+      const response& response);
+
+  void update_sm_data_handler(
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      SessionManagementSubscriptionData& subscription_data,
+      const response& response);
+
+  void delete_sm_data_handler(
+      const std::string& ue_id, const std::string& serving_plmn_id,
+      std::optional<oai::udr::model::Snssai>& snssai, const response& response);
 
   void create_smf_context_non_3gpp_handler(
       const std::string& ue_id, const int32_t& pdu_session_id,
