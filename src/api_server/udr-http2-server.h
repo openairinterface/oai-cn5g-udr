@@ -112,8 +112,8 @@ class udr_http2_server {
 
   void query_sm_data_handler(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      const response& response, oai::udr::model::Snssai snssai = {},
-      std::string dnn = {});
+      const response& response, std::optional<oai::udr::model::Snssai>& snssai,
+      std::optional<std::string>& dnn);
 
   void query_sm_data_handler(const response& response);
 

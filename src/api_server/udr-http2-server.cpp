@@ -87,7 +87,7 @@ void udr_http2_server::start() {
                     ueId, authentication_subscription, response);
               }
               // DELETE
-              if (request.method().compare("DELETE") == 0 && len > 0) {
+              if (request.method().compare("DELETE") == 0 && len == 0) {
                 this->delete_authentication_subscription_handler(
                     ueId, response);
               }
@@ -103,7 +103,7 @@ void udr_http2_server::start() {
                 this->create_authentication_status_handler(
                     ueId, authEvent, response);
               }
-              if (request.method().compare("DELETE") == 0 && len < 0) {
+              if (request.method().compare("DELETE") == 0 && len == 0) {
                 this->delete_authentication_status_handler(ueId, response);
               }
             }
@@ -146,7 +146,7 @@ void udr_http2_server::start() {
                 this->modify_sdm_subscription_handler(
                     ueId, subsId, sdmSubscription, response);
               }
-              if (request.method().compare("DELETE") == 0 && len < 0) {
+              if (request.method().compare("DELETE") == 0 && len == 0) {
                 this->remove_sdm_subscription_handler(ueId, subsId, response);
               }
               if (request.method().compare("PUT") == 0 && len > 0) {
@@ -170,8 +170,10 @@ void udr_http2_server::start() {
             if (split_q[split_q.size() - 1].compare(NUDR_DR_SM_DATA) == 0) {
               if (request.method().compare("GET") == 0 && len == 0) {
                 if (split_q.size() > 6) {  // GET
-                  Snssai singleNssai = {};
-                  std::string ueId   = split_q[split_q.size() - 4].c_str();
+                  std::optional<oai::udr::model::Snssai> singleNssaiOpt =
+                      std::nullopt;
+                  std::optional<std::string> dnnOpt = std::nullopt;
+                  std::string ueId = split_q[split_q.size() - 4].c_str();
                   std::string servingPlmnId =
                       split_q[split_q.size() - 3].c_str();
                   std::string qs = request.uri().raw_query;
@@ -182,17 +184,26 @@ void udr_http2_server::start() {
                   std::string dnn = util::get_query_param(qs, "dnn");
                   std::string snssai =
                       util::get_query_param(qs, "single-nssai");
-                  nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
+                  if (!snssai.empty()) {
+                    Snssai singleNssai = {};
+                    nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
+                    singleNssaiOpt =
+                        std::make_optional<oai::udr::model::Snssai>(
+                            singleNssai);
+                  }
+                  if (!dnn.empty()) {
+                    dnnOpt = std::make_optional<std::string>(dnn);
+                  }
 
                   this->query_sm_data_handler(
-                      ueId, servingPlmnId, response, singleNssai, dnn);
+                      ueId, servingPlmnId, response, singleNssaiOpt, dnnOpt);
                 } else {
                   // GET ALL
                   this->query_sm_data_handler(response);
                 }
               }
               // POST
-              if (request.method().compare("POST") == 0 && len == 0) {
+              if (request.method().compare("POST") == 0 && len > 0) {
                 Snssai singleNssai        = {};
                 std::string ueId          = split_q[split_q.size() - 4].c_str();
                 std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
@@ -203,7 +214,7 @@ void udr_http2_server::start() {
                     ueId, servingPlmnId, subscriptionData, response);
               }
               // PUT
-              if (request.method().compare("PUT") == 0 && len == 0) {
+              if (request.method().compare("PUT") == 0 && len > 0) {
                 Snssai singleNssai        = {};
                 std::string ueId          = split_q[split_q.size() - 4].c_str();
                 std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
@@ -243,7 +254,7 @@ void udr_http2_server::start() {
                 this->create_smf_context_non_3gpp_handler(
                     ueId, pduSessId, smfRegistration, response);
               }
-              if (request.method().compare("DELETE") == 0 && len < 0) {
+              if (request.method().compare("DELETE") == 0 && len == 0) {
                 this->delete_smf_context_handler(ueId, pduSessId, response);
               }
             }
@@ -546,7 +557,8 @@ void udr_http2_server::query_sdm_subscriptions_handler(
 //------------------------------------------------------------------------------
 void udr_http2_server::query_sm_data_handler(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    const response& response, oai::udr::model::Snssai snssai, std::string dnn) {
+    const response& response, std::optional<oai::udr::model::Snssai>& snssai,
+    std::optional<std::string>& dnn) {
   nlohmann::json response_data = {};
   header_map h;
   long http_code = 0;
