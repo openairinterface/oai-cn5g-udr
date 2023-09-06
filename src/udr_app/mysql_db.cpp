@@ -252,15 +252,19 @@ bool mysql_db::insert_authentication_subscription(
     return false;
   }
 
-  row = mysql_fetch_row(res);
+  std::string where_condition = {};
+  row                         = mysql_fetch_row(res);
+
   if (row != nullptr) {
-    Logger::udr_mysql().error(
-        "[UE Id %s] AuthenticationSubscription existed!", id.c_str());
+    Logger::udr_mysql().debug(
+        "[UE Id %s] AuthenticationSubscription existed, update with new "
+        "values!",
+        id.c_str());
     // Update accordingly
     mysql_free_result(res);
-    query = "UPDATE AuthenticationSubscription WHERE ueid='" + id + "' SET" +
-            " authenticationMethod='" +
+    query = "UPDATE AuthenticationSubscription SET authenticationMethod='" +
             auth_subscription.getAuthenticationMethod() + "'";
+    where_condition = " WHERE ueid='" + id + "'";
   } else {
     // Insert/create new record
     mysql_free_result(res);
@@ -302,6 +306,7 @@ bool mysql_db::insert_authentication_subscription(
     query += ",sequenceNumber='" + json_tmp.dump() + "'";
   }
 
+  query += where_condition;
   Logger::udr_mysql().info(
       "[UE Id %s] MySQL Query: %s", id.c_str(), query.c_str());
 
