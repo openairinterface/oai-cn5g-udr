@@ -261,7 +261,6 @@ bool mysql_db::insert_authentication_subscription(
     query = "UPDATE AuthenticationSubscription WHERE ueid='" + id + "' SET" +
             ",authenticationMethod='" +
             auth_subscription.getAuthenticationMethod() + "'";
-    return true;
   } else {
     // Insert/create new record
     mysql_free_result(res);
