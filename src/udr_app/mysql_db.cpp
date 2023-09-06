@@ -264,9 +264,9 @@ bool mysql_db::insert_authentication_subscription(
   } else {
     // Insert/create new record
     mysql_free_result(res);
-    query = "INSERT INTO AuthenticationSubscription SET ueid='" + id + "'";
-    ",authenticationMethod='" + auth_subscription.getAuthenticationMethod() +
-        "'";
+    query = "INSERT INTO AuthenticationSubscription SET ueid='" + id + "'" +
+            ",authenticationMethod='" +
+            auth_subscription.getAuthenticationMethod() + "'";
   }
 
   query +=
