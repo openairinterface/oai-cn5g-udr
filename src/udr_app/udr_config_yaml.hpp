@@ -39,25 +39,11 @@ constexpr auto UDR_CONFIG_DATABASE_TYPE_LABEL = "Database Type";
 
 namespace oai::config {
 
-class udr_support_features : public config_type {
- private:
-  string_config_value m_database_type;
-
- public:
-  explicit udr_support_features();
-
-  void from_yaml(const YAML::Node& node) override;
-
-  [[nodiscard]] std::string to_string(const std::string& indent) const override;
-  [[nodiscard]] std::string get_option_database_type() const;
-};
-
 class udr : public nf {
  private:
   int_config_value m_instance_id;
   string_config_value m_pid_directory;
   string_config_value m_udr_name;
-  udr_support_features m_udr_support_features;
 
  public:
   explicit udr(
@@ -65,12 +51,13 @@ class udr : public nf {
       const sbi_interface& sbi);
 
   void from_yaml(const YAML::Node& node) override;
-
   [[nodiscard]] std::string to_string(const std::string& indent) const override;
+  void to_json(nlohmann::json& json_data);
+  bool from_json(const nlohmann::json& json_data);
+
   [[nodiscard]] const uint32_t get_instance_id() const;
   [[nodiscard]] const std::string get_pid_directory() const;
   [[nodiscard]] const std::string get_udr_name() const;
-  udr_support_features get_support_features() const;
 };
 
 class udr_config_yaml : public config {
@@ -81,5 +68,12 @@ class udr_config_yaml : public config {
 
   void to_udr_config(oai::udr::config::udr_config& cfg);
   void pre_process();
+
+  void to_json(nlohmann::json& json_data);
+  bool from_json(const nlohmann::json& json_data);
+
+  std::shared_ptr<udr> get() const {
+    return std::static_pointer_cast<udr>(get_local());
+  };
 };
 }  // namespace oai::config
