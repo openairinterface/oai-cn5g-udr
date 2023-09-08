@@ -94,6 +94,7 @@ void UDRApiServer::init(size_t thr) {
   m_sMFRegistrationsCollectionApiServer->init();
   m_sDMSubscriptionDocumentApiServer->init();
   m_sDMSubscriptionsCollectionApiServer->init();
+  m_uDRConfigurationApiImpl->init();
 }
 
 //------------------------------------------------------------------------------

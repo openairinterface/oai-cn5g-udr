@@ -30,7 +30,6 @@
 #ifndef FILE_UDR_APP_HPP_SEEN
 #define FILE_UDR_APP_HPP_SEEN
 
-#include <mysql/mysql.h>
 #include <pistache/http.h>
 
 #include <nlohmann/json.hpp>
@@ -384,7 +383,6 @@ class udr_app {
       nlohmann::json& response_data, long& code);
 
  private:
-  MYSQL mysql;
   udr_event& event_sub;
   std::shared_ptr<database_wrapper_abstraction> db_connector;
   // std::shared_ptr<database_wrapper> db_connector_test;
