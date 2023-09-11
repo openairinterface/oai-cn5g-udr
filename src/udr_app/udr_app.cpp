@@ -36,6 +36,7 @@
 #include "logger.hpp"
 #include "mysql_db.hpp"
 #include "udr_config.hpp"
+#include "udr_config_yaml.hpp"
 #include "udr_nrf.hpp"
 
 using namespace oai::udr::app;
@@ -44,6 +45,7 @@ using namespace oai::udr::config;
 
 extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
+extern std::unique_ptr<oai::config::udr_config_yaml> udr_cfg_yaml;
 
 //------------------------------------------------------------------------------
 udr_app::udr_app(const std::string& config_file, udr_event& ev)
@@ -577,4 +579,45 @@ void udr_app::handle_query_smf_select_data(
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
+}
+
+//------------------------------------------------------------------------------
+bool udr_app::handle_read_configuration(
+    nlohmann::json& config_info, long& code) {
+  Logger::udr_app().info("Handle a request to get UDR Configuration");
+
+  // Process the request and trigger the response from UDR Server
+  udr_cfg_yaml->to_json(config_info);
+  Logger::udr_app().debug(
+      "UDR configuration:\n %s", config_info.dump().c_str());
+  code = static_cast<uint32_t>(http_status_code_e::HTTP_STATUS_CODE_200_OK);
+  return true;
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool udr_app::handle_update_configuration(
+    nlohmann::json& config_info, long& code) {
+  Logger::udr_app().info("Handle a request to update UDR configuration");
+
+  // TODO: remove this part to enable this functionality
+  code = static_cast<uint32_t>(
+      http_status_code_e::HTTP_STATUS_CODE_501_NOT_IMPLEMENTED);
+  return false;
+
+  // Process the request and trigger the response from UDR Server
+  if (udr_cfg_yaml->from_json(config_info)) {
+    udr_cfg_yaml->to_json(config_info);
+    Logger::udr_app().debug(
+        "UDR configuration:\n %s", config_info.dump().c_str());
+    code = static_cast<uint32_t>(http_status_code_e::HTTP_STATUS_CODE_200_OK);
+    return true;
+  } else {
+    code = static_cast<uint32_t>(
+        http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+    // TODO set problem_details
+    return false;
+  }
+  return true;
+  return true;
 }

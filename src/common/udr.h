@@ -51,6 +51,9 @@
 #define NUDR_DR_SMF_REG "smf-registrations"
 #define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
 
+#define NUDR_CUSTOMIZED_API_BASE "/nudr-oai/"
+#define NUDR_CUSTOMIZED_API_CONFIGURATION_URL "/configuration"
+
 typedef struct identity_range_s {
   std::string start;
   std::string end;

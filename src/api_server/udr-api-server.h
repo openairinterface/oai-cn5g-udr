@@ -55,6 +55,7 @@
 #include "SMFRegistrationsCollectionApiImpl.h"
 #include "SMFSelectionSubscriptionDataDocumentApiImpl.h"
 #include "SessionManagementSubscriptionDataApiImpl.h"
+#include "UDRConfigurationApiImpl.h"
 #include "udr_app.hpp"
 
 using namespace oai::udr::app;
@@ -102,6 +103,8 @@ class UDRApiServer {
     m_sDMSubscriptionsCollectionApiServer =
         std::make_shared<SDMSubscriptionsCollectionApiImpl>(
             m_router, udr_app_inst, m_address);
+    m_uDRConfigurationApiImpl =
+        std::make_shared<UDRConfigurationApiImpl>(m_router, udr_app_inst);
   }
   void init(size_t thr = 1);
   void start();
@@ -133,7 +136,7 @@ class UDRApiServer {
       m_sDMSubscriptionDocumentApiServer;
   std::shared_ptr<SDMSubscriptionsCollectionApiImpl>
       m_sDMSubscriptionsCollectionApiServer;
-
+  std::shared_ptr<UDRConfigurationApiImpl> m_uDRConfigurationApiImpl;
   std::string m_address;
 };
 

@@ -30,7 +30,6 @@
 #ifndef FILE_UDR_APP_HPP_SEEN
 #define FILE_UDR_APP_HPP_SEEN
 
-#include <mysql/mysql.h>
 #include <pistache/http.h>
 
 #include <nlohmann/json.hpp>
@@ -383,8 +382,23 @@ class udr_app {
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& response_data, long& code);
 
+  /*
+   * Get the current UDR's configuration
+   * @param [nlohmann::json&]: config_info: UDR configuration
+   * @param [long&] code: HTTP response code
+   * @return true if success, otherwise return false
+   */
+  bool handle_read_configuration(nlohmann::json& config_info, long& code);
+
+  /*
+   * Update UDR configuration
+   * @param [nlohmann::json&]: config_info: new UDR configuration
+   * @param [long&] code: HTTP response code
+   * @return true if success, otherwise return false
+   */
+  bool handle_update_configuration(nlohmann::json& config_info, long& code);
+
  private:
-  MYSQL mysql;
   udr_event& event_sub;
   std::shared_ptr<database_wrapper_abstraction> db_connector;
   // std::shared_ptr<database_wrapper> db_connector_test;
