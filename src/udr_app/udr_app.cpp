@@ -600,6 +600,11 @@ bool udr_app::handle_update_configuration(
     nlohmann::json& config_info, long& code) {
   Logger::udr_app().info("Handle a request to update UDR configuration");
 
+  // TODO: remove this part to enable this functionality
+  code = static_cast<uint32_t>(
+      http_status_code_e::HTTP_STATUS_CODE_501_NOT_IMPLEMENTED);
+  return false;
+
   // Process the request and trigger the response from UDR Server
   if (udr_cfg_yaml->from_json(config_info)) {
     udr_cfg_yaml->to_json(config_info);

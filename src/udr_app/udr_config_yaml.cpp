@@ -142,15 +142,14 @@ udr_config_yaml::udr_config_yaml(
                           oai::config::UDR_CONFIG_NAME,
                           oai::config::DATABASE_CONFIG};
 
-  // TODO with NF_Type and switch
   // TODO: Still we need to add default NFs even we don't use this in all_in_one
   // use case
   auto m_udr = std::make_shared<udr>(
-      "UDR", "oai-udr", sbi_interface("SBI", "oai-udr1", 80, "v1", "eth0"));
+      "UDR", "oai-udr", sbi_interface("sbi", "oai-udr", 80, "v1", "eth0"));
   add_nf(UDR_CONFIG_NAME, m_udr);
 
   auto m_nrf = std::make_shared<nf>(
-      "NRF", "oai-nrf", sbi_interface("SBI", "oai-nrf", 80, "v1", "eth0"));
+      "NRF", "oai-nrf", sbi_interface("sbi", "oai-nrf", 80, "v1", "eth0"));
   add_nf(NRF_CONFIG_NAME, m_nrf);
 
   update_used_nfs();
@@ -217,9 +216,8 @@ void udr_config_yaml::to_json(nlohmann::json& json_data) {
 }
 //------------------------------------------------------------------------------
 bool udr_config_yaml::from_json(const nlohmann::json& json_data) {
-  get()->from_json(json_data);
-  config::from_json(json_data);
-  // TODO:
+  if (get()->from_json(json_data)) return config::from_json(json_data);
+  return false;
 }
 
 }  // namespace oai::config

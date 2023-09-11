@@ -62,10 +62,16 @@ void UDRConfigurationApiImpl::update_configuration(
 
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
-  // content type
-  response.headers().add<Pistache::Http::Header::ContentType>(
-      Pistache::Http::Mime::MediaType("application/json"));
-  response.send(code, configuration_info.dump().c_str());
+  if ((code == Pistache::Http::Code::Ok) or
+      (code == Pistache::Http::Code::Accepted) or
+      (code == Pistache::Http::Code::Created)) {
+    // content type
+    response.headers().add<Pistache::Http::Header::ContentType>(
+        Pistache::Http::Mime::MediaType("application/json"));
+    response.send(code, configuration_info.dump().c_str());
+  } else {
+    response.send(code);
+  }
 }
 
 }  // namespace oai::udr::api

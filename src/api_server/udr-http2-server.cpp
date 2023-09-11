@@ -794,6 +794,11 @@ void udr_http2_server::update_configuration_handler(
 
   Logger::udr_server().debug(
       "HTTP Response code %d (HTTP Version 2).\n", http_code);
-  response.write_head(http_code, h);
-  response.end(configuration_info.dump().c_str());
+  if ((http_code == 200) or (http_code == 201) or (http_code == 202)) {
+    response.write_head(http_code, h);
+    response.end(configuration_info.dump().c_str());
+  } else {
+    response.write_head(http_code, h);
+    response.end();
+  }
 }
