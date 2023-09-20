@@ -50,24 +50,22 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class InfluenceDataStoreApiImpl : public oai::udr::api::InfluenceDataStoreApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   InfluenceDataStoreApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~InfluenceDataStoreApiImpl() {}
 
   void read_influence_data(
       const Pistache::Optional<std::vector<std::string>>& influenceIds,
       const Pistache::Optional<std::vector<std::string>>& dnns,
-      const Pistache::Optional<std::vector<Snssai>>& snssais,
+      const Pistache::Optional<std::vector<oai::model::common::Snssai>>&
+          snssais,
       const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
       const Pistache::Optional<std::vector<std::string>>& supis,
       const Pistache::Optional<std::string>& suppFeat,

@@ -64,11 +64,12 @@ void from_json(const nlohmann::json& j, AmPolicyData& o) {
   }
 }
 
-std::map<std::string, PresenceInfo>& AmPolicyData::getPraInfos() {
+std::map<std::string, oai::model::common::PresenceInfo>&
+AmPolicyData::getPraInfos() {
   return m_PraInfos;
 }
 void AmPolicyData::setPraInfos(
-    std::map<std::string, PresenceInfo> const& value) {
+    std::map<std::string, oai::model::common::PresenceInfo> const& value) {
   m_PraInfos      = value;
   m_PraInfosIsSet = true;
 }

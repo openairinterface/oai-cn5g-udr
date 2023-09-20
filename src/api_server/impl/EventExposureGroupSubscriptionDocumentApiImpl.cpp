@@ -42,8 +42,8 @@ using namespace oai::udr::model;
 
 EventExposureGroupSubscriptionDocumentApiImpl::
     EventExposureGroupSubscriptionDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-        std::string address)
+        std::shared_ptr<Pistache::Rest::Router> rtr,
+        oai::udr::app::udr_app* udr_app_inst, std::string address)
     : EventExposureGroupSubscriptionDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
@@ -51,7 +51,7 @@ EventExposureGroupSubscriptionDocumentApiImpl::
 void EventExposureGroupSubscriptionDocumentApiImpl::
     modify_ee_group_subscription(
         const std::string& ueGroupId, const std::string& subsId,
-        const std::vector<PatchItem>& patchItem,
+        const std::vector<oai::model::common::PatchItem>& patchItem,
         const Pistache::Optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   response.send(

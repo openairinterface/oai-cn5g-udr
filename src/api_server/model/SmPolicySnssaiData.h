@@ -64,8 +64,8 @@ class SmPolicySnssaiData {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSnssai() const;
-  void setSnssai(Snssai const& value);
+  oai::model::common::Snssai getSnssai() const;
+  void setSnssai(oai::model::common::Snssai const& value);
   /// <summary>
   ///
   /// </summary>
@@ -78,7 +78,7 @@ class SmPolicySnssaiData {
   friend void from_json(const nlohmann::json& j, SmPolicySnssaiData& o);
 
  protected:
-  Snssai m_Snssai;
+  oai::model::common::Snssai m_Snssai;
 
   std::map<std::string, SmPolicyDnnData> m_SmPolicyDnnData;
   bool m_SmPolicyDnnDataIsSet;

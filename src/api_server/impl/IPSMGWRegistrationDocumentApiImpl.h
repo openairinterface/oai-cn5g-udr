@@ -52,19 +52,16 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class IPSMGWRegistrationDocumentApiImpl
     : public oai::udr::api::IPSMGWRegistrationDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   IPSMGWRegistrationDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~IPSMGWRegistrationDocumentApiImpl() {}
 
   void create_ip_sm_gw_context(
@@ -73,7 +70,8 @@ class IPSMGWRegistrationDocumentApiImpl
   void delete_ip_sm_gw_context(
       const std::string& ueId, Pistache::Http::ResponseWriter& response);
   void modify_ip_sm_gw_context(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response);
   void query_ip_sm_gw_context(
       const std::string& ueId,

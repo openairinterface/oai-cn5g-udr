@@ -188,10 +188,11 @@ void from_json(const nlohmann::json& j, AccessAndMobilityData& o) {
   }
 }
 
-UserLocation AccessAndMobilityData::getLocation() const {
+oai::model::common::UserLocation AccessAndMobilityData::getLocation() const {
   return m_Location;
 }
-void AccessAndMobilityData::setLocation(UserLocation const& value) {
+void AccessAndMobilityData::setLocation(
+    oai::model::common::UserLocation const& value) {
   m_Location      = value;
   m_LocationIsSet = true;
 }
@@ -240,10 +241,11 @@ bool AccessAndMobilityData::timeZoneTsIsSet() const {
 void AccessAndMobilityData::unsetTimeZoneTs() {
   m_TimeZoneTsIsSet = false;
 }
-AccessType AccessAndMobilityData::getAccessType() const {
+oai::model::common::AccessType AccessAndMobilityData::getAccessType() const {
   return m_AccessType;
 }
-void AccessAndMobilityData::setAccessType(AccessType const& value) {
+void AccessAndMobilityData::setAccessType(
+    oai::model::common::AccessType const& value) {
   m_AccessType      = value;
   m_AccessTypeIsSet = true;
 }
@@ -383,10 +385,11 @@ bool AccessAndMobilityData::roamingStatusTsIsSet() const {
 void AccessAndMobilityData::unsetRoamingStatusTs() {
   m_RoamingStatusTsIsSet = false;
 }
-PlmnId AccessAndMobilityData::getCurrentPlmn() const {
+oai::model::common::PlmnId AccessAndMobilityData::getCurrentPlmn() const {
   return m_CurrentPlmn;
 }
-void AccessAndMobilityData::setCurrentPlmn(PlmnId const& value) {
+void AccessAndMobilityData::setCurrentPlmn(
+    oai::model::common::PlmnId const& value) {
   m_CurrentPlmn      = value;
   m_CurrentPlmnIsSet = true;
 }
@@ -409,10 +412,11 @@ bool AccessAndMobilityData::currentPlmnTsIsSet() const {
 void AccessAndMobilityData::unsetCurrentPlmnTs() {
   m_CurrentPlmnTsIsSet = false;
 }
-std::vector<RatType>& AccessAndMobilityData::getRatType() {
+std::vector<oai::model::common::RatType>& AccessAndMobilityData::getRatType() {
   return m_RatType;
 }
-void AccessAndMobilityData::setRatType(std::vector<RatType> const& value) {
+void AccessAndMobilityData::setRatType(
+    std::vector<oai::model::common::RatType> const& value) {
   m_RatType      = value;
   m_RatTypeIsSet = true;
 }

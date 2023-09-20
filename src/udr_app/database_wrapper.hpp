@@ -102,7 +102,7 @@ class database_wrapper : public database_wrapper_abstraction {
 
   bool update_authentication_subscription(
       const std::string& id,
-      const std::vector<oai::udr::model::PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->update_authentication_subscription(
@@ -187,7 +187,7 @@ class database_wrapper : public database_wrapper_abstraction {
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data,
-      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<oai::model::common::Snssai>& snssai,
       const std::optional<std::string>& dnn) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->query_sm_data(
@@ -201,7 +201,7 @@ class database_wrapper : public database_wrapper_abstraction {
 
   bool delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      const std::optional<oai::udr::model::Snssai>& snssai) {
+      const std::optional<oai::model::common::Snssai>& snssai) {
     auto derived = static_cast<DerivedT*>(this);
     return derived->delete_sm_data(ue_id, serving_plmn_id, snssai);
   }

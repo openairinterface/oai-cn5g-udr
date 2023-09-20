@@ -422,11 +422,12 @@ bool AccessAndMobilitySubscriptionData::sharedVnGroupDataIdsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetSharedVnGroupDataIds() {
   m_SharedVnGroupDataIdsIsSet = false;
 }
-AmbrRm AccessAndMobilitySubscriptionData::getSubscribedUeAmbr() const {
+oai::model::common::AmbrRm
+AccessAndMobilitySubscriptionData::getSubscribedUeAmbr() const {
   return m_SubscribedUeAmbr;
 }
 void AccessAndMobilitySubscriptionData::setSubscribedUeAmbr(
-    AmbrRm const& value) {
+    oai::model::common::AmbrRm const& value) {
   m_SubscribedUeAmbr      = value;
   m_SubscribedUeAmbrIsSet = true;
 }
@@ -449,11 +450,12 @@ bool AccessAndMobilitySubscriptionData::nssaiIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetNssai() {
   m_NssaiIsSet = false;
 }
-std::vector<RatType>& AccessAndMobilitySubscriptionData::getRatRestrictions() {
+std::vector<oai::model::common::RatType>&
+AccessAndMobilitySubscriptionData::getRatRestrictions() {
   return m_RatRestrictions;
 }
 void AccessAndMobilitySubscriptionData::setRatRestrictions(
-    std::vector<RatType> const& value) {
+    std::vector<oai::model::common::RatType> const& value) {
   m_RatRestrictions      = value;
   m_RatRestrictionsIsSet = true;
 }
@@ -463,11 +465,12 @@ bool AccessAndMobilitySubscriptionData::ratRestrictionsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetRatRestrictions() {
   m_RatRestrictionsIsSet = false;
 }
-std::vector<Area>& AccessAndMobilitySubscriptionData::getForbiddenAreas() {
+std::vector<oai::model::common::Area>&
+AccessAndMobilitySubscriptionData::getForbiddenAreas() {
   return m_ForbiddenAreas;
 }
 void AccessAndMobilitySubscriptionData::setForbiddenAreas(
-    std::vector<Area> const& value) {
+    std::vector<oai::model::common::Area> const& value) {
   m_ForbiddenAreas      = value;
   m_ForbiddenAreasIsSet = true;
 }
@@ -477,12 +480,12 @@ bool AccessAndMobilitySubscriptionData::forbiddenAreasIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetForbiddenAreas() {
   m_ForbiddenAreasIsSet = false;
 }
-ServiceAreaRestriction
+oai::model::common::ServiceAreaRestriction
 AccessAndMobilitySubscriptionData::getServiceAreaRestriction() const {
   return m_ServiceAreaRestriction;
 }
 void AccessAndMobilitySubscriptionData::setServiceAreaRestriction(
-    ServiceAreaRestriction const& value) {
+    oai::model::common::ServiceAreaRestriction const& value) {
   m_ServiceAreaRestriction      = value;
   m_ServiceAreaRestrictionIsSet = true;
 }
@@ -492,12 +495,12 @@ bool AccessAndMobilitySubscriptionData::serviceAreaRestrictionIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetServiceAreaRestriction() {
   m_ServiceAreaRestrictionIsSet = false;
 }
-std::vector<CoreNetworkType>&
+std::vector<oai::model::common::CoreNetworkType>&
 AccessAndMobilitySubscriptionData::getCoreNetworkTypeRestrictions() {
   return m_CoreNetworkTypeRestrictions;
 }
 void AccessAndMobilitySubscriptionData::setCoreNetworkTypeRestrictions(
-    std::vector<CoreNetworkType> const& value) {
+    std::vector<oai::model::common::CoreNetworkType> const& value) {
   m_CoreNetworkTypeRestrictions      = value;
   m_CoreNetworkTypeRestrictionsIsSet = true;
 }
@@ -681,12 +684,12 @@ bool AccessAndMobilitySubscriptionData::sharedAmDataIdsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetSharedAmDataIds() {
   m_SharedAmDataIdsIsSet = false;
 }
-OdbPacketServices AccessAndMobilitySubscriptionData::getOdbPacketServices()
-    const {
+oai::model::common::OdbPacketServices
+AccessAndMobilitySubscriptionData::getOdbPacketServices() const {
   return m_OdbPacketServices;
 }
 void AccessAndMobilitySubscriptionData::setOdbPacketServices(
-    OdbPacketServices const& value) {
+    oai::model::common::OdbPacketServices const& value) {
   m_OdbPacketServices      = value;
   m_OdbPacketServicesIsSet = true;
 }
@@ -741,12 +744,12 @@ bool AccessAndMobilitySubscriptionData::mdtUserConsentIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetMdtUserConsent() {
   m_MdtUserConsentIsSet = false;
 }
-MdtConfiguration AccessAndMobilitySubscriptionData::getMdtConfiguration()
-    const {
+oai::model::common::MdtConfiguration
+AccessAndMobilitySubscriptionData::getMdtConfiguration() const {
   return m_MdtConfiguration;
 }
 void AccessAndMobilitySubscriptionData::setMdtConfiguration(
-    MdtConfiguration const& value) {
+    oai::model::common::MdtConfiguration const& value) {
   m_MdtConfiguration      = value;
   m_MdtConfigurationIsSet = true;
 }
@@ -756,10 +759,12 @@ bool AccessAndMobilitySubscriptionData::mdtConfigurationIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetMdtConfiguration() {
   m_MdtConfigurationIsSet = false;
 }
-TraceData AccessAndMobilitySubscriptionData::getTraceData() const {
+oai::model::common::TraceData AccessAndMobilitySubscriptionData::getTraceData()
+    const {
   return m_TraceData;
 }
-void AccessAndMobilitySubscriptionData::setTraceData(TraceData const& value) {
+void AccessAndMobilitySubscriptionData::setTraceData(
+    oai::model::common::TraceData const& value) {
   m_TraceData      = value;
   m_TraceDataIsSet = true;
 }
@@ -895,12 +900,12 @@ bool AccessAndMobilitySubscriptionData::expectedUeBehaviourListIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetExpectedUeBehaviourList() {
   m_ExpectedUeBehaviourListIsSet = false;
 }
-std::vector<RatType>&
+std::vector<oai::model::common::RatType>&
 AccessAndMobilitySubscriptionData::getPrimaryRatRestrictions() {
   return m_PrimaryRatRestrictions;
 }
 void AccessAndMobilitySubscriptionData::setPrimaryRatRestrictions(
-    std::vector<RatType> const& value) {
+    std::vector<oai::model::common::RatType> const& value) {
   m_PrimaryRatRestrictions      = value;
   m_PrimaryRatRestrictionsIsSet = true;
 }
@@ -910,12 +915,12 @@ bool AccessAndMobilitySubscriptionData::primaryRatRestrictionsIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetPrimaryRatRestrictions() {
   m_PrimaryRatRestrictionsIsSet = false;
 }
-std::vector<RatType>&
+std::vector<oai::model::common::RatType>&
 AccessAndMobilitySubscriptionData::getSecondaryRatRestrictions() {
   return m_SecondaryRatRestrictions;
 }
 void AccessAndMobilitySubscriptionData::setSecondaryRatRestrictions(
-    std::vector<RatType> const& value) {
+    std::vector<oai::model::common::RatType> const& value) {
   m_SecondaryRatRestrictions      = value;
   m_SecondaryRatRestrictionsIsSet = true;
 }
@@ -969,12 +974,12 @@ bool AccessAndMobilitySubscriptionData::iabOperationAllowedIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetIabOperationAllowed() {
   m_IabOperationAllowedIsSet = false;
 }
-std::vector<WirelineArea>&
+std::vector<oai::model::common::WirelineArea>&
 AccessAndMobilitySubscriptionData::getWirelineForbiddenAreas() {
   return m_WirelineForbiddenAreas;
 }
 void AccessAndMobilitySubscriptionData::setWirelineForbiddenAreas(
-    std::vector<WirelineArea> const& value) {
+    std::vector<oai::model::common::WirelineArea> const& value) {
   m_WirelineForbiddenAreas      = value;
   m_WirelineForbiddenAreasIsSet = true;
 }
@@ -984,12 +989,12 @@ bool AccessAndMobilitySubscriptionData::wirelineForbiddenAreasIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetWirelineForbiddenAreas() {
   m_WirelineForbiddenAreasIsSet = false;
 }
-WirelineServiceAreaRestriction
+oai::model::common::WirelineServiceAreaRestriction
 AccessAndMobilitySubscriptionData::getWirelineServiceAreaRestriction() const {
   return m_WirelineServiceAreaRestriction;
 }
 void AccessAndMobilitySubscriptionData::setWirelineServiceAreaRestriction(
-    WirelineServiceAreaRestriction const& value) {
+    oai::model::common::WirelineServiceAreaRestriction const& value) {
   m_WirelineServiceAreaRestriction      = value;
   m_WirelineServiceAreaRestrictionIsSet = true;
 }

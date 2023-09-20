@@ -40,8 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
-using namespace oai::udr::model;
+using namespace oai::model::common::helpers;
 
 ProvisionedParameterDataDocumentApi::ProvisionedParameterDataDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -80,7 +79,7 @@ void ProvisionedParameterDataDocumentApi::modify_pp_data_handler(
   auto ueId = request.param(":ueId").as<std::string>();
 
   // Getting the body param
-  std::vector<PatchItem> patchItem;
+  std::vector<oai::model::common::PatchItem> patchItem;
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");

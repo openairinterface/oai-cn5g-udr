@@ -60,10 +60,12 @@ void from_json(const nlohmann::json& j, PlmnRouteSelectionDescriptor& o) {
   }
 }
 
-PlmnId PlmnRouteSelectionDescriptor::getServingPlmn() const {
+oai::model::common::PlmnId PlmnRouteSelectionDescriptor::getServingPlmn()
+    const {
   return m_ServingPlmn;
 }
-void PlmnRouteSelectionDescriptor::setServingPlmn(PlmnId const& value) {
+void PlmnRouteSelectionDescriptor::setServingPlmn(
+    oai::model::common::PlmnId const& value) {
   m_ServingPlmn = value;
 }
 std::vector<SnssaiRouteSelectionDescriptor>&

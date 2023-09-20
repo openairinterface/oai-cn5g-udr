@@ -197,10 +197,12 @@ bool DnnConfiguration::iwkEpsIndIsSet() const {
 void DnnConfiguration::unsetIwkEpsInd() {
   m_IwkEpsIndIsSet = false;
 }
-SubscribedDefaultQos DnnConfiguration::getR5gQosProfile() const {
+oai::model::common::SubscribedDefaultQos DnnConfiguration::getR5gQosProfile()
+    const {
   return m_r_5gQosProfile;
 }
-void DnnConfiguration::setR5gQosProfile(SubscribedDefaultQos const& value) {
+void DnnConfiguration::setR5gQosProfile(
+    oai::model::common::SubscribedDefaultQos const& value) {
   m_r_5gQosProfile      = value;
   m_r_5gQosProfileIsSet = true;
 }
@@ -210,10 +212,10 @@ bool DnnConfiguration::r5gQosProfileIsSet() const {
 void DnnConfiguration::unsetr_5gQosProfile() {
   m_r_5gQosProfileIsSet = false;
 }
-Ambr DnnConfiguration::getSessionAmbr() const {
+oai::model::common::Ambr DnnConfiguration::getSessionAmbr() const {
   return m_SessionAmbr;
 }
-void DnnConfiguration::setSessionAmbr(Ambr const& value) {
+void DnnConfiguration::setSessionAmbr(oai::model::common::Ambr const& value) {
   m_SessionAmbr      = value;
   m_SessionAmbrIsSet = true;
 }
@@ -250,10 +252,11 @@ bool DnnConfiguration::staticIpAddressIsSet() const {
 void DnnConfiguration::unsetStaticIpAddress() {
   m_StaticIpAddressIsSet = false;
 }
-UpSecurity DnnConfiguration::getUpSecurity() const {
+oai::model::common::UpSecurity DnnConfiguration::getUpSecurity() const {
   return m_UpSecurity;
 }
-void DnnConfiguration::setUpSecurity(UpSecurity const& value) {
+void DnnConfiguration::setUpSecurity(
+    oai::model::common::UpSecurity const& value) {
   m_UpSecurity      = value;
   m_UpSecurityIsSet = true;
 }
@@ -316,10 +319,10 @@ bool DnnConfiguration::redundantSessionAllowedIsSet() const {
 void DnnConfiguration::unsetRedundantSessionAllowed() {
   m_RedundantSessionAllowedIsSet = false;
 }
-AcsInfo DnnConfiguration::getAcsInfo() const {
+oai::model::common::AcsInfo DnnConfiguration::getAcsInfo() const {
   return m_AcsInfo;
 }
-void DnnConfiguration::setAcsInfo(AcsInfo const& value) {
+void DnnConfiguration::setAcsInfo(oai::model::common::AcsInfo const& value) {
   m_AcsInfo      = value;
   m_AcsInfoIsSet = true;
 }

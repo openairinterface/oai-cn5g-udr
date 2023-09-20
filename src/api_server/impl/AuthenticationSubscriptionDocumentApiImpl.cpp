@@ -45,15 +45,16 @@ using namespace oai::udr::model;
 
 AuthenticationSubscriptionDocumentApiImpl::
     AuthenticationSubscriptionDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-        std::string address)
+        std::shared_ptr<Pistache::Rest::Router> rtr,
+        oai::udr::app::udr_app* udr_app_inst, std::string address)
     : AuthenticationSubscriptionDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AuthenticationSubscriptionDocumentApiImpl::
     modify_authentication_subscription(
-        const std::string& ueId, const std::vector<PatchItem>& patchItem,
+        const std::string& ueId,
+        const std::vector<oai::model::common::PatchItem>& patchItem,
         const Pistache::Optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};

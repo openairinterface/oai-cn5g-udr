@@ -121,10 +121,11 @@ bool DataFilter::dnnsIsSet() const {
 void DataFilter::unsetDnns() {
   m_DnnsIsSet = false;
 }
-std::vector<Snssai>& DataFilter::getSnssais() {
+std::vector<oai::model::common::Snssai>& DataFilter::getSnssais() {
   return m_Snssais;
 }
-void DataFilter::setSnssais(std::vector<Snssai> const& value) {
+void DataFilter::setSnssais(
+    std::vector<oai::model::common::Snssai> const& value) {
   m_Snssais      = value;
   m_SnssaisIsSet = true;
 }
@@ -186,10 +187,11 @@ bool DataFilter::ueIpv4sIsSet() const {
 void DataFilter::unsetUeIpv4s() {
   m_UeIpv4sIsSet = false;
 }
-std::vector<Ipv6Addr>& DataFilter::getUeIpv6s() {
+std::vector<oai::model::common::Ipv6Addr>& DataFilter::getUeIpv6s() {
   return m_UeIpv6s;
 }
-void DataFilter::setUeIpv6s(std::vector<Ipv6Addr> const& value) {
+void DataFilter::setUeIpv6s(
+    std::vector<oai::model::common::Ipv6Addr> const& value) {
   m_UeIpv6s      = value;
   m_UeIpv6sIsSet = true;
 }

@@ -71,15 +71,16 @@ class DnnRouteSelectionDescriptor {
   /// <summary>
   ///
   /// </summary>
-  std::vector<SscMode>& getSscModes();
-  void setSscModes(std::vector<SscMode> const& value);
+  std::vector<oai::model::common::SscMode>& getSscModes();
+  void setSscModes(std::vector<oai::model::common::SscMode> const& value);
   bool sscModesIsSet() const;
   void unsetSscModes();
   /// <summary>
   ///
   /// </summary>
-  std::vector<PduSessionType>& getPduSessTypes();
-  void setPduSessTypes(std::vector<PduSessionType> const& value);
+  std::vector<oai::model::common::PduSessionType>& getPduSessTypes();
+  void setPduSessTypes(
+      std::vector<oai::model::common::PduSessionType> const& value);
   bool pduSessTypesIsSet() const;
   void unsetPduSessTypes();
   /// <summary>
@@ -99,9 +100,9 @@ class DnnRouteSelectionDescriptor {
  protected:
   std::string m_Dnn;
 
-  std::vector<SscMode> m_SscModes;
+  std::vector<oai::model::common::SscMode> m_SscModes;
   bool m_SscModesIsSet;
-  std::vector<PduSessionType> m_PduSessTypes;
+  std::vector<oai::model::common::PduSessionType> m_PduSessTypes;
   bool m_PduSessTypesIsSet;
   bool m_AtsssInfo;
   bool m_AtsssInfoIsSet;

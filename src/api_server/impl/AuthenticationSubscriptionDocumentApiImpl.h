@@ -49,23 +49,21 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class AuthenticationSubscriptionDocumentApiImpl
     : public oai::udr::api::AuthenticationSubscriptionDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   AuthenticationSubscriptionDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~AuthenticationSubscriptionDocumentApiImpl() {}
 
   void modify_authentication_subscription(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void read_authentication_subscription(

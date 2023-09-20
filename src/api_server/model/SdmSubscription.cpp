@@ -171,10 +171,11 @@ std::string SdmSubscription::getCallbackReference() const {
 void SdmSubscription::setCallbackReference(std::string const& value) {
   m_CallbackReference = value;
 }
-ServiceName SdmSubscription::getAmfServiceName() const {
+oai::model::nrf::ServiceName SdmSubscription::getAmfServiceName() const {
   return m_AmfServiceName;
 }
-void SdmSubscription::setAmfServiceName(ServiceName const& value) {
+void SdmSubscription::setAmfServiceName(
+    oai::model::nrf::ServiceName const& value) {
   m_AmfServiceName      = value;
   m_AmfServiceNameIsSet = true;
 }
@@ -191,10 +192,10 @@ void SdmSubscription::setMonitoredResourceUris(
     std::vector<std::string> const& value) {
   m_MonitoredResourceUris = value;
 }
-Snssai SdmSubscription::getSingleNssai() const {
+oai::model::common::Snssai SdmSubscription::getSingleNssai() const {
   return m_SingleNssai;
 }
-void SdmSubscription::setSingleNssai(Snssai const& value) {
+void SdmSubscription::setSingleNssai(oai::model::common::Snssai const& value) {
   m_SingleNssai      = value;
   m_SingleNssaiIsSet = true;
 }
@@ -230,10 +231,10 @@ bool SdmSubscription::subscriptionIdIsSet() const {
 void SdmSubscription::unsetSubscriptionId() {
   m_SubscriptionIdIsSet = false;
 }
-PlmnId SdmSubscription::getPlmnId() const {
+oai::model::common::PlmnId SdmSubscription::getPlmnId() const {
   return m_PlmnId;
 }
-void SdmSubscription::setPlmnId(PlmnId const& value) {
+void SdmSubscription::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId      = value;
   m_PlmnIdIsSet = true;
 }

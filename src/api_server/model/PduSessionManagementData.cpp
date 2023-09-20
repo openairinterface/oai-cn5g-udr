@@ -202,12 +202,12 @@ bool PduSessionManagementData::dnaiTsIsSet() const {
 void PduSessionManagementData::unsetDnaiTs() {
   m_DnaiTsIsSet = false;
 }
-std::vector<RouteToLocation>&
+std::vector<oai::model::common::RouteToLocation>&
 PduSessionManagementData::getN6TrafficRoutingInfo() {
   return m_N6TrafficRoutingInfo;
 }
 void PduSessionManagementData::setN6TrafficRoutingInfo(
-    std::vector<RouteToLocation> const& value) {
+    std::vector<oai::model::common::RouteToLocation> const& value) {
   m_N6TrafficRoutingInfo      = value;
   m_N6TrafficRoutingInfoIsSet = true;
 }
@@ -244,11 +244,12 @@ bool PduSessionManagementData::ipv4AddrIsSet() const {
 void PduSessionManagementData::unsetIpv4Addr() {
   m_Ipv4AddrIsSet = false;
 }
-std::vector<Ipv6Prefix>& PduSessionManagementData::getIpv6Prefix() {
+std::vector<oai::model::common::Ipv6Prefix>&
+PduSessionManagementData::getIpv6Prefix() {
   return m_Ipv6Prefix;
 }
 void PduSessionManagementData::setIpv6Prefix(
-    std::vector<Ipv6Prefix> const& value) {
+    std::vector<oai::model::common::Ipv6Prefix> const& value) {
   m_Ipv6Prefix      = value;
   m_Ipv6PrefixIsSet = true;
 }
@@ -258,11 +259,12 @@ bool PduSessionManagementData::ipv6PrefixIsSet() const {
 void PduSessionManagementData::unsetIpv6Prefix() {
   m_Ipv6PrefixIsSet = false;
 }
-std::vector<Ipv6Addr>& PduSessionManagementData::getIpv6Addrs() {
+std::vector<oai::model::common::Ipv6Addr>&
+PduSessionManagementData::getIpv6Addrs() {
   return m_Ipv6Addrs;
 }
 void PduSessionManagementData::setIpv6Addrs(
-    std::vector<Ipv6Addr> const& value) {
+    std::vector<oai::model::common::Ipv6Addr> const& value) {
   m_Ipv6Addrs      = value;
   m_Ipv6AddrsIsSet = true;
 }
@@ -272,10 +274,12 @@ bool PduSessionManagementData::ipv6AddrsIsSet() const {
 void PduSessionManagementData::unsetIpv6Addrs() {
   m_Ipv6AddrsIsSet = false;
 }
-PduSessionType PduSessionManagementData::getPduSessType() const {
+oai::model::common::PduSessionType PduSessionManagementData::getPduSessType()
+    const {
   return m_PduSessType;
 }
-void PduSessionManagementData::setPduSessType(PduSessionType const& value) {
+void PduSessionManagementData::setPduSessType(
+    oai::model::common::PduSessionType const& value) {
   m_PduSessType      = value;
   m_PduSessTypeIsSet = true;
 }

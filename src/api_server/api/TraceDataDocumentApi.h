@@ -50,8 +50,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class TraceDataDocumentApi {
  public:
   TraceDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);

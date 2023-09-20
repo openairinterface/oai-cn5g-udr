@@ -77,8 +77,8 @@ class DataFilter {
   /// <summary>
   ///
   /// </summary>
-  std::vector<Snssai>& getSnssais();
-  void setSnssais(std::vector<Snssai> const& value);
+  std::vector<oai::model::common::Snssai>& getSnssais();
+  void setSnssais(std::vector<oai::model::common::Snssai> const& value);
   bool snssaisIsSet() const;
   void unsetSnssais();
   /// <summary>
@@ -112,8 +112,8 @@ class DataFilter {
   /// <summary>
   ///
   /// </summary>
-  std::vector<Ipv6Addr>& getUeIpv6s();
-  void setUeIpv6s(std::vector<Ipv6Addr> const& value);
+  std::vector<oai::model::common::Ipv6Addr>& getUeIpv6s();
+  void setUeIpv6s(std::vector<oai::model::common::Ipv6Addr> const& value);
   bool ueIpv6sIsSet() const;
   void unsetUeIpv6s();
   /// <summary>
@@ -132,7 +132,7 @@ class DataFilter {
 
   std::vector<std::string> m_Dnns;
   bool m_DnnsIsSet;
-  std::vector<Snssai> m_Snssais;
+  std::vector<oai::model::common::Snssai> m_Snssais;
   bool m_SnssaisIsSet;
   std::vector<std::string> m_InternalGroupIds;
   bool m_InternalGroupIdsIsSet;
@@ -142,7 +142,7 @@ class DataFilter {
   bool m_AppIdsIsSet;
   std::vector<std::string> m_UeIpv4s;
   bool m_UeIpv4sIsSet;
-  std::vector<Ipv6Addr> m_UeIpv6s;
+  std::vector<oai::model::common::Ipv6Addr> m_UeIpv6s;
   bool m_UeIpv6sIsSet;
   std::vector<std::string> m_UeMacs;
   bool m_UeMacsIsSet;

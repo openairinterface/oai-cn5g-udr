@@ -160,10 +160,10 @@ bool PpData::ecRestrictionIsSet() const {
 void PpData::unsetEcRestriction() {
   m_EcRestrictionIsSet = false;
 }
-AcsInfoRm PpData::getAcsInfo() const {
+oai::model::common::AcsInfoRm PpData::getAcsInfo() const {
   return m_AcsInfo;
 }
-void PpData::setAcsInfo(AcsInfoRm const& value) {
+void PpData::setAcsInfo(oai::model::common::AcsInfoRm const& value) {
   m_AcsInfo      = value;
   m_AcsInfoIsSet = true;
 }

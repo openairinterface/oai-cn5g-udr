@@ -78,12 +78,12 @@ void from_json(const nlohmann::json& j, DatalinkReportingConfiguration& o) {
   }
 }
 
-std::vector<DddTrafficDescriptor>&
+std::vector<oai::model::common::DddTrafficDescriptor>&
 DatalinkReportingConfiguration::getDddTrafficDes() {
   return m_DddTrafficDes;
 }
 void DatalinkReportingConfiguration::setDddTrafficDes(
-    std::vector<DddTrafficDescriptor> const& value) {
+    std::vector<oai::model::common::DddTrafficDescriptor> const& value) {
   m_DddTrafficDes      = value;
   m_DddTrafficDesIsSet = true;
 }
@@ -106,10 +106,11 @@ bool DatalinkReportingConfiguration::dnnIsSet() const {
 void DatalinkReportingConfiguration::unsetDnn() {
   m_DnnIsSet = false;
 }
-Snssai DatalinkReportingConfiguration::getSlice() const {
+oai::model::common::Snssai DatalinkReportingConfiguration::getSlice() const {
   return m_Slice;
 }
-void DatalinkReportingConfiguration::setSlice(Snssai const& value) {
+void DatalinkReportingConfiguration::setSlice(
+    oai::model::common::Snssai const& value) {
   m_Slice      = value;
   m_SliceIsSet = true;
 }
@@ -119,12 +120,12 @@ bool DatalinkReportingConfiguration::sliceIsSet() const {
 void DatalinkReportingConfiguration::unsetSlice() {
   m_SliceIsSet = false;
 }
-std::vector<DlDataDeliveryStatus>&
+std::vector<oai::model::common::DlDataDeliveryStatus>&
 DatalinkReportingConfiguration::getDddStatusList() {
   return m_DddStatusList;
 }
 void DatalinkReportingConfiguration::setDddStatusList(
-    std::vector<DlDataDeliveryStatus> const& value) {
+    std::vector<oai::model::common::DlDataDeliveryStatus> const& value) {
   m_DddStatusList      = value;
   m_DddStatusListIsSet = true;
 }

@@ -66,8 +66,9 @@ class UePolicySet {
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, PresenceInfo>& getPraInfos();
-  void setPraInfos(std::map<std::string, PresenceInfo> const& value);
+  std::map<std::string, oai::model::common::PresenceInfo>& getPraInfos();
+  void setPraInfos(
+      std::map<std::string, oai::model::common::PresenceInfo> const& value);
   bool praInfosIsSet() const;
   void unsetPraInfos();
   /// <summary>
@@ -133,7 +134,7 @@ class UePolicySet {
   friend void from_json(const nlohmann::json& j, UePolicySet& o);
 
  protected:
-  std::map<std::string, PresenceInfo> m_PraInfos;
+  std::map<std::string, oai::model::common::PresenceInfo> m_PraInfos;
   bool m_PraInfosIsSet;
   std::vector<std::string> m_SubscCats;
   bool m_SubscCatsIsSet;

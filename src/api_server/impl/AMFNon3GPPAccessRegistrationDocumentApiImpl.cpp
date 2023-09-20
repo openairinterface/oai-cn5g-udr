@@ -41,14 +41,15 @@ using namespace oai::udr::model;
 
 AMFNon3GPPAccessRegistrationDocumentApiImpl::
     AMFNon3GPPAccessRegistrationDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-        std::string address)
+        std::shared_ptr<Pistache::Rest::Router> rtr,
+        oai::udr::app::udr_app* udr_app_inst, std::string address)
     : AMFNon3GPPAccessRegistrationDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void AMFNon3GPPAccessRegistrationDocumentApiImpl::amf_context_non3gpp(
-    const std::string& ueId, const std::vector<PatchItem>& patchItem,
+    const std::string& ueId,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

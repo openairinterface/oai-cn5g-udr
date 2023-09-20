@@ -41,15 +41,15 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 SDMSubscriptionDocumentApiImpl::SDMSubscriptionDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-    std::string address)
+    std::shared_ptr<Pistache::Rest::Router> rtr,
+    oai::udr::app::udr_app* udr_app_inst, std::string address)
     : SDMSubscriptionDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SDMSubscriptionDocumentApiImpl::modifysdm_subscription(
     const std::string& ueId, const std::string& subsId,
-    const std::vector<PatchItem>& patchItem,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

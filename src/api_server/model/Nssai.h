@@ -72,13 +72,14 @@ class Nssai {
   /// <summary>
   ///
   /// </summary>
-  std::vector<Snssai>& getDefaultSingleNssais();
-  void setDefaultSingleNssais(std::vector<Snssai> const& value);
+  std::vector<oai::model::common::Snssai>& getDefaultSingleNssais();
+  void setDefaultSingleNssais(
+      std::vector<oai::model::common::Snssai> const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<Snssai>& getSingleNssais();
-  void setSingleNssais(std::vector<Snssai> const& value);
+  std::vector<oai::model::common::Snssai>& getSingleNssais();
+  void setSingleNssais(std::vector<oai::model::common::Snssai> const& value);
   bool singleNssaisIsSet() const;
   void unsetSingleNssais();
   /// <summary>
@@ -103,9 +104,9 @@ class Nssai {
  protected:
   std::string m_SupportedFeatures;
   bool m_SupportedFeaturesIsSet;
-  std::vector<Snssai> m_DefaultSingleNssais;
+  std::vector<oai::model::common::Snssai> m_DefaultSingleNssais;
 
-  std::vector<Snssai> m_SingleNssais;
+  std::vector<oai::model::common::Snssai> m_SingleNssais;
   bool m_SingleNssaisIsSet;
   std::string m_ProvisioningTime;
   bool m_ProvisioningTimeIsSet;

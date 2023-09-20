@@ -49,25 +49,21 @@
 #include "udr_app.hpp"
 
 namespace oai::udr::api {
-
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class PduSessionManagementDataApiImpl
     : public oai::udr::api::PduSessionManagementDataApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   PduSessionManagementDataApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~PduSessionManagementDataApiImpl() {}
 
   void create_or_replace_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
-      const PduSessionManagementData& pduSessionManagementData,
+      const oai::udr::model::PduSessionManagementData& pduSessionManagementData,
       Pistache::Http::ResponseWriter& response);
   void delete_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
@@ -75,7 +71,7 @@ class PduSessionManagementDataApiImpl
   void query_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
       const Pistache::Optional<std::string>& ipv4Addr,
-      const Pistache::Optional<Ipv6Prefix>& ipv6Prefix,
+      const Pistache::Optional<oai::model::common::Ipv6Prefix>& ipv6Prefix,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::vector<std::string>>& fields,
       const Pistache::Optional<std::string>& suppFeat,

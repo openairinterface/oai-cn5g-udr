@@ -69,8 +69,8 @@ class FrameRouteInfo {
   /// <summary>
   ///
   /// </summary>
-  Ipv6Prefix getIpv6Prefix() const;
-  void setIpv6Prefix(Ipv6Prefix const& value);
+  oai::model::common::Ipv6Prefix getIpv6Prefix() const;
+  void setIpv6Prefix(oai::model::common::Ipv6Prefix const& value);
   bool ipv6PrefixIsSet() const;
   void unsetIpv6Prefix();
 
@@ -80,7 +80,7 @@ class FrameRouteInfo {
  protected:
   std::string m_Ipv4Mask;
   bool m_Ipv4MaskIsSet;
-  Ipv6Prefix m_Ipv6Prefix;
+  oai::model::common::Ipv6Prefix m_Ipv6Prefix;
   bool m_Ipv6PrefixIsSet;
 };
 

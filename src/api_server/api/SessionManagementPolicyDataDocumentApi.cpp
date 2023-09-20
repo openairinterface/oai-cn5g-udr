@@ -40,8 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
-using namespace oai::udr::model;
+using namespace oai::model::common::helpers;
 
 SessionManagementPolicyDataDocumentApi::SessionManagementPolicyDataDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -91,7 +90,7 @@ void SessionManagementPolicyDataDocumentApi::
 
   // Getting the query params
   auto snssaiQuery = request.query().get("snssai");
-  Pistache::Optional<Snssai> snssai;
+  Pistache::Optional<oai::model::common::Snssai> snssai;
   if (!snssaiQuery.isEmpty()) {
     //        Snssai valueQuery_instance;
     //        if(fromStringValue(snssaiQuery.get(), valueQuery_instance)){

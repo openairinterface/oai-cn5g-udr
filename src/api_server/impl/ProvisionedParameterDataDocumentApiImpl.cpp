@@ -38,18 +38,17 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 ProvisionedParameterDataDocumentApiImpl::
     ProvisionedParameterDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-        std::string address)
+        std::shared_ptr<Pistache::Rest::Router> rtr,
+        oai::udr::app::udr_app* udr_app_inst, std::string address)
     : ProvisionedParameterDataDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void ProvisionedParameterDataDocumentApiImpl::modify_pp_data(
-    const std::string& ueId, const std::vector<PatchItem>& patchItem,
+    const std::string& ueId,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

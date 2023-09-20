@@ -42,15 +42,15 @@ using namespace oai::udr::model;
 
 EventExposureSubscriptionDocumentApiImpl::
     EventExposureSubscriptionDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-        std::string address)
+        std::shared_ptr<Pistache::Rest::Router> rtr,
+        oai::udr::app::udr_app* udr_app_inst, std::string address)
     : EventExposureSubscriptionDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void EventExposureSubscriptionDocumentApiImpl::modify_eesubscription(
     const std::string& ueId, const std::string& subsId,
-    const std::vector<PatchItem>& patchItem,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

@@ -55,8 +55,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class SDMSubscriptionDocumentApi {
  public:
   SDMSubscriptionDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
@@ -99,7 +97,7 @@ class SDMSubscriptionDocumentApi {
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modifysdm_subscription(
       const std::string& ueId, const std::string& subsId,
-      const std::vector<PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 
@@ -138,7 +136,7 @@ class SDMSubscriptionDocumentApi {
   /// <param name="sdmSubscription"> (optional)</param>
   virtual void updatesdmsubscriptions(
       const std::string& ueId, const std::string& subsId,
-      SdmSubscription& sdmSubscription,
+      oai::udr::model::SdmSubscription& sdmSubscription,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

@@ -53,8 +53,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class AuthenticationSubscriptionDocumentApi {
  public:
   AuthenticationSubscriptionDocumentApi(
@@ -90,7 +88,8 @@ class AuthenticationSubscriptionDocumentApi {
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify_authentication_subscription(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
   virtual void read_authentication_subscription(

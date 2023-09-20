@@ -92,10 +92,11 @@ bool MulticastAccessControl::srcIpv4AddrIsSet() const {
 void MulticastAccessControl::unsetSrcIpv4Addr() {
   m_SrcIpv4AddrIsSet = false;
 }
-Ipv6Addr MulticastAccessControl::getSrcIpv6Addr() const {
+oai::model::common::Ipv6Addr MulticastAccessControl::getSrcIpv6Addr() const {
   return m_SrcIpv6Addr;
 }
-void MulticastAccessControl::setSrcIpv6Addr(Ipv6Addr const& value) {
+void MulticastAccessControl::setSrcIpv6Addr(
+    oai::model::common::Ipv6Addr const& value) {
   m_SrcIpv6Addr      = value;
   m_SrcIpv6AddrIsSet = true;
 }
@@ -118,10 +119,12 @@ bool MulticastAccessControl::multicastV4AddrIsSet() const {
 void MulticastAccessControl::unsetMulticastV4Addr() {
   m_MulticastV4AddrIsSet = false;
 }
-Ipv6Addr MulticastAccessControl::getMulticastV6Addr() const {
+oai::model::common::Ipv6Addr MulticastAccessControl::getMulticastV6Addr()
+    const {
   return m_MulticastV6Addr;
 }
-void MulticastAccessControl::setMulticastV6Addr(Ipv6Addr const& value) {
+void MulticastAccessControl::setMulticastV6Addr(
+    oai::model::common::Ipv6Addr const& value) {
   m_MulticastV6Addr      = value;
   m_MulticastV6AddrIsSet = true;
 }

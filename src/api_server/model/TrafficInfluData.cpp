@@ -277,10 +277,10 @@ bool TrafficInfluData::ethTrafficFiltersIsSet() const {
 void TrafficInfluData::unsetEthTrafficFilters() {
   m_EthTrafficFiltersIsSet = false;
 }
-Snssai TrafficInfluData::getSnssai() const {
+oai::model::common::Snssai TrafficInfluData::getSnssai() const {
   return m_Snssai;
 }
-void TrafficInfluData::setSnssai(Snssai const& value) {
+void TrafficInfluData::setSnssai(oai::model::common::Snssai const& value) {
   m_Snssai      = value;
   m_SnssaiIsSet = true;
 }
@@ -329,11 +329,12 @@ bool TrafficInfluData::trafficFiltersIsSet() const {
 void TrafficInfluData::unsetTrafficFilters() {
   m_TrafficFiltersIsSet = false;
 }
-std::vector<RouteToLocation>& TrafficInfluData::getTrafficRoutes() {
+std::vector<oai::model::common::RouteToLocation>&
+TrafficInfluData::getTrafficRoutes() {
   return m_TrafficRoutes;
 }
 void TrafficInfluData::setTrafficRoutes(
-    std::vector<RouteToLocation> const& value) {
+    std::vector<oai::model::common::RouteToLocation> const& value) {
   m_TrafficRoutes      = value;
   m_TrafficRoutesIsSet = true;
 }
@@ -449,10 +450,11 @@ bool TrafficInfluData::subscribedEventsIsSet() const {
 void TrafficInfluData::unsetSubscribedEvents() {
   m_SubscribedEventsIsSet = false;
 }
-DnaiChangeType TrafficInfluData::getDnaiChgType() const {
+oai::model::common::DnaiChangeType TrafficInfluData::getDnaiChgType() const {
   return m_DnaiChgType;
 }
-void TrafficInfluData::setDnaiChgType(DnaiChangeType const& value) {
+void TrafficInfluData::setDnaiChgType(
+    oai::model::common::DnaiChangeType const& value) {
   m_DnaiChgType      = value;
   m_DnaiChgTypeIsSet = true;
 }

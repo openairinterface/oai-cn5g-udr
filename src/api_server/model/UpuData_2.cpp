@@ -85,10 +85,11 @@ bool UpuData_2::secPacketIsSet() const {
 void UpuData_2::unsetSecPacket() {
   m_SecPacketIsSet = false;
 }
-std::vector<Snssai>& UpuData_2::getDefaultConfNssai() {
+std::vector<oai::model::common::Snssai>& UpuData_2::getDefaultConfNssai() {
   return m_DefaultConfNssai;
 }
-void UpuData_2::setDefaultConfNssai(std::vector<Snssai> const& value) {
+void UpuData_2::setDefaultConfNssai(
+    std::vector<oai::model::common::Snssai> const& value) {
   m_DefaultConfNssai      = value;
   m_DefaultConfNssaiIsSet = true;
 }

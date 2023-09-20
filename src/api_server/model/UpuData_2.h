@@ -70,8 +70,9 @@ class UpuData_2 {
   /// <summary>
   ///
   /// </summary>
-  std::vector<Snssai>& getDefaultConfNssai();
-  void setDefaultConfNssai(std::vector<Snssai> const& value);
+  std::vector<oai::model::common::Snssai>& getDefaultConfNssai();
+  void setDefaultConfNssai(
+      std::vector<oai::model::common::Snssai> const& value);
   bool defaultConfNssaiIsSet() const;
   void unsetDefaultConfNssai();
   /// <summary>
@@ -88,7 +89,7 @@ class UpuData_2 {
  protected:
   std::string m_SecPacket;
   bool m_SecPacketIsSet;
-  std::vector<Snssai> m_DefaultConfNssai;
+  std::vector<oai::model::common::Snssai> m_DefaultConfNssai;
   bool m_DefaultConfNssaiIsSet;
   std::string m_RoutingId;
   bool m_RoutingIdIsSet;
