@@ -82,7 +82,7 @@ list(APPEND USED_COMMON_MODEL_SRC_FILES
         ${COMMON_MODEL_DIR}/PreemptionVulnerability_anyOf.cpp
         ${COMMON_MODEL_DIR}/ProblemDetails.cpp
         ${COMMON_MODEL_DIR}/RatType.cpp
-        ${COMMON_MODEL_DIR}/RatType_anyOf
+        ${COMMON_MODEL_DIR}/RatType_anyOf.cpp
         ${COMMON_MODEL_DIR}/ReportAmountMdt.cpp
         ${COMMON_MODEL_DIR}/ReportAmountMdt_anyOf.cpp
         ${COMMON_MODEL_DIR}/ReportingTrigger.cpp
