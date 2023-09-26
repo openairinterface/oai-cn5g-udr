@@ -483,7 +483,8 @@ bool mysql_db::update_authentication_subscription(
         patchItem[i].valueIsSet()) {
       patchItem[i].getValue();
       SequenceNumber sequencenumber;
-      patchItem[i].getValue().get_to(sequencenumber);
+      nlohmann::json::parse(patchItem[i].getValue().c_str())
+          .get_to(sequencenumber);
 
       if (mysql_real_query(
               &mysql_connector, select_Authenticationsubscription.c_str(),
