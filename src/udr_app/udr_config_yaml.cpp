@@ -133,14 +133,15 @@ udr_config_yaml::udr_config_yaml(
     const std::string& config_path, bool log_stdout, bool log_rot_file)
     : oai::config::config(
           config_path, oai::config::UDR_CONFIG_NAME, log_stdout, log_rot_file) {
-  m_used_sbi_values    = {oai::config::UDR_CONFIG_NAME,
-                       oai::config::NRF_CONFIG_NAME};
-  m_used_config_values = {oai::config::LOG_LEVEL_CONFIG_NAME,
-                          oai::config::REGISTER_NF_CONFIG_NAME,
-                          NF_CONFIG_HTTP_NAME,
-                          oai::config::NF_LIST_CONFIG_NAME,
-                          oai::config::UDR_CONFIG_NAME,
-                          oai::config::DATABASE_CONFIG};
+  m_used_sbi_values = {
+      oai::config::UDR_CONFIG_NAME, oai::config::NRF_CONFIG_NAME};
+  m_used_config_values = {
+      oai::config::LOG_LEVEL_CONFIG_NAME,
+      oai::config::REGISTER_NF_CONFIG_NAME,
+      NF_CONFIG_HTTP_NAME,
+      oai::config::NF_LIST_CONFIG_NAME,
+      oai::config::UDR_CONFIG_NAME,
+      oai::config::DATABASE_CONFIG};
 
   // TODO: Still we need to add default NFs even we don't use this in all_in_one
   // use case
