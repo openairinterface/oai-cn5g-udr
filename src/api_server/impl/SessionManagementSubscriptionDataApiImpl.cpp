@@ -42,18 +42,19 @@ extern oai::udr::config::udr_config udr_cfg;
 namespace oai::udr::api {
 
 using namespace oai::udr::model;
+using namespace oai::model::common;
 
 SessionManagementSubscriptionDataApiImpl::
     SessionManagementSubscriptionDataApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-        std::string address)
+        std::shared_ptr<Pistache::Rest::Router> rtr,
+        oai::udr::app::udr_app* udr_app_inst, std::string address)
     : SessionManagementSubscriptionDataApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     const std::string& ueId, const std::string& servingPlmnId,
-    const Pistache::Optional<Snssai>& singleNssai,
+    const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
     const Pistache::Optional<std::string>& dnn,
     const Pistache::Optional<std::vector<std::string>>& fields,
     const Pistache::Optional<std::string>& supportedFeatures,

@@ -60,16 +60,17 @@ void from_json(const nlohmann::json& j, SscModes& o) {
   }
 }
 
-SscMode SscModes::getDefaultSscMode() const {
+oai::model::common::SscMode SscModes::getDefaultSscMode() const {
   return m_DefaultSscMode;
 }
-void SscModes::setDefaultSscMode(SscMode const& value) {
+void SscModes::setDefaultSscMode(oai::model::common::SscMode const& value) {
   m_DefaultSscMode = value;
 }
-std::vector<SscMode>& SscModes::getAllowedSscModes() {
+std::vector<oai::model::common::SscMode>& SscModes::getAllowedSscModes() {
   return m_AllowedSscModes;
 }
-void SscModes::setAllowedSscModes(std::vector<SscMode> const& value) {
+void SscModes::setAllowedSscModes(
+    std::vector<oai::model::common::SscMode> const& value) {
   m_AllowedSscModes      = value;
   m_AllowedSscModesIsSet = true;
 }

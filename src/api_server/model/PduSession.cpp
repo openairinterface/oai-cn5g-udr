@@ -77,16 +77,16 @@ std::string PduSession::getSmfInstanceId() const {
 void PduSession::setSmfInstanceId(std::string const& value) {
   m_SmfInstanceId = value;
 }
-PlmnId PduSession::getPlmnId() const {
+oai::model::common::PlmnId PduSession::getPlmnId() const {
   return m_PlmnId;
 }
-void PduSession::setPlmnId(PlmnId const& value) {
+void PduSession::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId = value;
 }
-Snssai PduSession::getSingleNssai() const {
+oai::model::common::Snssai PduSession::getSingleNssai() const {
   return m_SingleNssai;
 }
-void PduSession::setSingleNssai(Snssai const& value) {
+void PduSession::setSingleNssai(oai::model::common::Snssai const& value) {
   m_SingleNssai      = value;
   m_SingleNssaiIsSet = true;
 }

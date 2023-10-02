@@ -95,8 +95,9 @@ class PduSessionManagementData {
   /// <summary>
   ///
   /// </summary>
-  std::vector<RouteToLocation>& getN6TrafficRoutingInfo();
-  void setN6TrafficRoutingInfo(std::vector<RouteToLocation> const& value);
+  std::vector<oai::model::common::RouteToLocation>& getN6TrafficRoutingInfo();
+  void setN6TrafficRoutingInfo(
+      std::vector<oai::model::common::RouteToLocation> const& value);
   bool n6TrafficRoutingInfoIsSet() const;
   void unsetN6TrafficRoutingInfo();
   /// <summary>
@@ -116,22 +117,22 @@ class PduSessionManagementData {
   /// <summary>
   /// UE IPv6 prefix.
   /// </summary>
-  std::vector<Ipv6Prefix>& getIpv6Prefix();
-  void setIpv6Prefix(std::vector<Ipv6Prefix> const& value);
+  std::vector<oai::model::common::Ipv6Prefix>& getIpv6Prefix();
+  void setIpv6Prefix(std::vector<oai::model::common::Ipv6Prefix> const& value);
   bool ipv6PrefixIsSet() const;
   void unsetIpv6Prefix();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Ipv6Addr>& getIpv6Addrs();
-  void setIpv6Addrs(std::vector<Ipv6Addr> const& value);
+  std::vector<oai::model::common::Ipv6Addr>& getIpv6Addrs();
+  void setIpv6Addrs(std::vector<oai::model::common::Ipv6Addr> const& value);
   bool ipv6AddrsIsSet() const;
   void unsetIpv6Addrs();
   /// <summary>
   ///
   /// </summary>
-  PduSessionType getPduSessType() const;
-  void setPduSessType(PduSessionType const& value);
+  oai::model::common::PduSessionType getPduSessType() const;
+  void setPduSessType(oai::model::common::PduSessionType const& value);
   bool pduSessTypeIsSet() const;
   void unsetPduSessType();
   /// <summary>
@@ -175,17 +176,17 @@ class PduSessionManagementData {
   bool m_DnaiIsSet;
   std::string m_DnaiTs;
   bool m_DnaiTsIsSet;
-  std::vector<RouteToLocation> m_N6TrafficRoutingInfo;
+  std::vector<oai::model::common::RouteToLocation> m_N6TrafficRoutingInfo;
   bool m_N6TrafficRoutingInfoIsSet;
   std::string m_N6TrafficRoutingInfoTs;
   bool m_N6TrafficRoutingInfoTsIsSet;
   std::string m_Ipv4Addr;
   bool m_Ipv4AddrIsSet;
-  std::vector<Ipv6Prefix> m_Ipv6Prefix;
+  std::vector<oai::model::common::Ipv6Prefix> m_Ipv6Prefix;
   bool m_Ipv6PrefixIsSet;
-  std::vector<Ipv6Addr> m_Ipv6Addrs;
+  std::vector<oai::model::common::Ipv6Addr> m_Ipv6Addrs;
   bool m_Ipv6AddrsIsSet;
-  PduSessionType m_PduSessType;
+  oai::model::common::PduSessionType m_PduSessType;
   bool m_PduSessTypeIsSet;
   std::string m_IpAddrTs;
   bool m_IpAddrTsIsSet;

@@ -77,10 +77,11 @@ bool FrameRouteInfo::ipv4MaskIsSet() const {
 void FrameRouteInfo::unsetIpv4Mask() {
   m_Ipv4MaskIsSet = false;
 }
-Ipv6Prefix FrameRouteInfo::getIpv6Prefix() const {
+oai::model::common::Ipv6Prefix FrameRouteInfo::getIpv6Prefix() const {
   return m_Ipv6Prefix;
 }
-void FrameRouteInfo::setIpv6Prefix(Ipv6Prefix const& value) {
+void FrameRouteInfo::setIpv6Prefix(
+    oai::model::common::Ipv6Prefix const& value) {
   m_Ipv6Prefix      = value;
   m_Ipv6PrefixIsSet = true;
 }

@@ -69,8 +69,8 @@ class SessionManagementSubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const& value);
+  oai::model::common::Snssai getSingleNssai() const;
+  void setSingleNssai(oai::model::common::Snssai const& value);
   /// <summary>
   /// A map (list of key-value pairs where Dnn, or optionally the Wildcard DNN,
   /// serves as key) of DnnConfigurations
@@ -104,15 +104,15 @@ class SessionManagementSubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  OdbPacketServices getOdbPacketServices() const;
-  void setOdbPacketServices(OdbPacketServices const& value);
+  oai::model::common::OdbPacketServices getOdbPacketServices() const;
+  void setOdbPacketServices(oai::model::common::OdbPacketServices const& value);
   bool odbPacketServicesIsSet() const;
   void unsetOdbPacketServices();
   /// <summary>
   ///
   /// </summary>
-  TraceData getTraceData() const;
-  void setTraceData(TraceData const& value);
+  oai::model::common::TraceData getTraceData() const;
+  void setTraceData(oai::model::common::TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
   /// <summary>
@@ -152,7 +152,7 @@ class SessionManagementSubscriptionData {
       const nlohmann::json& j, SessionManagementSubscriptionData& o);
 
  protected:
-  Snssai m_SingleNssai;
+  oai::model::common::Snssai m_SingleNssai;
   std::map<std::string, DnnConfiguration> m_DnnConfigurations;
   bool m_DnnConfigurationsIsSet;
   std::vector<std::string> m_InternalGroupIds;
@@ -161,9 +161,9 @@ class SessionManagementSubscriptionData {
   bool m_SharedVnGroupDataIdsIsSet;
   std::string m_SharedDnnConfigurationsId;
   bool m_SharedDnnConfigurationsIdIsSet;
-  OdbPacketServices m_OdbPacketServices;
+  oai::model::common::OdbPacketServices m_OdbPacketServices;
   bool m_OdbPacketServicesIsSet;
-  TraceData m_TraceData;
+  oai::model::common::TraceData m_TraceData;
   bool m_TraceDataIsSet;
   std::string m_SharedTraceDataId;
   bool m_SharedTraceDataIdIsSet;

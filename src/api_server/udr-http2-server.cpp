@@ -71,7 +71,7 @@ void udr_http2_server::start() {
               }
               // PATCH
               if (request.method().compare("PATCH") == 0 && len > 0) {
-                std::vector<PatchItem> patchItem;
+                std::vector<oai::model::common::PatchItem> patchItem;
                 // Parse Body
                 nlohmann::json::parse(msg.c_str()).get_to(patchItem);
                 this->modify_authentication_subscription_handler(
@@ -170,7 +170,7 @@ void udr_http2_server::start() {
             if (split_q[split_q.size() - 1].compare(NUDR_DR_SM_DATA) == 0) {
               if (request.method().compare("GET") == 0 && len == 0) {
                 if (split_q.size() > 6) {  // GET
-                  std::optional<oai::udr::model::Snssai> singleNssaiOpt =
+                  std::optional<oai::model::common::Snssai> singleNssaiOpt =
                       std::nullopt;
                   std::optional<std::string> dnnOpt = std::nullopt;
                   std::string ueId = split_q[split_q.size() - 4].c_str();
@@ -185,10 +185,10 @@ void udr_http2_server::start() {
                   std::string snssai =
                       util::get_query_param(qs, "single-nssai");
                   if (!snssai.empty()) {
-                    Snssai singleNssai = {};
+                    oai::model::common::Snssai singleNssai = {};
                     nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
                     singleNssaiOpt =
-                        std::make_optional<oai::udr::model::Snssai>(
+                        std::make_optional<oai::model::common::Snssai>(
                             singleNssai);
                   }
                   if (!dnn.empty()) {
@@ -204,7 +204,7 @@ void udr_http2_server::start() {
               }
               // POST
               if (request.method().compare("POST") == 0 && len > 0) {
-                Snssai singleNssai        = {};
+                oai::model::common::Snssai singleNssai = {};
                 std::string ueId          = split_q[split_q.size() - 4].c_str();
                 std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
 
@@ -215,7 +215,7 @@ void udr_http2_server::start() {
               }
               // PUT
               if (request.method().compare("PUT") == 0 && len > 0) {
-                Snssai singleNssai        = {};
+                oai::model::common::Snssai singleNssai = {};
                 std::string ueId          = split_q[split_q.size() - 4].c_str();
                 std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
                 SessionManagementSubscriptionData subscriptionData;
@@ -225,17 +225,18 @@ void udr_http2_server::start() {
               }
               // DELETE
               if (request.method().compare("DELETE") == 0 && len == 0) {
-                std::optional<oai::udr::model::Snssai> singleNssaiOpt =
+                std::optional<oai::model::common::Snssai> singleNssaiOpt =
                     std::nullopt;
                 std::string ueId          = split_q[split_q.size() - 4].c_str();
                 std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
                 std::string qs            = request.uri().raw_query;
                 std::string snssai = util::get_query_param(qs, "single-nssai");
                 if (!snssai.empty()) {
-                  Snssai singleNssai = {};
+                  oai::model::common::Snssai singleNssai = {};
                   nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
                   singleNssaiOpt =
-                      std::make_optional<oai::udr::model::Snssai>(singleNssai);
+                      std::make_optional<oai::model::common::Snssai>(
+                          singleNssai);
                 }
 
                 this->delete_sm_data_handler(
@@ -423,7 +424,8 @@ void udr_http2_server::query_authentication_status_handler(
 
 //------------------------------------------------------------------------------
 void udr_http2_server::modify_authentication_subscription_handler(
-    const std::string& ue_id, const std::vector<PatchItem>& patchItem,
+    const std::string& ue_id,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     const response& response) {
   nlohmann::json response_data = {};
   long http_code               = 0;
@@ -583,7 +585,7 @@ void udr_http2_server::query_sdm_subscriptions_handler(
 //------------------------------------------------------------------------------
 void udr_http2_server::query_sm_data_handler(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    const response& response, std::optional<oai::udr::model::Snssai>& snssai,
+    const response& response, std::optional<oai::model::common::Snssai>& snssai,
     std::optional<std::string>& dnn) {
   nlohmann::json response_data = {};
   header_map h;
@@ -673,7 +675,8 @@ void udr_http2_server::update_sm_data_handler(
 //------------------------------------------------------------------------------
 void udr_http2_server::delete_sm_data_handler(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    std::optional<oai::udr::model::Snssai>& snssai, const response& response) {
+    std::optional<oai::model::common::Snssai>& snssai,
+    const response& response) {
   nlohmann::json response_data = {};
   header_map h;
   long http_code = 0;

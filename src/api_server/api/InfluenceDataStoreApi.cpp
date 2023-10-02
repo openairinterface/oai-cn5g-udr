@@ -40,8 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
-using namespace oai::udr::model;
+using namespace oai::model::common::helpers;
 
 InfluenceDataStoreApi::InfluenceDataStoreApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -86,7 +85,7 @@ void InfluenceDataStoreApi::read_influence_data_handler(
     }
   }
   auto snssaisQuery = request.query().get("snssais");
-  Pistache::Optional<std::vector<Snssai>> snssais;
+  Pistache::Optional<std::vector<oai::model::common::Snssai>> snssais;
   if (!snssaisQuery.isEmpty()) {
     //        std::vector<Snssai> valueQuery_instance;
     //        if(fromStringValue(snssaisQuery.get(), valueQuery_instance)){

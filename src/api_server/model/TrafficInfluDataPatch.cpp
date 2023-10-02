@@ -229,10 +229,10 @@ bool TrafficInfluDataPatch::ethTrafficFiltersIsSet() const {
 void TrafficInfluDataPatch::unsetEthTrafficFilters() {
   m_EthTrafficFiltersIsSet = false;
 }
-Snssai TrafficInfluDataPatch::getSnssai() const {
+oai::model::common::Snssai TrafficInfluDataPatch::getSnssai() const {
   return m_Snssai;
 }
-void TrafficInfluDataPatch::setSnssai(Snssai const& value) {
+void TrafficInfluDataPatch::setSnssai(oai::model::common::Snssai const& value) {
   m_Snssai      = value;
   m_SnssaiIsSet = true;
 }
@@ -282,11 +282,12 @@ bool TrafficInfluDataPatch::trafficFiltersIsSet() const {
 void TrafficInfluDataPatch::unsetTrafficFilters() {
   m_TrafficFiltersIsSet = false;
 }
-std::vector<RouteToLocation>& TrafficInfluDataPatch::getTrafficRoutes() {
+std::vector<oai::model::common::RouteToLocation>&
+TrafficInfluDataPatch::getTrafficRoutes() {
   return m_TrafficRoutes;
 }
 void TrafficInfluDataPatch::setTrafficRoutes(
-    std::vector<RouteToLocation> const& value) {
+    std::vector<oai::model::common::RouteToLocation> const& value) {
   m_TrafficRoutes      = value;
   m_TrafficRoutesIsSet = true;
 }

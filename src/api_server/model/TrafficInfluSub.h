@@ -70,8 +70,8 @@ class TrafficInfluSub {
   /// <summary>
   /// Each element identifies a slice.
   /// </summary>
-  std::vector<Snssai>& getSnssais();
-  void setSnssais(std::vector<Snssai> const& value);
+  std::vector<oai::model::common::Snssai>& getSnssais();
+  void setSnssais(std::vector<oai::model::common::Snssai> const& value);
   bool snssaisIsSet() const;
   void unsetSnssais();
   /// <summary>
@@ -114,7 +114,7 @@ class TrafficInfluSub {
  protected:
   std::vector<std::string> m_Dnns;
   bool m_DnnsIsSet;
-  std::vector<Snssai> m_Snssais;
+  std::vector<oai::model::common::Snssai> m_Snssais;
   bool m_SnssaisIsSet;
   std::vector<std::string> m_InternalGroupIds;
   bool m_InternalGroupIdsIsSet;

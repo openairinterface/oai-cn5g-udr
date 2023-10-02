@@ -65,7 +65,7 @@ class AmfSubscriptionInfoDocumentApiImpl
 
   void modify_amf_subscription_info(
       const std::string& ueId, const std::string& subsId,
-      const std::vector<PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };

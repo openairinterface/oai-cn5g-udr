@@ -70,15 +70,15 @@ class IpAddress {
   /// <summary>
   ///
   /// </summary>
-  Ipv6Addr getIpv6Addr() const;
-  void setIpv6Addr(Ipv6Addr const& value);
+  oai::model::common::Ipv6Addr getIpv6Addr() const;
+  void setIpv6Addr(oai::model::common::Ipv6Addr const& value);
   bool ipv6AddrIsSet() const;
   void unsetIpv6Addr();
   /// <summary>
   ///
   /// </summary>
-  Ipv6Prefix getIpv6Prefix() const;
-  void setIpv6Prefix(Ipv6Prefix const& value);
+  oai::model::common::Ipv6Prefix getIpv6Prefix() const;
+  void setIpv6Prefix(oai::model::common::Ipv6Prefix const& value);
   bool ipv6PrefixIsSet() const;
   void unsetIpv6Prefix();
 
@@ -88,9 +88,9 @@ class IpAddress {
  protected:
   std::string m_Ipv4Addr;
   bool m_Ipv4AddrIsSet;
-  Ipv6Addr m_Ipv6Addr;
+  oai::model::common::Ipv6Addr m_Ipv6Addr;
   bool m_Ipv6AddrIsSet;
-  Ipv6Prefix m_Ipv6Prefix;
+  oai::model::common::Ipv6Prefix m_Ipv6Prefix;
   bool m_Ipv6PrefixIsSet;
 };
 

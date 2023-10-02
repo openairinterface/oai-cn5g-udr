@@ -38,11 +38,9 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 OperatorSpecificDataDocumentApiImpl::OperatorSpecificDataDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-    std::string address)
+    std::shared_ptr<Pistache::Rest::Router> rtr,
+    oai::udr::app::udr_app* udr_app_inst, std::string address)
     : OperatorSpecificDataDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
@@ -57,13 +55,15 @@ void OperatorSpecificDataDocumentApiImpl::read_operator_specific_data(
 }
 void OperatorSpecificDataDocumentApiImpl::replace_operator_specific_data(
     const std::string& ueId,
-    const std::map<std::string, OperatorSpecificDataContainer>& requestBody,
+    const std::map<std::string, oai::udr::model::OperatorSpecificDataContainer>&
+        requestBody,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void OperatorSpecificDataDocumentApiImpl::update_operator_specific_data(
-    const std::string& ueId, const std::vector<PatchItem>& patchItem,
+    const std::string& ueId,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

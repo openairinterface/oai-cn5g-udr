@@ -108,8 +108,8 @@ class TrafficInfluData {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSnssai() const;
-  void setSnssai(Snssai const& value);
+  oai::model::common::Snssai getSnssai() const;
+  void setSnssai(oai::model::common::Snssai const& value);
   bool snssaiIsSet() const;
   void unsetSnssai();
   /// <summary>
@@ -137,8 +137,9 @@ class TrafficInfluData {
   /// <summary>
   /// Identifies the N6 traffic routing requirement.
   /// </summary>
-  std::vector<RouteToLocation>& getTrafficRoutes();
-  void setTrafficRoutes(std::vector<RouteToLocation> const& value);
+  std::vector<oai::model::common::RouteToLocation>& getTrafficRoutes();
+  void setTrafficRoutes(
+      std::vector<oai::model::common::RouteToLocation> const& value);
   bool trafficRoutesIsSet() const;
   void unsetTrafficRoutes();
   /// <summary>
@@ -200,8 +201,8 @@ class TrafficInfluData {
   /// <summary>
   ///
   /// </summary>
-  DnaiChangeType getDnaiChgType() const;
-  void setDnaiChgType(DnaiChangeType const& value);
+  oai::model::common::DnaiChangeType getDnaiChgType() const;
+  void setDnaiChgType(oai::model::common::DnaiChangeType const& value);
   bool dnaiChgTypeIsSet() const;
   void unsetDnaiChgType();
   /// <summary>
@@ -247,7 +248,7 @@ class TrafficInfluData {
   bool m_DnnIsSet;
   std::vector<EthFlowDescription> m_EthTrafficFilters;
   bool m_EthTrafficFiltersIsSet;
-  Snssai m_Snssai;
+  oai::model::common::Snssai m_Snssai;
   bool m_SnssaiIsSet;
   std::string m_InterGroupId;
   bool m_InterGroupIdIsSet;
@@ -255,7 +256,7 @@ class TrafficInfluData {
   bool m_SupiIsSet;
   std::vector<FlowInfo> m_TrafficFilters;
   bool m_TrafficFiltersIsSet;
-  std::vector<RouteToLocation> m_TrafficRoutes;
+  std::vector<oai::model::common::RouteToLocation> m_TrafficRoutes;
   bool m_TrafficRoutesIsSet;
   bool m_TraffCorreInd;
   bool m_TraffCorreIndIsSet;
@@ -273,7 +274,7 @@ class TrafficInfluData {
   bool m_HeadersIsSet;
   std::vector<SubscribedEvent> m_SubscribedEvents;
   bool m_SubscribedEventsIsSet;
-  DnaiChangeType m_DnaiChgType;
+  oai::model::common::DnaiChangeType m_DnaiChgType;
   bool m_DnaiChgTypeIsSet;
   bool m_AfAckInd;
   bool m_AfAckIndIsSet;

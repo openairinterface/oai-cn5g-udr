@@ -63,15 +63,15 @@ class V2xSubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  NrV2xAuth getNrV2xServicesAuth() const;
-  void setNrV2xServicesAuth(NrV2xAuth const& value);
+  oai::model::common::NrV2xAuth getNrV2xServicesAuth() const;
+  void setNrV2xServicesAuth(oai::model::common::NrV2xAuth const& value);
   bool nrV2xServicesAuthIsSet() const;
   void unsetNrV2xServicesAuth();
   /// <summary>
   ///
   /// </summary>
-  LteV2xAuth getLteV2xServicesAuth() const;
-  void setLteV2xServicesAuth(LteV2xAuth const& value);
+  oai::model::common::LteV2xAuth getLteV2xServicesAuth() const;
+  void setLteV2xServicesAuth(oai::model::common::LteV2xAuth const& value);
   bool lteV2xServicesAuthIsSet() const;
   void unsetLteV2xServicesAuth();
   /// <summary>
@@ -93,9 +93,9 @@ class V2xSubscriptionData {
   friend void from_json(const nlohmann::json& j, V2xSubscriptionData& o);
 
  protected:
-  NrV2xAuth m_NrV2xServicesAuth;
+  oai::model::common::NrV2xAuth m_NrV2xServicesAuth;
   bool m_NrV2xServicesAuthIsSet;
-  LteV2xAuth m_LteV2xServicesAuth;
+  oai::model::common::LteV2xAuth m_LteV2xServicesAuth;
   bool m_LteV2xServicesAuthIsSet;
   std::string m_NrUePc5Ambr;
   bool m_NrUePc5AmbrIsSet;

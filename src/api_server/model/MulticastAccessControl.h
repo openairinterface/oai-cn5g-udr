@@ -70,8 +70,8 @@ class MulticastAccessControl {
   /// <summary>
   ///
   /// </summary>
-  Ipv6Addr getSrcIpv6Addr() const;
-  void setSrcIpv6Addr(Ipv6Addr const& value);
+  oai::model::common::Ipv6Addr getSrcIpv6Addr() const;
+  void setSrcIpv6Addr(oai::model::common::Ipv6Addr const& value);
   bool srcIpv6AddrIsSet() const;
   void unsetSrcIpv6Addr();
   /// <summary>
@@ -84,8 +84,8 @@ class MulticastAccessControl {
   /// <summary>
   ///
   /// </summary>
-  Ipv6Addr getMulticastV6Addr() const;
-  void setMulticastV6Addr(Ipv6Addr const& value);
+  oai::model::common::Ipv6Addr getMulticastV6Addr() const;
+  void setMulticastV6Addr(oai::model::common::Ipv6Addr const& value);
   bool multicastV6AddrIsSet() const;
   void unsetMulticastV6Addr();
   /// <summary>
@@ -100,11 +100,11 @@ class MulticastAccessControl {
  protected:
   std::string m_SrcIpv4Addr;
   bool m_SrcIpv4AddrIsSet;
-  Ipv6Addr m_SrcIpv6Addr;
+  oai::model::common::Ipv6Addr m_SrcIpv6Addr;
   bool m_SrcIpv6AddrIsSet;
   std::string m_MulticastV4Addr;
   bool m_MulticastV4AddrIsSet;
-  Ipv6Addr m_MulticastV6Addr;
+  oai::model::common::Ipv6Addr m_MulticastV6Addr;
   bool m_MulticastV6AddrIsSet;
   AccessRightStatus m_AccStatus;
 };

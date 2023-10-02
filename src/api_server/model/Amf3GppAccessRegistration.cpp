@@ -254,11 +254,12 @@ std::string Amf3GppAccessRegistration::getDeregCallbackUri() const {
 void Amf3GppAccessRegistration::setDeregCallbackUri(std::string const& value) {
   m_DeregCallbackUri = value;
 }
-ServiceName Amf3GppAccessRegistration::getAmfServiceNameDereg() const {
+oai::model::nrf::ServiceName Amf3GppAccessRegistration::getAmfServiceNameDereg()
+    const {
   return m_AmfServiceNameDereg;
 }
 void Amf3GppAccessRegistration::setAmfServiceNameDereg(
-    ServiceName const& value) {
+    oai::model::nrf::ServiceName const& value) {
   m_AmfServiceNameDereg      = value;
   m_AmfServiceNameDeregIsSet = true;
 }
@@ -282,11 +283,12 @@ bool Amf3GppAccessRegistration::pcscfRestorationCallbackUriIsSet() const {
 void Amf3GppAccessRegistration::unsetPcscfRestorationCallbackUri() {
   m_PcscfRestorationCallbackUriIsSet = false;
 }
-ServiceName Amf3GppAccessRegistration::getAmfServiceNamePcscfRest() const {
+oai::model::nrf::ServiceName
+Amf3GppAccessRegistration::getAmfServiceNamePcscfRest() const {
   return m_AmfServiceNamePcscfRest;
 }
 void Amf3GppAccessRegistration::setAmfServiceNamePcscfRest(
-    ServiceName const& value) {
+    oai::model::nrf::ServiceName const& value) {
   m_AmfServiceNamePcscfRest      = value;
   m_AmfServiceNamePcscfRestIsSet = true;
 }
@@ -309,17 +311,19 @@ bool Amf3GppAccessRegistration::initialRegistrationIndIsSet() const {
 void Amf3GppAccessRegistration::unsetInitialRegistrationInd() {
   m_InitialRegistrationIndIsSet = false;
 }
-Guami Amf3GppAccessRegistration::getGuami() const {
+oai::model::common::Guami Amf3GppAccessRegistration::getGuami() const {
   return m_Guami;
 }
-void Amf3GppAccessRegistration::setGuami(Guami const& value) {
+void Amf3GppAccessRegistration::setGuami(
+    oai::model::common::Guami const& value) {
   m_Guami = value;
 }
-std::vector<BackupAmfInfo>& Amf3GppAccessRegistration::getBackupAmfInfo() {
+std::vector<oai::model::common::BackupAmfInfo>&
+Amf3GppAccessRegistration::getBackupAmfInfo() {
   return m_BackupAmfInfo;
 }
 void Amf3GppAccessRegistration::setBackupAmfInfo(
-    std::vector<BackupAmfInfo> const& value) {
+    std::vector<oai::model::common::BackupAmfInfo> const& value) {
   m_BackupAmfInfo      = value;
   m_BackupAmfInfoIsSet = true;
 }
@@ -342,10 +346,11 @@ bool Amf3GppAccessRegistration::drFlagIsSet() const {
 void Amf3GppAccessRegistration::unsetDrFlag() {
   m_DrFlagIsSet = false;
 }
-RatType Amf3GppAccessRegistration::getRatType() const {
+oai::model::common::RatType Amf3GppAccessRegistration::getRatType() const {
   return m_RatType;
 }
-void Amf3GppAccessRegistration::setRatType(RatType const& value) {
+void Amf3GppAccessRegistration::setRatType(
+    oai::model::common::RatType const& value) {
   m_RatType = value;
 }
 bool Amf3GppAccessRegistration::isUrrpIndicator() const {

@@ -53,8 +53,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class MessageWaitingDataDocumentApi {
  public:
   MessageWaitingDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
@@ -93,7 +91,8 @@ class MessageWaitingDataDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="messageWaitingData"> (optional)</param>
   virtual void create_message_waiting_data(
-      const std::string& ueId, const MessageWaitingData& messageWaitingData,
+      const std::string& ueId,
+      const oai::udr::model::MessageWaitingData& messageWaitingData,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
@@ -115,7 +114,8 @@ class MessageWaitingDataDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="patchItem"></param>
   virtual void modify_message_waiting_data(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>

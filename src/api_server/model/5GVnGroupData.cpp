@@ -89,17 +89,18 @@ std::string _5GVnGroupData::getDnn() const {
 void _5GVnGroupData::setDnn(std::string const& value) {
   m_Dnn = value;
 }
-Snssai _5GVnGroupData::getSNssai() const {
+oai::model::common::Snssai _5GVnGroupData::getSNssai() const {
   return m_SNssai;
 }
-void _5GVnGroupData::setSNssai(Snssai const& value) {
+void _5GVnGroupData::setSNssai(oai::model::common::Snssai const& value) {
   m_SNssai = value;
 }
-std::vector<PduSessionType>& _5GVnGroupData::getPduSessionTypes() {
+std::vector<oai::model::common::PduSessionType>&
+_5GVnGroupData::getPduSessionTypes() {
   return m_PduSessionTypes;
 }
 void _5GVnGroupData::setPduSessionTypes(
-    std::vector<PduSessionType> const& value) {
+    std::vector<oai::model::common::PduSessionType> const& value) {
   m_PduSessionTypes      = value;
   m_PduSessionTypesIsSet = true;
 }

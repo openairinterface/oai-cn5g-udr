@@ -92,7 +92,7 @@ class mysql_db : public database_wrapper<mysql_db> {
    * @return true if success, otherwise return false
    */
   bool get_key_from_snssai(
-      const oai::udr::model::Snssai& snssai, uint32_t& key);
+      const oai::model::common::Snssai& snssai, uint32_t& key);
 
   /*
    * Get NSSAI (SST, SD) from the corresponding key
@@ -101,7 +101,7 @@ class mysql_db : public database_wrapper<mysql_db> {
    * @return void
    */
   void get_snssai_from_key(
-      oai::udr::model::Snssai& snssai, const uint32_t& key);
+      oai::model::common::Snssai& snssai, const uint32_t& key);
 
   bool insert_authentication_subscription(
       const std::string& id,
@@ -116,7 +116,7 @@ class mysql_db : public database_wrapper<mysql_db> {
 
   bool update_authentication_subscription(
       const std::string& id,
-      const std::vector<oai::udr::model::PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       nlohmann::json& json_data);
 
   bool query_am_data(
@@ -172,14 +172,14 @@ class mysql_db : public database_wrapper<mysql_db> {
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data,
-      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<oai::model::common::Snssai>& snssai,
       const std::optional<std::string>& dnn);
 
   bool query_sm_data(nlohmann::json& json_data);
 
   bool delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      const std::optional<oai::udr::model::Snssai>& snssai);
+      const std::optional<oai::model::common::Snssai>& snssai);
 
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,

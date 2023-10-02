@@ -41,8 +41,8 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 IPTVConfigurationDataStoreApiImpl::IPTVConfigurationDataStoreApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-    std::string address)
+    std::shared_ptr<Pistache::Rest::Router> rtr,
+    oai::udr::app::udr_app* udr_app_inst, std::string address)
     : IPTVConfigurationDataStoreApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
@@ -50,7 +50,7 @@ IPTVConfigurationDataStoreApiImpl::IPTVConfigurationDataStoreApiImpl(
 void IPTVConfigurationDataStoreApiImpl::read_iptv_congifuration_data(
     const Pistache::Optional<std::vector<std::string>>& configIds,
     const Pistache::Optional<std::vector<std::string>>& dnns,
-    const Pistache::Optional<std::vector<Snssai>>& snssais,
+    const Pistache::Optional<std::vector<oai::model::common::Snssai>>& snssais,
     const Pistache::Optional<std::vector<std::string>>& supis,
     const Pistache::Optional<std::vector<std::string>>& interGroupIds,
     Pistache::Http::ResponseWriter& response) {

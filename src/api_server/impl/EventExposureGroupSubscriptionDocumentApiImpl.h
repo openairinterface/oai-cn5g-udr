@@ -50,24 +50,21 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class EventExposureGroupSubscriptionDocumentApiImpl
     : public oai::udr::api::EventExposureGroupSubscriptionDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   EventExposureGroupSubscriptionDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~EventExposureGroupSubscriptionDocumentApiImpl() {}
 
   void modify_ee_group_subscription(
       const std::string& ueGroupId, const std::string& subsId,
-      const std::vector<PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void query_ee_group_subscription(
@@ -78,7 +75,7 @@ class EventExposureGroupSubscriptionDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void update_ee_group_subscriptions(
       const std::string& ueGroupId, const std::string& subsId,
-      const EeSubscription& eeSubscription,
+      const oai::udr::model::EeSubscription& eeSubscription,
       Pistache::Http::ResponseWriter& response);
 };
 

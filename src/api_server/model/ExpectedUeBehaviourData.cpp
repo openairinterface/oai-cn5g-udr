@@ -114,11 +114,12 @@ void from_json(const nlohmann::json& j, ExpectedUeBehaviourData& o) {
   }
 }
 
-StationaryIndication ExpectedUeBehaviourData::getStationaryIndication() const {
+oai::model::common::StationaryIndication
+ExpectedUeBehaviourData::getStationaryIndication() const {
   return m_StationaryIndication;
 }
 void ExpectedUeBehaviourData::setStationaryIndication(
-    StationaryIndication const& value) {
+    oai::model::common::StationaryIndication const& value) {
   m_StationaryIndication      = value;
   m_StationaryIndicationIsSet = true;
 }
@@ -155,12 +156,12 @@ bool ExpectedUeBehaviourData::periodicTimeIsSet() const {
 void ExpectedUeBehaviourData::unsetPeriodicTime() {
   m_PeriodicTimeIsSet = false;
 }
-ScheduledCommunicationTime
+oai::model::common::ScheduledCommunicationTime
 ExpectedUeBehaviourData::getScheduledCommunicationTime() const {
   return m_ScheduledCommunicationTime;
 }
 void ExpectedUeBehaviourData::setScheduledCommunicationTime(
-    ScheduledCommunicationTime const& value) {
+    oai::model::common::ScheduledCommunicationTime const& value) {
   m_ScheduledCommunicationTime      = value;
   m_ScheduledCommunicationTimeIsSet = true;
 }
@@ -170,12 +171,12 @@ bool ExpectedUeBehaviourData::scheduledCommunicationTimeIsSet() const {
 void ExpectedUeBehaviourData::unsetScheduledCommunicationTime() {
   m_ScheduledCommunicationTimeIsSet = false;
 }
-ScheduledCommunicationType
+oai::model::common::ScheduledCommunicationType
 ExpectedUeBehaviourData::getScheduledCommunicationType() const {
   return m_ScheduledCommunicationType;
 }
 void ExpectedUeBehaviourData::setScheduledCommunicationType(
-    ScheduledCommunicationType const& value) {
+    oai::model::common::ScheduledCommunicationType const& value) {
   m_ScheduledCommunicationType      = value;
   m_ScheduledCommunicationTypeIsSet = true;
 }
@@ -199,10 +200,12 @@ bool ExpectedUeBehaviourData::expectedUmtsIsSet() const {
 void ExpectedUeBehaviourData::unsetExpectedUmts() {
   m_ExpectedUmtsIsSet = false;
 }
-TrafficProfile ExpectedUeBehaviourData::getTrafficProfile() const {
+oai::model::common::TrafficProfile ExpectedUeBehaviourData::getTrafficProfile()
+    const {
   return m_TrafficProfile;
 }
-void ExpectedUeBehaviourData::setTrafficProfile(TrafficProfile const& value) {
+void ExpectedUeBehaviourData::setTrafficProfile(
+    oai::model::common::TrafficProfile const& value) {
   m_TrafficProfile      = value;
   m_TrafficProfileIsSet = true;
 }
@@ -212,11 +215,12 @@ bool ExpectedUeBehaviourData::trafficProfileIsSet() const {
 void ExpectedUeBehaviourData::unsetTrafficProfile() {
   m_TrafficProfileIsSet = false;
 }
-BatteryIndication ExpectedUeBehaviourData::getBatteryIndication() const {
+oai::model::common::BatteryIndication
+ExpectedUeBehaviourData::getBatteryIndication() const {
   return m_BatteryIndication;
 }
 void ExpectedUeBehaviourData::setBatteryIndication(
-    BatteryIndication const& value) {
+    oai::model::common::BatteryIndication const& value) {
   m_BatteryIndication      = value;
   m_BatteryIndicationIsSet = true;
 }

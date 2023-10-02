@@ -79,10 +79,12 @@ void from_json(const nlohmann::json& j, V2xSubscriptionData& o) {
   }
 }
 
-NrV2xAuth V2xSubscriptionData::getNrV2xServicesAuth() const {
+oai::model::common::NrV2xAuth V2xSubscriptionData::getNrV2xServicesAuth()
+    const {
   return m_NrV2xServicesAuth;
 }
-void V2xSubscriptionData::setNrV2xServicesAuth(NrV2xAuth const& value) {
+void V2xSubscriptionData::setNrV2xServicesAuth(
+    oai::model::common::NrV2xAuth const& value) {
   m_NrV2xServicesAuth      = value;
   m_NrV2xServicesAuthIsSet = true;
 }
@@ -92,10 +94,12 @@ bool V2xSubscriptionData::nrV2xServicesAuthIsSet() const {
 void V2xSubscriptionData::unsetNrV2xServicesAuth() {
   m_NrV2xServicesAuthIsSet = false;
 }
-LteV2xAuth V2xSubscriptionData::getLteV2xServicesAuth() const {
+oai::model::common::LteV2xAuth V2xSubscriptionData::getLteV2xServicesAuth()
+    const {
   return m_LteV2xServicesAuth;
 }
-void V2xSubscriptionData::setLteV2xServicesAuth(LteV2xAuth const& value) {
+void V2xSubscriptionData::setLteV2xServicesAuth(
+    oai::model::common::LteV2xAuth const& value) {
   m_LteV2xServicesAuth      = value;
   m_LteV2xServicesAuthIsSet = true;
 }

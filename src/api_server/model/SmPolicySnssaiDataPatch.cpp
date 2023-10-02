@@ -60,10 +60,11 @@ void from_json(const nlohmann::json& j, SmPolicySnssaiDataPatch& o) {
   }
 }
 
-Snssai SmPolicySnssaiDataPatch::getSnssai() const {
+oai::model::common::Snssai SmPolicySnssaiDataPatch::getSnssai() const {
   return m_Snssai;
 }
-void SmPolicySnssaiDataPatch::setSnssai(Snssai const& value) {
+void SmPolicySnssaiDataPatch::setSnssai(
+    oai::model::common::Snssai const& value) {
   m_Snssai = value;
 }
 std::map<std::string, SmPolicyDnnDataPatch>&

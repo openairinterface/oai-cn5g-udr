@@ -99,8 +99,8 @@ class ProvisionedDataSets {
   /// <summary>
   ///
   /// </summary>
-  TraceData getTraceData() const;
-  void setTraceData(TraceData const& value);
+  oai::model::common::TraceData getTraceData() const;
+  void setTraceData(oai::model::common::TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
   /// <summary>
@@ -151,7 +151,7 @@ class ProvisionedDataSets {
   bool m_SmsSubsDataIsSet;
   std::vector<SessionManagementSubscriptionData> m_SmData;
   bool m_SmDataIsSet;
-  TraceData m_TraceData;
+  oai::model::common::TraceData m_TraceData;
   bool m_TraceDataIsSet;
   SmsManagementSubscriptionData m_SmsMngData;
   bool m_SmsMngDataIsSet;

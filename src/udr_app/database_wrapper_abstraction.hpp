@@ -126,7 +126,7 @@ class database_wrapper_abstraction {
    */
   virtual bool update_authentication_subscription(
       const std::string& id,
-      const std::vector<oai::udr::model::PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       nlohmann::json& json_data) = 0;
 
   /*
@@ -256,7 +256,7 @@ class database_wrapper_abstraction {
   virtual bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data,
-      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<oai::model::common::Snssai>& snssai,
       const std::optional<std::string>& dnn) = 0;
 
   /*
@@ -276,7 +276,7 @@ class database_wrapper_abstraction {
    */
   virtual bool delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      const std::optional<oai::udr::model::Snssai>& snssai) = 0;
+      const std::optional<oai::model::common::Snssai>& snssai) = 0;
 
   /*
    * Insert a new item into the DB for SessionManagementSubscription

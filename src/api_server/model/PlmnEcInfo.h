@@ -62,8 +62,8 @@ class PlmnEcInfo {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
@@ -83,7 +83,7 @@ class PlmnEcInfo {
   friend void from_json(const nlohmann::json& j, PlmnEcInfo& o);
 
  protected:
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
 
   EcRestrictionDataWb m_EcRestrictionDataWb;
   bool m_EcRestrictionDataWbIsSet;

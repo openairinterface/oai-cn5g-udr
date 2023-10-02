@@ -50,24 +50,21 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class SessionManagementSubscriptionDataApiImpl
     : public oai::udr::api::SessionManagementSubscriptionDataApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   SessionManagementSubscriptionDataApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~SessionManagementSubscriptionDataApiImpl() {}
 
   void query_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::vector<std::string>>& fields,
       const Pistache::Optional<std::string>& supportedFeatures,
@@ -77,15 +74,15 @@ class SessionManagementSubscriptionDataApiImpl
   void query_sm_data(Pistache::Http::ResponseWriter& response);
   void create_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      SessionManagementSubscriptionData& subscriptionData,
+      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
       Pistache::Http::ResponseWriter& response);
   void put_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      SessionManagementSubscriptionData& subscriptionData,
+      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
       Pistache::Http::ResponseWriter& response);
   void delete_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<Snssai>& singleNssai,
+      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
       Pistache::Http::ResponseWriter& response);
 };
 

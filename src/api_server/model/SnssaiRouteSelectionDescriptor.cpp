@@ -60,10 +60,11 @@ void from_json(const nlohmann::json& j, SnssaiRouteSelectionDescriptor& o) {
   }
 }
 
-Snssai SnssaiRouteSelectionDescriptor::getSnssai() const {
+oai::model::common::Snssai SnssaiRouteSelectionDescriptor::getSnssai() const {
   return m_Snssai;
 }
-void SnssaiRouteSelectionDescriptor::setSnssai(Snssai const& value) {
+void SnssaiRouteSelectionDescriptor::setSnssai(
+    oai::model::common::Snssai const& value) {
   m_Snssai = value;
 }
 std::vector<DnnRouteSelectionDescriptor>&

@@ -72,8 +72,8 @@ class PgwInfo {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
   bool plmnIdIsSet() const;
   void unsetPlmnId();
   /// <summary>
@@ -92,7 +92,7 @@ class PgwInfo {
 
   std::string m_PgwFqdn;
 
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
   bool m_PlmnIdIsSet;
   bool m_EpdgInd;
   bool m_EpdgIndIsSet;

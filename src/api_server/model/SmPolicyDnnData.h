@@ -191,8 +191,9 @@ class SmPolicyDnnData {
   /// <summary>
   ///
   /// </summary>
-  std::map<std::string, PresenceInfo>& getPraInfos();
-  void setPraInfos(std::map<std::string, PresenceInfo> const& value);
+  std::map<std::string, oai::model::common::PresenceInfo>& getPraInfos();
+  void setPraInfos(
+      std::map<std::string, oai::model::common::PresenceInfo> const& value);
   bool praInfosIsSet() const;
   void unsetPraInfos();
   /// <summary>
@@ -250,7 +251,7 @@ class SmPolicyDnnData {
   bool m_MpsPriorityLevelIsSet;
   int32_t m_McsPriorityLevel;
   bool m_McsPriorityLevelIsSet;
-  std::map<std::string, PresenceInfo> m_PraInfos;
+  std::map<std::string, oai::model::common::PresenceInfo> m_PraInfos;
   bool m_PraInfosIsSet;
   std::map<std::string, std::string> m_BdtRefIds;
   bool m_BdtRefIdsIsSet;

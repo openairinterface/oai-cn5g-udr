@@ -79,8 +79,8 @@ class VnGroupData {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const& value);
+  oai::model::common::Snssai getSingleNssai() const;
+  void setSingleNssai(oai::model::common::Snssai const& value);
   bool singleNssaiIsSet() const;
   void unsetSingleNssai();
   /// <summary>
@@ -99,7 +99,7 @@ class VnGroupData {
   bool m_PduSessionTypesIsSet;
   std::string m_Dnn;
   bool m_DnnIsSet;
-  Snssai m_SingleNssai;
+  oai::model::common::Snssai m_SingleNssai;
   bool m_SingleNssaiIsSet;
   std::vector<AppDescriptor> m_AppDescriptors;
   bool m_AppDescriptorsIsSet;

@@ -56,10 +56,10 @@ void from_json(const nlohmann::json& j, EdrxParameters& o) {
   j.at("edrxValue").get_to(o.m_EdrxValue);
 }
 
-RatType EdrxParameters::getRatType() const {
+oai::model::common::RatType EdrxParameters::getRatType() const {
   return m_RatType;
 }
-void EdrxParameters::setRatType(RatType const& value) {
+void EdrxParameters::setRatType(oai::model::common::RatType const& value) {
   m_RatType = value;
 }
 std::string EdrxParameters::getEdrxValue() const {

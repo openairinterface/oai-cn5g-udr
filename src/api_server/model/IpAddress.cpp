@@ -83,10 +83,10 @@ bool IpAddress::ipv4AddrIsSet() const {
 void IpAddress::unsetIpv4Addr() {
   m_Ipv4AddrIsSet = false;
 }
-Ipv6Addr IpAddress::getIpv6Addr() const {
+oai::model::common::Ipv6Addr IpAddress::getIpv6Addr() const {
   return m_Ipv6Addr;
 }
-void IpAddress::setIpv6Addr(Ipv6Addr const& value) {
+void IpAddress::setIpv6Addr(oai::model::common::Ipv6Addr const& value) {
   m_Ipv6Addr      = value;
   m_Ipv6AddrIsSet = true;
 }
@@ -96,10 +96,10 @@ bool IpAddress::ipv6AddrIsSet() const {
 void IpAddress::unsetIpv6Addr() {
   m_Ipv6AddrIsSet = false;
 }
-Ipv6Prefix IpAddress::getIpv6Prefix() const {
+oai::model::common::Ipv6Prefix IpAddress::getIpv6Prefix() const {
   return m_Ipv6Prefix;
 }
-void IpAddress::setIpv6Prefix(Ipv6Prefix const& value) {
+void IpAddress::setIpv6Prefix(oai::model::common::Ipv6Prefix const& value) {
   m_Ipv6Prefix      = value;
   m_Ipv6PrefixIsSet = true;
 }

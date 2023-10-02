@@ -425,11 +425,12 @@ bool SmPolicyDnnData::mcsPriorityLevelIsSet() const {
 void SmPolicyDnnData::unsetMcsPriorityLevel() {
   m_McsPriorityLevelIsSet = false;
 }
-std::map<std::string, PresenceInfo>& SmPolicyDnnData::getPraInfos() {
+std::map<std::string, oai::model::common::PresenceInfo>&
+SmPolicyDnnData::getPraInfos() {
   return m_PraInfos;
 }
 void SmPolicyDnnData::setPraInfos(
-    std::map<std::string, PresenceInfo> const& value) {
+    std::map<std::string, oai::model::common::PresenceInfo> const& value) {
   m_PraInfos      = value;
   m_PraInfosIsSet = true;
 }

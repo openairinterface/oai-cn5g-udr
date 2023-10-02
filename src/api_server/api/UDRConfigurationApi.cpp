@@ -27,7 +27,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
+using namespace oai::model::common::helpers;
 
 UDRConfigurationApi::UDRConfigurationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {

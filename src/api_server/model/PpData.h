@@ -96,8 +96,8 @@ class PpData {
   /// <summary>
   ///
   /// </summary>
-  AcsInfoRm getAcsInfo() const;
-  void setAcsInfo(AcsInfoRm const& value);
+  oai::model::common::AcsInfoRm getAcsInfo() const;
+  void setAcsInfo(oai::model::common::AcsInfoRm const& value);
   bool acsInfoIsSet() const;
   void unsetAcsInfo();
   /// <summary>
@@ -134,7 +134,7 @@ class PpData {
   bool m_ExpectedUeBehaviourParametersIsSet;
   EcRestriction m_EcRestriction;
   bool m_EcRestrictionIsSet;
-  AcsInfoRm m_AcsInfo;
+  oai::model::common::AcsInfoRm m_AcsInfo;
   bool m_AcsInfoIsSet;
   std::string m_StnSr;
   bool m_StnSrIsSet;

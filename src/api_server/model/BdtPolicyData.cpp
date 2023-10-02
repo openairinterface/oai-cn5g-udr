@@ -133,10 +133,10 @@ bool BdtPolicyData::dnnIsSet() const {
 void BdtPolicyData::unsetDnn() {
   m_DnnIsSet = false;
 }
-Snssai BdtPolicyData::getSnssai() const {
+oai::model::common::Snssai BdtPolicyData::getSnssai() const {
   return m_Snssai;
 }
-void BdtPolicyData::setSnssai(Snssai const& value) {
+void BdtPolicyData::setSnssai(oai::model::common::Snssai const& value) {
   m_Snssai      = value;
   m_SnssaiIsSet = true;
 }

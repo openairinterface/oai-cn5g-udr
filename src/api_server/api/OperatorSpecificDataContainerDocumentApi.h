@@ -54,8 +54,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class OperatorSpecificDataContainerDocumentApi {
  public:
   OperatorSpecificDataContainerDocumentApi(
@@ -91,7 +89,8 @@ class OperatorSpecificDataContainerDocumentApi {
   /// <param name="supportedFeatures">Features required to be supported by the
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify_oper_spec_data(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 

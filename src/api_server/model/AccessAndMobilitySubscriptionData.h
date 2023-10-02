@@ -113,8 +113,8 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  AmbrRm getSubscribedUeAmbr() const;
-  void setSubscribedUeAmbr(AmbrRm const& value);
+  oai::model::common::AmbrRm getSubscribedUeAmbr() const;
+  void setSubscribedUeAmbr(oai::model::common::AmbrRm const& value);
   bool subscribedUeAmbrIsSet() const;
   void unsetSubscribedUeAmbr();
   /// <summary>
@@ -127,30 +127,33 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType>& getRatRestrictions();
-  void setRatRestrictions(std::vector<RatType> const& value);
+  std::vector<oai::model::common::RatType>& getRatRestrictions();
+  void setRatRestrictions(
+      std::vector<oai::model::common::RatType> const& value);
   bool ratRestrictionsIsSet() const;
   void unsetRatRestrictions();
   /// <summary>
   ///
   /// </summary>
-  std::vector<Area>& getForbiddenAreas();
-  void setForbiddenAreas(std::vector<Area> const& value);
+  std::vector<oai::model::common::Area>& getForbiddenAreas();
+  void setForbiddenAreas(std::vector<oai::model::common::Area> const& value);
   bool forbiddenAreasIsSet() const;
   void unsetForbiddenAreas();
   /// <summary>
   ///
   /// </summary>
-  ServiceAreaRestriction getServiceAreaRestriction() const;
-  void setServiceAreaRestriction(ServiceAreaRestriction const& value);
+  oai::model::common::ServiceAreaRestriction getServiceAreaRestriction() const;
+  void setServiceAreaRestriction(
+      oai::model::common::ServiceAreaRestriction const& value);
   bool serviceAreaRestrictionIsSet() const;
   void unsetServiceAreaRestriction();
   /// <summary>
   ///
   /// </summary>
-  std::vector<CoreNetworkType>& getCoreNetworkTypeRestrictions();
+  std::vector<oai::model::common::CoreNetworkType>&
+  getCoreNetworkTypeRestrictions();
   void setCoreNetworkTypeRestrictions(
-      std::vector<CoreNetworkType> const& value);
+      std::vector<oai::model::common::CoreNetworkType> const& value);
   bool coreNetworkTypeRestrictionsIsSet() const;
   void unsetCoreNetworkTypeRestrictions();
   /// <summary>
@@ -247,8 +250,8 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  OdbPacketServices getOdbPacketServices() const;
-  void setOdbPacketServices(OdbPacketServices const& value);
+  oai::model::common::OdbPacketServices getOdbPacketServices() const;
+  void setOdbPacketServices(oai::model::common::OdbPacketServices const& value);
   bool odbPacketServicesIsSet() const;
   void unsetOdbPacketServices();
   /// <summary>
@@ -275,15 +278,15 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  MdtConfiguration getMdtConfiguration() const;
-  void setMdtConfiguration(MdtConfiguration const& value);
+  oai::model::common::MdtConfiguration getMdtConfiguration() const;
+  void setMdtConfiguration(oai::model::common::MdtConfiguration const& value);
   bool mdtConfigurationIsSet() const;
   void unsetMdtConfiguration();
   /// <summary>
   ///
   /// </summary>
-  TraceData getTraceData() const;
-  void setTraceData(TraceData const& value);
+  oai::model::common::TraceData getTraceData() const;
+  void setTraceData(oai::model::common::TraceData const& value);
   bool traceDataIsSet() const;
   void unsetTraceData();
   /// <summary>
@@ -352,15 +355,17 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType>& getPrimaryRatRestrictions();
-  void setPrimaryRatRestrictions(std::vector<RatType> const& value);
+  std::vector<oai::model::common::RatType>& getPrimaryRatRestrictions();
+  void setPrimaryRatRestrictions(
+      std::vector<oai::model::common::RatType> const& value);
   bool primaryRatRestrictionsIsSet() const;
   void unsetPrimaryRatRestrictions();
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType>& getSecondaryRatRestrictions();
-  void setSecondaryRatRestrictions(std::vector<RatType> const& value);
+  std::vector<oai::model::common::RatType>& getSecondaryRatRestrictions();
+  void setSecondaryRatRestrictions(
+      std::vector<oai::model::common::RatType> const& value);
   bool secondaryRatRestrictionsIsSet() const;
   void unsetSecondaryRatRestrictions();
   /// <summary>
@@ -387,16 +392,18 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  std::vector<WirelineArea>& getWirelineForbiddenAreas();
-  void setWirelineForbiddenAreas(std::vector<WirelineArea> const& value);
+  std::vector<oai::model::common::WirelineArea>& getWirelineForbiddenAreas();
+  void setWirelineForbiddenAreas(
+      std::vector<oai::model::common::WirelineArea> const& value);
   bool wirelineForbiddenAreasIsSet() const;
   void unsetWirelineForbiddenAreas();
   /// <summary>
   ///
   /// </summary>
-  WirelineServiceAreaRestriction getWirelineServiceAreaRestriction() const;
+  oai::model::common::WirelineServiceAreaRestriction
+  getWirelineServiceAreaRestriction() const;
   void setWirelineServiceAreaRestriction(
-      WirelineServiceAreaRestriction const& value);
+      oai::model::common::WirelineServiceAreaRestriction const& value);
   bool wirelineServiceAreaRestrictionIsSet() const;
   void unsetWirelineServiceAreaRestriction();
 
@@ -414,17 +421,18 @@ class AccessAndMobilitySubscriptionData {
   bool m_InternalGroupIdsIsSet;
   std::map<std::string, std::string> m_SharedVnGroupDataIds;
   bool m_SharedVnGroupDataIdsIsSet;
-  AmbrRm m_SubscribedUeAmbr;
+  oai::model::common::AmbrRm m_SubscribedUeAmbr;
   bool m_SubscribedUeAmbrIsSet;
   Nssai m_Nssai;
   bool m_NssaiIsSet;
-  std::vector<RatType> m_RatRestrictions;
+  std::vector<oai::model::common::RatType> m_RatRestrictions;
   bool m_RatRestrictionsIsSet;
-  std::vector<Area> m_ForbiddenAreas;
+  std::vector<oai::model::common::Area> m_ForbiddenAreas;
   bool m_ForbiddenAreasIsSet;
-  ServiceAreaRestriction m_ServiceAreaRestriction;
+  oai::model::common::ServiceAreaRestriction m_ServiceAreaRestriction;
   bool m_ServiceAreaRestrictionIsSet;
-  std::vector<CoreNetworkType> m_CoreNetworkTypeRestrictions;
+  std::vector<oai::model::common::CoreNetworkType>
+      m_CoreNetworkTypeRestrictions;
   bool m_CoreNetworkTypeRestrictionsIsSet;
   int32_t m_RfspIndex;
   bool m_RfspIndexIsSet;
@@ -452,7 +460,7 @@ class AccessAndMobilitySubscriptionData {
   bool m_MicoAllowedIsSet;
   std::vector<std::string> m_SharedAmDataIds;
   bool m_SharedAmDataIdsIsSet;
-  OdbPacketServices m_OdbPacketServices;
+  oai::model::common::OdbPacketServices m_OdbPacketServices;
   bool m_OdbPacketServicesIsSet;
   //    std::vector<AnyOfstringstring> m_SubscribedDnnList;
   bool m_SubscribedDnnListIsSet;
@@ -460,9 +468,9 @@ class AccessAndMobilitySubscriptionData {
   bool m_ServiceGapTimeIsSet;
   MdtUserConsent m_MdtUserConsent;
   bool m_MdtUserConsentIsSet;
-  MdtConfiguration m_MdtConfiguration;
+  oai::model::common::MdtConfiguration m_MdtConfiguration;
   bool m_MdtConfigurationIsSet;
-  TraceData m_TraceData;
+  oai::model::common::TraceData m_TraceData;
   bool m_TraceDataIsSet;
   CagData m_CagData;
   bool m_CagDataIsSet;
@@ -482,9 +490,9 @@ class AccessAndMobilitySubscriptionData {
   bool m_EcRestrictionDataNbIsSet;
   ExpectedUeBehaviourData m_ExpectedUeBehaviourList;
   bool m_ExpectedUeBehaviourListIsSet;
-  std::vector<RatType> m_PrimaryRatRestrictions;
+  std::vector<oai::model::common::RatType> m_PrimaryRatRestrictions;
   bool m_PrimaryRatRestrictionsIsSet;
-  std::vector<RatType> m_SecondaryRatRestrictions;
+  std::vector<oai::model::common::RatType> m_SecondaryRatRestrictions;
   bool m_SecondaryRatRestrictionsIsSet;
   std::vector<EdrxParameters> m_EdrxParametersList;
   bool m_EdrxParametersListIsSet;
@@ -492,9 +500,10 @@ class AccessAndMobilitySubscriptionData {
   bool m_PtwParametersListIsSet;
   bool m_IabOperationAllowed;
   bool m_IabOperationAllowedIsSet;
-  std::vector<WirelineArea> m_WirelineForbiddenAreas;
+  std::vector<oai::model::common::WirelineArea> m_WirelineForbiddenAreas;
   bool m_WirelineForbiddenAreasIsSet;
-  WirelineServiceAreaRestriction m_WirelineServiceAreaRestriction;
+  oai::model::common::WirelineServiceAreaRestriction
+      m_WirelineServiceAreaRestriction;
   bool m_WirelineServiceAreaRestrictionIsSet;
 };
 

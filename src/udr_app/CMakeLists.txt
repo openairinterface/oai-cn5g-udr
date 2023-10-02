@@ -26,6 +26,8 @@ include_directories(${SRC_TOP_DIR}/api_server/)
 include_directories(${SRC_TOP_DIR}/common/)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/common_model/common_model.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/nrf/nrf_model.cmake)
 
 add_library (UDR STATIC
   udr_app.cpp

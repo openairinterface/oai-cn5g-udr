@@ -68,8 +68,9 @@ class ExpectedUeBehaviourData {
   /// <summary>
   ///
   /// </summary>
-  StationaryIndication getStationaryIndication() const;
-  void setStationaryIndication(StationaryIndication const& value);
+  oai::model::common::StationaryIndication getStationaryIndication() const;
+  void setStationaryIndication(
+      oai::model::common::StationaryIndication const& value);
   bool stationaryIndicationIsSet() const;
   void unsetStationaryIndication();
   /// <summary>
@@ -89,15 +90,19 @@ class ExpectedUeBehaviourData {
   /// <summary>
   ///
   /// </summary>
-  ScheduledCommunicationTime getScheduledCommunicationTime() const;
-  void setScheduledCommunicationTime(ScheduledCommunicationTime const& value);
+  oai::model::common::ScheduledCommunicationTime getScheduledCommunicationTime()
+      const;
+  void setScheduledCommunicationTime(
+      oai::model::common::ScheduledCommunicationTime const& value);
   bool scheduledCommunicationTimeIsSet() const;
   void unsetScheduledCommunicationTime();
   /// <summary>
   ///
   /// </summary>
-  ScheduledCommunicationType getScheduledCommunicationType() const;
-  void setScheduledCommunicationType(ScheduledCommunicationType const& value);
+  oai::model::common::ScheduledCommunicationType getScheduledCommunicationType()
+      const;
+  void setScheduledCommunicationType(
+      oai::model::common::ScheduledCommunicationType const& value);
   bool scheduledCommunicationTypeIsSet() const;
   void unsetScheduledCommunicationType();
   /// <summary>
@@ -111,15 +116,15 @@ class ExpectedUeBehaviourData {
   /// <summary>
   ///
   /// </summary>
-  TrafficProfile getTrafficProfile() const;
-  void setTrafficProfile(TrafficProfile const& value);
+  oai::model::common::TrafficProfile getTrafficProfile() const;
+  void setTrafficProfile(oai::model::common::TrafficProfile const& value);
   bool trafficProfileIsSet() const;
   void unsetTrafficProfile();
   /// <summary>
   ///
   /// </summary>
-  BatteryIndication getBatteryIndication() const;
-  void setBatteryIndication(BatteryIndication const& value);
+  oai::model::common::BatteryIndication getBatteryIndication() const;
+  void setBatteryIndication(oai::model::common::BatteryIndication const& value);
   bool batteryIndicationIsSet() const;
   void unsetBatteryIndication();
   /// <summary>
@@ -134,21 +139,21 @@ class ExpectedUeBehaviourData {
   friend void from_json(const nlohmann::json& j, ExpectedUeBehaviourData& o);
 
  protected:
-  StationaryIndication m_StationaryIndication;
+  oai::model::common::StationaryIndication m_StationaryIndication;
   bool m_StationaryIndicationIsSet;
   int32_t m_CommunicationDurationTime;
   bool m_CommunicationDurationTimeIsSet;
   int32_t m_PeriodicTime;
   bool m_PeriodicTimeIsSet;
-  ScheduledCommunicationTime m_ScheduledCommunicationTime;
+  oai::model::common::ScheduledCommunicationTime m_ScheduledCommunicationTime;
   bool m_ScheduledCommunicationTimeIsSet;
-  ScheduledCommunicationType m_ScheduledCommunicationType;
+  oai::model::common::ScheduledCommunicationType m_ScheduledCommunicationType;
   bool m_ScheduledCommunicationTypeIsSet;
   std::vector<LocationArea> m_ExpectedUmts;
   bool m_ExpectedUmtsIsSet;
-  TrafficProfile m_TrafficProfile;
+  oai::model::common::TrafficProfile m_TrafficProfile;
   bool m_TrafficProfileIsSet;
-  BatteryIndication m_BatteryIndication;
+  oai::model::common::BatteryIndication m_BatteryIndication;
   bool m_BatteryIndicationIsSet;
   std::string m_ValidityTime;
   bool m_ValidityTimeIsSet;

@@ -40,7 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
+using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
 
 OperatorSpecificDataDocumentApi::OperatorSpecificDataDocumentApi(
@@ -172,7 +172,7 @@ void OperatorSpecificDataDocumentApi::update_operator_specific_data_handler(
   auto ueId = request.param(":ueId").as<std::string>();
 
   // Getting the body param
-  std::vector<PatchItem> patchItem;
+  std::vector<oai::model::common::PatchItem> patchItem;
 
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);

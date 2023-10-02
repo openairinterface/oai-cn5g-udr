@@ -41,7 +41,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
+using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
 
 AMF3GPPAccessRegistrationDocumentApi::AMF3GPPAccessRegistrationDocumentApi(
@@ -99,7 +99,7 @@ void AMF3GPPAccessRegistrationDocumentApi::amf_context3gpp_handler(
   auto ueId = request.param(":ueId").as<std::string>();
 
   // Getting the body param
-  std::vector<PatchItem> patchItem;
+  std::vector<oai::model::common::PatchItem> patchItem;
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");

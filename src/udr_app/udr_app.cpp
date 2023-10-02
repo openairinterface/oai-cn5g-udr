@@ -41,6 +41,7 @@
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
+using namespace oai::model::common;
 using namespace oai::udr::config;
 
 extern udr_app* udr_app_inst;
@@ -142,7 +143,7 @@ void udr_app::handle_query_amf_context_3gpp(
 
 //------------------------------------------------------------------------------
 void udr_app::handle_create_authentication_status(
-    const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+    const std::string& ue_id, const AuthEvent& authEvent,
     nlohmann::json& response_data, long& code) {
   Logger::udr_app().info(
       "[UE Id %s] Store the Authentication Status data of an UE",
@@ -375,7 +376,7 @@ void udr_app::handle_query_sdm_subscriptions(
 void udr_app::handle_query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& response_data, long& code,
-    const std::optional<oai::udr::model::Snssai>& snssai,
+    const std::optional<Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the Session Management Subscription Data of an UE",
@@ -469,8 +470,8 @@ void udr_app::handle_update_sm_data(
 //------------------------------------------------------------------------------
 void udr_app::handle_delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    const std::optional<oai::udr::model::Snssai>& snssai,
-    nlohmann::json& response_data, long& code) {
+    const std::optional<Snssai>& snssai, nlohmann::json& response_data,
+    long& code) {
   Logger::udr_app().info(
       "[UE Id %s]  Delete a Session Management subscription data of a UE",
       ue_id.c_str());

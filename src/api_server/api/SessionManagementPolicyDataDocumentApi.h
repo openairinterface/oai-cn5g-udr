@@ -92,7 +92,8 @@ class SessionManagementPolicyDataDocumentApi {
   /// std::vector&lt;std::string&gt;())</param> <param name="suppFeat">Supported
   /// Features (optional, default to &quot;&quot;)</param>
   virtual void read_session_management_policy_data(
-      const std::string& ueId, const Pistache::Optional<Snssai>& snssai,
+      const std::string& ueId,
+      const Pistache::Optional<oai::model::common::Snssai>& snssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::vector<std::string>>& fields,
       const Pistache::Optional<std::string>& suppFeat,

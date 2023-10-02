@@ -192,10 +192,10 @@ bool BdtData::dnnIsSet() const {
 void BdtData::unsetDnn() {
   m_DnnIsSet = false;
 }
-Snssai BdtData::getSnssai() const {
+oai::model::common::Snssai BdtData::getSnssai() const {
   return m_Snssai;
 }
-void BdtData::setSnssai(Snssai const& value) {
+void BdtData::setSnssai(oai::model::common::Snssai const& value) {
   m_Snssai      = value;
   m_SnssaiIsSet = true;
 }

@@ -65,8 +65,8 @@ class SnssaiRouteSelectionDescriptor {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSnssai() const;
-  void setSnssai(Snssai const& value);
+  oai::model::common::Snssai getSnssai() const;
+  void setSnssai(oai::model::common::Snssai const& value);
   /// <summary>
   ///
   /// </summary>
@@ -82,7 +82,7 @@ class SnssaiRouteSelectionDescriptor {
       const nlohmann::json& j, SnssaiRouteSelectionDescriptor& o);
 
  protected:
-  Snssai m_Snssai;
+  oai::model::common::Snssai m_Snssai;
 
   std::vector<DnnRouteSelectionDescriptor> m_DnnRouteSelDescs;
   bool m_DnnRouteSelDescsIsSet;

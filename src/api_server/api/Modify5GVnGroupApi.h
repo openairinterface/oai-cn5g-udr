@@ -53,8 +53,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class Modify5GVnGroupApi {
  public:
   Modify5GVnGroupApi(std::shared_ptr<Pistache::Rest::Router>);
@@ -87,7 +85,7 @@ class Modify5GVnGroupApi {
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify5_g_vn_group(
       const std::string& externalGroupId,
-      const std::vector<PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };

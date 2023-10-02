@@ -79,8 +79,8 @@ class DataChangeNotify {
   /// <summary>
   ///
   /// </summary>
-  std::vector<NotifyItem>& getNotifyItems();
-  void setNotifyItems(std::vector<NotifyItem> const& value);
+  std::vector<oai::model::common::NotifyItem>& getNotifyItems();
+  void setNotifyItems(std::vector<oai::model::common::NotifyItem> const& value);
   bool notifyItemsIsSet() const;
   void unsetNotifyItems();
   /// <summary>
@@ -115,7 +115,7 @@ class DataChangeNotify {
   bool m_OriginalCallbackReferenceIsSet;
   std::string m_UeId;
   bool m_UeIdIsSet;
-  std::vector<NotifyItem> m_NotifyItems;
+  std::vector<oai::model::common::NotifyItem> m_NotifyItems;
   bool m_NotifyItemsIsSet;
   SdmSubscription m_SdmSubscription;
   bool m_SdmSubscriptionIsSet;

@@ -68,10 +68,10 @@ void from_json(const nlohmann::json& j, PlmnEcInfo& o) {
   }
 }
 
-PlmnId PlmnEcInfo::getPlmnId() const {
+oai::model::common::PlmnId PlmnEcInfo::getPlmnId() const {
   return m_PlmnId;
 }
-void PlmnEcInfo::setPlmnId(PlmnId const& value) {
+void PlmnEcInfo::setPlmnId(oai::model::common::PlmnId const& value) {
   m_PlmnId = value;
 }
 EcRestrictionDataWb PlmnEcInfo::getEcRestrictionDataWb() const {

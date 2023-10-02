@@ -167,10 +167,10 @@ bool ServiceParameterData::dnnIsSet() const {
 void ServiceParameterData::unsetDnn() {
   m_DnnIsSet = false;
 }
-Snssai ServiceParameterData::getSnssai() const {
+oai::model::common::Snssai ServiceParameterData::getSnssai() const {
   return m_Snssai;
 }
-void ServiceParameterData::setSnssai(Snssai const& value) {
+void ServiceParameterData::setSnssai(oai::model::common::Snssai const& value) {
   m_Snssai      = value;
   m_SnssaiIsSet = true;
 }

@@ -115,7 +115,8 @@ class IPSMGWRegistrationDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="patchItem"></param>
   virtual void modify_ip_sm_gw_context(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
