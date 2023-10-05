@@ -76,10 +76,11 @@ void from_json(const nlohmann::json& j, NetworkAreaInfo_2& o) {
   }
 }
 
-std::vector<Ecgi>& NetworkAreaInfo_2::getEcgis() {
+std::vector<oai::model::common::Ecgi>& NetworkAreaInfo_2::getEcgis() {
   return m_Ecgis;
 }
-void NetworkAreaInfo_2::setEcgis(std::vector<Ecgi> const& value) {
+void NetworkAreaInfo_2::setEcgis(
+    std::vector<oai::model::common::Ecgi> const& value) {
   m_Ecgis      = value;
   m_EcgisIsSet = true;
 }
@@ -89,10 +90,11 @@ bool NetworkAreaInfo_2::ecgisIsSet() const {
 void NetworkAreaInfo_2::unsetEcgis() {
   m_EcgisIsSet = false;
 }
-std::vector<Ncgi>& NetworkAreaInfo_2::getNcgis() {
+std::vector<oai::model::common::Ncgi>& NetworkAreaInfo_2::getNcgis() {
   return m_Ncgis;
 }
-void NetworkAreaInfo_2::setNcgis(std::vector<Ncgi> const& value) {
+void NetworkAreaInfo_2::setNcgis(
+    std::vector<oai::model::common::Ncgi> const& value) {
   m_Ncgis      = value;
   m_NcgisIsSet = true;
 }
@@ -102,11 +104,12 @@ bool NetworkAreaInfo_2::ncgisIsSet() const {
 void NetworkAreaInfo_2::unsetNcgis() {
   m_NcgisIsSet = false;
 }
-std::vector<GlobalRanNodeId>& NetworkAreaInfo_2::getGRanNodeIds() {
+std::vector<oai::model::common::GlobalRanNodeId>&
+NetworkAreaInfo_2::getGRanNodeIds() {
   return m_GRanNodeIds;
 }
 void NetworkAreaInfo_2::setGRanNodeIds(
-    std::vector<GlobalRanNodeId> const& value) {
+    std::vector<oai::model::common::GlobalRanNodeId> const& value) {
   m_GRanNodeIds      = value;
   m_GRanNodeIdsIsSet = true;
 }
@@ -116,10 +119,11 @@ bool NetworkAreaInfo_2::gRanNodeIdsIsSet() const {
 void NetworkAreaInfo_2::unsetGRanNodeIds() {
   m_GRanNodeIdsIsSet = false;
 }
-std::vector<Tai>& NetworkAreaInfo_2::getTais() {
+std::vector<oai::model::common::Tai>& NetworkAreaInfo_2::getTais() {
   return m_Tais;
 }
-void NetworkAreaInfo_2::setTais(std::vector<Tai> const& value) {
+void NetworkAreaInfo_2::setTais(
+    std::vector<oai::model::common::Tai> const& value) {
   m_Tais      = value;
   m_TaisIsSet = true;
 }

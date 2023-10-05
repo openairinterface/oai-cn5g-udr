@@ -49,25 +49,22 @@
 #include "udr_app.hpp"
 
 namespace oai::udr::api {
-
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl
     : public oai::udr::api::
           QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl() {}
 
   void get_nidd_au_data(
-      const std::string& ueId, const Pistache::Optional<Snssai>& singleNssai,
+      const std::string& ueId,
+      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::string>& mtcProviderInformation,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,

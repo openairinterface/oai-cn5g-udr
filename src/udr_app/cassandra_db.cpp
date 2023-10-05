@@ -85,7 +85,7 @@ bool cassandra_db::query_authentication_subscription(
 //------------------------------------------------------------------------------
 bool cassandra_db::update_authentication_subscription(
     const std::string& id,
-    const std::vector<oai::udr::model::PatchItem>& patchItem,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     nlohmann::json& json_data) {
   return true;
 }
@@ -165,7 +165,7 @@ bool cassandra_db::query_sdm_subscriptions(
 //------------------------------------------------------------------------------
 bool cassandra_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& json_data, const std::optional<oai::udr::model::Snssai>&,
+    nlohmann::json& json_data, const std::optional<oai::model::common::Snssai>&,
     const std::optional<std::string>& dnn) {
   return true;
 }
@@ -195,7 +195,7 @@ bool cassandra_db::update_sm_data(
 //------------------------------------------------------------------------------
 bool cassandra_db::delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    const std::optional<oai::udr::model::Snssai>& snssai) {
+    const std::optional<oai::model::common::Snssai>& snssai) {
   return true;
 }
 

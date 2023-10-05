@@ -59,10 +59,10 @@ void from_json(const nlohmann::json& j, UsageMonDataScope& o) {
   }
 }
 
-Snssai UsageMonDataScope::getSnssai() const {
+oai::model::common::Snssai UsageMonDataScope::getSnssai() const {
   return m_Snssai;
 }
-void UsageMonDataScope::setSnssai(Snssai const& value) {
+void UsageMonDataScope::setSnssai(oai::model::common::Snssai const& value) {
   m_Snssai = value;
 }
 std::vector<std::string>& UsageMonDataScope::getDnn() {

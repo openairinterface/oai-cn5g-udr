@@ -37,8 +37,6 @@
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 AmfSubscriptionInfoDocumentApiImpl::AmfSubscriptionInfoDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
     std::string address)
@@ -48,7 +46,7 @@ AmfSubscriptionInfoDocumentApiImpl::AmfSubscriptionInfoDocumentApiImpl(
 
 void AmfSubscriptionInfoDocumentApiImpl::modify_amf_subscription_info(
     const std::string& ueId, const std::string& subsId,
-    const std::vector<PatchItem>& patchItem,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

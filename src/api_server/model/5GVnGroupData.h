@@ -71,13 +71,14 @@ class _5GVnGroupData {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSNssai() const;
-  void setSNssai(Snssai const& value);
+  oai::model::common::Snssai getSNssai() const;
+  void setSNssai(oai::model::common::Snssai const& value);
   /// <summary>
   ///
   /// </summary>
-  std::vector<PduSessionType>& getPduSessionTypes();
-  void setPduSessionTypes(std::vector<PduSessionType> const& value);
+  std::vector<oai::model::common::PduSessionType>& getPduSessionTypes();
+  void setPduSessionTypes(
+      std::vector<oai::model::common::PduSessionType> const& value);
   bool pduSessionTypesIsSet() const;
   void unsetPduSessionTypes();
   /// <summary>
@@ -108,9 +109,9 @@ class _5GVnGroupData {
  protected:
   std::string m_Dnn;
 
-  Snssai m_SNssai;
+  oai::model::common::Snssai m_SNssai;
 
-  std::vector<PduSessionType> m_PduSessionTypes;
+  std::vector<oai::model::common::PduSessionType> m_PduSessionTypes;
   bool m_PduSessionTypesIsSet;
   std::vector<AppDescriptor> m_AppDescriptors;
   bool m_AppDescriptorsIsSet;

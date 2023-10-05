@@ -89,15 +89,15 @@ class DnnConfiguration {
   /// <summary>
   ///
   /// </summary>
-  SubscribedDefaultQos getR5gQosProfile() const;
-  void setR5gQosProfile(SubscribedDefaultQos const& value);
+  oai::model::common::SubscribedDefaultQos getR5gQosProfile() const;
+  void setR5gQosProfile(oai::model::common::SubscribedDefaultQos const& value);
   bool r5gQosProfileIsSet() const;
   void unsetr_5gQosProfile();
   /// <summary>
   ///
   /// </summary>
-  Ambr getSessionAmbr() const;
-  void setSessionAmbr(Ambr const& value);
+  oai::model::common::Ambr getSessionAmbr() const;
+  void setSessionAmbr(oai::model::common::Ambr const& value);
   bool sessionAmbrIsSet() const;
   void unsetSessionAmbr();
   /// <summary>
@@ -117,8 +117,8 @@ class DnnConfiguration {
   /// <summary>
   ///
   /// </summary>
-  UpSecurity getUpSecurity() const;
-  void setUpSecurity(UpSecurity const& value);
+  oai::model::common::UpSecurity getUpSecurity() const;
+  void setUpSecurity(oai::model::common::UpSecurity const& value);
   bool upSecurityIsSet() const;
   void unsetUpSecurity();
   /// <summary>
@@ -152,8 +152,8 @@ class DnnConfiguration {
   /// <summary>
   ///
   /// </summary>
-  AcsInfo getAcsInfo() const;
-  void setAcsInfo(AcsInfo const& value);
+  oai::model::common::AcsInfo getAcsInfo() const;
+  void setAcsInfo(oai::model::common::AcsInfo const& value);
   bool acsInfoIsSet() const;
   void unsetAcsInfo();
   /// <summary>
@@ -209,15 +209,15 @@ class DnnConfiguration {
 
   bool m_IwkEpsInd;
   bool m_IwkEpsIndIsSet;
-  SubscribedDefaultQos m_r_5gQosProfile;
+  oai::model::common::SubscribedDefaultQos m_r_5gQosProfile;
   bool m_r_5gQosProfileIsSet;
-  Ambr m_SessionAmbr;
+  oai::model::common::Ambr m_SessionAmbr;
   bool m_SessionAmbrIsSet;
   std::string m_r_3gppChargingCharacteristics;
   bool m_r_3gppChargingCharacteristicsIsSet;
   std::vector<IpAddress> m_StaticIpAddress;
   bool m_StaticIpAddressIsSet;
-  UpSecurity m_UpSecurity;
+  oai::model::common::UpSecurity m_UpSecurity;
   bool m_UpSecurityIsSet;
   PduSessionContinuityInd m_PduSessionContinuityInd;
   bool m_PduSessionContinuityIndIsSet;
@@ -227,7 +227,7 @@ class DnnConfiguration {
   bool m_NiddInfoIsSet;
   bool m_RedundantSessionAllowed;
   bool m_RedundantSessionAllowedIsSet;
-  AcsInfo m_AcsInfo;
+  oai::model::common::AcsInfo m_AcsInfo;
   bool m_AcsInfoIsSet;
   std::vector<FrameRouteInfo> m_Ipv4FrameRouteList;
   bool m_Ipv4FrameRouteListIsSet;

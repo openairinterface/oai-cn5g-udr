@@ -292,6 +292,8 @@ add_executable(udr
   ${SRC_TOP_DIR}/oai_udr/options.cpp
   )
 
+include(${BUILD_TOP_DIR}/udr/used_models.cmake)
+
 ## Common modules
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger/logger.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config/config.cmake)

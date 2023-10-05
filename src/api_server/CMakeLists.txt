@@ -28,6 +28,8 @@ include_directories(${UDR_API_SERVER_DIR}/)
 include_directories(${SRC_TOP_DIR}/udr_app)
 include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/common_model/common_model.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/nrf/nrf_model.cmake)
 
 file(GLOB UDR_API_SERVER_src_files
     ${UDR_API_SERVER_DIR}/udr-api-server.cpp

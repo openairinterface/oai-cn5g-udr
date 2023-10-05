@@ -40,8 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
-using namespace oai::udr::model;
+using namespace oai::model::common::helpers;
 
 Modify5GVnGroupApi::Modify5GVnGroupApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -78,7 +77,7 @@ void Modify5GVnGroupApi::modify5_g_vn_group_handler(
   auto externalGroupId = request.param(":externalGroupId").as<std::string>();
 
   // Getting the body param
-  std::vector<PatchItem> patchItem;
+  std::vector<oai::model::common::PatchItem> patchItem;
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");

@@ -338,10 +338,11 @@ bool PolicyDataChangeNotification::usageMonIdIsSet() const {
 void PolicyDataChangeNotification::unsetUsageMonId() {
   m_UsageMonIdIsSet = false;
 }
-PlmnId PolicyDataChangeNotification::getPlmnId() const {
+oai::model::common::PlmnId PolicyDataChangeNotification::getPlmnId() const {
   return m_PlmnId;
 }
-void PolicyDataChangeNotification::setPlmnId(PlmnId const& value) {
+void PolicyDataChangeNotification::setPlmnId(
+    oai::model::common::PlmnId const& value) {
   m_PlmnId      = value;
   m_PlmnIdIsSet = true;
 }

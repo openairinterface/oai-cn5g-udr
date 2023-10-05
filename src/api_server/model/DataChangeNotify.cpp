@@ -123,10 +123,12 @@ bool DataChangeNotify::ueIdIsSet() const {
 void DataChangeNotify::unsetUeId() {
   m_UeIdIsSet = false;
 }
-std::vector<NotifyItem>& DataChangeNotify::getNotifyItems() {
+std::vector<oai::model::common::NotifyItem>&
+DataChangeNotify::getNotifyItems() {
   return m_NotifyItems;
 }
-void DataChangeNotify::setNotifyItems(std::vector<NotifyItem> const& value) {
+void DataChangeNotify::setNotifyItems(
+    std::vector<oai::model::common::NotifyItem> const& value) {
   m_NotifyItems      = value;
   m_NotifyItemsIsSet = true;
 }

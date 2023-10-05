@@ -38,19 +38,18 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 SessionManagementPolicyDataDocumentApiImpl::
     SessionManagementPolicyDataDocumentApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-        std::string address)
+        std::shared_ptr<Pistache::Rest::Router> rtr,
+        oai::udr::app::udr_app* udr_app_inst, std::string address)
     : SessionManagementPolicyDataDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void SessionManagementPolicyDataDocumentApiImpl::
     read_session_management_policy_data(
-        const std::string& ueId, const Pistache::Optional<Snssai>& snssai,
+        const std::string& ueId,
+        const Pistache::Optional<oai::model::common::Snssai>& snssai,
         const Pistache::Optional<std::string>& dnn,
         const Pistache::Optional<std::vector<std::string>>& fields,
         const Pistache::Optional<std::string>& suppFeat,

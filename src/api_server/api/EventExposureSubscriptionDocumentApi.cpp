@@ -40,8 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
-using namespace oai::udr::model;
+using namespace oai::model::common::helpers;
 
 EventExposureSubscriptionDocumentApi::EventExposureSubscriptionDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -105,7 +104,7 @@ void EventExposureSubscriptionDocumentApi::modify_eesubscription_handler(
   auto subsId = request.param(":subsId").as<std::string>();
 
   // Getting the body param
-  std::vector<PatchItem> patchItem;
+  std::vector<oai::model::common::PatchItem> patchItem;
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
@@ -202,7 +201,7 @@ void EventExposureSubscriptionDocumentApi::update_eesubscriptions_handler(
 
   // Getting the body param
 
-  EeSubscription eeSubscription;
+  oai::udr::model::EeSubscription eeSubscription;
 
   try {
     nlohmann::json::parse(request.body()).get_to(eeSubscription);

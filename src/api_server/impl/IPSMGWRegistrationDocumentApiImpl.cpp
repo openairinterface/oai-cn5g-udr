@@ -41,8 +41,8 @@ namespace oai::udr::api {
 using namespace oai::udr::model;
 
 IPSMGWRegistrationDocumentApiImpl::IPSMGWRegistrationDocumentApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-    std::string address)
+    std::shared_ptr<Pistache::Rest::Router> rtr,
+    oai::udr::app::udr_app* udr_app_inst, std::string address)
     : IPSMGWRegistrationDocumentApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
@@ -59,7 +59,8 @@ void IPSMGWRegistrationDocumentApiImpl::delete_ip_sm_gw_context(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void IPSMGWRegistrationDocumentApiImpl::modify_ip_sm_gw_context(
-    const std::string& ueId, const std::vector<PatchItem>& patchItem,
+    const std::string& ueId,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

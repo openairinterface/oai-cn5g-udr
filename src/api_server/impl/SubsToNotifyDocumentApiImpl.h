@@ -51,23 +51,21 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class SubsToNotifyDocumentApiImpl
     : public oai::udr::api::SubsToNotifyDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   SubsToNotifyDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~SubsToNotifyDocumentApiImpl() {}
 
   void modifysubscription_data_subscription(
-      const std::string& subsId, const std::vector<PatchItem>& patchItem,
+      const std::string& subsId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void query_subscription_data_subscriptions(

@@ -165,8 +165,8 @@ class PolicyDataChangeNotification {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
   bool plmnIdIsSet() const;
   void unsetPlmnId();
   /// <summary>
@@ -222,7 +222,7 @@ class PolicyDataChangeNotification {
   bool m_BdtRefIdIsSet;
   std::string m_UsageMonId;
   bool m_UsageMonIdIsSet;
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
   bool m_PlmnIdIsSet;
   std::vector<std::string> m_DelResources;
   bool m_DelResourcesIsSet;

@@ -86,8 +86,8 @@ class IptvConfigData {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSnssai() const;
-  void setSnssai(Snssai const& value);
+  oai::model::common::Snssai getSnssai() const;
+  void setSnssai(oai::model::common::Snssai const& value);
   bool snssaiIsSet() const;
   void unsetSnssai();
   /// <summary>
@@ -126,7 +126,7 @@ class IptvConfigData {
   bool m_InterGroupIdIsSet;
   std::string m_Dnn;
   bool m_DnnIsSet;
-  Snssai m_Snssai;
+  oai::model::common::Snssai m_Snssai;
   bool m_SnssaiIsSet;
   std::string m_AfAppId;
 

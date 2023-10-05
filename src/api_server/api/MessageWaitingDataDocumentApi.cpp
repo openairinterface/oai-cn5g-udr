@@ -40,8 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
-using namespace oai::udr::model;
+using namespace oai::model::common::helpers;
 
 MessageWaitingDataDocumentApi::MessageWaitingDataDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -104,7 +103,7 @@ void MessageWaitingDataDocumentApi::create_message_waiting_data_handler(
 
   // Getting the body param
 
-  MessageWaitingData messageWaitingData;
+  oai::udr::model::MessageWaitingData messageWaitingData;
 
   try {
     nlohmann::json::parse(request.body()).get_to(messageWaitingData);
@@ -160,7 +159,7 @@ void MessageWaitingDataDocumentApi::modify_message_waiting_data_handler(
   auto ueId = request.param(":ueId").as<std::string>();
 
   // Getting the body param
-  std::vector<PatchItem> patchItem;
+  std::vector<oai::model::common::PatchItem> patchItem;
 
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);

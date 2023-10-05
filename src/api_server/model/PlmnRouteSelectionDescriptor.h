@@ -67,8 +67,8 @@ class PlmnRouteSelectionDescriptor {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getServingPlmn() const;
-  void setServingPlmn(PlmnId const& value);
+  oai::model::common::PlmnId getServingPlmn() const;
+  void setServingPlmn(oai::model::common::PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
@@ -83,7 +83,7 @@ class PlmnRouteSelectionDescriptor {
       const nlohmann::json& j, PlmnRouteSelectionDescriptor& o);
 
  protected:
-  PlmnId m_ServingPlmn;
+  oai::model::common::PlmnId m_ServingPlmn;
 
   std::vector<SnssaiRouteSelectionDescriptor> m_SnssaiRouteSelDescs;
   bool m_SnssaiRouteSelDescsIsSet;

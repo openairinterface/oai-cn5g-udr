@@ -51,19 +51,16 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class OperatorSpecificDataDocumentApiImpl
     : public oai::udr::api::OperatorSpecificDataDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   OperatorSpecificDataDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~OperatorSpecificDataDocumentApiImpl() {}
 
   void read_operator_specific_data(
@@ -73,10 +70,13 @@ class OperatorSpecificDataDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void replace_operator_specific_data(
       const std::string& ueId,
-      const std::map<std::string, OperatorSpecificDataContainer>& requestBody,
+      const std::map<
+          std::string, oai::udr::model::OperatorSpecificDataContainer>&
+          requestBody,
       Pistache::Http::ResponseWriter& response);
   void update_operator_specific_data(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response);
 };
 

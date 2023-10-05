@@ -40,8 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
-using namespace oai::udr::model;
+using namespace oai::model::common::helpers;
 
 InfluenceDataSubscriptionsCollectionApi::
     InfluenceDataSubscriptionsCollectionApi(
@@ -86,7 +85,7 @@ void InfluenceDataSubscriptionsCollectionApi::
         Pistache::Http::ResponseWriter response) {
   // Getting the body param
 
-  TrafficInfluSub trafficInfluSub;
+  oai::udr::model::TrafficInfluSub trafficInfluSub;
 
   try {
     nlohmann::json::parse(request.body()).get_to(trafficInfluSub);
@@ -119,7 +118,7 @@ void InfluenceDataSubscriptionsCollectionApi::
     }
   }
   auto snssaiQuery = request.query().get("snssai");
-  Pistache::Optional<Snssai> snssai;
+  Pistache::Optional<oai::model::common::Snssai> snssai;
   if (!snssaiQuery.isEmpty()) {
     //        Snssai valueQuery_instance;
     //        if(fromStringValue(snssaiQuery.get(), valueQuery_instance)){

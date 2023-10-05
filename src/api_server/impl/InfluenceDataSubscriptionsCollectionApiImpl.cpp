@@ -42,8 +42,8 @@ using namespace oai::udr::model;
 
 InfluenceDataSubscriptionsCollectionApiImpl::
     InfluenceDataSubscriptionsCollectionApiImpl(
-        std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-        std::string address)
+        std::shared_ptr<Pistache::Rest::Router> rtr,
+        oai::udr::app::udr_app* udr_app_inst, std::string address)
     : InfluenceDataSubscriptionsCollectionApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
@@ -58,7 +58,7 @@ void InfluenceDataSubscriptionsCollectionApiImpl::
 void InfluenceDataSubscriptionsCollectionApiImpl::
     read_influence_data_subscriptions(
         const Pistache::Optional<std::string>& dnn,
-        const Pistache::Optional<Snssai>& snssai,
+        const Pistache::Optional<oai::model::common::Snssai>& snssai,
         const Pistache::Optional<std::string>& internalGroupId,
         const Pistache::Optional<std::string>& supi,
         Pistache::Http::ResponseWriter& response) {

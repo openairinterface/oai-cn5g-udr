@@ -40,7 +40,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
+using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
 
 SMSF3GPPRegistrationDocumentApi::SMSF3GPPRegistrationDocumentApi(

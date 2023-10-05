@@ -67,29 +67,30 @@ class NetworkAreaInfo {
   /// <summary>
   /// Contains a list of E-UTRA cell identities.
   /// </summary>
-  std::vector<Ecgi>& getEcgis();
-  void setEcgis(std::vector<Ecgi> const& value);
+  std::vector<oai::model::common::Ecgi>& getEcgis();
+  void setEcgis(std::vector<oai::model::common::Ecgi> const& value);
   bool ecgisIsSet() const;
   void unsetEcgis();
   /// <summary>
   /// Contains a list of NR cell identities.
   /// </summary>
-  std::vector<Ncgi>& getNcgis();
-  void setNcgis(std::vector<Ncgi> const& value);
+  std::vector<oai::model::common::Ncgi>& getNcgis();
+  void setNcgis(std::vector<oai::model::common::Ncgi> const& value);
   bool ncgisIsSet() const;
   void unsetNcgis();
   /// <summary>
   /// Contains a list of NG RAN nodes.
   /// </summary>
-  std::vector<GlobalRanNodeId>& getGRanNodeIds();
-  void setGRanNodeIds(std::vector<GlobalRanNodeId> const& value);
+  std::vector<oai::model::common::GlobalRanNodeId>& getGRanNodeIds();
+  void setGRanNodeIds(
+      std::vector<oai::model::common::GlobalRanNodeId> const& value);
   bool gRanNodeIdsIsSet() const;
   void unsetGRanNodeIds();
   /// <summary>
   /// Contains a list of tracking area identities.
   /// </summary>
-  std::vector<Tai>& getTais();
-  void setTais(std::vector<Tai> const& value);
+  std::vector<oai::model::common::Tai>& getTais();
+  void setTais(std::vector<oai::model::common::Tai> const& value);
   bool taisIsSet() const;
   void unsetTais();
 
@@ -97,13 +98,13 @@ class NetworkAreaInfo {
   friend void from_json(const nlohmann::json& j, NetworkAreaInfo& o);
 
  protected:
-  std::vector<Ecgi> m_Ecgis;
+  std::vector<oai::model::common::Ecgi> m_Ecgis;
   bool m_EcgisIsSet;
-  std::vector<Ncgi> m_Ncgis;
+  std::vector<oai::model::common::Ncgi> m_Ncgis;
   bool m_NcgisIsSet;
-  std::vector<GlobalRanNodeId> m_GRanNodeIds;
+  std::vector<oai::model::common::GlobalRanNodeId> m_GRanNodeIds;
   bool m_GRanNodeIdsIsSet;
-  std::vector<Tai> m_Tais;
+  std::vector<oai::model::common::Tai> m_Tais;
   bool m_TaisIsSet;
 };
 

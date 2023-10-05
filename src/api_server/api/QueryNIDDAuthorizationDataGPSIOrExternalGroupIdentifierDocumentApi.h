@@ -51,8 +51,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
  public:
   QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi(
@@ -91,7 +89,8 @@ class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
   /// name="ifModifiedSince">Validator for conditional requests, as described in
   /// RFC 7232, 3.3 (optional, default to &quot;&quot;)</param>
   virtual void get_nidd_au_data(
-      const std::string& ueId, const Pistache::Optional<Snssai>& singleNssai,
+      const std::string& ueId,
+      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::string>& mtcProviderInformation,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,

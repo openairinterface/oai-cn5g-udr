@@ -107,10 +107,11 @@ bool TrafficInfluSub::dnnsIsSet() const {
 void TrafficInfluSub::unsetDnns() {
   m_DnnsIsSet = false;
 }
-std::vector<Snssai>& TrafficInfluSub::getSnssais() {
+std::vector<oai::model::common::Snssai>& TrafficInfluSub::getSnssais() {
   return m_Snssais;
 }
-void TrafficInfluSub::setSnssais(std::vector<Snssai> const& value) {
+void TrafficInfluSub::setSnssais(
+    std::vector<oai::model::common::Snssai> const& value) {
   m_Snssais      = value;
   m_SnssaisIsSet = true;
 }

@@ -136,10 +136,10 @@ bool IptvConfigData::dnnIsSet() const {
 void IptvConfigData::unsetDnn() {
   m_DnnIsSet = false;
 }
-Snssai IptvConfigData::getSnssai() const {
+oai::model::common::Snssai IptvConfigData::getSnssai() const {
   return m_Snssai;
 }
-void IptvConfigData::setSnssai(Snssai const& value) {
+void IptvConfigData::setSnssai(oai::model::common::Snssai const& value) {
   m_Snssai      = value;
   m_SnssaiIsSet = true;
 }

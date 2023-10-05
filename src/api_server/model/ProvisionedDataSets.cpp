@@ -167,10 +167,11 @@ bool ProvisionedDataSets::smDataIsSet() const {
 void ProvisionedDataSets::unsetSmData() {
   m_SmDataIsSet = false;
 }
-TraceData ProvisionedDataSets::getTraceData() const {
+oai::model::common::TraceData ProvisionedDataSets::getTraceData() const {
   return m_TraceData;
 }
-void ProvisionedDataSets::setTraceData(TraceData const& value) {
+void ProvisionedDataSets::setTraceData(
+    oai::model::common::TraceData const& value) {
   m_TraceData      = value;
   m_TraceDataIsSet = true;
 }

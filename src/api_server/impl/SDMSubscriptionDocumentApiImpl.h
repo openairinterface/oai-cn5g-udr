@@ -50,24 +50,21 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class SDMSubscriptionDocumentApiImpl
     : public oai::udr::api::SDMSubscriptionDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   SDMSubscriptionDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~SDMSubscriptionDocumentApiImpl() {}
 
   void modifysdm_subscription(
       const std::string& ueId, const std::string& subsId,
-      const std::vector<PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void querysdm_subscription(
@@ -78,7 +75,7 @@ class SDMSubscriptionDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void updatesdmsubscriptions(
       const std::string& ueId, const std::string& subsId,
-      SdmSubscription& sdmSubscription,
+      oai::udr::model::SdmSubscription& sdmSubscription,
       Pistache::Http::ResponseWriter& response);
 };
 

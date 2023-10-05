@@ -41,7 +41,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::helpers;
+using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
 
 SessionManagementSubscriptionDataApi::SessionManagementSubscriptionDataApi(
@@ -117,11 +117,11 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
 
-  Pistache::Optional<Snssai> singleNssai;
+  Pistache::Optional<oai::model::common::Snssai> singleNssai;
   if (!singleNssaiQuery.isEmpty()) {
     Logger::udr_server().debug(
         "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
-    Snssai valueQuery_instance;
+    oai::model::common::Snssai valueQuery_instance;
     if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
       Logger::udr_server().debug(
           "SNSSAI SST %d, SD %s", valueQuery_instance.getSst(),
@@ -283,11 +283,11 @@ void SessionManagementSubscriptionDataApi::delete_sm_data_handler(
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
 
-  Pistache::Optional<Snssai> singleNssai;
+  Pistache::Optional<oai::model::common::Snssai> singleNssai;
   if (!singleNssaiQuery.isEmpty()) {
     Logger::udr_server().debug(
         "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
-    Snssai valueQuery_instance;
+    oai::model::common::Snssai valueQuery_instance;
     if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
       Logger::udr_server().debug(
           "SNSSAI SST %d, SD %s", valueQuery_instance.getSst(),

@@ -49,8 +49,6 @@
 #include "database_wrapper.hpp"
 #include "udr_event.hpp"
 
-using namespace oai::udr::model;
-
 namespace oai {
 namespace udr {
 namespace app {
@@ -88,7 +86,7 @@ class udr_app {
    */
   void handle_create_amf_context_3gpp(
       const std::string& ue_id,
-      Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
       nlohmann::json& response_data, long& code);
 
   /*
@@ -112,7 +110,7 @@ class udr_app {
    * @return void
    */
   void handle_create_authentication_status(
-      const std::string& ue_id, const AuthEvent& authEvent,
+      const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
       nlohmann::json& response_data, long& code);
 
   /*
@@ -149,7 +147,8 @@ class udr_app {
    */
   void handle_create_authentication_data(
       const std::string& ue_id,
-      const AuthenticationSubscription& authentication_subscription,
+      const oai::udr::model::AuthenticationSubscription&
+          authentication_subscription,
       nlohmann::json& response_data, long& code);
 
   /*
@@ -173,7 +172,8 @@ class udr_app {
    * @return void
    */
   void handle_modify_authentication_subscription(
-      const std::string& ue_id, const std::vector<PatchItem>& patchItem,
+      const std::string& ue_id,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       nlohmann::json& response_data, long& code);
 
   /*
@@ -223,8 +223,8 @@ class udr_app {
    */
   void handle_update_sdm_subscription(
       const std::string& ue_id, const std::string& subs_id,
-      SdmSubscription& sdmSubscription, nlohmann::json& response_data,
-      long& code);
+      oai::udr::model::SdmSubscription& sdmSubscription,
+      nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to create SDMSubscriptions
@@ -236,7 +236,8 @@ class udr_app {
    * @return void
    */
   void handle_create_sdm_subscriptions(
-      const std::string& ue_id, SdmSubscription& sdmSubscription,
+      const std::string& ue_id,
+      oai::udr::model::SdmSubscription& sdmSubscription,
       nlohmann::json& response_data, long& code);
 
   /*
@@ -264,7 +265,7 @@ class udr_app {
   void handle_query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& response_data, long& code,
-      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<oai::model::common::Snssai>& snssai,
       const std::optional<std::string>& dnn);
 
   /*
@@ -288,7 +289,7 @@ class udr_app {
    */
   void handle_delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<oai::model::common::Snssai>& snssai,
       nlohmann::json& response_data, long& http_code);
 
   /*
@@ -305,7 +306,7 @@ class udr_app {
    */
   void handle_create_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      SessionManagementSubscriptionData& subscription_data,
+      oai::udr::model::SessionManagementSubscriptionData& subscription_data,
       nlohmann::json& response_data, long& code, uint32_t& resource_id);
   /*
    * Handle a request to update a SessionManagementSubscription
@@ -321,7 +322,7 @@ class udr_app {
    */
   void handle_update_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      SessionManagementSubscriptionData& subscriptionData,
+      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
       nlohmann::json& response_data, long& code, uint32_t& resource_id);
 
   /*
@@ -335,8 +336,8 @@ class udr_app {
    */
   void handle_create_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,
-      const SmfRegistration& smfRegistration, nlohmann::json& response_data,
-      long& code);
+      const oai::udr::model::SmfRegistration& smfRegistration,
+      nlohmann::json& response_data, long& code);
 
   /*
    * Handle a request to delete SMFRegistration (SMFRegistrationDocumentApiImpl)
@@ -386,6 +387,22 @@ class udr_app {
   void handle_query_smf_select_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& response_data, long& code);
+
+  /*
+   * Get the current UDR's configuration
+   * @param [nlohmann::json&]: config_info: UDR configuration
+   * @param [long&] code: HTTP response code
+   * @return true if success, otherwise return false
+   */
+  bool handle_read_configuration(nlohmann::json& config_info, long& code);
+
+  /*
+   * Update UDR configuration
+   * @param [nlohmann::json&]: config_info: new UDR configuration
+   * @param [long&] code: HTTP response code
+   * @return true if success, otherwise return false
+   */
+  bool handle_update_configuration(nlohmann::json& config_info, long& code);
 
  private:
   MYSQL mysql;

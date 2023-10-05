@@ -103,10 +103,10 @@ bool VnGroupData::dnnIsSet() const {
 void VnGroupData::unsetDnn() {
   m_DnnIsSet = false;
 }
-Snssai VnGroupData::getSingleNssai() const {
+oai::model::common::Snssai VnGroupData::getSingleNssai() const {
   return m_SingleNssai;
 }
-void VnGroupData::setSingleNssai(Snssai const& value) {
+void VnGroupData::setSingleNssai(oai::model::common::Snssai const& value) {
   m_SingleNssai      = value;
   m_SingleNssaiIsSet = true;
 }

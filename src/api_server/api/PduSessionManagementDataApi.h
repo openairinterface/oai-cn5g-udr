@@ -52,8 +52,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class PduSessionManagementDataApi {
  public:
   PduSessionManagementDataApi(std::shared_ptr<Pistache::Rest::Router>);
@@ -92,7 +90,7 @@ class PduSessionManagementDataApi {
   /// <param name="pduSessionManagementData"></param>
   virtual void create_or_replace_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
-      const PduSessionManagementData& pduSessionManagementData,
+      const oai::udr::model::PduSessionManagementData& pduSessionManagementData,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
@@ -127,7 +125,7 @@ class PduSessionManagementDataApi {
   virtual void query_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
       const Pistache::Optional<std::string>& ipv4Addr,
-      const Pistache::Optional<Ipv6Prefix>& ipv6Prefix,
+      const Pistache::Optional<oai::model::common::Ipv6Prefix>& ipv6Prefix,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::vector<std::string>>& fields,
       const Pistache::Optional<std::string>& suppFeat,

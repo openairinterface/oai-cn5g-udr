@@ -80,11 +80,12 @@ std::string DnnRouteSelectionDescriptor::getDnn() const {
 void DnnRouteSelectionDescriptor::setDnn(std::string const& value) {
   m_Dnn = value;
 }
-std::vector<SscMode>& DnnRouteSelectionDescriptor::getSscModes() {
+std::vector<oai::model::common::SscMode>&
+DnnRouteSelectionDescriptor::getSscModes() {
   return m_SscModes;
 }
 void DnnRouteSelectionDescriptor::setSscModes(
-    std::vector<SscMode> const& value) {
+    std::vector<oai::model::common::SscMode> const& value) {
   m_SscModes      = value;
   m_SscModesIsSet = true;
 }
@@ -94,11 +95,12 @@ bool DnnRouteSelectionDescriptor::sscModesIsSet() const {
 void DnnRouteSelectionDescriptor::unsetSscModes() {
   m_SscModesIsSet = false;
 }
-std::vector<PduSessionType>& DnnRouteSelectionDescriptor::getPduSessTypes() {
+std::vector<oai::model::common::PduSessionType>&
+DnnRouteSelectionDescriptor::getPduSessTypes() {
   return m_PduSessTypes;
 }
 void DnnRouteSelectionDescriptor::setPduSessTypes(
-    std::vector<PduSessionType> const& value) {
+    std::vector<oai::model::common::PduSessionType> const& value) {
   m_PduSessTypes      = value;
   m_PduSessTypesIsSet = true;
 }

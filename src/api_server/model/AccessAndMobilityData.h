@@ -70,8 +70,8 @@ class AccessAndMobilityData {
   /// <summary>
   ///
   /// </summary>
-  UserLocation getLocation() const;
-  void setLocation(UserLocation const& value);
+  oai::model::common::UserLocation getLocation() const;
+  void setLocation(oai::model::common::UserLocation const& value);
   bool locationIsSet() const;
   void unsetLocation();
   /// <summary>
@@ -98,8 +98,8 @@ class AccessAndMobilityData {
   /// <summary>
   ///
   /// </summary>
-  AccessType getAccessType() const;
-  void setAccessType(AccessType const& value);
+  oai::model::common::AccessType getAccessType() const;
+  void setAccessType(oai::model::common::AccessType const& value);
   bool accessTypeIsSet() const;
   void unsetAccessType();
   /// <summary>
@@ -176,8 +176,8 @@ class AccessAndMobilityData {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getCurrentPlmn() const;
-  void setCurrentPlmn(PlmnId const& value);
+  oai::model::common::PlmnId getCurrentPlmn() const;
+  void setCurrentPlmn(oai::model::common::PlmnId const& value);
   bool currentPlmnIsSet() const;
   void unsetCurrentPlmn();
   /// <summary>
@@ -190,8 +190,8 @@ class AccessAndMobilityData {
   /// <summary>
   ///
   /// </summary>
-  std::vector<RatType>& getRatType();
-  void setRatType(std::vector<RatType> const& value);
+  std::vector<oai::model::common::RatType>& getRatType();
+  void setRatType(std::vector<oai::model::common::RatType> const& value);
   bool ratTypeIsSet() const;
   void unsetRatType();
   /// <summary>
@@ -213,7 +213,7 @@ class AccessAndMobilityData {
   friend void from_json(const nlohmann::json& j, AccessAndMobilityData& o);
 
  protected:
-  UserLocation m_Location;
+  oai::model::common::UserLocation m_Location;
   bool m_LocationIsSet;
   std::string m_LocationTs;
   bool m_LocationTsIsSet;
@@ -221,7 +221,7 @@ class AccessAndMobilityData {
   bool m_TimeZoneIsSet;
   std::string m_TimeZoneTs;
   bool m_TimeZoneTsIsSet;
-  AccessType m_AccessType;
+  oai::model::common::AccessType m_AccessType;
   bool m_AccessTypeIsSet;
   std::vector<RmInfo> m_RegStates;
   bool m_RegStatesIsSet;
@@ -243,11 +243,11 @@ class AccessAndMobilityData {
   bool m_RoamingStatusIsSet;
   std::string m_RoamingStatusTs;
   bool m_RoamingStatusTsIsSet;
-  PlmnId m_CurrentPlmn;
+  oai::model::common::PlmnId m_CurrentPlmn;
   bool m_CurrentPlmnIsSet;
   std::string m_CurrentPlmnTs;
   bool m_CurrentPlmnTsIsSet;
-  std::vector<RatType> m_RatType;
+  std::vector<oai::model::common::RatType> m_RatType;
   bool m_RatTypeIsSet;
   std::string m_RatTypesTs;
   bool m_RatTypesTsIsSet;

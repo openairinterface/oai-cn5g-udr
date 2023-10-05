@@ -52,28 +52,26 @@
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class AMF3GPPAccessRegistrationDocumentApiImpl
     : public oai::udr::api::AMF3GPPAccessRegistrationDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   AMF3GPPAccessRegistrationDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~AMF3GPPAccessRegistrationDocumentApiImpl() {}
 
   void amf_context3gpp(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void create_amf_context3gpp(
       const std::string& ueId,
-      Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
       Pistache::Http::ResponseWriter& response);
   void query_amf_context3gpp(
       const std::string& ueId,

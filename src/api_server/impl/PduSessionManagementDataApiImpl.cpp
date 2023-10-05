@@ -38,18 +38,16 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 PduSessionManagementDataApiImpl::PduSessionManagementDataApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-    std::string address)
+    std::shared_ptr<Pistache::Rest::Router> rtr,
+    oai::udr::app::udr_app* udr_app_inst, std::string address)
     : PduSessionManagementDataApi(rtr),
       m_udr_app(udr_app_inst),
       m_address(address) {}
 
 void PduSessionManagementDataApiImpl::create_or_replace_session_management_data(
     const std::string& ueId, const int32_t& pduSessionId,
-    const PduSessionManagementData& pduSessionManagementData,
+    const oai::udr::model::PduSessionManagementData& pduSessionManagementData,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
@@ -63,7 +61,7 @@ void PduSessionManagementDataApiImpl::delete_session_management_data(
 void PduSessionManagementDataApiImpl::query_session_management_data(
     const std::string& ueId, const int32_t& pduSessionId,
     const Pistache::Optional<std::string>& ipv4Addr,
-    const Pistache::Optional<Ipv6Prefix>& ipv6Prefix,
+    const Pistache::Optional<oai::model::common::Ipv6Prefix>& ipv6Prefix,
     const Pistache::Optional<std::string>& dnn,
     const Pistache::Optional<std::vector<std::string>>& fields,
     const Pistache::Optional<std::string>& suppFeat,

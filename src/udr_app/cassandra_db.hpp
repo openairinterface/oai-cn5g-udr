@@ -56,7 +56,7 @@ class cassandra_db : public database_wrapper<cassandra_db> {
 
   bool update_authentication_subscription(
       const std::string& id,
-      const std::vector<oai::udr::model::PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       nlohmann::json& json_data);
 
   bool query_am_data(
@@ -101,7 +101,7 @@ class cassandra_db : public database_wrapper<cassandra_db> {
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data,
-      const std::optional<oai::udr::model::Snssai>& snssai,
+      const std::optional<oai::model::common::Snssai>& snssai,
       const std::optional<std::string>& dnn);
 
   bool create_sm_data(
@@ -116,7 +116,7 @@ class cassandra_db : public database_wrapper<cassandra_db> {
 
   bool delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      const std::optional<oai::udr::model::Snssai>& snssai);
+      const std::optional<oai::model::common::Snssai>& snssai);
 
   bool query_sm_data(nlohmann::json& json_data);
 

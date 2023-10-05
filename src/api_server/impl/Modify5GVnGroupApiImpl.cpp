@@ -38,15 +38,14 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 Modify5GVnGroupApiImpl::Modify5GVnGroupApiImpl(
-    std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,
-    std::string address)
+    std::shared_ptr<Pistache::Rest::Router> rtr,
+    oai::udr::app::udr_app* udr_app_inst, std::string address)
     : Modify5GVnGroupApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void Modify5GVnGroupApiImpl::modify5_g_vn_group(
-    const std::string& externalGroupId, const std::vector<PatchItem>& patchItem,
+    const std::string& externalGroupId,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

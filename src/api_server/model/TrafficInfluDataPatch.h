@@ -99,8 +99,8 @@ class TrafficInfluDataPatch {
   /// <summary>
   ///
   /// </summary>
-  Snssai getSnssai() const;
-  void setSnssai(Snssai const& value);
+  oai::model::common::Snssai getSnssai() const;
+  void setSnssai(oai::model::common::Snssai const& value);
   bool snssaiIsSet() const;
   void unsetSnssai();
   /// <summary>
@@ -128,8 +128,9 @@ class TrafficInfluDataPatch {
   /// <summary>
   /// Identifies the N6 traffic routing requirement.
   /// </summary>
-  std::vector<RouteToLocation>& getTrafficRoutes();
-  void setTrafficRoutes(std::vector<RouteToLocation> const& value);
+  std::vector<oai::model::common::RouteToLocation>& getTrafficRoutes();
+  void setTrafficRoutes(
+      std::vector<oai::model::common::RouteToLocation> const& value);
   bool trafficRoutesIsSet() const;
   void unsetTrafficRoutes();
   /// <summary>
@@ -208,7 +209,7 @@ class TrafficInfluDataPatch {
   bool m_DnnIsSet;
   std::vector<EthFlowDescription> m_EthTrafficFilters;
   bool m_EthTrafficFiltersIsSet;
-  Snssai m_Snssai;
+  oai::model::common::Snssai m_Snssai;
   bool m_SnssaiIsSet;
   std::string m_InternalGroupId;
   bool m_InternalGroupIdIsSet;
@@ -216,7 +217,7 @@ class TrafficInfluDataPatch {
   bool m_SupiIsSet;
   std::vector<FlowInfo> m_TrafficFilters;
   bool m_TrafficFiltersIsSet;
-  std::vector<RouteToLocation> m_TrafficRoutes;
+  std::vector<oai::model::common::RouteToLocation> m_TrafficRoutes;
   bool m_TrafficRoutesIsSet;
   bool m_TraffCorreInd;
   bool m_TraffCorreIndIsSet;

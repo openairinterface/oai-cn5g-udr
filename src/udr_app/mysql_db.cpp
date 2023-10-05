@@ -38,11 +38,13 @@
 #include "SdmSubscription.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
+#include "PatchOperation_anyOf.h"
 
 #include <boost/algorithm/string.hpp>
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
+using namespace oai::model::common;
 using namespace oai::udr::config;
 using namespace boost::placeholders;
 
@@ -179,7 +181,7 @@ bool mysql_db::check_connection_status() {
 
 //------------------------------------------------------------------------------
 bool mysql_db::get_key_from_snssai(
-    const oai::udr::model::Snssai& snssai, uint32_t& key) {
+    const oai::model::common::Snssai& snssai, uint32_t& key) {
   uint8_t sst        = 0;
   uint32_t sd        = 0;
   sst                = snssai.getSst() & 0x000000ff;
@@ -210,7 +212,7 @@ bool mysql_db::get_key_from_snssai(
 
 //------------------------------------------------------------------------------
 void mysql_db::get_snssai_from_key(
-    oai::udr::model::Snssai& snssai, const uint32_t& key) {
+    oai::model::common::Snssai& snssai, const uint32_t& key) {
   uint8_t sst = 0;
   uint32_t sd = 0;
   sst         = key & 0x000000ff;
@@ -221,8 +223,7 @@ void mysql_db::get_snssai_from_key(
 
 //------------------------------------------------------------------------------
 bool mysql_db::insert_authentication_subscription(
-    const std::string& id,
-    const oai::udr::model::AuthenticationSubscription& auth_subscription,
+    const std::string& id, const AuthenticationSubscription& auth_subscription,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -252,19 +253,28 @@ bool mysql_db::insert_authentication_subscription(
     return false;
   }
 
-  row = mysql_fetch_row(res);
-  if (row != nullptr) {
-    Logger::udr_mysql().error(
-        "[UE Id %s] AuthenticationSubscription existed!", id.c_str());
-    // Existed
-    return false;
-  }
-  mysql_free_result(res);
+  std::string where_condition = {};
+  row                         = mysql_fetch_row(res);
 
-  query =
-      "INSERT INTO AuthenticationSubscription SET ueid='" + id + "'" +
-      ",authenticationMethod='" + auth_subscription.getAuthenticationMethod() +
-      "'" +
+  if (row != nullptr) {
+    Logger::udr_mysql().debug(
+        "[UE Id %s] AuthenticationSubscription existed, update with new "
+        "values!",
+        id.c_str());
+    // Update accordingly
+    mysql_free_result(res);
+    query = "UPDATE AuthenticationSubscription SET authenticationMethod='" +
+            auth_subscription.getAuthenticationMethod() + "'";
+    where_condition = " WHERE ueid='" + id + "'";
+  } else {
+    // Insert/create new record
+    mysql_free_result(res);
+    query = "INSERT INTO AuthenticationSubscription SET ueid='" + id + "'" +
+            ",authenticationMethod='" +
+            auth_subscription.getAuthenticationMethod() + "'";
+  }
+
+  query +=
       (auth_subscription.encPermanentKeyIsSet() ?
            ",encPermanentKey='" + auth_subscription.getEncPermanentKey() + "'" :
            "") +
@@ -285,14 +295,9 @@ bool mysql_db::insert_authentication_subscription(
       (auth_subscription.encTopcKeyIsSet() ?
            ",encTopcKey='" + auth_subscription.getEncTopcKey() + "'" :
            "") +
-      //   (auth_subscription.vectorGenerationInHssIsSet() ?
-      //   ",vectorGenerationInHss='" +
-      //   auth_subscription.isVectorGenerationInHss() + "'" : "") +
       (auth_subscription.n5gcAuthMethodIsSet() ?
            ",n5gcAuthMethod='" + auth_subscription.getN5gcAuthMethod() + "'" :
            "") +
-      // auth_subscription.rgAuthenticationIndIsSet() ? ",rgAuthenticationInd='"
-      // + auth_subscription.() + "'" : "") +
       (auth_subscription.supiIsSet() ?
            ",supi='" + auth_subscription.getSupi() + "'" :
            "");
@@ -302,6 +307,7 @@ bool mysql_db::insert_authentication_subscription(
     query += ",sequenceNumber='" + json_tmp.dump() + "'";
   }
 
+  query += where_condition;
   Logger::udr_mysql().info(
       "[UE Id %s] MySQL Query: %s", id.c_str(), query.c_str());
 
@@ -316,7 +322,7 @@ bool mysql_db::insert_authentication_subscription(
   to_json(json_data, auth_subscription);
 
   Logger::udr_mysql().debug(
-      "[UE Id %s] AuthenticationSubscription POST: %s", id.c_str(),
+      "[UE Id %s] AuthenticationSubscription: %s", id.c_str(),
       json_data.dump().c_str());
   return true;
 }
@@ -467,8 +473,7 @@ bool mysql_db::query_authentication_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::update_authentication_subscription(
-    const std::string& ue_id,
-    const std::vector<oai::udr::model::PatchItem>& patchItem,
+    const std::string& ue_id, const std::vector<PatchItem>& patchItem,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -490,8 +495,8 @@ bool mysql_db::update_authentication_subscription(
   auto start_time = std::chrono::steady_clock::now();
 
   for (int i = 0; i < patchItem.size(); i++) {
-    if ((boost::iequals(
-            patchItem[i].getOp().c_str(), PATCH_OPERATION_REPLACE)) &&
+    if ((patchItem[i].getOp().getEnumValue() ==
+         PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE) &&
         patchItem[i].valueIsSet()) {
       patchItem[i].getValue();
       SequenceNumber sequencenumber;
@@ -577,7 +582,7 @@ bool mysql_db::query_am_data(
   MYSQL_ROW row      = {};
   MYSQL_FIELD* field = nullptr;
 
-  oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
+  AccessAndMobilitySubscriptionData subscription_data = {};
   Logger::udr_mysql().debug("[UE Id %s] Handle Query AM Data", ue_id.c_str());
 
   // TODO: Define query template in a header file
@@ -1175,7 +1180,7 @@ bool mysql_db::query_amf_context_3gpp(
       } else if (
           boost::iequals("amfServiceNameDereg", field->name) &&
           row[i] != nullptr) {
-        ServiceName amfservicenamedereg;
+        oai::model::nrf::ServiceName amfservicenamedereg;
         nlohmann::json::parse(row[i]).get_to(amfservicenamedereg);
         amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
       } else if (
@@ -1185,7 +1190,7 @@ bool mysql_db::query_amf_context_3gpp(
       } else if (
           boost::iequals("amfServiceNamePcscfRest", field->name) &&
           row[i] != nullptr) {
-        ServiceName amfservicenamepcscfrest;
+        oai::model::nrf::ServiceName amfservicenamepcscfrest;
         nlohmann::json::parse(row[i]).get_to(amfservicenamepcscfrest);
         amf3gppaccessregistration.setAmfServiceNamePcscfRest(
             amfservicenamepcscfrest);
@@ -1277,7 +1282,7 @@ bool mysql_db::query_amf_context_3gpp(
 
 //------------------------------------------------------------------------------
 bool mysql_db::mysql_db::insert_authentication_status(
-    const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+    const std::string& ue_id, const AuthEvent& authEvent,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -1474,10 +1479,10 @@ bool mysql_db::mysql_db::query_sdm_subscription(
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
-  MYSQL_RES* res                                    = nullptr;
-  MYSQL_ROW row                                     = {};
-  MYSQL_FIELD* field                                = nullptr;
-  oai::udr::model::SdmSubscription SdmSubscriptions = {};
+  MYSQL_RES* res                   = nullptr;
+  MYSQL_ROW row                    = {};
+  MYSQL_FIELD* field               = nullptr;
+  SdmSubscription SdmSubscriptions = {};
   const std::string query = "SELECT * FROM SdmSubscriptions WHERE ueid='" +
                             ue_id + "' AND subsId=" + subs_id;
 
@@ -1515,7 +1520,7 @@ bool mysql_db::mysql_db::query_sdm_subscription(
         SdmSubscriptions.setCallbackReference(row[i]);
       } else if (
           boost::iequals("amfServiceName", field->name) && row[i] != nullptr) {
-        ServiceName amfservicename;
+        oai::model::nrf::ServiceName amfservicename;
         nlohmann::json::parse(row[i]).get_to(amfservicename);
         SdmSubscriptions.setAmfServiceName(amfservicename);
       } else if (boost::iequals("monitoredResourceUris", field->name)) {
@@ -1577,9 +1582,9 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
-  MYSQL_RES* res                                 = nullptr;
-  nlohmann::json j                               = {};
-  oai::udr::model::ProblemDetails problemdetails = {};
+  MYSQL_RES* res                = nullptr;
+  nlohmann::json j              = {};
+  ProblemDetails problemdetails = {};
 
   const std::string select_query =
       "SELECT * FROM SdmSubscriptions WHERE ueid='" + ue_id +
@@ -1632,8 +1637,7 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
 //------------------------------------------------------------------------------
 bool mysql_db::update_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
-    oai::udr::model::SdmSubscription& sdmSubscription,
-    nlohmann::json& json_data) {
+    SdmSubscription& sdmSubscription, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
@@ -1746,7 +1750,7 @@ bool mysql_db::update_sdm_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::create_sdm_subscriptions(
-    const std::string& ue_id, oai::udr::model::SdmSubscription& sdmSubscription,
+    const std::string& ue_id, SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -1916,7 +1920,7 @@ bool mysql_db::query_sdm_subscriptions(
       } else if (
           boost::iequals("amfServiceName", fields[i].c_str()) &&
           row[i] != nullptr) {
-        ServiceName amfservicename;
+        oai::model::nrf::ServiceName amfservicename;
         nlohmann::json::parse(row[i]).get_to(amfservicename);
         sdmsubscriptions.setAmfServiceName(amfservicename);
       } else if (boost::iequals("monitoredResourceUris", fields[i].c_str())) {
@@ -1981,7 +1985,7 @@ bool mysql_db::query_sdm_subscriptions(
 //------------------------------------------------------------------------------
 bool mysql_db::create_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
+    SessionManagementSubscriptionData& sm_subscription,
     nlohmann::json& json_data, uint32_t& resource_id) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -2157,7 +2161,7 @@ bool mysql_db::create_sm_data(
 //------------------------------------------------------------------------------
 bool mysql_db::update_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    oai::udr::model::SessionManagementSubscriptionData& subscription_data,
+    SessionManagementSubscriptionData& subscription_data,
     nlohmann::json& json_data, uint32_t& resource_id) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -2272,8 +2276,7 @@ bool mysql_db::update_sm_data(
 //------------------------------------------------------------------------------
 bool mysql_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& json_data,
-    const std::optional<oai::udr::model::Snssai>& snssai,
+    nlohmann::json& json_data, const std::optional<Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -2567,7 +2570,7 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
 //------------------------------------------------------------------------------
 bool mysql_db::delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    const std::optional<oai::udr::model::Snssai>& snssai) {
+    const std::optional<Snssai>& snssai) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
@@ -2605,8 +2608,7 @@ bool mysql_db::delete_sm_data(
 //------------------------------------------------------------------------------
 bool mysql_db::insert_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
-    const oai::udr::model::SmfRegistration& smfRegistration,
-    nlohmann::json& json_data) {
+    const SmfRegistration& smfRegistration, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 

@@ -52,8 +52,6 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-
 class InfluenceDataSubscriptionsCollectionApi {
  public:
   InfluenceDataSubscriptionsCollectionApi(
@@ -86,7 +84,7 @@ class InfluenceDataSubscriptionsCollectionApi {
   /// </remarks>
   /// <param name="trafficInfluSub"></param>
   virtual void create_individual_influence_data_subscription(
-      const TrafficInfluSub& trafficInfluSub,
+      const oai::udr::model::TrafficInfluSub& trafficInfluSub,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
@@ -102,7 +100,7 @@ class InfluenceDataSubscriptionsCollectionApi {
   /// name="supi">Identifies a user. (optional, default to &quot;&quot;)</param>
   virtual void read_influence_data_subscriptions(
       const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<Snssai>& snssai,
+      const Pistache::Optional<oai::model::common::Snssai>& snssai,
       const Pistache::Optional<std::string>& internalGroupId,
       const Pistache::Optional<std::string>& supi,
       Pistache::Http::ResponseWriter& response) = 0;

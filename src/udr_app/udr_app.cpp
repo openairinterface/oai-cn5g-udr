@@ -37,14 +37,17 @@
 #include "mysql_db.hpp"
 #include "mongo_db.hpp"
 #include "udr_config.hpp"
+#include "udr_config_yaml.hpp"
 #include "udr_nrf.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
+using namespace oai::model::common;
 using namespace oai::udr::config;
 
 extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
+extern std::unique_ptr<oai::config::udr_config_yaml> udr_cfg_yaml;
 
 //------------------------------------------------------------------------------
 udr_app::udr_app(const std::string& config_file, udr_event& ev)
@@ -143,7 +146,7 @@ void udr_app::handle_query_amf_context_3gpp(
 
 //------------------------------------------------------------------------------
 void udr_app::handle_create_authentication_status(
-    const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+    const std::string& ue_id, const AuthEvent& authEvent,
     nlohmann::json& response_data, long& code) {
   Logger::udr_app().info(
       "[UE Id %s] Store the Authentication Status data of an UE",
@@ -376,7 +379,7 @@ void udr_app::handle_query_sdm_subscriptions(
 void udr_app::handle_query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& response_data, long& code,
-    const std::optional<oai::udr::model::Snssai>& snssai,
+    const std::optional<Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the Session Management Subscription Data of an UE",
@@ -470,8 +473,8 @@ void udr_app::handle_update_sm_data(
 //------------------------------------------------------------------------------
 void udr_app::handle_delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    const std::optional<oai::udr::model::Snssai>& snssai,
-    nlohmann::json& response_data, long& code) {
+    const std::optional<Snssai>& snssai, nlohmann::json& response_data,
+    long& code) {
   Logger::udr_app().info(
       "[UE Id %s]  Delete a Session Management subscription data of a UE",
       ue_id.c_str());
@@ -580,4 +583,45 @@ void udr_app::handle_query_smf_select_data(
     code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
+}
+
+//------------------------------------------------------------------------------
+bool udr_app::handle_read_configuration(
+    nlohmann::json& config_info, long& code) {
+  Logger::udr_app().info("Handle a request to get UDR Configuration");
+
+  // Process the request and trigger the response from UDR Server
+  udr_cfg_yaml->to_json(config_info);
+  Logger::udr_app().debug(
+      "UDR configuration:\n %s", config_info.dump().c_str());
+  code = static_cast<uint32_t>(http_status_code_e::HTTP_STATUS_CODE_200_OK);
+  return true;
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool udr_app::handle_update_configuration(
+    nlohmann::json& config_info, long& code) {
+  Logger::udr_app().info("Handle a request to update UDR configuration");
+
+  // TODO: remove this part to enable this functionality
+  code = static_cast<uint32_t>(
+      http_status_code_e::HTTP_STATUS_CODE_501_NOT_IMPLEMENTED);
+  return false;
+
+  // Process the request and trigger the response from UDR Server
+  if (udr_cfg_yaml->from_json(config_info)) {
+    udr_cfg_yaml->to_json(config_info);
+    Logger::udr_app().debug(
+        "UDR configuration:\n %s", config_info.dump().c_str());
+    code = static_cast<uint32_t>(http_status_code_e::HTTP_STATUS_CODE_200_OK);
+    return true;
+  } else {
+    code = static_cast<uint32_t>(
+        http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+    // TODO set problem_details
+    return false;
+  }
+  return true;
+  return true;
 }

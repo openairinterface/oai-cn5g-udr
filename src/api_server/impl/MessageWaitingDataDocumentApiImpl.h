@@ -52,28 +52,27 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::udr::app;
-
 class MessageWaitingDataDocumentApiImpl
     : public oai::udr::api::MessageWaitingDataDocumentApi {
  private:
-  udr_app* m_udr_app;
+  oai::udr::app::udr_app* m_udr_app;
   std::string m_address;
 
  public:
   MessageWaitingDataDocumentApiImpl(
-      std::shared_ptr<Pistache::Rest::Router>, udr_app* udr_app_inst,
-      std::string address);
+      std::shared_ptr<Pistache::Rest::Router>,
+      oai::udr::app::udr_app* udr_app_inst, std::string address);
   ~MessageWaitingDataDocumentApiImpl() {}
 
   void create_message_waiting_data(
-      const std::string& ueId, const MessageWaitingData& messageWaitingData,
+      const std::string& ueId,
+      const oai::udr::model::MessageWaitingData& messageWaitingData,
       Pistache::Http::ResponseWriter& response);
   void delete_message_waiting_data(
       const std::string& ueId, Pistache::Http::ResponseWriter& response);
   void modify_message_waiting_data(
-      const std::string& ueId, const std::vector<PatchItem>& patchItem,
+      const std::string& ueId,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response);
   void query_message_waiting_data(
       const std::string& ueId,

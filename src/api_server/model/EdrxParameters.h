@@ -62,8 +62,8 @@ class EdrxParameters {
   /// <summary>
   ///
   /// </summary>
-  RatType getRatType() const;
-  void setRatType(RatType const& value);
+  oai::model::common::RatType getRatType() const;
+  void setRatType(oai::model::common::RatType const& value);
   /// <summary>
   ///
   /// </summary>
@@ -74,7 +74,7 @@ class EdrxParameters {
   friend void from_json(const nlohmann::json& j, EdrxParameters& o);
 
  protected:
-  RatType m_RatType;
+  oai::model::common::RatType m_RatType;
 
   std::string m_EdrxValue;
 };

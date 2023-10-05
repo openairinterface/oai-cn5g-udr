@@ -73,13 +73,13 @@ class PduSession {
   /// <summary>
   ///
   /// </summary>
-  PlmnId getPlmnId() const;
-  void setPlmnId(PlmnId const& value);
+  oai::model::common::PlmnId getPlmnId() const;
+  void setPlmnId(oai::model::common::PlmnId const& value);
   /// <summary>
   ///
   /// </summary>
-  Snssai getSingleNssai() const;
-  void setSingleNssai(Snssai const& value);
+  oai::model::common::Snssai getSingleNssai() const;
+  void setSingleNssai(oai::model::common::Snssai const& value);
   bool singleNssaiIsSet() const;
   void unsetSingleNssai();
 
@@ -91,9 +91,9 @@ class PduSession {
 
   std::string m_SmfInstanceId;
 
-  PlmnId m_PlmnId;
+  oai::model::common::PlmnId m_PlmnId;
 
-  Snssai m_SingleNssai;
+  oai::model::common::Snssai m_SingleNssai;
   bool m_SingleNssaiIsSet;
 };
 
