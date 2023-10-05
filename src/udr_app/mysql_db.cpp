@@ -825,6 +825,12 @@ bool mysql_db::query_am_data(
           nlohmann::json::parse(row[i]).get_to(wirelineservicearearestriction);
           subscription_data.setWirelineServiceAreaRestriction(
               wirelineservicearearestriction);
+        } else if (
+            boost::iequals("subscribedDnnList", field->name) &&
+            row[i] != nullptr) {
+          std::vector<std::string> subscribedDnnList;
+          nlohmann::json::parse(row[i]).get_to(subscribedDnnList);
+          subscription_data.setSubscribedDnnList(subscribedDnnList);
         }
       } catch (std::exception e) {
         Logger::udr_mysql().error(

@@ -143,8 +143,8 @@ void to_json(nlohmann::json& j, const AccessAndMobilitySubscriptionData& o) {
     j["sharedAmDataIds"] = o.m_SharedAmDataIds;
   if (o.odbPacketServicesIsSet())
     j["odbPacketServices"] = o.m_OdbPacketServices;
-  //    if(o.subscribedDnnListIsSet() || !o.m_SubscribedDnnList.empty())
-  //        j["subscribedDnnList"] = o.m_SubscribedDnnList;
+  if (o.subscribedDnnListIsSet() || !o.m_SubscribedDnnList.empty())
+    j["subscribedDnnList"] = o.m_SubscribedDnnList;
   if (o.serviceGapTimeIsSet()) j["serviceGapTime"] = o.m_ServiceGapTime;
   if (o.mdtUserConsentIsSet()) j["mdtUserConsent"] = o.m_MdtUserConsent;
   if (o.mdtConfigurationIsSet()) j["mdtConfiguration"] = o.m_MdtConfiguration;
@@ -278,8 +278,8 @@ void from_json(const nlohmann::json& j, AccessAndMobilitySubscriptionData& o) {
     o.m_OdbPacketServicesIsSet = true;
   }
   if (j.find("subscribedDnnList") != j.end()) {
-    //        j.at("subscribedDnnList").get_to(o.m_SubscribedDnnList);
-    //        o.m_SubscribedDnnListIsSet = true;
+    j.at("subscribedDnnList").get_to(o.m_SubscribedDnnList);
+    o.m_SubscribedDnnListIsSet = true;
   }
   if (j.find("serviceGapTime") != j.end()) {
     j.at("serviceGapTime").get_to(o.m_ServiceGapTime);
@@ -699,18 +699,15 @@ bool AccessAndMobilitySubscriptionData::odbPacketServicesIsSet() const {
 void AccessAndMobilitySubscriptionData::unsetOdbPacketServices() {
   m_OdbPacketServicesIsSet = false;
 }
-// std::vector<AnyOfstringstring>&
-// AccessAndMobilitySubscriptionData::getSubscribedDnnList()
-//{
-//    return m_SubscribedDnnList;
-//}
-// void
-// AccessAndMobilitySubscriptionData::setSubscribedDnnList(std::vector<AnyOfstringstring>
-// const& value)
-//{
-//    m_SubscribedDnnList = value;
-//    m_SubscribedDnnListIsSet = true;
-//}
+std::vector<std::string>&
+AccessAndMobilitySubscriptionData::getSubscribedDnnList() {
+  return m_SubscribedDnnList;
+}
+void AccessAndMobilitySubscriptionData::setSubscribedDnnList(
+    std::vector<std::string> const& value) {
+  m_SubscribedDnnList      = value;
+  m_SubscribedDnnListIsSet = true;
+}
 bool AccessAndMobilitySubscriptionData::subscribedDnnListIsSet() const {
   return m_SubscribedDnnListIsSet;
 }

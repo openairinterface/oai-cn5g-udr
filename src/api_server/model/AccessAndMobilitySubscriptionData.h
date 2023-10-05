@@ -257,8 +257,8 @@ class AccessAndMobilitySubscriptionData {
   /// <summary>
   ///
   /// </summary>
-  //    std::vector<AnyOfstringstring>& getSubscribedDnnList();
-  //    void setSubscribedDnnList(std::vector<AnyOfstringstring> const& value);
+  std::vector<std::string>& getSubscribedDnnList();
+  void setSubscribedDnnList(std::vector<std::string> const& value);
   bool subscribedDnnListIsSet() const;
   void unsetSubscribedDnnList();
   /// <summary>
@@ -462,7 +462,7 @@ class AccessAndMobilitySubscriptionData {
   bool m_SharedAmDataIdsIsSet;
   oai::model::common::OdbPacketServices m_OdbPacketServices;
   bool m_OdbPacketServicesIsSet;
-  //    std::vector<AnyOfstringstring> m_SubscribedDnnList;
+  std::vector<std::string> m_SubscribedDnnList;
   bool m_SubscribedDnnListIsSet;
   int32_t m_ServiceGapTime;
   bool m_ServiceGapTimeIsSet;
