@@ -77,11 +77,11 @@ typedef struct {
   std::string mysql_server;
   std::string mysql_user;
   std::string mysql_pass;
-  std::string mysql_db;  
+  std::string mysql_db;
   uint32_t connection_timeout;
-}mysql_conf_t;
+} mysql_conf_t;
 
-typedef struct{
+typedef struct {
   std::string mongo_server;
   std::string mongo_user;
   std::string mongo_pass;

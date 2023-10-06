@@ -60,9 +60,7 @@ void udr_http2_server::start() {
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);
-          
 
-          
           try {
             std::vector<std::string> split_q;
             boost::split(split_q, request.uri().path, boost::is_any_of("/"));
@@ -70,7 +68,7 @@ void udr_http2_server::start() {
               std::string ueId = split_q[split_q.size() - 3].c_str();
               // GET
               if (request.method().compare("GET") == 0 && len == 0) {
-              this->read_authentication_subscription_handler(ueId, response);
+                this->read_authentication_subscription_handler(ueId, response);
               }
               // PATCH
               if (request.method().compare("PATCH") == 0 && len > 0) {
@@ -450,11 +448,10 @@ void udr_http2_server::read_authentication_subscription_handler(
   nlohmann::json response_data = {};
   long http_code               = 0;
   header_map h;
-Logger::udr_server().info("Received response: ", response.status_code());
+  Logger::udr_server().info("Received response: ", response.status_code());
 
   m_udr_app->handle_read_authentication_subscription(
       ue_id, response_data, http_code);
-
 
   Logger::udr_server().info(
       "HTTP Response code %d (HTTP Version 2).\n", http_code);

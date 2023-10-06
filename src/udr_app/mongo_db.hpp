@@ -12,7 +12,6 @@
 #include <bsoncxx/builder/stream/array.hpp>
 #include <bsoncxx/stdx/optional.hpp>
 
-
 #include <bsoncxx/types.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
 #include <bsoncxx/builder/basic/kvp.hpp>
@@ -25,9 +24,7 @@
 
 #include "udr_config.hpp"
 
-
 namespace oai::udr::app {
-    
 
 class mongo_db : public database_wrapper<mongo_db> {
  public:
@@ -113,7 +110,8 @@ class mongo_db : public database_wrapper<mongo_db> {
 
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const std::optional<oai::model::common::Snssai>& snssai,
+      nlohmann::json& json_data,
+      const std::optional<oai::model::common::Snssai>& snssai,
       const std::optional<std::string>& dnn);
 
   bool query_sm_data(nlohmann::json& json_data);
@@ -136,8 +134,10 @@ class mongo_db : public database_wrapper<mongo_db> {
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data);
 
-  nlohmann::json query_sm_data_helper(const bsoncxx::v_noabi::document::view& view);
-private:
+  nlohmann::json query_sm_data_helper(
+      const bsoncxx::v_noabi::document::view& view);
+
+ private:
   mongocxx::instance m_instance;
   mongocxx::client mongo_client;
   udr_event& m_event_sub;

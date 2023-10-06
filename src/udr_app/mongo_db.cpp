@@ -25,9 +25,9 @@ extern udr_config udr_cfg;
 
 mongo_db::mongo_db(udr_event& ev)
     : database_wrapper<mongo_db>(), m_event_sub(ev), m_db_connection_status() {
-   mongo_client = mongocxx::client{mongocxx::uri{
-  "mongodb://" + udr_cfg.mongo.mongo_user + ":" + udr_cfg.mongo.mongo_pass +
-  "@" + udr_cfg.mongo.mongo_server + ":27017"}};
+  mongo_client            = mongocxx::client{mongocxx::uri{
+      "mongodb://" + udr_cfg.mongo.mongo_user + ":" + udr_cfg.mongo.mongo_pass +
+      "@" + udr_cfg.mongo.mongo_server + ":27017"}};
   is_db_connection_active = false;
   start_event_connection_handling();
 }
@@ -41,11 +41,13 @@ mongo_db::~mongo_db() {
 //------------------------------------------------------------------------------
 bool mongo_db::initialize() {
   Logger::udr_mongo().debug("Initializing MongoDB ...");
-  //static mongocxx::instance instance{};  // Initialize the MongoDB driver
+  // static mongocxx::instance instance{};  // Initialize the MongoDB driver
 
   try {
-    mongocxx::client client{mongocxx::uri{"mongodb://" + udr_cfg.mongo.mongo_user + ":" + udr_cfg.mongo.mongo_pass +
-      "@" + udr_cfg.mongo.mongo_server + ":27017"}};  // Create a MongoDB client
+    mongocxx::client client{mongocxx::uri{
+        "mongodb://" + udr_cfg.mongo.mongo_user + ":" +
+        udr_cfg.mongo.mongo_pass + "@" + udr_cfg.mongo.mongo_server +
+        ":27017"}};  // Create a MongoDB client
     // Additional initialization code specific to MongoDB can be added here
     Logger::udr_mongo().debug("Done!");
     return true;
@@ -194,7 +196,8 @@ bool mongo_db::insert_authentication_subscription(
   auto end_time = std::chrono::steady_clock::now();
 
   // Calculate the duration
-  auto find_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+  auto find_duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+      end_time - start_time);
 
   if (cursor) {
     Logger::udr_mongo().error("AuthenticationSubscription existed!");
@@ -258,9 +261,8 @@ bool mongo_db::insert_authentication_subscription(
   bsoncxx::document::value auth_subscription_doc =
       auth_subscription_builder << bsoncxx::builder::stream::finalize;
 
-
   // Start the timer for insertion
-  start_time = std::chrono::steady_clock::now();    
+  start_time = std::chrono::steady_clock::now();
 
   coll.insert_one(auth_subscription_doc.view());
 
@@ -268,21 +270,24 @@ bool mongo_db::insert_authentication_subscription(
   end_time = std::chrono::steady_clock::now();
 
   // Calculate the duration for insertion
-  auto insertion_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+  auto insertion_duration =
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          end_time - start_time);
 
   to_json(json_data, auth_subscription);
 
   Logger::udr_mongo().debug(
       "AuthenticationSubscription POST: %s", json_data.dump().c_str());
-  
+
   // Log the durations
-  Logger::udr_mongo().info("Find Duration: %lld milliseconds", find_duration.count());
-  Logger::udr_mongo().info("Insertion Duration: %lld milliseconds", insertion_duration.count());
+  Logger::udr_mongo().info(
+      "Find Duration: %lld milliseconds", find_duration.count());
+  Logger::udr_mongo().info(
+      "Insertion Duration: %lld milliseconds", insertion_duration.count());
   return true;
 }
 
 bool mongo_db::delete_authentication_subscription(const std::string& id) {
-
   // Select the appropriate database and collection
   mongocxx::database db     = mongo_client["oai_db_mongo"];
   mongocxx::collection coll = db["AuthenticationSubscription"];
@@ -303,8 +308,9 @@ bool mongo_db::delete_authentication_subscription(const std::string& id) {
   auto end_time = std::chrono::steady_clock::now();
 
   // Calculate the duration
-  auto deletion_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-
+  auto deletion_duration =
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          end_time - start_time);
 
   if (!result) {
     std::cerr << "Failed to delete document from MongoDB" << std::endl;
@@ -320,7 +326,8 @@ bool mongo_db::delete_authentication_subscription(const std::string& id) {
             << " document(s) from MongoDB" << std::endl;
 
   // Log the duration
-  Logger::udr_mongo().info("Deletion Duration: %lld milliseconds", deletion_duration.count());          
+  Logger::udr_mongo().info(
+      "Deletion Duration: %lld milliseconds", deletion_duration.count());
   return true;
 }
 
@@ -335,7 +342,6 @@ bool mongo_db::query_authentication_subscription(
   }
 
   Logger::udr_mongo().info("Query Authentication Subscription");
-
 
   // Get the database and collection
   auto db   = mongo_client["oai_db_mongo"];
@@ -355,23 +361,24 @@ bool mongo_db::query_authentication_subscription(
 
   auto start_time = std::chrono::steady_clock::now();
 
-  //std::string query_str = bsoncxx::to_json(query.view());
+  // std::string query_str = bsoncxx::to_json(query.view());
 
   // Log the query using the Logger::udr_mongo().info() method
-  //Logger::udr_mongo().info("MongoDB Query: %s", query_str.c_str());
+  // Logger::udr_mongo().info("MongoDB Query: %s", query_str.c_str());
 
   // Execute the query and get the result
   bsoncxx::stdx::optional<bsoncxx::document::value> result = coll.find_one(
       bsoncxx::builder::stream::document{}
       << "ueid" << id << bsoncxx::builder::stream::finalize);
   // Check if the result is not empty before calling the view() method
-  
+
   // Stop the timer
   auto end_time = std::chrono::steady_clock::now();
 
   // Calculate the duration
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-  
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+      end_time - start_time);
+
   /*if (result) {
     // Convert the result object to a JSON string
     std::string result_str = bsoncxx::to_json(result->view());
@@ -384,7 +391,7 @@ bool mongo_db::query_authentication_subscription(
 
   // Logger::udr_mongo().info("Mongo client created successfully");
   if (result) {
-    bsoncxx::document::view view = result->view();
+    bsoncxx::document::view view                           = result->view();
     AuthenticationSubscription authentication_subscription = {};
     if (view["authenticationMethod"]) {
       authentication_subscription.setAuthenticationMethod(
@@ -399,19 +406,21 @@ bool mongo_db::query_authentication_subscription(
           std::string{view["protectionParameterId"].get_string().value});
     }
 
-if (view["sequenceNumber"]) {
-    bsoncxx::document::element sequenceNumberElement = view["sequenceNumber"];
-    if (sequenceNumberElement.type() == bsoncxx::type::k_document) {
-        bsoncxx::document::view sequenceNumberView = sequenceNumberElement.get_document().value;
+    if (view["sequenceNumber"]) {
+      bsoncxx::document::element sequenceNumberElement = view["sequenceNumber"];
+      if (sequenceNumberElement.type() == bsoncxx::type::k_document) {
+        bsoncxx::document::view sequenceNumberView =
+            sequenceNumberElement.get_document().value;
         std::string sequenceNumberJson = bsoncxx::to_json(sequenceNumberView);
-        nlohmann::json sequenceNumberJsonObj = nlohmann::json::parse(sequenceNumberJson);
+        nlohmann::json sequenceNumberJsonObj =
+            nlohmann::json::parse(sequenceNumberJson);
         SequenceNumber sequenceNumber = sequenceNumberJsonObj;
         authentication_subscription.setSequenceNumber(sequenceNumber);
+      }
     }
-}
     if (view["authenticationManagementField"]) {
-      authentication_subscription.setAuthenticationManagementField(
-          std::string{view["authenticationManagementField"].get_string().value});
+      authentication_subscription.setAuthenticationManagementField(std::string{
+          view["authenticationManagementField"].get_string().value});
     }
     if (view["algorithmId"]) {
       authentication_subscription.setAlgorithmId(
@@ -426,9 +435,9 @@ if (view["sequenceNumber"]) {
           std::string{view["encTopcKey"].get_string().value});
     }
     if (view["vectorGenerationInHss"]) {
-      std::string
-    vector_generation_in_hss{view["vectorGenerationInHss"].get_string().value}; if
-    (vector_generation_in_hss == "0") {
+      std::string vector_generation_in_hss{
+          view["vectorGenerationInHss"].get_string().value};
+      if (vector_generation_in_hss == "0") {
         authentication_subscription.setVectorGenerationInHss(false);
       } else {
         authentication_subscription.setVectorGenerationInHss(true);
@@ -439,9 +448,9 @@ if (view["sequenceNumber"]) {
           std::string{view["n5gcAuthMethod"].get_string().value});
     }
     if (view["rgAuthenticationInd"]) {
-      std::string
-    rgAuthenticationInd_in_hss{view["rgAuthenticationInd"].get_string().value}; if
-    (rgAuthenticationInd_in_hss == "0") {
+      std::string rgAuthenticationInd_in_hss{
+          view["rgAuthenticationInd"].get_string().value};
+      if (rgAuthenticationInd_in_hss == "0") {
         authentication_subscription.setRgAuthenticationInd(false);
       } else {
         authentication_subscription.setRgAuthenticationInd(true);
@@ -452,7 +461,8 @@ if (view["sequenceNumber"]) {
           std::string{view["supi"].get_string().value});
     }
 
-    Logger::udr_mongo().info("Query Duration: %lld milliseconds", duration.count());
+    Logger::udr_mongo().info(
+        "Query Duration: %lld milliseconds", duration.count());
 
     to_json(json_data, authentication_subscription);
 
@@ -461,7 +471,8 @@ if (view["sequenceNumber"]) {
     Logger::udr_mongo().error(
         "AuthenticationSubscription no data！ Query filter: %s",
         bsoncxx::to_json(query.view()).c_str());
-    Logger::udr_mongo().info("Query Duration: %lld milliseconds", duration.count());
+    Logger::udr_mongo().info(
+        "Query Duration: %lld milliseconds", duration.count());
 
     return false;
   }
@@ -483,26 +494,32 @@ bool mongo_db::update_authentication_subscription(
   auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["AuthenticationSubscription"];
 
-  auto filter = bsoncxx::builder::stream::document{} << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
+  auto filter = bsoncxx::builder::stream::document{}
+                << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
 
   // Start the timer
   auto start_time = std::chrono::steady_clock::now();
 
-  bsoncxx::stdx::optional<bsoncxx::document::value> result = coll.find_one(filter.view());
+  bsoncxx::stdx::optional<bsoncxx::document::value> result =
+      coll.find_one(filter.view());
 
   if (result) {
     bsoncxx::document::view view = result->view();
 
     for (const auto& item : patchItem) {
-      if (item.getOp().getEnumValue()  == PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE && item.valueIsSet()) {
+      if (item.getOp().getEnumValue() ==
+              PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE &&
+          item.valueIsSet()) {
         SequenceNumber sequenceNumber;
         nlohmann::json::parse(item.getValue().c_str()).get_to(sequenceNumber);
 
-        bsoncxx::document::value sequenceNumberValue = bsoncxx::from_json(item.getValue());
+        bsoncxx::document::value sequenceNumberValue =
+            bsoncxx::from_json(item.getValue());
         bsoncxx::document::view sequenceNumberView = sequenceNumberValue.view();
 
         std::string sequenceNumberJson = bsoncxx::to_json(sequenceNumberView);
-        //Logger::udr_mongo().info("Raw sequenceNumber value: %s", sequenceNumberJson.c_str());
+        // Logger::udr_mongo().info("Raw sequenceNumber value: %s",
+        // sequenceNumberJson.c_str());
 
         bsoncxx::builder::stream::document updateBuilder{};
         updateBuilder << "$set" << bsoncxx::builder::stream::open_document;
@@ -513,35 +530,41 @@ bool mongo_db::update_authentication_subscription(
 
         auto updateResult = coll.update_one(filter.view(), update.view());
         if (!updateResult) {
-          Logger::udr_mongo().error("Failed to update AuthenticationSubscription");
+          Logger::udr_mongo().error(
+              "Failed to update AuthenticationSubscription");
           return false;
         }
       }
-      
 
       nlohmann::json tmp_j;
       to_json(tmp_j, item);
       json_data += tmp_j;
     }
 
-    Logger::udr_mongo().info("AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
- bool query_result = query_authentication_subscription(ue_id, json_data);
-  if (!query_result) {
-    Logger::udr_mongo().error("Failed to retrieve updated authentication subscription data");
-    return false;
-  }
-  // Stop the timer
-  auto end_time = std::chrono::steady_clock::now();
+    Logger::udr_mongo().info(
+        "AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
+    bool query_result = query_authentication_subscription(ue_id, json_data);
+    if (!query_result) {
+      Logger::udr_mongo().error(
+          "Failed to retrieve updated authentication subscription data");
+      return false;
+    }
+    // Stop the timer
+    auto end_time = std::chrono::steady_clock::now();
 
-  // Calculate the duration
-  auto update_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    // Calculate the duration
+    auto update_duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(
+            end_time - start_time);
 
-  // Log the duration
-  Logger::udr_mongo().info("Update Duration: %lld milliseconds", update_duration.count());
-  
-  return true;
+    // Log the duration
+    Logger::udr_mongo().info(
+        "Update Duration: %lld milliseconds", update_duration.count());
+
+    return true;
   } else {
-    Logger::udr_mongo().error("AuthenticationSubscription not found for ueid: %s", ue_id.c_str());
+    Logger::udr_mongo().error(
+        "AuthenticationSubscription not found for ueid: %s", ue_id.c_str());
     return false;
   }
 }
@@ -551,18 +574,15 @@ bool mongo_db::query_am_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
   // Establish MongoDB connection
-    if (!get_db_connection_status()) {
+  if (!get_db_connection_status()) {
     Logger::udr_mongo().info(
         "The connection to the MongoDB is currently inactive");
     return false;
   }
 
-
   // Get the database and collection
   auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["AccessAndMobilitySubscriptionData"];
-
-
 
   // Construct the MongoDB query
   bsoncxx::builder::stream::document query_builder{};
@@ -579,7 +599,8 @@ bool mongo_db::query_am_data(
     if (auto val = row["supportedFeatures"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setSupportedFeatures(val.get_string().value.to_string());
+      subscription_data.setSupportedFeatures(
+          val.get_string().value.to_string());
     }
     if (auto val = row["gpsis"]; val.type() != bsoncxx::type::k_null &&
                                  val.type() != bsoncxx::type::k_undefined) {
@@ -591,8 +612,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<std ::string> internalgroupids;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(internalgroupids);
+      nlohmann::json::parse(val.get_string().value).get_to(internalgroupids);
       subscription_data.setInternalGroupIds(internalgroupids);
     }
     if (auto val = row["sharedvngroupdataids"];
@@ -607,8 +627,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       AmbrRm subscribedueambr;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(subscribedueambr);
+      nlohmann::json::parse(val.get_string().value).get_to(subscribedueambr);
       subscription_data.setSubscribedUeAmbr(subscribedueambr);
     }
     if (auto val = row["nssai"]; val.type() != bsoncxx::type::k_null &&
@@ -621,16 +640,14 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std ::vector<RatType> ratrestrictions;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(ratrestrictions);
+      nlohmann::json::parse(val.get_string().value).get_to(ratrestrictions);
       subscription_data.setRatRestrictions(ratrestrictions);
     }
     if (auto val = row["forbiddenareas"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std ::vector<Area> forbiddenareas;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(forbiddenareas);
+      nlohmann::json::parse(val.get_string().value).get_to(forbiddenareas);
       subscription_data.setForbiddenAreas(forbiddenareas);
     }
     if (auto val = row["servicearearestriction"];
@@ -718,16 +735,14 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<std ::string> sharedAmDataIds;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(sharedAmDataIds);
+      nlohmann::json::parse(val.get_string().value).get_to(sharedAmDataIds);
       subscription_data.setSharedAmDataIds(sharedAmDataIds);
     }
     if (auto val = row["odbPacketServices"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       OdbPacketServices odbPacketServices = {};
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(odbPacketServices);
+      nlohmann::json::parse(val.get_string().value).get_to(odbPacketServices);
       subscription_data.setOdbPacketServices(odbPacketServices);
     }
     if (auto val = row["serviceGapTime"];
@@ -739,16 +754,14 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       MdtUserConsent mdtUserConsent = {};
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(mdtUserConsent);
+      nlohmann::json::parse(val.get_string().value).get_to(mdtUserConsent);
       subscription_data.setMdtUserConsent(mdtUserConsent);
     }
     if (auto val = row["mdtConfiguration"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       MdtConfiguration mdtConfiguration = {};
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(mdtConfiguration);
+      nlohmann::json::parse(val.get_string().value).get_to(mdtConfiguration);
       subscription_data.setMdtConfiguration(mdtConfiguration);
     }
     if (auto val = row["traceData"]; val.type() != bsoncxx::type::k_null &&
@@ -791,8 +804,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       EcRestrictionDataWb ecRestrictionDataWb = {};
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(ecRestrictionDataWb);
+      nlohmann::json::parse(val.get_string().value).get_to(ecRestrictionDataWb);
       subscription_data.setEcRestrictionDataWb(ecRestrictionDataWb);
     }
     if (auto val = row["ecRestrictionDataNb"];
@@ -828,16 +840,14 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<EdrxParameters> edrxParametersList;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(edrxParametersList);
+      nlohmann::json::parse(val.get_string().value).get_to(edrxParametersList);
       subscription_data.setEdrxParametersList(edrxParametersList);
     }
     if (auto val = row["ptwParametersList"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<PtwParameters> ptwParametersList;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(ptwParametersList);
+      nlohmann::json::parse(val.get_string().value).get_to(ptwParametersList);
       subscription_data.setPtwParametersList(ptwParametersList);
     }
     if (auto val = row["iabOperationAllowed"];
@@ -884,7 +894,7 @@ bool mongo_db::create_amf_context_3gpp(
 
   bsoncxx::builder::stream::document filter_builder;
   filter_builder << "ueid" << ue_id;
-  
+
   // Select the appropriate database and collection
   mongocxx::database db = mongo_client["oai_db_mongo"];
 
@@ -1017,7 +1027,9 @@ bool mongo_db::create_amf_context_3gpp(
     return true;
   } else {
     Logger::udr_mongo().error(
-            "MongoDB Document %S not found! Query could not be submitted: %s", bsoncxx::to_json(filter_builder.view()), bsoncxx::to_json(update_doc.view()));
+        "MongoDB Document %S not found! Query could not be submitted: %s",
+        bsoncxx::to_json(filter_builder.view()),
+        bsoncxx::to_json(update_doc.view()));
     return false;
   }
 }
@@ -1031,8 +1043,8 @@ bool mongo_db::query_amf_context_3gpp(
     return false;
   }
 
-  auto db = mongo_client["oai_db_mongo"];
-  auto collection       = db["Amf3GppAccessRegistration"];
+  auto db         = mongo_client["oai_db_mongo"];
+  auto collection = db["Amf3GppAccessRegistration"];
   bsoncxx::builder::stream::document filter_builder;
   filter_builder << "ueid" << ue_id;
   auto filter = filter_builder.view();
@@ -1065,8 +1077,7 @@ bool mongo_db::query_amf_context_3gpp(
     if (auto val = row["imsVoPs"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
       ImsVoPs imsvops;
-      nlohmann::json::parse(row["imsVoPs"].get_string().value)
-          .get_to(imsvops);
+      nlohmann::json::parse(row["imsVoPs"].get_string().value).get_to(imsvops);
       amf3gppaccessregistration.setImsVoPs(imsvops);
     }
     if (auto val = row["purgeFlag"]; val.type() != bsoncxx::type::k_null &&
@@ -1083,8 +1094,7 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       oai::model::nrf::ServiceName amfservicenamedereg;
-      nlohmann::json::parse(
-          row["amfServiceNameDereg"].get_string().value)
+      nlohmann::json::parse(row["amfServiceNameDereg"].get_string().value)
           .get_to(amfservicenamedereg);
       amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
     }
@@ -1098,8 +1108,7 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       oai::model::nrf::ServiceName amfservicenamepcscfrest;
-      nlohmann::json::parse(
-          row["amfServiceNamePcscfRest"].get_string().value)
+      nlohmann::json::parse(row["amfServiceNamePcscfRest"].get_string().value)
           .get_to(amfservicenamepcscfrest);
       amf3gppaccessregistration.setAmfServiceNamePcscfRest(
           amfservicenamepcscfrest);
@@ -1107,8 +1116,7 @@ bool mongo_db::query_amf_context_3gpp(
     if (auto val = row["guami"]; val.type() != bsoncxx::type::k_null &&
                                  val.type() != bsoncxx::type::k_undefined) {
       Guami guami;
-      nlohmann::json::parse(row["guami"].get_string().value)
-          .get_to(guami);
+      nlohmann::json::parse(row["guami"].get_string().value).get_to(guami);
       amf3gppaccessregistration.setGuami(guami);
     }
     if (auto val = row["backupAmfInfo"];
@@ -1122,8 +1130,7 @@ bool mongo_db::query_amf_context_3gpp(
     if (auto val = row["ratType"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
       RatType ratType;
-      nlohmann::json::parse(row["ratType"].get_string().value)
-          .get_to(ratType);
+      nlohmann::json::parse(row["ratType"].get_string().value).get_to(ratType);
       amf3gppaccessregistration.setRatType(ratType);
     }
 
@@ -1131,8 +1138,7 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       EpsInterworkingInfo epsInterworkingInfo;
-      nlohmann::json::parse(
-          row["epsInterworkingInfo"].get_string().value)
+      nlohmann::json::parse(row["epsInterworkingInfo"].get_string().value)
           .get_to(epsInterworkingInfo);
       amf3gppaccessregistration.setEpsInterworkingInfo(epsInterworkingInfo);
     }
@@ -1212,14 +1218,16 @@ bool mongo_db::insert_authentication_status(
   }
 
   // Get the database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db         = mongo_client["oai_db_mongo"];
   auto collection = db["AuthenticationStatus"];
-  auto filter = bsoncxx::builder::stream::document{} << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
-  
+  auto filter     = bsoncxx::builder::stream::document{}
+                << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
+
   // Start the timer
   auto start_time = std::chrono::steady_clock::now();
-  
-  bsoncxx::stdx::optional<bsoncxx::document::value> result = collection.find_one(filter.view());
+
+  bsoncxx::stdx::optional<bsoncxx::document::value> result =
+      collection.find_one(filter.view());
 
   bsoncxx::builder::stream::document documentBuilder{};
 
@@ -1231,7 +1239,8 @@ bool mongo_db::insert_authentication_status(
   documentBuilder << "servingNetworkName" << authEvent.getServingNetworkName();
 
   if (authEvent.authRemovalIndIsSet()) {
-    documentBuilder << "authRemovalInd" << (authEvent.isAuthRemovalInd() ? true : false);
+    documentBuilder << "authRemovalInd"
+                    << (authEvent.isAuthRemovalInd() ? true : false);
   }
 
   auto document = documentBuilder << bsoncxx::builder::stream::finalize;
@@ -1249,20 +1258,23 @@ bool mongo_db::insert_authentication_status(
       return false;
     }
   }
-  
+
   nlohmann::json tmp = {};
   to_json(tmp, authEvent);
   Logger::udr_mongo().info("AuthenticationStatus PUT: %s", tmp.dump().c_str());
-  
+
   // Stop the timer
   auto end_time = std::chrono::steady_clock::now();
 
   // Calculate the duration
-  auto operation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+  auto operation_duration =
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          end_time - start_time);
 
   // Log the duration
-  Logger::udr_mongo().info("Operation Duration: %lld milliseconds", operation_duration.count());
-  
+  Logger::udr_mongo().info(
+      "Operation Duration: %lld milliseconds", operation_duration.count());
+
   return true;
 }
 
@@ -1273,7 +1285,7 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
-  
+
   mongocxx::database db     = mongo_client["oai_ab_mongo"];
   mongocxx::collection coll = db["AuthenticationStatus"];
 
@@ -1281,7 +1293,7 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
   filter_builder
       << "ueid"
       << ue_id;  // Create a filter document for matching the "ueid" field
-  
+
   // Start the timer
   auto start_time = std::chrono::steady_clock::now();
 
@@ -1295,9 +1307,12 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
         // Stop the timer
         auto end_time = std::chrono::steady_clock::now();
         // Calculate the duration
-        auto operation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        auto operation_duration =
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                end_time - start_time);
         // Log the duration
-        Logger::udr_mongo().info("Deletion Duration: %lld milliseconds", operation_duration.count());
+        Logger::udr_mongo().info(
+            "Deletion Duration: %lld milliseconds", operation_duration.count());
 
         return true;
       } else {
@@ -1317,87 +1332,96 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
 }
 
 //------------------------------------------------------------------------------
-bool mongo_db::query_authentication_status(const std::string& ue_id, nlohmann::json& json_data) {
-    
-    // Check the connection with DB first
-    if (!get_db_connection_status()) {
-        Logger::udr_mongo().info("The connection to the MongoDB is currently inactive");
-        return false;
+bool mongo_db::query_authentication_status(
+    const std::string& ue_id, nlohmann::json& json_data) {
+  // Check the connection with DB first
+  if (!get_db_connection_status()) {
+    Logger::udr_mongo().info(
+        "The connection to the MongoDB is currently inactive");
+    return false;
+  }
+
+  Logger::udr_mongo().info("Query Authentication Status");
+
+  // Get the database and collection
+  auto db   = mongo_client["oai_db_mongo"];
+  auto coll = db["AuthenticationStatus"];
+
+  // Build the query
+  auto query = bsoncxx::builder::stream::document{}
+               << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
+
+  // Start the timer
+  auto start_time = std::chrono::steady_clock::now();
+
+  // Execute the query and get the result
+  bsoncxx::stdx::optional<bsoncxx::document::value> result =
+      coll.find_one(query.view());
+
+  // Stop the timer
+  auto end_time = std::chrono::steady_clock::now();
+
+  // Calculate the duration
+  auto operation_duration =
+      std::chrono::duration_cast<std::chrono::milliseconds>(
+          end_time - start_time);
+
+  // Log the duration
+  Logger::udr_mongo().info(
+      "Query Duration: %lld milliseconds", operation_duration.count());
+
+  // Check if the result is not empty
+  if (result) {
+    // Convert the result object to a JSON string
+    std::string result_str = bsoncxx::to_json(result->view());
+
+    // Log the result using the Logger::udr_mongo().info() method
+    Logger::udr_mongo().info("MongoDB Result: %s", result_str.c_str());
+
+    bsoncxx::document::view view    = result->view();
+    AuthEvent authentication_status = {};
+
+    if (view["nfInstanceId"]) {
+      authentication_status.setNfInstanceId(
+          std::string{view["nfInstanceId"].get_string().value});
     }
 
-    Logger::udr_mongo().info("Query Authentication Status");
-
-    // Get the database and collection
-    auto db = mongo_client["oai_db_mongo"];
-    auto coll = db["AuthenticationStatus"];
-
-    // Build the query
-    auto query = bsoncxx::builder::stream::document{}
-        << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
-
-    // Start the timer
-    auto start_time = std::chrono::steady_clock::now();
-
-    // Execute the query and get the result
-    bsoncxx::stdx::optional<bsoncxx::document::value> result = coll.find_one(query.view());
-
-    // Stop the timer
-    auto end_time = std::chrono::steady_clock::now();
-
-    // Calculate the duration
-    auto operation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-
-    // Log the duration
-    Logger::udr_mongo().info("Query Duration: %lld milliseconds", operation_duration.count());
-
-
-    
-    // Check if the result is not empty
-    if (result) {
-        // Convert the result object to a JSON string
-        std::string result_str = bsoncxx::to_json(result->view());
-
-        // Log the result using the Logger::udr_mongo().info() method
-        Logger::udr_mongo().info("MongoDB Result: %s", result_str.c_str());
-
-        bsoncxx::document::view view = result->view();
-        AuthEvent authentication_status = {};
-
-        if (view["nfInstanceId"]) {
-            authentication_status.setNfInstanceId(std::string{ view["nfInstanceId"].get_string().value });
-        }
-
-        if (view["success"]) {
-            bool success = view["success"].get_bool().value;
-            authentication_status.setSuccess(success);
-        }
-
-        if (view["timeStamp"]) {
-            authentication_status.setTimeStamp(std::string{ view["timeStamp"].get_string().value });
-        }
-
-        if (view["authType"]) {
-            authentication_status.setAuthType(std::string{ view["authType"].get_string().value });
-        }
-
-        if (view["servingNetworkName"]) {
-            authentication_status.setServingNetworkName(std::string{ view["servingNetworkName"].get_string().value });
-        }
-
-        if (view["authRemovalInd"]) {
-            bool authRemovalInd = view["authRemovalInd"].get_bool().value;
-            authentication_status.setAuthRemovalInd(authRemovalInd);
-        }
-
-        to_json(json_data, authentication_status);
-        Logger::udr_mongo().info("AuthenticationStatus GET: %s", json_data.dump().c_str());
-        return true;
-    } else {
-        Logger::udr_mongo().error("AuthenticationStatus no data！ Query filter: %s", bsoncxx::to_json(query.view()).c_str());
-        return false;
+    if (view["success"]) {
+      bool success = view["success"].get_bool().value;
+      authentication_status.setSuccess(success);
     }
+
+    if (view["timeStamp"]) {
+      authentication_status.setTimeStamp(
+          std::string{view["timeStamp"].get_string().value});
+    }
+
+    if (view["authType"]) {
+      authentication_status.setAuthType(
+          std::string{view["authType"].get_string().value});
+    }
+
+    if (view["servingNetworkName"]) {
+      authentication_status.setServingNetworkName(
+          std::string{view["servingNetworkName"].get_string().value});
+    }
+
+    if (view["authRemovalInd"]) {
+      bool authRemovalInd = view["authRemovalInd"].get_bool().value;
+      authentication_status.setAuthRemovalInd(authRemovalInd);
+    }
+
+    to_json(json_data, authentication_status);
+    Logger::udr_mongo().info(
+        "AuthenticationStatus GET: %s", json_data.dump().c_str());
+    return true;
+  } else {
+    Logger::udr_mongo().error(
+        "AuthenticationStatus no data！ Query filter: %s",
+        bsoncxx::to_json(query.view()).c_str());
+    return false;
+  }
 }
-
 
 //------------------------------------------------------------------------------
 bool mongo_db::query_sdm_subscription(
@@ -1408,7 +1432,7 @@ bool mongo_db::query_sdm_subscription(
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
-  
+
   // Select the appropriate database and collection
   mongocxx::database db     = mongo_client["oai_db_mongo"];
   mongocxx::collection coll = db["SdmSubscriptions"];
@@ -1437,7 +1461,8 @@ bool mongo_db::query_sdm_subscription(
     }
 
     if (doc["expires"]) {
-      SdmSubscriptions.setExpires(doc["expires"].get_string().value.to_string());
+      SdmSubscriptions.setExpires(
+          doc["expires"].get_string().value.to_string());
     }
 
     if (doc["callbackReference"]) {
@@ -1454,8 +1479,7 @@ bool mongo_db::query_sdm_subscription(
 
     if (doc["monitoredResourceUris"]) {
       std::vector<std::string> monitoredresourceuris;
-      nlohmann::json::parse(
-          doc["monitoredResourceUris"].get_string().value)
+      nlohmann::json::parse(doc["monitoredResourceUris"].get_string().value)
           .get_to(monitoredresourceuris);
       SdmSubscriptions.setMonitoredResourceUris(monitoredresourceuris);
     }
@@ -1478,8 +1502,7 @@ bool mongo_db::query_sdm_subscription(
 
     if (doc["plmnId"]) {
       PlmnId plmnid;
-      nlohmann::json::parse(doc["plmnId"].get_string().value)
-          .get_to(plmnid);
+      nlohmann::json::parse(doc["plmnId"].get_string().value).get_to(plmnid);
       SdmSubscriptions.setPlmnId(plmnid);
     }
 
@@ -1492,8 +1515,7 @@ bool mongo_db::query_sdm_subscription(
 
     if (doc["report"]) {
       SubscriptionDataSets report;
-      nlohmann::json::parse(doc["report"].get_string().value)
-          .get_to(report);
+      nlohmann::json::parse(doc["report"].get_string().value).get_to(report);
       SdmSubscriptions.setReport(report);
     }
 
@@ -1536,10 +1558,9 @@ bool mongo_db::delete_sdm_subscription(
         "The connection to the MongoDB is currently inactive");
     return false;
   }
-  
 
   // Select the appropriate database and collection
-  auto db     = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SdmSubscriptions"];
   bsoncxx::builder::stream::document filter_builder;
   filter_builder << "ueid" << ue_id << "subsId" << subs_id;
@@ -1568,9 +1589,9 @@ bool mongo_db::update_sdm_subscription(
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
-  
+
   // Select the appropriate database and collection
-  auto db     = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SdmSubscriptions"];
   // Prepare filter for update
   bsoncxx::builder::stream::document filter;
@@ -1693,7 +1714,7 @@ bool mongo_db::create_sdm_subscriptions(
   }
 
   // Select the appropriate database and collection
-  auto db     = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SdmSubscriptions"];
 
   bsoncxx::builder::stream::document filter_builder;
@@ -1796,14 +1817,13 @@ bool mongo_db::query_sdm_subscriptions(
   bsoncxx::document::view_or_value query =
       bsoncxx::builder::stream::document{}
       << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
-  
 
   // Select the appropriate database and collection
-  auto db     = mongo_client["oai_db_mongo"];
-  auto coll = db["SdmSubscriptions"];
-  mongocxx::cursor cursor   = coll.find(query.view());
-  nlohmann::json j          = {};
-  nlohmann::json tmp        = {};
+  auto db                 = mongo_client["oai_db_mongo"];
+  auto coll               = db["SdmSubscriptions"];
+  mongocxx::cursor cursor = coll.find(query.view());
+  nlohmann::json j        = {};
+  nlohmann::json tmp      = {};
 
   for (const bsoncxx::document::view& doc : cursor) {
     SdmSubscription sdmsubscriptions = {};
@@ -1820,7 +1840,8 @@ bool mongo_db::query_sdm_subscriptions(
         sdmsubscriptions.setImplicitUnsubscribe(false);
     }
     if (doc["expires"]) {
-      sdmsubscriptions.setExpires(doc["expires"].get_string().value.to_string());
+      sdmsubscriptions.setExpires(
+          doc["expires"].get_string().value.to_string());
     }
     if (doc["callbackReference"]) {
       sdmsubscriptions.setCallbackReference(
@@ -1834,8 +1855,7 @@ bool mongo_db::query_sdm_subscriptions(
     }
     if (doc["monitoredResourceUris"]) {
       std::vector<std::string> monitoredresourceuris;
-      nlohmann::json::parse(
-          doc["monitoredResourceUris"].get_string().value)
+      nlohmann::json::parse(doc["monitoredResourceUris"].get_string().value)
           .get_to(monitoredresourceuris);
       sdmsubscriptions.setMonitoredResourceUris(monitoredresourceuris);
     }
@@ -1854,8 +1874,7 @@ bool mongo_db::query_sdm_subscriptions(
     }
     if (doc["plmnId"]) {
       PlmnId plmnid;
-      nlohmann::json::parse(doc["plmnId"].get_string().value)
-          .get_to(plmnid);
+      nlohmann::json::parse(doc["plmnId"].get_string().value).get_to(plmnid);
       sdmsubscriptions.setPlmnId(plmnid);
     }
     if (doc["immediateReport"]) {
@@ -1866,8 +1885,7 @@ bool mongo_db::query_sdm_subscriptions(
     }
     if (doc["report"]) {
       SubscriptionDataSets report;
-      nlohmann::json::parse(doc["report"].get_string().value)
-          .get_to(report);
+      nlohmann::json::parse(doc["report"].get_string().value).get_to(report);
       sdmsubscriptions.setReport(report);
     }
     if (doc["supportedFeatures"]) {
@@ -1897,14 +1915,15 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
     return false;
   }
 
-  auto db    = mongo_client["oai_db_mongo"];
-  auto coll = db["SessionManagementSubscriptionData"];
+  auto db     = mongo_client["oai_db_mongo"];
+  auto coll   = db["SessionManagementSubscriptionData"];
   auto cursor = coll.find({});
 
-  auto row    = cursor.begin();
+  auto row = cursor.begin();
   if (row == cursor.end()) {
     Logger::udr_mongo().error(
-            "Empty document in MongoDB Collection SessionManagementSubscriptionData");
+        "Empty document in MongoDB Collection "
+        "SessionManagementSubscriptionData");
     return false;
   }
 
@@ -1912,7 +1931,7 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
     nlohmann::json j = query_sm_data_helper(view);
     json_data += j;
     Logger::udr_mongo().debug(
-            "SessionManagementSubscriptionData: %s", j.dump().c_str());
+        "SessionManagementSubscriptionData: %s", j.dump().c_str());
   }
   return true;
 }
@@ -1920,7 +1939,8 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
 //------------------------------------------------------------------------------
 bool mongo_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& json_data, const std::optional<oai::model::common::Snssai>& snssai,
+    nlohmann::json& json_data,
+    const std::optional<oai::model::common::Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   // Check the connection with DB first
   if (!get_db_connection_status()) {
@@ -1928,9 +1948,9 @@ bool mongo_db::query_sm_data(
     return false;
   }
 
-  auto db    = mongo_client["oai_db_mongo"];
-  auto coll = db["SessionManagementSubscriptionData"];
-  auto filter               = bsoncxx::builder::stream::document{};
+  auto db     = mongo_client["oai_db_mongo"];
+  auto coll   = db["SessionManagementSubscriptionData"];
+  auto filter = bsoncxx::builder::stream::document{};
   filter << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id;
 
   if (snssai.value().getSst() > 0) {
@@ -1945,11 +1965,11 @@ bool mongo_db::query_sm_data(
 
   auto cursor = coll.find(filter.view());
 
-  auto row    = cursor.begin();
+  auto row = cursor.begin();
   if (row == cursor.end()) {
     Logger::udr_mongo().error(
-            "Empty document in MongoDB: ueid=%s, servingPlmnid=%s", ue_id.c_str(),
-            serving_plmn_id.c_str());
+        "Empty document in MongoDB: ueid=%s, servingPlmnid=%s", ue_id.c_str(),
+        serving_plmn_id.c_str());
     return false;
   }
 
@@ -1957,14 +1977,15 @@ bool mongo_db::query_sm_data(
     nlohmann::json j = query_sm_data_helper(view);
     json_data += j;
     Logger::udr_mongo().debug(
-            "SessionManagementSubscriptionData: %s", j.dump().c_str());
+        "SessionManagementSubscriptionData: %s", j.dump().c_str());
   }
   return true;
 }
 
 //------------------------------------------------------------------------------
-nlohmann::json mongo_db::query_sm_data_helper(const bsoncxx::v_noabi::document::view& view){
-  //check if at least one document can be found
+nlohmann::json mongo_db::query_sm_data_helper(
+    const bsoncxx::v_noabi::document::view& view) {
+  // check if at least one document can be found
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
 
   bsoncxx::document::element element = view["singleNssai"];
@@ -1972,7 +1993,7 @@ nlohmann::json mongo_db::query_sm_data_helper(const bsoncxx::v_noabi::document::
     Snssai singlenssai;
     bsoncxx::stdx::string_view str_view{element.get_string().value};
     nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-            .get_to(singlenssai);
+        .get_to(singlenssai);
     sessionmanagementsubscriptiondata.setSingleNssai(singlenssai);
   }
 
@@ -1980,12 +2001,11 @@ nlohmann::json mongo_db::query_sm_data_helper(const bsoncxx::v_noabi::document::
   if (element && element.type() == bsoncxx::type::k_document) {
     std::map<std::string, DnnConfiguration> dnnconfigurations;
     bsoncxx::document::view dnn_view{element.get_document().view()};
-    for (bsoncxx::document::element e: dnn_view) {
+    for (bsoncxx::document::element e : dnn_view) {
       DnnConfiguration config;
       bsoncxx::stdx::string_view str_view{e.get_string().value};
-      nlohmann::json::parse(
-              str_view.data(), str_view.data() + str_view.size())
-              .get_to(config);
+      nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
+          .get_to(config);
       dnnconfigurations.insert({e.key().to_string(), config});
     }
     sessionmanagementsubscriptiondata.setDnnConfigurations(dnnconfigurations);
@@ -1995,7 +2015,7 @@ nlohmann::json mongo_db::query_sm_data_helper(const bsoncxx::v_noabi::document::
   if (element && element.type() == bsoncxx::type::k_array) {
     std::vector<std::string> internalgroupIds;
     bsoncxx::array::view array_view{element.get_array().value};
-    for (bsoncxx::array::element e: array_view) {
+    for (bsoncxx::array::element e : array_view) {
       internalgroupIds.emplace_back(e.get_string().value);
     }
     sessionmanagementsubscriptiondata.setInternalGroupIds(internalgroupIds);
@@ -2005,21 +2025,21 @@ nlohmann::json mongo_db::query_sm_data_helper(const bsoncxx::v_noabi::document::
     std::map<std::string, std::string> sharedvngroupdataids;
     bsoncxx::stdx::string_view str_view{element.get_string().value};
     nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-            .get_to(sharedvngroupdataids);
+        .get_to(sharedvngroupdataids);
     sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(
-            sharedvngroupdataids);
+        sharedvngroupdataids);
   }
   element = view["sharedDnnConfigurationsId"];
   if (element && element.type() == bsoncxx::type::k_utf8) {
     sessionmanagementsubscriptiondata.setSharedDnnConfigurationsId(
-            element.get_string().value.to_string());
+        element.get_string().value.to_string());
   }
   element = view["odbPacketServices"];
   if (element) {
     OdbPacketServices odbpacketservices;
     bsoncxx::stdx::string_view str_view{element.get_string().value};
     nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-            .get_to(odbpacketservices);
+        .get_to(odbpacketservices);
     sessionmanagementsubscriptiondata.setOdbPacketServices(odbpacketservices);
   }
   element = view["traceData"];
@@ -2027,36 +2047,36 @@ nlohmann::json mongo_db::query_sm_data_helper(const bsoncxx::v_noabi::document::
     TraceData tracedata;
     bsoncxx::stdx::string_view str_view{element.get_string().value};
     nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-            .get_to(tracedata);
+        .get_to(tracedata);
     sessionmanagementsubscriptiondata.setTraceData(tracedata);
   }
   element = view["sharedTraceDataId"];
   if (element && element.type() == bsoncxx::type::k_utf8) {
     sessionmanagementsubscriptiondata.setSharedTraceDataId(
-            element.get_string().value.to_string());
+        element.get_string().value.to_string());
   }
   element = view["expectedUeBehavioursList"];
   if (element && element.type() == bsoncxx::type::k_array) {
     std::map<std::string, ExpectedUeBehaviourData> expecteduebehaviourslist;
     bsoncxx::stdx::string_view str_view{element.get_string().value};
     nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-            .get_to(expecteduebehaviourslist);
+        .get_to(expecteduebehaviourslist);
     sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(
-            expecteduebehaviourslist);
+        expecteduebehaviourslist);
   }
   element = view["suggestedPacketNumDlList"];
   if (element && element.type() == bsoncxx::type::k_array) {
     std::map<std::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
     bsoncxx::stdx::string_view str_view{element.get_string().value};
     nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-            .get_to(suggestedpacketnumdllist);
+        .get_to(suggestedpacketnumdllist);
     sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(
-            suggestedpacketnumdllist);
+        suggestedpacketnumdllist);
   }
   element = view["3gppChargingCharacteristics"];
   if (element && element.type() == bsoncxx::type::k_utf8) {
     sessionmanagementsubscriptiondata.setR3gppChargingCharacteristics(
-            element.get_string().value.to_string());
+        element.get_string().value.to_string());
   }
 
   nlohmann::json j;
@@ -2076,8 +2096,7 @@ bool mongo_db::insert_smf_context_non_3gpp(
     return false;
   }
 
-  
-  auto db     = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SmfRegistrations"];
 
   bsoncxx::builder::stream::document filter_builder{};
@@ -2187,8 +2206,8 @@ bool mongo_db::delete_smf_context(
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
-  
-  auto db     = mongo_client["oai_db_mongo"];
+
+  auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SmfRegistrations"];
 
   bsoncxx::builder::stream::document query_builder{};
@@ -2220,8 +2239,8 @@ bool mongo_db::query_smf_registration(
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
-  
-  auto db     = mongo_client["oai_db_mongo"];
+
+  auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SmfRegistrations"];
 
   bsoncxx::stdx::optional<bsoncxx::document::value> maybe_result =
@@ -2249,8 +2268,7 @@ bool mongo_db::query_smf_registration(
           doc_view["pduSessionId"].get_int32().value);
       if (doc_view["singleNssai"]) {
         Snssai singlenssai;
-        nlohmann::json::parse(
-            doc_view["singleNssai"].get_string().value)
+        nlohmann::json::parse(doc_view["singleNssai"].get_string().value)
             .get_to(singlenssai);
         smfregistration.setSingleNssai(singlenssai);
       }
@@ -2294,8 +2312,7 @@ bool mongo_db::query_smf_registration(
       }
       if (doc_view["registrationReason"]) {
         RegistrationReason registrationreason;
-        nlohmann::json::parse(
-            doc_view["registrationReason"].get_string().value)
+        nlohmann::json::parse(doc_view["registrationReason"].get_string().value)
             .get_to(registrationreason);
         smfregistration.setRegistrationReason(registrationreason);
       }
@@ -2305,8 +2322,7 @@ bool mongo_db::query_smf_registration(
       }
       if (doc_view["contextInfo"]) {
         ContextInfo contextinfo;
-        nlohmann::json::parse(
-            doc_view["contextInfo"].get_string().value)
+        nlohmann::json::parse(doc_view["contextInfo"].get_string().value)
             .get_to(contextinfo);
         smfregistration.setContextInfo(contextinfo);
       }
@@ -2338,8 +2354,8 @@ bool mongo_db::query_smf_reg_list(
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
-  
-  auto db     = mongo_client["oai_db_mongo"];
+
+  auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SmfRegistrations"];
 
   bsoncxx::builder::stream::document filter{};
@@ -2360,7 +2376,8 @@ bool mongo_db::query_smf_reg_list(
           doc["smfInstanceId"].get_string().value.to_string());
     }
     if (doc["smfSetId"]) {
-      smfregistration.setSmfSetId(doc["smfSetId"].get_string().value.to_string());
+      smfregistration.setSmfSetId(
+          doc["smfSetId"].get_string().value.to_string());
     }
     if (doc["supportedFeatures"]) {
       smfregistration.setSupportedFeatures(
@@ -2390,12 +2407,12 @@ bool mongo_db::query_smf_reg_list(
       }
       if (doc["plmnId"]) {
         PlmnId plmnid;
-        nlohmann::json::parse(doc["plmnId"].get_string().value)
-            .get_to(plmnid);
+        nlohmann::json::parse(doc["plmnId"].get_string().value).get_to(plmnid);
         smfregistration.setPlmnId(plmnid);
       }
       if (doc["pgwFqdn"]) {
-        smfregistration.setPgwFqdn(doc["pgwFqdn"].get_string().value.to_string());
+        smfregistration.setPgwFqdn(
+            doc["pgwFqdn"].get_string().value.to_string());
       }
       if (doc["epdgInd"]) {
         if (doc["epdgInd"].get_bool()) {
@@ -2410,8 +2427,7 @@ bool mongo_db::query_smf_reg_list(
       }
       if (doc["registrationReason"]) {
         RegistrationReason registrationreason;
-        nlohmann::json::parse(
-            doc["registrationReason"].get_string().value)
+        nlohmann::json::parse(doc["registrationReason"].get_string().value)
             .get_to(registrationreason);
         smfregistration.setRegistrationReason(registrationreason);
       }
@@ -2445,7 +2461,7 @@ bool mongo_db::query_smf_select_data(
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
-  auto db     = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SmfSelectionSubscriptionData"];
 
   auto query_filter = bsoncxx::builder::stream::document{}
@@ -2471,8 +2487,7 @@ bool mongo_db::query_smf_select_data(
 
   if (doc["subscribedSnssaiInfos"]) {
     std::map<std ::string, SnssaiInfo> subscribedsnssaiinfos;
-    nlohmann::json::parse(
-        doc["subscribedSnssaiInfos"].get_string().value)
+    nlohmann::json::parse(doc["subscribedSnssaiInfos"].get_string().value)
         .get_to(subscribedsnssaiinfos);
     smfselectionsubscriptiondata.setSubscribedSnssaiInfos(
         subscribedsnssaiinfos);
@@ -2492,4 +2507,3 @@ bool mongo_db::query_smf_select_data(
 
   return true;
 }
-

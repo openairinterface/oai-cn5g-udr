@@ -406,8 +406,8 @@ class udr_app {
 
  private:
   MYSQL mysql;
-  //MONGO mongo;
-  mongocxx::client mongo_client; // MongoDB C++ driver clien
+  // MONGO mongo;
+  mongocxx::client mongo_client;  // MongoDB C++ driver clien
   udr_event& event_sub;
   std::shared_ptr<database_wrapper_abstraction> db_connector;
   // std::shared_ptr<database_wrapper> db_connector_test;
