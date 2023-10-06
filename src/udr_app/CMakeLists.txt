@@ -43,4 +43,6 @@ add_library (UDR STATIC
   mongo_db.cpp
 )
 
+target_link_libraries (UDR mongo::mongocxx_shared mongo::bsoncxx_shared)
+
 

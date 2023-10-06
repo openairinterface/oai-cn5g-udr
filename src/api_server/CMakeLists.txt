@@ -41,3 +41,5 @@ file(GLOB UDR_API_SERVER_src_files
  
 add_library(UDR_API STATIC
            ${UDR_API_SERVER_src_files})
+
+target_link_libraries (UDR_API mongo::mongocxx_shared mongo::bsoncxx_shared)

@@ -255,13 +255,15 @@ add_boolean_option( LOG_OAI                         False    "Thread safe loggin
 pkg_search_module(CONFIG REQUIRED libconfig++)
 include_directories(${CONFIG_INCLUDE_DIRS})
 
-# TODO: is there a better not-hardcoded way to do this
-include_directories(/usr/local/include/bsoncxx/v_noabi)
-include_directories(/usr/local/include/mongocxx/v_noabi)
-
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 #find_package(Threads REQUIRED)
+
+###############################################################################
+# MongoDB
+###############################################################################
+find_package(mongocxx CONFIG REQUIRED)
+find_package(bsoncxx CONFIG REQUIRED)
 
 ################################################################
 # Add sub modules
@@ -287,6 +289,7 @@ include_directories(${SRC_TOP_DIR}/api_server/impl)
 include_directories(${SRC_TOP_DIR}/api_server/model)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 
+
 add_executable(udr
   ${SRC_TOP_DIR}/oai_udr/main.cpp
   ${SRC_TOP_DIR}/oai_udr/options.cpp
@@ -308,5 +311,5 @@ ENDIF(STATIC_LINKING)
 # TODO: Commented out also for hard-coded paths
 #    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle  ${NETTLE_LIBRARIES} /tmp/mongo-cxx-driver/src /usr/local/lib/libmongoc-1.0.so.0 bsoncxx ${CRYPTO_LIBRARIES} -lmongocxx  -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl)
 #
-target_link_libraries (udr ${ASAN} 
+target_link_libraries (udr ${ASAN} mongo::mongocxx_shared mongo::bsoncxx_shared
     -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl yaml-cpp)
