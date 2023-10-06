@@ -95,6 +95,9 @@ install_mongocxx_from_git() {
     $CMAKE .. \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=/usr/local \
+      -DBSONCXX_POLY_USE_BOOST=0 \
+      -DBSONCXX_POLY_USE_MNMLSTC=0 \
+      -DBSONCXX_POLY_USE_STD_EXPERIMENTAL=0 \
       -DENABLE_TESTS=OFF
 
     $CMAKE --build . -j $(nproc)
