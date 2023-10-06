@@ -68,7 +68,7 @@ class mongo_db : public database_wrapper<mongo_db> {
 
   bool update_authentication_subscription(
       const std::string& id,
-      const std::vector<oai::udr::model::PatchItem>& patchItem,
+      const std::vector<oai::model::common::PatchItem>& patchItem,
       nlohmann::json& json_data);
 
   bool query_am_data(
@@ -113,8 +113,10 @@ class mongo_db : public database_wrapper<mongo_db> {
 
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      nlohmann::json& json_data, const oai::udr::model::Snssai& snssai = {},
-      const std::string dnn = {});
+      nlohmann::json& json_data, const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<std::string>& dnn);
+
+  bool query_sm_data(nlohmann::json& json_data);
 
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,
@@ -133,6 +135,8 @@ class mongo_db : public database_wrapper<mongo_db> {
   bool query_smf_select_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data);
+
+  nlohmann::json query_sm_data_helper(const bsoncxx::v_noabi::document::view& view);
 private:
   mongocxx::instance m_instance;
   mongocxx::client mongo_client;

@@ -1,8 +1,9 @@
 #include "mongo_db.hpp"
-#include <iostream>
 
+#include <iostream>
 #include <chrono>
 #include <thread>
+#include <functional>
 #include <spdlog/spdlog.h>
 
 #include "AccessAndMobilitySubscriptionData.h"
@@ -12,16 +13,21 @@
 #include "logger.hpp"
 #include "udr_config.hpp"
 
+#include <boost/algorithm/string.hpp>
+
 using namespace oai::udr::app;
 using namespace oai::udr::model;
 using namespace oai::udr::config;
+using namespace oai::model::common;
+using namespace std::placeholders;
+
 extern udr_config udr_cfg;
 
 mongo_db::mongo_db(udr_event& ev)
     : database_wrapper<mongo_db>(), m_event_sub(ev), m_db_connection_status() {
-       mongo_client = mongocxx::client{mongocxx::uri{
-      "mongodb://" + udr_cfg.mongo.mongo_user + ":" + udr_cfg.mongo.mongo_pass +
-      "@" + udr_cfg.mongo.mongo_server + ":27017"}};
+   mongo_client = mongocxx::client{mongocxx::uri{
+  "mongodb://" + udr_cfg.mongo.mongo_user + ":" + udr_cfg.mongo.mongo_pass +
+  "@" + udr_cfg.mongo.mongo_server + ":27017"}};
   is_db_connection_active = false;
   start_event_connection_handling();
 }
@@ -124,7 +130,7 @@ void mongo_db::start_event_connection_handling() {
       its.it_value.tv_nsec / 1000000;  // convert sec, nsec to msec
 
   db_connection_event = m_event_sub.subscribe_task_nf_heartbeat(
-      boost::bind(&mongo_db::trigger_connection_handling_procedure, this, _1),
+      std::bind(&mongo_db::trigger_connection_handling_procedure, this, _1),
       interval, ms + interval);
 }
 //---------------------------------------------------------------------------------------------
@@ -382,15 +388,15 @@ bool mongo_db::query_authentication_subscription(
     AuthenticationSubscription authentication_subscription = {};
     if (view["authenticationMethod"]) {
       authentication_subscription.setAuthenticationMethod(
-          std::string{view["authenticationMethod"].get_utf8().value});
+          std::string{view["authenticationMethod"].get_string().value});
     }
     if (view["encPermanentKey"]) {
       authentication_subscription.setEncPermanentKey(
-          std::string{view["encPermanentKey"].get_utf8().value});
+          std::string{view["encPermanentKey"].get_string().value});
     }
     if (view["protectionParameterId"]) {
       authentication_subscription.setProtectionParameterId(
-          std::string{view["protectionParameterId"].get_utf8().value});
+          std::string{view["protectionParameterId"].get_string().value});
     }
 
 if (view["sequenceNumber"]) {
@@ -405,23 +411,23 @@ if (view["sequenceNumber"]) {
 }
     if (view["authenticationManagementField"]) {
       authentication_subscription.setAuthenticationManagementField(
-          std::string{view["authenticationManagementField"].get_utf8().value});
+          std::string{view["authenticationManagementField"].get_string().value});
     }
     if (view["algorithmId"]) {
       authentication_subscription.setAlgorithmId(
-          std::string{view["algorithmId"].get_utf8().value});
+          std::string{view["algorithmId"].get_string().value});
     }
     if (view["encOpcKey"]) {
       authentication_subscription.setEncOpcKey(
-          std::string{view["encOpcKey"].get_utf8().value});
+          std::string{view["encOpcKey"].get_string().value});
     }
     if (view["encTopcKey"]) {
       authentication_subscription.setEncTopcKey(
-          std::string{view["encTopcKey"].get_utf8().value});
+          std::string{view["encTopcKey"].get_string().value});
     }
     if (view["vectorGenerationInHss"]) {
       std::string
-    vector_generation_in_hss{view["vectorGenerationInHss"].get_utf8().value}; if
+    vector_generation_in_hss{view["vectorGenerationInHss"].get_string().value}; if
     (vector_generation_in_hss == "0") {
         authentication_subscription.setVectorGenerationInHss(false);
       } else {
@@ -430,11 +436,11 @@ if (view["sequenceNumber"]) {
     }
     if (view["n5gcAuthMethod"]) {
       authentication_subscription.setN5gcAuthMethod(
-          std::string{view["n5gcAuthMethod"].get_utf8().value});
+          std::string{view["n5gcAuthMethod"].get_string().value});
     }
     if (view["rgAuthenticationInd"]) {
       std::string
-    rgAuthenticationInd_in_hss{view["rgAuthenticationInd"].get_utf8().value}; if
+    rgAuthenticationInd_in_hss{view["rgAuthenticationInd"].get_string().value}; if
     (rgAuthenticationInd_in_hss == "0") {
         authentication_subscription.setRgAuthenticationInd(false);
       } else {
@@ -443,7 +449,7 @@ if (view["sequenceNumber"]) {
     }
     if (view["supi"]) {
       authentication_subscription.setSupi(
-          std::string{view["supi"].get_utf8().value});
+          std::string{view["supi"].get_string().value});
     }
 
     Logger::udr_mongo().info("Query Duration: %lld milliseconds", duration.count());
@@ -465,7 +471,7 @@ if (view["sequenceNumber"]) {
 
 bool mongo_db::update_authentication_subscription(
     const std::string& ue_id,
-    const std::vector<oai::udr::model::PatchItem>& patchItem,
+    const std::vector<oai::model::common::PatchItem>& patchItem,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!get_db_connection_status()) {
@@ -488,7 +494,7 @@ bool mongo_db::update_authentication_subscription(
     bsoncxx::document::view view = result->view();
 
     for (const auto& item : patchItem) {
-      if (item.getOp() == PATCH_OPERATION_REPLACE && item.valueIsSet()) {
+      if (item.getOp().getEnumValue()  == PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE && item.valueIsSet()) {
         SequenceNumber sequenceNumber;
         nlohmann::json::parse(item.getValue().c_str()).get_to(sequenceNumber);
 
@@ -573,19 +579,19 @@ bool mongo_db::query_am_data(
     if (auto val = row["supportedFeatures"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setSupportedFeatures(val.get_utf8().value.to_string());
+      subscription_data.setSupportedFeatures(val.get_string().value.to_string());
     }
     if (auto val = row["gpsis"]; val.type() != bsoncxx::type::k_null &&
                                  val.type() != bsoncxx::type::k_undefined) {
       std::vector<std ::string> gpsis;
-      nlohmann::json::parse(val.get_utf8().value.to_string()).get_to(gpsis);
+      nlohmann::json::parse(val.get_string().value).get_to(gpsis);
       subscription_data.setGpsis(gpsis);
     }
     if (auto val = row["internalgroupids"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<std ::string> internalgroupids;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(internalgroupids);
       subscription_data.setInternalGroupIds(internalgroupids);
     }
@@ -593,7 +599,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::map<std ::string, std::string> sharedvngroupdataids;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(sharedvngroupdataids);
       subscription_data.setSharedVnGroupDataIds(sharedvngroupdataids);
     }
@@ -601,21 +607,21 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       AmbrRm subscribedueambr;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(subscribedueambr);
       subscription_data.setSubscribedUeAmbr(subscribedueambr);
     }
     if (auto val = row["nssai"]; val.type() != bsoncxx::type::k_null &&
                                  val.type() != bsoncxx::type::k_undefined) {
       Nssai nssai = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string()).get_to(nssai);
+      nlohmann::json::parse(val.get_string().value).get_to(nssai);
       subscription_data.setNssai(nssai);
     }
     if (auto val = row["ratrestrictions"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std ::vector<RatType> ratrestrictions;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(ratrestrictions);
       subscription_data.setRatRestrictions(ratrestrictions);
     }
@@ -623,7 +629,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std ::vector<Area> forbiddenareas;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(forbiddenareas);
       subscription_data.setForbiddenAreas(forbiddenareas);
     }
@@ -631,7 +637,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       ServiceAreaRestriction servicearearestriction;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(servicearearestriction);
       subscription_data.setServiceAreaRestriction(servicearearestriction);
     }
@@ -639,7 +645,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std ::vector<CoreNetworkType> coreNetworkTypeRestrictions;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(coreNetworkTypeRestrictions);
       subscription_data.setCoreNetworkTypeRestrictions(
           coreNetworkTypeRestrictions);
@@ -676,7 +682,7 @@ bool mongo_db::query_am_data(
     if (auto val = row["sorInfo"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
       SorInfo sorInfo = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string()).get_to(sorInfo);
+      nlohmann::json::parse(val.get_string().value).get_to(sorInfo);
       subscription_data.setSorInfo(sorInfo);
     }
     if (auto val = row["sorInfoExpectInd"];
@@ -693,14 +699,14 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<SorUpdateIndicator> sorUpdateIndicatorList;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(sorUpdateIndicatorList);
       subscription_data.setSorUpdateIndicatorList(sorUpdateIndicatorList);
     }
     if (auto val = row["upuInfo"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
       UpuInfo upuInfo = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string()).get_to(upuInfo);
+      nlohmann::json::parse(val.get_string().value).get_to(upuInfo);
       subscription_data.setUpuInfo(upuInfo);
     }
     if (auto val = row["micoAllowed"];
@@ -712,7 +718,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<std ::string> sharedAmDataIds;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(sharedAmDataIds);
       subscription_data.setSharedAmDataIds(sharedAmDataIds);
     }
@@ -720,7 +726,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       OdbPacketServices odbPacketServices = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(odbPacketServices);
       subscription_data.setOdbPacketServices(odbPacketServices);
     }
@@ -733,7 +739,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       MdtUserConsent mdtUserConsent = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(mdtUserConsent);
       subscription_data.setMdtUserConsent(mdtUserConsent);
     }
@@ -741,29 +747,29 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       MdtConfiguration mdtConfiguration = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(mdtConfiguration);
       subscription_data.setMdtConfiguration(mdtConfiguration);
     }
     if (auto val = row["traceData"]; val.type() != bsoncxx::type::k_null &&
                                      val.type() != bsoncxx::type::k_undefined) {
       TraceData traceData = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string()).get_to(traceData);
+      nlohmann::json::parse(val.get_string().value).get_to(traceData);
       subscription_data.setTraceData(traceData);
     }
     if (auto val = row["cagData"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
       CagData cagData = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string()).get_to(cagData);
+      nlohmann::json::parse(val.get_string().value).get_to(cagData);
       subscription_data.setCagData(cagData);
     }
     if (auto val = row["stnSr"]; val.type() != bsoncxx::type::k_null &&
                                  val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setStnSr(val.get_utf8().value.to_string());
+      subscription_data.setStnSr(val.get_string().value.to_string());
     }
     if (auto val = row["cMsisdn"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setCMsisdn(val.get_utf8().value.to_string());
+      subscription_data.setCMsisdn(val.get_string().value.to_string());
     }
     if (auto val = row["nbIoTUePriority"];
         val.type() != bsoncxx::type::k_null &&
@@ -779,13 +785,13 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       subscription_data.setRgWirelineCharacteristics(
-          val.get_utf8().value.to_string());
+          val.get_string().value.to_string());
     }
     if (auto val = row["ecRestrictionDataWb"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       EcRestrictionDataWb ecRestrictionDataWb = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(ecRestrictionDataWb);
       subscription_data.setEcRestrictionDataWb(ecRestrictionDataWb);
     }
@@ -798,7 +804,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       ExpectedUeBehaviourData expectedUeBehaviourList = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(expectedUeBehaviourList);
       subscription_data.setExpectedUeBehaviourList(expectedUeBehaviourList);
     }
@@ -806,7 +812,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<RatType> primaryRatRestrictions;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(primaryRatRestrictions);
       subscription_data.setPrimaryRatRestrictions(primaryRatRestrictions);
     }
@@ -814,7 +820,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<RatType> secondaryRatRestrictions;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(secondaryRatRestrictions);
       subscription_data.setSecondaryRatRestrictions(secondaryRatRestrictions);
     }
@@ -822,7 +828,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<EdrxParameters> edrxParametersList;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(edrxParametersList);
       subscription_data.setEdrxParametersList(edrxParametersList);
     }
@@ -830,7 +836,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<PtwParameters> ptwParametersList;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(ptwParametersList);
       subscription_data.setPtwParametersList(ptwParametersList);
     }
@@ -843,7 +849,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std::vector<WirelineArea> wirelineForbiddenAreas;
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(wirelineForbiddenAreas);
       subscription_data.setWirelineForbiddenAreas(wirelineForbiddenAreas);
     }
@@ -851,7 +857,7 @@ bool mongo_db::query_am_data(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       WirelineServiceAreaRestriction wirelineServiceAreaRestriction = {};
-      nlohmann::json::parse(val.get_utf8().value.to_string())
+      nlohmann::json::parse(val.get_string().value)
           .get_to(wirelineServiceAreaRestriction);
       subscription_data.setWirelineServiceAreaRestriction(
           wirelineServiceAreaRestriction);
@@ -1008,6 +1014,11 @@ bool mongo_db::create_amf_context_3gpp(
           bsoncxx::to_json(update_doc.view()).c_str());
       return false;
     }
+    return true;
+  } else {
+    Logger::udr_mongo().error(
+            "MongoDB Document %S not found! Query could not be submitted: %s", bsoncxx::to_json(filter_builder.view()), bsoncxx::to_json(update_doc.view()));
+    return false;
   }
 }
 
@@ -1038,23 +1049,23 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       amf3gppaccessregistration.setAmfInstanceId(
-          val.get_utf8().value.to_string());
+          val.get_string().value.to_string());
     }
     if (auto val = row["supportedFeatures"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       amf3gppaccessregistration.setSupportedFeatures(
-          val.get_utf8().value.to_string());
+          val.get_string().value.to_string());
     }
     if (auto val = row["pei"]; val.type() != bsoncxx::type::k_null &&
                                val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setPei(val.get_utf8().value.to_string());
+      amf3gppaccessregistration.setPei(val.get_string().value.to_string());
     }
 
     if (auto val = row["imsVoPs"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
       ImsVoPs imsvops;
-      nlohmann::json::parse(row["imsVoPs"].get_utf8().value.to_string())
+      nlohmann::json::parse(row["imsVoPs"].get_string().value)
           .get_to(imsvops);
       amf3gppaccessregistration.setImsVoPs(imsvops);
     }
@@ -1066,14 +1077,14 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       amf3gppaccessregistration.setDeregCallbackUri(
-          val.get_utf8().value.to_string());
+          val.get_string().value.to_string());
     }
     if (auto val = row["amfServiceNameDereg"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
-      ServiceName amfservicenamedereg;
+      oai::model::nrf::ServiceName amfservicenamedereg;
       nlohmann::json::parse(
-          row["amfServiceNameDereg"].get_utf8().value.to_string())
+          row["amfServiceNameDereg"].get_string().value)
           .get_to(amfservicenamedereg);
       amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
     }
@@ -1081,14 +1092,14 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       amf3gppaccessregistration.setPcscfRestorationCallbackUri(
-          val.get_utf8().value.to_string());
+          val.get_string().value.to_string());
     }
     if (auto val = row["amfServiceNamePcscfRest"];
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
-      ServiceName amfservicenamepcscfrest;
+      oai::model::nrf::ServiceName amfservicenamepcscfrest;
       nlohmann::json::parse(
-          row["amfServiceNamePcscfRest"].get_utf8().value.to_string())
+          row["amfServiceNamePcscfRest"].get_string().value)
           .get_to(amfservicenamepcscfrest);
       amf3gppaccessregistration.setAmfServiceNamePcscfRest(
           amfservicenamepcscfrest);
@@ -1096,7 +1107,7 @@ bool mongo_db::query_amf_context_3gpp(
     if (auto val = row["guami"]; val.type() != bsoncxx::type::k_null &&
                                  val.type() != bsoncxx::type::k_undefined) {
       Guami guami;
-      nlohmann::json::parse(row["guami"].get_utf8().value.to_string())
+      nlohmann::json::parse(row["guami"].get_string().value)
           .get_to(guami);
       amf3gppaccessregistration.setGuami(guami);
     }
@@ -1104,14 +1115,14 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       std ::vector<BackupAmfInfo> backupamfinfo;
-      nlohmann::json::parse(row["backupAmfInfo"].get_utf8().value.to_string())
+      nlohmann::json::parse(row["backupAmfInfo"].get_string().value)
           .get_to(backupamfinfo);
       amf3gppaccessregistration.setBackupAmfInfo(backupamfinfo);
     }
     if (auto val = row["ratType"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
       RatType ratType;
-      nlohmann::json::parse(row["ratType"].get_utf8().value.to_string())
+      nlohmann::json::parse(row["ratType"].get_string().value)
           .get_to(ratType);
       amf3gppaccessregistration.setRatType(ratType);
     }
@@ -1121,7 +1132,7 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_undefined) {
       EpsInterworkingInfo epsInterworkingInfo;
       nlohmann::json::parse(
-          row["epsInterworkingInfo"].get_utf8().value.to_string())
+          row["epsInterworkingInfo"].get_string().value)
           .get_to(epsInterworkingInfo);
       amf3gppaccessregistration.setEpsInterworkingInfo(epsInterworkingInfo);
     }
@@ -1129,7 +1140,7 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       VgmlcAddress vgmlcAddress;
-      nlohmann::json::parse(row["vgmlcAddress"].get_utf8().value.to_string())
+      nlohmann::json::parse(row["vgmlcAddress"].get_string().value)
           .get_to(vgmlcAddress);
       amf3gppaccessregistration.setVgmlcAddress(vgmlcAddress);
     }
@@ -1137,7 +1148,7 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       ContextInfo contextInfo;
-      nlohmann::json::parse(row["contextInfo"].get_utf8().value.to_string())
+      nlohmann::json::parse(row["contextInfo"].get_string().value)
           .get_to(contextInfo);
       amf3gppaccessregistration.setContextInfo(contextInfo);
     }
@@ -1160,7 +1171,7 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       amf3gppaccessregistration.setAmfEeSubscriptionId(
-          val.get_utf8().value.to_string());
+          val.get_string().value.to_string());
     }
     if (auto val = row["ueSrvccCapability"];
         val.type() != bsoncxx::type::k_null &&
@@ -1171,7 +1182,7 @@ bool mongo_db::query_amf_context_3gpp(
         val.type() != bsoncxx::type::k_null &&
         val.type() != bsoncxx::type::k_undefined) {
       amf3gppaccessregistration.setRegistrationTime(
-          val.get_utf8().value.to_string());
+          val.get_string().value.to_string());
     }
     if (auto val = row["noEeSubscriptionInd"];
         val.type() != bsoncxx::type::k_null &&
@@ -1280,6 +1291,14 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
     if (result) {
       if (result->deleted_count() > 0) {
         Logger::udr_mongo().debug("AuthenticationStatus DELETE - successful");
+
+        // Stop the timer
+        auto end_time = std::chrono::steady_clock::now();
+        // Calculate the duration
+        auto operation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        // Log the duration
+        Logger::udr_mongo().info("Deletion Duration: %lld milliseconds", operation_duration.count());
+
         return true;
       } else {
         Logger::udr_mongo().info(
@@ -1295,16 +1314,6 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
         "Exception while deleting document in MongoDB: %s", e.what());
     return false;
   }
-
-  // Stop the timer
-  auto end_time = std::chrono::steady_clock::now();
-
-  // Calculate the duration
-  auto operation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-
-  // Log the duration
-  Logger::udr_mongo().info("Deletion Duration: %lld milliseconds", operation_duration.count());
-
 }
 
 //------------------------------------------------------------------------------
@@ -1355,7 +1364,7 @@ bool mongo_db::query_authentication_status(const std::string& ue_id, nlohmann::j
         AuthEvent authentication_status = {};
 
         if (view["nfInstanceId"]) {
-            authentication_status.setNfInstanceId(std::string{ view["nfInstanceId"].get_utf8().value });
+            authentication_status.setNfInstanceId(std::string{ view["nfInstanceId"].get_string().value });
         }
 
         if (view["success"]) {
@@ -1364,15 +1373,15 @@ bool mongo_db::query_authentication_status(const std::string& ue_id, nlohmann::j
         }
 
         if (view["timeStamp"]) {
-            authentication_status.setTimeStamp(std::string{ view["timeStamp"].get_utf8().value });
+            authentication_status.setTimeStamp(std::string{ view["timeStamp"].get_string().value });
         }
 
         if (view["authType"]) {
-            authentication_status.setAuthType(std::string{ view["authType"].get_utf8().value });
+            authentication_status.setAuthType(std::string{ view["authType"].get_string().value });
         }
 
         if (view["servingNetworkName"]) {
-            authentication_status.setServingNetworkName(std::string{ view["servingNetworkName"].get_utf8().value });
+            authentication_status.setServingNetworkName(std::string{ view["servingNetworkName"].get_string().value });
         }
 
         if (view["authRemovalInd"]) {
@@ -1417,28 +1426,28 @@ bool mongo_db::query_sdm_subscription(
 
     if (doc["nfInstanceId"]) {
       SdmSubscriptions.setNfInstanceId(
-          doc["nfInstanceId"].get_utf8().value.to_string());
+          doc["nfInstanceId"].get_string().value.to_string());
     }
 
     if (doc["implicitUnsubscribe"]) {
-      if (doc["implicitUnsubscribe"].get_utf8().value.to_string() != "0")
+      if (doc["implicitUnsubscribe"].get_string().value.to_string() != "0")
         SdmSubscriptions.setImplicitUnsubscribe(true);
       else
         SdmSubscriptions.setImplicitUnsubscribe(false);
     }
 
     if (doc["expires"]) {
-      SdmSubscriptions.setExpires(doc["expires"].get_utf8().value.to_string());
+      SdmSubscriptions.setExpires(doc["expires"].get_string().value.to_string());
     }
 
     if (doc["callbackReference"]) {
       SdmSubscriptions.setCallbackReference(
-          doc["callbackReference"].get_utf8().value.to_string());
+          doc["callbackReference"].get_string().value.to_string());
     }
 
     if (doc["amfServiceName"]) {
-      ServiceName amfservicename;
-      nlohmann::json::parse(doc["amfServiceName"].get_utf8().value.to_string())
+      oai::model::nrf::ServiceName amfservicename;
+      nlohmann::json::parse(doc["amfServiceName"].get_string().value)
           .get_to(amfservicename);
       SdmSubscriptions.setAmfServiceName(amfservicename);
     }
@@ -1446,36 +1455,36 @@ bool mongo_db::query_sdm_subscription(
     if (doc["monitoredResourceUris"]) {
       std::vector<std::string> monitoredresourceuris;
       nlohmann::json::parse(
-          doc["monitoredResourceUris"].get_utf8().value.to_string())
+          doc["monitoredResourceUris"].get_string().value)
           .get_to(monitoredresourceuris);
       SdmSubscriptions.setMonitoredResourceUris(monitoredresourceuris);
     }
 
     if (doc["singleNssai"]) {
       Snssai singlenssai;
-      nlohmann::json::parse(doc["singleNssai"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["singleNssai"].get_string().value)
           .get_to(singlenssai);
       SdmSubscriptions.setSingleNssai(singlenssai);
     }
 
     if (doc["dnn"]) {
-      SdmSubscriptions.setDnn(doc["dnn"].get_utf8().value.to_string());
+      SdmSubscriptions.setDnn(doc["dnn"].get_string().value.to_string());
     }
 
     if (doc["subscriptionId"]) {
       SdmSubscriptions.setSubscriptionId(
-          doc["subscriptionId"].get_utf8().value.to_string());
+          doc["subscriptionId"].get_string().value.to_string());
     }
 
     if (doc["plmnId"]) {
       PlmnId plmnid;
-      nlohmann::json::parse(doc["plmnId"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["plmnId"].get_string().value)
           .get_to(plmnid);
       SdmSubscriptions.setPlmnId(plmnid);
     }
 
     if (doc["immediateReport"]) {
-      if (doc["immediateReport"].get_utf8().value.to_string() != "0")
+      if (doc["immediateReport"].get_string().value.to_string() != "0")
         SdmSubscriptions.setImmediateReport(true);
       else
         SdmSubscriptions.setImmediateReport(false);
@@ -1483,18 +1492,18 @@ bool mongo_db::query_sdm_subscription(
 
     if (doc["report"]) {
       SubscriptionDataSets report;
-      nlohmann::json::parse(doc["report"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["report"].get_string().value)
           .get_to(report);
       SdmSubscriptions.setReport(report);
     }
 
     if (doc["subscriptionId"]) {
       SdmSubscriptions.setSubscriptionId(
-          doc["subscriptionId"].get_utf8().value.to_string());
+          doc["subscriptionId"].get_string().value.to_string());
     }
     if (doc["contextInfo"]) {
       ContextInfo contextInfo;
-      nlohmann::json::parse(doc["contextInfo"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["contextInfo"].get_string().value)
           .get_to(contextInfo);
       SdmSubscriptions.setContextInfo(contextInfo);
     }
@@ -1802,7 +1811,7 @@ bool mongo_db::query_sdm_subscriptions(
 
     if (doc["nfInstanceId"]) {
       sdmsubscriptions.setNfInstanceId(
-          doc["nfInstanceId"].get_utf8().value.to_string());
+          doc["nfInstanceId"].get_string().value.to_string());
     }
     if (doc["implicitUnsubscribe"]) {
       if (doc["implicitUnsubscribe"].get_bool().value)
@@ -1811,41 +1820,41 @@ bool mongo_db::query_sdm_subscriptions(
         sdmsubscriptions.setImplicitUnsubscribe(false);
     }
     if (doc["expires"]) {
-      sdmsubscriptions.setExpires(doc["expires"].get_utf8().value.to_string());
+      sdmsubscriptions.setExpires(doc["expires"].get_string().value.to_string());
     }
     if (doc["callbackReference"]) {
       sdmsubscriptions.setCallbackReference(
-          doc["callbackReference"].get_utf8().value.to_string());
+          doc["callbackReference"].get_string().value.to_string());
     }
     if (doc["amfServiceName"]) {
-      ServiceName amfservicename;
-      nlohmann::json::parse(doc["amfServiceName"].get_utf8().value.to_string())
+      oai::model::nrf::ServiceName amfservicename;
+      nlohmann::json::parse(doc["amfServiceName"].get_string().value)
           .get_to(amfservicename);
       sdmsubscriptions.setAmfServiceName(amfservicename);
     }
     if (doc["monitoredResourceUris"]) {
       std::vector<std::string> monitoredresourceuris;
       nlohmann::json::parse(
-          doc["monitoredResourceUris"].get_utf8().value.to_string())
+          doc["monitoredResourceUris"].get_string().value)
           .get_to(monitoredresourceuris);
       sdmsubscriptions.setMonitoredResourceUris(monitoredresourceuris);
     }
     if (doc["singleNssai"]) {
       Snssai singlenssai;
-      nlohmann::json::parse(doc["singleNssai"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["singleNssai"].get_string().value)
           .get_to(singlenssai);
       sdmsubscriptions.setSingleNssai(singlenssai);
     }
     if (doc["dnn"]) {
-      sdmsubscriptions.setDnn(doc["dnn"].get_utf8().value.to_string());
+      sdmsubscriptions.setDnn(doc["dnn"].get_string().value.to_string());
     }
     if (doc["subscriptionId"]) {
       sdmsubscriptions.setSubscriptionId(
-          doc["subscriptionId"].get_utf8().value.to_string());
+          doc["subscriptionId"].get_string().value.to_string());
     }
     if (doc["plmnId"]) {
       PlmnId plmnid;
-      nlohmann::json::parse(doc["plmnId"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["plmnId"].get_string().value)
           .get_to(plmnid);
       sdmsubscriptions.setPlmnId(plmnid);
     }
@@ -1857,17 +1866,17 @@ bool mongo_db::query_sdm_subscriptions(
     }
     if (doc["report"]) {
       SubscriptionDataSets report;
-      nlohmann::json::parse(doc["report"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["report"].get_string().value)
           .get_to(report);
       sdmsubscriptions.setReport(report);
     }
     if (doc["supportedFeatures"]) {
       sdmsubscriptions.setSupportedFeatures(
-          doc["dnn"].get_utf8().value.to_string());
+          doc["dnn"].get_string().value.to_string());
     }
     if (doc["contextInfo"]) {
       ContextInfo contextInfo;
-      nlohmann::json::parse(doc["contextInfo"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["contextInfo"].get_string().value)
           .get_to(contextInfo);
       sdmsubscriptions.setContextInfo(contextInfo);
     }
@@ -1880,147 +1889,180 @@ bool mongo_db::query_sdm_subscriptions(
       "SdmSubscriptions GET: %s", json_data.dump().c_str());
   return true;
 }
-
 //------------------------------------------------------------------------------
-bool mongo_db::query_sm_data(
-    const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& json_data, const oai::udr::model::Snssai& snssai,
-    const std::string dnn) {
+bool mongo_db::query_sm_data(nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
 
+  auto db    = mongo_client["oai_db_mongo"];
+  auto coll = db["SessionManagementSubscriptionData"];
+  auto cursor = coll.find({});
+
+  auto row    = cursor.begin();
+  if (row == cursor.end()) {
+    Logger::udr_mongo().error(
+            "Empty document in MongoDB Collection SessionManagementSubscriptionData");
+    return false;
+  }
+
+  for (auto&& view : cursor) {
+    nlohmann::json j = query_sm_data_helper(view);
+    json_data += j;
+    Logger::udr_mongo().debug(
+            "SessionManagementSubscriptionData: %s", j.dump().c_str());
+  }
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool mongo_db::query_sm_data(
+    const std::string& ue_id, const std::string& serving_plmn_id,
+    nlohmann::json& json_data, const std::optional<oai::model::common::Snssai>& snssai,
+    const std::optional<std::string>& dnn) {
+  // Check the connection with DB first
+  if (!get_db_connection_status()) {
+    Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
+    return false;
+  }
 
   auto db    = mongo_client["oai_db_mongo"];
   auto coll = db["SessionManagementSubscriptionData"];
   auto filter               = bsoncxx::builder::stream::document{};
   filter << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id;
 
-  if (snssai.getSst() > 0) {
-    filter << "singleNssai.sst" << snssai.getSst();
+  if (snssai.value().getSst() > 0) {
+    filter << "singleNssai.sst" << snssai.value().getSst();
   }
 
-  if (!dnn.empty()) {
-    filter << "dnnConfigurations." + dnn
+  if (dnn.has_value()) {
+    filter << "dnnConfigurations." + dnn.value()
            << bsoncxx::builder::stream::open_document << "$exists" << true
            << bsoncxx::builder::stream::close_document;
   }
 
   auto cursor = coll.find(filter.view());
+
   auto row    = cursor.begin();
-  if (row != cursor.end()) {
-    SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
-
-    bsoncxx::document::view view = *row;
-
-    bsoncxx::document::element element = view["singleNssai"];
-    if (element) {
-      Snssai singlenssai;
-      bsoncxx::stdx::string_view str_view{element.get_utf8().value};
-      nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-          .get_to(singlenssai);
-      sessionmanagementsubscriptiondata.setSingleNssai(singlenssai);
-    }
-
-    element = view["dnnConfigurations"];
-    if (element && element.type() == bsoncxx::type::k_document) {
-      std::map<std::string, DnnConfiguration> dnnconfigurations;
-      bsoncxx::document::view dnn_view{element.get_document().view()};
-      for (bsoncxx::document::element e : dnn_view) {
-        DnnConfiguration config;
-        bsoncxx::stdx::string_view str_view{e.get_utf8().value};
-        nlohmann::json::parse(
-            str_view.data(), str_view.data() + str_view.size())
-            .get_to(config);
-        dnnconfigurations.insert({e.key().to_string(), config});
-      }
-      sessionmanagementsubscriptiondata.setDnnConfigurations(dnnconfigurations);
-    }
-
-    element = view["internalGroupIds"];
-    if (element && element.type() == bsoncxx::type::k_array) {
-      std::vector<std::string> internalgroupIds;
-      bsoncxx::array::view array_view{element.get_array().value};
-      for (bsoncxx::array::element e : array_view) {
-        internalgroupIds.emplace_back(e.get_utf8().value.to_string());
-      }
-      sessionmanagementsubscriptiondata.setInternalGroupIds(internalgroupIds);
-    }
-    element = view["sharedVnGroupDataIds"];
-    if (element && element.type() == bsoncxx::type::k_array) {
-      std::map<std::string, std::string> sharedvngroupdataids;
-      bsoncxx::stdx::string_view str_view{element.get_utf8().value};
-      nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-          .get_to(sharedvngroupdataids);
-      sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(
-          sharedvngroupdataids);
-    }
-    element = view["sharedDnnConfigurationsId"];
-    if (element && element.type() == bsoncxx::type::k_utf8) {
-      sessionmanagementsubscriptiondata.setSharedDnnConfigurationsId(
-          element.get_utf8().value.to_string());
-    }
-    element = view["odbPacketServices"];
-    if (element) {
-      OdbPacketServices odbpacketservices;
-      bsoncxx::stdx::string_view str_view{element.get_utf8().value};
-      nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-          .get_to(odbpacketservices);
-      sessionmanagementsubscriptiondata.setOdbPacketServices(odbpacketservices);
-    }
-    element = view["traceData"];
-    if (element) {
-      TraceData tracedata;
-      bsoncxx::stdx::string_view str_view{element.get_utf8().value};
-      nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-          .get_to(tracedata);
-      sessionmanagementsubscriptiondata.setTraceData(tracedata);
-    }
-    element = view["sharedTraceDataId"];
-    if (element && element.type() == bsoncxx::type::k_utf8) {
-      sessionmanagementsubscriptiondata.setSharedTraceDataId(
-          element.get_utf8().value.to_string());
-    }
-    element = view["expectedUeBehavioursList"];
-    if (element && element.type() == bsoncxx::type::k_array) {
-      std ::map<std ::string, ExpectedUeBehaviourData> expecteduebehaviourslist;
-      bsoncxx::stdx::string_view str_view{element.get_utf8().value};
-      nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-          .get_to(expecteduebehaviourslist);
-      sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(
-          expecteduebehaviourslist);
-    }
-    element = view["suggestedPacketNumDlList"];
-    if (element && element.type() == bsoncxx::type::k_array) {
-      std ::map<std ::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
-      bsoncxx::stdx::string_view str_view{element.get_utf8().value};
-      nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-          .get_to(suggestedpacketnumdllist);
-      sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(
-          suggestedpacketnumdllist);
-    }
-    element = view["3gppChargingCharacteristics"];
-    if (element && element.type() == bsoncxx::type::k_utf8) {
-      sessionmanagementsubscriptiondata.setR3gppChargingCharacteristics(
-          element.get_utf8().value.to_string());
-    }
-
-    nlohmann::json j;
-    to_json(j, sessionmanagementsubscriptiondata);
-    json_data = j;
-
-    Logger::udr_mongo().debug(
-        "SessionManagementSubscriptionData: %s", j.dump().c_str());
-
-    return true;
-  } else {
+  if (row == cursor.end()) {
     Logger::udr_mongo().error(
-        "Empty document in MongoDB: ueid=%s, servingPlmnid=%s", ue_id.c_str(),
-        serving_plmn_id.c_str());
+            "Empty document in MongoDB: ueid=%s, servingPlmnid=%s", ue_id.c_str(),
+            serving_plmn_id.c_str());
     return false;
   }
+
+  for (auto&& view : cursor) {
+    nlohmann::json j = query_sm_data_helper(view);
+    json_data += j;
+    Logger::udr_mongo().debug(
+            "SessionManagementSubscriptionData: %s", j.dump().c_str());
+  }
+  return true;
+}
+
+//------------------------------------------------------------------------------
+nlohmann::json mongo_db::query_sm_data_helper(const bsoncxx::v_noabi::document::view& view){
+  //check if at least one document can be found
+  SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
+
+  bsoncxx::document::element element = view["singleNssai"];
+  if (element) {
+    Snssai singlenssai;
+    bsoncxx::stdx::string_view str_view{element.get_string().value};
+    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
+            .get_to(singlenssai);
+    sessionmanagementsubscriptiondata.setSingleNssai(singlenssai);
+  }
+
+  element = view["dnnConfigurations"];
+  if (element && element.type() == bsoncxx::type::k_document) {
+    std::map<std::string, DnnConfiguration> dnnconfigurations;
+    bsoncxx::document::view dnn_view{element.get_document().view()};
+    for (bsoncxx::document::element e: dnn_view) {
+      DnnConfiguration config;
+      bsoncxx::stdx::string_view str_view{e.get_string().value};
+      nlohmann::json::parse(
+              str_view.data(), str_view.data() + str_view.size())
+              .get_to(config);
+      dnnconfigurations.insert({e.key().to_string(), config});
+    }
+    sessionmanagementsubscriptiondata.setDnnConfigurations(dnnconfigurations);
+  }
+
+  element = view["internalGroupIds"];
+  if (element && element.type() == bsoncxx::type::k_array) {
+    std::vector<std::string> internalgroupIds;
+    bsoncxx::array::view array_view{element.get_array().value};
+    for (bsoncxx::array::element e: array_view) {
+      internalgroupIds.emplace_back(e.get_string().value);
+    }
+    sessionmanagementsubscriptiondata.setInternalGroupIds(internalgroupIds);
+  }
+  element = view["sharedVnGroupDataIds"];
+  if (element && element.type() == bsoncxx::type::k_array) {
+    std::map<std::string, std::string> sharedvngroupdataids;
+    bsoncxx::stdx::string_view str_view{element.get_string().value};
+    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
+            .get_to(sharedvngroupdataids);
+    sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(
+            sharedvngroupdataids);
+  }
+  element = view["sharedDnnConfigurationsId"];
+  if (element && element.type() == bsoncxx::type::k_utf8) {
+    sessionmanagementsubscriptiondata.setSharedDnnConfigurationsId(
+            element.get_string().value.to_string());
+  }
+  element = view["odbPacketServices"];
+  if (element) {
+    OdbPacketServices odbpacketservices;
+    bsoncxx::stdx::string_view str_view{element.get_string().value};
+    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
+            .get_to(odbpacketservices);
+    sessionmanagementsubscriptiondata.setOdbPacketServices(odbpacketservices);
+  }
+  element = view["traceData"];
+  if (element) {
+    TraceData tracedata;
+    bsoncxx::stdx::string_view str_view{element.get_string().value};
+    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
+            .get_to(tracedata);
+    sessionmanagementsubscriptiondata.setTraceData(tracedata);
+  }
+  element = view["sharedTraceDataId"];
+  if (element && element.type() == bsoncxx::type::k_utf8) {
+    sessionmanagementsubscriptiondata.setSharedTraceDataId(
+            element.get_string().value.to_string());
+  }
+  element = view["expectedUeBehavioursList"];
+  if (element && element.type() == bsoncxx::type::k_array) {
+    std::map<std::string, ExpectedUeBehaviourData> expecteduebehaviourslist;
+    bsoncxx::stdx::string_view str_view{element.get_string().value};
+    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
+            .get_to(expecteduebehaviourslist);
+    sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(
+            expecteduebehaviourslist);
+  }
+  element = view["suggestedPacketNumDlList"];
+  if (element && element.type() == bsoncxx::type::k_array) {
+    std::map<std::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
+    bsoncxx::stdx::string_view str_view{element.get_string().value};
+    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
+            .get_to(suggestedpacketnumdllist);
+    sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(
+            suggestedpacketnumdllist);
+  }
+  element = view["3gppChargingCharacteristics"];
+  if (element && element.type() == bsoncxx::type::k_utf8) {
+    sessionmanagementsubscriptiondata.setR3gppChargingCharacteristics(
+            element.get_string().value.to_string());
+  }
+
+  nlohmann::json j;
+  to_json(j, sessionmanagementsubscriptiondata);
+
+  return j;
 }
 
 //------------------------------------------------------------------------------
@@ -2194,27 +2236,27 @@ bool mongo_db::query_smf_registration(
 
     try {
       smfregistration.setSmfInstanceId(
-          doc_view["smfInstanceId"].get_utf8().value.to_string());
+          doc_view["smfInstanceId"].get_string().value.to_string());
       if (doc_view["smfSetId"]) {
         smfregistration.setSmfSetId(
-            doc_view["smfSetId"].get_utf8().value.to_string());
+            doc_view["smfSetId"].get_string().value.to_string());
       }
       if (doc_view["supportedFeatures"]) {
         smfregistration.setSupportedFeatures(
-            doc_view["supportedFeatures"].get_utf8().value.to_string());
+            doc_view["supportedFeatures"].get_string().value.to_string());
       }
       smfregistration.setPduSessionId(
           doc_view["pduSessionId"].get_int32().value);
       if (doc_view["singleNssai"]) {
         Snssai singlenssai;
         nlohmann::json::parse(
-            doc_view["singleNssai"].get_utf8().value.to_string())
+            doc_view["singleNssai"].get_string().value)
             .get_to(singlenssai);
         smfregistration.setSingleNssai(singlenssai);
       }
 
       if (doc_view["dnn"]) {
-        smfregistration.setDnn(doc_view["dnn"].get_utf8().value.to_string());
+        smfregistration.setDnn(doc_view["dnn"].get_string().value.to_string());
       }
       if (doc_view["emergencyServices"]) {
         if (doc_view["emergencyServices"].get_bool()) {
@@ -2226,18 +2268,18 @@ bool mongo_db::query_smf_registration(
       if (doc_view["pcscfRestorationCallbackUri"]) {
         smfregistration.setPcscfRestorationCallbackUri(
             doc_view["pcscfRestorationCallbackUri"]
-                .get_utf8()
+                .get_string()
                 .value.to_string());
       }
       if (doc_view["plmnId"]) {
         PlmnId plmnid;
-        nlohmann::json::parse(doc_view["plmnId"].get_utf8().value.to_string())
+        nlohmann::json::parse(doc_view["plmnId"].get_string().value)
             .get_to(plmnid);
         smfregistration.setPlmnId(plmnid);
       }
       if (doc_view["pgwFqdn"]) {
         smfregistration.setPgwFqdn(
-            doc_view["pgwFqdn"].get_utf8().value.to_string());
+            doc_view["pgwFqdn"].get_string().value.to_string());
       }
       if (doc_view["epdgInd"]) {
         if (doc_view["epdgInd"].get_bool()) {
@@ -2248,23 +2290,23 @@ bool mongo_db::query_smf_registration(
       }
       if (doc_view["deregCallbackUri"]) {
         smfregistration.setDeregCallbackUri(
-            doc_view["deregCallbackUri"].get_utf8().value.to_string());
+            doc_view["deregCallbackUri"].get_string().value.to_string());
       }
       if (doc_view["registrationReason"]) {
         RegistrationReason registrationreason;
         nlohmann::json::parse(
-            doc_view["registrationReason"].get_utf8().value.to_string())
+            doc_view["registrationReason"].get_string().value)
             .get_to(registrationreason);
         smfregistration.setRegistrationReason(registrationreason);
       }
       if (doc_view["registrationTime"]) {
         smfregistration.setRegistrationTime(
-            doc_view["registrationTime"].get_utf8().value.to_string());
+            doc_view["registrationTime"].get_string().value.to_string());
       }
       if (doc_view["contextInfo"]) {
         ContextInfo contextinfo;
         nlohmann::json::parse(
-            doc_view["contextInfo"].get_utf8().value.to_string())
+            doc_view["contextInfo"].get_string().value)
             .get_to(contextinfo);
         smfregistration.setContextInfo(contextinfo);
       }
@@ -2315,26 +2357,26 @@ bool mongo_db::query_smf_reg_list(
 
     if (doc["smfInstanceId"]) {
       smfregistration.setSmfInstanceId(
-          doc["smfInstanceId"].get_utf8().value.to_string());
+          doc["smfInstanceId"].get_string().value.to_string());
     }
     if (doc["smfSetId"]) {
-      smfregistration.setSmfSetId(doc["smfSetId"].get_utf8().value.to_string());
+      smfregistration.setSmfSetId(doc["smfSetId"].get_string().value.to_string());
     }
     if (doc["supportedFeatures"]) {
       smfregistration.setSupportedFeatures(
-          doc["supportedFeatures"].get_utf8().value.to_string());
+          doc["supportedFeatures"].get_string().value.to_string());
     }
     if (doc["pduSessionId"]) {
       smfregistration.setPduSessionId(doc["pduSessionId"].get_int32().value);
     }
     if (doc["singleNssai"]) {
       Snssai singlenssai;
-      nlohmann::json::parse(doc["singleNssai"].get_utf8().value.to_string())
+      nlohmann::json::parse(doc["singleNssai"].get_string().value)
           .get_to(singlenssai);
       smfregistration.setSingleNssai(singlenssai);
     }
     if (doc["dnn"]) {
-      smfregistration.setDnn(doc["dnn"].get_utf8().value.to_string());
+      smfregistration.setDnn(doc["dnn"].get_string().value.to_string());
     }
     if (doc["emergencyServices"]) {
       if (doc["emergencyServices"].get_bool()) {
@@ -2344,16 +2386,16 @@ bool mongo_db::query_smf_reg_list(
       }
       if (doc["pcscfRestorationCallbackUri"]) {
         smfregistration.setPcscfRestorationCallbackUri(
-            doc["pcscfRestorationCallbackUri"].get_utf8().value.to_string());
+            doc["pcscfRestorationCallbackUri"].get_string().value.to_string());
       }
       if (doc["plmnId"]) {
         PlmnId plmnid;
-        nlohmann::json::parse(doc["plmnId"].get_utf8().value.to_string())
+        nlohmann::json::parse(doc["plmnId"].get_string().value)
             .get_to(plmnid);
         smfregistration.setPlmnId(plmnid);
       }
       if (doc["pgwFqdn"]) {
-        smfregistration.setPgwFqdn(doc["pgwFqdn"].get_utf8().value.to_string());
+        smfregistration.setPgwFqdn(doc["pgwFqdn"].get_string().value.to_string());
       }
       if (doc["epdgInd"]) {
         if (doc["epdgInd"].get_bool()) {
@@ -2364,22 +2406,22 @@ bool mongo_db::query_smf_reg_list(
       }
       if (doc["deregCallbackUri"]) {
         smfregistration.setDeregCallbackUri(
-            doc["deregCallbackUri"].get_utf8().value.to_string());
+            doc["deregCallbackUri"].get_string().value.to_string());
       }
       if (doc["registrationReason"]) {
         RegistrationReason registrationreason;
         nlohmann::json::parse(
-            doc["registrationReason"].get_utf8().value.to_string())
+            doc["registrationReason"].get_string().value)
             .get_to(registrationreason);
         smfregistration.setRegistrationReason(registrationreason);
       }
       if (doc["registrationTime"]) {
         smfregistration.setRegistrationTime(
-            doc["registrationTime"].get_utf8().value.to_string());
+            doc["registrationTime"].get_string().value.to_string());
       }
       if (doc["contextInfo"]) {
         ContextInfo contextinfo;
-        nlohmann::json::parse(doc["contextInfo"].get_utf8().value.to_string())
+        nlohmann::json::parse(doc["contextInfo"].get_string().value)
             .get_to(contextinfo);
         smfregistration.setContextInfo(contextinfo);
       }
@@ -2424,13 +2466,13 @@ bool mongo_db::query_smf_select_data(
 
   if (doc["supportedFeatures"]) {
     smfselectionsubscriptiondata.setSupportedFeatures(
-        doc["supportedFeatures"].get_utf8().value.to_string());
+        doc["supportedFeatures"].get_string().value.to_string());
   }
 
   if (doc["subscribedSnssaiInfos"]) {
     std::map<std ::string, SnssaiInfo> subscribedsnssaiinfos;
     nlohmann::json::parse(
-        doc["subscribedSnssaiInfos"].get_utf8().value.to_string())
+        doc["subscribedSnssaiInfos"].get_string().value)
         .get_to(subscribedsnssaiinfos);
     smfselectionsubscriptiondata.setSubscribedSnssaiInfos(
         subscribedsnssaiinfos);
@@ -2438,7 +2480,7 @@ bool mongo_db::query_smf_select_data(
 
   if (doc["sharedSnssaiInfosId"]) {
     smfselectionsubscriptiondata.setSharedSnssaiInfosId(
-        doc["sharedSnssaiInfosId"].get_utf8().value.to_string());
+        doc["sharedSnssaiInfosId"].get_string().value.to_string());
   }
 
   auto j = nlohmann::json{};

@@ -56,6 +56,8 @@ class Logger {
         name, UDR_NRF, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, UDR_MYSQL, log_stdout, log_rot_file);
+    oai::logger::logger_registry::register_logger(
+            name, UDR_MONGO, log_stdout, log_rot_file);
   }
   static void set_level(spdlog::level::level_enum level) {
     oai::logger::logger_registry::set_level(level);

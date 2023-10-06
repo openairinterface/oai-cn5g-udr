@@ -187,13 +187,24 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
     // cfg.mysql.       = get_database_config().get_random();
     cfg.mysql.connection_timeout =
         get_database_config().get_connection_timeout();
-    cfg.db_type = DB_TYPE_MYSQL;  // Set to MySQL by default
 
+
+    cfg.mongo.mongo_server = get_database_config().get_host();
+    cfg.mongo.mongo_user   = get_database_config().get_user();
+    cfg.mongo.mongo_pass   = get_database_config().get_pass();
+    cfg.mongo.mongo_db     = get_database_config().get_database_name();
+    cfg.mongo.connection_timeout =
+            get_database_config().get_connection_timeout();
+
+    cfg.db_type = DB_TYPE_MYSQL;  // Set to MySQL by default
     if (boost::iequals(get_database_config().get_database_type(), "mysql")) {
       cfg.db_type = DB_TYPE_MYSQL;
     } else if (boost::iequals(
                    get_database_config().get_database_type(), "cassandra")) {
       cfg.db_type = DB_TYPE_CASSANDRA;
+    } else if (boost::iequals(
+            get_database_config().get_database_type(), "mongodb")) {
+      cfg.db_type = DB_TYPE_MONGO;
     }
   }
 

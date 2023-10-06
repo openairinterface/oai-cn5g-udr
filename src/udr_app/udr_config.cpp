@@ -160,10 +160,10 @@ int udr_config::load(const std ::string& config_file) {
 
     if (boost::iequals(opt, "cassandra")) {
       db_type = DB_TYPE_CASSANDRA;
-    } else if (boost::iequals(opt, "mysql")) {
-      db_type = DB_TYPE_MYSQL;
+    } else if (boost::iequals(opt, "mongodb")) {
+      db_type = DB_TYPE_MONGO;
     } else {
-      db_type = DB_TYPE_MONGO;  // Default for now
+      db_type = DB_TYPE_MYSQL;  // Default for now
     }
 
   } catch (const SettingNotFoundException& nfex) {
