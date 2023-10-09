@@ -19,7 +19,6 @@ using namespace oai::udr::app;
 using namespace oai::udr::model;
 using namespace oai::udr::config;
 using namespace oai::model::common;
-using namespace std::placeholders;
 
 extern udr_config udr_cfg;
 
@@ -132,7 +131,7 @@ void mongo_db::start_event_connection_handling() {
       its.it_value.tv_nsec / 1000000;  // convert sec, nsec to msec
 
   db_connection_event = m_event_sub.subscribe_task_nf_heartbeat(
-      std::bind(&mongo_db::trigger_connection_handling_procedure, this, _1),
+      std::bind(&mongo_db::trigger_connection_handling_procedure, this, std::placeholders::_1),
       interval, ms + interval);
 }
 //---------------------------------------------------------------------------------------------

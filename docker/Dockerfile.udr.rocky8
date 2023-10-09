@@ -116,6 +116,12 @@ COPY --from=oai-udr-builder \
     /usr/local/lib64/libspdlog.so \
     /usr/local/lib64/libfmt.so \
     /usr/local/lib64/libyaml-cpp.so.0.* \
+    /usr/local/lib64/libmongocxx.so._noabi \
+    /usr/local/lib64/libbsoncxx.so._noabi \
+    /lib64/libmongoc-1.0.so.0 \
+    /lib64/libbson-1.0.so.0 \
+    /lib64/libsnappy.so.1 \
+    /lib64/libmongocrypt.so.0 \
     /usr/lib64/
 
 RUN ldconfig && \

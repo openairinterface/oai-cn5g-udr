@@ -134,6 +134,11 @@ COPY --from=oai-udr-builder \
     /usr/local/lib/libpistache.so \
     /usr/local/lib/libfmt.so \
     /usr/local/lib/libyaml-cpp.so.0.? \
+    /usr/local/lib/libmongocxx.so._noabi \
+    /usr/local/lib/libbsoncxx.so._noabi \
+    /usr/local/lib/libmongoc-1.0.so.0 \
+    /usr/local/lib/libbson-1.0.so.0 \
+    /lib/x86_64-linux-gnu/libsnappy.so.1 \
     /usr/local/lib/
 
 RUN ldconfig && \
