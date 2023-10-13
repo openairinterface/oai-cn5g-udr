@@ -24,9 +24,6 @@ extern udr_config udr_cfg;
 
 mongo_db::mongo_db(udr_event& ev)
     : database_wrapper<mongo_db>(), m_event_sub(ev), m_db_connection_status() {
-  mongo_client            = mongocxx::client{mongocxx::uri{
-      "mongodb://" + udr_cfg.mongo.mongo_user + ":" + udr_cfg.mongo.mongo_pass +
-      "@" + udr_cfg.mongo.mongo_server + ":27017"}};
   is_db_connection_active = false;
   start_event_connection_handling();
 }
@@ -39,21 +36,7 @@ mongo_db::~mongo_db() {
 
 //------------------------------------------------------------------------------
 bool mongo_db::initialize() {
-  Logger::udr_mongo().debug("Initializing MongoDB ...");
-  // static mongocxx::instance instance{};  // Initialize the MongoDB driver
-
-  try {
-    mongocxx::client client{mongocxx::uri{
-        "mongodb://" + udr_cfg.mongo.mongo_user + ":" +
-        udr_cfg.mongo.mongo_pass + "@" + udr_cfg.mongo.mongo_server +
-        ":27017"}};  // Create a MongoDB client
-    // Additional initialization code specific to MongoDB can be added here
-    Logger::udr_mongo().debug("Done!");
-    return true;
-  } catch (const std::exception& e) {
-    Logger::udr_mongo().error("Failed to initialize MongoDB: %s", e.what());
-    throw std::runtime_error("Failed to initialize MongoDB");
-  }
+  return true;
 }
 
 //------------------------------------------------------------------------------
@@ -65,14 +48,19 @@ bool mongo_db::connect(uint32_t num_retries) {
     try {
       // Try to connect to MongoDB
 
-      auto mongo_client = mongocxx::client{mongocxx::uri{
-          "mongodb://" + udr_cfg.mongo.mongo_user + ":" +
-          udr_cfg.mongo.mongo_pass + "@" + udr_cfg.mongo.mongo_server +
-          ":27017"}};
+      mongo_client = mongocxx::client{mongocxx::uri{
+          "mongodb://" + udr_cfg.db_conf.user + ":" +
+          udr_cfg.db_conf.pass + "@" + udr_cfg.db_conf.server +
+          ":" + std::to_string(udr_cfg.db_conf.port)}};
+
+      // Check if connection to MongoDB works
+      bsoncxx::builder::stream::document ping;
+      ping << "ping" << 1;
+      auto db = mongo_client["oai_db_mongo"];
+      db.run_command(ping.view());
 
       Logger::udr_mongo().info("Connected to MongoDB");
       set_db_connection_status(true);
-
       Logger::udr_mongo().info("Mongo client created successfully");
 
       return true;
@@ -124,7 +112,7 @@ void mongo_db::start_event_connection_handling() {
                     .count();
 
   struct itimerspec its;
-  its.it_value.tv_sec  = udr_cfg.mongo.connection_timeout;  // seconds
+  its.it_value.tv_sec  = udr_cfg.db_conf.connection_timeout;  // seconds
   its.it_value.tv_nsec = 0;  // 100 * 1000 * 1000; //100ms
   const uint64_t interval =
       its.it_value.tv_sec * 1000 +
@@ -143,13 +131,12 @@ void mongo_db::trigger_connection_handling_procedure(uint64_t ms) {
       "DB Connection handling, current time: %s", std::ctime(&current_time));
 
   try {
-    auto mongo_client = mongocxx::client{mongocxx::uri{
-        "mongodb://" + udr_cfg.mongo.mongo_user + ":" +
-        udr_cfg.mongo.mongo_pass + "@" + udr_cfg.mongo.mongo_server +
-        ":27017"}};
-
     if (mongo_client) {
       // mongo_client.reset(client);
+      bsoncxx::builder::stream::document ping;
+      ping << "ping" << 1;
+      auto db = mongo_client["oai_db_mongo"];
+      db.run_command(ping.view());
       return;
     }
   } catch (const std::exception& e) {

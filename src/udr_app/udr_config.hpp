@@ -74,20 +74,13 @@ using namespace libconfig;
 namespace oai::udr::config {
 
 typedef struct {
-  std::string mysql_server;
-  std::string mysql_user;
-  std::string mysql_pass;
-  std::string mysql_db;
-  uint32_t connection_timeout;
-} mysql_conf_t;
-
-typedef struct {
-  std::string mongo_server;
-  std::string mongo_user;
-  std::string mongo_pass;
-  std::string mongo_db;
-  uint32_t connection_timeout;
-} mongo_conf_t;
+    std::string server;
+    uint32_t port;
+    std::string user;
+    std::string pass;
+    std::string db_name;
+    uint32_t connection_timeout;
+} db_conf_t;
 
 typedef struct interface_cfg_s {
   std::string if_name;
@@ -128,8 +121,7 @@ class udr_config {
   bool use_fqdn_dns;
   bool use_http2;
 
-  mysql_conf_t mysql;
-  mongo_conf_t mongo;
+  db_conf_t db_conf;
   db_type_t db_type;
 };
 }  // namespace oai::udr::config

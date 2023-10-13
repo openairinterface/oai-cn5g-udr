@@ -82,9 +82,9 @@ bool mysql_db::connect(uint32_t num_retries) {
   while (i < num_retries) {
     // TODO: use mysql_real_connect_nonblocking (only from MySQL 8.0.16)
     if (!mysql_real_connect(
-            &mysql_connector, udr_cfg.mysql.mysql_server.c_str(),
-            udr_cfg.mysql.mysql_user.c_str(), udr_cfg.mysql.mysql_pass.c_str(),
-            udr_cfg.mysql.mysql_db.c_str(), 0, 0, 0)) {
+            &mysql_connector, udr_cfg.db_conf.server.c_str(),
+            udr_cfg.db_conf.user.c_str(), udr_cfg.db_conf.pass.c_str(),
+            udr_cfg.db_conf.db_name.c_str(), udr_cfg.db_conf.port, 0, 0)) {
       Logger::udr_mysql().error(
           "An error occurred when connecting to MySQL DB (%s), retry ...",
           mysql_error(&mysql_connector));
@@ -133,7 +133,7 @@ void mysql_db::start_event_connection_handling() {
                     .count();
 
   struct itimerspec its;
-  its.it_value.tv_sec  = udr_cfg.mysql.connection_timeout;  // seconds
+  its.it_value.tv_sec  = udr_cfg.db_conf.connection_timeout;  // seconds
   its.it_value.tv_nsec = 0;  // 100 * 1000 * 1000; //100ms
   const uint64_t interval =
       its.it_value.tv_sec * 1000 +

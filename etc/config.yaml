@@ -33,7 +33,7 @@ log_level:
 register_nf:
   general: yes
 
-http_version: 2
+http_version: 1
 
 ############## SBI Interfaces
 ### Each NF takes its local SBI interfaces and remote interfaces from here, unless it gets them using NRF discovery mechanisms
@@ -96,11 +96,11 @@ nfs:
 
 #### Common for UDR and AMF
 database:
-  host: mysql
+  host: mongodb  #mongodb
   user: test
-  type: mysql
+  type: mongodb  #mongodb
   password: test
-  database_name: oai_db
+  database_name: oai_db_mongo  #oai_db_mongo
   generate_random: true
   connection_timeout: 300 # seconds
 

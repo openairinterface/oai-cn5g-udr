@@ -308,8 +308,5 @@ IF(STATIC_LINKING)
     SET(ASAN)
 ENDIF(STATIC_LINKING)   
 
-# TODO: Commented out also for hard-coded paths
-#    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle  ${NETTLE_LIBRARIES} /tmp/mongo-cxx-driver/src /usr/local/lib/libmongoc-1.0.so.0 bsoncxx ${CRYPTO_LIBRARIES} -lmongocxx  -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl)
-#
 target_link_libraries (udr ${ASAN} mongo::mongocxx_shared mongo::bsoncxx_shared
     -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl yaml-cpp)
