@@ -236,38 +236,38 @@ int udr_config::load(const std ::string& config_file) {
     }
   }
 
-  if(db_type == DB_TYPE_MYSQL) {
+  if (db_type == DB_TYPE_MYSQL) {
     // MySQL
     try {
-      const Setting &mysql_cfg = udr_cfg[UDR_CONFIG_STRING_MYSQL];
+      const Setting& mysql_cfg = udr_cfg[UDR_CONFIG_STRING_MYSQL];
       mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_SERVER, db_conf.server);
       mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_USER, db_conf.user);
       mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_PASS, db_conf.pass);
       mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_DB, db_conf.db_name);
       mysql_cfg.lookupValue(
-              UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT,
-              db_conf.connection_timeout);
-      db_conf.port = 3306; // MySQL Default
-    } catch (const SettingNotFoundException &nfex) {
+          UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT,
+          db_conf.connection_timeout);
+      db_conf.port = 3306;  // MySQL Default
+    } catch (const SettingNotFoundException& nfex) {
       Logger::udr_app().error(
-              "%s : %s, using defaults", nfex.what(), nfex.getPath());
+          "%s : %s, using defaults", nfex.what(), nfex.getPath());
       return RETURNerror;
     }
   } else if (db_type == DB_TYPE_MONGO) {
     // Mongo
     try {
-      const Setting &mongo_cfg = udr_cfg[UDR_CONFIG_STRING_MONGO];
+      const Setting& mongo_cfg = udr_cfg[UDR_CONFIG_STRING_MONGO];
       mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_SERVER, db_conf.server);
       mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_USER, db_conf.user);
       mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_PASS, db_conf.pass);
       mongo_cfg.lookupValue(UDR_CONFIG_STRING_MONGO_DB, db_conf.db_name);
       mongo_cfg.lookupValue(
-              UDR_CONFIG_STRING_MONGO_DB_CONNECTION_TIMEOUT,
-              db_conf.connection_timeout);
-      db_conf.port = 27017; // MongoDB Default
-    } catch (const SettingNotFoundException &nfex) {
+          UDR_CONFIG_STRING_MONGO_DB_CONNECTION_TIMEOUT,
+          db_conf.connection_timeout);
+      db_conf.port = 27017;  // MongoDB Default
+    } catch (const SettingNotFoundException& nfex) {
       Logger::udr_app().error(
-              "%s : %s, using defaults", nfex.what(), nfex.getPath());
+          "%s : %s, using defaults", nfex.what(), nfex.getPath());
       return RETURNerror;
     }
   }
@@ -371,17 +371,17 @@ void udr_config::display() {
           "    FQDN ..................: %s", nrf_addr.fqdn.c_str());
   }
 
-  if (db_type == DB_TYPE_CASSANDRA){
+  if (db_type == DB_TYPE_CASSANDRA) {
     Logger::config().info("- Cassandra:");
     Logger::config().info(
-            "    Cassandra DB ..........: not "
-            "supported!");
+        "    Cassandra DB ..........: not "
+        "supported!");
   } else if (db_type == DB_TYPE_UNKNOWN) {
     Logger::config().info("- Unknown DB:");
     Logger::config().info(
-            "    ..........: not "
-            "supported!");
-  } else if (db_type == DB_TYPE_MYSQL or db_type == DB_TYPE_MONGO){
+        "    ..........: not "
+        "supported!");
+  } else if (db_type == DB_TYPE_MYSQL or db_type == DB_TYPE_MONGO) {
     if (db_type == DB_TYPE_MYSQL) {
       Logger::config().info("- MySQL:");
     } else {
@@ -389,8 +389,7 @@ void udr_config::display() {
     }
     Logger::config().info(
         "    Server Addr ...........: %s", db_conf.server.c_str());
-    Logger::config().info(
-        "    Server Port ...........: %d", db_conf.port);
+    Logger::config().info("    Server Port ...........: %d", db_conf.port);
     Logger::config().info(
         "    Username ..............: %s", db_conf.user.c_str());
     Logger::config().info(
@@ -398,7 +397,8 @@ void udr_config::display() {
     Logger::config().info(
         "    Database ..............: %s", db_conf.db_name.c_str());
     Logger::config().info(
-        "    DB Timeout ............: %d (seconds)", db_conf.connection_timeout);
+        "    DB Timeout ............: %d (seconds)",
+        db_conf.connection_timeout);
   }
 
   Logger::config().info(

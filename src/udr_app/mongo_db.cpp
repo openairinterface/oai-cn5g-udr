@@ -49,9 +49,9 @@ bool mongo_db::connect(uint32_t num_retries) {
       // Try to connect to MongoDB
 
       mongo_client = mongocxx::client{mongocxx::uri{
-          "mongodb://" + udr_cfg.db_conf.user + ":" +
-          udr_cfg.db_conf.pass + "@" + udr_cfg.db_conf.server +
-          ":" + std::to_string(udr_cfg.db_conf.port)}};
+          "mongodb://" + udr_cfg.db_conf.user + ":" + udr_cfg.db_conf.pass +
+          "@" + udr_cfg.db_conf.server + ":" +
+          std::to_string(udr_cfg.db_conf.port)}};
 
       // Check if connection to MongoDB works
       bsoncxx::builder::stream::document ping;
@@ -119,7 +119,9 @@ void mongo_db::start_event_connection_handling() {
       its.it_value.tv_nsec / 1000000;  // convert sec, nsec to msec
 
   db_connection_event = m_event_sub.subscribe_task_nf_heartbeat(
-      std::bind(&mongo_db::trigger_connection_handling_procedure, this, std::placeholders::_1),
+      std::bind(
+          &mongo_db::trigger_connection_handling_procedure, this,
+          std::placeholders::_1),
       interval, ms + interval);
 }
 //---------------------------------------------------------------------------------------------

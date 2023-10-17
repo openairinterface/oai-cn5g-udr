@@ -180,11 +180,11 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
 
   // Database
   if (get_database_config().is_set()) {
-    cfg.db_conf.server = get_database_config().get_host();
-    cfg.db_conf.port   = get_database_config().get_port();
-    cfg.db_conf.user   = get_database_config().get_user();
-    cfg.db_conf.pass   = get_database_config().get_pass();
-    cfg.db_conf.db_name     = get_database_config().get_database_name();
+    cfg.db_conf.server  = get_database_config().get_host();
+    cfg.db_conf.port    = get_database_config().get_port();
+    cfg.db_conf.user    = get_database_config().get_user();
+    cfg.db_conf.pass    = get_database_config().get_pass();
+    cfg.db_conf.db_name = get_database_config().get_database_name();
     // cfg.mysql.       = get_database_config().get_random();
     cfg.db_conf.connection_timeout =
         get_database_config().get_connection_timeout();

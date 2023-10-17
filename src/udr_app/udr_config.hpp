@@ -74,12 +74,12 @@ using namespace libconfig;
 namespace oai::udr::config {
 
 typedef struct {
-    std::string server;
-    uint32_t port;
-    std::string user;
-    std::string pass;
-    std::string db_name;
-    uint32_t connection_timeout;
+  std::string server;
+  uint32_t port;
+  std::string user;
+  std::string pass;
+  std::string db_name;
+  uint32_t connection_timeout;
 } db_conf_t;
 
 typedef struct interface_cfg_s {
