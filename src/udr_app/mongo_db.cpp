@@ -56,7 +56,7 @@ bool mongo_db::connect(uint32_t num_retries) {
       // Check if connection to MongoDB works
       bsoncxx::builder::stream::document ping;
       ping << "ping" << 1;
-      auto db = mongo_client["oai_db_mongo"];
+      auto db = mongo_client[udr_cfg.db_conf.db_name.c_str()];
       db.run_command(ping.view());
 
       Logger::udr_mongo().info("Connected to MongoDB");
@@ -137,7 +137,7 @@ void mongo_db::trigger_connection_handling_procedure(uint64_t ms) {
       // mongo_client.reset(client);
       bsoncxx::builder::stream::document ping;
       ping << "ping" << 1;
-      auto db = mongo_client["oai_db_mongo"];
+      auto db = mongo_client[udr_cfg.db_conf.db_name.c_str()];
       db.run_command(ping.view());
       return;
     }
@@ -167,7 +167,7 @@ bool mongo_db::insert_authentication_subscription(
     return false;
   }
   // Select the appropriate database and collection
-  mongocxx::database db     = mongo_client["oai_db_mongo"];
+  mongocxx::database db     = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   mongocxx::collection coll = db["AuthenticationSubscription"];
   bsoncxx::builder::stream::document filter_builder{};
   filter_builder << "ueid" << id;
@@ -284,7 +284,7 @@ bool mongo_db::insert_authentication_subscription(
 
 bool mongo_db::delete_authentication_subscription(const std::string& id) {
   // Select the appropriate database and collection
-  mongocxx::database db     = mongo_client["oai_db_mongo"];
+  mongocxx::database db     = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   mongocxx::collection coll = db["AuthenticationSubscription"];
 
   // Construct the query document
@@ -346,7 +346,7 @@ bool mongo_db::query_authentication_subscription(
   Logger::udr_mongo().info("Query Authentication Subscription");
 
   // Get the database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["AuthenticationSubscription"];
 
   // Build the query
@@ -478,7 +478,7 @@ bool mongo_db::update_authentication_subscription(
   }
 
   // Get the database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["AuthenticationSubscription"];
 
   auto filter = bsoncxx::builder::stream::document{}
@@ -576,7 +576,7 @@ bool mongo_db::query_am_data(
   }
 
   // Get the database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["AccessAndMobilitySubscriptionData"];
 
   // Construct the MongoDB query
@@ -901,7 +901,7 @@ bool mongo_db::create_amf_context_3gpp(
   filter_builder << "ueid" << ue_id;
 
   // Select the appropriate database and collection
-  mongocxx::database db = mongo_client["oai_db_mongo"];
+  mongocxx::database db = mongo_client[udr_cfg.db_conf.db_name.c_str()];
 
   try {
     auto find_opts = mongocxx::options::find{};
@@ -1055,7 +1055,7 @@ bool mongo_db::query_amf_context_3gpp(
     return false;
   }
 
-  auto db         = mongo_client["oai_db_mongo"];
+  auto db         = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto collection = db["Amf3GppAccessRegistration"];
   bsoncxx::builder::stream::document filter_builder;
   filter_builder << "ueid" << ue_id;
@@ -1240,7 +1240,7 @@ bool mongo_db::insert_authentication_status(
   }
 
   // Get the database and collection
-  auto db         = mongo_client["oai_db_mongo"];
+  auto db         = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto collection = db["AuthenticationStatus"];
   auto filter     = bsoncxx::builder::stream::document{}
                 << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
@@ -1377,7 +1377,7 @@ bool mongo_db::query_authentication_status(
   Logger::udr_mongo().info("Query Authentication Status");
 
   // Get the database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["AuthenticationStatus"];
 
   // Build the query
@@ -1473,7 +1473,7 @@ bool mongo_db::query_sdm_subscription(
   }
 
   // Select the appropriate database and collection
-  mongocxx::database db     = mongo_client["oai_db_mongo"];
+  mongocxx::database db     = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   mongocxx::collection coll = db["SdmSubscriptions"];
   bsoncxx::builder::stream::document filter_builder;
   filter_builder << "ueid" << ue_id << "subsId" << subs_id;
@@ -1606,7 +1606,7 @@ bool mongo_db::delete_sdm_subscription(
   }
 
   // Select the appropriate database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SdmSubscriptions"];
   bsoncxx::builder::stream::document filter_builder;
   filter_builder << "ueid" << ue_id << "subsId" << subs_id;
@@ -1642,7 +1642,7 @@ bool mongo_db::update_sdm_subscription(
   }
 
   // Select the appropriate database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SdmSubscriptions"];
   // Prepare filter for update
   bsoncxx::builder::stream::document filter;
@@ -1774,7 +1774,7 @@ bool mongo_db::create_sdm_subscriptions(
   }
 
   // Select the appropriate database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SdmSubscriptions"];
 
   bsoncxx::builder::stream::document filter_builder;
@@ -1886,7 +1886,7 @@ bool mongo_db::query_sdm_subscriptions(
       << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
 
   // Select the appropriate database and collection
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SdmSubscriptions"];
 
   try {
@@ -1989,7 +1989,7 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
     return false;
   }
 
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SessionManagementSubscriptionData"];
 
   try {
@@ -2029,7 +2029,7 @@ bool mongo_db::query_sm_data(
     return false;
   }
 
-  auto db     = mongo_client["oai_db_mongo"];
+  auto db     = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll   = db["SessionManagementSubscriptionData"];
   auto filter = bsoncxx::builder::stream::document{};
   filter << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id;
@@ -2183,7 +2183,7 @@ bool mongo_db::insert_smf_context_non_3gpp(
     return false;
   }
 
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SmfRegistrations"];
 
   bsoncxx::builder::stream::document filter_builder{};
@@ -2301,7 +2301,7 @@ bool mongo_db::delete_smf_context(
     return false;
   }
 
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SmfRegistrations"];
 
   bsoncxx::builder::stream::document query_builder{};
@@ -2334,7 +2334,7 @@ bool mongo_db::query_smf_registration(
     return false;
   }
 
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SmfRegistrations"];
 
   try {
@@ -2457,7 +2457,7 @@ bool mongo_db::query_smf_reg_list(
     return false;
   }
 
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SmfRegistrations"];
 
   bsoncxx::builder::stream::document filter{};
@@ -2573,7 +2573,7 @@ bool mongo_db::query_smf_select_data(
     Logger::udr_mongo().info("The connection to MongoDB is currently inactive");
     return false;
   }
-  auto db   = mongo_client["oai_db_mongo"];
+  auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SmfSelectionSubscriptionData"];
 
   auto query_filter = bsoncxx::builder::stream::document{}
