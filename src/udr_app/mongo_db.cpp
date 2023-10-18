@@ -178,101 +178,108 @@ bool mongo_db::insert_authentication_subscription(
   // Start the timer
   auto start_time = std::chrono::steady_clock::now();
 
-  auto cursor = coll.find_one(filter_builder.view(), opts);
+  try {
+    auto cursor = coll.find_one(filter_builder.view(), opts);
 
-  // Stop the timer
-  auto end_time = std::chrono::steady_clock::now();
+    // Stop the timer
+    auto end_time = std::chrono::steady_clock::now();
 
-  // Calculate the duration
-  auto find_duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-      end_time - start_time);
+    // Calculate the duration
+    auto find_duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+        end_time - start_time);
 
-  if (cursor) {
-    Logger::udr_mongo().error("AuthenticationSubscription existed!");
-    // Existed
+    if (cursor) {
+      Logger::udr_mongo().error("AuthenticationSubscription existed!");
+      // Existed
+      return false;
+    }
+
+    bsoncxx::builder::stream::document auth_subscription_builder{};
+    auth_subscription_builder << "ueid" << id << "authenticationMethod"
+                              << auth_subscription.getAuthenticationMethod();
+
+    if (auth_subscription.encPermanentKeyIsSet()) {
+      auth_subscription_builder << "encPermanentKey"
+                                << auth_subscription.getEncPermanentKey();
+    }
+
+    if (auth_subscription.protectionParameterIdIsSet()) {
+      auth_subscription_builder << "protectionParameterId"
+                                << auth_subscription.getProtectionParameterId();
+    }
+
+    if (auth_subscription.authenticationManagementFieldIsSet()) {
+      auth_subscription_builder
+          << "authenticationManagementField"
+          << auth_subscription.getAuthenticationManagementField();
+    }
+
+    if (auth_subscription.algorithmIdIsSet()) {
+      auth_subscription_builder << "algorithmId"
+                                << auth_subscription.getAlgorithmId();
+    }
+
+    if (auth_subscription.encOpcKeyIsSet()) {
+      auth_subscription_builder << "encOpcKey"
+                                << auth_subscription.getEncOpcKey();
+    }
+
+    if (auth_subscription.encTopcKeyIsSet()) {
+      auth_subscription_builder << "encTopcKey"
+                                << auth_subscription.getEncTopcKey();
+    }
+
+    if (auth_subscription.n5gcAuthMethodIsSet()) {
+      auth_subscription_builder << "n5gcAuthMethod"
+                                << auth_subscription.getN5gcAuthMethod();
+    }
+
+    if (auth_subscription.supiIsSet()) {
+      auth_subscription_builder << "supi" << auth_subscription.getSupi();
+    }
+
+    if (auth_subscription.sequenceNumberIsSet()) {
+      const auto& sequence_number   = auth_subscription.getSequenceNumber();
+      int64_t sequence_number_value = std::stoll(sequence_number.getSqn());
+      bsoncxx::builder::stream::document sequence_number_builder{};
+      sequence_number_builder << "sequenceNumber"
+                              << bsoncxx::types::b_int64{sequence_number_value};
+      // auth_subscription_builder << sequence_number_builder;
+    }
+
+    bsoncxx::document::value auth_subscription_doc =
+        auth_subscription_builder << bsoncxx::builder::stream::finalize;
+
+    // Start the timer for insertion
+    start_time = std::chrono::steady_clock::now();
+
+    coll.insert_one(auth_subscription_doc.view());
+
+    // Stop the timer for insertion
+    end_time = std::chrono::steady_clock::now();
+
+    // Calculate the duration for insertion
+    auto insertion_duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(
+            end_time - start_time);
+
+    to_json(json_data, auth_subscription);
+
+    Logger::udr_mongo().debug(
+        "AuthenticationSubscription POST: %s", json_data.dump().c_str());
+
+    // Log the durations
+    Logger::udr_mongo().info(
+        "Find Duration: %lld milliseconds", find_duration.count());
+    Logger::udr_mongo().info(
+        "Insertion Duration: %lld milliseconds", insertion_duration.count());
+    return true;
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while insert authentication subscription in MongoDB: %s",
+        e.what());
     return false;
   }
-
-  bsoncxx::builder::stream::document auth_subscription_builder{};
-  auth_subscription_builder << "ueid" << id << "authenticationMethod"
-                            << auth_subscription.getAuthenticationMethod();
-
-  if (auth_subscription.encPermanentKeyIsSet()) {
-    auth_subscription_builder << "encPermanentKey"
-                              << auth_subscription.getEncPermanentKey();
-  }
-
-  if (auth_subscription.protectionParameterIdIsSet()) {
-    auth_subscription_builder << "protectionParameterId"
-                              << auth_subscription.getProtectionParameterId();
-  }
-
-  if (auth_subscription.authenticationManagementFieldIsSet()) {
-    auth_subscription_builder
-        << "authenticationManagementField"
-        << auth_subscription.getAuthenticationManagementField();
-  }
-
-  if (auth_subscription.algorithmIdIsSet()) {
-    auth_subscription_builder << "algorithmId"
-                              << auth_subscription.getAlgorithmId();
-  }
-
-  if (auth_subscription.encOpcKeyIsSet()) {
-    auth_subscription_builder << "encOpcKey"
-                              << auth_subscription.getEncOpcKey();
-  }
-
-  if (auth_subscription.encTopcKeyIsSet()) {
-    auth_subscription_builder << "encTopcKey"
-                              << auth_subscription.getEncTopcKey();
-  }
-
-  if (auth_subscription.n5gcAuthMethodIsSet()) {
-    auth_subscription_builder << "n5gcAuthMethod"
-                              << auth_subscription.getN5gcAuthMethod();
-  }
-
-  if (auth_subscription.supiIsSet()) {
-    auth_subscription_builder << "supi" << auth_subscription.getSupi();
-  }
-
-  if (auth_subscription.sequenceNumberIsSet()) {
-    const auto& sequence_number   = auth_subscription.getSequenceNumber();
-    int64_t sequence_number_value = std::stoll(sequence_number.getSqn());
-    bsoncxx::builder::stream::document sequence_number_builder{};
-    sequence_number_builder << "sequenceNumber"
-                            << bsoncxx::types::b_int64{sequence_number_value};
-    // auth_subscription_builder << sequence_number_builder;
-  }
-
-  bsoncxx::document::value auth_subscription_doc =
-      auth_subscription_builder << bsoncxx::builder::stream::finalize;
-
-  // Start the timer for insertion
-  start_time = std::chrono::steady_clock::now();
-
-  coll.insert_one(auth_subscription_doc.view());
-
-  // Stop the timer for insertion
-  end_time = std::chrono::steady_clock::now();
-
-  // Calculate the duration for insertion
-  auto insertion_duration =
-      std::chrono::duration_cast<std::chrono::milliseconds>(
-          end_time - start_time);
-
-  to_json(json_data, auth_subscription);
-
-  Logger::udr_mongo().debug(
-      "AuthenticationSubscription POST: %s", json_data.dump().c_str());
-
-  // Log the durations
-  Logger::udr_mongo().info(
-      "Find Duration: %lld milliseconds", find_duration.count());
-  Logger::udr_mongo().info(
-      "Insertion Duration: %lld milliseconds", insertion_duration.count());
-  return true;
 }
 
 bool mongo_db::delete_authentication_subscription(const std::string& id) {
@@ -289,34 +296,41 @@ bool mongo_db::delete_authentication_subscription(const std::string& id) {
   // Start the timer
   auto start_time = std::chrono::steady_clock::now();
 
-  // Perform the delete operation
-  auto result = coll.delete_one(query);
+  try {
+    // Perform the delete operation
+    auto result = coll.delete_one(query);
 
-  // Stop the timer
-  auto end_time = std::chrono::steady_clock::now();
+    // Stop the timer
+    auto end_time = std::chrono::steady_clock::now();
 
-  // Calculate the duration
-  auto deletion_duration =
-      std::chrono::duration_cast<std::chrono::milliseconds>(
-          end_time - start_time);
+    // Calculate the duration
+    auto deletion_duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(
+            end_time - start_time);
 
-  if (!result) {
-    std::cerr << "Failed to delete document from MongoDB" << std::endl;
+    if (!result) {
+      std::cerr << "Failed to delete document from MongoDB" << std::endl;
+      return false;
+    }
+
+    if (result->deleted_count() == 0) {
+      std::cerr << "No document found with the given ID" << std::endl;
+      return false;
+    }
+
+    std::cout << "Deleted " << result->deleted_count()
+              << " document(s) from MongoDB" << std::endl;
+
+    // Log the duration
+    Logger::udr_mongo().info(
+        "Deletion Duration: %lld milliseconds", deletion_duration.count());
+    return true;
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while delete authentication subscription from MongoDB: %s",
+        e.what());
     return false;
   }
-
-  if (result->deleted_count() == 0) {
-    std::cerr << "No document found with the given ID" << std::endl;
-    return false;
-  }
-
-  std::cout << "Deleted " << result->deleted_count()
-            << " document(s) from MongoDB" << std::endl;
-
-  // Log the duration
-  Logger::udr_mongo().info(
-      "Deletion Duration: %lld milliseconds", deletion_duration.count());
-  return true;
 }
 
 bool mongo_db::query_authentication_subscription(
@@ -335,133 +349,118 @@ bool mongo_db::query_authentication_subscription(
   auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["AuthenticationSubscription"];
 
-  /*std::stringstream log_message_stream;
-  log_message_stream << "Mongo client created successfully: "
-                     << mongo_client.uri().to_string()
-                     << ", database: " << db.name()
-                     << ", collection: " << coll.name();
-  std::string log_message = log_message_stream.str();
-  Logger::udr_mongo().info(log_message);*/
-
   // Build the query
   auto query = bsoncxx::builder::stream::document{}
                << "ueid" << id << bsoncxx::builder::stream::finalize;
 
   auto start_time = std::chrono::steady_clock::now();
 
-  // std::string query_str = bsoncxx::to_json(query.view());
+  try {
+    // Execute the query and get the result
+    bsoncxx::stdx::optional<bsoncxx::document::value> result = coll.find_one(
+        bsoncxx::builder::stream::document{}
+        << "ueid" << id << bsoncxx::builder::stream::finalize);
 
-  // Log the query using the Logger::udr_mongo().info() method
-  // Logger::udr_mongo().info("MongoDB Query: %s", query_str.c_str());
+    // Stop the timer
+    auto end_time = std::chrono::steady_clock::now();
 
-  // Execute the query and get the result
-  bsoncxx::stdx::optional<bsoncxx::document::value> result = coll.find_one(
-      bsoncxx::builder::stream::document{}
-      << "ueid" << id << bsoncxx::builder::stream::finalize);
-  // Check if the result is not empty before calling the view() method
+    // Calculate the duration
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+        end_time - start_time);
 
-  // Stop the timer
-  auto end_time = std::chrono::steady_clock::now();
+    if (result) {
+      bsoncxx::document::view view = result->view();
 
-  // Calculate the duration
-  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-      end_time - start_time);
-
-  /*if (result) {
-    // Convert the result object to a JSON string
-    std::string result_str = bsoncxx::to_json(result->view());
-
-    // Log the result using the Logger::udr_mongo().info() method
-    Logger::udr_mongo().info("MongoDB Result: %s", result_str.c_str());
-  } else {
-    Logger::udr_mongo().info("MongoDB Result: empty");
-  }*/
-
-  // Logger::udr_mongo().info("Mongo client created successfully");
-  if (result) {
-    bsoncxx::document::view view                           = result->view();
-    AuthenticationSubscription authentication_subscription = {};
-    if (view["authenticationMethod"]) {
-      authentication_subscription.setAuthenticationMethod(
-          std::string{view["authenticationMethod"].get_string().value});
-    }
-    if (view["encPermanentKey"]) {
-      authentication_subscription.setEncPermanentKey(
-          std::string{view["encPermanentKey"].get_string().value});
-    }
-    if (view["protectionParameterId"]) {
-      authentication_subscription.setProtectionParameterId(
-          std::string{view["protectionParameterId"].get_string().value});
-    }
-
-    if (view["sequenceNumber"]) {
-      bsoncxx::document::element sequenceNumberElement = view["sequenceNumber"];
-      if (sequenceNumberElement.type() == bsoncxx::type::k_document) {
-        bsoncxx::document::view sequenceNumberView =
-            sequenceNumberElement.get_document().value;
-        std::string sequenceNumberJson = bsoncxx::to_json(sequenceNumberView);
-        nlohmann::json sequenceNumberJsonObj =
-            nlohmann::json::parse(sequenceNumberJson);
-        SequenceNumber sequenceNumber = sequenceNumberJsonObj;
-        authentication_subscription.setSequenceNumber(sequenceNumber);
+      AuthenticationSubscription authentication_subscription = {};
+      if (view["authenticationMethod"]) {
+        authentication_subscription.setAuthenticationMethod(
+            std::string{view["authenticationMethod"].get_string().value});
       }
-    }
-    if (view["authenticationManagementField"]) {
-      authentication_subscription.setAuthenticationManagementField(std::string{
-          view["authenticationManagementField"].get_string().value});
-    }
-    if (view["algorithmId"]) {
-      authentication_subscription.setAlgorithmId(
-          std::string{view["algorithmId"].get_string().value});
-    }
-    if (view["encOpcKey"]) {
-      authentication_subscription.setEncOpcKey(
-          std::string{view["encOpcKey"].get_string().value});
-    }
-    if (view["encTopcKey"]) {
-      authentication_subscription.setEncTopcKey(
-          std::string{view["encTopcKey"].get_string().value});
-    }
-    if (view["vectorGenerationInHss"]) {
-      std::string vector_generation_in_hss{
-          view["vectorGenerationInHss"].get_string().value};
-      if (vector_generation_in_hss == "0") {
-        authentication_subscription.setVectorGenerationInHss(false);
-      } else {
-        authentication_subscription.setVectorGenerationInHss(true);
+      if (view["encPermanentKey"]) {
+        authentication_subscription.setEncPermanentKey(
+            std::string{view["encPermanentKey"].get_string().value});
       }
-    }
-    if (view["n5gcAuthMethod"]) {
-      authentication_subscription.setN5gcAuthMethod(
-          std::string{view["n5gcAuthMethod"].get_string().value});
-    }
-    if (view["rgAuthenticationInd"]) {
-      std::string rgAuthenticationInd_in_hss{
-          view["rgAuthenticationInd"].get_string().value};
-      if (rgAuthenticationInd_in_hss == "0") {
-        authentication_subscription.setRgAuthenticationInd(false);
-      } else {
-        authentication_subscription.setRgAuthenticationInd(true);
+      if (view["protectionParameterId"]) {
+        authentication_subscription.setProtectionParameterId(
+            std::string{view["protectionParameterId"].get_string().value});
       }
+
+      if (view["sequenceNumber"]) {
+        bsoncxx::document::element sequenceNumberElement =
+            view["sequenceNumber"];
+        if (sequenceNumberElement.type() == bsoncxx::type::k_document) {
+          bsoncxx::document::view sequenceNumberView =
+              sequenceNumberElement.get_document().value;
+          std::string sequenceNumberJson = bsoncxx::to_json(sequenceNumberView);
+          nlohmann::json sequenceNumberJsonObj =
+              nlohmann::json::parse(sequenceNumberJson);
+          SequenceNumber sequenceNumber = sequenceNumberJsonObj;
+          authentication_subscription.setSequenceNumber(sequenceNumber);
+        }
+      }
+      if (view["authenticationManagementField"]) {
+        authentication_subscription.setAuthenticationManagementField(
+            std::string{
+                view["authenticationManagementField"].get_string().value});
+      }
+      if (view["algorithmId"]) {
+        authentication_subscription.setAlgorithmId(
+            std::string{view["algorithmId"].get_string().value});
+      }
+      if (view["encOpcKey"]) {
+        authentication_subscription.setEncOpcKey(
+            std::string{view["encOpcKey"].get_string().value});
+      }
+      if (view["encTopcKey"]) {
+        authentication_subscription.setEncTopcKey(
+            std::string{view["encTopcKey"].get_string().value});
+      }
+      if (view["vectorGenerationInHss"]) {
+        std::string vector_generation_in_hss{
+            view["vectorGenerationInHss"].get_string().value};
+        if (vector_generation_in_hss == "0") {
+          authentication_subscription.setVectorGenerationInHss(false);
+        } else {
+          authentication_subscription.setVectorGenerationInHss(true);
+        }
+      }
+      if (view["n5gcAuthMethod"]) {
+        authentication_subscription.setN5gcAuthMethod(
+            std::string{view["n5gcAuthMethod"].get_string().value});
+      }
+      if (view["rgAuthenticationInd"]) {
+        std::string rgAuthenticationInd_in_hss{
+            view["rgAuthenticationInd"].get_string().value};
+        if (rgAuthenticationInd_in_hss == "0") {
+          authentication_subscription.setRgAuthenticationInd(false);
+        } else {
+          authentication_subscription.setRgAuthenticationInd(true);
+        }
+      }
+      if (view["supi"]) {
+        authentication_subscription.setSupi(
+            std::string{view["supi"].get_string().value});
+      }
+
+      Logger::udr_mongo().info(
+          "Query Duration: %lld milliseconds", duration.count());
+
+      to_json(json_data, authentication_subscription);
+
+      return true;
+    } else {
+      Logger::udr_mongo().error(
+          "AuthenticationSubscription no data！ Query filter: %s",
+          bsoncxx::to_json(query.view()).c_str());
+      Logger::udr_mongo().info(
+          "Query Duration: %lld milliseconds", duration.count());
+
+      return false;
     }
-    if (view["supi"]) {
-      authentication_subscription.setSupi(
-          std::string{view["supi"].get_string().value});
-    }
-
-    Logger::udr_mongo().info(
-        "Query Duration: %lld milliseconds", duration.count());
-
-    to_json(json_data, authentication_subscription);
-
-    return true;
-  } else {
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "AuthenticationSubscription no data！ Query filter: %s",
-        bsoncxx::to_json(query.view()).c_str());
-    Logger::udr_mongo().info(
-        "Query Duration: %lld milliseconds", duration.count());
-
+        "Exception while query authentication subscription from MongoDB: %s",
+        e.what());
     return false;
   }
 }
@@ -488,71 +487,79 @@ bool mongo_db::update_authentication_subscription(
   // Start the timer
   auto start_time = std::chrono::steady_clock::now();
 
-  bsoncxx::stdx::optional<bsoncxx::document::value> result =
-      coll.find_one(filter.view());
+  try {
+    bsoncxx::stdx::optional<bsoncxx::document::value> result =
+        coll.find_one(filter.view());
 
-  if (result) {
-    bsoncxx::document::view view = result->view();
+    if (result) {
+      bsoncxx::document::view view = result->view();
 
-    for (const auto& item : patchItem) {
-      if (item.getOp().getEnumValue() ==
-              PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE &&
-          item.valueIsSet()) {
-        SequenceNumber sequenceNumber;
-        nlohmann::json::parse(item.getValue().c_str()).get_to(sequenceNumber);
+      for (const auto& item : patchItem) {
+        if (item.getOp().getEnumValue() ==
+                PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE &&
+            item.valueIsSet()) {
+          SequenceNumber sequenceNumber;
+          nlohmann::json::parse(item.getValue().c_str()).get_to(sequenceNumber);
 
-        bsoncxx::document::value sequenceNumberValue =
-            bsoncxx::from_json(item.getValue());
-        bsoncxx::document::view sequenceNumberView = sequenceNumberValue.view();
+          bsoncxx::document::value sequenceNumberValue =
+              bsoncxx::from_json(item.getValue());
+          bsoncxx::document::view sequenceNumberView =
+              sequenceNumberValue.view();
 
-        std::string sequenceNumberJson = bsoncxx::to_json(sequenceNumberView);
-        // Logger::udr_mongo().info("Raw sequenceNumber value: %s",
-        // sequenceNumberJson.c_str());
+          std::string sequenceNumberJson = bsoncxx::to_json(sequenceNumberView);
+          // Logger::udr_mongo().info("Raw sequenceNumber value: %s",
+          // sequenceNumberJson.c_str());
 
-        bsoncxx::builder::stream::document updateBuilder{};
-        updateBuilder << "$set" << bsoncxx::builder::stream::open_document;
-        updateBuilder << "sequenceNumber" << sequenceNumberView;
-        updateBuilder << bsoncxx::builder::stream::close_document;
+          bsoncxx::builder::stream::document updateBuilder{};
+          updateBuilder << "$set" << bsoncxx::builder::stream::open_document;
+          updateBuilder << "sequenceNumber" << sequenceNumberView;
+          updateBuilder << bsoncxx::builder::stream::close_document;
 
-        auto update = updateBuilder << bsoncxx::builder::stream::finalize;
+          auto update = updateBuilder << bsoncxx::builder::stream::finalize;
 
-        auto updateResult = coll.update_one(filter.view(), update.view());
-        if (!updateResult) {
-          Logger::udr_mongo().error(
-              "Failed to update AuthenticationSubscription");
-          return false;
+          auto updateResult = coll.update_one(filter.view(), update.view());
+          if (!updateResult) {
+            Logger::udr_mongo().error(
+                "Failed to update AuthenticationSubscription");
+            return false;
+          }
         }
+
+        nlohmann::json tmp_j;
+        to_json(tmp_j, item);
+        json_data += tmp_j;
       }
 
-      nlohmann::json tmp_j;
-      to_json(tmp_j, item);
-      json_data += tmp_j;
-    }
+      Logger::udr_mongo().info(
+          "AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
+      bool query_result = query_authentication_subscription(ue_id, json_data);
+      if (!query_result) {
+        Logger::udr_mongo().error(
+            "Failed to retrieve updated authentication subscription data");
+        return false;
+      }
+      // Stop the timer
+      auto end_time = std::chrono::steady_clock::now();
 
-    Logger::udr_mongo().info(
-        "AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
-    bool query_result = query_authentication_subscription(ue_id, json_data);
-    if (!query_result) {
+      // Calculate the duration
+      auto update_duration =
+          std::chrono::duration_cast<std::chrono::milliseconds>(
+              end_time - start_time);
+
+      // Log the duration
+      Logger::udr_mongo().info(
+          "Update Duration: %lld milliseconds", update_duration.count());
+
+      return true;
+    } else {
       Logger::udr_mongo().error(
-          "Failed to retrieve updated authentication subscription data");
+          "AuthenticationSubscription not found for ueid: %s", ue_id.c_str());
       return false;
     }
-    // Stop the timer
-    auto end_time = std::chrono::steady_clock::now();
-
-    // Calculate the duration
-    auto update_duration =
-        std::chrono::duration_cast<std::chrono::milliseconds>(
-            end_time - start_time);
-
-    // Log the duration
-    Logger::udr_mongo().info(
-        "Update Duration: %lld milliseconds", update_duration.count());
-
-    return true;
-  } else {
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "AuthenticationSubscription not found for ueid: %s", ue_id.c_str());
+        "Exception while update authentication subscription in MongoDB: %s",
+        e.what());
     return false;
   }
 }
@@ -577,293 +584,303 @@ bool mongo_db::query_am_data(
   query_builder << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id;
   auto query = query_builder.view();
 
-  auto result = coll.find_one(query);
-  if (result) {
-    // auto document = result.value();
-    oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
+  try {
+    auto result = coll.find_one(query);
+    if (result) {
+      // auto document = result.value();
+      oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
 
-    const bsoncxx::document::view row = result.value().view();
+      const bsoncxx::document::view row = result.value().view();
 
-    if (auto val = row["supportedFeatures"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setSupportedFeatures(
-          val.get_string().value.to_string());
-    }
-    if (auto val = row["gpsis"]; val.type() != bsoncxx::type::k_null &&
-                                 val.type() != bsoncxx::type::k_undefined) {
-      std::vector<std ::string> gpsis;
-      nlohmann::json::parse(val.get_string().value).get_to(gpsis);
-      subscription_data.setGpsis(gpsis);
-    }
-    if (auto val = row["internalgroupids"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::vector<std ::string> internalgroupids;
-      nlohmann::json::parse(val.get_string().value).get_to(internalgroupids);
-      subscription_data.setInternalGroupIds(internalgroupids);
-    }
-    if (auto val = row["sharedvngroupdataids"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::map<std ::string, std::string> sharedvngroupdataids;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(sharedvngroupdataids);
-      subscription_data.setSharedVnGroupDataIds(sharedvngroupdataids);
-    }
-    if (auto val = row["subscribedueambr"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      AmbrRm subscribedueambr;
-      nlohmann::json::parse(val.get_string().value).get_to(subscribedueambr);
-      subscription_data.setSubscribedUeAmbr(subscribedueambr);
-    }
-    if (auto val = row["nssai"]; val.type() != bsoncxx::type::k_null &&
-                                 val.type() != bsoncxx::type::k_undefined) {
-      Nssai nssai = {};
-      nlohmann::json::parse(val.get_string().value).get_to(nssai);
-      subscription_data.setNssai(nssai);
-    }
-    if (auto val = row["ratrestrictions"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std ::vector<RatType> ratrestrictions;
-      nlohmann::json::parse(val.get_string().value).get_to(ratrestrictions);
-      subscription_data.setRatRestrictions(ratrestrictions);
-    }
-    if (auto val = row["forbiddenareas"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std ::vector<Area> forbiddenareas;
-      nlohmann::json::parse(val.get_string().value).get_to(forbiddenareas);
-      subscription_data.setForbiddenAreas(forbiddenareas);
-    }
-    if (auto val = row["servicearearestriction"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      ServiceAreaRestriction servicearearestriction;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(servicearearestriction);
-      subscription_data.setServiceAreaRestriction(servicearearestriction);
-    }
-    if (auto val = row["coreNetworkTypeRestrictions"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std ::vector<CoreNetworkType> coreNetworkTypeRestrictions;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(coreNetworkTypeRestrictions);
-      subscription_data.setCoreNetworkTypeRestrictions(
-          coreNetworkTypeRestrictions);
-    }
-    if (auto val = row["rfspIndex"]; val.type() != bsoncxx::type::k_null &&
+      if (auto val = row["supportedFeatures"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setSupportedFeatures(
+            val.get_string().value.to_string());
+      }
+      if (auto val = row["gpsis"]; val.type() != bsoncxx::type::k_null &&
+                                   val.type() != bsoncxx::type::k_undefined) {
+        std::vector<std ::string> gpsis;
+        nlohmann::json::parse(val.get_string().value).get_to(gpsis);
+        subscription_data.setGpsis(gpsis);
+      }
+      if (auto val = row["internalgroupids"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::vector<std ::string> internalgroupids;
+        nlohmann::json::parse(val.get_string().value).get_to(internalgroupids);
+        subscription_data.setInternalGroupIds(internalgroupids);
+      }
+      if (auto val = row["sharedvngroupdataids"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::map<std ::string, std::string> sharedvngroupdataids;
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(sharedvngroupdataids);
+        subscription_data.setSharedVnGroupDataIds(sharedvngroupdataids);
+      }
+      if (auto val = row["subscribedueambr"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        AmbrRm subscribedueambr;
+        nlohmann::json::parse(val.get_string().value).get_to(subscribedueambr);
+        subscription_data.setSubscribedUeAmbr(subscribedueambr);
+      }
+      if (auto val = row["nssai"]; val.type() != bsoncxx::type::k_null &&
+                                   val.type() != bsoncxx::type::k_undefined) {
+        Nssai nssai = {};
+        nlohmann::json::parse(val.get_string().value).get_to(nssai);
+        subscription_data.setNssai(nssai);
+      }
+      if (auto val = row["ratrestrictions"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std ::vector<RatType> ratrestrictions;
+        nlohmann::json::parse(val.get_string().value).get_to(ratrestrictions);
+        subscription_data.setRatRestrictions(ratrestrictions);
+      }
+      if (auto val = row["forbiddenareas"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std ::vector<Area> forbiddenareas;
+        nlohmann::json::parse(val.get_string().value).get_to(forbiddenareas);
+        subscription_data.setForbiddenAreas(forbiddenareas);
+      }
+      if (auto val = row["servicearearestriction"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        ServiceAreaRestriction servicearearestriction;
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(servicearearestriction);
+        subscription_data.setServiceAreaRestriction(servicearearestriction);
+      }
+      if (auto val = row["coreNetworkTypeRestrictions"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std ::vector<CoreNetworkType> coreNetworkTypeRestrictions;
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(coreNetworkTypeRestrictions);
+        subscription_data.setCoreNetworkTypeRestrictions(
+            coreNetworkTypeRestrictions);
+      }
+      if (auto val = row["rfspIndex"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setRfspIndex(val.get_int32().value);
+      }
+      if (auto val = row["subsRegTimer"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setSubsRegTimer(val.get_int32().value);
+      }
+      if (auto val = row["ueUsageType"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setUeUsageType(val.get_int32().value);
+      }
+      if (auto val = row["mpsPriority"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setMpsPriority(val.get_bool().value);
+      }
+      if (auto val = row["mcsPriority"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setMcsPriority(val.get_bool().value);
+      }
+      if (auto val = row["activeTime"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setActiveTime(val.get_int32().value);
+      }
+      if (auto val = row["sorInfo"]; val.type() != bsoncxx::type::k_null &&
                                      val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setRfspIndex(val.get_int32().value);
-    }
-    if (auto val = row["subsRegTimer"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setSubsRegTimer(val.get_int32().value);
-    }
-    if (auto val = row["ueUsageType"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setUeUsageType(val.get_int32().value);
-    }
-    if (auto val = row["mpsPriority"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setMpsPriority(val.get_bool().value);
-    }
-    if (auto val = row["mcsPriority"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setMcsPriority(val.get_bool().value);
-    }
-    if (auto val = row["activeTime"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setActiveTime(val.get_int32().value);
-    }
-    if (auto val = row["sorInfo"]; val.type() != bsoncxx::type::k_null &&
-                                   val.type() != bsoncxx::type::k_undefined) {
-      SorInfo sorInfo = {};
-      nlohmann::json::parse(val.get_string().value).get_to(sorInfo);
-      subscription_data.setSorInfo(sorInfo);
-    }
-    if (auto val = row["sorInfoExpectInd"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setSorInfoExpectInd(val.get_bool().value);
-    }
-    if (auto val = row["sorafRetrieval"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setSorafRetrieval(val.get_bool().value);
-    }
-    if (auto val = row["sorUpdateIndicatorList"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::vector<SorUpdateIndicator> sorUpdateIndicatorList;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(sorUpdateIndicatorList);
-      subscription_data.setSorUpdateIndicatorList(sorUpdateIndicatorList);
-    }
-    if (auto val = row["upuInfo"]; val.type() != bsoncxx::type::k_null &&
-                                   val.type() != bsoncxx::type::k_undefined) {
-      UpuInfo upuInfo = {};
-      nlohmann::json::parse(val.get_string().value).get_to(upuInfo);
-      subscription_data.setUpuInfo(upuInfo);
-    }
-    if (auto val = row["micoAllowed"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setMicoAllowed(val.get_bool().value);
-    }
-    if (auto val = row["sharedAmDataIds"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::vector<std ::string> sharedAmDataIds;
-      nlohmann::json::parse(val.get_string().value).get_to(sharedAmDataIds);
-      subscription_data.setSharedAmDataIds(sharedAmDataIds);
-    }
-    if (auto val = row["odbPacketServices"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      OdbPacketServices odbPacketServices = {};
-      nlohmann::json::parse(val.get_string().value).get_to(odbPacketServices);
-      subscription_data.setOdbPacketServices(odbPacketServices);
-    }
-    if (auto val = row["serviceGapTime"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setServiceGapTime(val.get_int32().value);
-    }
-    if (auto val = row["mdtUserConsent"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      MdtUserConsent mdtUserConsent = {};
-      nlohmann::json::parse(val.get_string().value).get_to(mdtUserConsent);
-      subscription_data.setMdtUserConsent(mdtUserConsent);
-    }
-    if (auto val = row["mdtConfiguration"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      MdtConfiguration mdtConfiguration = {};
-      nlohmann::json::parse(val.get_string().value).get_to(mdtConfiguration);
-      subscription_data.setMdtConfiguration(mdtConfiguration);
-    }
-    if (auto val = row["traceData"]; val.type() != bsoncxx::type::k_null &&
+        SorInfo sorInfo = {};
+        nlohmann::json::parse(val.get_string().value).get_to(sorInfo);
+        subscription_data.setSorInfo(sorInfo);
+      }
+      if (auto val = row["sorInfoExpectInd"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setSorInfoExpectInd(val.get_bool().value);
+      }
+      if (auto val = row["sorafRetrieval"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setSorafRetrieval(val.get_bool().value);
+      }
+      if (auto val = row["sorUpdateIndicatorList"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::vector<SorUpdateIndicator> sorUpdateIndicatorList;
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(sorUpdateIndicatorList);
+        subscription_data.setSorUpdateIndicatorList(sorUpdateIndicatorList);
+      }
+      if (auto val = row["upuInfo"]; val.type() != bsoncxx::type::k_null &&
                                      val.type() != bsoncxx::type::k_undefined) {
-      TraceData traceData = {};
-      nlohmann::json::parse(val.get_string().value).get_to(traceData);
-      subscription_data.setTraceData(traceData);
-    }
-    if (auto val = row["cagData"]; val.type() != bsoncxx::type::k_null &&
+        UpuInfo upuInfo = {};
+        nlohmann::json::parse(val.get_string().value).get_to(upuInfo);
+        subscription_data.setUpuInfo(upuInfo);
+      }
+      if (auto val = row["micoAllowed"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setMicoAllowed(val.get_bool().value);
+      }
+      if (auto val = row["sharedAmDataIds"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::vector<std ::string> sharedAmDataIds;
+        nlohmann::json::parse(val.get_string().value).get_to(sharedAmDataIds);
+        subscription_data.setSharedAmDataIds(sharedAmDataIds);
+      }
+      if (auto val = row["odbPacketServices"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        OdbPacketServices odbPacketServices = {};
+        nlohmann::json::parse(val.get_string().value).get_to(odbPacketServices);
+        subscription_data.setOdbPacketServices(odbPacketServices);
+      }
+      if (auto val = row["serviceGapTime"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setServiceGapTime(val.get_int32().value);
+      }
+      if (auto val = row["mdtUserConsent"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        MdtUserConsent mdtUserConsent = {};
+        nlohmann::json::parse(val.get_string().value).get_to(mdtUserConsent);
+        subscription_data.setMdtUserConsent(mdtUserConsent);
+      }
+      if (auto val = row["mdtConfiguration"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        MdtConfiguration mdtConfiguration = {};
+        nlohmann::json::parse(val.get_string().value).get_to(mdtConfiguration);
+        subscription_data.setMdtConfiguration(mdtConfiguration);
+      }
+      if (auto val = row["traceData"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        TraceData traceData = {};
+        nlohmann::json::parse(val.get_string().value).get_to(traceData);
+        subscription_data.setTraceData(traceData);
+      }
+      if (auto val = row["cagData"]; val.type() != bsoncxx::type::k_null &&
+                                     val.type() != bsoncxx::type::k_undefined) {
+        CagData cagData = {};
+        nlohmann::json::parse(val.get_string().value).get_to(cagData);
+        subscription_data.setCagData(cagData);
+      }
+      if (auto val = row["stnSr"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
-      CagData cagData = {};
-      nlohmann::json::parse(val.get_string().value).get_to(cagData);
-      subscription_data.setCagData(cagData);
-    }
-    if (auto val = row["stnSr"]; val.type() != bsoncxx::type::k_null &&
-                                 val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setStnSr(val.get_string().value.to_string());
-    }
-    if (auto val = row["cMsisdn"]; val.type() != bsoncxx::type::k_null &&
-                                   val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setCMsisdn(val.get_string().value.to_string());
-    }
-    if (auto val = row["nbIoTUePriority"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setNbIoTUePriority(val.get_int32().value);
-    }
-    if (auto val = row["nssaiInclusionAllowed"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setNssaiInclusionAllowed(val.get_bool().value);
-    }
-    if (auto val = row["rgWirelineCharacteristics"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setRgWirelineCharacteristics(
-          val.get_string().value.to_string());
-    }
-    if (auto val = row["ecRestrictionDataWb"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      EcRestrictionDataWb ecRestrictionDataWb = {};
-      nlohmann::json::parse(val.get_string().value).get_to(ecRestrictionDataWb);
-      subscription_data.setEcRestrictionDataWb(ecRestrictionDataWb);
-    }
-    if (auto val = row["ecRestrictionDataNb"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setEcRestrictionDataNb(val.get_bool().value);
-    }
-    if (auto val = row["expectedUeBehaviourList"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      ExpectedUeBehaviourData expectedUeBehaviourList = {};
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(expectedUeBehaviourList);
-      subscription_data.setExpectedUeBehaviourList(expectedUeBehaviourList);
-    }
-    if (auto val = row["primaryRatRestrictions"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::vector<RatType> primaryRatRestrictions;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(primaryRatRestrictions);
-      subscription_data.setPrimaryRatRestrictions(primaryRatRestrictions);
-    }
-    if (auto val = row["secondaryRatRestrictions"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::vector<RatType> secondaryRatRestrictions;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(secondaryRatRestrictions);
-      subscription_data.setSecondaryRatRestrictions(secondaryRatRestrictions);
-    }
-    if (auto val = row["edrxParametersList"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::vector<EdrxParameters> edrxParametersList;
-      nlohmann::json::parse(val.get_string().value).get_to(edrxParametersList);
-      subscription_data.setEdrxParametersList(edrxParametersList);
-    }
-    if (auto val = row["ptwParametersList"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::vector<PtwParameters> ptwParametersList;
-      nlohmann::json::parse(val.get_string().value).get_to(ptwParametersList);
-      subscription_data.setPtwParametersList(ptwParametersList);
-    }
-    if (auto val = row["iabOperationAllowed"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      subscription_data.setIabOperationAllowed(val.get_bool().value);
-    }
-    if (auto val = row["wirelineForbiddenAreas"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std::vector<WirelineArea> wirelineForbiddenAreas;
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(wirelineForbiddenAreas);
-      subscription_data.setWirelineForbiddenAreas(wirelineForbiddenAreas);
-    }
-    if (auto val = row["wirelineServiceAreaRestriction"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      WirelineServiceAreaRestriction wirelineServiceAreaRestriction = {};
-      nlohmann::json::parse(val.get_string().value)
-          .get_to(wirelineServiceAreaRestriction);
-      subscription_data.setWirelineServiceAreaRestriction(
-          wirelineServiceAreaRestriction);
-    }
+        subscription_data.setStnSr(val.get_string().value.to_string());
+      }
+      if (auto val = row["cMsisdn"]; val.type() != bsoncxx::type::k_null &&
+                                     val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setCMsisdn(val.get_string().value.to_string());
+      }
+      if (auto val = row["nbIoTUePriority"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setNbIoTUePriority(val.get_int32().value);
+      }
+      if (auto val = row["nssaiInclusionAllowed"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setNssaiInclusionAllowed(val.get_bool().value);
+      }
+      if (auto val = row["rgWirelineCharacteristics"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setRgWirelineCharacteristics(
+            val.get_string().value.to_string());
+      }
+      if (auto val = row["ecRestrictionDataWb"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        EcRestrictionDataWb ecRestrictionDataWb = {};
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(ecRestrictionDataWb);
+        subscription_data.setEcRestrictionDataWb(ecRestrictionDataWb);
+      }
+      if (auto val = row["ecRestrictionDataNb"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setEcRestrictionDataNb(val.get_bool().value);
+      }
+      if (auto val = row["expectedUeBehaviourList"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        ExpectedUeBehaviourData expectedUeBehaviourList = {};
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(expectedUeBehaviourList);
+        subscription_data.setExpectedUeBehaviourList(expectedUeBehaviourList);
+      }
+      if (auto val = row["primaryRatRestrictions"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::vector<RatType> primaryRatRestrictions;
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(primaryRatRestrictions);
+        subscription_data.setPrimaryRatRestrictions(primaryRatRestrictions);
+      }
+      if (auto val = row["secondaryRatRestrictions"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::vector<RatType> secondaryRatRestrictions;
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(secondaryRatRestrictions);
+        subscription_data.setSecondaryRatRestrictions(secondaryRatRestrictions);
+      }
+      if (auto val = row["edrxParametersList"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::vector<EdrxParameters> edrxParametersList;
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(edrxParametersList);
+        subscription_data.setEdrxParametersList(edrxParametersList);
+      }
+      if (auto val = row["ptwParametersList"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::vector<PtwParameters> ptwParametersList;
+        nlohmann::json::parse(val.get_string().value).get_to(ptwParametersList);
+        subscription_data.setPtwParametersList(ptwParametersList);
+      }
+      if (auto val = row["iabOperationAllowed"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        subscription_data.setIabOperationAllowed(val.get_bool().value);
+      }
+      if (auto val = row["wirelineForbiddenAreas"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std::vector<WirelineArea> wirelineForbiddenAreas;
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(wirelineForbiddenAreas);
+        subscription_data.setWirelineForbiddenAreas(wirelineForbiddenAreas);
+      }
+      if (auto val = row["wirelineServiceAreaRestriction"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        WirelineServiceAreaRestriction wirelineServiceAreaRestriction = {};
+        nlohmann::json::parse(val.get_string().value)
+            .get_to(wirelineServiceAreaRestriction);
+        subscription_data.setWirelineServiceAreaRestriction(
+            wirelineServiceAreaRestriction);
+      }
 
-  } else {
-    // Handle query failure
-    Logger::udr_mongo().error("Failed to query AM Data from MongoDB");
+    } else {
+      // Handle query failure
+      Logger::udr_mongo().error("Failed to query AM Data from MongoDB");
+      return false;
+    }
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while query AM Data from MongoDB: %s", e.what());
     return false;
   }
 
@@ -886,138 +903,145 @@ bool mongo_db::create_amf_context_3gpp(
   // Select the appropriate database and collection
   mongocxx::database db = mongo_client["oai_db_mongo"];
 
-  auto find_opts = mongocxx::options::find{};
-  auto document  = db["Amf3GppAccessRegistration"].find_one(
-      filter_builder.view(), find_opts);
+  try {
+    auto find_opts = mongocxx::options::find{};
+    auto document  = db["Amf3GppAccessRegistration"].find_one(
+        filter_builder.view(), find_opts);
 
-  bsoncxx::builder::stream::document update_doc;
-  update_doc << "$set" << bsoncxx::builder::stream::open_document;
-  update_doc << "amfInstanceId" << amf3GppAccessRegistration.getAmfInstanceId();
+    bsoncxx::builder::stream::document update_doc;
+    update_doc << "$set" << bsoncxx::builder::stream::open_document;
+    update_doc << "amfInstanceId"
+               << amf3GppAccessRegistration.getAmfInstanceId();
 
-  if (amf3GppAccessRegistration.supportedFeaturesIsSet()) {
-    update_doc << "supportedFeatures"
-               << amf3GppAccessRegistration.getSupportedFeatures();
-  }
-
-  if (amf3GppAccessRegistration.purgeFlagIsSet()) {
-    update_doc << "purgeFlag"
-               << (amf3GppAccessRegistration.isPurgeFlag() ? 1 : 0);
-  }
-
-  if (amf3GppAccessRegistration.peiIsSet()) {
-    update_doc << "pei" << amf3GppAccessRegistration.getPei();
-  }
-
-  if (amf3GppAccessRegistration.pcscfRestorationCallbackUriIsSet()) {
-    update_doc << "pcscfRestorationCallbackUri"
-               << amf3GppAccessRegistration.getPcscfRestorationCallbackUri();
-  }
-
-  if (amf3GppAccessRegistration.initialRegistrationIndIsSet()) {
-    update_doc << "initialRegistrationInd"
-               << (amf3GppAccessRegistration.isInitialRegistrationInd() ? 1 :
-                                                                          0);
-  }
-
-  if (amf3GppAccessRegistration.drFlagIsSet()) {
-    update_doc << "drFlag" << (amf3GppAccessRegistration.isDrFlag() ? 1 : 0);
-  }
-
-  if (amf3GppAccessRegistration.urrpIndicatorIsSet()) {
-    update_doc << "urrpIndicator"
-               << (amf3GppAccessRegistration.isUrrpIndicator() ? 1 : 0);
-  }
-
-  if (amf3GppAccessRegistration.amfEeSubscriptionIdIsSet()) {
-    update_doc << "amfEeSubscriptionId"
-               << amf3GppAccessRegistration.getAmfEeSubscriptionId();
-  }
-
-  if (amf3GppAccessRegistration.ueSrvccCapabilityIsSet()) {
-    update_doc << "ueSrvccCapability"
-               << (amf3GppAccessRegistration.isUeSrvccCapability() ? 1 : 0);
-  }
-
-  if (amf3GppAccessRegistration.registrationTimeIsSet()) {
-    update_doc << "registrationTime"
-               << amf3GppAccessRegistration.getRegistrationTime();
-  }
-
-  if (amf3GppAccessRegistration.noEeSubscriptionIndIsSet()) {
-    update_doc << "noEeSubscriptionInd"
-               << (amf3GppAccessRegistration.isNoEeSubscriptionInd() ? 1 : 0);
-  }
-  if (amf3GppAccessRegistration.imsVoPsIsSet()) {
-    nlohmann::json j;
-    to_json(j, amf3GppAccessRegistration.getImsVoPs());
-    update_doc << "imsVoPs" << j.dump();
-  }
-
-  if (amf3GppAccessRegistration.amfServiceNameDeregIsSet()) {
-    nlohmann::json j;
-    to_json(j, amf3GppAccessRegistration.getAmfServiceNameDereg());
-    update_doc << "amfServiceNameDereg" << j.dump();
-  }
-  if (amf3GppAccessRegistration.amfServiceNamePcscfRestIsSet()) {
-    nlohmann::json j;
-    to_json(j, amf3GppAccessRegistration.getAmfServiceNamePcscfRest());
-    update_doc << "amfServiceNamePcscfRest" << j.dump();
-  }
-
-  if (amf3GppAccessRegistration.backupAmfInfoIsSet()) {
-    std::vector<BackupAmfInfo> backupamfinfo =
-        amf3GppAccessRegistration.getBackupAmfInfo();
-    auto arr_builder = bsoncxx::builder::stream::array{};
-    for (int i = 0; i < backupamfinfo.size(); i++) {
-      nlohmann::json json_obj = backupamfinfo[i];
-      auto tmp                = bsoncxx::from_json(json_obj.dump());
-      arr_builder << tmp.view();
+    if (amf3GppAccessRegistration.supportedFeaturesIsSet()) {
+      update_doc << "supportedFeatures"
+                 << amf3GppAccessRegistration.getSupportedFeatures();
     }
-    auto arr = arr_builder << bsoncxx::types::b_null{}
-                           << bsoncxx::builder::stream::finalize;
-    update_doc << "backupAmfInfo" << arr;
-  }
 
-  if (amf3GppAccessRegistration.epsInterworkingInfoIsSet()) {
+    if (amf3GppAccessRegistration.purgeFlagIsSet()) {
+      update_doc << "purgeFlag"
+                 << (amf3GppAccessRegistration.isPurgeFlag() ? 1 : 0);
+    }
+
+    if (amf3GppAccessRegistration.peiIsSet()) {
+      update_doc << "pei" << amf3GppAccessRegistration.getPei();
+    }
+
+    if (amf3GppAccessRegistration.pcscfRestorationCallbackUriIsSet()) {
+      update_doc << "pcscfRestorationCallbackUri"
+                 << amf3GppAccessRegistration.getPcscfRestorationCallbackUri();
+    }
+
+    if (amf3GppAccessRegistration.initialRegistrationIndIsSet()) {
+      update_doc << "initialRegistrationInd"
+                 << (amf3GppAccessRegistration.isInitialRegistrationInd() ? 1 :
+                                                                            0);
+    }
+
+    if (amf3GppAccessRegistration.drFlagIsSet()) {
+      update_doc << "drFlag" << (amf3GppAccessRegistration.isDrFlag() ? 1 : 0);
+    }
+
+    if (amf3GppAccessRegistration.urrpIndicatorIsSet()) {
+      update_doc << "urrpIndicator"
+                 << (amf3GppAccessRegistration.isUrrpIndicator() ? 1 : 0);
+    }
+
+    if (amf3GppAccessRegistration.amfEeSubscriptionIdIsSet()) {
+      update_doc << "amfEeSubscriptionId"
+                 << amf3GppAccessRegistration.getAmfEeSubscriptionId();
+    }
+
+    if (amf3GppAccessRegistration.ueSrvccCapabilityIsSet()) {
+      update_doc << "ueSrvccCapability"
+                 << (amf3GppAccessRegistration.isUeSrvccCapability() ? 1 : 0);
+    }
+
+    if (amf3GppAccessRegistration.registrationTimeIsSet()) {
+      update_doc << "registrationTime"
+                 << amf3GppAccessRegistration.getRegistrationTime();
+    }
+
+    if (amf3GppAccessRegistration.noEeSubscriptionIndIsSet()) {
+      update_doc << "noEeSubscriptionInd"
+                 << (amf3GppAccessRegistration.isNoEeSubscriptionInd() ? 1 : 0);
+    }
+    if (amf3GppAccessRegistration.imsVoPsIsSet()) {
+      nlohmann::json j;
+      to_json(j, amf3GppAccessRegistration.getImsVoPs());
+      update_doc << "imsVoPs" << j.dump();
+    }
+
+    if (amf3GppAccessRegistration.amfServiceNameDeregIsSet()) {
+      nlohmann::json j;
+      to_json(j, amf3GppAccessRegistration.getAmfServiceNameDereg());
+      update_doc << "amfServiceNameDereg" << j.dump();
+    }
+    if (amf3GppAccessRegistration.amfServiceNamePcscfRestIsSet()) {
+      nlohmann::json j;
+      to_json(j, amf3GppAccessRegistration.getAmfServiceNamePcscfRest());
+      update_doc << "amfServiceNamePcscfRest" << j.dump();
+    }
+
+    if (amf3GppAccessRegistration.backupAmfInfoIsSet()) {
+      std::vector<BackupAmfInfo> backupamfinfo =
+          amf3GppAccessRegistration.getBackupAmfInfo();
+      auto arr_builder = bsoncxx::builder::stream::array{};
+      for (int i = 0; i < backupamfinfo.size(); i++) {
+        nlohmann::json json_obj = backupamfinfo[i];
+        auto tmp                = bsoncxx::from_json(json_obj.dump());
+        arr_builder << tmp.view();
+      }
+      auto arr = arr_builder << bsoncxx::types::b_null{}
+                             << bsoncxx::builder::stream::finalize;
+      update_doc << "backupAmfInfo" << arr;
+    }
+
+    if (amf3GppAccessRegistration.epsInterworkingInfoIsSet()) {
+      nlohmann::json j;
+      to_json(j, amf3GppAccessRegistration.getEpsInterworkingInfo());
+      update_doc << "epsInterworkingInfo" << j.dump();
+    }
+    if (amf3GppAccessRegistration.vgmlcAddressIsSet()) {
+      nlohmann::json j;
+      to_json(j, amf3GppAccessRegistration.getVgmlcAddress());
+      update_doc << "vgmlcAddress" << j.dump();
+    }
+
+    if (amf3GppAccessRegistration.contextInfoIsSet()) {
+      nlohmann::json j;
+      to_json(j, amf3GppAccessRegistration.getContextInfo());
+      update_doc << "contextInfo" << j.dump();
+    }
     nlohmann::json j;
-    to_json(j, amf3GppAccessRegistration.getEpsInterworkingInfo());
-    update_doc << "epsInterworkingInfo" << j.dump();
-  }
-  if (amf3GppAccessRegistration.vgmlcAddressIsSet()) {
-    nlohmann::json j;
-    to_json(j, amf3GppAccessRegistration.getVgmlcAddress());
-    update_doc << "vgmlcAddress" << j.dump();
-  }
+    to_json(j, amf3GppAccessRegistration.getGuami());
+    update_doc << "guami" << j.dump();
 
-  if (amf3GppAccessRegistration.contextInfoIsSet()) {
-    nlohmann::json j;
-    to_json(j, amf3GppAccessRegistration.getContextInfo());
-    update_doc << "contextInfo" << j.dump();
-  }
-  nlohmann::json j;
-  to_json(j, amf3GppAccessRegistration.getGuami());
-  update_doc << "guami" << j.dump();
+    to_json(j, amf3GppAccessRegistration.getRatType());
+    update_doc << "ratType" << j.dump();
 
-  to_json(j, amf3GppAccessRegistration.getRatType());
-  update_doc << "ratType" << j.dump();
+    update_doc << bsoncxx::builder::stream::close_document;
 
-  update_doc << bsoncxx::builder::stream::close_document;
-
-  if (document) {
-    auto result = db["Amf3GppAccessRegistration"].update_one(
-        filter_builder.view(), update_doc.view());
-    if (!result) {
+    if (document) {
+      auto result = db["Amf3GppAccessRegistration"].update_one(
+          filter_builder.view(), update_doc.view());
+      if (!result) {
+        Logger::udr_mongo().error(
+            "MongoDB update_one failure! Query: %s",
+            bsoncxx::to_json(update_doc.view()).c_str());
+        return false;
+      }
+      return true;
+    } else {
       Logger::udr_mongo().error(
-          "MongoDB update_one failure! Query: %s",
-          bsoncxx::to_json(update_doc.view()).c_str());
+          "MongoDB Document %S not found! Query could not be submitted: %s",
+          bsoncxx::to_json(filter_builder.view()),
+          bsoncxx::to_json(update_doc.view()));
       return false;
     }
-    return true;
-  } else {
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "MongoDB Document %S not found! Query could not be submitted: %s",
-        bsoncxx::to_json(filter_builder.view()),
-        bsoncxx::to_json(update_doc.view()));
+        "Exception while create AMF context in MongoDB: %s", e.what());
     return false;
   }
 }
@@ -1037,161 +1061,171 @@ bool mongo_db::query_amf_context_3gpp(
   filter_builder << "ueid" << ue_id;
   auto filter = filter_builder.view();
 
-  auto cursor = collection.find_one(filter);
+  try {
+    auto cursor = collection.find_one(filter);
 
-  // auto document = result.value();
-  if (cursor) {
-    auto doc = cursor.value();
-    oai::udr::model::Amf3GppAccessRegistration amf3gppaccessregistration = {};
-    const bsoncxx::document::view row = cursor.value().view();
+    // auto document = result.value();
+    if (cursor) {
+      auto doc = cursor.value();
+      oai::udr::model::Amf3GppAccessRegistration amf3gppaccessregistration = {};
+      const bsoncxx::document::view row = cursor.value().view();
 
-    if (auto val = row["amfInstanceId"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setAmfInstanceId(
-          val.get_string().value.to_string());
-    }
-    if (auto val = row["supportedFeatures"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setSupportedFeatures(
-          val.get_string().value.to_string());
-    }
-    if (auto val = row["pei"]; val.type() != bsoncxx::type::k_null &&
-                               val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setPei(val.get_string().value.to_string());
-    }
-
-    if (auto val = row["imsVoPs"]; val.type() != bsoncxx::type::k_null &&
-                                   val.type() != bsoncxx::type::k_undefined) {
-      ImsVoPs imsvops;
-      nlohmann::json::parse(row["imsVoPs"].get_string().value).get_to(imsvops);
-      amf3gppaccessregistration.setImsVoPs(imsvops);
-    }
-    if (auto val = row["purgeFlag"]; val.type() != bsoncxx::type::k_null &&
-                                     val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setPurgeFlag(val.get_bool().value);
-    }
-    if (auto val = row["deregCallbackUri"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setDeregCallbackUri(
-          val.get_string().value.to_string());
-    }
-    if (auto val = row["amfServiceNameDereg"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      oai::model::nrf::ServiceName amfservicenamedereg;
-      nlohmann::json::parse(row["amfServiceNameDereg"].get_string().value)
-          .get_to(amfservicenamedereg);
-      amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
-    }
-    if (auto val = row["pcscfRestorationCallbackUri"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setPcscfRestorationCallbackUri(
-          val.get_string().value.to_string());
-    }
-    if (auto val = row["amfServiceNamePcscfRest"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      oai::model::nrf::ServiceName amfservicenamepcscfrest;
-      nlohmann::json::parse(row["amfServiceNamePcscfRest"].get_string().value)
-          .get_to(amfservicenamepcscfrest);
-      amf3gppaccessregistration.setAmfServiceNamePcscfRest(
-          amfservicenamepcscfrest);
-    }
-    if (auto val = row["guami"]; val.type() != bsoncxx::type::k_null &&
+      if (auto val = row["amfInstanceId"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setAmfInstanceId(
+            val.get_string().value.to_string());
+      }
+      if (auto val = row["supportedFeatures"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setSupportedFeatures(
+            val.get_string().value.to_string());
+      }
+      if (auto val = row["pei"]; val.type() != bsoncxx::type::k_null &&
                                  val.type() != bsoncxx::type::k_undefined) {
-      Guami guami;
-      nlohmann::json::parse(row["guami"].get_string().value).get_to(guami);
-      amf3gppaccessregistration.setGuami(guami);
-    }
-    if (auto val = row["backupAmfInfo"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      std ::vector<BackupAmfInfo> backupamfinfo;
-      nlohmann::json::parse(row["backupAmfInfo"].get_string().value)
-          .get_to(backupamfinfo);
-      amf3gppaccessregistration.setBackupAmfInfo(backupamfinfo);
-    }
-    if (auto val = row["ratType"]; val.type() != bsoncxx::type::k_null &&
+        amf3gppaccessregistration.setPei(val.get_string().value.to_string());
+      }
+
+      if (auto val = row["imsVoPs"]; val.type() != bsoncxx::type::k_null &&
+                                     val.type() != bsoncxx::type::k_undefined) {
+        ImsVoPs imsvops;
+        nlohmann::json::parse(row["imsVoPs"].get_string().value)
+            .get_to(imsvops);
+        amf3gppaccessregistration.setImsVoPs(imsvops);
+      }
+      if (auto val = row["purgeFlag"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setPurgeFlag(val.get_bool().value);
+      }
+      if (auto val = row["deregCallbackUri"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setDeregCallbackUri(
+            val.get_string().value.to_string());
+      }
+      if (auto val = row["amfServiceNameDereg"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        oai::model::nrf::ServiceName amfservicenamedereg;
+        nlohmann::json::parse(row["amfServiceNameDereg"].get_string().value)
+            .get_to(amfservicenamedereg);
+        amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
+      }
+      if (auto val = row["pcscfRestorationCallbackUri"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setPcscfRestorationCallbackUri(
+            val.get_string().value.to_string());
+      }
+      if (auto val = row["amfServiceNamePcscfRest"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        oai::model::nrf::ServiceName amfservicenamepcscfrest;
+        nlohmann::json::parse(row["amfServiceNamePcscfRest"].get_string().value)
+            .get_to(amfservicenamepcscfrest);
+        amf3gppaccessregistration.setAmfServiceNamePcscfRest(
+            amfservicenamepcscfrest);
+      }
+      if (auto val = row["guami"]; val.type() != bsoncxx::type::k_null &&
                                    val.type() != bsoncxx::type::k_undefined) {
-      RatType ratType;
-      nlohmann::json::parse(row["ratType"].get_string().value).get_to(ratType);
-      amf3gppaccessregistration.setRatType(ratType);
-    }
+        Guami guami;
+        nlohmann::json::parse(row["guami"].get_string().value).get_to(guami);
+        amf3gppaccessregistration.setGuami(guami);
+      }
+      if (auto val = row["backupAmfInfo"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        std ::vector<BackupAmfInfo> backupamfinfo;
+        nlohmann::json::parse(row["backupAmfInfo"].get_string().value)
+            .get_to(backupamfinfo);
+        amf3gppaccessregistration.setBackupAmfInfo(backupamfinfo);
+      }
+      if (auto val = row["ratType"]; val.type() != bsoncxx::type::k_null &&
+                                     val.type() != bsoncxx::type::k_undefined) {
+        RatType ratType;
+        nlohmann::json::parse(row["ratType"].get_string().value)
+            .get_to(ratType);
+        amf3gppaccessregistration.setRatType(ratType);
+      }
 
-    if (auto val = row["epsInterworkingInfo"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      EpsInterworkingInfo epsInterworkingInfo;
-      nlohmann::json::parse(row["epsInterworkingInfo"].get_string().value)
-          .get_to(epsInterworkingInfo);
-      amf3gppaccessregistration.setEpsInterworkingInfo(epsInterworkingInfo);
-    }
-    if (auto val = row["vgmlcAddress"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      VgmlcAddress vgmlcAddress;
-      nlohmann::json::parse(row["vgmlcAddress"].get_string().value)
-          .get_to(vgmlcAddress);
-      amf3gppaccessregistration.setVgmlcAddress(vgmlcAddress);
-    }
-    if (auto val = row["contextInfo"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      ContextInfo contextInfo;
-      nlohmann::json::parse(row["contextInfo"].get_string().value)
-          .get_to(contextInfo);
-      amf3gppaccessregistration.setContextInfo(contextInfo);
-    }
+      if (auto val = row["epsInterworkingInfo"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        EpsInterworkingInfo epsInterworkingInfo;
+        nlohmann::json::parse(row["epsInterworkingInfo"].get_string().value)
+            .get_to(epsInterworkingInfo);
+        amf3gppaccessregistration.setEpsInterworkingInfo(epsInterworkingInfo);
+      }
+      if (auto val = row["vgmlcAddress"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        VgmlcAddress vgmlcAddress;
+        nlohmann::json::parse(row["vgmlcAddress"].get_string().value)
+            .get_to(vgmlcAddress);
+        amf3gppaccessregistration.setVgmlcAddress(vgmlcAddress);
+      }
+      if (auto val = row["contextInfo"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        ContextInfo contextInfo;
+        nlohmann::json::parse(row["contextInfo"].get_string().value)
+            .get_to(contextInfo);
+        amf3gppaccessregistration.setContextInfo(contextInfo);
+      }
 
-    if (auto val = row["initialRegistrationInd"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setInitialRegistrationInd(val.get_bool().value);
-    }
-    if (auto val = row["drFlag"]; val.type() != bsoncxx::type::k_null &&
-                                  val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setDrFlag(val.get_bool().value);
-    }
-    if (auto val = row["urrpIndicator"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setUrrpIndicator(val.get_bool().value);
-    }
-    if (auto val = row["amfEeSubscriptionId"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setAmfEeSubscriptionId(
-          val.get_string().value.to_string());
-    }
-    if (auto val = row["ueSrvccCapability"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setUeSrvccCapability(val.get_bool().value);
-    }
-    if (auto val = row["registrationTime"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setRegistrationTime(
-          val.get_string().value.to_string());
-    }
-    if (auto val = row["noEeSubscriptionInd"];
-        val.type() != bsoncxx::type::k_null &&
-        val.type() != bsoncxx::type::k_undefined) {
-      amf3gppaccessregistration.setNoEeSubscriptionInd(val.get_bool().value);
-    }
+      if (auto val = row["initialRegistrationInd"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setInitialRegistrationInd(
+            val.get_bool().value);
+      }
+      if (auto val = row["drFlag"]; val.type() != bsoncxx::type::k_null &&
+                                    val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setDrFlag(val.get_bool().value);
+      }
+      if (auto val = row["urrpIndicator"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setUrrpIndicator(val.get_bool().value);
+      }
+      if (auto val = row["amfEeSubscriptionId"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setAmfEeSubscriptionId(
+            val.get_string().value.to_string());
+      }
+      if (auto val = row["ueSrvccCapability"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setUeSrvccCapability(val.get_bool().value);
+      }
+      if (auto val = row["registrationTime"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setRegistrationTime(
+            val.get_string().value.to_string());
+      }
+      if (auto val = row["noEeSubscriptionInd"];
+          val.type() != bsoncxx::type::k_null &&
+          val.type() != bsoncxx::type::k_undefined) {
+        amf3gppaccessregistration.setNoEeSubscriptionInd(val.get_bool().value);
+      }
 
-    to_json(json_data, amf3gppaccessregistration);
+      to_json(json_data, amf3gppaccessregistration);
 
-    // json_data = amf3gppaccessregistration.to_json();
-    return true;
-  } else {
-    Logger::udr_mongo().info(
-        "AMF 3GPP Access Registration for UE ID {} not found in MongoDB",
-        ue_id);
+      // json_data = amf3gppaccessregistration.to_json();
+      return true;
+    } else {
+      Logger::udr_mongo().info(
+          "AMF 3GPP Access Registration for UE ID {} not found in MongoDB",
+          ue_id);
+      return false;
+    }
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while query AMF context from MongoDB: %s", e.what());
     return false;
   }
 }
@@ -1214,56 +1248,66 @@ bool mongo_db::insert_authentication_status(
   // Start the timer
   auto start_time = std::chrono::steady_clock::now();
 
-  bsoncxx::stdx::optional<bsoncxx::document::value> result =
-      collection.find_one(filter.view());
+  try {
+    bsoncxx::stdx::optional<bsoncxx::document::value> result =
+        collection.find_one(filter.view());
 
-  bsoncxx::builder::stream::document documentBuilder{};
+    bsoncxx::builder::stream::document documentBuilder{};
 
-  documentBuilder << "ueid" << ue_id;
-  documentBuilder << "nfInstanceId" << authEvent.getNfInstanceId();
-  documentBuilder << "success" << (authEvent.isSuccess() ? true : false);
-  documentBuilder << "timeStamp" << authEvent.getTimeStamp();
-  documentBuilder << "authType" << authEvent.getAuthType();
-  documentBuilder << "servingNetworkName" << authEvent.getServingNetworkName();
+    documentBuilder << "ueid" << ue_id;
+    documentBuilder << "nfInstanceId" << authEvent.getNfInstanceId();
+    documentBuilder << "success" << (authEvent.isSuccess() ? true : false);
+    documentBuilder << "timeStamp" << authEvent.getTimeStamp();
+    documentBuilder << "authType" << authEvent.getAuthType();
+    documentBuilder << "servingNetworkName"
+                    << authEvent.getServingNetworkName();
 
-  if (authEvent.authRemovalIndIsSet()) {
-    documentBuilder << "authRemovalInd"
-                    << (authEvent.isAuthRemovalInd() ? true : false);
-  }
-
-  auto document = documentBuilder << bsoncxx::builder::stream::finalize;
-
-  if (result) {
-    auto updateResult = collection.update_one(filter.view(), document.view());
-    if (!updateResult) {
-      Logger::udr_mongo().error("Failed to update AuthenticationStatus");
-      return false;
+    if (authEvent.authRemovalIndIsSet()) {
+      documentBuilder << "authRemovalInd"
+                      << (authEvent.isAuthRemovalInd() ? true : false);
     }
-  } else {
-    auto insertResult = collection.insert_one(document.view());
-    if (!insertResult) {
-      Logger::udr_mongo().error("Failed to insert AuthenticationStatus");
-      return false;
+
+    auto document = documentBuilder << bsoncxx::builder::stream::finalize;
+
+    if (result) {
+      auto updateResult = collection.update_one(filter.view(), document.view());
+      if (!updateResult) {
+        Logger::udr_mongo().error("Failed to update AuthenticationStatus");
+        return false;
+      }
+    } else {
+      auto insertResult = collection.insert_one(document.view());
+      if (!insertResult) {
+        Logger::udr_mongo().error("Failed to insert AuthenticationStatus");
+        return false;
+      }
     }
+
+    nlohmann::json tmp = {};
+    to_json(tmp, authEvent);
+    Logger::udr_mongo().info(
+        "AuthenticationStatus PUT: %s", tmp.dump().c_str());
+
+    // Stop the timer
+    auto end_time = std::chrono::steady_clock::now();
+
+    // Calculate the duration
+    auto operation_duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(
+            end_time - start_time);
+
+    // Log the duration
+    Logger::udr_mongo().info(
+        "Operation Duration: %lld milliseconds", operation_duration.count());
+
+    return true;
+
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while insert authentication status in MongoDB: %s",
+        e.what());
+    return false;
   }
-
-  nlohmann::json tmp = {};
-  to_json(tmp, authEvent);
-  Logger::udr_mongo().info("AuthenticationStatus PUT: %s", tmp.dump().c_str());
-
-  // Stop the timer
-  auto end_time = std::chrono::steady_clock::now();
-
-  // Calculate the duration
-  auto operation_duration =
-      std::chrono::duration_cast<std::chrono::milliseconds>(
-          end_time - start_time);
-
-  // Log the duration
-  Logger::udr_mongo().info(
-      "Operation Duration: %lld milliseconds", operation_duration.count());
-
-  return true;
 }
 
 //------------------------------------------------------------------------------
@@ -1314,7 +1358,8 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "Exception while deleting document in MongoDB: %s", e.what());
+        "Exception while delete authentication status from MongoDB: %s",
+        e.what());
     return false;
   }
 }
@@ -1342,71 +1387,77 @@ bool mongo_db::query_authentication_status(
   // Start the timer
   auto start_time = std::chrono::steady_clock::now();
 
-  // Execute the query and get the result
-  bsoncxx::stdx::optional<bsoncxx::document::value> result =
-      coll.find_one(query.view());
+  try {
+    // Execute the query and get the result
+    bsoncxx::stdx::optional<bsoncxx::document::value> result =
+        coll.find_one(query.view());
 
-  // Stop the timer
-  auto end_time = std::chrono::steady_clock::now();
+    // Stop the timer
+    auto end_time = std::chrono::steady_clock::now();
 
-  // Calculate the duration
-  auto operation_duration =
-      std::chrono::duration_cast<std::chrono::milliseconds>(
-          end_time - start_time);
+    // Calculate the duration
+    auto operation_duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(
+            end_time - start_time);
 
-  // Log the duration
-  Logger::udr_mongo().info(
-      "Query Duration: %lld milliseconds", operation_duration.count());
-
-  // Check if the result is not empty
-  if (result) {
-    // Convert the result object to a JSON string
-    std::string result_str = bsoncxx::to_json(result->view());
-
-    // Log the result using the Logger::udr_mongo().info() method
-    Logger::udr_mongo().info("MongoDB Result: %s", result_str.c_str());
-
-    bsoncxx::document::view view    = result->view();
-    AuthEvent authentication_status = {};
-
-    if (view["nfInstanceId"]) {
-      authentication_status.setNfInstanceId(
-          std::string{view["nfInstanceId"].get_string().value});
-    }
-
-    if (view["success"]) {
-      bool success = view["success"].get_bool().value;
-      authentication_status.setSuccess(success);
-    }
-
-    if (view["timeStamp"]) {
-      authentication_status.setTimeStamp(
-          std::string{view["timeStamp"].get_string().value});
-    }
-
-    if (view["authType"]) {
-      authentication_status.setAuthType(
-          std::string{view["authType"].get_string().value});
-    }
-
-    if (view["servingNetworkName"]) {
-      authentication_status.setServingNetworkName(
-          std::string{view["servingNetworkName"].get_string().value});
-    }
-
-    if (view["authRemovalInd"]) {
-      bool authRemovalInd = view["authRemovalInd"].get_bool().value;
-      authentication_status.setAuthRemovalInd(authRemovalInd);
-    }
-
-    to_json(json_data, authentication_status);
+    // Log the duration
     Logger::udr_mongo().info(
-        "AuthenticationStatus GET: %s", json_data.dump().c_str());
-    return true;
-  } else {
+        "Query Duration: %lld milliseconds", operation_duration.count());
+
+    // Check if the result is not empty
+    if (result) {
+      // Convert the result object to a JSON string
+      std::string result_str = bsoncxx::to_json(result->view());
+
+      // Log the result using the Logger::udr_mongo().info() method
+      Logger::udr_mongo().info("MongoDB Result: %s", result_str.c_str());
+
+      bsoncxx::document::view view    = result->view();
+      AuthEvent authentication_status = {};
+
+      if (view["nfInstanceId"]) {
+        authentication_status.setNfInstanceId(
+            std::string{view["nfInstanceId"].get_string().value});
+      }
+
+      if (view["success"]) {
+        bool success = view["success"].get_bool().value;
+        authentication_status.setSuccess(success);
+      }
+
+      if (view["timeStamp"]) {
+        authentication_status.setTimeStamp(
+            std::string{view["timeStamp"].get_string().value});
+      }
+
+      if (view["authType"]) {
+        authentication_status.setAuthType(
+            std::string{view["authType"].get_string().value});
+      }
+
+      if (view["servingNetworkName"]) {
+        authentication_status.setServingNetworkName(
+            std::string{view["servingNetworkName"].get_string().value});
+      }
+
+      if (view["authRemovalInd"]) {
+        bool authRemovalInd = view["authRemovalInd"].get_bool().value;
+        authentication_status.setAuthRemovalInd(authRemovalInd);
+      }
+
+      to_json(json_data, authentication_status);
+      Logger::udr_mongo().info(
+          "AuthenticationStatus GET: %s", json_data.dump().c_str());
+      return true;
+    } else {
+      Logger::udr_mongo().error(
+          "AuthenticationStatus no data！ Query filter: %s",
+          bsoncxx::to_json(query.view()).c_str());
+      return false;
+    }
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "AuthenticationStatus no data！ Query filter: %s",
-        bsoncxx::to_json(query.view()).c_str());
+        "Exception while query authentication data from MongoDB: %s", e.what());
     return false;
   }
 }
@@ -1428,112 +1479,119 @@ bool mongo_db::query_sdm_subscription(
   filter_builder << "ueid" << ue_id << "subsId" << subs_id;
   auto filter = filter_builder.view();
 
-  auto cursor = coll.find_one(filter);
+  try {
+    auto cursor = coll.find_one(filter);
 
-  if (cursor) {
-    // auto doc = cursor.value();
-    auto doc                                          = cursor->view();
-    oai::udr::model::SdmSubscription SdmSubscriptions = {};
-    // AuthenticationSubscription authentication_subscription = {};
+    if (cursor) {
+      // auto doc = cursor.value();
+      auto doc                                          = cursor->view();
+      oai::udr::model::SdmSubscription SdmSubscriptions = {};
+      // AuthenticationSubscription authentication_subscription = {};
 
-    if (doc["nfInstanceId"]) {
-      SdmSubscriptions.setNfInstanceId(
-          doc["nfInstanceId"].get_string().value.to_string());
+      if (doc["nfInstanceId"]) {
+        SdmSubscriptions.setNfInstanceId(
+            doc["nfInstanceId"].get_string().value.to_string());
+      }
+
+      if (doc["implicitUnsubscribe"]) {
+        if (doc["implicitUnsubscribe"].get_string().value.to_string() != "0")
+          SdmSubscriptions.setImplicitUnsubscribe(true);
+        else
+          SdmSubscriptions.setImplicitUnsubscribe(false);
+      }
+
+      if (doc["expires"]) {
+        SdmSubscriptions.setExpires(
+            doc["expires"].get_string().value.to_string());
+      }
+
+      if (doc["callbackReference"]) {
+        SdmSubscriptions.setCallbackReference(
+            doc["callbackReference"].get_string().value.to_string());
+      }
+
+      if (doc["amfServiceName"]) {
+        oai::model::nrf::ServiceName amfservicename;
+        nlohmann::json::parse(doc["amfServiceName"].get_string().value)
+            .get_to(amfservicename);
+        SdmSubscriptions.setAmfServiceName(amfservicename);
+      }
+
+      if (doc["monitoredResourceUris"]) {
+        std::vector<std::string> monitoredresourceuris;
+        nlohmann::json::parse(doc["monitoredResourceUris"].get_string().value)
+            .get_to(monitoredresourceuris);
+        SdmSubscriptions.setMonitoredResourceUris(monitoredresourceuris);
+      }
+
+      if (doc["singleNssai"]) {
+        Snssai singlenssai;
+        nlohmann::json::parse(doc["singleNssai"].get_string().value)
+            .get_to(singlenssai);
+        SdmSubscriptions.setSingleNssai(singlenssai);
+      }
+
+      if (doc["dnn"]) {
+        SdmSubscriptions.setDnn(doc["dnn"].get_string().value.to_string());
+      }
+
+      if (doc["subscriptionId"]) {
+        SdmSubscriptions.setSubscriptionId(
+            doc["subscriptionId"].get_string().value.to_string());
+      }
+
+      if (doc["plmnId"]) {
+        PlmnId plmnid;
+        nlohmann::json::parse(doc["plmnId"].get_string().value).get_to(plmnid);
+        SdmSubscriptions.setPlmnId(plmnid);
+      }
+
+      if (doc["immediateReport"]) {
+        if (doc["immediateReport"].get_string().value.to_string() != "0")
+          SdmSubscriptions.setImmediateReport(true);
+        else
+          SdmSubscriptions.setImmediateReport(false);
+      }
+
+      if (doc["report"]) {
+        SubscriptionDataSets report;
+        nlohmann::json::parse(doc["report"].get_string().value).get_to(report);
+        SdmSubscriptions.setReport(report);
+      }
+
+      if (doc["subscriptionId"]) {
+        SdmSubscriptions.setSubscriptionId(
+            doc["subscriptionId"].get_string().value.to_string());
+      }
+      if (doc["contextInfo"]) {
+        ContextInfo contextInfo;
+        nlohmann::json::parse(doc["contextInfo"].get_string().value)
+            .get_to(contextInfo);
+        SdmSubscriptions.setContextInfo(contextInfo);
+      }
+
+      // Convert SdmSubscriptions to json
+      nlohmann::json sdmSubscriptionsJson = SdmSubscriptions;
+
+      // Assign the converted json to the output json_data
+      json_data = sdmSubscriptionsJson;
+
+      Logger::udr_mongo().debug(
+          "Successfully queried SDM subscription from MongoDB: UE ID={}, "
+          "Subscription ID={}",
+          ue_id, subs_id);
+      return true;
+    } else {
+      Logger::udr_mongo().info(
+          "Failed to query SDM subscription from MongoDB: UE ID={}, "
+          "Subscription "
+          "ID={}",
+          ue_id, subs_id);
+      return false;
     }
-
-    if (doc["implicitUnsubscribe"]) {
-      if (doc["implicitUnsubscribe"].get_string().value.to_string() != "0")
-        SdmSubscriptions.setImplicitUnsubscribe(true);
-      else
-        SdmSubscriptions.setImplicitUnsubscribe(false);
-    }
-
-    if (doc["expires"]) {
-      SdmSubscriptions.setExpires(
-          doc["expires"].get_string().value.to_string());
-    }
-
-    if (doc["callbackReference"]) {
-      SdmSubscriptions.setCallbackReference(
-          doc["callbackReference"].get_string().value.to_string());
-    }
-
-    if (doc["amfServiceName"]) {
-      oai::model::nrf::ServiceName amfservicename;
-      nlohmann::json::parse(doc["amfServiceName"].get_string().value)
-          .get_to(amfservicename);
-      SdmSubscriptions.setAmfServiceName(amfservicename);
-    }
-
-    if (doc["monitoredResourceUris"]) {
-      std::vector<std::string> monitoredresourceuris;
-      nlohmann::json::parse(doc["monitoredResourceUris"].get_string().value)
-          .get_to(monitoredresourceuris);
-      SdmSubscriptions.setMonitoredResourceUris(monitoredresourceuris);
-    }
-
-    if (doc["singleNssai"]) {
-      Snssai singlenssai;
-      nlohmann::json::parse(doc["singleNssai"].get_string().value)
-          .get_to(singlenssai);
-      SdmSubscriptions.setSingleNssai(singlenssai);
-    }
-
-    if (doc["dnn"]) {
-      SdmSubscriptions.setDnn(doc["dnn"].get_string().value.to_string());
-    }
-
-    if (doc["subscriptionId"]) {
-      SdmSubscriptions.setSubscriptionId(
-          doc["subscriptionId"].get_string().value.to_string());
-    }
-
-    if (doc["plmnId"]) {
-      PlmnId plmnid;
-      nlohmann::json::parse(doc["plmnId"].get_string().value).get_to(plmnid);
-      SdmSubscriptions.setPlmnId(plmnid);
-    }
-
-    if (doc["immediateReport"]) {
-      if (doc["immediateReport"].get_string().value.to_string() != "0")
-        SdmSubscriptions.setImmediateReport(true);
-      else
-        SdmSubscriptions.setImmediateReport(false);
-    }
-
-    if (doc["report"]) {
-      SubscriptionDataSets report;
-      nlohmann::json::parse(doc["report"].get_string().value).get_to(report);
-      SdmSubscriptions.setReport(report);
-    }
-
-    if (doc["subscriptionId"]) {
-      SdmSubscriptions.setSubscriptionId(
-          doc["subscriptionId"].get_string().value.to_string());
-    }
-    if (doc["contextInfo"]) {
-      ContextInfo contextInfo;
-      nlohmann::json::parse(doc["contextInfo"].get_string().value)
-          .get_to(contextInfo);
-      SdmSubscriptions.setContextInfo(contextInfo);
-    }
-
-    // Convert SdmSubscriptions to json
-    nlohmann::json sdmSubscriptionsJson = SdmSubscriptions;
-
-    // Assign the converted json to the output json_data
-    json_data = sdmSubscriptionsJson;
-
-    Logger::udr_mongo().debug(
-        "Successfully queried SDM subscription from MongoDB: UE ID={}, "
-        "Subscription ID={}",
-        ue_id, subs_id);
-    return true;
-  } else {
-    Logger::udr_mongo().info(
-        "Failed to query SDM subscription from MongoDB: UE ID={}, Subscription "
-        "ID={}",
-        ue_id, subs_id);
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while query sdm subscription from MongoDB: %s", e.what());
     return false;
   }
 }
@@ -1554,13 +1612,18 @@ bool mongo_db::delete_sdm_subscription(
   filter_builder << "ueid" << ue_id << "subsId" << subs_id;
   bsoncxx::document::view_or_value filter = filter_builder.view();
 
-  // auto collection = mongodb_connector["SdmSubscriptions"];
-  auto result = coll.delete_one(filter);
+  try {
+    auto result = coll.delete_one(filter);
 
-  if (!result || result->deleted_count() == 0) {
+    if (!result || result->deleted_count() == 0) {
+      Logger::udr_mongo().error(
+          "Failed to delete document from MongoDB: ueid='%s' subsId='%s'",
+          ue_id.c_str(), subs_id.c_str());
+      return false;
+    }
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "Failed to delete document from MongoDB: ueid='%s' subsId='%s'",
-        ue_id.c_str(), subs_id.c_str());
+        "Exception while delete sdm subscription from MongoDB: %s", e.what());
     return false;
   }
 
@@ -1648,44 +1711,53 @@ bool mongo_db::update_sdm_subscription(
     update << "contextInfo" << bsoncxx::types::b_utf8{j.dump()};
   }
 
-  // Execute update query
-  auto result = coll.update_one(filter.view(), update.view());
+  try {
+    // Execute update query
+    auto result = coll.update_one(filter.view(), update.view());
 
-  // Check for update success
-  if (result) {
-    Logger::udr_mongo().info(
-        "Successfully updated SDM subscription in MongoDB. UE ID: {}, Subs ID: "
-        "{}",
-        ue_id, subs_id);
-    // Update json_data with updated values
-    json_data["nfInstanceId"]        = sdmSubscription.getNfInstanceId();
-    json_data["implicitUnsubscribe"] = sdmSubscription.isImplicitUnsubscribe();
-    json_data["expires"]             = sdmSubscription.getExpires();
-    json_data["callbackReference"]   = sdmSubscription.getCallbackReference();
-    json_data["dnn"]                 = sdmSubscription.getDnn();
-    json_data["subscriptionId"]      = sdmSubscription.getSubscriptionId();
-    json_data["immediateReport"]     = sdmSubscription.isImmediateReport();
-    json_data["supportedFeatures"]   = sdmSubscription.getSupportedFeatures();
-    if (sdmSubscription.amfServiceNameIsSet()) {
-      json_data["amfServiceName"] = sdmSubscription.getAmfServiceName();
+    // Check for update success
+    if (result) {
+      Logger::udr_mongo().info(
+          "Successfully updated SDM subscription in MongoDB. UE ID: {}, Subs "
+          "ID: "
+          "{}",
+          ue_id, subs_id);
+      // Update json_data with updated values
+      json_data["nfInstanceId"] = sdmSubscription.getNfInstanceId();
+      json_data["implicitUnsubscribe"] =
+          sdmSubscription.isImplicitUnsubscribe();
+      json_data["expires"]           = sdmSubscription.getExpires();
+      json_data["callbackReference"] = sdmSubscription.getCallbackReference();
+      json_data["dnn"]               = sdmSubscription.getDnn();
+      json_data["subscriptionId"]    = sdmSubscription.getSubscriptionId();
+      json_data["immediateReport"]   = sdmSubscription.isImmediateReport();
+      json_data["supportedFeatures"] = sdmSubscription.getSupportedFeatures();
+      if (sdmSubscription.amfServiceNameIsSet()) {
+        json_data["amfServiceName"] = sdmSubscription.getAmfServiceName();
+      }
+      if (sdmSubscription.singleNssaiIsSet()) {
+        json_data["singleNssai"] = sdmSubscription.getSingleNssai();
+      }
+      if (sdmSubscription.plmnIdIsSet()) {
+        json_data["plmnId"] = sdmSubscription.getPlmnId();
+      }
+      if (sdmSubscription.reportIsSet()) {
+        json_data["report"] = sdmSubscription.getReport();
+      }
+      if (sdmSubscription.contextInfoIsSet()) {
+        json_data["contextInfo"] = sdmSubscription.getContextInfo();
+      }
+      return true;
+    } else {
+      Logger::udr_mongo().error(
+          "Failed to update SDM subscription in MongoDB. UE ID: {}, Subs ID: "
+          "{}",
+          ue_id, subs_id);
+      return false;
     }
-    if (sdmSubscription.singleNssaiIsSet()) {
-      json_data["singleNssai"] = sdmSubscription.getSingleNssai();
-    }
-    if (sdmSubscription.plmnIdIsSet()) {
-      json_data["plmnId"] = sdmSubscription.getPlmnId();
-    }
-    if (sdmSubscription.reportIsSet()) {
-      json_data["report"] = sdmSubscription.getReport();
-    }
-    if (sdmSubscription.contextInfoIsSet()) {
-      json_data["contextInfo"] = sdmSubscription.getContextInfo();
-    }
-    return true;
-  } else {
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "Failed to update SDM subscription in MongoDB. UE ID: {}, Subs ID: {}",
-        ue_id, subs_id);
+        "Exception while update sdm subscription in MongoDB: %s", e.what());
     return false;
   }
 }
@@ -1712,84 +1784,91 @@ bool mongo_db::create_sdm_subscriptions(
   mongocxx::options::find opts{};
   opts.limit(1);
 
-  auto result = coll.find_one(filter.view(), opts);
-  if (result) {
-    bsoncxx::document::element subs_id_elem = result.value().view()["subsId"];
-    if (subs_id_elem) {
-      int32_t subs_id = subs_id_elem.get_int32().value;
-      // sdmSubscription.setSubsId(subs_id);
+  try {
+    auto result = coll.find_one(filter.view(), opts);
+    if (result) {
+      bsoncxx::document::element subs_id_elem = result.value().view()["subsId"];
+      if (subs_id_elem) {
+        int32_t subs_id = subs_id_elem.get_int32().value;
+        // sdmSubscription.setSubsId(subs_id);
+      }
     }
-  }
 
-  bsoncxx::builder::stream::document doc_builder;
-  doc_builder << "ueid" << ue_id;
-  doc_builder << "nfInstanceId" << sdmSubscription.getNfInstanceId();
+    bsoncxx::builder::stream::document doc_builder;
+    doc_builder << "ueid" << ue_id;
+    doc_builder << "nfInstanceId" << sdmSubscription.getNfInstanceId();
 
-  if (sdmSubscription.implicitUnsubscribeIsSet()) {
-    doc_builder << "implicitUnsubscribe"
-                << (sdmSubscription.isImplicitUnsubscribe() ? true : false);
-  }
+    if (sdmSubscription.implicitUnsubscribeIsSet()) {
+      doc_builder << "implicitUnsubscribe"
+                  << (sdmSubscription.isImplicitUnsubscribe() ? true : false);
+    }
 
-  if (sdmSubscription.expiresIsSet()) {
-    doc_builder << "expires" << sdmSubscription.getExpires();
-  }
-  doc_builder << "callbackReference" << sdmSubscription.getCallbackReference();
+    if (sdmSubscription.expiresIsSet()) {
+      doc_builder << "expires" << sdmSubscription.getExpires();
+    }
+    doc_builder << "callbackReference"
+                << sdmSubscription.getCallbackReference();
 
-  if (sdmSubscription.dnnIsSet()) {
-    doc_builder << "dnn" << sdmSubscription.getDnn();
-  }
-  if (sdmSubscription.subscriptionIdIsSet()) {
-    doc_builder << "subscriptionId" << sdmSubscription.getSubscriptionId();
-  }
-  if (sdmSubscription.immediateReportIsSet()) {
-    doc_builder << "immediateReport" << sdmSubscription.isImmediateReport();
-  }
-  if (sdmSubscription.supportedFeaturesIsSet()) {
-    doc_builder << "supportedFeatures"
-                << sdmSubscription.getSupportedFeatures();
-  }
-  if (sdmSubscription.amfServiceNameIsSet()) {
-    nlohmann::json j;
-    to_json(j, sdmSubscription.getAmfServiceName());
-    doc_builder << "amfServiceName" << bsoncxx::from_json(j.dump());
-  }
-  if (sdmSubscription.singleNssaiIsSet()) {
-    nlohmann::json j;
-    to_json(j, sdmSubscription.getSingleNssai());
-    doc_builder << "singleNssai" << bsoncxx::from_json(j.dump());
-  }
-  if (sdmSubscription.plmnIdIsSet()) {
-    nlohmann::json j;
-    to_json(j, sdmSubscription.getPlmnId());
-    doc_builder << "plmnId" << bsoncxx::from_json(j.dump());
-  }
-  if (sdmSubscription.reportIsSet()) {
-    nlohmann::json j;
-    to_json(j, sdmSubscription.getReport());
-    doc_builder << "report" << bsoncxx::from_json(j.dump());
-  }
-  if (sdmSubscription.contextInfoIsSet()) {
-    nlohmann::json j;
-    to_json(j, sdmSubscription.getContextInfo());
-    doc_builder << "contextInfo" << bsoncxx::from_json(j.dump());
-  }
+    if (sdmSubscription.dnnIsSet()) {
+      doc_builder << "dnn" << sdmSubscription.getDnn();
+    }
+    if (sdmSubscription.subscriptionIdIsSet()) {
+      doc_builder << "subscriptionId" << sdmSubscription.getSubscriptionId();
+    }
+    if (sdmSubscription.immediateReportIsSet()) {
+      doc_builder << "immediateReport" << sdmSubscription.isImmediateReport();
+    }
+    if (sdmSubscription.supportedFeaturesIsSet()) {
+      doc_builder << "supportedFeatures"
+                  << sdmSubscription.getSupportedFeatures();
+    }
+    if (sdmSubscription.amfServiceNameIsSet()) {
+      nlohmann::json j;
+      to_json(j, sdmSubscription.getAmfServiceName());
+      doc_builder << "amfServiceName" << bsoncxx::from_json(j.dump());
+    }
+    if (sdmSubscription.singleNssaiIsSet()) {
+      nlohmann::json j;
+      to_json(j, sdmSubscription.getSingleNssai());
+      doc_builder << "singleNssai" << bsoncxx::from_json(j.dump());
+    }
+    if (sdmSubscription.plmnIdIsSet()) {
+      nlohmann::json j;
+      to_json(j, sdmSubscription.getPlmnId());
+      doc_builder << "plmnId" << bsoncxx::from_json(j.dump());
+    }
+    if (sdmSubscription.reportIsSet()) {
+      nlohmann::json j;
+      to_json(j, sdmSubscription.getReport());
+      doc_builder << "report" << bsoncxx::from_json(j.dump());
+    }
+    if (sdmSubscription.contextInfoIsSet()) {
+      nlohmann::json j;
+      to_json(j, sdmSubscription.getContextInfo());
+      doc_builder << "contextInfo" << bsoncxx::from_json(j.dump());
+    }
 
-  auto MonitoredResourceUris_json =
-      nlohmann::json(sdmSubscription.getMonitoredResourceUris());
-  doc_builder << "monitoredResourceUris"
-              << bsoncxx::from_json(MonitoredResourceUris_json.dump());
+    auto MonitoredResourceUris_json =
+        nlohmann::json(sdmSubscription.getMonitoredResourceUris());
+    doc_builder << "monitoredResourceUris"
+                << bsoncxx::from_json(MonitoredResourceUris_json.dump());
 
-  bsoncxx::document::view view = doc_builder.view();
-  bsoncxx::document::value doc(view);
+    bsoncxx::document::view view = doc_builder.view();
+    bsoncxx::document::value doc(view);
 
-  auto cursor = coll.insert_one(doc.view());
-  if (cursor) {
-    to_json(json_data, sdmSubscription);
-    Logger::udr_mongo().debug(
-        "SdmSubscriptions POST: %s", json_data.dump().c_str());
-    return true;
-  } else {
-    Logger::udr_mongo().error("Failed to insert document into MongoDB");
+    auto cursor = coll.insert_one(doc.view());
+    if (cursor) {
+      to_json(json_data, sdmSubscription);
+      Logger::udr_mongo().debug(
+          "SdmSubscriptions POST: %s", json_data.dump().c_str());
+      return true;
+    } else {
+      Logger::udr_mongo().error("Failed to insert document into MongoDB");
+      return false;
+    }
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while create sdm subscription in MongoDB: %s", e.what());
     return false;
   }
 }
@@ -1807,93 +1886,100 @@ bool mongo_db::query_sdm_subscriptions(
       << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
 
   // Select the appropriate database and collection
-  auto db                 = mongo_client["oai_db_mongo"];
-  auto coll               = db["SdmSubscriptions"];
-  mongocxx::cursor cursor = coll.find(query.view());
-  nlohmann::json j        = {};
-  nlohmann::json tmp      = {};
+  auto db   = mongo_client["oai_db_mongo"];
+  auto coll = db["SdmSubscriptions"];
 
-  for (const bsoncxx::document::view& doc : cursor) {
-    SdmSubscription sdmsubscriptions = {};
-    tmp.clear();
+  try {
+    mongocxx::cursor cursor = coll.find(query.view());
+    nlohmann::json j        = {};
+    nlohmann::json tmp      = {};
 
-    if (doc["nfInstanceId"]) {
-      sdmsubscriptions.setNfInstanceId(
-          doc["nfInstanceId"].get_string().value.to_string());
-    }
-    if (doc["implicitUnsubscribe"]) {
-      if (doc["implicitUnsubscribe"].get_bool().value)
-        sdmsubscriptions.setImplicitUnsubscribe(true);
-      else
-        sdmsubscriptions.setImplicitUnsubscribe(false);
-    }
-    if (doc["expires"]) {
-      sdmsubscriptions.setExpires(
-          doc["expires"].get_string().value.to_string());
-    }
-    if (doc["callbackReference"]) {
-      sdmsubscriptions.setCallbackReference(
-          doc["callbackReference"].get_string().value.to_string());
-    }
-    if (doc["amfServiceName"]) {
-      oai::model::nrf::ServiceName amfservicename;
-      nlohmann::json::parse(doc["amfServiceName"].get_string().value)
-          .get_to(amfservicename);
-      sdmsubscriptions.setAmfServiceName(amfservicename);
-    }
-    if (doc["monitoredResourceUris"]) {
-      std::vector<std::string> monitoredresourceuris;
-      nlohmann::json::parse(doc["monitoredResourceUris"].get_string().value)
-          .get_to(monitoredresourceuris);
-      sdmsubscriptions.setMonitoredResourceUris(monitoredresourceuris);
-    }
-    if (doc["singleNssai"]) {
-      Snssai singlenssai;
-      nlohmann::json::parse(doc["singleNssai"].get_string().value)
-          .get_to(singlenssai);
-      sdmsubscriptions.setSingleNssai(singlenssai);
-    }
-    if (doc["dnn"]) {
-      sdmsubscriptions.setDnn(doc["dnn"].get_string().value.to_string());
-    }
-    if (doc["subscriptionId"]) {
-      sdmsubscriptions.setSubscriptionId(
-          doc["subscriptionId"].get_string().value.to_string());
-    }
-    if (doc["plmnId"]) {
-      PlmnId plmnid;
-      nlohmann::json::parse(doc["plmnId"].get_string().value).get_to(plmnid);
-      sdmsubscriptions.setPlmnId(plmnid);
-    }
-    if (doc["immediateReport"]) {
-      if (doc["immediateReport"].get_bool().value)
-        sdmsubscriptions.setImmediateReport(true);
-      else
-        sdmsubscriptions.setImmediateReport(false);
-    }
-    if (doc["report"]) {
-      SubscriptionDataSets report;
-      nlohmann::json::parse(doc["report"].get_string().value).get_to(report);
-      sdmsubscriptions.setReport(report);
-    }
-    if (doc["supportedFeatures"]) {
-      sdmsubscriptions.setSupportedFeatures(
-          doc["dnn"].get_string().value.to_string());
-    }
-    if (doc["contextInfo"]) {
-      ContextInfo contextInfo;
-      nlohmann::json::parse(doc["contextInfo"].get_string().value)
-          .get_to(contextInfo);
-      sdmsubscriptions.setContextInfo(contextInfo);
-    }
+    for (const bsoncxx::document::view& doc : cursor) {
+      SdmSubscription sdmsubscriptions = {};
+      tmp.clear();
 
-    to_json(tmp, sdmsubscriptions);
-    j.push_back(tmp);
+      if (doc["nfInstanceId"]) {
+        sdmsubscriptions.setNfInstanceId(
+            doc["nfInstanceId"].get_string().value.to_string());
+      }
+      if (doc["implicitUnsubscribe"]) {
+        if (doc["implicitUnsubscribe"].get_bool().value)
+          sdmsubscriptions.setImplicitUnsubscribe(true);
+        else
+          sdmsubscriptions.setImplicitUnsubscribe(false);
+      }
+      if (doc["expires"]) {
+        sdmsubscriptions.setExpires(
+            doc["expires"].get_string().value.to_string());
+      }
+      if (doc["callbackReference"]) {
+        sdmsubscriptions.setCallbackReference(
+            doc["callbackReference"].get_string().value.to_string());
+      }
+      if (doc["amfServiceName"]) {
+        oai::model::nrf::ServiceName amfservicename;
+        nlohmann::json::parse(doc["amfServiceName"].get_string().value)
+            .get_to(amfservicename);
+        sdmsubscriptions.setAmfServiceName(amfservicename);
+      }
+      if (doc["monitoredResourceUris"]) {
+        std::vector<std::string> monitoredresourceuris;
+        nlohmann::json::parse(doc["monitoredResourceUris"].get_string().value)
+            .get_to(monitoredresourceuris);
+        sdmsubscriptions.setMonitoredResourceUris(monitoredresourceuris);
+      }
+      if (doc["singleNssai"]) {
+        Snssai singlenssai;
+        nlohmann::json::parse(doc["singleNssai"].get_string().value)
+            .get_to(singlenssai);
+        sdmsubscriptions.setSingleNssai(singlenssai);
+      }
+      if (doc["dnn"]) {
+        sdmsubscriptions.setDnn(doc["dnn"].get_string().value.to_string());
+      }
+      if (doc["subscriptionId"]) {
+        sdmsubscriptions.setSubscriptionId(
+            doc["subscriptionId"].get_string().value.to_string());
+      }
+      if (doc["plmnId"]) {
+        PlmnId plmnid;
+        nlohmann::json::parse(doc["plmnId"].get_string().value).get_to(plmnid);
+        sdmsubscriptions.setPlmnId(plmnid);
+      }
+      if (doc["immediateReport"]) {
+        if (doc["immediateReport"].get_bool().value)
+          sdmsubscriptions.setImmediateReport(true);
+        else
+          sdmsubscriptions.setImmediateReport(false);
+      }
+      if (doc["report"]) {
+        SubscriptionDataSets report;
+        nlohmann::json::parse(doc["report"].get_string().value).get_to(report);
+        sdmsubscriptions.setReport(report);
+      }
+      if (doc["supportedFeatures"]) {
+        sdmsubscriptions.setSupportedFeatures(
+            doc["dnn"].get_string().value.to_string());
+      }
+      if (doc["contextInfo"]) {
+        ContextInfo contextInfo;
+        nlohmann::json::parse(doc["contextInfo"].get_string().value)
+            .get_to(contextInfo);
+        sdmsubscriptions.setContextInfo(contextInfo);
+      }
+
+      to_json(tmp, sdmsubscriptions);
+      j.push_back(tmp);
+    }
+    json_data = j;
+    Logger::udr_mongo().debug(
+        "SdmSubscriptions GET: %s", json_data.dump().c_str());
+    return true;
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while query sdm subscription from MongoDB: %s", e.what());
+    return false;
   }
-  json_data = j;
-  Logger::udr_mongo().debug(
-      "SdmSubscriptions GET: %s", json_data.dump().c_str());
-  return true;
 }
 //------------------------------------------------------------------------------
 bool mongo_db::query_sm_data(nlohmann::json& json_data) {
@@ -1903,25 +1989,32 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
     return false;
   }
 
-  auto db     = mongo_client["oai_db_mongo"];
-  auto coll   = db["SessionManagementSubscriptionData"];
-  auto cursor = coll.find({});
+  auto db   = mongo_client["oai_db_mongo"];
+  auto coll = db["SessionManagementSubscriptionData"];
 
-  auto row = cursor.begin();
-  if (row == cursor.end()) {
+  try {
+    auto cursor = coll.find({});
+
+    auto row = cursor.begin();
+    if (row == cursor.end()) {
+      Logger::udr_mongo().error(
+          "Empty document in MongoDB Collection "
+          "SessionManagementSubscriptionData");
+      return false;
+    }
+
+    for (auto&& view : cursor) {
+      nlohmann::json j = query_sm_data_helper(view);
+      json_data += j;
+      Logger::udr_mongo().debug(
+          "SessionManagementSubscriptionData: %s", j.dump().c_str());
+    }
+    return true;
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "Empty document in MongoDB Collection "
-        "SessionManagementSubscriptionData");
+        "Exception while query sm data from MongoDB: %s", e.what());
     return false;
   }
-
-  for (auto&& view : cursor) {
-    nlohmann::json j = query_sm_data_helper(view);
-    json_data += j;
-    Logger::udr_mongo().debug(
-        "SessionManagementSubscriptionData: %s", j.dump().c_str());
-  }
-  return true;
 }
 
 //------------------------------------------------------------------------------
@@ -1951,23 +2044,29 @@ bool mongo_db::query_sm_data(
            << bsoncxx::builder::stream::close_document;
   }
 
-  auto cursor = coll.find(filter.view());
+  try {
+    auto cursor = coll.find(filter.view());
 
-  auto row = cursor.begin();
-  if (row == cursor.end()) {
+    auto row = cursor.begin();
+    if (row == cursor.end()) {
+      Logger::udr_mongo().error(
+          "Empty document in MongoDB: ueid=%s, servingPlmnid=%s", ue_id.c_str(),
+          serving_plmn_id.c_str());
+      return false;
+    }
+
+    for (auto&& view : cursor) {
+      nlohmann::json j = query_sm_data_helper(view);
+      json_data += j;
+      Logger::udr_mongo().debug(
+          "SessionManagementSubscriptionData: %s", j.dump().c_str());
+    }
+    return true;
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "Empty document in MongoDB: ueid=%s, servingPlmnid=%s", ue_id.c_str(),
-        serving_plmn_id.c_str());
+        "Exception while query sm data from MongoDB: %s", e.what());
     return false;
   }
-
-  for (auto&& view : cursor) {
-    nlohmann::json j = query_sm_data_helper(view);
-    json_data += j;
-    Logger::udr_mongo().debug(
-        "SessionManagementSubscriptionData: %s", j.dump().c_str());
-  }
-  return true;
 }
 
 //------------------------------------------------------------------------------
@@ -2091,100 +2190,107 @@ bool mongo_db::insert_smf_context_non_3gpp(
   filter_builder << "ueid" << ue_id << "subpduSessionId" << pdu_session_id;
   auto filter = filter_builder.view();
 
-  auto result = coll.find_one(filter);
+  try {
+    auto result = coll.find_one(filter);
 
-  bsoncxx::builder::stream::document document_builder{};
-  document_builder << "ueid" << ue_id << "subpduSessionId" << pdu_session_id
-                   << "pduSessionId" << smfRegistration.getPduSessionId()
-                   << "smfInstanceId" << smfRegistration.getSmfInstanceId()
-                   << "pduSessionId" << smfRegistration.getPduSessionId();
+    bsoncxx::builder::stream::document document_builder{};
+    document_builder << "ueid" << ue_id << "subpduSessionId" << pdu_session_id
+                     << "pduSessionId" << smfRegistration.getPduSessionId()
+                     << "smfInstanceId" << smfRegistration.getSmfInstanceId()
+                     << "pduSessionId" << smfRegistration.getPduSessionId();
 
-  if (smfRegistration.smfSetIdIsSet()) {
-    document_builder << "smfSetId" << smfRegistration.getSmfSetId();
-  }
-
-  if (smfRegistration.supportedFeaturesIsSet()) {
-    document_builder << "supportedFeatures"
-                     << smfRegistration.getSupportedFeatures();
-  }
-  if (smfRegistration.dnnIsSet()) {
-    document_builder << "dnn" << smfRegistration.getDnn();
-  }
-
-  if (smfRegistration.emergencyServicesIsSet()) {
-    document_builder << "emergencyServices"
-                     << smfRegistration.isEmergencyServices();
-  }
-
-  if (smfRegistration.pcscfRestorationCallbackUriIsSet()) {
-    document_builder << "pcscfRestorationCallbackUri"
-                     << smfRegistration.getPcscfRestorationCallbackUri();
-  }
-
-  if (smfRegistration.pgwFqdnIsSet()) {
-    document_builder << "pgwFqdn" << smfRegistration.getPgwFqdn();
-  }
-
-  if (smfRegistration.epdgIndIsSet()) {
-    document_builder << "epdgInd" << smfRegistration.isEpdgInd();
-  }
-  if (smfRegistration.deregCallbackUriIsSet()) {
-    document_builder << "deregCallbackUri"
-                     << smfRegistration.getDeregCallbackUri();
-  }
-
-  if (smfRegistration.registrationTimeIsSet()) {
-    document_builder << "registrationTime"
-                     << smfRegistration.getRegistrationTime();
-  }
-
-  if (smfRegistration.registrationReasonIsSet()) {
-    auto registrationReason = smfRegistration.getRegistrationReason();
-    document_builder << "registrationReason"
-                     << bsoncxx::from_json(
-                            nlohmann::json(registrationReason).dump());
-  }
-
-  if (smfRegistration.contextInfoIsSet()) {
-    auto contextInfo = smfRegistration.getContextInfo();
-    document_builder << "contextInfo"
-                     << bsoncxx::from_json(nlohmann::json(contextInfo).dump());
-  }
-
-  auto singleNssai = smfRegistration.getSingleNssai();
-  auto plmnId      = smfRegistration.getPlmnId();
-  document_builder << "singleNssai"
-                   << bsoncxx::from_json(nlohmann::json(singleNssai).dump())
-                   << "plmnId"
-                   << bsoncxx::from_json(nlohmann::json(plmnId).dump());
-
-  bsoncxx::document::value document_value = document_builder.extract();
-
-  if (result) {
-    auto update_result = coll.update_one(
-        filter, bsoncxx::builder::stream::document{}
-                    << "$set"
-                    << bsoncxx::from_json(bsoncxx::to_json(document_value))
-                    << bsoncxx::builder::stream::finalize);
-
-    if (!update_result) {
-      Logger::udr_mongo().error("Failed to update SmfRegistration document.");
-      return false;
+    if (smfRegistration.smfSetIdIsSet()) {
+      document_builder << "smfSetId" << smfRegistration.getSmfSetId();
     }
-  } else {
-    auto insert_result = coll.insert_one(document_value.view());
 
-    if (!insert_result) {
-      Logger::udr_mongo().error("Failed to insert SmfRegistration document.");
-      return false;
+    if (smfRegistration.supportedFeaturesIsSet()) {
+      document_builder << "supportedFeatures"
+                       << smfRegistration.getSupportedFeatures();
     }
+    if (smfRegistration.dnnIsSet()) {
+      document_builder << "dnn" << smfRegistration.getDnn();
+    }
+
+    if (smfRegistration.emergencyServicesIsSet()) {
+      document_builder << "emergencyServices"
+                       << smfRegistration.isEmergencyServices();
+    }
+
+    if (smfRegistration.pcscfRestorationCallbackUriIsSet()) {
+      document_builder << "pcscfRestorationCallbackUri"
+                       << smfRegistration.getPcscfRestorationCallbackUri();
+    }
+
+    if (smfRegistration.pgwFqdnIsSet()) {
+      document_builder << "pgwFqdn" << smfRegistration.getPgwFqdn();
+    }
+
+    if (smfRegistration.epdgIndIsSet()) {
+      document_builder << "epdgInd" << smfRegistration.isEpdgInd();
+    }
+    if (smfRegistration.deregCallbackUriIsSet()) {
+      document_builder << "deregCallbackUri"
+                       << smfRegistration.getDeregCallbackUri();
+    }
+
+    if (smfRegistration.registrationTimeIsSet()) {
+      document_builder << "registrationTime"
+                       << smfRegistration.getRegistrationTime();
+    }
+
+    if (smfRegistration.registrationReasonIsSet()) {
+      auto registrationReason = smfRegistration.getRegistrationReason();
+      document_builder << "registrationReason"
+                       << bsoncxx::from_json(
+                              nlohmann::json(registrationReason).dump());
+    }
+
+    if (smfRegistration.contextInfoIsSet()) {
+      auto contextInfo = smfRegistration.getContextInfo();
+      document_builder << "contextInfo"
+                       << bsoncxx::from_json(
+                              nlohmann::json(contextInfo).dump());
+    }
+
+    auto singleNssai = smfRegistration.getSingleNssai();
+    auto plmnId      = smfRegistration.getPlmnId();
+    document_builder << "singleNssai"
+                     << bsoncxx::from_json(nlohmann::json(singleNssai).dump())
+                     << "plmnId"
+                     << bsoncxx::from_json(nlohmann::json(plmnId).dump());
+
+    bsoncxx::document::value document_value = document_builder.extract();
+
+    if (result) {
+      auto update_result = coll.update_one(
+          filter, bsoncxx::builder::stream::document{}
+                      << "$set"
+                      << bsoncxx::from_json(bsoncxx::to_json(document_value))
+                      << bsoncxx::builder::stream::finalize);
+
+      if (!update_result) {
+        Logger::udr_mongo().error("Failed to update SmfRegistration document.");
+        return false;
+      }
+    } else {
+      auto insert_result = coll.insert_one(document_value.view());
+
+      if (!insert_result) {
+        Logger::udr_mongo().error("Failed to insert SmfRegistration document.");
+        return false;
+      }
+    }
+
+    to_json(json_data, smfRegistration);
+    Logger::udr_mongo().debug(
+        "SmfRegistration PUT: %s", json_data.dump().c_str());
+
+    return true;
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while insert smf context in MongoDB: %s", e.what());
+    return false;
   }
-
-  to_json(json_data, smfRegistration);
-  Logger::udr_mongo().debug(
-      "SmfRegistration PUT: %s", json_data.dump().c_str());
-
-  return true;
 }
 //------------------------------------------------------------------------------
 bool mongo_db::delete_smf_context(
@@ -2213,7 +2319,7 @@ bool mongo_db::delete_smf_context(
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "MongoDB delete operation failed with error: %s", e.what());
+        "Exception while delete smf context from MongoDB: %s", e.what());
     return false;
   }
 }
@@ -2231,105 +2337,113 @@ bool mongo_db::query_smf_registration(
   auto db   = mongo_client["oai_db_mongo"];
   auto coll = db["SmfRegistrations"];
 
-  bsoncxx::stdx::optional<bsoncxx::document::value> maybe_result =
-      coll.find_one(
-          bsoncxx::builder::stream::document{}
-          << "ueid" << ue_id << "subpduSessionId" << pdu_session_id
-          << bsoncxx::builder::stream::finalize);
+  try {
+    bsoncxx::stdx::optional<bsoncxx::document::value> maybe_result =
+        coll.find_one(
+            bsoncxx::builder::stream::document{}
+            << "ueid" << ue_id << "subpduSessionId" << pdu_session_id
+            << bsoncxx::builder::stream::finalize);
 
-  if (maybe_result) {
-    auto doc_view                   = maybe_result->view();
-    SmfRegistration smfregistration = {};
+    if (maybe_result) {
+      auto doc_view                   = maybe_result->view();
+      SmfRegistration smfregistration = {};
 
-    try {
-      smfregistration.setSmfInstanceId(
-          doc_view["smfInstanceId"].get_string().value.to_string());
-      if (doc_view["smfSetId"]) {
-        smfregistration.setSmfSetId(
-            doc_view["smfSetId"].get_string().value.to_string());
-      }
-      if (doc_view["supportedFeatures"]) {
-        smfregistration.setSupportedFeatures(
-            doc_view["supportedFeatures"].get_string().value.to_string());
-      }
-      smfregistration.setPduSessionId(
-          doc_view["pduSessionId"].get_int32().value);
-      if (doc_view["singleNssai"]) {
-        Snssai singlenssai;
-        nlohmann::json::parse(doc_view["singleNssai"].get_string().value)
-            .get_to(singlenssai);
-        smfregistration.setSingleNssai(singlenssai);
-      }
-
-      if (doc_view["dnn"]) {
-        smfregistration.setDnn(doc_view["dnn"].get_string().value.to_string());
-      }
-      if (doc_view["emergencyServices"]) {
-        if (doc_view["emergencyServices"].get_bool()) {
-          smfregistration.setEmergencyServices(true);
-        } else {
-          smfregistration.setEmergencyServices(false);
+      try {
+        smfregistration.setSmfInstanceId(
+            doc_view["smfInstanceId"].get_string().value.to_string());
+        if (doc_view["smfSetId"]) {
+          smfregistration.setSmfSetId(
+              doc_view["smfSetId"].get_string().value.to_string());
         }
-      }
-      if (doc_view["pcscfRestorationCallbackUri"]) {
-        smfregistration.setPcscfRestorationCallbackUri(
-            doc_view["pcscfRestorationCallbackUri"]
-                .get_string()
-                .value.to_string());
-      }
-      if (doc_view["plmnId"]) {
-        PlmnId plmnid;
-        nlohmann::json::parse(doc_view["plmnId"].get_string().value)
-            .get_to(plmnid);
-        smfregistration.setPlmnId(plmnid);
-      }
-      if (doc_view["pgwFqdn"]) {
-        smfregistration.setPgwFqdn(
-            doc_view["pgwFqdn"].get_string().value.to_string());
-      }
-      if (doc_view["epdgInd"]) {
-        if (doc_view["epdgInd"].get_bool()) {
-          smfregistration.setEpdgInd(true);
-        } else {
-          smfregistration.setEpdgInd(false);
+        if (doc_view["supportedFeatures"]) {
+          smfregistration.setSupportedFeatures(
+              doc_view["supportedFeatures"].get_string().value.to_string());
         }
+        smfregistration.setPduSessionId(
+            doc_view["pduSessionId"].get_int32().value);
+        if (doc_view["singleNssai"]) {
+          Snssai singlenssai;
+          nlohmann::json::parse(doc_view["singleNssai"].get_string().value)
+              .get_to(singlenssai);
+          smfregistration.setSingleNssai(singlenssai);
+        }
+
+        if (doc_view["dnn"]) {
+          smfregistration.setDnn(
+              doc_view["dnn"].get_string().value.to_string());
+        }
+        if (doc_view["emergencyServices"]) {
+          if (doc_view["emergencyServices"].get_bool()) {
+            smfregistration.setEmergencyServices(true);
+          } else {
+            smfregistration.setEmergencyServices(false);
+          }
+        }
+        if (doc_view["pcscfRestorationCallbackUri"]) {
+          smfregistration.setPcscfRestorationCallbackUri(
+              doc_view["pcscfRestorationCallbackUri"]
+                  .get_string()
+                  .value.to_string());
+        }
+        if (doc_view["plmnId"]) {
+          PlmnId plmnid;
+          nlohmann::json::parse(doc_view["plmnId"].get_string().value)
+              .get_to(plmnid);
+          smfregistration.setPlmnId(plmnid);
+        }
+        if (doc_view["pgwFqdn"]) {
+          smfregistration.setPgwFqdn(
+              doc_view["pgwFqdn"].get_string().value.to_string());
+        }
+        if (doc_view["epdgInd"]) {
+          if (doc_view["epdgInd"].get_bool()) {
+            smfregistration.setEpdgInd(true);
+          } else {
+            smfregistration.setEpdgInd(false);
+          }
+        }
+        if (doc_view["deregCallbackUri"]) {
+          smfregistration.setDeregCallbackUri(
+              doc_view["deregCallbackUri"].get_string().value.to_string());
+        }
+        if (doc_view["registrationReason"]) {
+          RegistrationReason registrationreason;
+          nlohmann::json::parse(
+              doc_view["registrationReason"].get_string().value)
+              .get_to(registrationreason);
+          smfregistration.setRegistrationReason(registrationreason);
+        }
+        if (doc_view["registrationTime"]) {
+          smfregistration.setRegistrationTime(
+              doc_view["registrationTime"].get_string().value.to_string());
+        }
+        if (doc_view["contextInfo"]) {
+          ContextInfo contextinfo;
+          nlohmann::json::parse(doc_view["contextInfo"].get_string().value)
+              .get_to(contextinfo);
+          smfregistration.setContextInfo(contextinfo);
+        }
+      } catch (std::exception e) {
+        Logger::udr_mongo().error(
+            "Cannot set values for SMF Registration: %s", e.what());
+        return false;
       }
-      if (doc_view["deregCallbackUri"]) {
-        smfregistration.setDeregCallbackUri(
-            doc_view["deregCallbackUri"].get_string().value.to_string());
-      }
-      if (doc_view["registrationReason"]) {
-        RegistrationReason registrationreason;
-        nlohmann::json::parse(doc_view["registrationReason"].get_string().value)
-            .get_to(registrationreason);
-        smfregistration.setRegistrationReason(registrationreason);
-      }
-      if (doc_view["registrationTime"]) {
-        smfregistration.setRegistrationTime(
-            doc_view["registrationTime"].get_string().value.to_string());
-      }
-      if (doc_view["contextInfo"]) {
-        ContextInfo contextinfo;
-        nlohmann::json::parse(doc_view["contextInfo"].get_string().value)
-            .get_to(contextinfo);
-        smfregistration.setContextInfo(contextinfo);
-      }
-    } catch (std::exception e) {
+
+      nlohmann::json j = {};
+      to_json(j, smfregistration);
+      json_data = j;
+
+      Logger::udr_mongo().debug("SmfRegistration GET: %s", j.dump().c_str());
+      return true;
+    } else {
       Logger::udr_mongo().error(
-          "Cannot set values for SMF Registration: %s", e.what());
+          "SmfRegistration no data！ue_id: %s, pdu_session_id: %d",
+          ue_id.c_str(), pdu_session_id);
       return false;
     }
-
-    nlohmann::json j = {};
-    to_json(j, smfregistration);
-    json_data = j;
-
-    Logger::udr_mongo().debug("SmfRegistration GET: %s", j.dump().c_str());
-    return true;
-  } else {
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "SmfRegistration no data！ue_id: %s, pdu_session_id: %d", ue_id.c_str(),
-        pdu_session_id);
+        "Exception while query smf context from MongoDB: %s", e.what());
     return false;
   }
 }
@@ -2349,95 +2463,105 @@ bool mongo_db::query_smf_reg_list(
   bsoncxx::builder::stream::document filter{};
   filter << "ueid" << ue_id;
 
-  mongocxx::cursor cursor = coll.find(filter.view());
+  try {
+    mongocxx::cursor cursor = coll.find(filter.view());
 
-  nlohmann::json j   = {};
-  nlohmann::json tmp = {};
+    nlohmann::json j   = {};
+    nlohmann::json tmp = {};
 
-  for (const bsoncxx::document::view& doc : cursor) {
-    SmfRegistration smfregistration = {};
+    for (const bsoncxx::document::view& doc : cursor) {
+      SmfRegistration smfregistration = {};
 
-    tmp.clear();
+      tmp.clear();
 
-    if (doc["smfInstanceId"]) {
-      smfregistration.setSmfInstanceId(
-          doc["smfInstanceId"].get_string().value.to_string());
-    }
-    if (doc["smfSetId"]) {
-      smfregistration.setSmfSetId(
-          doc["smfSetId"].get_string().value.to_string());
-    }
-    if (doc["supportedFeatures"]) {
-      smfregistration.setSupportedFeatures(
-          doc["supportedFeatures"].get_string().value.to_string());
-    }
-    if (doc["pduSessionId"]) {
-      smfregistration.setPduSessionId(doc["pduSessionId"].get_int32().value);
-    }
-    if (doc["singleNssai"]) {
-      Snssai singlenssai;
-      nlohmann::json::parse(doc["singleNssai"].get_string().value)
-          .get_to(singlenssai);
-      smfregistration.setSingleNssai(singlenssai);
-    }
-    if (doc["dnn"]) {
-      smfregistration.setDnn(doc["dnn"].get_string().value.to_string());
-    }
-    if (doc["emergencyServices"]) {
-      if (doc["emergencyServices"].get_bool()) {
-        smfregistration.setEmergencyServices(true);
-      } else {
-        smfregistration.setEmergencyServices(false);
+      if (doc["smfInstanceId"]) {
+        smfregistration.setSmfInstanceId(
+            doc["smfInstanceId"].get_string().value.to_string());
       }
-      if (doc["pcscfRestorationCallbackUri"]) {
-        smfregistration.setPcscfRestorationCallbackUri(
-            doc["pcscfRestorationCallbackUri"].get_string().value.to_string());
+      if (doc["smfSetId"]) {
+        smfregistration.setSmfSetId(
+            doc["smfSetId"].get_string().value.to_string());
       }
-      if (doc["plmnId"]) {
-        PlmnId plmnid;
-        nlohmann::json::parse(doc["plmnId"].get_string().value).get_to(plmnid);
-        smfregistration.setPlmnId(plmnid);
+      if (doc["supportedFeatures"]) {
+        smfregistration.setSupportedFeatures(
+            doc["supportedFeatures"].get_string().value.to_string());
       }
-      if (doc["pgwFqdn"]) {
-        smfregistration.setPgwFqdn(
-            doc["pgwFqdn"].get_string().value.to_string());
+      if (doc["pduSessionId"]) {
+        smfregistration.setPduSessionId(doc["pduSessionId"].get_int32().value);
       }
-      if (doc["epdgInd"]) {
-        if (doc["epdgInd"].get_bool()) {
-          smfregistration.setEpdgInd(true);
+      if (doc["singleNssai"]) {
+        Snssai singlenssai;
+        nlohmann::json::parse(doc["singleNssai"].get_string().value)
+            .get_to(singlenssai);
+        smfregistration.setSingleNssai(singlenssai);
+      }
+      if (doc["dnn"]) {
+        smfregistration.setDnn(doc["dnn"].get_string().value.to_string());
+      }
+      if (doc["emergencyServices"]) {
+        if (doc["emergencyServices"].get_bool()) {
+          smfregistration.setEmergencyServices(true);
         } else {
-          smfregistration.setEpdgInd(false);
+          smfregistration.setEmergencyServices(false);
         }
-      }
-      if (doc["deregCallbackUri"]) {
-        smfregistration.setDeregCallbackUri(
-            doc["deregCallbackUri"].get_string().value.to_string());
-      }
-      if (doc["registrationReason"]) {
-        RegistrationReason registrationreason;
-        nlohmann::json::parse(doc["registrationReason"].get_string().value)
-            .get_to(registrationreason);
-        smfregistration.setRegistrationReason(registrationreason);
-      }
-      if (doc["registrationTime"]) {
-        smfregistration.setRegistrationTime(
-            doc["registrationTime"].get_string().value.to_string());
-      }
-      if (doc["contextInfo"]) {
-        ContextInfo contextinfo;
-        nlohmann::json::parse(doc["contextInfo"].get_string().value)
-            .get_to(contextinfo);
-        smfregistration.setContextInfo(contextinfo);
-      }
+        if (doc["pcscfRestorationCallbackUri"]) {
+          smfregistration.setPcscfRestorationCallbackUri(
+              doc["pcscfRestorationCallbackUri"]
+                  .get_string()
+                  .value.to_string());
+        }
+        if (doc["plmnId"]) {
+          PlmnId plmnid;
+          nlohmann::json::parse(doc["plmnId"].get_string().value)
+              .get_to(plmnid);
+          smfregistration.setPlmnId(plmnid);
+        }
+        if (doc["pgwFqdn"]) {
+          smfregistration.setPgwFqdn(
+              doc["pgwFqdn"].get_string().value.to_string());
+        }
+        if (doc["epdgInd"]) {
+          if (doc["epdgInd"].get_bool()) {
+            smfregistration.setEpdgInd(true);
+          } else {
+            smfregistration.setEpdgInd(false);
+          }
+        }
+        if (doc["deregCallbackUri"]) {
+          smfregistration.setDeregCallbackUri(
+              doc["deregCallbackUri"].get_string().value.to_string());
+        }
+        if (doc["registrationReason"]) {
+          RegistrationReason registrationreason;
+          nlohmann::json::parse(doc["registrationReason"].get_string().value)
+              .get_to(registrationreason);
+          smfregistration.setRegistrationReason(registrationreason);
+        }
+        if (doc["registrationTime"]) {
+          smfregistration.setRegistrationTime(
+              doc["registrationTime"].get_string().value.to_string());
+        }
+        if (doc["contextInfo"]) {
+          ContextInfo contextinfo;
+          nlohmann::json::parse(doc["contextInfo"].get_string().value)
+              .get_to(contextinfo);
+          smfregistration.setContextInfo(contextinfo);
+        }
 
-      to_json(tmp, smfregistration);
-      j += tmp;
+        to_json(tmp, smfregistration);
+        j += tmp;
+      }
     }
-  }
-  json_data = j;
+    json_data = j;
 
-  Logger::udr_mongo().debug("SmfRegistrations GET: %s", j.dump().c_str());
-  return true;
+    Logger::udr_mongo().debug("SmfRegistrations GET: %s", j.dump().c_str());
+    return true;
+  } catch (const mongocxx::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while query smf registration list from MongoDB: %s",
+        e.what());
+    return false;
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -2456,42 +2580,50 @@ bool mongo_db::query_smf_select_data(
                       << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id
                       << bsoncxx::builder::stream::finalize;
 
-  auto query_result = coll.find_one(query_filter.view());
+  try {
+    auto query_result = coll.find_one(query_filter.view());
 
-  if (!query_result) {
+    if (!query_result) {
+      Logger::udr_mongo().error(
+          "SmfSelectionSubscriptionData no data！Query: %s",
+          bsoncxx::to_json(query_filter.view()).c_str());
+      return false;
+    }
+
+    auto smfselectionsubscriptiondata = SmfSelectionSubscriptionData();
+    auto doc                          = query_result.value().view();
+
+    if (doc["supportedFeatures"]) {
+      smfselectionsubscriptiondata.setSupportedFeatures(
+          doc["supportedFeatures"].get_string().value.to_string());
+    }
+
+    if (doc["subscribedSnssaiInfos"]) {
+      std::map<std::string, SnssaiInfo> subscribedsnssaiinfos;
+      nlohmann::json::parse(doc["subscribedSnssaiInfos"].get_string().value)
+          .get_to(subscribedsnssaiinfos);
+      smfselectionsubscriptiondata.setSubscribedSnssaiInfos(
+          subscribedsnssaiinfos);
+    }
+
+    if (doc["sharedSnssaiInfosId"]) {
+      smfselectionsubscriptiondata.setSharedSnssaiInfosId(
+          doc["sharedSnssaiInfosId"].get_string().value.to_string());
+    }
+
+    auto j = nlohmann::json{};
+    to_json(j, smfselectionsubscriptiondata);
+    json_data = j;
+
+    Logger::udr_mongo().debug(
+        "SmfSelectionSubscriptionData GET: %s", j.dump().c_str());
+
+    return true;
+  } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
-        "SmfSelectionSubscriptionData no data！Query: %s",
-        bsoncxx::to_json(query_filter.view()).c_str());
+        "Exception while query smf selection subscription data from MongoDB: "
+        "%s",
+        e.what());
     return false;
   }
-
-  auto smfselectionsubscriptiondata = SmfSelectionSubscriptionData();
-  auto doc                          = query_result.value().view();
-
-  if (doc["supportedFeatures"]) {
-    smfselectionsubscriptiondata.setSupportedFeatures(
-        doc["supportedFeatures"].get_string().value.to_string());
-  }
-
-  if (doc["subscribedSnssaiInfos"]) {
-    std::map<std ::string, SnssaiInfo> subscribedsnssaiinfos;
-    nlohmann::json::parse(doc["subscribedSnssaiInfos"].get_string().value)
-        .get_to(subscribedsnssaiinfos);
-    smfselectionsubscriptiondata.setSubscribedSnssaiInfos(
-        subscribedsnssaiinfos);
-  }
-
-  if (doc["sharedSnssaiInfosId"]) {
-    smfselectionsubscriptiondata.setSharedSnssaiInfosId(
-        doc["sharedSnssaiInfosId"].get_string().value.to_string());
-  }
-
-  auto j = nlohmann::json{};
-  to_json(j, smfselectionsubscriptiondata);
-  json_data = j;
-
-  Logger::udr_mongo().debug(
-      "SmfSelectionSubscriptionData GET: %s", j.dump().c_str());
-
-  return true;
 }
