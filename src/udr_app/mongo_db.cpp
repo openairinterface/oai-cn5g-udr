@@ -1270,7 +1270,8 @@ bool mongo_db::insert_authentication_status(
     auto document = documentBuilder << bsoncxx::builder::stream::finalize;
 
     if (result) {
-      auto updateResult = collection.update_one(filter.view(), document.view());
+      auto updateResult = collection.update_one(filter.view(), bsoncxx::builder::basic::make_document(
+              bsoncxx::builder::basic::kvp("$set", document.view())));
       if (!updateResult) {
         Logger::udr_mongo().error("Failed to update AuthenticationStatus");
         return false;
