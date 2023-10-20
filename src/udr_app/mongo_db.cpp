@@ -372,7 +372,9 @@ bool mongo_db::query_authentication_subscription(
       bsoncxx::document::view view = result->view();
 
       AuthenticationSubscription authentication_subscription = {};
-      from_json(nlohmann::json::parse(bsoncxx::to_json(view)), authentication_subscription);
+      from_json(
+          nlohmann::json::parse(bsoncxx::to_json(view)),
+          authentication_subscription);
 
       /*
       if (view["authenticationMethod"]) {
@@ -1273,7 +1275,9 @@ bool mongo_db::insert_authentication_status(
     auto document = documentBuilder << bsoncxx::builder::stream::finalize;
 
     if (result) {
-      auto updateResult = collection.update_one(filter.view(), bsoncxx::builder::basic::make_document(
+      auto updateResult = collection.update_one(
+          filter.view(),
+          bsoncxx::builder::basic::make_document(
               bsoncxx::builder::basic::kvp("$set", document.view())));
       if (!updateResult) {
         Logger::udr_mongo().error("Failed to update AuthenticationStatus");
@@ -2020,7 +2024,7 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
     return false;
   } catch (const std::exception& e) {
     Logger::udr_mongo().error(
-            "Exception while query sm data from MongoDB: %s", e.what());
+        "Exception while query sm data from MongoDB: %s", e.what());
     return false;
   }
 }
@@ -2076,7 +2080,7 @@ bool mongo_db::query_sm_data(
     return false;
   } catch (const std::exception& e) {
     Logger::udr_mongo().error(
-            "Exception while query sm data from MongoDB: %s", e.what());
+        "Exception while query sm data from MongoDB: %s", e.what());
     return false;
   }
 }
@@ -2086,7 +2090,9 @@ nlohmann::json mongo_db::query_sm_data_helper(
     const bsoncxx::v_noabi::document::view& view) {
   // check if at least one document can be found
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
-  from_json(nlohmann::json::parse(bsoncxx::to_json(view)), sessionmanagementsubscriptiondata);
+  from_json(
+      nlohmann::json::parse(bsoncxx::to_json(view)),
+      sessionmanagementsubscriptiondata);
 
   nlohmann::json j;
   to_json(j, sessionmanagementsubscriptiondata);
@@ -2102,27 +2108,29 @@ nlohmann::json mongo_db::query_sm_data_helper(
     view_json["singleNssai"].get_to(singlenssai);
     sessionmanagementsubscriptiondata.setSingleNssai(singlenssai);
   }
-  if (view_json.contains("dnnConfigurations") && view_json["dnnConfigurations"].is_object()) {
-    std::map<std::string, DnnConfiguration> dnnconfigurations;
-    for (auto& el : view_json["dnnConfigurations"].items()) {
-      DnnConfiguration config;
+  if (view_json.contains("dnnConfigurations") &&
+  view_json["dnnConfigurations"].is_object()) { std::map<std::string,
+  DnnConfiguration> dnnconfigurations; for (auto& el :
+  view_json["dnnConfigurations"].items()) { DnnConfiguration config;
       el.value().get_to(config);
       dnnconfigurations.insert({el.key(), config});
     }
     sessionmanagementsubscriptiondata.setDnnConfigurations(dnnconfigurations);
   }
-  if (view_json.contains("internalGroupIds") && view_json["internalGroupIds"].is_array()) {
-    std::vector<std::string> internalgroupIds;
-    for (auto& el : view_json["internalGroupIds"].items()) {
+  if (view_json.contains("internalGroupIds") &&
+  view_json["internalGroupIds"].is_array()) { std::vector<std::string>
+  internalgroupIds; for (auto& el : view_json["internalGroupIds"].items()) {
       internalgroupIds.emplace_back(el.value().get<std::string>());
     }
   }
-  if (view_json.contains("sharedVnGroupDataIds") && view_json["sharedVnGroupDataIds"].is_array()) {
-    std::map<std::string, std::string> sharedvngroupdataids;
+  if (view_json.contains("sharedVnGroupDataIds") &&
+  view_json["sharedVnGroupDataIds"].is_array()) { std::map<std::string,
+  std::string> sharedvngroupdataids;
     view_json["sharedVnGroupDataIds"].get_to(sharedvngroupdataids);
     sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(sharedvngroupdataids);
   }
-  if (view_json.contains("sharedDnnConfigurationsId") && view_json["sharedDnnConfigurationsId"].is_string()) {
+  if (view_json.contains("sharedDnnConfigurationsId") &&
+  view_json["sharedDnnConfigurationsId"].is_string()) {
     sessionmanagementsubscriptiondata.setSharedDnnConfigurationsId(
             view_json["sharedDnnConfigurationsId"].get<std::string>());
   }
@@ -2136,22 +2144,26 @@ nlohmann::json mongo_db::query_sm_data_helper(
     view_json["traceData"].get_to(tracedata);
     sessionmanagementsubscriptiondata.setTraceData(tracedata);
   }
-  if (view_json.contains("sharedTraceDataId") && view_json["sharedTraceDataId"].is_string()) {
+  if (view_json.contains("sharedTraceDataId") &&
+  view_json["sharedTraceDataId"].is_string()) {
     sessionmanagementsubscriptiondata.setSharedTraceDataId(
           view_json["sharedTraceDataId"].get<std::string>());
   }
-  if (view_json.contains("expectedUeBehavioursList") && view_json["expectedUeBehavioursList"].is_array()) {
-    std::map<std::string, ExpectedUeBehaviourData> expecteduebehaviourslist;
+  if (view_json.contains("expectedUeBehavioursList") &&
+  view_json["expectedUeBehavioursList"].is_array()) { std::map<std::string,
+  ExpectedUeBehaviourData> expecteduebehaviourslist;
     view_json["expectedUeBehavioursList"].get_to(expecteduebehaviourslist);
     sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(expecteduebehaviourslist);
   }
-  if (view_json.contains("suggestedPacketNumDlList") && view_json["suggestedPacketNumDlList"].is_array()) {
-    std::map<std::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
+  if (view_json.contains("suggestedPacketNumDlList") &&
+  view_json["suggestedPacketNumDlList"].is_array()) { std::map<std::string,
+  SuggestedPacketNumDl> suggestedpacketnumdllist;
     view_json["suggestedPacketNumDlList"].get_to(suggestedpacketnumdllist);
     sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(suggestedpacketnumdllist);
   }
 
-  if (view_json.contains("3gppChargingCharacteristics") && view_json["3gppChargingCharacteristics"].is_string()) {
+  if (view_json.contains("3gppChargingCharacteristics") &&
+  view_json["3gppChargingCharacteristics"].is_string()) {
     sessionmanagementsubscriptiondata.setR3gppChargingCharacteristics(
             view_json["3gppChargingCharacteristics"].get<std::string>());
   }
@@ -2582,7 +2594,9 @@ bool mongo_db::query_smf_select_data(
     }
 
     auto smfselectionsubscriptiondata = SmfSelectionSubscriptionData();
-    from_json(nlohmann::json::parse(bsoncxx::to_json(query_result.value().view())), smfselectionsubscriptiondata);
+    from_json(
+        nlohmann::json::parse(bsoncxx::to_json(query_result.value().view())),
+        smfselectionsubscriptiondata);
 
     /*
     auto doc                          = query_result.value().view();
