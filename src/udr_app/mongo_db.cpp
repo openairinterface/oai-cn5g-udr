@@ -372,6 +372,9 @@ bool mongo_db::query_authentication_subscription(
       bsoncxx::document::view view = result->view();
 
       AuthenticationSubscription authentication_subscription = {};
+      from_json(nlohmann::json::parse(bsoncxx::to_json(view)), authentication_subscription);
+
+      /*
       if (view["authenticationMethod"]) {
         authentication_subscription.setAuthenticationMethod(
             std::string{view["authenticationMethod"].get_string().value});
@@ -440,7 +443,7 @@ bool mongo_db::query_authentication_subscription(
       if (view["supi"]) {
         authentication_subscription.setSupi(
             std::string{view["supi"].get_string().value});
-      }
+      }*/
 
       Logger::udr_mongo().info(
           "Query Duration: %lld milliseconds", duration.count());
@@ -2579,8 +2582,10 @@ bool mongo_db::query_smf_select_data(
     }
 
     auto smfselectionsubscriptiondata = SmfSelectionSubscriptionData();
-    auto doc                          = query_result.value().view();
+    from_json(nlohmann::json::parse(bsoncxx::to_json(query_result.value().view())), smfselectionsubscriptiondata);
 
+    /*
+    auto doc                          = query_result.value().view();
     if (doc["supportedFeatures"]) {
       smfselectionsubscriptiondata.setSupportedFeatures(
           doc["supportedFeatures"].get_string().value.to_string());
@@ -2598,13 +2603,12 @@ bool mongo_db::query_smf_select_data(
       smfselectionsubscriptiondata.setSharedSnssaiInfosId(
           doc["sharedSnssaiInfosId"].get_string().value.to_string());
     }
+    */
 
-    auto j = nlohmann::json{};
-    to_json(j, smfselectionsubscriptiondata);
-    json_data = j;
+    to_json(json_data, smfselectionsubscriptiondata);
 
     Logger::udr_mongo().debug(
-        "SmfSelectionSubscriptionData GET: %s", j.dump().c_str());
+        "SmfSelectionSubscriptionData GET: %s", json_data.dump().c_str());
 
     return true;
   } catch (const mongocxx::exception& e) {
