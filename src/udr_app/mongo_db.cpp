@@ -2014,6 +2014,10 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
     Logger::udr_mongo().error(
         "Exception while query sm data from MongoDB: %s", e.what());
     return false;
+  } catch (const std::exception& e) {
+    Logger::udr_mongo().error(
+            "Exception while query sm data from MongoDB: %s", e.what());
+    return false;
   }
 }
 
@@ -2066,6 +2070,10 @@ bool mongo_db::query_sm_data(
     Logger::udr_mongo().error(
         "Exception while query sm data from MongoDB: %s", e.what());
     return false;
+  } catch (const std::exception& e) {
+    Logger::udr_mongo().error(
+            "Exception while query sm data from MongoDB: %s", e.what());
+    return false;
   }
 }
 
@@ -2074,100 +2082,79 @@ nlohmann::json mongo_db::query_sm_data_helper(
     const bsoncxx::v_noabi::document::view& view) {
   // check if at least one document can be found
   SessionManagementSubscriptionData sessionmanagementsubscriptiondata = {};
+  from_json(nlohmann::json::parse(bsoncxx::to_json(view)), sessionmanagementsubscriptiondata);
 
+  nlohmann::json j;
+  to_json(j, sessionmanagementsubscriptiondata);
+
+  /*
+  nlohmann::json view_json = nlohmann::json::parse(bsoncxx::to_json(view));
   bsoncxx::document::element element = view["singleNssai"];
-  if (element) {
+  Logger::udr_mongo().debug(bsoncxx::to_json(view));
+
+  if (view_json.contains("singleNssai")) {
+    Logger::udr_mongo().debug("TEST CONTAINS");
     Snssai singlenssai;
-    bsoncxx::stdx::string_view str_view{element.get_string().value};
-    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-        .get_to(singlenssai);
+    view_json["singleNssai"].get_to(singlenssai);
     sessionmanagementsubscriptiondata.setSingleNssai(singlenssai);
   }
-
-  element = view["dnnConfigurations"];
-  if (element && element.type() == bsoncxx::type::k_document) {
+  if (view_json.contains("dnnConfigurations") && view_json["dnnConfigurations"].is_object()) {
     std::map<std::string, DnnConfiguration> dnnconfigurations;
-    bsoncxx::document::view dnn_view{element.get_document().view()};
-    for (bsoncxx::document::element e : dnn_view) {
+    for (auto& el : view_json["dnnConfigurations"].items()) {
       DnnConfiguration config;
-      bsoncxx::stdx::string_view str_view{e.get_string().value};
-      nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-          .get_to(config);
-      dnnconfigurations.insert({e.key().to_string(), config});
+      el.value().get_to(config);
+      dnnconfigurations.insert({el.key(), config});
     }
     sessionmanagementsubscriptiondata.setDnnConfigurations(dnnconfigurations);
   }
-
-  element = view["internalGroupIds"];
-  if (element && element.type() == bsoncxx::type::k_array) {
+  if (view_json.contains("internalGroupIds") && view_json["internalGroupIds"].is_array()) {
     std::vector<std::string> internalgroupIds;
-    bsoncxx::array::view array_view{element.get_array().value};
-    for (bsoncxx::array::element e : array_view) {
-      internalgroupIds.emplace_back(e.get_string().value);
+    for (auto& el : view_json["internalGroupIds"].items()) {
+      internalgroupIds.emplace_back(el.value().get<std::string>());
     }
-    sessionmanagementsubscriptiondata.setInternalGroupIds(internalgroupIds);
   }
-  element = view["sharedVnGroupDataIds"];
-  if (element && element.type() == bsoncxx::type::k_array) {
+  if (view_json.contains("sharedVnGroupDataIds") && view_json["sharedVnGroupDataIds"].is_array()) {
     std::map<std::string, std::string> sharedvngroupdataids;
-    bsoncxx::stdx::string_view str_view{element.get_string().value};
-    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-        .get_to(sharedvngroupdataids);
-    sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(
-        sharedvngroupdataids);
+    view_json["sharedVnGroupDataIds"].get_to(sharedvngroupdataids);
+    sessionmanagementsubscriptiondata.setSharedVnGroupDataIds(sharedvngroupdataids);
   }
-  element = view["sharedDnnConfigurationsId"];
-  if (element && element.type() == bsoncxx::type::k_utf8) {
+  if (view_json.contains("sharedDnnConfigurationsId") && view_json["sharedDnnConfigurationsId"].is_string()) {
     sessionmanagementsubscriptiondata.setSharedDnnConfigurationsId(
-        element.get_string().value.to_string());
+            view_json["sharedDnnConfigurationsId"].get<std::string>());
   }
-  element = view["odbPacketServices"];
-  if (element) {
+  if (view_json.contains("odbPacketServices")) {
     OdbPacketServices odbpacketservices;
-    bsoncxx::stdx::string_view str_view{element.get_string().value};
-    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-        .get_to(odbpacketservices);
+    view_json["odbPacketServices"].get_to(odbpacketservices);
     sessionmanagementsubscriptiondata.setOdbPacketServices(odbpacketservices);
   }
-  element = view["traceData"];
-  if (element) {
+  if (view_json.contains("traceData")) {
     TraceData tracedata;
-    bsoncxx::stdx::string_view str_view{element.get_string().value};
-    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-        .get_to(tracedata);
+    view_json["traceData"].get_to(tracedata);
     sessionmanagementsubscriptiondata.setTraceData(tracedata);
   }
-  element = view["sharedTraceDataId"];
-  if (element && element.type() == bsoncxx::type::k_utf8) {
+  if (view_json.contains("sharedTraceDataId") && view_json["sharedTraceDataId"].is_string()) {
     sessionmanagementsubscriptiondata.setSharedTraceDataId(
-        element.get_string().value.to_string());
+          view_json["sharedTraceDataId"].get<std::string>());
   }
-  element = view["expectedUeBehavioursList"];
-  if (element && element.type() == bsoncxx::type::k_array) {
+  if (view_json.contains("expectedUeBehavioursList") && view_json["expectedUeBehavioursList"].is_array()) {
     std::map<std::string, ExpectedUeBehaviourData> expecteduebehaviourslist;
-    bsoncxx::stdx::string_view str_view{element.get_string().value};
-    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-        .get_to(expecteduebehaviourslist);
-    sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(
-        expecteduebehaviourslist);
+    view_json["expectedUeBehavioursList"].get_to(expecteduebehaviourslist);
+    sessionmanagementsubscriptiondata.setExpectedUeBehavioursList(expecteduebehaviourslist);
   }
-  element = view["suggestedPacketNumDlList"];
-  if (element && element.type() == bsoncxx::type::k_array) {
+  if (view_json.contains("suggestedPacketNumDlList") && view_json["suggestedPacketNumDlList"].is_array()) {
     std::map<std::string, SuggestedPacketNumDl> suggestedpacketnumdllist;
-    bsoncxx::stdx::string_view str_view{element.get_string().value};
-    nlohmann::json::parse(str_view.data(), str_view.data() + str_view.size())
-        .get_to(suggestedpacketnumdllist);
-    sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(
-        suggestedpacketnumdllist);
+    view_json["suggestedPacketNumDlList"].get_to(suggestedpacketnumdllist);
+    sessionmanagementsubscriptiondata.setSuggestedPacketNumDlList(suggestedpacketnumdllist);
   }
-  element = view["3gppChargingCharacteristics"];
-  if (element && element.type() == bsoncxx::type::k_utf8) {
+
+  if (view_json.contains("3gppChargingCharacteristics") && view_json["3gppChargingCharacteristics"].is_string()) {
     sessionmanagementsubscriptiondata.setR3gppChargingCharacteristics(
-        element.get_string().value.to_string());
+            view_json["3gppChargingCharacteristics"].get<std::string>());
   }
 
   nlohmann::json j;
   to_json(j, sessionmanagementsubscriptiondata);
+  */
 
   return j;
 }
