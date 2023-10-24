@@ -592,12 +592,19 @@ bool mongo_db::query_am_data(
   try {
     auto result = coll.find_one(query);
     if (result) {
-      // auto document = result.value();
       oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
 
       const bsoncxx::document::view row = result.value().view();
 
-      if (auto val = row["supportedFeatures"];
+      from_json(
+          nlohmann::json::parse(bsoncxx::to_json(row)), subscription_data);
+      to_json(json_data, subscription_data);
+
+      Logger::udr_mongo().debug(
+          "AccessAndMobilitySubscriptionData Get: %s",
+          json_data.dump().c_str());
+
+      /*if (auto val = row["supportedFeatures"];
           val.type() != bsoncxx::type::k_null &&
           val.type() != bsoncxx::type::k_undefined) {
         subscription_data.setSupportedFeatures(
@@ -876,7 +883,7 @@ bool mongo_db::query_am_data(
             .get_to(wirelineServiceAreaRestriction);
         subscription_data.setWirelineServiceAreaRestriction(
             wirelineServiceAreaRestriction);
-      }
+      }*/
 
     } else {
       // Handle query failure
@@ -887,8 +894,11 @@ bool mongo_db::query_am_data(
     Logger::udr_mongo().error(
         "Exception while query AM Data from MongoDB: %s", e.what());
     return false;
+  } catch (const std::exception& e) {
+    Logger::udr_mongo().error(
+        "Exception while query AM Data from MongoDB: %s", e.what());
+    return false;
   }
-
   return true;
 }
 
