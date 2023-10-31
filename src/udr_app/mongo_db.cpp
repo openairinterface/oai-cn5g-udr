@@ -175,18 +175,8 @@ bool mongo_db::insert_authentication_subscription(
   mongocxx::options::find opts{};
   opts.limit(1);
 
-  // Start the timer
-  auto start_time = std::chrono::steady_clock::now();
-
   try {
     auto cursor = coll.find_one(filter_builder.view(), opts);
-
-    // Stop the timer
-    auto end_time = std::chrono::steady_clock::now();
-
-    // Calculate the duration
-    auto find_duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-        end_time - start_time);
 
     if (cursor) {
       Logger::udr_mongo().error("AuthenticationSubscription existed!");
@@ -250,29 +240,13 @@ bool mongo_db::insert_authentication_subscription(
     bsoncxx::document::value auth_subscription_doc =
         auth_subscription_builder << bsoncxx::builder::stream::finalize;
 
-    // Start the timer for insertion
-    start_time = std::chrono::steady_clock::now();
-
     coll.insert_one(auth_subscription_doc.view());
-
-    // Stop the timer for insertion
-    end_time = std::chrono::steady_clock::now();
-
-    // Calculate the duration for insertion
-    auto insertion_duration =
-        std::chrono::duration_cast<std::chrono::milliseconds>(
-            end_time - start_time);
 
     to_json(json_data, auth_subscription);
 
     Logger::udr_mongo().debug(
         "AuthenticationSubscription POST: %s", json_data.dump().c_str());
 
-    // Log the durations
-    Logger::udr_mongo().info(
-        "Find Duration: %lld milliseconds", find_duration.count());
-    Logger::udr_mongo().info(
-        "Insertion Duration: %lld milliseconds", insertion_duration.count());
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
@@ -293,20 +267,9 @@ bool mongo_db::delete_authentication_subscription(const std::string& id) {
                                          << bsoncxx::builder::stream::finalize;
   bsoncxx::document::view_or_value query = query_value.view();
 
-  // Start the timer
-  auto start_time = std::chrono::steady_clock::now();
-
   try {
     // Perform the delete operation
     auto result = coll.delete_one(query);
-
-    // Stop the timer
-    auto end_time = std::chrono::steady_clock::now();
-
-    // Calculate the duration
-    auto deletion_duration =
-        std::chrono::duration_cast<std::chrono::milliseconds>(
-            end_time - start_time);
 
     if (!result) {
       std::cerr << "Failed to delete document from MongoDB" << std::endl;
@@ -321,9 +284,6 @@ bool mongo_db::delete_authentication_subscription(const std::string& id) {
     std::cout << "Deleted " << result->deleted_count()
               << " document(s) from MongoDB" << std::endl;
 
-    // Log the duration
-    Logger::udr_mongo().info(
-        "Deletion Duration: %lld milliseconds", deletion_duration.count());
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_mongo().error(
@@ -353,20 +313,11 @@ bool mongo_db::query_authentication_subscription(
   auto query = bsoncxx::builder::stream::document{}
                << "ueid" << id << bsoncxx::builder::stream::finalize;
 
-  auto start_time = std::chrono::steady_clock::now();
-
   try {
     // Execute the query and get the result
     bsoncxx::stdx::optional<bsoncxx::document::value> result = coll.find_one(
         bsoncxx::builder::stream::document{}
         << "ueid" << id << bsoncxx::builder::stream::finalize);
-
-    // Stop the timer
-    auto end_time = std::chrono::steady_clock::now();
-
-    // Calculate the duration
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-        end_time - start_time);
 
     if (result) {
       bsoncxx::document::view view = result->view();
@@ -376,9 +327,6 @@ bool mongo_db::query_authentication_subscription(
           nlohmann::json::parse(bsoncxx::to_json(view)),
           authentication_subscription);
 
-      Logger::udr_mongo().info(
-          "Query Duration: %lld milliseconds", duration.count());
-
       to_json(json_data, authentication_subscription);
 
       return true;
@@ -386,8 +334,6 @@ bool mongo_db::query_authentication_subscription(
       Logger::udr_mongo().error(
           "AuthenticationSubscription no data！ Query filter: %s",
           bsoncxx::to_json(query.view()).c_str());
-      Logger::udr_mongo().info(
-          "Query Duration: %lld milliseconds", duration.count());
 
       return false;
     }
@@ -417,9 +363,6 @@ bool mongo_db::update_authentication_subscription(
 
   auto filter = bsoncxx::builder::stream::document{}
                 << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
-
-  // Start the timer
-  auto start_time = std::chrono::steady_clock::now();
 
   try {
     bsoncxx::stdx::optional<bsoncxx::document::value> result =
@@ -470,17 +413,6 @@ bool mongo_db::update_authentication_subscription(
             "Failed to retrieve updated authentication subscription data");
         return false;
       }
-      // Stop the timer
-      auto end_time = std::chrono::steady_clock::now();
-
-      // Calculate the duration
-      auto update_duration =
-          std::chrono::duration_cast<std::chrono::milliseconds>(
-              end_time - start_time);
-
-      // Log the duration
-      Logger::udr_mongo().info(
-          "Update Duration: %lld milliseconds", update_duration.count());
 
       return true;
     } else {
@@ -768,9 +700,6 @@ bool mongo_db::insert_authentication_status(
   auto filter     = bsoncxx::builder::stream::document{}
                 << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
 
-  // Start the timer
-  auto start_time = std::chrono::steady_clock::now();
-
   try {
     bsoncxx::stdx::optional<bsoncxx::document::value> result =
         collection.find_one(filter.view());
@@ -814,18 +743,6 @@ bool mongo_db::insert_authentication_status(
     Logger::udr_mongo().info(
         "AuthenticationStatus PUT: %s", tmp.dump().c_str());
 
-    // Stop the timer
-    auto end_time = std::chrono::steady_clock::now();
-
-    // Calculate the duration
-    auto operation_duration =
-        std::chrono::duration_cast<std::chrono::milliseconds>(
-            end_time - start_time);
-
-    // Log the duration
-    Logger::udr_mongo().info(
-        "Operation Duration: %lld milliseconds", operation_duration.count());
-
     return true;
 
   } catch (const mongocxx::exception& e) {
@@ -852,25 +769,12 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
       << "ueid"
       << ue_id;  // Create a filter document for matching the "ueid" field
 
-  // Start the timer
-  auto start_time = std::chrono::steady_clock::now();
-
   try {
     auto result = coll.delete_one(
         filter_builder.view());  // Delete the document matching the filter
     if (result) {
       if (result->deleted_count() > 0) {
         Logger::udr_mongo().debug("AuthenticationStatus DELETE - successful");
-
-        // Stop the timer
-        auto end_time = std::chrono::steady_clock::now();
-        // Calculate the duration
-        auto operation_duration =
-            std::chrono::duration_cast<std::chrono::milliseconds>(
-                end_time - start_time);
-        // Log the duration
-        Logger::udr_mongo().info(
-            "Deletion Duration: %lld milliseconds", operation_duration.count());
 
         return true;
       } else {
@@ -910,25 +814,10 @@ bool mongo_db::query_authentication_status(
   auto query = bsoncxx::builder::stream::document{}
                << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
 
-  // Start the timer
-  auto start_time = std::chrono::steady_clock::now();
-
   try {
     // Execute the query and get the result
     bsoncxx::stdx::optional<bsoncxx::document::value> result =
         coll.find_one(query.view());
-
-    // Stop the timer
-    auto end_time = std::chrono::steady_clock::now();
-
-    // Calculate the duration
-    auto operation_duration =
-        std::chrono::duration_cast<std::chrono::milliseconds>(
-            end_time - start_time);
-
-    // Log the duration
-    Logger::udr_mongo().info(
-        "Query Duration: %lld milliseconds", operation_duration.count());
 
     // Check if the result is not empty
     if (result) {
