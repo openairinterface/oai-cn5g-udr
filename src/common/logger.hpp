@@ -37,8 +37,7 @@ static const std::string UDR_APP     = "udr_app";
 static const std::string SYSTEM      = "system";
 static const std::string UDR_SVR_LOG = "udr_server";
 static const std::string UDR_NRF     = "udr_nrf";
-static const std::string UDR_MYSQL   = "udr_mysql";
-static const std::string UDR_MONGO   = "udr_mongo";
+static const std::string UDR_DB      = "udr_db";
 
 class Logger {
  public:
@@ -55,9 +54,7 @@ class Logger {
     oai::logger::logger_registry::register_logger(
         name, UDR_NRF, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
-        name, UDR_MYSQL, log_stdout, log_rot_file);
-    oai::logger::logger_registry::register_logger(
-        name, UDR_MONGO, log_stdout, log_rot_file);
+        name, UDR_DB, log_stdout, log_rot_file);
   }
   static void set_level(spdlog::level::level_enum level) {
     oai::logger::logger_registry::set_level(level);
@@ -81,10 +78,7 @@ class Logger {
   static const oai::logger::printf_logger& udr_nrf() {
     return oai::logger::logger_registry::get_logger(UDR_NRF);
   }
-  static const oai::logger::printf_logger& udr_mysql() {
-    return oai::logger::logger_registry::get_logger(UDR_MYSQL);
-  }
-  static const oai::logger::printf_logger& udr_mongo() {
-    return oai::logger::logger_registry::get_logger(UDR_MONGO);
+  static const oai::logger::printf_logger& udr_db() {
+    return oai::logger::logger_registry::get_logger(UDR_DB);
   }
 };
