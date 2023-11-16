@@ -40,6 +40,9 @@ add_library (UDR STATIC
   udr_client.cpp
   mysql_db.cpp
   cassandra_db.cpp
+  mongo_db.cpp
 )
+
+target_link_libraries (UDR mongo::mongocxx_shared mongo::bsoncxx_shared)
 
 

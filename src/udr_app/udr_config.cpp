@@ -1,5 +1,5 @@
 /*
- * Licensed to the OpenAirInterface (OAI) Software Alliance mysql_conf_tunder
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under
  *one or more contributor license agreements.  See the NOTICE file distributed
  *with this work for additional information regarding copyright ownership. The
  *OpenAirInterface Software Alliance licenses this file to You under the OAI
@@ -37,7 +37,8 @@ using namespace libconfig;
 namespace oai::udr::config {
 
 //------------------------------------------------------------------------------
-udr_config::udr_config() : mysql(), instance(), udr_name(), pid_dir(), nudr() {
+udr_config::udr_config()
+    : db_conf(), instance(), udr_name(), pid_dir(), nudr() {
   nudr_http2_port  = 8080;
   nudr.api_version = "v1";
   db_type          = DB_TYPE_MYSQL;
@@ -160,8 +161,8 @@ int udr_config::load(const std ::string& config_file) {
 
     if (boost::iequals(opt, "cassandra")) {
       db_type = DB_TYPE_CASSANDRA;
-    } else if (boost::iequals(opt, "mysql")) {
-      db_type = DB_TYPE_MYSQL;
+    } else if (boost::iequals(opt, "mongodb")) {
+      db_type = DB_TYPE_MONGO;
     } else {
       db_type = DB_TYPE_MYSQL;  // Default for now
     }
@@ -235,20 +236,23 @@ int udr_config::load(const std ::string& config_file) {
     }
   }
 
-  // MySQL
   try {
-    const Setting& mysql_cfg = udr_cfg[UDR_CONFIG_STRING_MYSQL];
-    mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_SERVER, mysql.mysql_server);
-    mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_USER, mysql.mysql_user);
-    mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_PASS, mysql.mysql_pass);
-    mysql_cfg.lookupValue(UDR_CONFIG_STRING_MYSQL_DB, mysql.mysql_db);
-    mysql_cfg.lookupValue(
-        UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT,
-        mysql.connection_timeout);
+    const Setting& db_cfg = udr_cfg[UDR_CONFIG_STRING_DB];
+    db_cfg.lookupValue(UDR_CONFIG_STRING_DB_SERVER, db_conf.server);
+    db_cfg.lookupValue(UDR_CONFIG_STRING_DB_USER, db_conf.user);
+    db_cfg.lookupValue(UDR_CONFIG_STRING_DB_PASS, db_conf.pass);
+    db_cfg.lookupValue(UDR_CONFIG_STRING_DB_NAME, db_conf.db_name);
+    db_cfg.lookupValue(
+        UDR_CONFIG_STRING_DB_CONNECTION_TIMEOUT, db_conf.connection_timeout);
   } catch (const SettingNotFoundException& nfex) {
     Logger::udr_app().error(
         "%s : %s, using defaults", nfex.what(), nfex.getPath());
     return RETURNerror;
+  }
+  if (db_type == DB_TYPE_MYSQL) {
+    db_conf.port = 3306;  // MySQL Default
+  } else if (db_type == DB_TYPE_MONGO) {
+    db_conf.port = 27017;  // MongoDB Default
   }
 
   return RETURNok;
@@ -350,23 +354,34 @@ void udr_config::display() {
           "    FQDN ..................: %s", nrf_addr.fqdn.c_str());
   }
 
-  if (db_type == DB_TYPE_MYSQL) {
-    Logger::config().info("- MySQL:");
-    Logger::config().info(
-        "    Server Addr ...........: %s", mysql.mysql_server.c_str());
-    Logger::config().info(
-        "    Username ..............: %s", mysql.mysql_user.c_str());
-    Logger::config().info(
-        "    Password ..............: %s", mysql.mysql_pass.c_str());
-    Logger::config().info(
-        "    Database ..............: %s", mysql.mysql_db.c_str());
-    Logger::config().info(
-        "    DB Timeout ............: %d (seconds)", mysql.connection_timeout);
-  } else if (db_type == DB_TYPE_CASSANDRA) {
+  if (db_type == DB_TYPE_CASSANDRA) {
     Logger::config().info("- Cassandra:");
     Logger::config().info(
         "    Cassandra DB ..........: not "
         "supported!");
+  } else if (db_type == DB_TYPE_UNKNOWN) {
+    Logger::config().info("- Unknown DB:");
+    Logger::config().info(
+        "    ..........: not "
+        "supported!");
+  } else if (db_type == DB_TYPE_MYSQL or db_type == DB_TYPE_MONGO) {
+    if (db_type == DB_TYPE_MYSQL) {
+      Logger::config().info("- MySQL:");
+    } else {
+      Logger::config().info("- Mongo:");
+    }
+    Logger::config().info(
+        "    Server Addr ...........: %s", db_conf.server.c_str());
+    Logger::config().info("    Server Port ...........: %d", db_conf.port);
+    Logger::config().info(
+        "    Username ..............: %s", db_conf.user.c_str());
+    Logger::config().info(
+        "    Password ..............: %s", db_conf.pass.c_str());
+    Logger::config().info(
+        "    Database ..............: %s", db_conf.db_name.c_str());
+    Logger::config().info(
+        "    DB Timeout ............: %d (seconds)",
+        db_conf.connection_timeout);
   }
 
   Logger::config().info(

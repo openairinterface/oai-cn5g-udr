@@ -54,12 +54,13 @@
 #define UDR_CONFIG_STRING_FQDN_DNS "FQDN"
 
 #define UDR_CONFIG_STRING_DATABASE_TYPE "DATABASE"
-#define UDR_CONFIG_STRING_MYSQL "MYSQL"
-#define UDR_CONFIG_STRING_MYSQL_SERVER "MYSQL_SERVER"
-#define UDR_CONFIG_STRING_MYSQL_USER "MYSQL_USER"
-#define UDR_CONFIG_STRING_MYSQL_PASS "MYSQL_PASS"
-#define UDR_CONFIG_STRING_MYSQL_DB "MYSQL_DB"
-#define UDR_CONFIG_STRING_MYSQL_DB_CONNECTION_TIMEOUT "DB_CONNECTION_TIMEOUT"
+
+#define UDR_CONFIG_STRING_DB "DB"
+#define UDR_CONFIG_STRING_DB_SERVER "DB_SERVER"
+#define UDR_CONFIG_STRING_DB_USER "DB_USER"
+#define UDR_CONFIG_STRING_DB_PASS "DB_PASS"
+#define UDR_CONFIG_STRING_DB_NAME "DB_NAME"
+#define UDR_CONFIG_STRING_DB_CONNECTION_TIMEOUT "DB_CONNECTION_TIMEOUT"
 
 #define UDR_CONFIG_STRING_LOG_LEVEL "LOG_LEVEL"
 
@@ -68,12 +69,13 @@ using namespace libconfig;
 namespace oai::udr::config {
 
 typedef struct {
-  std::string mysql_server;
-  std::string mysql_user;
-  std::string mysql_pass;
-  std::string mysql_db;
+  std::string server;
+  uint32_t port;
+  std::string user;
+  std::string pass;
+  std::string db_name;
   uint32_t connection_timeout;
-} mysql_conf_t;
+} db_conf_t;
 
 typedef struct interface_cfg_s {
   std::string if_name;
@@ -114,7 +116,7 @@ class udr_config {
   bool use_fqdn_dns;
   bool use_http2;
 
-  mysql_conf_t mysql;
+  db_conf_t db_conf;
   db_type_t db_type;
 };
 }  // namespace oai::udr::config

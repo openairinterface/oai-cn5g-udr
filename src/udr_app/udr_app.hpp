@@ -30,6 +30,7 @@
 #ifndef FILE_UDR_APP_HPP_SEEN
 #define FILE_UDR_APP_HPP_SEEN
 
+#include <mysql/mysql.h>
 #include <pistache/http.h>
 
 #include <nlohmann/json.hpp>

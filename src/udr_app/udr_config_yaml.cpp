@@ -180,20 +180,24 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
 
   // Database
   if (get_database_config().is_set()) {
-    cfg.mysql.mysql_server = get_database_config().get_host();
-    cfg.mysql.mysql_user   = get_database_config().get_user();
-    cfg.mysql.mysql_pass   = get_database_config().get_pass();
-    cfg.mysql.mysql_db     = get_database_config().get_database_name();
+    cfg.db_conf.server  = get_database_config().get_host();
+    cfg.db_conf.port    = get_database_config().get_port();
+    cfg.db_conf.user    = get_database_config().get_user();
+    cfg.db_conf.pass    = get_database_config().get_pass();
+    cfg.db_conf.db_name = get_database_config().get_database_name();
     // cfg.mysql.       = get_database_config().get_random();
-    cfg.mysql.connection_timeout =
+    cfg.db_conf.connection_timeout =
         get_database_config().get_connection_timeout();
-    cfg.db_type = DB_TYPE_MYSQL;  // Set to MySQL by default
 
+    cfg.db_type = DB_TYPE_MYSQL;  // Set to MySQL by default
     if (boost::iequals(get_database_config().get_database_type(), "mysql")) {
       cfg.db_type = DB_TYPE_MYSQL;
     } else if (boost::iequals(
                    get_database_config().get_database_type(), "cassandra")) {
       cfg.db_type = DB_TYPE_CASSANDRA;
+    } else if (boost::iequals(
+                   get_database_config().get_database_type(), "mongodb")) {
+      cfg.db_type = DB_TYPE_MONGO;
     }
   }
 

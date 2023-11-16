@@ -35,6 +35,7 @@
 #include "cassandra_db.hpp"
 #include "logger.hpp"
 #include "mysql_db.hpp"
+#include "mongo_db.hpp"
 #include "udr_config.hpp"
 #include "udr_config_yaml.hpp"
 #include "udr_nrf.hpp"
@@ -56,8 +57,10 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
   // Use the appropriate DB connector to initialize the connection to the DB
   if (udr_cfg.db_type == DB_TYPE_CASSANDRA) {
     db_connector = std::make_shared<cassandra_db>();
-  } else {
+  } else if (udr_cfg.db_type == DB_TYPE_MYSQL) {
     db_connector = std::make_shared<mysql_db>(ev);
+  } else {
+    db_connector = std::make_shared<mongo_db>(ev);
   }
 
   if (!db_connector->initialize()) {

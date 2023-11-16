@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Packet Capture
+*.pcap
+
 # CI artifacts
 archives
 src/oai_rules_result*
@@ -38,3 +41,8 @@ test_results_oai_smf.html
 
 #build 
 build/ext
+
+build/udr/build
+build/log
+udr.conf.dev
+udr.entrypoint.sh
