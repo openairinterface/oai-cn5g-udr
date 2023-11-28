@@ -1,3 +1,32 @@
+/*
+ * Licensed to the OpenAirInterface (OAI) Software Alliance under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The OpenAirInterface Software Alliance licenses this file to You under
+ * the OAI Public License, Version 1.1  (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the
+ * License at
+ *
+ *      http://www.openairinterface.org/?page_id=698
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *-------------------------------------------------------------------------------
+ * For more information about the OpenAirInterface (OAI) Software Alliance:
+ *      contact@openairinterface.org
+ */
+
+/*! \file mongo_db.cpp
+ \brief
+ \author
+ \company Eurecom, phine.tech
+ \date 2023
+ \email: contact@openairinterface.org, lukas.rotheneder@phine.tech
+ */
+
 #include "mongo_db.hpp"
 
 #include <iostream>
@@ -47,7 +76,6 @@ bool mongo_db::connect(uint32_t num_retries) {
   while (i < num_retries) {
     try {
       // Try to connect to MongoDB
-
       mongo_client = mongocxx::client{mongocxx::uri{
           "mongodb://" + udr_cfg.db_conf.user + ":" + udr_cfg.db_conf.pass +
           "@" + udr_cfg.db_conf.server + ":" +
@@ -124,6 +152,7 @@ void mongo_db::start_event_connection_handling() {
           std::placeholders::_1),
       interval, ms + interval);
 }
+
 //---------------------------------------------------------------------------------------------
 void mongo_db::trigger_connection_handling_procedure(uint64_t ms) {
   _unused(ms);
@@ -146,8 +175,8 @@ void mongo_db::trigger_connection_handling_procedure(uint64_t ms) {
         "Could not establish the connection to the DB, reason: %s", e.what());
   }
 
-  // If couldn't connect to the DB
-  // Reset the connection and try again
+  // If the connection couldn't be established
+  // reset the connection and try again
   close_connection();
   initialize();
   if (!connect(MAX_CONNECTION_RETRY))
@@ -171,152 +200,144 @@ bool mongo_db::insert_authentication_subscription(
   bsoncxx::builder::stream::document filter_builder{};
   filter_builder << "ueid" << id;
 
-  mongocxx::options::find opts{};
-  opts.limit(1);
-
   try {
-    auto cursor = coll.find_one(filter_builder.view(), opts);
+    auto cursor = coll.find_one(filter_builder.view());
 
     if (cursor) {
-      Logger::udr_db().error("AuthenticationSubscription existed!");
-      // Existed
+      Logger::udr_db().error(
+          "[UE Id %s] AuthenticationSubscription for UE Id already exists.",
+          id);
       return false;
     }
 
     to_json(json_data, auth_subscription);
-
     json_data["ueid"] = id;
     coll.insert_one(bsoncxx::from_json(json_data.dump()));
-
     Logger::udr_db().debug(
-        "AuthenticationSubscription POST: %s", json_data.dump().c_str());
-
+        "[UE Id %s] AuthenticationSubscription inserted in MongoDB: %s", id,
+        json_data.dump());
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while insert authentication subscription in MongoDB: %s",
-        e.what());
+        "[UE Id %s] Exception while insert AuthenticationSubscription in "
+        "MongoDB: %s",
+        id, e.what());
     return false;
   }
 }
 
 bool mongo_db::delete_authentication_subscription(const std::string& id) {
+  Logger::udr_db().info("[UE Id %s] Delete AuthenticationSubscription", id);
+  // Check the connection with DB first
+  if (!get_db_connection_status()) {
+    Logger::udr_db().info(
+        "The connection to the MongoDB is currently inactive");
+    return false;
+  }
   // Select the appropriate database and collection
   mongocxx::database db     = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   mongocxx::collection coll = db["AuthenticationSubscription"];
+  bsoncxx::builder::stream::document filter_builder{};
+  filter_builder << "ueid" << id;
 
   try {
     // Perform the delete operation
-    auto result = coll.delete_one(bsoncxx::builder::basic::make_document(
-        bsoncxx::builder::basic::kvp("ueid", id)));
+    auto result = coll.delete_one(filter_builder.view());
 
     if (!result) {
-      Logger::udr_db().error("Failed to delete document from MongoDB");
+      Logger::udr_db().error(
+          "[UE Id %s] Failed to delete document from MongoDB", id);
       return false;
     }
-
     if (result->deleted_count() == 0) {
-      Logger::udr_db().error("No document found with the given ID");
+      Logger::udr_db().error(
+          "[UE Id %s] Failed to delete document from MongoDB: Document not "
+          "found",
+          id);
       return false;
     }
-
-    Logger::udr_db().debug(
-        "Deleted %i document(s) from MongoDB", result->deleted_count());
-
+    Logger::udr_db().debug("[UE Id %s] Deleted document from MongoDB", id);
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while delete authentication subscription from MongoDB: %s",
-        e.what());
+        "[UE Id %s] Exception while delete authentication subscription from "
+        "MongoDB: %s",
+        id, e.what());
     return false;
   }
 }
 
 bool mongo_db::query_authentication_subscription(
     const std::string& id, nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Query AuthenticationSubscription", id);
   // Check the connection with DB first
-
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
     return false;
   }
-
-  Logger::udr_db().info("Query Authentication Subscription");
-
   // Get the database and collection
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["AuthenticationSubscription"];
-
-  // Build the query
-  auto query = bsoncxx::builder::stream::document{}
-               << "ueid" << id << bsoncxx::builder::stream::finalize;
+  bsoncxx::builder::stream::document filter_builder{};
+  filter_builder << "ueid" << id;
 
   try {
     // Execute the query and get the result
-    bsoncxx::stdx::optional<bsoncxx::document::value> result =
-        coll.find_one(query.view());
+    auto result = coll.find_one(filter_builder.view());
 
     if (result) {
-      bsoncxx::document::view view = result->view();
-
       AuthenticationSubscription authentication_subscription = {};
       from_json(
-          nlohmann::json::parse(bsoncxx::to_json(view)),
+          nlohmann::json::parse(bsoncxx::to_json(result->view())),
           authentication_subscription);
-
       to_json(json_data, authentication_subscription);
-
+      Logger::udr_db().debug(
+          "[UE Id %s] AuthenticationSubscription: %s", id, json_data.dump());
       return true;
     } else {
       Logger::udr_db().error(
-          "AuthenticationSubscription no data！ Query filter: %s",
-          bsoncxx::to_json(query.view()).c_str());
+          "[UE Id %s] AuthenticationSubscription not Found！", id);
 
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query authentication subscription from MongoDB: %s",
-        e.what());
+        "[UE Id %s] Exception while query AuthenticationSubscription from "
+        "MongoDB: %s",
+        id, e.what());
     return false;
   }
 }
 
 //------------------------------------------------------------------------------
-
 bool mongo_db::update_authentication_subscription(
     const std::string& ue_id,
     const std::vector<oai::model::common::PatchItem>& patchItem,
     nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Update AuthenticationSubscription", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
     return false;
   }
-
   // Get the database and collection
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["AuthenticationSubscription"];
-
-  auto filter = bsoncxx::builder::stream::document{}
-                << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
+  bsoncxx::builder::stream::document filter_builder{};
+  filter_builder << "ueid" << ue_id;
 
   try {
     bsoncxx::stdx::optional<bsoncxx::document::value> result =
-        coll.find_one(filter.view());
-
+        coll.find_one(filter_builder.view());
     if (result) {
       bsoncxx::document::view view = result->view();
-
       for (const auto& item : patchItem) {
         if (item.getOp().getEnumValue() ==
                 PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE &&
             item.valueIsSet()) {
-          bsoncxx::document::value sequenceNumberValue =
-              bsoncxx::from_json(item.getValue());
           bsoncxx::document::view sequenceNumberView =
-              sequenceNumberValue.view();
+              bsoncxx::from_json(item.getValue()).view();
 
           bsoncxx::builder::stream::document updateBuilder{};
           updateBuilder << "$set" << bsoncxx::builder::stream::open_document;
@@ -324,38 +345,31 @@ bool mongo_db::update_authentication_subscription(
           updateBuilder << bsoncxx::builder::stream::close_document;
           auto update = updateBuilder << bsoncxx::builder::stream::finalize;
 
-          auto updateResult = coll.update_one(filter.view(), update.view());
+          auto updateResult =
+              coll.update_one(filter_builder.view(), update.view());
           if (!updateResult) {
             Logger::udr_db().error(
-                "Failed to update AuthenticationSubscription");
+                "[UE Id %s] Failed to update AuthenticationSubscription");
             return false;
           }
         }
-
         nlohmann::json tmp_j;
         to_json(tmp_j, item);
         json_data += tmp_j;
       }
-
-      Logger::udr_db().info(
-          "AuthenticationSubscription PATCH: %s", json_data.dump().c_str());
-      bool query_result = query_authentication_subscription(ue_id, json_data);
-      if (!query_result) {
-        Logger::udr_db().error(
-            "Failed to retrieve updated authentication subscription data");
-        return false;
-      }
-
+      Logger::udr_db().debug(
+          "[UE Id %s] Update AuthenticationSubscription: %s", json_data.dump());
       return true;
     } else {
       Logger::udr_db().error(
-          "AuthenticationSubscription not found for ueid: %s", ue_id.c_str());
+          "[UE Id %s] AuthenticationSubscription not found!", ue_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while update authentication subscription in MongoDB: %s",
-        e.what());
+        "[UE Id %s] Exception while update AuthenticationSubscription in "
+        "MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
 }
@@ -364,48 +378,45 @@ bool mongo_db::update_authentication_subscription(
 bool mongo_db::query_am_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
+  Logger::udr_db().info(
+      "[UE Id %s] Query AccessAndMobilitySubscriptionData", ue_id);
   // Establish MongoDB connection
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
     return false;
   }
-
   // Get the database and collection
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["AccessAndMobilitySubscriptionData"];
-
   // Construct the MongoDB query
-  bsoncxx::builder::stream::document query_builder{};
-  query_builder << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id;
-  auto query = query_builder.view();
+  bsoncxx::builder::stream::document filter_builder{};
+  filter_builder << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id;
 
   try {
-    auto result = coll.find_one(query);
+    auto result = coll.find_one(filter_builder.view());
     if (result) {
       oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
-
       const bsoncxx::document::view row = result.value().view();
-
       from_json(
           nlohmann::json::parse(bsoncxx::to_json(row)), subscription_data);
       to_json(json_data, subscription_data);
-
       Logger::udr_db().debug(
-          "AccessAndMobilitySubscriptionData Get: %s",
-          json_data.dump().c_str());
+          "[UE Id %s] AccessAndMobilitySubscriptionData: %s", ue_id,
+          json_data.dump());
     } else {
       // Handle query failure
-      Logger::udr_db().error("Failed to query AM Data from MongoDB");
+      Logger::udr_db().error(
+          "[UE Id %s] Failed to query AccessAndMobilitySubscriptionData from "
+          "MongoDB",
+          ue_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query AM Data from MongoDB: %s", e.what());
-    return false;
-  } catch (const std::exception& e) {
-    Logger::udr_db().error(
-        "Exception while query AM Data from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while query AccessAndMobilitySubscriptionData "
+        "from MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
   return true;
@@ -415,54 +426,54 @@ bool mongo_db::query_am_data(
 bool mongo_db::create_amf_context_3gpp(
     const std::string& ue_id,
     Amf3GppAccessRegistration& amf3GppAccessRegistration) {
+  Logger::udr_db().info("[UE Id %s] Put Amf3GppAccessRegistration", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
     return false;
   }
-
-  bsoncxx::builder::stream::document filter_builder;
-  filter_builder << "ueid" << ue_id;
-
   // Select the appropriate database and collection
   mongocxx::database db = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto collection       = db["Amf3GppAccessRegistration"];
+  bsoncxx::builder::stream::document filter_builder;
+  filter_builder << "ueid" << ue_id;
+
   try {
     auto document = collection.find_one(filter_builder.view());
 
     nlohmann::json json_data;
     to_json(json_data, amf3GppAccessRegistration);
-
-    bsoncxx::document::value update_doc = bsoncxx::from_json(json_data.dump());
-
     if (document) {
+      bsoncxx::document::value update_doc =
+          bsoncxx::from_json(json_data.dump());
       auto result = collection.update_one(
           filter_builder.view(),
           bsoncxx::builder::basic::make_document(
               bsoncxx::builder::basic::kvp("$set", update_doc.view())));
       if (!result) {
         Logger::udr_db().error(
-            "MongoDB update failure! Query: %s",
-            bsoncxx::to_json(update_doc.view()).c_str());
+            "[UE Id %s] Failed to update Amf3GppAccessRegistration in MongoDB",
+            ue_id, bsoncxx::to_json(update_doc.view()).c_str());
         return false;
       }
-
       Logger::udr_db().debug(
-          "MongoDB Document %s is updated successfully with following values: "
-          "%s",
-          bsoncxx::to_json(filter_builder.view()),
-          bsoncxx::to_json(update_doc.view()));
+          "[UE Id %s] Amf3GppAccessRegistration is updated in MongoDB: %s",
+          ue_id, bsoncxx::to_json(update_doc.view()));
       return true;
     } else {
-      Logger::udr_db().error(
-          "MongoDB Document %s not found! Query could not be submitted: %s",
-          bsoncxx::to_json(filter_builder.view()),
-          bsoncxx::to_json(update_doc.view()));
-      return false;
+      json_data["ueid"] = ue_id;
+      bsoncxx::document::value insert_doc =
+          bsoncxx::from_json(json_data.dump());
+      collection.insert_one(insert_doc.view());
+      Logger::udr_db().debug(
+          "[UE Id %s] Amf3GppAccessRegistration is inserted in MongoDB: %s",
+          ue_id, bsoncxx::to_json(insert_doc.view()));
+      return true;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while create AMF context in MongoDB: %s", e.what());
+        "[UE Id %s] Exception while create AMF context in MongoDB: %s", ue_id,
+        e.what());
     return false;
   }
 }
@@ -470,67 +481,63 @@ bool mongo_db::create_amf_context_3gpp(
 //------------------------------------------------------------------------------
 bool mongo_db::query_amf_context_3gpp(
     const std::string& ue_id, nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Get Amf3GppAccessRegistration", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
     return false;
   }
-
   auto db         = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto collection = db["Amf3GppAccessRegistration"];
   bsoncxx::builder::stream::document filter_builder;
   filter_builder << "ueid" << ue_id;
-  auto filter = filter_builder.view();
 
   try {
-    auto cursor = collection.find_one(filter);
+    auto cursor = collection.find_one(filter_builder.view());
 
     if (cursor) {
       oai::udr::model::Amf3GppAccessRegistration amf3gppaccessregistration = {};
       const bsoncxx::document::view row = cursor.value().view();
-
       from_json(
           nlohmann::json::parse(bsoncxx::to_json(row)),
           amf3gppaccessregistration);
       to_json(json_data, amf3gppaccessregistration);
-
+      Logger::udr_db().debug(
+          "[UE Id %s] Amf3GppAccessRegistration: %s", ue_id, json_data.dump());
       return true;
     } else {
       Logger::udr_db().info(
-          "AMF 3GPP Access Registration for UE ID %s not found in MongoDB",
-          ue_id.c_str());
+          "[UE Id %s] AMF 3GPP Access Registration for not found in MongoDB",
+          ue_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query AMF context from MongoDB: %s", e.what());
-    return false;
-  } catch (const std::exception& e) {
-    Logger::udr_db().error(
-        "Exception while query sm data from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while query AMF context from MongoDB: %s", ue_id,
+        e.what());
     return false;
   }
 }
+
 //------------------------------------------------------------------------------
 bool mongo_db::insert_authentication_status(
     const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
     nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Put AuthenticationStatus", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
     return false;
   }
-
   // Get the database and collection
   auto db         = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto collection = db["AuthenticationStatus"];
-  auto filter     = bsoncxx::builder::stream::document{}
-                << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
+  bsoncxx::builder::stream::document filter_builder;
+  filter_builder << "ueid" << ue_id;
 
   try {
     bsoncxx::stdx::optional<bsoncxx::document::value> result =
-        collection.find_one(filter.view());
-
+        collection.find_one(filter_builder.view());
     nlohmann::json tmp_json;
     to_json(tmp_json, authEvent);
     tmp_json["ueid"] = ue_id;
@@ -538,71 +545,75 @@ bool mongo_db::insert_authentication_status(
 
     if (result) {
       auto updateResult = collection.update_one(
-          filter.view(),
+          filter_builder.view(),
           bsoncxx::builder::basic::make_document(
               bsoncxx::builder::basic::kvp("$set", document.view())));
       if (!updateResult) {
-        Logger::udr_db().error("Failed to update AuthenticationStatus");
+        Logger::udr_db().error(
+            "[UE Id %s] Failed to update AuthenticationStatus", ue_id);
         return false;
       }
+      json_data = tmp_json;
+      Logger::udr_db().debug(
+          "[UE Id %s] Successfully updated AuthenticationStatus: %s", ue_id,
+          json_data.dump());
     } else {
       auto insertResult = collection.insert_one(document.view());
       if (!insertResult) {
-        Logger::udr_db().error("Failed to insert AuthenticationStatus");
+        Logger::udr_db().error(
+            "[UE Id %s] Failed to insert AuthenticationStatus", ue_id);
         return false;
       }
+      json_data = tmp_json;
+      Logger::udr_db().debug(
+          "[UE Id %s] Successfully inserted AuthenticationStatus: %s", ue_id,
+          json_data.dump());
     }
-
-    Logger::udr_db().info(
-        "AuthenticationStatus PUT: %s", tmp_json.dump().c_str());
-
     return true;
-
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while insert authentication status in MongoDB: %s",
-        e.what());
+        "[UE Id %s] Exception while put AuthenticationStatus in MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
 }
 
 //------------------------------------------------------------------------------
 bool mongo_db::delete_authentication_status(const std::string& ue_id) {
+  Logger::udr_db().info("[UE Id %s] Delete AuthenticationStatus", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
     return false;
   }
-
   mongocxx::database db     = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   mongocxx::collection coll = db["AuthenticationStatus"];
-
   bsoncxx::builder::stream::document filter_builder;
-  filter_builder
-      << "ueid"
-      << ue_id;  // Create a filter document for matching the "ueid" field
+  filter_builder << "ueid" << ue_id;
 
   try {
     auto result = coll.delete_one(
         filter_builder.view());  // Delete the document matching the filter
     if (result) {
       if (result->deleted_count() > 0) {
-        Logger::udr_db().debug("AuthenticationStatus DELETE - successful");
-
+        Logger::udr_db().debug(
+            "[UE Id %s] Successfully deleted AuthenticationStatus", ue_id);
         return true;
       } else {
         Logger::udr_db().info(
-            "No document found with ueid '%s'", ue_id.c_str());
+            "[UE Id %s] No AuthenticationStatus found", ue_id.c_str());
         return false;
       }
     } else {
-      Logger::udr_db().error("Failed to delete document in MongoDB");
+      Logger::udr_db().error(
+          "[UE Id %s] Failed to delete AuthenticationStatus");
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while delete authentication status from MongoDB: %s",
-        e.what());
+        "[UE Id %s] Exception while delete AuthenticationStatus from MongoDB: "
+        "%s",
+        ue_id, e.what());
     return false;
   }
 }
@@ -610,49 +621,48 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
 //------------------------------------------------------------------------------
 bool mongo_db::query_authentication_status(
     const std::string& ue_id, nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Get AuthenticationStatus", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
     return false;
   }
-
-  Logger::udr_db().info("Query Authentication Status");
-
   // Get the database and collection
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["AuthenticationStatus"];
-
   // Build the query
-  auto query = bsoncxx::builder::stream::document{}
-               << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
+  bsoncxx::builder::stream::document filter_builder;
+  filter_builder << "ueid" << ue_id;
 
   try {
     // Execute the query and get the result
     bsoncxx::stdx::optional<bsoncxx::document::value> result =
-        coll.find_one(query.view());
+        coll.find_one(filter_builder.view());
 
     // Check if the result is not empty
     if (result) {
       // Convert the result object to a JSON string
       std::string result_str = bsoncxx::to_json(result->view());
-
-      // Log the result using the Logger::udr_db().info() method
-      Logger::udr_db().info("MongoDB Result: %s", result_str.c_str());
+      Logger::udr_db().debug(
+          "[UE Id %s] Get AuthenticationStatus: %s", result_str);
 
       AuthEvent authentication_status = {};
       from_json(nlohmann::json::parse(result_str), authentication_status);
       to_json(json_data, authentication_status);
+      Logger::udr_db().debug(
+          "[UE Id %s] AuthenticationStatus: %s", ue_id, json_data.dump());
       return true;
     } else {
       Logger::udr_db().error(
-          "AuthenticationStatus no data！ Query filter: %s",
-          bsoncxx::to_json(query.view()).c_str());
+          "[UE Id %s] AuthenticationStatus not found", ue_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query authentication data from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while query AuthenticationStatus from MongoDB: "
+        "%s",
+        ue_id, e.what());
     return false;
   }
 }
@@ -661,52 +671,50 @@ bool mongo_db::query_authentication_status(
 bool mongo_db::query_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
     nlohmann::json& json_data) {
+  Logger::udr_db().info(
+      "[UE Id %s] Get SdmSubscription with subscription ID %s", ue_id, subs_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
     return false;
   }
-
   // Select the appropriate database and collection
   mongocxx::database db     = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   mongocxx::collection coll = db["SdmSubscriptions"];
   bsoncxx::builder::stream::document filter;
-
-  // TODO Error Handling
-  filter << "ueid" << ue_id << "subsId" << std::stoi(subs_id);
-
+  try {
+    filter << "ueid" << ue_id << "subsId" << std::stoi(subs_id);
+  } catch (std::exception& err) {
+    Logger::udr_db().error(
+        "[UE Id %s] Exception while query authentication data from MongoDB: %s",
+        ue_id, err.what());
+    return false;
+  }
   try {
     auto result = coll.find_one(filter.view());
-    Logger::udr_db().debug(
-        "SdmSubscription Query Filter: %s", bsoncxx::to_json(filter.view()));
     if (result) {
       auto str_result = bsoncxx::to_json(result->view());
       oai::udr::model::SdmSubscription sdmSubscriptions = {};
 
       from_json(nlohmann::json::parse(str_result), sdmSubscriptions);
-
-      // Convert SdmSubscriptions to json
       to_json(json_data, sdmSubscriptions);
 
       Logger::udr_db().debug(
-          "SdmSubscription Query Result: %s", json_data.dump());
-
-      Logger::udr_db().debug(
-          "Successfully queried SDM subscription from MongoDB: UE ID=%s, "
-          "Subscription ID=%s",
-          ue_id, subs_id);
+          "[UE Id %s] SdmSubscription with id %s: %s", ue_id, subs_id,
+          json_data.dump());
       return true;
     } else {
       Logger::udr_db().info(
-          "Failed to query SDM subscription from MongoDB: UE ID=%s, "
-          "Subscription "
-          "ID=%s",
+          "[UE Id %s] Failed to query SdmSubscription from MongoDB with "
+          "subscription ID %s",
           ue_id, subs_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query sdm subscription from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while query SdmSubscription with subscription ID "
+        "%s: %s",
+        ue_id, subs_id, e.what());
     return false;
   }
 }
@@ -714,36 +722,45 @@ bool mongo_db::query_sdm_subscription(
 //------------------------------------------------------------------------------
 bool mongo_db::delete_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id) {
+  Logger::udr_db().info("[UE Id %s] Delete SdmSubscription", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
     return false;
   }
-
   // Select the appropriate database and collection
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SdmSubscriptions"];
   bsoncxx::builder::stream::document filter;
-
-  // TODO Error Handling
-  filter << "ueid" << ue_id << "subsId" << stoi(subs_id);
-
+  try {
+    filter << "ueid" << ue_id << "subsId" << stoi(subs_id);
+  } catch (std::exception& e) {
+    Logger::udr_db().error(
+        "[UE Id %s] Exception while delete SdmSubscription data from MongoDB: "
+        "%s",
+        ue_id, e.what());
+    return false;
+  }
   try {
     auto result = coll.delete_one(filter.view());
 
     if (!result || result->deleted_count() == 0) {
       Logger::udr_db().error(
-          "Failed to delete document from MongoDB: ueid='%s' subsId='%s'",
-          ue_id.c_str(), subs_id.c_str());
+          "[UE Id %s] Failed to delete SdmSubscription with subscription ID %s "
+          "from MongoDB",
+          ue_id, subs_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while delete sdm subscription from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while delete sdm subscription from MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
-
+  Logger::udr_db().debug(
+      "[UE Id %s] Successfully deleted SdmSubscription with subscription ID %s",
+      ue_id, subs_id);
   return true;
 }
 
@@ -752,20 +769,28 @@ bool mongo_db::update_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
     oai::udr::model::SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
+  Logger::udr_db().info(
+      "[UE Id %s] Update SdmSubscription with subscription ID %s", ue_id,
+      subs_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
     return false;
   }
-
   // Select the appropriate database and collection
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SdmSubscriptions"];
 
   // Prepare filter for update
   bsoncxx::builder::stream::document filter;
-  filter << "ueid" << ue_id << "subsId" << subs_id;
-
+  try {
+    filter << "ueid" << ue_id << "subsId" << stoi(subs_id);
+  } catch (std::exception& e) {
+    Logger::udr_db().error(
+        "[UE Id %s] Exception while update SdmSubscription data in MongoDB: %s",
+        ue_id, e.what());
+    return false;
+  }
   nlohmann::json sdmSubscriptionJson;
   to_json(sdmSubscriptionJson, sdmSubscription);
   bsoncxx::document::value update_doc =
@@ -782,29 +807,29 @@ bool mongo_db::update_sdm_subscription(
     if (result) {
       if (result->modified_count() == 1) {
         json_data = sdmSubscriptionJson;
-        Logger::udr_db().info(
-            "Successfully updated SDM subscription in MongoDB. UE ID: %s, Subs "
-            "ID: %s: %s",
+        Logger::udr_db().debug(
+            "[UE Id %s] Successfully updated SdmSubscription with subscription "
+            "ID %s in MongoDB: %s",
             ue_id, subs_id, json_data.dump());
 
         return true;
       } else {
         Logger::udr_db().error(
-            "Failed to update SDM subscription. SDM Subscription UE ID: %s, "
-            "Subs ID: %s not found",
+            "[UE Id %s] Failed to update SdmSubscription with subscription ID "
+            "%s",
             ue_id, subs_id);
         return false;
       }
     } else {
       Logger::udr_db().error(
-          "Failed to update SDM subscription in MongoDB. UE ID: %s, Subs ID: "
-          "%s",
+          "[UE Id %s] Failed to update SdmSubscription with subscription ID %s",
           ue_id, subs_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while update sdm subscription in MongoDB: %s", e.what());
+        "[UE Id %s] Exception while update SdmSubscription in MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
 }
@@ -813,27 +838,26 @@ bool mongo_db::update_sdm_subscription(
 bool mongo_db::create_sdm_subscriptions(
     const std::string& ue_id, oai::udr::model::SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Create SdmSubscription", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
-    Logger::udr_db().info("The connection to the MySQL is currently inactive");
+    Logger::udr_db().info(
+        "The connection to the MongoDB is currently inactive");
     return false;
   }
-
   // Select the appropriate database and collection
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SdmSubscriptions"];
 
   bsoncxx::builder::stream::document filter_builder;
   filter_builder << "ueid" << ue_id;
-  bsoncxx::document::view_or_value filter = filter_builder.view();
 
   nlohmann::json tmp_json;
   to_json(tmp_json, sdmSubscription);
   tmp_json["ueid"] = ue_id;
 
   try {
-    auto cursor = coll.find(filter.view());
-
+    auto cursor = coll.find(filter_builder.view());
     std::list<int32_t> subsIds;
     for (auto doc : cursor) {
       bsoncxx::document::element subs_id_elem = doc["subsId"];
@@ -843,54 +867,54 @@ bool mongo_db::create_sdm_subscriptions(
       }
     }
     subsIds.sort();
-    int count   = 0;
-    int subs_id = 0;
+    int count = 0;
     for (auto el : subsIds) {
       if (el != count) {
         break;
       }
       count++;
     }
-    subs_id = count;
-
-    tmp_json["subsId"] = subs_id;
+    tmp_json["subsId"] = count;
     auto document      = bsoncxx::from_json(tmp_json.dump());
 
     auto result = coll.insert_one(document.view());
     if (result) {
       json_data = tmp_json;
       Logger::udr_db().debug(
-          "SdmSubscriptions POST: %s", json_data.dump().c_str());
+          "[UE Id %s] Successfully create SdmSubscriptions: %s", ue_id,
+          json_data.dump());
       return true;
     } else {
-      Logger::udr_db().error("Failed to insert document into MongoDB");
+      Logger::udr_db().error(
+          "[UE Id %s] Failed to insert SdmSubscriptions into MongoDB", ue_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while create sdm subscription in MongoDB: %s", e.what());
+        "[UE Id %s] Exception while create SdmSubscriptions in MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
 }
+
 //------------------------------------------------------------------------------
 bool mongo_db::query_sdm_subscriptions(
     const std::string& ue_id, nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Get SdmSubscriptions", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
     return false;
   }
-
-  bsoncxx::document::view_or_value query =
-      bsoncxx::builder::stream::document{}
-      << "ueid" << ue_id << bsoncxx::builder::stream::finalize;
+  bsoncxx::builder::stream::document filter_builder;
+  filter_builder << "ueid" << ue_id;
 
   // Select the appropriate database and collection
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SdmSubscriptions"];
 
   try {
-    mongocxx::cursor result = coll.find(query.view());
+    mongocxx::cursor result = coll.find(filter_builder.view());
     nlohmann::json j        = {};
     nlohmann::json tmp      = {};
 
@@ -903,16 +927,19 @@ bool mongo_db::query_sdm_subscriptions(
     }
     json_data = j;
     Logger::udr_db().debug(
-        "SdmSubscriptions GET: %s", json_data.dump().c_str());
+        "[UE Id %s] SdmSubscriptions: %s", ue_id, json_data.dump());
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query sdm subscription from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while query sdm subscription from MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
 }
+
 //------------------------------------------------------------------------------
 bool mongo_db::query_sm_data(nlohmann::json& json_data) {
+  Logger::udr_db().info("Get SessionManagementSubscriptionData");
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
@@ -942,11 +969,9 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query sm data from MongoDB: %s", e.what());
-    return false;
-  } catch (const std::exception& e) {
-    Logger::udr_db().error(
-        "Exception while query sm data from MongoDB: %s", e.what());
+        "Exception while query SessionManagementSubscriptionData from MongoDB: "
+        "%s",
+        e.what());
     return false;
   }
 }
@@ -957,6 +982,8 @@ bool mongo_db::query_sm_data(
     nlohmann::json& json_data,
     const std::optional<oai::model::common::Snssai>& snssai,
     const std::optional<std::string>& dnn) {
+  Logger::udr_db().info(
+      "[UE Id %s] Get SessionManagementSubscriptionData", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
@@ -967,25 +994,22 @@ bool mongo_db::query_sm_data(
   auto coll   = db["SessionManagementSubscriptionData"];
   auto filter = bsoncxx::builder::stream::document{};
   filter << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id;
-
   if (snssai.value().getSst() > 0) {
     filter << "singleNssai.sst" << snssai.value().getSst();
   }
-
   if (dnn.has_value()) {
     filter << "dnnConfigurations." + dnn.value()
            << bsoncxx::builder::stream::open_document << "$exists" << true
            << bsoncxx::builder::stream::close_document;
   }
-
   try {
     auto result = coll.find(filter.view());
 
     auto row = result.begin();
     if (row == result.end()) {
       Logger::udr_db().error(
-          "Empty document in MongoDB: ueid=%s, servingPlmnid=%s", ue_id.c_str(),
-          serving_plmn_id.c_str());
+          "[UE Id %s] Empty document for servingPlmnid=%s", ue_id,
+          serving_plmn_id);
       return false;
     }
 
@@ -993,16 +1017,14 @@ bool mongo_db::query_sm_data(
       nlohmann::json j = query_sm_data_helper(view);
       json_data += j;
       Logger::udr_db().debug(
-          "SessionManagementSubscriptionData: %s", j.dump().c_str());
+          "[UE Id %s] SessionManagementSubscriptionData: %s", ue_id, j.dump());
     }
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query sm data from MongoDB: %s", e.what());
-    return false;
-  } catch (const std::exception& e) {
-    Logger::udr_db().error(
-        "Exception while query sm data from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while SessionManagementSubscriptionData from "
+        "MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
 }
@@ -1027,6 +1049,7 @@ bool mongo_db::insert_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
     const oai::udr::model::SmfRegistration& smfRegistration,
     nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Insert SmfRegistrations", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
@@ -1055,31 +1078,38 @@ bool mongo_db::insert_smf_context_non_3gpp(
                       bsoncxx::builder::basic::kvp("$set", update_doc.view())));
 
       if (!update_result) {
-        Logger::udr_db().error("Failed to update SmfRegistration document.");
+        Logger::udr_db().error(
+            "[UE Id %s] Failed to update SmfRegistration", ue_id);
         return false;
       }
     } else {
       auto insert_result = coll.insert_one(update_doc.view());
 
       if (!insert_result) {
-        Logger::udr_db().error("Failed to insert SmfRegistration document.");
+        Logger::udr_db().error(
+            "[UE Id %s] Failed to insert SmfRegistration", ue_id);
         return false;
       }
     }
 
     to_json(json_data, smfRegistration);
-    Logger::udr_db().debug("SmfRegistration PUT: %s", json_data.dump().c_str());
-
+    Logger::udr_db().debug(
+        "[UE Id %s] Successfully put SmfRegistration: %s", ue_id,
+        json_data.dump());
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while insert smf context in MongoDB: %s", e.what());
+        "[UE Id %s] Exception while insert smf context in MongoDB: %s", ue_id,
+        e.what());
     return false;
   }
 }
 //------------------------------------------------------------------------------
 bool mongo_db::delete_smf_context(
     const std::string& ue_id, const int32_t& pdu_session_id) {
+  Logger::udr_db().info(
+      "[UE Id %s] Delete SmfRegistrations for PduSessionId: %i", ue_id,
+      pdu_session_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
@@ -1089,22 +1119,24 @@ bool mongo_db::delete_smf_context(
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SmfRegistrations"];
 
-  bsoncxx::builder::stream::document query_builder{};
-  query_builder << "ueid" << ue_id << "subpduSessionId" << pdu_session_id;
+  bsoncxx::builder::stream::document filter_builder{};
+  filter_builder << "ueid" << ue_id << "subpduSessionId" << pdu_session_id;
 
   try {
-    auto result = coll.delete_one(query_builder.view());
+    auto result = coll.delete_one(filter_builder.view());
     if (result->deleted_count() == 0) {
       Logger::udr_db().warn(
-          "No documents matching query found. Query: %s",
-          bsoncxx::to_json(query_builder.view()).c_str());
+          "[UE Id %s] SmfRegistration for PduSessionId %i not found", ue_id,
+          pdu_session_id);
       return false;
     }
-    Logger::udr_db().debug("SmfRegistration DELETE - successful");
+    Logger::udr_db().debug(
+        "[UE Id %s] Successfully delete SmfRegistration", ue_id);
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while delete smf context from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while delete smf context from MongoDB: %s", ue_id,
+        e.what());
     return false;
   }
 }
@@ -1113,6 +1145,9 @@ bool mongo_db::delete_smf_context(
 bool mongo_db::query_smf_registration(
     const std::string& ue_id, const int32_t& pdu_session_id,
     nlohmann::json& json_data) {
+  Logger::udr_db().info(
+      "[UE Id %s] Get SmfRegistrations for PduSessionId: %i", ue_id,
+      pdu_session_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
@@ -1121,30 +1156,32 @@ bool mongo_db::query_smf_registration(
 
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SmfRegistrations"];
+  bsoncxx::builder::stream::document filter_builder{};
+  filter_builder << "ueid" << ue_id << "subpduSessionId" << pdu_session_id;
 
   try {
-    bsoncxx::stdx::optional<bsoncxx::document::value> result = coll.find_one(
-        bsoncxx::builder::stream::document{}
-        << "ueid" << ue_id << "subpduSessionId" << pdu_session_id
-        << bsoncxx::builder::stream::finalize);
+    bsoncxx::stdx::optional<bsoncxx::document::value> result =
+        coll.find_one(filter_builder.view());
 
     if (result) {
-      auto doc_view                   = result->view();
       SmfRegistration smfregistration = {};
-      from_json(bsoncxx::to_json(doc_view), smfregistration);
+      from_json(bsoncxx::to_json(result->view()), smfregistration);
       to_json(json_data, smfregistration);
 
-      Logger::udr_db().debug("SmfRegistration GET: %s", json_data.dump());
+      Logger::udr_db().debug(
+          "[UE Id %s] SmfRegistration for PduSessionId %i: %s", ue_id,
+          pdu_session_id, json_data.dump());
       return true;
     } else {
       Logger::udr_db().error(
-          "SmfRegistration no data！ue_id: %s, pdu_session_id: %d",
-          ue_id.c_str(), pdu_session_id);
+          "[UE Id %s] SmfRegistration not found for PduSessionId %i", ue_id,
+          pdu_session_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query smf context from MongoDB: %s", e.what());
+        "[UE Id %s] Exception while query smf context from MongoDB: %s", ue_id,
+        e.what());
     return false;
   }
 }
@@ -1152,6 +1189,7 @@ bool mongo_db::query_smf_registration(
 //------------------------------------------------------------------------------
 bool mongo_db::query_smf_reg_list(
     const std::string& ue_id, nlohmann::json& json_data) {
+  Logger::udr_db().info("[UE Id %s] Get SmfRegistrations", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
@@ -1167,25 +1205,23 @@ bool mongo_db::query_smf_reg_list(
   try {
     mongocxx::cursor result = coll.find(filter.view());
 
-    nlohmann::json j   = {};
-    nlohmann::json tmp = {};
-
+    nlohmann::json j = {};
     for (const bsoncxx::document::view& doc : result) {
       SmfRegistration smfregistration = {};
-
-      tmp.clear();
+      nlohmann::json tmp              = {};
       from_json(bsoncxx::to_json(doc), smfregistration);
       to_json(tmp, smfregistration);
       j += tmp;
     }
     json_data = j;
 
-    Logger::udr_db().debug("SmfRegistrations GET: %s", j.dump().c_str());
+    Logger::udr_db().debug("[UE Id %s] SmfRegistrations: %s", ue_id, j.dump());
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query smf registration list from MongoDB: %s",
-        e.what());
+        "[UE Id %s] Exception while query smf registration list from MongoDB: "
+        "%s",
+        ue_id, e.what());
     return false;
   }
 }
@@ -1194,6 +1230,9 @@ bool mongo_db::query_smf_reg_list(
 bool mongo_db::query_smf_select_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
+  Logger::udr_db().info(
+      "[UE Id %s] Get SmfSelectionSubscriptionData for ServingPlmnId %s", ue_id,
+      serving_plmn_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
@@ -1202,17 +1241,17 @@ bool mongo_db::query_smf_select_data(
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
   auto coll = db["SmfSelectionSubscriptionData"];
 
-  auto query_filter = bsoncxx::builder::stream::document{}
-                      << "ueid" << ue_id << "servingPlmnid" << serving_plmn_id
-                      << bsoncxx::builder::stream::finalize;
+  bsoncxx::builder::stream::document filter{};
+  filter << "ueid" << ue_id;
 
   try {
-    auto query_result = coll.find_one(query_filter.view());
+    auto query_result = coll.find_one(filter.view());
 
     if (!query_result) {
       Logger::udr_db().error(
-          "SmfSelectionSubscriptionData no data！Query: %s",
-          bsoncxx::to_json(query_filter.view()).c_str());
+          "[UE Id %s] SmfSelectionSubscriptionData for ServingPlmnId %s not "
+          "found",
+          ue_id, serving_plmn_id);
       return false;
     }
 
@@ -1220,18 +1259,18 @@ bool mongo_db::query_smf_select_data(
     from_json(
         nlohmann::json::parse(bsoncxx::to_json(query_result.value().view())),
         smfselectionsubscriptiondata);
-
     to_json(json_data, smfselectionsubscriptiondata);
 
     Logger::udr_db().debug(
-        "SmfSelectionSubscriptionData GET: %s", json_data.dump().c_str());
+        "[UE Id %s] SmfSelectionSubscriptionData for ServingPlmnId %s: %s",
+        ue_id, serving_plmn_id, json_data.dump());
 
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
-        "Exception while query smf selection subscription data from MongoDB: "
-        "%s",
-        e.what());
+        "[UE Id %s] Exception while query smf selection subscription data from "
+        "MongoDB: %s",
+        ue_id, e.what());
     return false;
   }
 }
