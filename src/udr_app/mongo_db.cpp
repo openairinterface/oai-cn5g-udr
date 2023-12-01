@@ -188,10 +188,13 @@ bool mongo_db::insert_authentication_subscription(
     const std::string& id,
     const oai::udr::model::AuthenticationSubscription& auth_subscription,
     nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Select the appropriate database and collection
@@ -207,6 +210,8 @@ bool mongo_db::insert_authentication_subscription(
       Logger::udr_db().error(
           "[UE Id %s] AuthenticationSubscription for UE Id already exists.",
           id);
+      problemDetails.setCause("SYSTEM_FAILURE");
+      to_json(json_data, problemDetails);
       return false;
     }
 
@@ -222,16 +227,22 @@ bool mongo_db::insert_authentication_subscription(
         "[UE Id %s] Exception while insert AuthenticationSubscription in "
         "MongoDB: %s",
         id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
 
-bool mongo_db::delete_authentication_subscription(const std::string& id) {
+bool mongo_db::delete_authentication_subscription(const std::string& id,
+                                                  nlohmann::json& json_data) {
   Logger::udr_db().info("[UE Id %s] Delete AuthenticationSubscription", id);
+  ProblemDetails problemDetails = {};
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Select the appropriate database and collection
@@ -254,6 +265,8 @@ bool mongo_db::delete_authentication_subscription(const std::string& id) {
           "[UE Id %s] Failed to delete document from MongoDB: Document not "
           "found",
           id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
     Logger::udr_db().debug("[UE Id %s] Deleted document from MongoDB", id);
@@ -263,17 +276,22 @@ bool mongo_db::delete_authentication_subscription(const std::string& id) {
         "[UE Id %s] Exception while delete authentication subscription from "
         "MongoDB: %s",
         id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
 
 bool mongo_db::query_authentication_subscription(
     const std::string& id, nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Query AuthenticationSubscription", id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Get the database and collection
@@ -298,7 +316,8 @@ bool mongo_db::query_authentication_subscription(
     } else {
       Logger::udr_db().error(
           "[UE Id %s] AuthenticationSubscription not Found！", id);
-
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
@@ -306,6 +325,8 @@ bool mongo_db::query_authentication_subscription(
         "[UE Id %s] Exception while query AuthenticationSubscription from "
         "MongoDB: %s",
         id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -315,10 +336,13 @@ bool mongo_db::update_authentication_subscription(
     const std::string& ue_id,
     const std::vector<oai::model::common::PatchItem>& patchItem,
     nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Update AuthenticationSubscription", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Get the database and collection
@@ -350,6 +374,8 @@ bool mongo_db::update_authentication_subscription(
           if (!updateResult) {
             Logger::udr_db().error(
                 "[UE Id %s] Failed to update AuthenticationSubscription");
+            problemDetails.setCause("SYSTEM_FAILURE");
+            to_json(json_data, problemDetails);
             return false;
           }
         }
@@ -363,6 +389,8 @@ bool mongo_db::update_authentication_subscription(
     } else {
       Logger::udr_db().error(
           "[UE Id %s] AuthenticationSubscription not found!", ue_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
@@ -370,6 +398,8 @@ bool mongo_db::update_authentication_subscription(
         "[UE Id %s] Exception while update AuthenticationSubscription in "
         "MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -378,12 +408,15 @@ bool mongo_db::update_authentication_subscription(
 bool mongo_db::query_am_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info(
       "[UE Id %s] Query AccessAndMobilitySubscriptionData", ue_id);
   // Establish MongoDB connection
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Get the database and collection
@@ -410,6 +443,8 @@ bool mongo_db::query_am_data(
           "[UE Id %s] Failed to query AccessAndMobilitySubscriptionData from "
           "MongoDB",
           ue_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
@@ -417,6 +452,8 @@ bool mongo_db::query_am_data(
         "[UE Id %s] Exception while query AccessAndMobilitySubscriptionData "
         "from MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   return true;
@@ -425,11 +462,14 @@ bool mongo_db::query_am_data(
 //------------------------------------------------------------------------------
 bool mongo_db::create_amf_context_3gpp(
     const std::string& ue_id,
-    Amf3GppAccessRegistration& amf3GppAccessRegistration) {
+    Amf3GppAccessRegistration& amf3GppAccessRegistration, nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Put Amf3GppAccessRegistration", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Select the appropriate database and collection
@@ -454,6 +494,8 @@ bool mongo_db::create_amf_context_3gpp(
         Logger::udr_db().error(
             "[UE Id %s] Failed to update Amf3GppAccessRegistration in MongoDB",
             ue_id, bsoncxx::to_json(update_doc.view()).c_str());
+        problemDetails.setCause("SYSTEM_FAILURE");
+        to_json(json_data, problemDetails);
         return false;
       }
       Logger::udr_db().debug(
@@ -474,6 +516,8 @@ bool mongo_db::create_amf_context_3gpp(
     Logger::udr_db().error(
         "[UE Id %s] Exception while create AMF context in MongoDB: %s", ue_id,
         e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -481,10 +525,13 @@ bool mongo_db::create_amf_context_3gpp(
 //------------------------------------------------------------------------------
 bool mongo_db::query_amf_context_3gpp(
     const std::string& ue_id, nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Get Amf3GppAccessRegistration", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   auto db         = mongo_client[udr_cfg.db_conf.db_name.c_str()];
@@ -509,12 +556,16 @@ bool mongo_db::query_amf_context_3gpp(
       Logger::udr_db().info(
           "[UE Id %s] AMF 3GPP Access Registration for not found in MongoDB",
           ue_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
         "[UE Id %s] Exception while query AMF context from MongoDB: %s", ue_id,
         e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -523,10 +574,13 @@ bool mongo_db::query_amf_context_3gpp(
 bool mongo_db::insert_authentication_status(
     const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
     nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Put AuthenticationStatus", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Get the database and collection
@@ -548,20 +602,25 @@ bool mongo_db::insert_authentication_status(
           filter_builder.view(),
           bsoncxx::builder::basic::make_document(
               bsoncxx::builder::basic::kvp("$set", document.view())));
-      if (!updateResult) {
+      if (updateResult && updateResult->matched_count() == 1){
+        json_data = tmp_json;
+        Logger::udr_db().debug(
+                "[UE Id %s] Successfully updated AuthenticationStatus: %s", ue_id,
+                json_data.dump());
+      } else {
         Logger::udr_db().error(
             "[UE Id %s] Failed to update AuthenticationStatus", ue_id);
+        problemDetails.setCause("DATA_NOT_FOUND");
+        to_json(json_data, problemDetails);
         return false;
       }
-      json_data = tmp_json;
-      Logger::udr_db().debug(
-          "[UE Id %s] Successfully updated AuthenticationStatus: %s", ue_id,
-          json_data.dump());
     } else {
       auto insertResult = collection.insert_one(document.view());
       if (!insertResult) {
         Logger::udr_db().error(
             "[UE Id %s] Failed to insert AuthenticationStatus", ue_id);
+        problemDetails.setCause("DATA_NOT_FOUND");
+        to_json(json_data, problemDetails);
         return false;
       }
       json_data = tmp_json;
@@ -574,16 +633,22 @@ bool mongo_db::insert_authentication_status(
     Logger::udr_db().error(
         "[UE Id %s] Exception while put AuthenticationStatus in MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
 
 //------------------------------------------------------------------------------
-bool mongo_db::delete_authentication_status(const std::string& ue_id) {
+bool mongo_db::delete_authentication_status(const std::string& ue_id,
+                                            nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Delete AuthenticationStatus", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   mongocxx::database db     = mongo_client[udr_cfg.db_conf.db_name.c_str()];
@@ -594,19 +659,15 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
   try {
     auto result = coll.delete_one(
         filter_builder.view());  // Delete the document matching the filter
-    if (result) {
-      if (result->deleted_count() > 0) {
-        Logger::udr_db().debug(
-            "[UE Id %s] Successfully deleted AuthenticationStatus", ue_id);
-        return true;
-      } else {
-        Logger::udr_db().info(
-            "[UE Id %s] No AuthenticationStatus found", ue_id.c_str());
-        return false;
-      }
+    if (result && result->deleted_count() > 0) {
+      Logger::udr_db().debug(
+          "[UE Id %s] Successfully deleted AuthenticationStatus", ue_id);
+      return true;
     } else {
-      Logger::udr_db().error(
-          "[UE Id %s] Failed to delete AuthenticationStatus");
+      Logger::udr_db().info(
+          "[UE Id %s] No AuthenticationStatus found", ue_id.c_str());
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
@@ -614,6 +675,8 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
         "[UE Id %s] Exception while delete AuthenticationStatus from MongoDB: "
         "%s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -621,11 +684,14 @@ bool mongo_db::delete_authentication_status(const std::string& ue_id) {
 //------------------------------------------------------------------------------
 bool mongo_db::query_authentication_status(
     const std::string& ue_id, nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Get AuthenticationStatus", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Get the database and collection
@@ -656,6 +722,8 @@ bool mongo_db::query_authentication_status(
     } else {
       Logger::udr_db().error(
           "[UE Id %s] AuthenticationStatus not found", ue_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
@@ -663,6 +731,8 @@ bool mongo_db::query_authentication_status(
         "[UE Id %s] Exception while query AuthenticationStatus from MongoDB: "
         "%s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -673,9 +743,12 @@ bool mongo_db::query_sdm_subscription(
     nlohmann::json& json_data) {
   Logger::udr_db().info(
       "[UE Id %s] Get SdmSubscription with subscription ID %s", ue_id, subs_id);
+  ProblemDetails problemDetails = {};
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Select the appropriate database and collection
@@ -688,6 +761,9 @@ bool mongo_db::query_sdm_subscription(
     Logger::udr_db().error(
         "[UE Id %s] Exception while query authentication data from MongoDB: %s",
         ue_id, err.what());
+    problemDetails.setCause("INVALID_QUERY_PARAM");
+    problemDetails.setInvalidParams(std::vector<InvalidParam>{{"subsId"}});
+    to_json(json_data, problemDetails);
     return false;
   }
   try {
@@ -698,16 +774,16 @@ bool mongo_db::query_sdm_subscription(
 
       from_json(nlohmann::json::parse(str_result), sdmSubscriptions);
       to_json(json_data, sdmSubscriptions);
-
       Logger::udr_db().debug(
           "[UE Id %s] SdmSubscription with id %s: %s", ue_id, subs_id,
           json_data.dump());
       return true;
     } else {
       Logger::udr_db().info(
-          "[UE Id %s] Failed to query SdmSubscription from MongoDB with "
-          "subscription ID %s",
+          "[UE Id %s] SdmSubscription with subscription ID %s not found",
           ue_id, subs_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
@@ -715,18 +791,24 @@ bool mongo_db::query_sdm_subscription(
         "[UE Id %s] Exception while query SdmSubscription with subscription ID "
         "%s: %s",
         ue_id, subs_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
 
 //------------------------------------------------------------------------------
 bool mongo_db::delete_sdm_subscription(
-    const std::string& ue_id, const std::string& subs_id) {
+    const std::string& ue_id, const std::string& subs_id,
+    nlohmann::json& json_data) {
   Logger::udr_db().info("[UE Id %s] Delete SdmSubscription", ue_id);
+  ProblemDetails problemDetails = {};
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Select the appropriate database and collection
@@ -734,28 +816,34 @@ bool mongo_db::delete_sdm_subscription(
   auto coll = db["SdmSubscriptions"];
   bsoncxx::builder::stream::document filter;
   try {
-    filter << "ueid" << ue_id << "subsId" << stoi(subs_id);
+    filter << "ueid" << ue_id << "subsId" << std::stoi(subs_id);
   } catch (std::exception& e) {
     Logger::udr_db().error(
         "[UE Id %s] Exception while delete SdmSubscription data from MongoDB: "
         "%s",
         ue_id, e.what());
+    problemDetails.setCause("INVALID_QUERY_PARAM");
+    problemDetails.setInvalidParams(std::vector<InvalidParam>{{"subsId"}});
+    to_json(json_data, problemDetails);
     return false;
   }
   try {
     auto result = coll.delete_one(filter.view());
-
     if (!result || result->deleted_count() == 0) {
       Logger::udr_db().error(
           "[UE Id %s] Failed to delete SdmSubscription with subscription ID %s "
           "from MongoDB",
           ue_id, subs_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
         "[UE Id %s] Exception while delete sdm subscription from MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   Logger::udr_db().debug(
@@ -772,9 +860,12 @@ bool mongo_db::update_sdm_subscription(
   Logger::udr_db().info(
       "[UE Id %s] Update SdmSubscription with subscription ID %s", ue_id,
       subs_id);
+  ProblemDetails problemDetails = {};
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Select the appropriate database and collection
@@ -784,11 +875,14 @@ bool mongo_db::update_sdm_subscription(
   // Prepare filter for update
   bsoncxx::builder::stream::document filter;
   try {
-    filter << "ueid" << ue_id << "subsId" << stoi(subs_id);
+    filter << "ueid" << ue_id << "subsId" << std::stoi(subs_id);
   } catch (std::exception& e) {
     Logger::udr_db().error(
         "[UE Id %s] Exception while update SdmSubscription data in MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("INVALID_QUERY_PARAM");
+    problemDetails.setInvalidParams(std::vector<InvalidParam>{{"subsId"}});
+    to_json(json_data, problemDetails);
     return false;
   }
   nlohmann::json sdmSubscriptionJson;
@@ -805,28 +899,32 @@ bool mongo_db::update_sdm_subscription(
 
     // Check for update success
     if (result) {
-      if (result->modified_count() == 1) {
+      if (result->matched_count() == 1) {
         json_data = sdmSubscriptionJson;
         Logger::udr_db().debug(
-            "[UE Id %s] Successfully updated SdmSubscription with subscription "
-            "ID %s in MongoDB: %s",
-            ue_id, subs_id, json_data.dump());
-
+                "[UE Id %s] Successfully updated SdmSubscription with subscription "
+                "ID %s in MongoDB: %s",
+                ue_id, subs_id, json_data.dump());
         return true;
       } else {
+        problemDetails.setCause("DATA_NOT_FOUND");
+        to_json(json_data, problemDetails);
         Logger::udr_db().error(
-            "[UE Id %s] Failed to update SdmSubscription with subscription ID "
-            "%s",
-            ue_id, subs_id);
+                "[UE Id %s] Failed to update SdmSubscription with subscription ID %s",
+                ue_id, subs_id);
         return false;
       }
     } else {
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       Logger::udr_db().error(
-          "[UE Id %s] Failed to update SdmSubscription with subscription ID %s",
-          ue_id, subs_id);
+              "[UE Id %s] Failed to update SdmSubscription with subscription ID %s",
+              ue_id, subs_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     Logger::udr_db().error(
         "[UE Id %s] Exception while update SdmSubscription in MongoDB: %s",
         ue_id, e.what());
@@ -839,10 +937,13 @@ bool mongo_db::create_sdm_subscriptions(
     const std::string& ue_id, oai::udr::model::SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
   Logger::udr_db().info("[UE Id %s] Create SdmSubscription", ue_id);
+  ProblemDetails problemDetails = {};
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info(
         "The connection to the MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   // Select the appropriate database and collection
@@ -887,12 +988,16 @@ bool mongo_db::create_sdm_subscriptions(
     } else {
       Logger::udr_db().error(
           "[UE Id %s] Failed to insert SdmSubscriptions into MongoDB", ue_id);
+      problemDetails.setCause("SYSTEM_FAILURE");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
         "[UE Id %s] Exception while create SdmSubscriptions in MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -900,10 +1005,13 @@ bool mongo_db::create_sdm_subscriptions(
 //------------------------------------------------------------------------------
 bool mongo_db::query_sdm_subscriptions(
     const std::string& ue_id, nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Get SdmSubscriptions", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   bsoncxx::builder::stream::document filter_builder;
@@ -915,15 +1023,20 @@ bool mongo_db::query_sdm_subscriptions(
 
   try {
     mongocxx::cursor result = coll.find(filter_builder.view());
+
     nlohmann::json j        = {};
     nlohmann::json tmp      = {};
-
     for (const bsoncxx::document::view& doc : result) {
       SdmSubscription sdmsubscriptions = {};
       tmp.clear();
-      from_json(bsoncxx::to_json(doc), sdmsubscriptions);
+      from_json(nlohmann::json::parse(bsoncxx::to_json(doc)), sdmsubscriptions);
       to_json(tmp, sdmsubscriptions);
       j.push_back(tmp);
+    }
+    if(j.empty()){
+      problemDetails.setCause("USER_NOT_FOUND");
+      to_json(json_data, problemDetails);
+      return false;
     }
     json_data = j;
     Logger::udr_db().debug(
@@ -933,16 +1046,21 @@ bool mongo_db::query_sdm_subscriptions(
     Logger::udr_db().error(
         "[UE Id %s] Exception while query sdm subscription from MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
 
 //------------------------------------------------------------------------------
 bool mongo_db::query_sm_data(nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("Get SessionManagementSubscriptionData");
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 
@@ -957,6 +1075,8 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
       Logger::udr_db().error(
           "Empty document in MongoDB Collection "
           "SessionManagementSubscriptionData");
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
 
@@ -972,6 +1092,8 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
         "Exception while query SessionManagementSubscriptionData from MongoDB: "
         "%s",
         e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -982,11 +1104,14 @@ bool mongo_db::query_sm_data(
     nlohmann::json& json_data,
     const std::optional<oai::model::common::Snssai>& snssai,
     const std::optional<std::string>& dnn) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info(
       "[UE Id %s] Get SessionManagementSubscriptionData", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 
@@ -1010,6 +1135,8 @@ bool mongo_db::query_sm_data(
       Logger::udr_db().error(
           "[UE Id %s] Empty document for servingPlmnid=%s", ue_id,
           serving_plmn_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
 
@@ -1025,6 +1152,8 @@ bool mongo_db::query_sm_data(
         "[UE Id %s] Exception while SessionManagementSubscriptionData from "
         "MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -1049,10 +1178,13 @@ bool mongo_db::insert_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
     const oai::udr::model::SmfRegistration& smfRegistration,
     nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Insert SmfRegistrations", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 
@@ -1076,23 +1208,25 @@ bool mongo_db::insert_smf_context_non_3gpp(
       auto update_result = coll.update_one(
           filter, bsoncxx::builder::basic::make_document(
                       bsoncxx::builder::basic::kvp("$set", update_doc.view())));
-
       if (!update_result) {
         Logger::udr_db().error(
             "[UE Id %s] Failed to update SmfRegistration", ue_id);
+        problemDetails.setCause("SYSTEM_FAILURE");
+        to_json(json_data, problemDetails);
         return false;
       }
     } else {
       auto insert_result = coll.insert_one(update_doc.view());
-
       if (!insert_result) {
         Logger::udr_db().error(
             "[UE Id %s] Failed to insert SmfRegistration", ue_id);
+        problemDetails.setCause("SYSTEM_FAILURE");
+        to_json(json_data, problemDetails);
         return false;
       }
     }
 
-    to_json(json_data, smfRegistration);
+    json_data = tmp_json;
     Logger::udr_db().debug(
         "[UE Id %s] Successfully put SmfRegistration: %s", ue_id,
         json_data.dump());
@@ -1101,18 +1235,24 @@ bool mongo_db::insert_smf_context_non_3gpp(
     Logger::udr_db().error(
         "[UE Id %s] Exception while insert smf context in MongoDB: %s", ue_id,
         e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
+
 //------------------------------------------------------------------------------
 bool mongo_db::delete_smf_context(
-    const std::string& ue_id, const int32_t& pdu_session_id) {
+    const std::string& ue_id, const int32_t& pdu_session_id, nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info(
       "[UE Id %s] Delete SmfRegistrations for PduSessionId: %i", ue_id,
       pdu_session_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 
@@ -1124,10 +1264,12 @@ bool mongo_db::delete_smf_context(
 
   try {
     auto result = coll.delete_one(filter_builder.view());
-    if (result->deleted_count() == 0) {
+    if (result && result->deleted_count() == 0) {
       Logger::udr_db().warn(
           "[UE Id %s] SmfRegistration for PduSessionId %i not found", ue_id,
           pdu_session_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
     Logger::udr_db().debug(
@@ -1137,6 +1279,8 @@ bool mongo_db::delete_smf_context(
     Logger::udr_db().error(
         "[UE Id %s] Exception while delete smf context from MongoDB: %s", ue_id,
         e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -1145,12 +1289,15 @@ bool mongo_db::delete_smf_context(
 bool mongo_db::query_smf_registration(
     const std::string& ue_id, const int32_t& pdu_session_id,
     nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info(
       "[UE Id %s] Get SmfRegistrations for PduSessionId: %i", ue_id,
       pdu_session_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 
@@ -1165,7 +1312,7 @@ bool mongo_db::query_smf_registration(
 
     if (result) {
       SmfRegistration smfregistration = {};
-      from_json(bsoncxx::to_json(result->view()), smfregistration);
+      from_json(nlohmann::json::parse(bsoncxx::to_json(result->view())), smfregistration);
       to_json(json_data, smfregistration);
 
       Logger::udr_db().debug(
@@ -1176,12 +1323,16 @@ bool mongo_db::query_smf_registration(
       Logger::udr_db().error(
           "[UE Id %s] SmfRegistration not found for PduSessionId %i", ue_id,
           pdu_session_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
         "[UE Id %s] Exception while query smf context from MongoDB: %s", ue_id,
         e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -1189,10 +1340,13 @@ bool mongo_db::query_smf_registration(
 //------------------------------------------------------------------------------
 bool mongo_db::query_smf_reg_list(
     const std::string& ue_id, nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Get SmfRegistrations", ue_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 
@@ -1209,12 +1363,17 @@ bool mongo_db::query_smf_reg_list(
     for (const bsoncxx::document::view& doc : result) {
       SmfRegistration smfregistration = {};
       nlohmann::json tmp              = {};
-      from_json(bsoncxx::to_json(doc), smfregistration);
+      from_json(nlohmann::json::parse(bsoncxx::to_json(doc)), smfregistration);
       to_json(tmp, smfregistration);
       j += tmp;
     }
+    if (j.empty()){
+      Logger::udr_db().debug("[UE Id %s] No SmfRegistration found", ue_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
+      return false;
+    }
     json_data = j;
-
     Logger::udr_db().debug("[UE Id %s] SmfRegistrations: %s", ue_id, j.dump());
     return true;
   } catch (const mongocxx::exception& e) {
@@ -1222,6 +1381,8 @@ bool mongo_db::query_smf_reg_list(
         "[UE Id %s] Exception while query smf registration list from MongoDB: "
         "%s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
@@ -1230,12 +1391,15 @@ bool mongo_db::query_smf_reg_list(
 bool mongo_db::query_smf_select_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
+  ProblemDetails problemDetails = {};
   Logger::udr_db().info(
       "[UE Id %s] Get SmfSelectionSubscriptionData for ServingPlmnId %s", ue_id,
       serving_plmn_id);
   // Check the connection with DB first
   if (!get_db_connection_status()) {
     Logger::udr_db().info("The connection to MongoDB is currently inactive");
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
   auto db   = mongo_client[udr_cfg.db_conf.db_name.c_str()];
@@ -1252,6 +1416,8 @@ bool mongo_db::query_smf_select_data(
           "[UE Id %s] SmfSelectionSubscriptionData for ServingPlmnId %s not "
           "found",
           ue_id, serving_plmn_id);
+      problemDetails.setCause("DATA_NOT_FOUND");
+      to_json(json_data, problemDetails);
       return false;
     }
 
@@ -1264,13 +1430,14 @@ bool mongo_db::query_smf_select_data(
     Logger::udr_db().debug(
         "[UE Id %s] SmfSelectionSubscriptionData for ServingPlmnId %s: %s",
         ue_id, serving_plmn_id, json_data.dump());
-
     return true;
   } catch (const mongocxx::exception& e) {
     Logger::udr_db().error(
         "[UE Id %s] Exception while query smf selection subscription data from "
         "MongoDB: %s",
         ue_id, e.what());
+    problemDetails.setCause("SYSTEM_FAILURE");
+    to_json(json_data, problemDetails);
     return false;
   }
 }
