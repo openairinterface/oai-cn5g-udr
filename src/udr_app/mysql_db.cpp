@@ -327,8 +327,8 @@ bool mysql_db::insert_authentication_subscription(
 }
 
 //------------------------------------------------------------------------------
-bool mysql_db::delete_authentication_subscription(const std::string& id,
-                                                  nlohmann::json& json_data) {
+bool mysql_db::delete_authentication_subscription(
+    const std::string& id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
@@ -852,12 +852,13 @@ bool mysql_db::query_am_data(
 //------------------------------------------------------------------------------
 bool mysql_db::create_amf_context_3gpp(
     const std::string& ue_id,
-    Amf3GppAccessRegistration& amf3GppAccessRegistration, nlohmann::json& json_data) {
+    Amf3GppAccessRegistration& amf3GppAccessRegistration,
+    nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
-  MYSQL_RES* res           = nullptr;
-  MYSQL_ROW row            = {};
+  MYSQL_RES* res = nullptr;
+  MYSQL_ROW row  = {};
 
   const std::string select_AMF3GPPAccessRegistration =
       "SELECT * FROM Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
@@ -2719,7 +2720,8 @@ bool mysql_db::insert_smf_context_non_3gpp(
 
 //------------------------------------------------------------------------------
 bool mysql_db::delete_smf_context(
-    const std::string& ue_id, const int32_t& pdu_session_id, nlohmann::json& json_data) {
+    const std::string& ue_id, const int32_t& pdu_session_id,
+    nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 

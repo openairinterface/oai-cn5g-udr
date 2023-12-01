@@ -49,7 +49,8 @@ class cassandra_db : public database_wrapper<cassandra_db> {
           authentication_subscription,
       nlohmann::json& json_data);
 
-  bool delete_authentication_subscription(const std::string& id, nlohmann::json& json_data);
+  bool delete_authentication_subscription(
+      const std::string& id, nlohmann::json& json_data);
 
   bool query_authentication_subscription(
       const std::string& id, nlohmann::json& json_data);
@@ -65,7 +66,8 @@ class cassandra_db : public database_wrapper<cassandra_db> {
 
   bool create_amf_context_3gpp(
       const std::string& ue_id,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration, nlohmann::json& json_data);
+      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      nlohmann::json& json_data);
 
   bool query_amf_context_3gpp(
       const std::string& ue_id, nlohmann::json& json_data);
@@ -74,8 +76,8 @@ class cassandra_db : public database_wrapper<cassandra_db> {
       const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
       nlohmann::json& json_data);
 
-  bool delete_authentication_status(const std::string& ue_id,
-                                    nlohmann::json& json_data);
+  bool delete_authentication_status(
+      const std::string& ue_id, nlohmann::json& json_data);
 
   bool query_authentication_status(
       const std::string& ue_id, nlohmann::json& json_data);
@@ -129,7 +131,8 @@ class cassandra_db : public database_wrapper<cassandra_db> {
       nlohmann::json& json_data);
 
   bool delete_smf_context(
-      const std::string& ue_id, const int32_t& pdu_session_id, nlohmann::json& json_data);
+      const std::string& ue_id, const int32_t& pdu_session_id,
+      nlohmann::json& json_data);
 
   bool query_smf_registration(
       const std::string& ue_id, const int32_t& pdu_session_id,

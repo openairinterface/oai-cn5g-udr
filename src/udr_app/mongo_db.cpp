@@ -233,8 +233,8 @@ bool mongo_db::insert_authentication_subscription(
   }
 }
 
-bool mongo_db::delete_authentication_subscription(const std::string& id,
-                                                  nlohmann::json& json_data) {
+bool mongo_db::delete_authentication_subscription(
+    const std::string& id, nlohmann::json& json_data) {
   Logger::udr_db().info("[UE Id %s] Delete AuthenticationSubscription", id);
   ProblemDetails problemDetails = {};
   // Check the connection with DB first
@@ -462,7 +462,8 @@ bool mongo_db::query_am_data(
 //------------------------------------------------------------------------------
 bool mongo_db::create_amf_context_3gpp(
     const std::string& ue_id,
-    Amf3GppAccessRegistration& amf3GppAccessRegistration, nlohmann::json& json_data) {
+    Amf3GppAccessRegistration& amf3GppAccessRegistration,
+    nlohmann::json& json_data) {
   ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Put Amf3GppAccessRegistration", ue_id);
   // Check the connection with DB first
@@ -602,11 +603,11 @@ bool mongo_db::insert_authentication_status(
           filter_builder.view(),
           bsoncxx::builder::basic::make_document(
               bsoncxx::builder::basic::kvp("$set", document.view())));
-      if (updateResult && updateResult->matched_count() == 1){
+      if (updateResult && updateResult->matched_count() == 1) {
         json_data = tmp_json;
         Logger::udr_db().debug(
-                "[UE Id %s] Successfully updated AuthenticationStatus: %s", ue_id,
-                json_data.dump());
+            "[UE Id %s] Successfully updated AuthenticationStatus: %s", ue_id,
+            json_data.dump());
       } else {
         Logger::udr_db().error(
             "[UE Id %s] Failed to update AuthenticationStatus", ue_id);
@@ -640,8 +641,8 @@ bool mongo_db::insert_authentication_status(
 }
 
 //------------------------------------------------------------------------------
-bool mongo_db::delete_authentication_status(const std::string& ue_id,
-                                            nlohmann::json& json_data) {
+bool mongo_db::delete_authentication_status(
+    const std::string& ue_id, nlohmann::json& json_data) {
   ProblemDetails problemDetails = {};
   Logger::udr_db().info("[UE Id %s] Delete AuthenticationStatus", ue_id);
   // Check the connection with DB first
@@ -780,8 +781,8 @@ bool mongo_db::query_sdm_subscription(
       return true;
     } else {
       Logger::udr_db().info(
-          "[UE Id %s] SdmSubscription with subscription ID %s not found",
-          ue_id, subs_id);
+          "[UE Id %s] SdmSubscription with subscription ID %s not found", ue_id,
+          subs_id);
       problemDetails.setCause("DATA_NOT_FOUND");
       to_json(json_data, problemDetails);
       return false;
@@ -902,24 +903,25 @@ bool mongo_db::update_sdm_subscription(
       if (result->matched_count() == 1) {
         json_data = sdmSubscriptionJson;
         Logger::udr_db().debug(
-                "[UE Id %s] Successfully updated SdmSubscription with subscription "
-                "ID %s in MongoDB: %s",
-                ue_id, subs_id, json_data.dump());
+            "[UE Id %s] Successfully updated SdmSubscription with subscription "
+            "ID %s in MongoDB: %s",
+            ue_id, subs_id, json_data.dump());
         return true;
       } else {
         problemDetails.setCause("DATA_NOT_FOUND");
         to_json(json_data, problemDetails);
         Logger::udr_db().error(
-                "[UE Id %s] Failed to update SdmSubscription with subscription ID %s",
-                ue_id, subs_id);
+            "[UE Id %s] Failed to update SdmSubscription with subscription ID "
+            "%s",
+            ue_id, subs_id);
         return false;
       }
     } else {
       problemDetails.setCause("DATA_NOT_FOUND");
       to_json(json_data, problemDetails);
       Logger::udr_db().error(
-              "[UE Id %s] Failed to update SdmSubscription with subscription ID %s",
-              ue_id, subs_id);
+          "[UE Id %s] Failed to update SdmSubscription with subscription ID %s",
+          ue_id, subs_id);
       return false;
     }
   } catch (const mongocxx::exception& e) {
@@ -1024,8 +1026,8 @@ bool mongo_db::query_sdm_subscriptions(
   try {
     mongocxx::cursor result = coll.find(filter_builder.view());
 
-    nlohmann::json j        = {};
-    nlohmann::json tmp      = {};
+    nlohmann::json j   = {};
+    nlohmann::json tmp = {};
     for (const bsoncxx::document::view& doc : result) {
       SdmSubscription sdmsubscriptions = {};
       tmp.clear();
@@ -1033,7 +1035,7 @@ bool mongo_db::query_sdm_subscriptions(
       to_json(tmp, sdmsubscriptions);
       j.push_back(tmp);
     }
-    if(j.empty()){
+    if (j.empty()) {
       problemDetails.setCause("USER_NOT_FOUND");
       to_json(json_data, problemDetails);
       return false;
@@ -1243,7 +1245,8 @@ bool mongo_db::insert_smf_context_non_3gpp(
 
 //------------------------------------------------------------------------------
 bool mongo_db::delete_smf_context(
-    const std::string& ue_id, const int32_t& pdu_session_id, nlohmann::json& json_data) {
+    const std::string& ue_id, const int32_t& pdu_session_id,
+    nlohmann::json& json_data) {
   ProblemDetails problemDetails = {};
   Logger::udr_db().info(
       "[UE Id %s] Delete SmfRegistrations for PduSessionId: %i", ue_id,
@@ -1312,7 +1315,9 @@ bool mongo_db::query_smf_registration(
 
     if (result) {
       SmfRegistration smfregistration = {};
-      from_json(nlohmann::json::parse(bsoncxx::to_json(result->view())), smfregistration);
+      from_json(
+          nlohmann::json::parse(bsoncxx::to_json(result->view())),
+          smfregistration);
       to_json(json_data, smfregistration);
 
       Logger::udr_db().debug(
@@ -1367,7 +1372,7 @@ bool mongo_db::query_smf_reg_list(
       to_json(tmp, smfregistration);
       j += tmp;
     }
-    if (j.empty()){
+    if (j.empty()) {
       Logger::udr_db().debug("[UE Id %s] No SmfRegistration found", ue_id);
       problemDetails.setCause("DATA_NOT_FOUND");
       to_json(json_data, problemDetails);

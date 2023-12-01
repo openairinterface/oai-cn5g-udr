@@ -113,7 +113,8 @@ void udr_app::handle_create_amf_context_3gpp(
       "Access in the UDR",
       ue_id.c_str(), ue_id.c_str());
 
-  if (db_connector->create_amf_context_3gpp(ue_id, amf3GppAccessRegistration, response_data)) {
+  if (db_connector->create_amf_context_3gpp(
+          ue_id, amf3GppAccessRegistration, response_data)) {
     code = HTTP_STATUS_CODE_201_CREATED;
     Logger::udr_app().info(
         "[UE Id %s] Amf3GppAccessRegistration Data: %s", ue_id.c_str(),

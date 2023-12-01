@@ -105,8 +105,8 @@ class database_wrapper_abstraction {
    * @param [const std::string&] id: UE Identity
    * @return true if successful, otherwise return false
    */
-  virtual bool delete_authentication_subscription(const std::string& id,
-                                                  nlohmann::json& json_data) = 0;
+  virtual bool delete_authentication_subscription(
+      const std::string& id, nlohmann::json& json_data) = 0;
 
   /*
    * Query an item from the DB for the Authentication Subscription
@@ -149,8 +149,9 @@ class database_wrapper_abstraction {
    * @return true if successful, otherwise return false
    */
   virtual bool create_amf_context_3gpp(
-      const std::string& ue_id, oai::udr::model::Amf3GppAccessRegistration&
-                                    amf3GppAccessRegistration, nlohmann::json& json_data) = 0;
+      const std::string& ue_id,
+      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      nlohmann::json& json_data) = 0;
 
   /*
    *  Query for an item from the DB for AMF3GPPAccessRegistration
@@ -178,8 +179,8 @@ class database_wrapper_abstraction {
    * @param [const std::string&] ue_id: UE Identity
    * @return true if successful, otherwise return false
    */
-  virtual bool delete_authentication_status(const std::string& ue_id,
-                                            nlohmann::json& json_data) = 0;
+  virtual bool delete_authentication_status(
+      const std::string& ue_id, nlohmann::json& json_data) = 0;
 
   /*
    * Query for an item from the DB for AuthenticationStatus
@@ -331,7 +332,8 @@ class database_wrapper_abstraction {
    * @return true if successful, otherwise return false
    */
   virtual bool delete_smf_context(
-      const std::string& ue_id, const int32_t& pdu_session_id, nlohmann::json& json_data) = 0;
+      const std::string& ue_id, const int32_t& pdu_session_id,
+      nlohmann::json& json_data) = 0;
 
   /*
    * Query an item from the DB SMFRegistration

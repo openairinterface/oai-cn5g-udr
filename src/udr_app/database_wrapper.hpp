@@ -89,8 +89,8 @@ class database_wrapper : public database_wrapper_abstraction {
         id, authentication_subscription, json_data);
   }
 
-  bool delete_authentication_subscription(const std::string& id,
-                                          nlohmann::json& json_data) override {
+  bool delete_authentication_subscription(
+      const std::string& id, nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->delete_authentication_subscription(id, json_data);
   }
@@ -119,10 +119,11 @@ class database_wrapper : public database_wrapper_abstraction {
 
   bool create_amf_context_3gpp(
       const std::string& ue_id,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration, nlohmann::json& json_data)
-      override {
+      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->create_amf_context_3gpp(ue_id, amf3GppAccessRegistration, json_data);
+    return derived->create_amf_context_3gpp(
+        ue_id, amf3GppAccessRegistration, json_data);
   }
 
   bool query_amf_context_3gpp(
@@ -138,8 +139,8 @@ class database_wrapper : public database_wrapper_abstraction {
     return derived->insert_authentication_status(ue_id, authEvent, json_data);
   }
 
-  bool delete_authentication_status(const std::string& ue_id,
-                                    nlohmann::json& json_data) override {
+  bool delete_authentication_status(
+      const std::string& ue_id, nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->delete_authentication_status(ue_id, json_data);
   }
@@ -237,7 +238,8 @@ class database_wrapper : public database_wrapper_abstraction {
   }
 
   bool delete_smf_context(
-      const std::string& ue_id, const int32_t& pdu_session_id, nlohmann::json& json_data) override {
+      const std::string& ue_id, const int32_t& pdu_session_id,
+      nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
     return derived->delete_smf_context(ue_id, pdu_session_id, json_data);
   }

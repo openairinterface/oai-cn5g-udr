@@ -71,7 +71,8 @@ bool cassandra_db::insert_authentication_subscription(
 }
 
 //------------------------------------------------------------------------------
-bool cassandra_db::delete_authentication_subscription(const std::string& id, nlohmann::json& json_data) {
+bool cassandra_db::delete_authentication_subscription(
+    const std::string& id, nlohmann::json& json_data) {
   return true;
 }
 
@@ -100,7 +101,8 @@ bool cassandra_db::query_am_data(
 //------------------------------------------------------------------------------
 bool cassandra_db::create_amf_context_3gpp(
     const std::string& ue_id,
-    oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration, nlohmann::json& json_data) {
+    oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+    nlohmann::json& json_data) {
   return true;
 }
 
@@ -211,7 +213,8 @@ bool cassandra_db::insert_smf_context_non_3gpp(
 
 //------------------------------------------------------------------------------
 bool cassandra_db::delete_smf_context(
-    const std::string& ue_id, const int32_t& pdu_session_id, nlohmann::json& json_data) {
+    const std::string& ue_id, const int32_t& pdu_session_id,
+    nlohmann::json& json_data) {
   return true;
 }
 
