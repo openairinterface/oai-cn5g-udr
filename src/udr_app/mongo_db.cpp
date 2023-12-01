@@ -360,20 +360,22 @@ bool mongo_db::update_authentication_subscription(
         if (item.getOp().getEnumValue() ==
                 PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE &&
             item.valueIsSet()) {
-          bsoncxx::document::view sequenceNumberView =
-              bsoncxx::from_json(item.getValue()).view();
+          auto sequenceNumberValue =
+              bsoncxx::from_json(item.getValue().c_str());
+          auto sequenceNumberView = sequenceNumberValue.view();
 
           bsoncxx::builder::stream::document updateBuilder{};
-          updateBuilder << "$set" << bsoncxx::builder::stream::open_document;
-          updateBuilder << "sequenceNumber" << sequenceNumberView;
-          updateBuilder << bsoncxx::builder::stream::close_document;
-          auto update = updateBuilder << bsoncxx::builder::stream::finalize;
+          updateBuilder << "$set" << bsoncxx::builder::stream::open_document
+                        << "sequenceNumber" << sequenceNumberView
+                        << bsoncxx::builder::stream::close_document;
 
           auto updateResult =
-              coll.update_one(filter_builder.view(), update.view());
+              coll.update_one(filter_builder.view(), updateBuilder.view());
+
           if (!updateResult) {
             Logger::udr_db().error(
-                "[UE Id %s] Failed to update AuthenticationSubscription");
+                "[UE Id %s] Failed to update AuthenticationSubscription",
+                ue_id);
             problemDetails.setCause("SYSTEM_FAILURE");
             to_json(json_data, problemDetails);
             return false;
@@ -384,7 +386,8 @@ bool mongo_db::update_authentication_subscription(
         json_data += tmp_j;
       }
       Logger::udr_db().debug(
-          "[UE Id %s] Update AuthenticationSubscription: %s", json_data.dump());
+          "[UE Id %s] Update AuthenticationSubscription: %s", ue_id,
+          json_data.dump());
       return true;
     } else {
       Logger::udr_db().error(
