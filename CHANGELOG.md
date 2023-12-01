@@ -1,5 +1,23 @@
 # RELEASE NOTES: #
 
+## v2.0.0 -- December 2023 ##
+
+* Features
+  - Support YAML configuration file
+    * Yaml validation default value
+  - SessionManagementSubscriptionData GET ALL and DELETE apis
+  - Session management subscription DATA PUT api new
+  - UDR configuration APIs
+  - Added support for MongoDB database choice
+* Fixes
+  - Fixed hardcoded HTTP/2 port
+  - Added missing HTTP2 for Authentication Data and Session Management Subscription Data
+* Tech debt
+  - Moved common models to the shared common submodule
+  - Switching to clang-format-12
+  - Published image on Docker-Hub is using now Ubuntu-22 as base image
+    * Ubuntu-18 is no longer supported
+
 ## v1.5.1 -- May 2023 ##
 
 * Fix PLMN ID for SessionManagementSubscriptionData (HTTP2)
