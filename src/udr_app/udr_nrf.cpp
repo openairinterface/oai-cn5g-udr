@@ -141,7 +141,8 @@ void udr_nrf::register_to_nrf() {
         start_event_nf_heartbeat(remote_uri);
       }
     } catch (nlohmann::json::exception& e) {
-      Logger::udr_nrf().info("NF Registration procedure failed - cannot parse the response");
+      Logger::udr_nrf().info(
+          "NF Registration procedure failed - cannot parse the response");
     }
     stop_nrf_registration_retry();
   } else {
@@ -209,17 +210,17 @@ void udr_nrf::start_nrf_registration_retry() {
   if (!retry_nrf_registration_task_connection.connected()) {
     // get current time
     uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch())
-            .count();
+                      std::chrono::system_clock::now().time_since_epoch())
+                      .count();
     const uint64_t interval =
-            NRF_REGISTRATION_RETRY_TIMER * 1000;  // convert sec to msec
+        NRF_REGISTRATION_RETRY_TIMER * 1000;  // convert sec to msec
 
     Logger::udr_nrf().debug("Start NRF registration retry task");
     retry_nrf_registration_task_connection =
-            m_event_sub.subscribe_task_nf_heartbeat(
-                    boost::bind(
-                            &udr_nrf::trigger_nrf_registration_retry_procedure, this, _1),
-                    interval, ms + interval);
+        m_event_sub.subscribe_task_nf_heartbeat(
+            boost::bind(
+                &udr_nrf::trigger_nrf_registration_retry_procedure, this, _1),
+            interval, ms + interval);
   }
 }
 
@@ -233,8 +234,8 @@ void udr_nrf::trigger_nrf_registration_retry_procedure(uint64_t ms) {
 void udr_nrf::stop_nrf_registration_retry() {
   // get current time
   uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-          std::chrono::system_clock::now().time_since_epoch())
-          .count();
+                    std::chrono::system_clock::now().time_since_epoch())
+                    .count();
   if (retry_nrf_registration_task_connection.connected()) {
     Logger::udr_nrf().debug("Stop NRF registration retry task");
     retry_nrf_registration_task_connection.disconnect();

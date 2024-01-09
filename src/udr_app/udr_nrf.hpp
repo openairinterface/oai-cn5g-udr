@@ -76,7 +76,7 @@ class udr_nrf {
    * @param [void]
    * @return void
    */
-    void start_nrf_registration_retry();
+  void start_nrf_registration_retry();
 
   /*
    * Trigger NF registration procedure
