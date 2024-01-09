@@ -75,7 +75,8 @@ void SDMSubscriptionDocumentApi::setupRoutes() {
           &SDMSubscriptionDocumentApi::removesdm_subscriptions_handler, this));
   Routes::Put(
       *router,
-      base + "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
+      base + udr_cfg.nudr.api_version +
+          "/subscription-data/:ueId/context-data/sdm-subscriptions/:subsId",
       Routes::bind(
           &SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler, this));
 
