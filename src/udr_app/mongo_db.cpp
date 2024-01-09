@@ -72,7 +72,7 @@ bool mongo_db::connect(uint32_t num_retries) {
           ex.what());
       i++;
       set_db_connection_status(false);
-      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
   }
 

@@ -131,23 +131,9 @@ void udr_nrf::register_to_nrf() {
 
   Logger::udr_nrf().info("Sending NF Registration request");
 
-  bool registration_result = false;
-  int num_retries          = 0;
-  while (num_retries < MAX_NF_REGISTER_RETRY) {
-    num_retries++;
-    if (!udr_client_inst->curl_http_client(
-            remote_uri, method, json_data.dump().c_str(), response,
-            response_code)) {
-      sleep(TIME_INTERVAL_NF_REGISTER_RETRY * pow(2, num_retries - 1));
-      Logger::udr_app().debug("NF Register Retry %d ...", num_retries);
-      continue;
-    } else {
-      registration_result = true;
-      break;
-    }
-  }
-
-  if (registration_result) {
+  if (udr_client_inst->curl_http_client(
+          remote_uri, method, json_data.dump().c_str(), response,
+          response_code)) {
     try {
       response_data = nlohmann::json::parse(response);
       // TODO: use Heart-beart timer interval returned from NRF
@@ -155,12 +141,12 @@ void udr_nrf::register_to_nrf() {
         start_event_nf_heartbeat(remote_uri);
       }
     } catch (nlohmann::json::exception& e) {
-      Logger::udr_nrf().info("NF Registration procedure failed");
+      Logger::udr_nrf().info("NF Registration procedure failed - cannot parse the response");
     }
+    stop_nrf_registration_retry();
   } else {
-    Logger::udr_nrf().info(
-        "NF Registration procedure failed after %d retries", num_retries);
-    // TODO:
+    Logger::udr_app().debug("NF registration procedure failed, try again ...");
+    start_nrf_registration_retry();
   }
 }
 //---------------------------------------------------------------------------------------------
@@ -215,5 +201,42 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
     task_connection.disconnect();
   } else {
     // TODO: process the response
+  }
+}
+
+//---------------------------------------------------------------------------------------------
+void udr_nrf::start_nrf_registration_retry() {
+  if (!retry_nrf_registration_task_connection.connected()) {
+    // get current time
+    uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count();
+    const uint64_t interval =
+            NRF_REGISTRATION_RETRY_TIMER * 1000;  // convert sec to msec
+
+    Logger::udr_nrf().debug("Start NRF registration retry task");
+    retry_nrf_registration_task_connection =
+            m_event_sub.subscribe_task_nf_heartbeat(
+                    boost::bind(
+                            &udr_nrf::trigger_nrf_registration_retry_procedure, this, _1),
+                    interval, ms + interval);
+  }
+}
+
+//---------------------------------------------------------------------------------------------
+void udr_nrf::trigger_nrf_registration_retry_procedure(uint64_t ms) {
+  _unused(ms);
+  register_to_nrf();
+}
+
+//---------------------------------------------------------------------------------------------
+void udr_nrf::stop_nrf_registration_retry() {
+  // get current time
+  uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+          std::chrono::system_clock::now().time_since_epoch())
+          .count();
+  if (retry_nrf_registration_task_connection.connected()) {
+    Logger::udr_nrf().debug("Stop NRF registration retry task");
+    retry_nrf_registration_task_connection.disconnect();
   }
 }
