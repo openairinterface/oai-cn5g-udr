@@ -327,7 +327,8 @@ bool mysql_db::insert_authentication_subscription(
 }
 
 //------------------------------------------------------------------------------
-bool mysql_db::delete_authentication_subscription(const std::string& id) {
+bool mysql_db::delete_authentication_subscription(
+    const std::string& id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
@@ -851,13 +852,13 @@ bool mysql_db::query_am_data(
 //------------------------------------------------------------------------------
 bool mysql_db::create_amf_context_3gpp(
     const std::string& ue_id,
-    Amf3GppAccessRegistration& amf3GppAccessRegistration) {
+    Amf3GppAccessRegistration& amf3GppAccessRegistration,
+    nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
-  nlohmann::json json_data = {};
-  MYSQL_RES* res           = nullptr;
-  MYSQL_ROW row            = {};
+  MYSQL_RES* res = nullptr;
+  MYSQL_ROW row  = {};
 
   const std::string select_AMF3GPPAccessRegistration =
       "SELECT * FROM Amf3GppAccessRegistration WHERE ueid='" + ue_id + "'";
@@ -1336,7 +1337,7 @@ bool mysql_db::mysql_db::insert_authentication_status(
 
 //------------------------------------------------------------------------------
 bool mysql_db::mysql_db::delete_authentication_status(
-    const std::string& ue_id) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
@@ -1533,12 +1534,12 @@ bool mysql_db::mysql_db::query_sdm_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::mysql_db::delete_sdm_subscription(
-    const std::string& ue_id, const std::string& subs_id) {
+    const std::string& ue_id, const std::string& subs_id,
+    nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
   MYSQL_RES* res                = nullptr;
-  nlohmann::json j              = {};
   ProblemDetails problemdetails = {};
 
   const std::string select_query =
@@ -1552,7 +1553,7 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
           &mysql_connector, select_query.c_str(),
           (unsigned long) select_query.size())) {
     problemdetails.setCause("USER_NOT_FOUND");
-    to_json(j, problemdetails);
+    to_json(json_data, problemdetails);
     Logger::udr_db().error(
         "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
         query.c_str());
@@ -1562,7 +1563,7 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     problemdetails.setCause("USER_NOT_FOUND");
-    to_json(j, problemdetails);
+    to_json(json_data, problemdetails);
     Logger::udr_db().error(
         "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
         query.c_str());
@@ -1571,7 +1572,7 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
 
   if (!mysql_num_rows(res)) {
     problemdetails.setCause("DATA_NOT_FOUND");
-    to_json(j, problemdetails);
+    to_json(json_data, problemdetails);
     return false;
   }
   mysql_free_result(res);
@@ -1579,7 +1580,7 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     problemdetails.setCause("USER_NOT_FOUND");
-    to_json(j, problemdetails);
+    to_json(json_data, problemdetails);
     Logger::udr_db().error(
         "[UE Id %s] mysql_real_query failure！ SQL Query: %s", ue_id.c_str(),
         query.c_str());
@@ -2719,7 +2720,8 @@ bool mysql_db::insert_smf_context_non_3gpp(
 
 //------------------------------------------------------------------------------
 bool mysql_db::delete_smf_context(
-    const std::string& ue_id, const int32_t& pdu_session_id) {
+    const std::string& ue_id, const int32_t& pdu_session_id,
+    nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 

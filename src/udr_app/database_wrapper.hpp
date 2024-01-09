@@ -89,9 +89,10 @@ class database_wrapper : public database_wrapper_abstraction {
         id, authentication_subscription, json_data);
   }
 
-  bool delete_authentication_subscription(const std::string& id) override {
+  bool delete_authentication_subscription(
+      const std::string& id, nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->delete_authentication_subscription(id);
+    return derived->delete_authentication_subscription(id, json_data);
   }
 
   bool query_authentication_subscription(
@@ -118,10 +119,11 @@ class database_wrapper : public database_wrapper_abstraction {
 
   bool create_amf_context_3gpp(
       const std::string& ue_id,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration)
-      override {
+      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->create_amf_context_3gpp(ue_id, amf3GppAccessRegistration);
+    return derived->create_amf_context_3gpp(
+        ue_id, amf3GppAccessRegistration, json_data);
   }
 
   bool query_amf_context_3gpp(
@@ -137,9 +139,10 @@ class database_wrapper : public database_wrapper_abstraction {
     return derived->insert_authentication_status(ue_id, authEvent, json_data);
   }
 
-  bool delete_authentication_status(const std::string& ue_id) override {
+  bool delete_authentication_status(
+      const std::string& ue_id, nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->delete_authentication_status(ue_id);
+    return derived->delete_authentication_status(ue_id, json_data);
   }
 
   bool query_authentication_status(
@@ -156,9 +159,10 @@ class database_wrapper : public database_wrapper_abstraction {
   }
 
   bool delete_sdm_subscription(
-      const std::string& ue_id, const std::string& subs_id) override {
+      const std::string& ue_id, const std::string& subs_id,
+      nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->delete_sdm_subscription(ue_id, subs_id);
+    return derived->delete_sdm_subscription(ue_id, subs_id, json_data);
   }
 
   bool update_sdm_subscription(
@@ -234,9 +238,10 @@ class database_wrapper : public database_wrapper_abstraction {
   }
 
   bool delete_smf_context(
-      const std::string& ue_id, const int32_t& pdu_session_id) override {
+      const std::string& ue_id, const int32_t& pdu_session_id,
+      nlohmann::json& json_data) override {
     auto derived = static_cast<DerivedT*>(this);
-    return derived->delete_smf_context(ue_id, pdu_session_id);
+    return derived->delete_smf_context(ue_id, pdu_session_id, json_data);
   }
 
   bool query_smf_registration(

@@ -113,7 +113,8 @@ void udr_app::handle_create_amf_context_3gpp(
       "Access in the UDR",
       ue_id.c_str(), ue_id.c_str());
 
-  if (db_connector->create_amf_context_3gpp(ue_id, amf3GppAccessRegistration)) {
+  if (db_connector->create_amf_context_3gpp(
+          ue_id, amf3GppAccessRegistration, response_data)) {
     code = HTTP_STATUS_CODE_201_CREATED;
     Logger::udr_app().info(
         "[UE Id %s] Amf3GppAccessRegistration Data: %s", ue_id.c_str(),
@@ -171,7 +172,7 @@ void udr_app::handle_delete_authentication_status(
       "[UE Id %s] Remove the Authentication Status data of an UE",
       ue_id.c_str());
 
-  if (db_connector->delete_authentication_status(ue_id)) {
+  if (db_connector->delete_authentication_status(ue_id, response_data)) {
     code = HTTP_STATUS_CODE_204_NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful removed the Authentication Status data",
@@ -228,7 +229,7 @@ void udr_app::handle_delete_authentication_data(
       "[UE Id %s] Delete an Authentication Subscription data of an UE",
       ue_id.c_str());
 
-  if (db_connector->delete_authentication_subscription(ue_id)) {
+  if (db_connector->delete_authentication_subscription(ue_id, response_data)) {
     code = HTTP_STATUS_CODE_204_NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful removed the Authentication Subscription data",
@@ -305,7 +306,7 @@ void udr_app::handle_remove_sdm_subscription(
     nlohmann::json& response_data, long& code) {
   Logger::udr_app().info("[UE Id %s] Delete a SdmSubscriptions", ue_id.c_str());
 
-  if (db_connector->delete_sdm_subscription(ue_id, subs_id)) {
+  if (db_connector->delete_sdm_subscription(ue_id, subs_id, response_data)) {
     code = HTTP_STATUS_CODE_204_NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful removed a SdmSubscriptions", ue_id.c_str());
@@ -518,7 +519,7 @@ void udr_app::handle_delete_smf_context(
       "[UE Id %s] Remove an individual SMF context data of an UE",
       ue_id.c_str());
 
-  if (db_connector->delete_smf_context(ue_id, pdu_session_id)) {
+  if (db_connector->delete_smf_context(ue_id, pdu_session_id, response_data)) {
     code = HTTP_STATUS_CODE_204_NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful deleted SMF context data", ue_id.c_str());
