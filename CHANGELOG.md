@@ -1,5 +1,11 @@
 # RELEASE NOTES: #
 
+## v2.0.1 -- January 2024 ##
+
+* Tech debt
+  - Fixed builds
+  - Refactor mongoDB
+
 ## v2.0.0 -- December 2023 ##
 
 * Features
