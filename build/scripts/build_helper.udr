@@ -141,7 +141,6 @@ check_install_udr_deps() {
       check \
       nettle-devel \
       libcurl-devel \
-      python2 \
       pkgconfig \
       mysql \
       mysql-devel \
