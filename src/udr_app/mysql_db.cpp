@@ -96,7 +96,7 @@ bool mysql_db::connect(uint32_t num_retries) {
       set_db_connection_status(true);
       return true;
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
   if (i == num_retries) {
     return false;

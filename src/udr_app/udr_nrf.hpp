@@ -72,6 +72,27 @@ class udr_nrf {
   void trigger_nf_heartbeat_procedure(uint64_t ms);
 
   /*
+   * Start event nrf registration retry
+   * @param [void]
+   * @return void
+   */
+  void start_nrf_registration_retry();
+
+  /*
+   * Trigger NF registration procedure
+   * @param [void]
+   * @return void
+   */
+  void trigger_nrf_registration_retry_procedure(uint64_t ms);
+
+  /*
+   * Stop event nrf registration retry
+   * @param [void]
+   * @return void
+   */
+  void stop_nrf_registration_retry();
+
+  /*
    * Generate a UDR profile for this instance
    * @param [void]
    * @return void
@@ -95,6 +116,7 @@ class udr_nrf {
  private:
   udr_event& m_event_sub;
   bs2::connection task_connection;
+  bs2::connection retry_nrf_registration_task_connection;
 };
 }  // namespace app
 }  // namespace udr
