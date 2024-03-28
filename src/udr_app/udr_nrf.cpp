@@ -206,7 +206,7 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
         response_code == HTTP_STATUS_CODE_201_CREATED or
         response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
       is_heartbeat_success = true;
-      // TODO
+      // TODO: process the response
     }
   }
 
