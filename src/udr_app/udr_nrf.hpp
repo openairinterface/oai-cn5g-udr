@@ -46,8 +46,6 @@ namespace app {
 class udr_nrf {
  private:
  public:
-  udr_profile udr_nf_profile;   // UDR profile
-  std::string udr_instance_id;  // UDR instance id
   // timer_id_t timer_udr_heartbeat;
 
   udr_nrf(udr_event& ev);
@@ -55,8 +53,6 @@ class udr_nrf {
   void operator=(udr_nrf const&) = delete;
 
   void start();
-
-  void generate_uuid();
 
   /*
    * Start event nf heartbeat procedure
@@ -97,8 +93,7 @@ class udr_nrf {
    * @param [void]
    * @return void
    */
-  void generate_udr_profile(
-      udr_profile& udr_nf_profile, std::string& udr_instance_id);
+  void generate_udr_profile();
 
   /*
    * Trigger NF instance registration to NRF
@@ -117,6 +112,8 @@ class udr_nrf {
   udr_event& m_event_sub;
   bs2::connection task_connection;
   bs2::connection retry_nrf_registration_task_connection;
+  udr_profile udr_nf_profile;   // UDR profile
+  std::string udr_instance_id;  // UDR instance id
 };
 }  // namespace app
 }  // namespace udr
