@@ -43,6 +43,7 @@ class udr_event;
 class task_manager {
  public:
   task_manager(udr_event& ev);
+  ~task_manager();
 
   /*
    * Manage the tasks
@@ -68,6 +69,8 @@ class task_manager {
 
   udr_event& event_sub_;
   int sfd;
+  bool terminate;
+  bool terminated;
 };
 }  // namespace app
 }  // namespace udr

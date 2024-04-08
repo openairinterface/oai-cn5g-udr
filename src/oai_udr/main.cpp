@@ -44,6 +44,7 @@ udr_app* udr_app_inst          = nullptr;
 udr_nrf* udr_nrf_inst          = nullptr;
 UDRApiServer* http_server1     = nullptr;
 udr_http2_server* http_server2 = nullptr;
+task_manager* tm_inst          = nullptr;
 
 std::unique_ptr<udr_config_yaml> udr_cfg_yaml;
 
@@ -64,6 +65,12 @@ void my_app_signal_handler(int s) {
   }
 
   Logger::system().debug("HTTP servers are shutdown");
+
+  if (tm_inst) {
+    delete tm_inst;
+    tm_inst = nullptr;
+  }
+  Logger::system().debug("Stopped the UDR Task Manager.");
 
   if (udr_app_inst) {
     delete udr_app_inst;
@@ -124,8 +131,8 @@ int main(int argc, char** argv) {
   udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);
 
   // Task Manager
-  task_manager tm(ev);
-  std::thread task_manager_thread(&task_manager::run, &tm);
+  tm_inst = new task_manager(ev);
+  std::thread task_manager_thread(&task_manager::run, tm_inst);
 
   // UDR NRF
   udr_nrf_inst = new udr_nrf(ev);
