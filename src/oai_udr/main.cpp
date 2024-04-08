@@ -49,10 +49,9 @@ std::unique_ptr<udr_config_yaml> udr_cfg_yaml;
 
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
-  std::cout << "Caught signal " << s << std::endl;
-  Logger::system().startup("exiting");
-  std::cout << "Freeing Allocated memory..." << std::endl;
-  std::cout << "Shutting down HTTP servers..." << std::endl;
+  Logger::system().info("Exiting: caught signal %d", s);
+  Logger::system().debug("Freeing Allocated memory...");
+
   if (http_server1) {
     http_server1->shutdown();
     delete http_server1;
@@ -64,12 +63,16 @@ void my_app_signal_handler(int s) {
     http_server2 = nullptr;
   }
 
+  Logger::system().debug("HTTP servers are shutdown");
+
   if (udr_app_inst) {
     delete udr_app_inst;
     udr_app_inst = nullptr;
   }
-  std::cout << "UDR APP memory done" << std::endl;
-  std::cout << "Freeing allocated memory done" << std::endl;
+
+  Logger::system().debug("UDR APP memory done");
+  Logger::system().debug("Freeing allocated memory done");
+  Logger::system().info("Bye.");
   exit(0);
 }
 
