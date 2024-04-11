@@ -50,6 +50,9 @@ std::unique_ptr<udr_config_yaml> udr_cfg_yaml;
 
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
+  // Setting log level arbitrarly to debug to show the whole
+  // shutdown procedure in the logs even in case of off-logging
+  Logger::set_level(spdlog::level::debug);
   Logger::system().info("Exiting: caught signal %d", s);
   Logger::system().debug("Freeing Allocated memory...");
 
