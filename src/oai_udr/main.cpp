@@ -63,11 +63,11 @@ void my_app_signal_handler(int s) {
   Logger::system().debug("HTTP servers are shutdown");
 
   if (udr_nrf_inst) {
-    udr_nrf_inst.stop();
+    udr_nrf_inst->stop();
   }
 
   if (udr_app_inst) {
-    udr_app_inst.stop();
+    udr_app_inst->stop();
   }
 
   Logger::system().debug("Freeing Allocated memory...");
