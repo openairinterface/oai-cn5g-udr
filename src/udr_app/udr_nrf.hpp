@@ -53,6 +53,7 @@ class udr_nrf {
   void operator=(udr_nrf const&) = delete;
 
   void start();
+  void stop();
 
   /*
    * Start event nf heartbeat procedure
@@ -101,12 +102,20 @@ class udr_nrf {
    * @return void
    */
   void register_to_nrf();
+
   /*
-   * Get udr API Root
-   * @param [std::string& ] api_root: udr's API Root
+   * Trigger NF instance deregistration to NRF
+   * @param [void]
    * @return void
    */
-  void get_udr_api_root(std::string& api_root);
+  void deregister_to_nrf();
+
+  /*
+   * Get NRF API Root
+   * @param [std::string& ] api_root: NRF's API Root
+   * @return void
+   */
+  void get_nrf_api_root(std::string& api_root);
 
  private:
   udr_event& m_event_sub;

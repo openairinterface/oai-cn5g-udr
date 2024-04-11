@@ -54,7 +54,6 @@ extern udr_config udr_cfg;
 mongo_db::mongo_db(udr_event& ev)
     : database_wrapper<mongo_db>(), m_event_sub(ev), m_db_connection_status() {
   is_db_connection_active = false;
-  start_event_connection_handling();
 }
 
 //------------------------------------------------------------------------------

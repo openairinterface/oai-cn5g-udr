@@ -53,18 +53,33 @@ void my_app_signal_handler(int s) {
   Logger::system().info("Exiting: caught signal %d", s);
   Logger::system().debug("Freeing Allocated memory...");
 
+  // Stop on-going tasks
   if (http_server1) {
     http_server1->shutdown();
+  }
+  if (http_server2) {
+    http_server2->stop();
+  }
+  Logger::system().debug("HTTP servers are shutdown");
+
+  if (udr_nrf_inst) {
+    udr_nrf_inst.stop();
+  }
+
+  if (udr_app_inst) {
+    udr_app_inst.stop();
+  }
+
+  Logger::system().debug("Freeing Allocated memory...");
+  // Delete instances
+  if (http_server1) {
     delete http_server1;
     http_server1 = nullptr;
   }
   if (http_server2) {
-    http_server2->stop();
     delete http_server2;
     http_server2 = nullptr;
   }
-
-  Logger::system().debug("HTTP servers are shutdown");
 
   if (tm_inst) {
     delete tm_inst;
@@ -76,8 +91,8 @@ void my_app_signal_handler(int s) {
     delete udr_app_inst;
     udr_app_inst = nullptr;
   }
-
   Logger::system().debug("UDR APP memory done");
+
   Logger::system().debug("Freeing allocated memory done");
   Logger::system().info("Bye.");
   exit(0);
@@ -95,7 +110,7 @@ int main(int argc, char** argv) {
 
   // Logger
   Logger::init("udr", Options::getlogStdout(), Options::getlogRotFilelog());
-  Logger::udr_server().startup("Options parsed");
+  Logger::system().startup("Options parsed");
 
   std::signal(SIGTERM, my_app_signal_handler);
   std::signal(SIGINT, my_app_signal_handler);
@@ -107,8 +122,7 @@ int main(int argc, char** argv) {
   std::string conf_file_name = Options::getlibconfigConfig();
   std::string file_ext       = ".conf";
   if (conf_file_name.find(file_ext) != std::string::npos) {
-    Logger::udr_server().debug(
-        "Parsing the configuration file, file type CONF.");
+    Logger::system().debug("Parsing the configuration file, file type CONF.");
     udr_cfg.load(conf_file_name);
     Logger::set_level(udr_cfg.log_level);
     udr_cfg.display();
@@ -118,7 +132,7 @@ int main(int argc, char** argv) {
     udr_cfg_yaml = std::make_unique<udr_config_yaml>(
         conf_file_name, Options::getlogStdout(), Options::getlogRotFilelog());
     if (!udr_cfg_yaml->init()) {
-      Logger::udr_server().error("Reading the configuration failed. Exiting.");
+      Logger::system().error("Reading the configuration failed. Exiting.");
       return 1;
     }
     udr_cfg_yaml->pre_process();
@@ -129,6 +143,11 @@ int main(int argc, char** argv) {
 
   // UDR application layer
   udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);
+  if (!udr_app_inst->start()) {
+    udr_app_inst->stop();
+    Logger::system().error("Could not start UDR APP, exiting.");
+    return 1;
+  }
 
   // Task Manager
   tm_inst = new task_manager(ev);
@@ -142,8 +161,7 @@ int main(int argc, char** argv) {
   string pid_file_name =
       get_exe_absolute_path(udr_cfg.pid_dir, udr_cfg.instance);
   if (!is_pid_file_lock_success(pid_file_name.c_str())) {
-    Logger::udr_server().error(
-        "Lock PID file %s failed\n", pid_file_name.c_str());
+    Logger::system().error("Lock PID file %s failed\n", pid_file_name.c_str());
     exit(-EDEADLK);
   }
 
