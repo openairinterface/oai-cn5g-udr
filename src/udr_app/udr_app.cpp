@@ -82,7 +82,6 @@ bool udr_app::start() {
 
   if (!db_connector->connect(MAX_FIRST_CONNECTION_RETRY)) {
     Logger::udr_app().warn("Could not establish the connection to the DB");
-    return false;
   }
   // Start connection handling
   db_connector->start_event_connection_handling();
