@@ -63,15 +63,6 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
     db_connector = std::make_shared<mongo_db>(ev);
   }
 
-  if (!db_connector->initialize()) {
-    Logger::udr_app().error("Error when initializing a connection with DB");
-    return;
-  }
-
-  if (!db_connector->connect(MAX_FIRST_CONNECTION_RETRY)) {
-    Logger::udr_app().warn("Could not establish the connection to the DB");
-  }
-
   Logger::udr_app().startup("Started");
 }
 
@@ -79,7 +70,28 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
 udr_app::~udr_app() {
   Logger::udr_app().debug("Delete UDR APP instance...");
   // Close DB connection
-  db_connector->close_connection();
+  if (db_connector) db_connector->close_connection();
+}
+
+//------------------------------------------------------------------------------
+bool udr_app::start() {
+  if (!db_connector->initialize()) {
+    Logger::udr_app().error("Error when initializing a connection with DB");
+    return false;
+  }
+
+  if (!db_connector->connect(MAX_FIRST_CONNECTION_RETRY)) {
+    Logger::udr_app().warn("Could not establish the connection to the DB");
+  }
+  // Start connection handling
+  db_connector->start_event_connection_handling();
+  return true;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::stop() {
+  // Close DB connection
+  if (db_connector) db_connector->close_connection();
 }
 
 //------------------------------------------------------------------------------

@@ -54,7 +54,6 @@ extern udr_config udr_cfg;
 mysql_db::mysql_db(udr_event& ev)
     : database_wrapper<mysql_db>(), m_event_sub(ev), m_db_connection_status() {
   is_db_connection_active = false;
-  start_event_connection_handling();
 }
 
 //------------------------------------------------------------------------------

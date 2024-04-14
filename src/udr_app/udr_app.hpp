@@ -57,6 +57,9 @@ class udr_app {
 
   virtual ~udr_app();
 
+  bool start();
+  void stop();
+
   /*
    * Handle a query for AccessandMobilitySubscriptionData
    * (AccessAndMobilitySubscriptionDataDocumentApiImpl)

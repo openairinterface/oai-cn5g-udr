@@ -67,8 +67,17 @@ void udr_nrf::start() {
     register_to_nrf();
   }
 }
+
+//------------------------------------------------------------------------------
+void udr_nrf::stop() {
+  // Deregister to NRF
+  if (udr_cfg.register_nrf) {
+    deregister_to_nrf();
+  }
+}
+
 //---------------------------------------------------------------------------------------------
-void udr_nrf::get_udr_api_root(std::string& api_root) {
+void udr_nrf::get_nrf_api_root(std::string& api_root) {
   api_root =
       udr_cfg.nrf_addr.uri_root + NNRF_NFM_BASE + udr_cfg.nrf_addr.api_version;
 }
@@ -118,12 +127,12 @@ void udr_nrf::register_to_nrf() {
   nlohmann::json response_data = {};
 
   // Send NF registration request
-  std::string udr_api_root = {};
+  std::string nrf_api_root = {};
   std::string response     = {};
   std::string method       = {"PUT"};
   long response_code       = {0};
-  get_udr_api_root(udr_api_root);
-  std::string remote_uri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  get_nrf_api_root(nrf_api_root);
+  std::string remote_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
   nlohmann::json json_data = {};
   udr_nf_profile.to_json(json_data);
 
@@ -151,6 +160,33 @@ void udr_nrf::register_to_nrf() {
 
   if (!is_registration_success) start_nrf_registration_retry();
 }
+
+//---------------------------------------------------------------------------------------------
+void udr_nrf::deregister_to_nrf() {
+  nlohmann::json response_data = {};
+  // Send NFs deregistration request
+  std::string nrf_api_root = {};
+  std::string response     = {};
+  std::string method       = {"DELETE"};
+  long response_code       = {0};
+
+  get_nrf_api_root(nrf_api_root);
+  std::string nrf_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+
+  Logger::udr_nrf().info("Sending NF Deregistration request");
+
+  bool deregistration_result = false;
+  deregistration_result      = udr_client_inst->curl_http_client(
+      nrf_uri, method, "", response, response_code);
+
+  if (deregistration_result and (response_code == 204)) {
+    // TODO:
+  } else {
+    Logger::udr_nrf().info("NF Deregistration procedure failed.");
+    // TODO: should we retry?
+  }
+}
+
 //---------------------------------------------------------------------------------------------
 void udr_nrf::start_event_nf_heartbeat(std::string& remote_uri) {
   // get current time
@@ -193,9 +229,9 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
     json_data.push_back(item);
   }
 
-  std::string udr_api_root = {};
-  get_udr_api_root(udr_api_root);
-  std::string remote_uri = udr_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  std::string nrf_api_root = {};
+  get_nrf_api_root(nrf_api_root);
+  std::string remote_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
 
   bool is_heartbeat_success = false;
 
