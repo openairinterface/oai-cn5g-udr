@@ -281,6 +281,9 @@ ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src/api_server ${CMAKE_CURREN
 add_definitions("-DPACKAGE_NAME=\"UDR\"")
 
 include_directories(${SRC_TOP_DIR}/udr_app)
+include_directories(${SRC_TOP_DIR}/udr_app/database)
+include_directories(${SRC_TOP_DIR}/udr_app/event_handling)
+include_directories(${SRC_TOP_DIR}/udr_app/sbi)
 include_directories(${SRC_TOP_DIR}/oai_udr)
 include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/api_server)

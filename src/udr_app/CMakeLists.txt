@@ -33,14 +33,14 @@ add_library (UDR STATIC
   udr_app.cpp
   udr_config.cpp 
   udr_config_yaml.cpp 
-  udr_profile.cpp
-  udr_nrf.cpp 
-  udr_event.cpp
-  task_manager.cpp
-  udr_client.cpp
-  mysql_db.cpp
-  cassandra_db.cpp
-  mongo_db.cpp
+  sbi/udr_profile.cpp
+  sbi/udr_nrf.cpp 
+  sbi/udr_client.cpp
+  event_handling/udr_event.cpp
+  event_handling/task_manager.cpp
+  database/mysql_db.cpp
+  database/cassandra_db.cpp
+  database/mongo_db.cpp
 )
 
 target_link_libraries (UDR mongo::mongocxx_shared mongo::bsoncxx_shared)

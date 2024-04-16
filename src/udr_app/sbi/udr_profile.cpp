@@ -36,7 +36,6 @@
 #include "logger.hpp"
 #include "string.hpp"
 
-// using namespace udr;
 using namespace oai::udr::app;
 
 //------------------------------------------------------------------------------
