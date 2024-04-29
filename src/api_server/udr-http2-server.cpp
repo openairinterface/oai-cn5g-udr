@@ -53,7 +53,7 @@ extern udr_config udr_cfg;
 void udr_http2_server::start() {
   boost::system::error_code ec;
 
-  Logger::udr_server().info("HTTP2 server started ");
+  Logger::udr_server().info("HTTP2 server being started ");
 
   server.handle(
       NUDR_DR_BASE + udr_cfg.nudr.api_version + "/",
@@ -317,9 +317,10 @@ void udr_http2_server::start() {
         });
       });
 
-  if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
-    std::cerr << "HTTP Server error: " << ec.message() << std::endl;
+  if (server.listen_and_serve(ec, m_address, std::to_string(m_port), true)) {
+    Logger::udr_server().debug("HTTP2 server status: %s", ec.message());
   }
+  Logger::udr_server().info("HTTP2 server fully started ");
 }
 
 //------------------------------------------------------------------------------
