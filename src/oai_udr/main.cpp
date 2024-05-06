@@ -190,7 +190,8 @@ int main(int argc, char** argv) {
     http_server2 = new udr_http2_server(
         conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr_http2_port,
         udr_app_inst);
-    http_server2->start();
+    std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
+    udr_http2_manager.join();
   }
 
   Logger::system().info("Initiation Done!");
