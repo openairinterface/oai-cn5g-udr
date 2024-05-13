@@ -74,7 +74,7 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
 
   nlohmann::json response_data = nlohmann::json::array();
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_query_sm_data(
       ueId, servingPlmnId, response_data, http_code, snssai, dnn_str);
@@ -91,7 +91,7 @@ void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_query_sm_data(response_data, http_code);
 
@@ -109,7 +109,7 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   uint32_t resource_id         = 0;
   m_udr_app->handle_create_sm_data(
       ueId, servingPlmnId, subscriptionData, response_data, http_code,
@@ -148,7 +148,7 @@ void SessionManagementSubscriptionDataApiImpl::put_sm_data(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   uint32_t resource_id         = 0;
 
   m_udr_app->handle_update_sm_data(
@@ -186,7 +186,7 @@ void SessionManagementSubscriptionDataApiImpl::delete_sm_data(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   std::optional<Snssai> snssai = std::nullopt;
   if (!singleNssai.isEmpty()) {

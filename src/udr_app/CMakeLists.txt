@@ -26,8 +26,11 @@ include_directories(${SRC_TOP_DIR}/api_server/)
 include_directories(${SRC_TOP_DIR}/common/)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/common_model/common_model.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/nrf/nrf_model.cmake)
+
 
 add_library (UDR STATIC
   udr_app.cpp
@@ -35,7 +38,6 @@ add_library (UDR STATIC
   udr_config_yaml.cpp 
   sbi/udr_profile.cpp
   sbi/udr_nrf.cpp 
-  sbi/udr_client.cpp
   event_handling/udr_event.cpp
   event_handling/task_manager.cpp
   database/mysql_db.cpp

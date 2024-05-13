@@ -29,18 +29,17 @@
 
 #include "mysql_db.hpp"
 
+#include <boost/algorithm/string.hpp>
 #include <chrono>
 #include <thread>
 
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AuthenticationSubscription.h"
+#include "PatchOperation_anyOf.h"
 #include "ProblemDetails.h"
 #include "SdmSubscription.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
-#include "PatchOperation_anyOf.h"
-
-#include <boost/algorithm/string.hpp>
 
 using namespace oai::udr::app;
 using namespace oai::udr::model;
@@ -537,7 +536,7 @@ bool mysql_db::update_authentication_subscription(
       "[UE Id %s] AuthenticationSubscription PATCH: %s", ue_id.c_str(),
       json_data.dump().c_str());
 
-  //	  code          = HTTP_STATUS_CODE_204_NO_CONTENT;
+  //	  code          = oai::http::http_status_code::NO_CONTENT;
   return true;
 }
 
@@ -2737,7 +2736,7 @@ bool mysql_db::delete_smf_context(
   }
 
   // r_data = {};
-  // code          = HTTP_STATUS_CODE_204_NO_CONTENT;
+  // code          = oai::http::http_status_code::NO_CONTENT;
   Logger::udr_db().debug(
       "[UE Id %s] SmfRegistration DELETE - successful", ue_id.c_str());
   return true;
@@ -2984,7 +2983,7 @@ bool mysql_db::query_smf_reg_list(
   mysql_free_result(res);
 
   json_data = j;
-  // code          = HTTP_STATUS_CODE_200_OK;
+  // code          = oai::http::http_status_code::OK;
 
   Logger::udr_db().debug(
       "[UE Id %s] SmfRegistrations GET: %s", ue_id.c_str(), j.dump().c_str());

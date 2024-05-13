@@ -255,9 +255,12 @@ add_boolean_option( LOG_OAI                         False    "Thread safe loggin
 pkg_search_module(CONFIG REQUIRED libconfig++)
 include_directories(${CONFIG_INCLUDE_DIRS})
 
-
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 #find_package(Threads REQUIRED)
+
+###################################
+#CPR
+find_package(cpr REQUIRED)
 
 ###############################################################################
 # MongoDB
@@ -290,8 +293,8 @@ include_directories(${SRC_TOP_DIR}/api_server)
 include_directories(${SRC_TOP_DIR}/api_server/api)
 include_directories(${SRC_TOP_DIR}/api_server/impl)
 include_directories(${SRC_TOP_DIR}/api_server/model)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
-
 
 add_executable(udr
   ${SRC_TOP_DIR}/oai_udr/main.cpp
@@ -301,8 +304,9 @@ add_executable(udr
 include(${BUILD_TOP_DIR}/udr/used_models.cmake)
 
 ## Common modules
-include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger/logger.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config/config.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http/http.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger/logger.cmake)
 
 IF(STATIC_LINKING)
     SET(CMAKE_EXE_LINKER_FLAGS "-static")
@@ -312,4 +316,4 @@ IF(STATIC_LINKING)
 ENDIF(STATIC_LINKING)   
 
 target_link_libraries (udr ${ASAN} mongo::mongocxx_shared mongo::bsoncxx_shared
-    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl yaml-cpp)
+    -Wl,--start-group UDR 3GPP_COMMON_TYPES UDR_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl yaml-cpp cpr::cpr)

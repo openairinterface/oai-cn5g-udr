@@ -23,31 +23,32 @@
 #include <thread>
 
 #include "conversions.hpp"
+#include "http_client.hpp"
 #include "logger.hpp"
 #include "options.hpp"
 #include "pid_file.hpp"
+#include "sbi_helper.hpp"
 #include "udr-api-server.h"
 #include "udr-http2-server.h"
 #include "udr_app.hpp"
-#include "udr_nrf.hpp"
 #include "udr_config.hpp"
 #include "udr_config_yaml.hpp"
+#include "udr_nrf.hpp"
 
 using namespace util;
-using namespace std;
+// using namespace std;
 using namespace oai::udr::app;
 using namespace oai::udr::config;
 using namespace oai::config;
 
 udr_config udr_cfg;
-udr_app* udr_app_inst          = nullptr;
-udr_nrf* udr_nrf_inst          = nullptr;
-UDRApiServer* http_server1     = nullptr;
-udr_http2_server* http_server2 = nullptr;
-task_manager* tm_inst          = nullptr;
-
+udr_app* udr_app_inst                                    = nullptr;
+udr_nrf* udr_nrf_inst                                    = nullptr;
+UDRApiServer* http_server1                               = nullptr;
+udr_http2_server* http_server2                           = nullptr;
+task_manager* tm_inst                                    = nullptr;
+std::shared_ptr<oai::http::http_client> http_client_inst = nullptr;
 std::unique_ptr<udr_config_yaml> udr_cfg_yaml;
-
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
   // Setting log level arbitrarly to debug to show the whole
@@ -144,6 +145,12 @@ int main(int argc, char** argv) {
     udr_cfg_yaml->to_udr_config(udr_cfg);
   }
 
+  // HTTP Client
+  uint8_t http_version = udr_cfg.use_http2 ? 2 : 1;
+  http_client_inst     = oai::http::http_client::create_instance(
+      Logger::udr_nrf(), oai::common::sbi::kNfDefaultHttpRequestTimeout,
+      udr_cfg.nudr.if_name, http_version);
+
   // UDR application layer
   udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);
   if (!udr_app_inst->start()) {
@@ -161,7 +168,7 @@ int main(int argc, char** argv) {
   std::thread udr_nrf_manager(&udr_nrf::start, udr_nrf_inst);
 
   // PID file
-  string pid_file_name =
+  std::string pid_file_name =
       get_exe_absolute_path(udr_cfg.pid_dir, udr_cfg.instance);
   if (!is_pid_file_lock_success(pid_file_name.c_str())) {
     Logger::system().error("Lock PID file %s failed\n", pid_file_name.c_str());

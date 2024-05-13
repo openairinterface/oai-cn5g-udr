@@ -51,7 +51,7 @@ void SDMSubscriptionsCollectionApiImpl::create_sdm_subscriptions(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_create_sdm_subscriptions(
       ueId, sdmSubscription, response_data, http_code);
@@ -69,7 +69,7 @@ void SDMSubscriptionsCollectionApiImpl::querysdmsubscriptions(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_query_sdm_subscriptions(ueId, response_data, http_code);
 
