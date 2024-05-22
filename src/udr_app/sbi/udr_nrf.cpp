@@ -139,7 +139,7 @@ void udr_nrf::register_to_nrf() {
   oai::http::request http_request =
       http_client_inst->prepare_json_request(nrf_uri, json_data.dump());
   auto http_response = http_client_inst->send_http_request(
-      oai::http::method_e::PUT, http_request);
+      oai::common::sbi::method_e::PUT, http_request);
 
   if ((http_response.status_code == oai::http::http_status_code::OK) or
       (http_response.status_code == oai::http::http_status_code::CREATED)) {
@@ -178,7 +178,7 @@ void udr_nrf::deregister_to_nrf() {
   oai::http::request http_request =
       http_client_inst->prepare_json_request(nrf_uri);
   auto http_response = http_client_inst->send_http_request(
-      oai::http::method_e::DELETE, http_request);
+      oai::common::sbi::method_e::DELETE, http_request);
 
   if (http_response.status_code == oai::http::http_status_code::NO_CONTENT) {
     // TODO:
@@ -235,7 +235,7 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   oai::http::request http_request =
       http_client_inst->prepare_json_request(nrf_uri, json_data.dump());
   auto http_response = http_client_inst->send_http_request(
-      oai::http::method_e::PATCH, http_request);
+      oai::common::sbi::method_e::PATCH, http_request);
 
   if ((http_response.status_code == oai::http::http_status_code::OK) or
       (http_response.status_code == oai::http::http_status_code::NO_CONTENT)) {
