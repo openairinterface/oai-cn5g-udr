@@ -58,6 +58,12 @@ void my_app_signal_handler(int s) {
   Logger::system().debug("Freeing Allocated memory...");
 
   // Stop on-going tasks
+  Logger::system().debug("First stop the nrf inst");
+  if (udr_nrf_inst) {
+    udr_nrf_inst->stop();
+  }
+
+  Logger::system().debug("Then stop the http servers");
   if (http_server1) {
     http_server1->shutdown();
   }
@@ -65,10 +71,6 @@ void my_app_signal_handler(int s) {
     http_server2->stop();
   }
   Logger::system().debug("HTTP servers are shutdown");
-
-  if (udr_nrf_inst) {
-    udr_nrf_inst->stop();
-  }
 
   if (udr_app_inst) {
     udr_app_inst->stop();
@@ -198,6 +200,8 @@ int main(int argc, char** argv) {
     std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
     udr_http2_manager.join();
   }
+
+  Logger::system().info("Initiation Done!");
 
   task_manager_thread.join();
   udr_nrf_manager.join();

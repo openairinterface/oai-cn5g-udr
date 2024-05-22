@@ -170,6 +170,7 @@ class udr_http2_server {
   uint32_t m_port;
   http2 server;
   oai::udr::app::udr_app* m_udr_app;
+  bool running_server;
 };
 
 #endif
