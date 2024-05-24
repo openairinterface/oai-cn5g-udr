@@ -132,7 +132,7 @@ void udr_http2_server::start() {
                 std::string qs   = request.uri().raw_query;
                 Logger::udr_server().debug("QueryString: %s", qs.c_str());
                 std::string servingPlmnId =
-                    util::get_query_param(qs, "servingPlmnId");
+                    oai::utils::get_query_param(qs, "servingPlmnId");
                 this->query_am_data_handler(ueId, servingPlmnId, response);
               }
             }
@@ -182,10 +182,10 @@ void udr_http2_server::start() {
                   Logger::udr_server().debug("QueryString: %s", qs.c_str());
 
                   // std::string servingPlmnId =
-                  // util::get_query_param(qs, "servingPlmnId");
-                  std::string dnn = util::get_query_param(qs, "dnn");
+                  // oai::utils::get_query_param(qs, "servingPlmnId");
+                  std::string dnn = oai::utils::get_query_param(qs, "dnn");
                   std::string snssai =
-                      util::get_query_param(qs, "single-nssai");
+                      oai::utils::get_query_param(qs, "single-nssai");
                   if (!snssai.empty()) {
                     oai::model::common::Snssai singleNssai = {};
                     nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
@@ -232,7 +232,8 @@ void udr_http2_server::start() {
                 std::string ueId          = split_q[split_q.size() - 4].c_str();
                 std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
                 std::string qs            = request.uri().raw_query;
-                std::string snssai = util::get_query_param(qs, "single-nssai");
+                std::string snssai =
+                    oai::utils::get_query_param(qs, "single-nssai");
                 if (!snssai.empty()) {
                   oai::model::common::Snssai singleNssai = {};
                   nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
@@ -276,14 +277,15 @@ void udr_http2_server::start() {
                 Logger::udr_server().debug("QueryString: %s", qs.c_str());
 
                 std::string servingPlmnId =
-                    util::get_query_param(qs, "servingPlmnId");
+                    oai::utils::get_query_param(qs, "servingPlmnId");
                 this->query_smf_select_data_handler(
                     ueId, servingPlmnId, response);
               }
             }
           } catch (std::exception& e) {
             Logger::udr_server().warn("Invalid request (error: %s)!", e.what());
-            response.write_head(oai::http::http_status_code::BAD_REQUEST);
+            response.write_head(
+                oai::common::sbi::http_status_code::BAD_REQUEST);
             response.end();
             return;
           }
@@ -308,7 +310,8 @@ void udr_http2_server::start() {
           } catch (nlohmann::detail::exception& e) {
             Logger::udr_server().warn(
                 "Can not parse the JSON data (error: %s)!", e.what());
-            response.write_head(oai::http::http_status_code::BAD_REQUEST);
+            response.write_head(
+                oai::common::sbi::http_status_code::BAD_REQUEST);
             response.end();
             return;
           }
@@ -533,7 +536,7 @@ void udr_http2_server::modify_sdm_subscription_handler(
     SdmSubscription& sdmSubscription, const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  response.write_head(oai::http::http_status_code::BAD_REQUEST, h);
+  response.write_head(oai::common::sbi::http_status_code::BAD_REQUEST, h);
   response.end("This API has not been implemented yet! (HTTP Version 2)\n");
 }
 

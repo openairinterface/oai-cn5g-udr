@@ -55,34 +55,6 @@
 #define NUDR_CUSTOMIZED_API_BASE "/nudr-oai/"
 #define NUDR_CUSTOMIZED_API_CONFIGURATION_URL "/configuration"
 
-typedef struct identity_range_s {
-  std::string start;
-  std::string end;
-  std::string pattern;
-} identity_range_t;
-
-typedef struct identity_range_udr_info_item_s {
-  identity_range_t identity_range;
-} identity_range_udr_info_item_t;
-
-typedef struct supi_range_s {
-  std::string start;
-  std::string end;
-  std::string pattern;
-} supi_range_t;
-
-typedef struct supi_range_udr_info_item_s {
-  supi_range_t supi_range;
-} supi_range_udr_info_item_t;
-
-typedef struct udr_info_s {
-  std::string groupid;
-  std::vector<supi_range_udr_info_item_t> supi_ranges;
-  std::vector<identity_range_udr_info_item_t> gpsi_ranges;
-  std::vector<identity_range_udr_info_item_t> ext_grp_id_ranges;
-  std::vector<std::string> data_set_id;
-} udr_info_t;
-
 typedef enum db_type_s {
   DB_TYPE_UNKNOWN   = 0,
   DB_TYPE_MYSQL     = 1,

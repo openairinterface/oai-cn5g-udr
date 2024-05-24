@@ -102,8 +102,8 @@ void udr_nrf::generate_udr_profile() {
   // "externalGroupIdentifiersRanges" attributes are absent, and "groupId" is
   // present, the SUPIs / GPSIs / ExternalGroups served by this UDR instance is
   // determined by the NRF (see 3GPP TS 23.501 [2], clause 6.2.6.2).
-  udr_info_t udr_info_item;
-  supi_range_udr_info_item_t supi_ranges;
+  oai::common::sbi::udr_info_t udr_info_item;
+  oai::common::sbi::supi_range_info_item_t supi_ranges;
   udr_info_item.groupid = "oai-udr-testgroupid";
   udr_info_item.data_set_id.push_back("0210");
   udr_info_item.data_set_id.push_back("9876");
@@ -111,7 +111,7 @@ void udr_nrf::generate_udr_profile() {
   supi_ranges.supi_range.pattern = "^imsi-20895[31-131]{6}$";
   supi_ranges.supi_range.start   = "208950000000131";
   udr_info_item.supi_ranges.push_back(supi_ranges);
-  identity_range_udr_info_item_t gpsi_ranges;
+  oai::common::sbi::identity_range_info_item_t gpsi_ranges;
   gpsi_ranges.identity_range.start   = "752740000";
   gpsi_ranges.identity_range.pattern = "^gpsi-75274[0-9]{4}$";
   gpsi_ranges.identity_range.end     = "752749999";
@@ -141,8 +141,9 @@ void udr_nrf::register_to_nrf() {
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::PUT, http_request);
 
-  if ((http_response.status_code == oai::http::http_status_code::OK) or
-      (http_response.status_code == oai::http::http_status_code::CREATED)) {
+  if ((http_response.status_code == oai::common::sbi::http_status_code::OK) or
+      (http_response.status_code ==
+       oai::common::sbi::http_status_code::CREATED)) {
     try {
       response_data = nlohmann::json::parse(http_response.body);
       // TODO: use Heart-beart timer interval returned from NRF
@@ -180,7 +181,8 @@ void udr_nrf::deregister_to_nrf() {
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::DELETE, http_request);
 
-  if (http_response.status_code == oai::http::http_status_code::NO_CONTENT) {
+  if (http_response.status_code ==
+      oai::common::sbi::http_status_code::NO_CONTENT) {
     // TODO:
   } else {
     Logger::udr_nrf().info("NF Deregistration procedure failed.");
@@ -237,8 +239,9 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   auto http_response = http_client_inst->send_http_request(
       oai::common::sbi::method_e::PATCH, http_request);
 
-  if ((http_response.status_code == oai::http::http_status_code::OK) or
-      (http_response.status_code == oai::http::http_status_code::NO_CONTENT)) {
+  if ((http_response.status_code == oai::common::sbi::http_status_code::OK) or
+      (http_response.status_code ==
+       oai::common::sbi::http_status_code::NO_CONTENT)) {
     // TODO: process the response
   } else {
     Logger::udr_nrf().info(

@@ -32,7 +32,6 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 
-#include "fqdn.hpp"
 #include "logger.hpp"
 #include "string.hpp"
 
@@ -177,12 +176,12 @@ void udr_profile::get_nf_ipv4_addresses(std::vector<struct in_addr>& a) const {
 }
 
 //------------------------------------------------------------------------------
-void udr_profile::set_udr_info(const udr_info_t& s) {
+void udr_profile::set_udr_info(const oai::common::sbi::udr_info_t& s) {
   udr_info = s;
 }
 
 //------------------------------------------------------------------------------
-void udr_profile::get_udr_info(udr_info_t& s) const {
+void udr_profile::get_udr_info(oai::common::sbi::udr_info_t& s) const {
   s = udr_info;
 }
 
@@ -339,11 +338,13 @@ void udr_profile::from_json(const nlohmann::json& data) {
       struct in_addr addr4 = {};
       std::string address  = it.get<std::string>();
       unsigned char buf_in_addr[sizeof(struct in_addr)];
-      if (inet_pton(AF_INET, util::trim(address).c_str(), buf_in_addr) == 1) {
+      if (inet_pton(AF_INET, oai::utils::trim(address).c_str(), buf_in_addr) ==
+          1) {
         memcpy(&addr4, buf_in_addr, sizeof(struct in_addr));
       } else {
         Logger::udr_app().warn(
-            "Address conversion: Bad value %s", util::trim(address).c_str());
+            "Address conversion: Bad value %s",
+            oai::utils::trim(address).c_str());
       }
       add_nf_ipv4_addresses(addr4);
     }
@@ -372,7 +373,7 @@ void udr_profile::from_json(const nlohmann::json& data) {
     if (info.find("supiRanges") != info.end()) {
       nlohmann::json supi_ranges = data["udrInfo"]["supiRanges"];
       for (auto d : supi_ranges) {
-        supi_range_udr_info_item_t supi;
+        oai::common::sbi::supi_range_info_item_t supi;
         supi.supi_range.start   = d["start"];
         supi.supi_range.end     = d["end"];
         supi.supi_range.pattern = d["pattern"];
@@ -382,7 +383,7 @@ void udr_profile::from_json(const nlohmann::json& data) {
     if (info.find("gpsiRanges") != info.end()) {
       nlohmann::json gpsi_ranges = data["udrInfo"]["gpsiRanges"];
       for (auto d : gpsi_ranges) {
-        identity_range_udr_info_item_t gpsi;
+        oai::common::sbi::identity_range_info_item_t gpsi;
         gpsi.identity_range.start   = d["start"];
         gpsi.identity_range.end     = d["end"];
         gpsi.identity_range.pattern = d["pattern"];
@@ -393,7 +394,7 @@ void udr_profile::from_json(const nlohmann::json& data) {
       nlohmann::json ext_grp_id_ranges =
           data["udrInfo"]["externalGroupIdentifiersRanges"];
       for (auto d : ext_grp_id_ranges) {
-        identity_range_udr_info_item_t ext_grp_id;
+        oai::common::sbi::identity_range_info_item_t ext_grp_id;
         ext_grp_id.identity_range.start   = d["start"];
         ext_grp_id.identity_range.end     = d["end"];
         ext_grp_id.identity_range.pattern = d["pattern"];
