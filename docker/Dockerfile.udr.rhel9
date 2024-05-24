@@ -55,6 +55,22 @@ RUN rm -f /etc/rhsm-host && \
     echo "/usr/local/lib" > /etc/ld.so.conf.d/local-lib.conf && \
     echo "/usr/local/lib64" >> /etc/ld.so.conf.d/local-lib.conf
 
+# 2024/05/24 : problem w/ cmake version 3.26.5-2
+# Installing 2 versions on the system (3.20.2) and picking oldest one
+WORKDIR /opt/cmake-3.20.2
+RUN dnf install -y \
+        wget \
+        cmake && \
+    wget --quiet https://github.com/Kitware/CMake/releases/download/v3.20.2/cmake-3.20.2-Linux-x86_64.sh \
+        -O /tmp/cmake.sh && \
+    sh /tmp/cmake.sh --prefix=/opt/cmake-3.20.2 --exclude-subdir && \
+    rm -f /tmp/cmake.sh && \
+    mv /usr/bin/cmake /usr/bin/cmake-3.26.5 && \
+    ln -s /usr/bin/cmake-3.26.5 /usr/bin/cmake && \
+    update-alternatives --install /usr/bin/cmake cmake /opt/cmake-3.20.2/bin/cmake 20 && \
+    cmake --version && \
+    dnf install -y wget cmake
+
 # Some GIT configuration command quite useful
 RUN git config --global https.postBuffer 123289600 && \
     git config --global http.sslverify false
@@ -70,19 +86,6 @@ RUN git clone https://github.com/vishnubob/wait-for-it.git
 # Installing and Building UDR
 WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --install-deps --force
-# 2024/05/03: problem w/ cmake version 3.26.5-2
-# forcing installation with 3.20.2
-# let see if they bump back later
-RUN wget --quiet --retry-connrefused \
-         http://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/cmake-3.20.2-9.el9.x86_64.rpm \
-         http://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/cmake-data-3.20.2-9.el9.noarch.rpm \
-         http://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/cmake-filesystem-3.20.2-9.el9.x86_64.rpm \
-         http://www.rpmfind.net/linux/centos-stream/9-stream/AppStream/x86_64/os/Packages/cmake-rpm-macros-3.20.2-9.el9.noarch.rpm && \
-    dnf remove -y --noautoremove cmake cmake-data cmake-filesystem cmake-rpm-macros && \
-    rpm -i cmake-rpm-macros-3.20.2-9.el9.noarch.rpm cmake-filesystem-3.20.2-9.el9.x86_64.rpm cmake-data-3.20.2-9.el9.noarch.rpm cmake-3.20.2-9.el9.x86_64.rpm && \
-    rm -f cmake*.rpm && \
-    dnf list installed | grep cmake && \
-    cmake --version
 
 # Patching the CMakefile to link mysqlclient
 RUN sed -i -e "s@-lmysqlclient@-L/usr/lib64/mysql -lmysqlclient@" ../../src/oai_udr/CMakeLists.txt && \
