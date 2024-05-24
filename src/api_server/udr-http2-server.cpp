@@ -53,7 +53,7 @@ extern udr_config udr_cfg;
 void udr_http2_server::start() {
   boost::system::error_code ec;
 
-  Logger::udr_server().info("HTTP2 server started ");
+  Logger::udr_server().info("HTTP2 server being started ");
 
   server.handle(
       NUDR_DR_BASE + udr_cfg.nudr.api_version + "/",
@@ -318,17 +318,22 @@ void udr_http2_server::start() {
         });
       });
 
+  running_server = true;
   if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
-    std::cerr << "HTTP Server error: " << ec.message() << std::endl;
+    Logger::udr_server().debug("HTTP2 server status: %s", ec.message());
   }
+  running_server = false;
+  Logger::udr_server().info("HTTP2 server fully stopped");
 }
 
 //------------------------------------------------------------------------------
 void udr_http2_server::stop() {
   server.stop();
-  // asio_http2_server.h specifies that after the stop, do a join to wait for
-  // all threads to gracefully finish
-  server.join();
+  while (running_server) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
+  Logger::udr_server().info("HTTP2 server should be fully stopped");
+  std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
 //------------------------------------------------------------------------------
