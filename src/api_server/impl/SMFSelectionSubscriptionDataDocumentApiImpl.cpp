@@ -57,7 +57,7 @@ void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_query_smf_select_data(
       ueId, servingPlmnId, response_data, http_code);

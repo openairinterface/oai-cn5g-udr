@@ -292,14 +292,14 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
    * @param [udr_info_t &] s: udr info
    * @return void
    */
-  void set_udr_info(const udr_info_t& s);
+  void set_udr_info(const oai::common::sbi::udr_info_t& s);
 
   /*
    * Get NF instance udr info
    * @param [udr_info_t &] s: store instance's udr info
    * @return void:
    */
-  void get_udr_info(udr_info_t& s) const;
+  void get_udr_info(oai::common::sbi::udr_info_t& s) const;
 
   /*
    * Print related-information for NF profile
@@ -341,7 +341,7 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
   std::vector<struct in_addr> ipv4_addresses;
   uint16_t priority;
   uint16_t capacity;
-  udr_info_t udr_info;
+  oai::common::sbi::udr_info_t udr_info;
 };
 
 }  // namespace app

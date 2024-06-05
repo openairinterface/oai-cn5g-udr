@@ -34,8 +34,8 @@
 #include "AuthenticationSubscription.h"
 #include "cassandra_db.hpp"
 #include "logger.hpp"
-#include "mysql_db.hpp"
 #include "mongo_db.hpp"
+#include "mysql_db.hpp"
 #include "udr_config.hpp"
 #include "udr_config_yaml.hpp"
 #include "udr_nrf.hpp"
@@ -97,20 +97,21 @@ void udr_app::stop() {
 //------------------------------------------------------------------------------
 void udr_app::handle_query_am_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the access and mobility subscription data of an UE "
       "(ID %s)",
       ue_id.c_str(), ue_id.c_str());
 
   if (db_connector->query_am_data(ue_id, serving_plmn_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] AccessAndMobilitySubscriptionData Data: %s", ue_id.c_str(),
         response_data.dump().c_str());
     // TODO: headers
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;
+    // TODO
   }
   return;
 }
@@ -119,7 +120,7 @@ void udr_app::handle_query_am_data(
 void udr_app::handle_create_amf_context_3gpp(
     const std::string& ue_id,
     Amf3GppAccessRegistration& amf3GppAccessRegistration,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Store the AMF context data of an UE (ID %s) using 3GPP "
       "Access in the UDR",
@@ -127,32 +128,32 @@ void udr_app::handle_create_amf_context_3gpp(
 
   if (db_connector->create_amf_context_3gpp(
           ue_id, amf3GppAccessRegistration, response_data)) {
-    code = HTTP_STATUS_CODE_201_CREATED;
+    code = oai::common::sbi::http_status_code::CREATED;
     Logger::udr_app().info(
         "[UE Id %s] Amf3GppAccessRegistration Data: %s", ue_id.c_str(),
         response_data.dump().c_str());
     // TODO: Location
     // TODO: CODE 204
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_query_amf_context_3gpp(
-    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the AMF context data of an UE using 3GPP Access",
       ue_id.c_str());
 
   if (db_connector->query_amf_context_3gpp(ue_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] Amf3GppAccessRegistration Data: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -160,55 +161,55 @@ void udr_app::handle_query_amf_context_3gpp(
 //------------------------------------------------------------------------------
 void udr_app::handle_create_authentication_status(
     const std::string& ue_id, const AuthEvent& authEvent,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Store the Authentication Status data of an UE",
       ue_id.c_str());
 
   if (db_connector->insert_authentication_status(
           ue_id, authEvent, response_data)) {
-    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    code = oai::common::sbi::http_status_code::NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful stored the Authentication Status data",
         ue_id.c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_delete_authentication_status(
-    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Remove the Authentication Status data of an UE",
       ue_id.c_str());
 
   if (db_connector->delete_authentication_status(ue_id, response_data)) {
-    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    code = oai::common::sbi::http_status_code::NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful removed the Authentication Status data",
         ue_id.c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_query_authentication_status(
-    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the Authentication Status data of an UE",
       ue_id.c_str());
 
   if (db_connector->query_authentication_status(ue_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] AuthEvent Data: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -217,37 +218,37 @@ void udr_app::handle_query_authentication_status(
 void udr_app::handle_create_authentication_data(
     const std::string& ue_id,
     const AuthenticationSubscription& authentication_subscription,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Create an Authentication Subscription data of an UE",
       ue_id.c_str());
 
   if (db_connector->insert_authentication_subscription(
           ue_id, authentication_subscription, response_data)) {
-    code = HTTP_STATUS_CODE_201_CREATED;
+    code = oai::common::sbi::http_status_code::CREATED;
     Logger::udr_app().info(
         "[UE Id %s] AuthenticationSubscription: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_delete_authentication_data(
-    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Delete an Authentication Subscription data of an UE",
       ue_id.c_str());
 
   if (db_connector->delete_authentication_subscription(ue_id, response_data)) {
-    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    code = oai::common::sbi::http_status_code::NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful removed the Authentication Subscription data",
         ue_id.c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -255,21 +256,21 @@ void udr_app::handle_delete_authentication_data(
 //------------------------------------------------------------------------------
 void udr_app::handle_modify_authentication_subscription(
     const std::string& ue_id, const std::vector<PatchItem>& patchItem,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Modify the Authentication Subscription data of an UE",
       ue_id.c_str());
 
   if (db_connector->update_authentication_subscription(
           ue_id, patchItem, response_data)) {
-    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    code = oai::common::sbi::http_status_code::NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful modified the Authentication subscription data",
         ue_id.c_str());
     // TODO: Code 200
 
   } else {
-    code = HTTP_STATUS_CODE_403_FORBIDDEN;
+    code = oai::common::sbi::http_status_code::FORBIDDEN;
     // TODO: problem details
   }
   return;
@@ -277,18 +278,18 @@ void udr_app::handle_modify_authentication_subscription(
 
 //------------------------------------------------------------------------------
 void udr_app::handle_read_authentication_subscription(
-    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the Authentication Subscription data of an UE",
       ue_id.c_str());
 
   if (db_connector->query_authentication_subscription(ue_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] AuthenticationSubscription: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;  // TODO
+    code = oai::common::sbi::http_status_code::NOT_FOUND;  // TODO
   }
   return;
 }
@@ -296,18 +297,18 @@ void udr_app::handle_read_authentication_subscription(
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve an individual SdmSubscription identified by subsId",
       ue_id.c_str());
 
   if (db_connector->query_sdm_subscription(ue_id, subs_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s]SdmSubscriptions: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;  // TODO
+    code = oai::common::sbi::http_status_code::NOT_FOUND;  // TODO
   }
   return;
 }
@@ -315,15 +316,15 @@ void udr_app::handle_query_sdm_subscription(
 //------------------------------------------------------------------------------
 void udr_app::handle_remove_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info("[UE Id %s] Delete a SdmSubscriptions", ue_id.c_str());
 
   if (db_connector->delete_sdm_subscription(ue_id, subs_id, response_data)) {
-    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    code = oai::common::sbi::http_status_code::NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful removed a SdmSubscriptions", ue_id.c_str());
   } else {
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;  // TODO
+    code = oai::common::sbi::http_status_code::NOT_FOUND;  // TODO
   }
   return;
 
@@ -335,18 +336,18 @@ void udr_app::handle_remove_sdm_subscription(
 void udr_app::handle_update_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
     SdmSubscription& sdmSubscription, nlohmann::json& response_data,
-    long& code) {
+    uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Update an individual SDM Subscription of an UE",
       ue_id.c_str());
 
   if (db_connector->update_sdm_subscription(
           ue_id, subs_id, sdmSubscription, response_data)) {
-    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    code = oai::common::sbi::http_status_code::NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful updated a SDMSubscription", ue_id.c_str());
   } else {
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
   }
   return;
 }
@@ -354,36 +355,36 @@ void udr_app::handle_update_sdm_subscription(
 //------------------------------------------------------------------------------
 void udr_app::handle_create_sdm_subscriptions(
     const std::string& ue_id, SdmSubscription& sdmSubscription,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Create an individual SDM subscription", ue_id.c_str());
 
   if (db_connector->create_sdm_subscriptions(
           ue_id, sdmSubscription, response_data)) {
-    code = HTTP_STATUS_CODE_201_CREATED;
+    code = oai::common::sbi::http_status_code::CREATED;
     Logger::udr_app().info(
         "[UE Id %s] SdmSubscription: %s", ue_id.c_str(),
         response_data.dump().c_str());
     // TODO: Location
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sdm_subscriptions(
-    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the SDM subscriptions of an UE", ue_id.c_str());
 
   if (db_connector->query_sdm_subscriptions(ue_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] SdmSubscriptions: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -391,7 +392,7 @@ void udr_app::handle_query_sdm_subscriptions(
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& response_data, long& code,
+    nlohmann::json& response_data, uint32_t& code,
     const std::optional<Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   Logger::udr_app().info(
@@ -400,33 +401,34 @@ void udr_app::handle_query_sm_data(
 
   if (db_connector->query_sm_data(
           ue_id, serving_plmn_id, response_data, snssai, dnn)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] SessionManagementSubscriptionData: %s", ue_id.c_str(),
         response_data.dump().c_str());
     // TODO: Headers
   } else if (response_data.is_null()) {
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
 
 //------------------------------------------------------------------------------
-void udr_app::handle_query_sm_data(nlohmann::json& response_data, long& code) {
+void udr_app::handle_query_sm_data(
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "Retrieve the Session Management subscription data of all UEs");
 
   if (db_connector->query_sm_data(response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "SessionManagementSubscriptionData: %s", response_data.dump().c_str());
     // TODO: Headers
   } else if (response_data.is_null()) {
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -435,7 +437,7 @@ void udr_app::handle_query_sm_data(nlohmann::json& response_data, long& code) {
 void udr_app::handle_create_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     SessionManagementSubscriptionData& subscription_data,
-    nlohmann::json& response_data, long& code, uint32_t& resource_id) {
+    nlohmann::json& response_data, uint32_t& code, uint32_t& resource_id) {
   Logger::udr_app().info(
       "[UE Id %s] Create a Session Management Subscription Data of an UE",
       ue_id.c_str());
@@ -443,7 +445,7 @@ void udr_app::handle_create_sm_data(
   if (db_connector->create_sm_data(
           ue_id, serving_plmn_id, subscription_data, response_data,
           resource_id)) {
-    code = HTTP_STATUS_CODE_201_CREATED;
+    code = oai::common::sbi::http_status_code::CREATED;
     Logger::udr_app().info(
         "[UE Id %s] SessionManagementSubscription: %s", ue_id.c_str(),
         response_data.dump().c_str());
@@ -451,11 +453,11 @@ void udr_app::handle_create_sm_data(
     if (response_data.find("error") != response_data.end()) {
       std::string e = response_data["error"];
       if (e.find("exists")) {
-        code = HTTP_STATUS_CODE_400_BAD_REQUEST;
+        code = oai::common::sbi::http_status_code::BAD_REQUEST;
         return;
       }
     }
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -464,21 +466,21 @@ void udr_app::handle_create_sm_data(
 void udr_app::handle_update_sm_data(
     const std::string& ueId, const std::string& servingPlmnId,
     SessionManagementSubscriptionData& subscriptionData,
-    nlohmann::json& response_data, long& code, uint32_t& resource_id) {
+    nlohmann::json& response_data, uint32_t& code, uint32_t& resource_id) {
   Logger::udr_app().info(
       "Update a Session Management subscription data of a UE");
 
   if (db_connector->update_sm_data(
           ueId, servingPlmnId, subscriptionData, response_data, resource_id)) {
     if (resource_id > 0) {
-      code = HTTP_STATUS_CODE_201_CREATED;
+      code = oai::common::sbi::http_status_code::CREATED;
     } else {
-      code = HTTP_STATUS_CODE_204_NO_CONTENT;
+      code = oai::common::sbi::http_status_code::NO_CONTENT;
     }
     Logger::udr_app().info(
         "SessionManagementSubscription: %s", response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -487,15 +489,15 @@ void udr_app::handle_update_sm_data(
 void udr_app::handle_delete_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     const std::optional<Snssai>& snssai, nlohmann::json& response_data,
-    long& code) {
+    uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s]  Delete a Session Management subscription data of a UE",
       ue_id.c_str());
 
   if (db_connector->delete_sm_data(ue_id, serving_plmn_id, snssai)) {
-    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    code = oai::common::sbi::http_status_code::NO_CONTENT;
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -504,21 +506,21 @@ void udr_app::handle_delete_sm_data(
 void udr_app::handle_create_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
     const SmfRegistration& smfRegistration, nlohmann::json& response_data,
-    long& code) {
+    uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Create an individual SMF Registration data of an UE",
       ue_id.c_str());
 
   if (db_connector->insert_smf_context_non_3gpp(
           ue_id, pdu_session_id, smfRegistration, response_data)) {
-    code = HTTP_STATUS_CODE_201_CREATED;
+    code = oai::common::sbi::http_status_code::CREATED;
     Logger::udr_app().info(
         "[UE Id %s] SmfRegistration: %s", ue_id.c_str(),
         response_data.dump().c_str());
     // TODO: Location
     // TODO: Code 204
   } else {
-    code = HTTP_STATUS_CODE_404_NOT_FOUND;  // TODO
+    code = oai::common::sbi::http_status_code::NOT_FOUND;  // TODO
   }
   return;
 }
@@ -526,17 +528,17 @@ void udr_app::handle_create_smf_context_non_3gpp(
 //------------------------------------------------------------------------------
 void udr_app::handle_delete_smf_context(
     const std::string& ue_id, const int32_t& pdu_session_id,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Remove an individual SMF context data of an UE",
       ue_id.c_str());
 
   if (db_connector->delete_smf_context(ue_id, pdu_session_id, response_data)) {
-    code = HTTP_STATUS_CODE_204_NO_CONTENT;
+    code = oai::common::sbi::http_status_code::NO_CONTENT;
     Logger::udr_app().info(
         "[UE Id %s] Successful deleted SMF context data", ue_id.c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -544,36 +546,36 @@ void udr_app::handle_delete_smf_context(
 //------------------------------------------------------------------------------
 void udr_app::handle_query_smf_registration(
     const std::string& ue_id, const int32_t& pdu_session_id,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the individual SMF registration of an UE",
       ue_id.c_str());
 
   if (db_connector->query_smf_registration(
           ue_id, pdu_session_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] SmfRegistration: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
 
 //------------------------------------------------------------------------------
 void udr_app::handle_query_smf_reg_list(
-    const std::string& ue_id, nlohmann::json& response_data, long& code) {
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the SMF registration list of an UE", ue_id.c_str());
 
   if (db_connector->query_smf_reg_list(ue_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] SmfRegList: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
@@ -581,45 +583,43 @@ void udr_app::handle_query_smf_reg_list(
 //------------------------------------------------------------------------------
 void udr_app::handle_query_smf_select_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
-    nlohmann::json& response_data, long& code) {
+    nlohmann::json& response_data, uint32_t& code) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the SMF selection subscription data of an UE",
       ue_id.c_str());
 
   if (db_connector->query_smf_select_data(
           ue_id, serving_plmn_id, response_data)) {
-    code = HTTP_STATUS_CODE_200_OK;
+    code = oai::common::sbi::http_status_code::OK;
     Logger::udr_app().info(
         "[UE Id %s] SmfSelectionSubscriptionData: %s", ue_id.c_str(),
         response_data.dump().c_str());
   } else {
-    code = HTTP_STATUS_CODE_500_INTERNAL_SERVER_ERROR;  // TODO
+    code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;  // TODO
   }
   return;
 }
 
 //------------------------------------------------------------------------------
 bool udr_app::handle_read_configuration(
-    nlohmann::json& config_info, long& code) {
+    nlohmann::json& config_info, uint32_t& code) {
   Logger::udr_app().info("Handle a request to get UDR Configuration");
 
   // Process the request and trigger the response from UDR Server
   udr_cfg_yaml->to_json(config_info);
   Logger::udr_app().debug(
       "UDR configuration:\n %s", config_info.dump().c_str());
-  code = static_cast<uint32_t>(http_status_code_e::HTTP_STATUS_CODE_200_OK);
-  return true;
+  code = oai::common::sbi::http_status_code::OK;
   return true;
 }
 
 //------------------------------------------------------------------------------
 bool udr_app::handle_update_configuration(
-    nlohmann::json& config_info, long& code) {
+    nlohmann::json& config_info, uint32_t& code) {
   Logger::udr_app().info("Handle a request to update UDR configuration");
 
   // TODO: remove this part to enable this functionality
-  code = static_cast<uint32_t>(
-      http_status_code_e::HTTP_STATUS_CODE_501_NOT_IMPLEMENTED);
+  code = oai::common::sbi::http_status_code::NOT_IMPLEMENTED;
   return false;
 
   // Process the request and trigger the response from UDR Server
@@ -627,14 +627,12 @@ bool udr_app::handle_update_configuration(
     udr_cfg_yaml->to_json(config_info);
     Logger::udr_app().debug(
         "UDR configuration:\n %s", config_info.dump().c_str());
-    code = static_cast<uint32_t>(http_status_code_e::HTTP_STATUS_CODE_200_OK);
+    code = oai::common::sbi::http_status_code::OK;
     return true;
   } else {
-    code = static_cast<uint32_t>(
-        http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+    code = oai::common::sbi::http_status_code::BAD_REQUEST;
     // TODO set problem_details
     return false;
   }
-  return true;
   return true;
 }

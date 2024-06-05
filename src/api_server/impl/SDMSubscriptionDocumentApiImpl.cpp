@@ -60,7 +60,7 @@ void SDMSubscriptionDocumentApiImpl::querysdm_subscription(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_query_sdm_subscription(
       ueId, subsId, response_data, http_code);
@@ -74,7 +74,7 @@ void SDMSubscriptionDocumentApiImpl::removesdm_subscriptions(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_remove_sdm_subscription(
       ueId, subsId, response_data, http_code);
@@ -92,7 +92,7 @@ void SDMSubscriptionDocumentApiImpl::updatesdmsubscriptions(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_update_sdm_subscription(
       ueId, subsId, sdmSubscription, response_data, http_code);

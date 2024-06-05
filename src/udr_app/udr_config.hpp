@@ -93,8 +93,6 @@ class udr_config {
   udr_config();
   ~udr_config();
 
-  int load(const std::string& config_file);
-  int load_interface(const Setting& if_cfg, interface_cfg_t& cfg);
   void display();
 
   unsigned int instance;

@@ -30,8 +30,8 @@
 #ifndef DATABASE_WRAPPER_ABSTRACTION_HPP
 #define DATABASE_WRAPPER_ABSTRACTION_HPP
 
-#include <optional>
 #include <nlohmann/json.hpp>
+#include <optional>
 
 #include "Amf3GppAccessRegistration.h"
 #include "AuthEvent.h"
@@ -157,7 +157,6 @@ class database_wrapper_abstraction {
    *  Query for an item from the DB for AMF3GPPAccessRegistration
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] json_data: Data in Json format
-   * @param [long code] code: HTTP response code
    * @return true if successful, otherwise return false
    */
   virtual bool query_amf_context_3gpp(

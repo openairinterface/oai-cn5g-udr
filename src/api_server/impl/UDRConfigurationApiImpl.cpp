@@ -38,7 +38,7 @@ void UDRConfigurationApiImpl::read_configuration(
 
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
 
   m_udr_app->handle_read_configuration(response_data, http_code);
 
@@ -56,7 +56,7 @@ void UDRConfigurationApiImpl::update_configuration(
   Logger::udr_server().debug("Update UDRConfiguration, handling...");
 
   Pistache::Http::Code code = {};
-  long http_code            = 0;
+  uint32_t http_code        = 0;
 
   m_udr_app->handle_update_configuration(configuration_info, http_code);
 

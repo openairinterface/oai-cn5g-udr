@@ -132,7 +132,7 @@ void udr_http2_server::start() {
                 std::string qs   = request.uri().raw_query;
                 Logger::udr_server().debug("QueryString: %s", qs.c_str());
                 std::string servingPlmnId =
-                    util::get_query_param(qs, "servingPlmnId");
+                    oai::utils::get_query_param(qs, "servingPlmnId");
                 this->query_am_data_handler(ueId, servingPlmnId, response);
               }
             }
@@ -182,10 +182,10 @@ void udr_http2_server::start() {
                   Logger::udr_server().debug("QueryString: %s", qs.c_str());
 
                   // std::string servingPlmnId =
-                  // util::get_query_param(qs, "servingPlmnId");
-                  std::string dnn = util::get_query_param(qs, "dnn");
+                  // oai::utils::get_query_param(qs, "servingPlmnId");
+                  std::string dnn = oai::utils::get_query_param(qs, "dnn");
                   std::string snssai =
-                      util::get_query_param(qs, "single-nssai");
+                      oai::utils::get_query_param(qs, "single-nssai");
                   if (!snssai.empty()) {
                     oai::model::common::Snssai singleNssai = {};
                     nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
@@ -232,7 +232,8 @@ void udr_http2_server::start() {
                 std::string ueId          = split_q[split_q.size() - 4].c_str();
                 std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
                 std::string qs            = request.uri().raw_query;
-                std::string snssai = util::get_query_param(qs, "single-nssai");
+                std::string snssai =
+                    oai::utils::get_query_param(qs, "single-nssai");
                 if (!snssai.empty()) {
                   oai::model::common::Snssai singleNssai = {};
                   nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
@@ -276,7 +277,7 @@ void udr_http2_server::start() {
                 Logger::udr_server().debug("QueryString: %s", qs.c_str());
 
                 std::string servingPlmnId =
-                    util::get_query_param(qs, "servingPlmnId");
+                    oai::utils::get_query_param(qs, "servingPlmnId");
                 this->query_smf_select_data_handler(
                     ueId, servingPlmnId, response);
               }
@@ -284,7 +285,7 @@ void udr_http2_server::start() {
           } catch (std::exception& e) {
             Logger::udr_server().warn("Invalid request (error: %s)!", e.what());
             response.write_head(
-                http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+                oai::common::sbi::http_status_code::BAD_REQUEST);
             response.end();
             return;
           }
@@ -310,7 +311,7 @@ void udr_http2_server::start() {
             Logger::udr_server().warn(
                 "Can not parse the JSON data (error: %s)!", e.what());
             response.write_head(
-                http_status_code_e::HTTP_STATUS_CODE_400_BAD_REQUEST);
+                oai::common::sbi::http_status_code::BAD_REQUEST);
             response.end();
             return;
           }
@@ -340,7 +341,7 @@ void udr_http2_server::query_am_data_handler(
     const std::string& ue_id, const std::string& serving_plmn_id,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_query_am_data(
@@ -357,7 +358,7 @@ void udr_http2_server::create_amf_context_3gpp_handler(
     Amf3GppAccessRegistration& amf3GppAccessRegistration,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_create_amf_context_3gpp(
@@ -373,7 +374,7 @@ void udr_http2_server::create_amf_context_3gpp_handler(
 void udr_http2_server::query_amf_context_3gpp_handler(
     const std::string& ue_id, const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_query_amf_context_3gpp(ue_id, response_data, http_code);
@@ -388,7 +389,7 @@ void udr_http2_server::create_authentication_status_handler(
     const std::string& ue_id, const AuthEvent& authEvent,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_create_authentication_status(
@@ -404,7 +405,7 @@ void udr_http2_server::create_authentication_status_handler(
 void udr_http2_server::delete_authentication_status_handler(
     const std::string& ue_id, const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_delete_authentication_status(
@@ -420,7 +421,7 @@ void udr_http2_server::delete_authentication_status_handler(
 void udr_http2_server::query_authentication_status_handler(
     const std::string& ue_id, const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_query_authentication_status(
@@ -438,7 +439,7 @@ void udr_http2_server::modify_authentication_subscription_handler(
     const std::vector<oai::model::common::PatchItem>& patchItem,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_modify_authentication_subscription(
@@ -454,7 +455,7 @@ void udr_http2_server::modify_authentication_subscription_handler(
 void udr_http2_server::read_authentication_subscription_handler(
     const std::string& ue_id, const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
   Logger::udr_server().info("Received response: ", response.status_code());
 
@@ -473,7 +474,7 @@ void udr_http2_server::create_authentication_subscription_handler(
     const AuthenticationSubscription& authentication_subscription,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_create_authentication_data(
@@ -489,7 +490,7 @@ void udr_http2_server::create_authentication_subscription_handler(
 void udr_http2_server::delete_authentication_subscription_handler(
     const std::string& ue_id, const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_delete_authentication_data(ue_id, response_data, http_code);
@@ -505,7 +506,7 @@ void udr_http2_server::query_sdm_subscription_handler(
     const std::string& ue_id, const std::string& subs_id,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_query_sdm_subscription(
@@ -522,7 +523,7 @@ void udr_http2_server::remove_sdm_subscription_handler(
     const std::string& ue_id, const std::string& subs_id,
     const response& response) {
   nlohmann::json response_data = {};
-  long http_code               = 0;
+  uint32_t http_code           = 0;
   header_map h;
 
   m_udr_app->handle_remove_sdm_subscription(
@@ -540,7 +541,7 @@ void udr_http2_server::modify_sdm_subscription_handler(
     SdmSubscription& sdmSubscription, const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  response.write_head(HTTP_STATUS_CODE_400_BAD_REQUEST, h);
+  response.write_head(oai::common::sbi::http_status_code::BAD_REQUEST, h);
   response.end("This API has not been implemented yet! (HTTP Version 2)\n");
 }
 
@@ -550,7 +551,7 @@ void udr_http2_server::update_sdm_subscription_handler(
     SdmSubscription& sdmSubscription, const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_update_sdm_subscription(
       ue_id, subs_id, sdmSubscription, response_data, http_code);
@@ -567,7 +568,7 @@ void udr_http2_server::create_sdm_subscriptions_handler(
     const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_create_sdm_subscriptions(
       ue_id, sdmSubscription, response_data, http_code);
@@ -583,7 +584,7 @@ void udr_http2_server::query_sdm_subscriptions_handler(
     const std::string& ue_id, const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_query_sdm_subscriptions(ue_id, response_data, http_code);
 
@@ -600,7 +601,7 @@ void udr_http2_server::query_sm_data_handler(
     std::optional<std::string>& dnn) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_query_sm_data(
       ue_id, serving_plmn_id, response_data, http_code, snssai, dnn);
@@ -615,7 +616,7 @@ void udr_http2_server::query_sm_data_handler(
 void udr_http2_server::query_sm_data_handler(const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_query_sm_data(response_data, http_code);
 
@@ -632,7 +633,7 @@ void udr_http2_server::create_sm_data_handler(
     const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code       = 0;
+  uint32_t http_code   = 0;
   uint32_t resource_id = 0;
 
   m_udr_app->handle_create_sm_data(
@@ -661,7 +662,7 @@ void udr_http2_server::update_sm_data_handler(
     const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code       = 0;
+  uint32_t http_code   = 0;
   uint32_t resource_id = 0;
 
   m_udr_app->handle_update_sm_data(
@@ -690,7 +691,7 @@ void udr_http2_server::delete_sm_data_handler(
     const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_delete_sm_data(
       ue_id, serving_plmn_id, snssai, response_data, http_code);
@@ -707,7 +708,7 @@ void udr_http2_server::create_smf_context_non_3gpp_handler(
     const SmfRegistration& smfRegistration, const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_create_smf_context_non_3gpp(
       ue_id, pdu_session_id, smfRegistration, response_data, http_code);
@@ -724,7 +725,7 @@ void udr_http2_server::delete_smf_context_handler(
     const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_delete_smf_context(
       ue_id, pdu_session_id, response_data, http_code);
@@ -741,7 +742,7 @@ void udr_http2_server::query_smf_registration_handler(
     const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_query_smf_registration(
       ue_id, pdu_session_id, response_data, http_code);
@@ -757,7 +758,7 @@ void udr_http2_server::query_smf_reg_list_handler(
     const std::string& ue_id, const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_query_smf_reg_list(ue_id, response_data, http_code);
 
@@ -773,7 +774,7 @@ void udr_http2_server::query_smf_select_data_handler(
     const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_query_smf_select_data(
       ue_id, serving_plmn_id, response_data, http_code);
@@ -788,7 +789,7 @@ void udr_http2_server::query_smf_select_data_handler(
 void udr_http2_server::read_configuration_handler(const response& response) {
   nlohmann::json response_data = {};
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_read_configuration(response_data, http_code);
 
@@ -802,7 +803,7 @@ void udr_http2_server::read_configuration_handler(const response& response) {
 void udr_http2_server::update_configuration_handler(
     nlohmann::json& configuration_info, const response& response) {
   header_map h;
-  long http_code = 0;
+  uint32_t http_code = 0;
 
   m_udr_app->handle_update_configuration(configuration_info, http_code);
 

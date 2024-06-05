@@ -55,7 +55,7 @@ void AuthenticationDataDocumentApiImpl::create_auth_subs_data(
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json responseData = {};
   Pistache::Http::Code code   = {};
-  long httpCode               = 0;
+  uint32_t httpCode           = 0;
 
   m_udr_app->handle_create_authentication_data(
       ueId, authenticationSubscription, responseData, httpCode);
@@ -72,7 +72,7 @@ void AuthenticationDataDocumentApiImpl::delete_auth_subs_data(
     const std::string& ueId, Pistache::Http::ResponseWriter& response) {
   nlohmann::json responseData = {};
   Pistache::Http::Code code   = {};
-  long httpCode               = 0;
+  uint32_t httpCode           = 0;
 
   m_udr_app->handle_delete_authentication_data(ueId, responseData, httpCode);
 

@@ -35,10 +35,10 @@
 #include <stdexcept>
 
 #include "3gpp_29.500.h"
+#include "http_client.hpp"
 #include "logger.hpp"
 #include "udr.h"
 #include "udr_app.hpp"
-#include "udr_client.hpp"
 #include "udr_profile.hpp"
 
 using namespace oai::udr::config;
@@ -49,7 +49,7 @@ using json = nlohmann::json;
 
 extern udr_config udr_cfg;
 extern udr_nrf* udr_nrf_inst;
-udr_client* udr_client_inst = nullptr;
+extern std::shared_ptr<oai::http::http_client> http_client_inst;
 
 //------------------------------------------------------------------------------
 udr_nrf::udr_nrf(udr_event& ev) : m_event_sub(ev) {
@@ -102,8 +102,8 @@ void udr_nrf::generate_udr_profile() {
   // "externalGroupIdentifiersRanges" attributes are absent, and "groupId" is
   // present, the SUPIs / GPSIs / ExternalGroups served by this UDR instance is
   // determined by the NRF (see 3GPP TS 23.501 [2], clause 6.2.6.2).
-  udr_info_t udr_info_item;
-  supi_range_udr_info_item_t supi_ranges;
+  oai::common::sbi::udr_info_t udr_info_item;
+  oai::common::sbi::supi_range_info_item_t supi_ranges;
   udr_info_item.groupid = "oai-udr-testgroupid";
   udr_info_item.data_set_id.push_back("0210");
   udr_info_item.data_set_id.push_back("9876");
@@ -111,7 +111,7 @@ void udr_nrf::generate_udr_profile() {
   supi_ranges.supi_range.pattern = "^imsi-20895[31-131]{6}$";
   supi_ranges.supi_range.start   = "208950000000131";
   udr_info_item.supi_ranges.push_back(supi_ranges);
-  identity_range_udr_info_item_t gpsi_ranges;
+  oai::common::sbi::identity_range_info_item_t gpsi_ranges;
   gpsi_ranges.identity_range.start   = "752740000";
   gpsi_ranges.identity_range.pattern = "^gpsi-75274[0-9]{4}$";
   gpsi_ranges.identity_range.end     = "752749999";
@@ -128,37 +128,42 @@ void udr_nrf::register_to_nrf() {
 
   // Send NF registration request
   std::string nrf_api_root = {};
-  std::string response     = {};
-  std::string method       = {"PUT"};
-  long response_code       = {0};
   get_nrf_api_root(nrf_api_root);
-  std::string remote_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  std::string nrf_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
   nlohmann::json json_data = {};
   udr_nf_profile.to_json(json_data);
 
   Logger::udr_nrf().info("Sending NF Registration request");
   bool is_registration_success = false;
 
-  if (udr_client_inst->curl_http_client(
-          remote_uri, method, json_data.dump().c_str(), response,
-          response_code)) {
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(nrf_uri, json_data.dump());
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::PUT, http_request);
+
+  if ((http_response.status_code == oai::common::sbi::http_status_code::OK) or
+      (http_response.status_code ==
+       oai::common::sbi::http_status_code::CREATED)) {
     try {
-      response_data = nlohmann::json::parse(response);
+      response_data = nlohmann::json::parse(http_response.body);
       // TODO: use Heart-beart timer interval returned from NRF
-      if (response.find("REGISTERED") != 0) {
-        stop_nrf_registration_retry();
-        start_event_nf_heartbeat(remote_uri);
-        is_registration_success = true;
+      if (response_data.find("nfStatus") != response_data.end()) {
+        std::string status = response_data["nfStatus"].get<std::string>();
+        if (status.compare("REGISTERED") == 0) {
+          is_registration_success = true;
+          stop_nrf_registration_retry();
+          start_event_nf_heartbeat(nrf_uri);
+        }
       }
     } catch (nlohmann::json::exception& e) {
-      Logger::udr_nrf().info(
-          "NF Registration procedure failed - cannot parse the response");
+      Logger::udr_nrf().info("NF Registration procedure failed.");
     }
-  } else {
-    Logger::udr_app().debug("NF registration procedure failed, try again ...");
   }
 
-  if (!is_registration_success) start_nrf_registration_retry();
+  if (!is_registration_success) {
+    Logger::udr_app().debug("NF registration procedure failed, try again ...");
+    start_nrf_registration_retry();
+  }
 }
 
 //---------------------------------------------------------------------------------------------
@@ -166,29 +171,27 @@ void udr_nrf::deregister_to_nrf() {
   nlohmann::json response_data = {};
   // Send NFs deregistration request
   std::string nrf_api_root = {};
-  std::string response     = {};
-  std::string method       = {"DELETE"};
-  long response_code       = {0};
-
   get_nrf_api_root(nrf_api_root);
   std::string nrf_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
 
   Logger::udr_nrf().info("Sending NF Deregistration request");
 
-  bool deregistration_result = false;
-  deregistration_result      = udr_client_inst->curl_http_client(
-      nrf_uri, method, "", response, response_code);
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(nrf_uri);
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::DELETE, http_request);
 
-  if (deregistration_result and (response_code == 204)) {
+  if (http_response.status_code ==
+      oai::common::sbi::http_status_code::NO_CONTENT) {
     // TODO:
   } else {
     Logger::udr_nrf().info("NF Deregistration procedure failed.");
-    // TODO: should we retry?
+    // TODO:
   }
 }
 
 //---------------------------------------------------------------------------------------------
-void udr_nrf::start_event_nf_heartbeat(std::string& remote_uri) {
+void udr_nrf::start_event_nf_heartbeat(std::string& nrf_uri) {
   // get current time
   uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch())
@@ -219,8 +222,6 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
   patch_items.push_back(patch_item);
   Logger::udr_nrf().info("Sending NF Heartbeat Request");
 
-  std::string response     = {};
-  long response_code       = {0};
   std::string method       = {"PATCH"};
   nlohmann::json json_data = nlohmann::json::array();
   for (auto i : patch_items) {
@@ -231,22 +232,18 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
 
   std::string nrf_api_root = {};
   get_nrf_api_root(nrf_api_root);
-  std::string remote_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  std::string nrf_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
 
-  bool is_heartbeat_success = false;
+  oai::http::request http_request =
+      http_client_inst->prepare_json_request(nrf_uri, json_data.dump());
+  auto http_response = http_client_inst->send_http_request(
+      oai::common::sbi::method_e::PATCH, http_request);
 
-  if (udr_client_inst->curl_http_client(
-          remote_uri, method, json_data.dump().c_str(), response,
-          response_code)) {
-    if (response_code == HTTP_STATUS_CODE_200_OK or
-        response_code == HTTP_STATUS_CODE_201_CREATED or
-        response_code == HTTP_STATUS_CODE_204_NO_CONTENT) {
-      is_heartbeat_success = true;
-      // TODO: process the response
-    }
-  }
-
-  if (!is_heartbeat_success) {
+  if ((http_response.status_code == oai::common::sbi::http_status_code::OK) or
+      (http_response.status_code ==
+       oai::common::sbi::http_status_code::NO_CONTENT)) {
+    // TODO: process the response
+  } else {
     Logger::udr_nrf().info(
         "NF Heartbeat procedure failed, try to register again");
     if (task_connection.connected()) task_connection.disconnect();

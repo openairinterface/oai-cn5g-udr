@@ -19,7 +19,7 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_client.hpp
+/*! \file udr_nrf.hpp
  \author
  \company Eurecom
  \date 2020
