@@ -126,6 +126,7 @@ RUN rm -f /etc/rhsm-host && \
 #      libasan \
       libicu \
       boost \
+      utf8proc \
       libevent \
       findutils \
       libconfig && \

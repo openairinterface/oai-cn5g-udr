@@ -91,6 +91,7 @@ RUN microdnf update -y && \
 #      libasan \
       libicu \
       boost \
+      utf8proc \
       libevent \
       findutils \
       libconfig && \
