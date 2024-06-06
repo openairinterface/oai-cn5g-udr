@@ -195,7 +195,7 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
       cfg.db_type = DB_TYPE_CASSANDRA;
     } else if (boost::iequals(
                    get_database_config().get_database_type(), "mongodb")) {
-      cfg.db_type = DB_TYPE_MONGO;
+      cfg.db_type = DB_TYPE_MONGODB;
     }
   }
 
