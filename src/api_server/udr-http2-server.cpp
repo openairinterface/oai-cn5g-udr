@@ -634,12 +634,15 @@ void udr_http2_server::create_sm_data_handler(
       ue_id, serving_plmn_id, subscription_data, response_data, http_code,
       resource_id);
 
+  std::string location_format_str = {};
+  udr_sbi_helper::get_fmt_format_form(
+      sbi_helper::UdrDrPathSubscriptionDataProvisionedDataSmData,
+      location_format_str);
+  // Location
   std::string location =
-      NUDR_DR_BASE + udr_cfg.nudr.api_version +
-      fmt::format(
-          "/subscription-data/{}/{}/provisioned-data/sm-data", ue_id,
-          serving_plmn_id) +
-      "/" + std::to_string(resource_id);
+      "http://" + m_address + udr_sbi_helper::UdrDataRepositoryServiceBase +
+      fmt::format(location_format_str, ue_id, serving_plmn_id) + "/" +
+      std::to_string(resource_id);
 
   Logger::udr_server().debug(
       "HTTP Response code %d (HTTP Version 2).\n", http_code);
@@ -663,12 +666,15 @@ void udr_http2_server::update_sm_data_handler(
       ue_id, serving_plmn_id, subscription_data, response_data, http_code,
       resource_id);
 
+  std::string location_format_str = {};
+  udr_sbi_helper::get_fmt_format_form(
+      sbi_helper::UdrDrPathSubscriptionDataProvisionedDataSmData,
+      location_format_str);
+  // Location
   std::string location =
-      NUDR_DR_BASE + udr_cfg.nudr.api_version +
-      fmt::format(
-          "/subscription-data/{}/{}/provisioned-data/sm-data", ue_id,
-          serving_plmn_id) +
-      "/" + std::to_string(resource_id);
+      "http://" + m_address + udr_sbi_helper::UdrDataRepositoryServiceBase +
+      fmt::format(location_format_str, ue_id, serving_plmn_id) + "/" +
+      std::to_string(resource_id);
 
   Logger::udr_server().debug(
       "HTTP Response code %d (HTTP Version 2).\n", http_code);

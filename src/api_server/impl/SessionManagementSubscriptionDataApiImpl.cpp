@@ -36,6 +36,7 @@
 #include "logger.hpp"
 #include "udr_app.hpp"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -43,6 +44,7 @@ namespace oai::udr::api {
 
 using namespace oai::udr::model;
 using namespace oai::model::common;
+using namespace oai::udr::api;
 
 SessionManagementSubscriptionDataApiImpl::
     SessionManagementSubscriptionDataApiImpl(
