@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 UEPolicySetDocumentApi::UEPolicySetDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -57,17 +59,20 @@ void UEPolicySetDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/ue-policy-set",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataUesUePolicySet,
       Routes::bind(
           &UEPolicySetDocumentApi::create_or_replace_ue_policy_set_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/ue-policy-set",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataUesUePolicySet,
       Routes::bind(&UEPolicySetDocumentApi::read_ue_policy_set_handler, this));
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/ue-policy-set",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataUesUePolicySet,
       Routes::bind(
           &UEPolicySetDocumentApi::update_ue_policy_set_handler, this));
 

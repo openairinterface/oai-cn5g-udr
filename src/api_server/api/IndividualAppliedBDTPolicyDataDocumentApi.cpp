@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 IndividualAppliedBDTPolicyDataDocumentApi::
     IndividualAppliedBDTPolicyDataDocumentApi(
@@ -58,16 +60,16 @@ void IndividualAppliedBDTPolicyDataDocumentApi::setupRoutes() {
 
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/application-data/bdtPolicyData/:bdtPolicyId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataBdtPolicyDataBdtPolicyId,
       Routes::bind(
           &IndividualAppliedBDTPolicyDataDocumentApi::
               delete_individual_applied_bdt_policy_data_handler,
           this));
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/application-data/bdtPolicyData/:bdtPolicyId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataBdtPolicyDataBdtPolicyId,
       Routes::bind(
           &IndividualAppliedBDTPolicyDataDocumentApi::
               update_individual_applied_bdt_policy_data_handler,

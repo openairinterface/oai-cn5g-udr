@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file databse_wrapper_abstraction.hpp
- \brief
- \author
- \company Eurecom
- \date 2022
- \email: contact@openairinterface.org
- */
-
 #ifndef DATABASE_WRAPPER_ABSTRACTION_HPP
 #define DATABASE_WRAPPER_ABSTRACTION_HPP
 

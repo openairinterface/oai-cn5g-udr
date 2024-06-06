@@ -59,8 +59,6 @@ class SponsorConnectivityDataDocumentApi {
   virtual ~SponsorConnectivityDataDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

@@ -59,8 +59,6 @@ class SMSManagementSubscriptionDataDocumentApi {
   virtual ~SMSManagementSubscriptionDataDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

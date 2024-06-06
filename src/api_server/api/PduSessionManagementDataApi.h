@@ -58,8 +58,6 @@ class PduSessionManagementDataApi {
   virtual ~PduSessionManagementDataApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

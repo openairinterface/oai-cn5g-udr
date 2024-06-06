@@ -19,37 +19,11 @@
  *      contact@openairinterface.org
  */
 
-#ifndef FILE_UDR_SEEN
-#define FILE_UDR_SEEN
+#include "udr_sbi_helper.hpp"
 
-#include <string>
-#include <vector>
+#include "logger.hpp"
 
-#define HEART_BEAT_TIMER 10
-#define NRF_REGISTRATION_RETRY_TIMER 5
+namespace oai::udr::api {
+//------------------------------------------------------------------------------
 
-#define MAX_FIRST_CONNECTION_RETRY 100
-#define MAX_CONNECTION_RETRY 3
-
-#define _unused(x) ((void) (x))
-
-#define NUDR_DR_AUTH_STATUS "authentication-status"
-#define NUDR_DR_AUTH_SUBS "authentication-subscription"
-#define NUDR_DR_AMF_XGPP_ACCESS "amf-3gpp-access"
-#define NUDR_DR_AM_DATA "am-data"
-#define NUDR_DR_SDM_SUBS "sdm-subscriptions"
-#define NUDR_DR_SM_DATA "sm-data"
-#define NUDR_DR_SMF_REG "smf-registrations"
-#define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
-
-typedef enum db_type_s {
-  DB_TYPE_UNKNOWN   = 0,
-  DB_TYPE_MYSQL     = 1,
-  DB_TYPE_CASSANDRA = 2,
-  DB_TYPE_MONGO     = 3
-} db_type_t;
-
-static const std::vector<std::string> db_type_e2str = {
-    "Unknown", "MySQL", "Cassandra", "Mongo"};
-
-#endif
+}  // namespace oai::udr::api

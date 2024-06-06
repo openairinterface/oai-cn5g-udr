@@ -57,8 +57,6 @@ class PolicyDataSubscriptionsCollectionApi {
   virtual ~PolicyDataSubscriptionsCollectionApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_nrf.cpp
- \brief
- \author
- \company Eurecom
- \date 2020
- \email: contact@openairinterface.org
- */
-
 #include "udr_nrf.hpp"
 
 #include <boost/uuid/random_generator.hpp>
@@ -77,12 +69,6 @@ void udr_nrf::stop() {
 }
 
 //---------------------------------------------------------------------------------------------
-void udr_nrf::get_nrf_api_root(std::string& api_root) {
-  api_root =
-      udr_cfg.nrf_addr.uri_root + NNRF_NFM_BASE + udr_cfg.nrf_addr.api_version;
-}
-
-//---------------------------------------------------------------------------------------------
 void udr_nrf::generate_udr_profile() {
   // TODO: remove hardcoded values
   udr_nf_profile.set_nf_instance_id(udr_instance_id);
@@ -127,9 +113,9 @@ void udr_nrf::register_to_nrf() {
   nlohmann::json response_data = {};
 
   // Send NF registration request
-  std::string nrf_api_root = {};
-  get_nrf_api_root(nrf_api_root);
-  std::string nrf_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  std::string nrf_uri = {};
+  oai::common::sbi::sbi_helper::get_nrf_nf_instance_uri(
+      udr_cfg.nrf_addr, udr_instance_id, nrf_uri);
   nlohmann::json json_data = {};
   udr_nf_profile.to_json(json_data);
 
@@ -170,9 +156,9 @@ void udr_nrf::register_to_nrf() {
 void udr_nrf::deregister_to_nrf() {
   nlohmann::json response_data = {};
   // Send NFs deregistration request
-  std::string nrf_api_root = {};
-  get_nrf_api_root(nrf_api_root);
-  std::string nrf_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  std::string nrf_uri = {};
+  oai::common::sbi::sbi_helper::get_nrf_nf_instance_uri(
+      udr_cfg.nrf_addr, udr_instance_id, nrf_uri);
 
   Logger::udr_nrf().info("Sending NF Deregistration request");
 
@@ -230,9 +216,9 @@ void udr_nrf::trigger_nf_heartbeat_procedure(uint64_t ms) {
     json_data.push_back(item);
   }
 
-  std::string nrf_api_root = {};
-  get_nrf_api_root(nrf_api_root);
-  std::string nrf_uri = nrf_api_root + UDR_NF_REGISTER_URL + udr_instance_id;
+  std::string nrf_uri = {};
+  oai::common::sbi::sbi_helper::get_nrf_nf_instance_uri(
+      udr_cfg.nrf_addr, udr_instance_id, nrf_uri);
 
   oai::http::request http_request =
       http_client_inst->prepare_json_request(nrf_uri, json_data.dump());

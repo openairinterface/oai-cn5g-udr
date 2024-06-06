@@ -59,8 +59,6 @@ class Modify5GVnGroupApi {
   virtual ~Modify5GVnGroupApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

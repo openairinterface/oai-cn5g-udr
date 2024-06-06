@@ -19,37 +19,31 @@
  *      contact@openairinterface.org
  */
 
-#ifndef FILE_UDR_SEEN
-#define FILE_UDR_SEEN
+#ifndef _UDR_SBI_HELPER_HPP
+#define _UDR_SBI_HELPER_HPP
 
-#include <string>
-#include <vector>
+#include <nlohmann/json.hpp>
 
-#define HEART_BEAT_TIMER 10
-#define NRF_REGISTRATION_RETRY_TIMER 5
+#include "udr_config.hpp"
+#include "sbi_helper.hpp"
 
-#define MAX_FIRST_CONNECTION_RETRY 100
-#define MAX_CONNECTION_RETRY 3
+using namespace oai::common::sbi;
 
-#define _unused(x) ((void) (x))
+extern oai::udr::config::udr_config udr_cfg;
 
-#define NUDR_DR_AUTH_STATUS "authentication-status"
-#define NUDR_DR_AUTH_SUBS "authentication-subscription"
-#define NUDR_DR_AMF_XGPP_ACCESS "amf-3gpp-access"
-#define NUDR_DR_AM_DATA "am-data"
-#define NUDR_DR_SDM_SUBS "sdm-subscriptions"
-#define NUDR_DR_SM_DATA "sm-data"
-#define NUDR_DR_SMF_REG "smf-registrations"
-#define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
+namespace oai::udr::api {
 
-typedef enum db_type_s {
-  DB_TYPE_UNKNOWN   = 0,
-  DB_TYPE_MYSQL     = 1,
-  DB_TYPE_CASSANDRA = 2,
-  DB_TYPE_MONGO     = 3
-} db_type_t;
+class udr_sbi_helper : public sbi_helper {
+ public:
+  static inline const std::string UdrDataRepositoryServiceBase =
+      sbi_helper::UdrDataRepositoryBase +
+      udr_cfg.nudr.api_version.value_or(kDefaultSbiApiVersion);
 
-static const std::vector<std::string> db_type_e2str = {
-    "Unknown", "MySQL", "Cassandra", "Mongo"};
+  static inline const std::string UdrConfigurationServiceBase =
+      sbi_helper::UdrConfBase +
+      udr_cfg.nudr.api_version.value_or(kDefaultSbiApiVersion);
+};
+
+}  // namespace oai::udr::api
 
 #endif

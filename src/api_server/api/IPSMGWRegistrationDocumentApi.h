@@ -61,8 +61,6 @@ class IPSMGWRegistrationDocumentApi {
   virtual ~IPSMGWRegistrationDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

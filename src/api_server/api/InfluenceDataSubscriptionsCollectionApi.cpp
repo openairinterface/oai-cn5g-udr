@@ -35,12 +35,14 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
+using namespace oai::udr::api;
 
 InfluenceDataSubscriptionsCollectionApi::
     InfluenceDataSubscriptionsCollectionApi(
@@ -57,16 +59,16 @@ void InfluenceDataSubscriptionsCollectionApi::setupRoutes() {
 
   Routes::Post(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/application-data/influenceData/subs-to-notify",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataInfluenceDataSubsToNotify,
       Routes::bind(
           &InfluenceDataSubscriptionsCollectionApi::
               create_individual_influence_data_subscription_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/application-data/influenceData/subs-to-notify",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataInfluenceDataSubsToNotify,
       Routes::bind(
           &InfluenceDataSubscriptionsCollectionApi::
               read_influence_data_subscriptions_handler,

@@ -174,8 +174,6 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
   cfg.log_level                  = spdlog::level::from_str(log_level());
   cfg.register_nrf               = register_nrf();
 
-  // TODO:
-  // cfg.support_features.use_fqdn_dns = true;
   if (get_http_version() == 2) cfg.use_http2 = true;
 
   // Database
@@ -202,7 +200,6 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
   }
 
   cfg.nudr.api_version = local().get_sbi().get_api_version();
-  cfg.nudr_http2_port  = local().get_sbi().get_port();
   cfg.nudr.port        = local().get_sbi().get_port();
   cfg.nudr.addr4       = local().get_sbi().get_addr4();
   cfg.nudr.if_name     = local().get_sbi().get_if_name();

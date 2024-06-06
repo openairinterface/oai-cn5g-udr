@@ -58,8 +58,6 @@ class Class5GVNGroupsInternalDocumentApi {
   virtual ~Class5GVNGroupsInternalDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

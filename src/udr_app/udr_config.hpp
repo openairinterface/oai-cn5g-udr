@@ -22,49 +22,11 @@
 #ifndef _UDR_CONFIG_H_
 #define _UDR_CONFIG_H_
 
-#include <arpa/inet.h>
-#include <netinet/in.h>
-
-#include <libconfig.h++>
 #include <string>
 
 #include "udr.h"
 #include "logger.hpp"
-
-#define UDR_CONFIG_STRING_UDR_CONFIG "UDR"
-#define UDR_CONFIG_STRING_INSTANCE_ID "INSTANCE_ID"
-#define UDR_CONFIG_STRING_UDR_NAME "UDR_NAME"
-#define UDR_CONFIG_STRING_PID_DIRECTORY "PID_DIRECTORY"
-#define UDR_CONFIG_STRING_INTERFACES "INTERFACES"
-#define UDR_CONFIG_STRING_INTERFACE_NUDR "NUDR"
-#define UDR_CONFIG_STRING_INTERFACE_NAME "INTERFACE_NAME"
-#define UDR_CONFIG_STRING_IPV4_ADDRESS "IPV4_ADDRESS"
-#define UDR_CONFIG_STRING_PORT "PORT"
-#define UDR_CONFIG_STRING_HTTP2_PORT "HTTP2_PORT"
-#define UDR_CONFIG_STRING_API_VERSION "API_VERSION"
-
-#define UDR_CONFIG_STRING_NRF "NRF"
-#define UDR_CONFIG_STRING_NRF_IPV4_ADDRESS "IPV4_ADDRESS"
-#define UDR_CONFIG_STRING_NRF_PORT "PORT"
-
-#define UDR_CONFIG_STRING_SUPPORT_FEATURES "SUPPORT_FEATURES"
-#define UDR_CONFIG_STRING_SUPPORT_FEATURES_USE_FQDN_DNS "USE_FQDN_DNS"
-#define UDR_CONFIG_STRING_SUPPORTED_FEATURES_REGISTER_NRF "REGISTER_NRF"
-#define UDM_CONFIG_STRING_SUPPORT_FEATURES_USE_HTTP2 "USE_HTTP2"
-#define UDR_CONFIG_STRING_FQDN_DNS "FQDN"
-
-#define UDR_CONFIG_STRING_DATABASE_TYPE "DATABASE"
-
-#define UDR_CONFIG_STRING_DB "DB"
-#define UDR_CONFIG_STRING_DB_SERVER "DB_SERVER"
-#define UDR_CONFIG_STRING_DB_USER "DB_USER"
-#define UDR_CONFIG_STRING_DB_PASS "DB_PASS"
-#define UDR_CONFIG_STRING_DB_NAME "DB_NAME"
-#define UDR_CONFIG_STRING_DB_CONNECTION_TIMEOUT "DB_CONNECTION_TIMEOUT"
-
-#define UDR_CONFIG_STRING_LOG_LEVEL "LOG_LEVEL"
-
-using namespace libconfig;
+#include "sbi_helper.hpp"
 
 namespace oai::udr::config {
 
@@ -77,41 +39,20 @@ typedef struct {
   uint32_t connection_timeout;
 } db_conf_t;
 
-typedef struct interface_cfg_s {
-  std::string if_name;
-  struct in_addr addr4;
-  struct in_addr network4;
-  struct in6_addr addr6;
-  unsigned int mtu;
-  unsigned int port;
-  std::string api_version;
-
-} interface_cfg_t;
-
 class udr_config {
  public:
   udr_config();
   ~udr_config();
 
-  void display();
-
   unsigned int instance;
   std::string pid_dir;
   std::string udr_name;
   spdlog::level::level_enum log_level;
-  interface_cfg_t nudr;
-  unsigned int nudr_http2_port;
+  oai::common::sbi::interface_cfg_t nudr;
 
-  struct {
-    struct in_addr ipv4_addr;
-    unsigned int port;
-    std::string api_version;
-    std::string fqdn;
-    std::string uri_root;
-  } nrf_addr;
+  oai::common::sbi::nf_addr_t nrf_addr;
 
   bool register_nrf;
-  bool use_fqdn_dns;
   bool use_http2;
 
   db_conf_t db_conf;

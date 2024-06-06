@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_event_sig.hpp
- \brief
- \author
- \company
- \date 2022
- \email: contact@openairinterface.org
- */
-
 #ifndef FILE_UDR_EVENT_SIG_HPP_SEEN
 #define FILE_UDR_EVENT_SIG_HPP_SEEN
 

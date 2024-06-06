@@ -44,7 +44,6 @@
 #include <pistache/optional.h>
 #include <pistache/router.h>
 
-//#include "Object.h"
 #include <string>
 #include <vector>
 
@@ -59,8 +58,6 @@ class SubsToNotifyDocumentApi {
   SubsToNotifyDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~SubsToNotifyDocumentApi() {}
   void init();
-
-  const std::string base = "/nudr-dr/";
 
  private:
   void setupRoutes();

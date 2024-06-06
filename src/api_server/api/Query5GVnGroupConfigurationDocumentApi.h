@@ -59,8 +59,6 @@ class Query5GVnGroupConfigurationDocumentApi {
   virtual ~Query5GVnGroupConfigurationDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

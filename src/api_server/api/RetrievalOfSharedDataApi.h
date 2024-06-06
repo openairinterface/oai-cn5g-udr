@@ -45,7 +45,6 @@
 #include <pistache/router.h>
 
 #include "ProblemDetails.h"
-//#include "Set.h"
 #include <string>
 
 #include "SharedData.h"
@@ -59,8 +58,6 @@ class RetrievalOfSharedDataApi {
   RetrievalOfSharedDataApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~RetrievalOfSharedDataApi() {}
   void init();
-
-  const std::string base = "/nudr-dr/";
 
  private:
   void setupRoutes();

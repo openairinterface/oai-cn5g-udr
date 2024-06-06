@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_http2-server.cpp
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2020
- \email: tien-thinh.nguyen@eurecom.fr
- */
-
 #include "udr-http2-server.h"
 
 #include <boost/algorithm/string.hpp>
@@ -41,11 +33,13 @@
 #include "string.hpp"
 #include "udr.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 using namespace nghttp2::asio_http2;
 using namespace nghttp2::asio_http2::server;
 using namespace oai::udr::model;
 using namespace oai::udr::config;
+using namespace oai::udr::api;
 
 extern udr_config udr_cfg;
 
@@ -56,7 +50,7 @@ void udr_http2_server::start() {
   Logger::udr_server().info("HTTP2 server being started ");
 
   server.handle(
-      NUDR_DR_BASE + udr_cfg.nudr.api_version + "/",
+      udr_sbi_helper::UdrDataRepositoryServiceBase + "/",
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);
@@ -294,8 +288,8 @@ void udr_http2_server::start() {
 
   // Configuration APIs
   server.handle(
-      NUDR_CUSTOMIZED_API_BASE + udr_cfg.nudr.api_version +
-          NUDR_CUSTOMIZED_API_CONFIGURATION_URL,
+      udr_sbi_helper::UdrConfigurationServiceBase +
+          udr_sbi_helper::UdrConfPathConfiguration,
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           try {

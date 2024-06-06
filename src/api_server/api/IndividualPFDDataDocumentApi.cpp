@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 IndividualPFDDataDocumentApi::IndividualPFDDataDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -57,20 +59,23 @@ void IndividualPFDDataDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataPfdsApp,
       Routes::bind(
           &IndividualPFDDataDocumentApi::
               create_or_replace_individual_pfd_data_handler,
           this));
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataPfdsApp,
       Routes::bind(
           &IndividualPFDDataDocumentApi::delete_individual_pfd_data_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version + "/application-data/pfds/:appId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataPfdsApp,
       Routes::bind(
           &IndividualPFDDataDocumentApi::read_individual_pfd_data_handler,
           this));

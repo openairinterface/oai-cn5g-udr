@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_profile.cpp
- \brief
- \author
- \company Eurecom
- \date 2021
- \email: contact@openairinterface.org
- */
-
 #include "udr_profile.hpp"
 
 #include <boost/algorithm/string/classification.hpp>

@@ -46,7 +46,6 @@
 
 #include "DataSetName.h"
 #include "ProvisionedDataSets.h"
-//#include "Set.h"
 #include <string>
 
 namespace oai::udr::api {
@@ -58,8 +57,6 @@ class ProvisionedDataDocumentApi {
   ProvisionedDataDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~ProvisionedDataDocumentApi() {}
   void init();
-
-  const std::string base = "/nudr-dr/";
 
  private:
   void setupRoutes();

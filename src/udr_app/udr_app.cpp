@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_app.cpp
- \brief
- \author
- \company Eurecom
- \date 2020
- \email: contact@openairinterface.org
- */
-
 #include "udr_app.hpp"
 
 #include "3gpp_29.500.h"

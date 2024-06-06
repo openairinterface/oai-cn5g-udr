@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file mysql_db.hpp
- \brief
- \author
- \company Eurecom
- \date 2022
- \email: contact@openairinterface.org
- */
-
 #ifndef MYSQL_DB_HPP
 #define MYSQL_DB_HPP
 

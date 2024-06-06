@@ -58,8 +58,6 @@ class V2XSubscriptionDataApi {
   virtual ~V2XSubscriptionDataApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

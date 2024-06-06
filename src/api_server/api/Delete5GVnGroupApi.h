@@ -55,8 +55,6 @@ class Delete5GVnGroupApi {
   virtual ~Delete5GVnGroupApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 
