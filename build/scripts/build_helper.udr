@@ -108,7 +108,7 @@ check_install_udr_deps() {
         specific_packages="libconfig++-dev libasio-dev libboost-all-dev libasan6"
         ;;
       "ubuntu24.04")
-        specific_packages="libasio-dev libboost-all-dev libasan8"
+        specific_packages="libconfig++-dev libasio-dev libboost-all-dev libasan8"
         ;;
     esac
     # removed libspdlog-dev
