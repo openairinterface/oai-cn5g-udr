@@ -98,6 +98,25 @@ check_install_udr_deps() {
   $SUDO $INSTALLER install $OPTION $PACKAGE_LIST
   ret=$?;[[ $ret -ne 0 ]] && return $ret
 
+  # Newer versions of cmake are an issue w/ mongo-cxx
+  # Installing the same version as for U22
+  if [[ $OS_DISTRO == "ubuntu" ]]; then
+    case "$(get_distribution_release)" in
+      "ubuntu24.04")
+        wget --quiet https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.sh \
+          -O /tmp/cmake.sh
+        mkdir -p /opt/cmake-3.22.1
+        sh /tmp/cmake.sh --prefix=/opt/cmake-3.22.1 --exclude-subdir
+        mv /usr/bin/cmake /usr/bin/cmake-3.28.3
+        ln -s /usr/bin/cmake-3.28.3 /usr/bin/cmake
+        update-alternatives --install /usr/bin/cmake cmake /opt/cmake-3.22.1/bin/cmake 20
+        rm -f /tmp/cmake.sh
+        cmake --version
+        $SUDO $INSTALLER install $OPTION $CMAKE
+        ;;
+    esac
+  fi
+
   # Libraries
   if [[ $OS_DISTRO == "ubuntu" ]]; then
     case "$(get_distribution_release)" in
