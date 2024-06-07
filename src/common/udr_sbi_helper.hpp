@@ -19,42 +19,31 @@
  *      contact@openairinterface.org
  */
 
-#ifndef _UDR_CONFIG_H_
-#define _UDR_CONFIG_H_
+#ifndef _UDR_SBI_HELPER_HPP
+#define _UDR_SBI_HELPER_HPP
 
-#include <string>
+#include <nlohmann/json.hpp>
 
-#include "udr.h"
-#include "logger.hpp"
+#include "udr_config.hpp"
 #include "sbi_helper.hpp"
 
-namespace oai::udr::config {
+using namespace oai::common::sbi;
 
-typedef struct {
-  std::string server;
-  uint32_t port;
-  std::string user;
-  std::string pass;
-  std::string db_name;
-  uint32_t connection_timeout;
-} db_conf_t;
+extern oai::udr::config::udr_config udr_cfg;
 
-class udr_config {
+namespace oai::udr::api {
+
+class udr_sbi_helper : public sbi_helper {
  public:
-  udr_config();
-  ~udr_config();
+  static inline const std::string UdrDataRepositoryServiceBase =
+      sbi_helper::UdrDataRepositoryBase +
+      udr_cfg.nudr.api_version.value_or(kDefaultSbiApiVersion);
 
-  unsigned int instance;
-  std::string pid_dir;
-  std::string udr_name;
-  spdlog::level::level_enum log_level;
-  oai::common::sbi::interface_cfg_t nudr;
-  oai::common::sbi::nf_addr_t nrf_addr;
-  bool register_nrf;
-  bool use_http2;
-  db_conf_t db_conf;
-  db_type_t db_type;
+  static inline const std::string UdrConfigurationServiceBase =
+      sbi_helper::UdrConfBase +
+      udr_cfg.nudr.api_version.value_or(kDefaultSbiApiVersion);
 };
-}  // namespace oai::udr::config
+
+}  // namespace oai::udr::api
 
 #endif

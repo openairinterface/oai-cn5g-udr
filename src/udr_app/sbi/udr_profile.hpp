@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_profile.hpp
- \brief
- \author
- \company Eurecom
- \date 2021
- \email: contact@openairinterface.org
- */
-
 #ifndef FILE_UDR_PROFILE_HPP_SEEN
 #define FILE_UDR_PROFILE_HPP_SEEN
 

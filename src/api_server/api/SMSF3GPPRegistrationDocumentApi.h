@@ -58,8 +58,6 @@ class SMSF3GPPRegistrationDocumentApi {
   virtual ~SMSF3GPPRegistrationDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

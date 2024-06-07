@@ -35,12 +35,14 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
+using namespace oai::udr::api;
 
 EventExposureSubscriptionDocumentApi::EventExposureSubscriptionDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -56,29 +58,33 @@ void EventExposureSubscriptionDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataContextDataEeSubscriptionsSubsId,
       Routes::bind(
           &EventExposureSubscriptionDocumentApi::modify_eesubscription_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataContextDataEeSubscriptionsSubsId,
       Routes::bind(
           &EventExposureSubscriptionDocumentApi::queryee_subscription_handler,
           this));
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataContextDataEeSubscriptionsSubsId,
       Routes::bind(
           &EventExposureSubscriptionDocumentApi::removeee_subscriptions_handler,
           this));
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/ee-subscriptions/:subsId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataContextDataEeSubscriptionsSubsId,
       Routes::bind(
           &EventExposureSubscriptionDocumentApi::update_eesubscriptions_handler,
           this));

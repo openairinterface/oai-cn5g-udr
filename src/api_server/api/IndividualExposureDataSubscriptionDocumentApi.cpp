@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 IndividualExposureDataSubscriptionDocumentApi::
     IndividualExposureDataSubscriptionDocumentApi(
@@ -58,14 +60,16 @@ void IndividualExposureDataSubscriptionDocumentApi::setupRoutes() {
 
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version + "/exposure-data/subs-to-notify/:subId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathExposureDataSubsToNotifySubsId,
       Routes::bind(
           &IndividualExposureDataSubscriptionDocumentApi::
               delete_individual_exposure_data_subscription_handler,
           this));
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version + "/exposure-data/subs-to-notify/:subId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathExposureDataSubsToNotifySubsId,
       Routes::bind(
           &IndividualExposureDataSubscriptionDocumentApi::
               replace_individual_exposure_data_subscription_handler,

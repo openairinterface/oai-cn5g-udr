@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_http2-server.cpp
- \brief
- \author  Tien-Thinh NGUYEN
- \company Eurecom
- \date 2020
- \email: tien-thinh.nguyen@eurecom.fr
- */
-
 #include "udr-http2-server.h"
 
 #include <boost/algorithm/string.hpp>
@@ -41,11 +33,13 @@
 #include "string.hpp"
 #include "udr.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 using namespace nghttp2::asio_http2;
 using namespace nghttp2::asio_http2::server;
 using namespace oai::udr::model;
 using namespace oai::udr::config;
+using namespace oai::udr::api;
 
 extern udr_config udr_cfg;
 
@@ -56,7 +50,7 @@ void udr_http2_server::start() {
   Logger::udr_server().info("HTTP2 server being started ");
 
   server.handle(
-      NUDR_DR_BASE + udr_cfg.nudr.api_version + "/",
+      udr_sbi_helper::UdrDataRepositoryServiceBase + "/",
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           std::string msg((char*) data, len);
@@ -294,8 +288,8 @@ void udr_http2_server::start() {
 
   // Configuration APIs
   server.handle(
-      NUDR_CUSTOMIZED_API_BASE + udr_cfg.nudr.api_version +
-          NUDR_CUSTOMIZED_API_CONFIGURATION_URL,
+      udr_sbi_helper::UdrConfigurationServiceBase +
+          udr_sbi_helper::UdrConfPathConfiguration,
       [&](const request& request, const response& response) {
         request.on_data([&](const uint8_t* data, std::size_t len) {
           try {
@@ -640,12 +634,15 @@ void udr_http2_server::create_sm_data_handler(
       ue_id, serving_plmn_id, subscription_data, response_data, http_code,
       resource_id);
 
+  std::string location_format_str = {};
+  udr_sbi_helper::get_fmt_format_form(
+      sbi_helper::UdrDrPathSubscriptionDataProvisionedDataSmData,
+      location_format_str);
+  // Location
   std::string location =
-      NUDR_DR_BASE + udr_cfg.nudr.api_version +
-      fmt::format(
-          "/subscription-data/{}/{}/provisioned-data/sm-data", ue_id,
-          serving_plmn_id) +
-      "/" + std::to_string(resource_id);
+      "http://" + m_address + udr_sbi_helper::UdrDataRepositoryServiceBase +
+      fmt::format(location_format_str, ue_id, serving_plmn_id) + "/" +
+      std::to_string(resource_id);
 
   Logger::udr_server().debug(
       "HTTP Response code %d (HTTP Version 2).\n", http_code);
@@ -669,12 +666,15 @@ void udr_http2_server::update_sm_data_handler(
       ue_id, serving_plmn_id, subscription_data, response_data, http_code,
       resource_id);
 
+  std::string location_format_str = {};
+  udr_sbi_helper::get_fmt_format_form(
+      sbi_helper::UdrDrPathSubscriptionDataProvisionedDataSmData,
+      location_format_str);
+  // Location
   std::string location =
-      NUDR_DR_BASE + udr_cfg.nudr.api_version +
-      fmt::format(
-          "/subscription-data/{}/{}/provisioned-data/sm-data", ue_id,
-          serving_plmn_id) +
-      "/" + std::to_string(resource_id);
+      "http://" + m_address + udr_sbi_helper::UdrDataRepositoryServiceBase +
+      fmt::format(location_format_str, ue_id, serving_plmn_id) + "/" +
+      std::to_string(resource_id);
 
   Logger::udr_server().debug(
       "HTTP Response code %d (HTTP Version 2).\n", http_code);

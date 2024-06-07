@@ -19,13 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_nrf.hpp
- \author
- \company Eurecom
- \date 2020
- \email: contact@openairinterface.org
- */
-
 #ifndef FILE_UDR_NRF_SEEN
 #define FILE_UDR_NRF_SEEN
 
@@ -109,13 +102,6 @@ class udr_nrf {
    * @return void
    */
   void deregister_to_nrf();
-
-  /*
-   * Get NRF API Root
-   * @param [std::string& ] api_root: NRF's API Root
-   * @return void
-   */
-  void get_nrf_api_root(std::string& api_root);
 
  private:
   udr_event& m_event_sub;

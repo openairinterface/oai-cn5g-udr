@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 AccessAndMobilityDataApi::AccessAndMobilityDataApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -57,30 +59,30 @@ void AccessAndMobilityDataApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/exposure-data/:ueId/access-and-mobility-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathExposureDataAccessAndMobilityData,
       Routes::bind(
           &AccessAndMobilityDataApi::
               create_or_replace_access_and_mobility_data_handler,
           this));
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/exposure-data/:ueId/access-and-mobility-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathExposureDataAccessAndMobilityData,
       Routes::bind(
           &AccessAndMobilityDataApi::delete_access_and_mobility_data_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/exposure-data/:ueId/access-and-mobility-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathExposureDataAccessAndMobilityData,
       Routes::bind(
           &AccessAndMobilityDataApi::query_access_and_mobility_data_handler,
           this));
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/exposure-data/:ueId/access-and-mobility-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathExposureDataAccessAndMobilityData,
       Routes::bind(
           &AccessAndMobilityDataApi::update_access_and_mobility_data_handler,
           this));

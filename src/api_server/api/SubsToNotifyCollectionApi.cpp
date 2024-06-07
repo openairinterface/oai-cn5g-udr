@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 SubsToNotifyCollectionApi::SubsToNotifyCollectionApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -57,19 +59,22 @@ void SubsToNotifyCollectionApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataSubsToNotify,
       Routes::bind(
           &SubsToNotifyCollectionApi::query_subs_to_notify_handler, this));
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataSubsToNotify,
       Routes::bind(
           &SubsToNotifyCollectionApi::
               remove_multiple_subscription_data_subscriptions_handler,
           this));
   Routes::Post(
       *router,
-      base + udr_cfg.nudr.api_version + "/subscription-data/subs-to-notify",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataSubsToNotify,
       Routes::bind(
           &SubsToNotifyCollectionApi::subscription_data_subscriptions_handler,
           this));

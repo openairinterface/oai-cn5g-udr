@@ -59,8 +59,6 @@ class LCSMobileOriginatedSubscriptionDataApi {
   virtual ~LCSMobileOriginatedSubscriptionDataApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

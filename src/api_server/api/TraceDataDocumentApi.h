@@ -56,8 +56,6 @@ class TraceDataDocumentApi {
   virtual ~TraceDataDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

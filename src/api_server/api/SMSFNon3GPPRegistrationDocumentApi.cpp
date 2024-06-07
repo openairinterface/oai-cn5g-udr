@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 SMSFNon3GPPRegistrationDocumentApi::SMSFNon3GPPRegistrationDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -57,24 +59,24 @@ void SMSFNon3GPPRegistrationDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/smsf-non-3gpp-access",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataSmsfNon3gppAccess,
       Routes::bind(
           &SMSFNon3GPPRegistrationDocumentApi::
               create_smsf_context_non3gpp_handler,
           this));
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/smsf-non-3gpp-access",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataSmsfNon3gppAccess,
       Routes::bind(
           &SMSFNon3GPPRegistrationDocumentApi::
               delete_smsf_context_non3gpp_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/smsf-non-3gpp-access",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataSmsfNon3gppAccess,
       Routes::bind(
           &SMSFNon3GPPRegistrationDocumentApi::
               query_smsf_context_non3gpp_handler,

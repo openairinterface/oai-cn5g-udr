@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file mysql_db.cpp
- \brief
- \author
- \company Eurecom
- \date 2022
- \email: contact@openairinterface.org
- */
-
 #include "mysql_db.hpp"
 
 #include <boost/algorithm/string.hpp>

@@ -60,8 +60,6 @@ class AuthenticationDataDocumentApi {
   virtual ~AuthenticationDataDocumentApi() = default;
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

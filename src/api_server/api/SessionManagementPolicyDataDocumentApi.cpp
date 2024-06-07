@@ -35,12 +35,14 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
+using namespace oai::udr::api;
 
 SessionManagementPolicyDataDocumentApi::SessionManagementPolicyDataDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -56,14 +58,16 @@ void SessionManagementPolicyDataDocumentApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/sm-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataUesSmData,
       Routes::bind(
           &SessionManagementPolicyDataDocumentApi::
               read_session_management_policy_data_handler,
           this));
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version + "/policy-data/ues/:ueId/sm-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataUesSmData,
       Routes::bind(
           &SessionManagementPolicyDataDocumentApi::
               update_session_management_policy_data_handler,

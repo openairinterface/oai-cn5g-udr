@@ -58,8 +58,6 @@ class InfluenceDataStoreApi {
   virtual ~InfluenceDataStoreApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

@@ -22,12 +22,14 @@
 #include "UDRConfigurationApi.h"
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
+using namespace oai::udr::api;
 
 UDRConfigurationApi::UDRConfigurationApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -42,11 +44,15 @@ void UDRConfigurationApi::setupRoutes() {
   using namespace Pistache::Rest;
 
   Routes::Get(
-      *router, base + udr_cfg.nudr.api_version + "/configuration/",
+      *router,
+      udr_sbi_helper::UdrConfigurationServiceBase +
+          udr_sbi_helper::UdrConfPathConfiguration,
       Routes::bind(&UDRConfigurationApi::read_configuration_handler, this));
 
   Routes::Put(
-      *router, base + udr_cfg.nudr.api_version + "/configuration/",
+      *router,
+      udr_sbi_helper::UdrConfigurationServiceBase +
+          udr_sbi_helper::UdrConfPathConfiguration,
       Routes::bind(&UDRConfigurationApi::update_configuration_handler, this));
 
   // Default handler, called when a route is not found

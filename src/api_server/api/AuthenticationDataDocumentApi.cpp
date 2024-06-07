@@ -37,6 +37,7 @@
 #include "Helpers.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -44,6 +45,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 AuthenticationDataDocumentApi::AuthenticationDataDocumentApi(
     const std::shared_ptr<Pistache::Rest::Router>& rtr)
@@ -58,17 +60,15 @@ void AuthenticationDataDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/authentication-data/"
-          "authentication-subscription",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataAuthenticationSubscription,
       Routes::bind(
           &AuthenticationDataDocumentApi::create_auth_subs_data_handler, this));
 
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/authentication-data/"
-          "authentication-subscription",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataAuthenticationSubscription,
       Routes::bind(
           &AuthenticationDataDocumentApi::delete_auth_subs_data_handler, this));
 

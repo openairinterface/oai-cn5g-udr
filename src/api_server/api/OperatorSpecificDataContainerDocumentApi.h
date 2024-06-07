@@ -61,8 +61,6 @@ class OperatorSpecificDataContainerDocumentApi {
   virtual ~OperatorSpecificDataContainerDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

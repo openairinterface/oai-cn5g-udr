@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file mongo_db.cpp
- \brief
- \author
- \company Eurecom, phine.tech
- \date 2023
- \email: contact@openairinterface.org, lukas.rotheneder@phine.tech
- */
-
 #include "mongo_db.hpp"
 
 #include <iostream>

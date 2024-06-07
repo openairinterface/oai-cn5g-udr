@@ -35,12 +35,14 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
+using namespace oai::udr::api;
 
 OperatorSpecificDataContainerDocumentApi::
     OperatorSpecificDataContainerDocumentApi(
@@ -57,16 +59,16 @@ void OperatorSpecificDataContainerDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/operator-specific-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataOperatorSpecificData,
       Routes::bind(
           &OperatorSpecificDataContainerDocumentApi::
               modify_oper_spec_data_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/operator-specific-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataOperatorSpecificData,
       Routes::bind(
           &OperatorSpecificDataContainerDocumentApi::
               query_oper_spec_data_handler,

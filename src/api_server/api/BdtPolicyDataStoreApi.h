@@ -59,8 +59,6 @@ class BdtPolicyDataStoreApi {
   virtual ~BdtPolicyDataStoreApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

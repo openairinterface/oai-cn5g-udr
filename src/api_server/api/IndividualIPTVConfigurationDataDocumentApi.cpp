@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 IndividualIPTVConfigurationDataDocumentApi::
     IndividualIPTVConfigurationDataDocumentApi(
@@ -58,16 +60,16 @@ void IndividualIPTVConfigurationDataDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/application-data/iptvConfigData/:configurationId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataIptvConfigDataConfigurationId,
       Routes::bind(
           &IndividualIPTVConfigurationDataDocumentApi::
               create_or_replace_individual_iptv_configuration_data_handler,
           this));
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/application-data/iptvConfigData/:configurationId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataIptvConfigDataConfigurationId,
       Routes::bind(
           &IndividualIPTVConfigurationDataDocumentApi::
               delete_individual_iptv_configuration_data_handler,

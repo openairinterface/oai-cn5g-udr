@@ -36,6 +36,7 @@
 #include "Helpers.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -43,6 +44,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 SMFRegistrationDocumentApi::SMFRegistrationDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -58,24 +60,24 @@ void SMFRegistrationDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/smf-registrations/"
-          ":pduSessionId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataContextDataSmfRegistrationsPduSession,
       Routes::bind(
           &SMFRegistrationDocumentApi::create_smf_context_non3gpp_handler,
           this));
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/smf-registrations/"
-          ":pduSessionId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataContextDataSmfRegistrationsPduSession,
       Routes::bind(
           &SMFRegistrationDocumentApi::delete_smf_context_handler, this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/smf-registrations/"
-          ":pduSessionId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataContextDataSmfRegistrationsPduSession,
       Routes::bind(
           &SMFRegistrationDocumentApi::query_smf_registration_handler, this));
 

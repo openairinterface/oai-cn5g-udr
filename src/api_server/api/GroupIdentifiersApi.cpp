@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 GroupIdentifiersApi::GroupIdentifiersApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -57,8 +59,8 @@ void GroupIdentifiersApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/group-data/group-identifiers",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataGroupDataGroupIdentifier,
       Routes::bind(&GroupIdentifiersApi::get_group_identifiers_handler, this));
 
   // Default handler, called when a route is not found

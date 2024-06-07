@@ -37,8 +37,6 @@ class UDRConfigurationApi {
   virtual ~UDRConfigurationApi() {}
   void init();
 
-  const std::string base = "/nudr-oai/";
-
  private:
   void setupRoutes();
 

@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file task_manager.cpp
- \brief
- \author
- \company Eurecom
- \date 2020
- \email: contact@openairinterface.org
- */
-
 #include "task_manager.hpp"
 
 #include <unistd.h>

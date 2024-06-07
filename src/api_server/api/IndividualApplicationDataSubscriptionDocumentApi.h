@@ -60,8 +60,6 @@ class IndividualApplicationDataSubscriptionDocumentApi {
   virtual ~IndividualApplicationDataSubscriptionDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

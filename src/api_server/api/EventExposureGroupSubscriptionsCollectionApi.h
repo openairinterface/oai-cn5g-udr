@@ -59,8 +59,6 @@ class EventExposureGroupSubscriptionsCollectionApi {
   virtual ~EventExposureGroupSubscriptionsCollectionApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

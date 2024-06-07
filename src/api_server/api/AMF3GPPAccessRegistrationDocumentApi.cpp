@@ -36,6 +36,7 @@
 #include "Helpers.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -43,6 +44,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 AMF3GPPAccessRegistrationDocumentApi::AMF3GPPAccessRegistrationDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -58,22 +60,22 @@ void AMF3GPPAccessRegistrationDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/amf-3gpp-access",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataAmf3gppAccess,
       Routes::bind(
           &AMF3GPPAccessRegistrationDocumentApi::amf_context3gpp_handler,
           this));
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/amf-3gpp-access",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataAmf3gppAccess,
       Routes::bind(
           &AMF3GPPAccessRegistrationDocumentApi::create_amf_context3gpp_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/amf-3gpp-access",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataAmf3gppAccess,
       Routes::bind(
           &AMF3GPPAccessRegistrationDocumentApi::query_amf_context3gpp_handler,
           this));

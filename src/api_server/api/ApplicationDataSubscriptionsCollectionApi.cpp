@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 ApplicationDataSubscriptionsCollectionApi::
     ApplicationDataSubscriptionsCollectionApi(
@@ -58,14 +60,16 @@ void ApplicationDataSubscriptionsCollectionApi::setupRoutes() {
 
   Routes::Post(
       *router,
-      base + udr_cfg.nudr.api_version + "/application-data/subs-to-notify",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataSubsToNotify,
       Routes::bind(
           &ApplicationDataSubscriptionsCollectionApi::
               create_individual_application_data_subscription_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version + "/application-data/subs-to-notify",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathApplicationDataSubsToNotify,
       Routes::bind(
           &ApplicationDataSubscriptionsCollectionApi::
               read_application_data_change_subscriptions_handler,

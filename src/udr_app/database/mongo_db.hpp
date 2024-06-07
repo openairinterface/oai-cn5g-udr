@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file mongo_db.hpp
- \brief
- \author
- \company Eurecom
- \date 2023
- \email: contact@openairinterface.org
- */
-
 #ifndef MONGODB_DB_HPP
 #define MONGODB_DB_HPP
 

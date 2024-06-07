@@ -45,7 +45,6 @@
 #include <pistache/router.h>
 
 #include "EeSubscription.h"
-//#include "Object.h"
 #include <string>
 #include <vector>
 
@@ -60,8 +59,6 @@ class EventExposureSubscriptionDocumentApi {
   EventExposureSubscriptionDocumentApi(std::shared_ptr<Pistache::Rest::Router>);
   virtual ~EventExposureSubscriptionDocumentApi() {}
   void init();
-
-  const std::string base = "/nudr-dr/";
 
  private:
   void setupRoutes();

@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 EventExposureGroupSubscriptionDocumentApi::
     EventExposureGroupSubscriptionDocumentApi(
@@ -58,32 +60,36 @@ void EventExposureGroupSubscriptionDocumentApi::setupRoutes() {
 
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/group-data/:ueGroupId/ee-subscriptions/:subsId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataGroupDataEeSubscriptionsSubsId,
       Routes::bind(
           &EventExposureGroupSubscriptionDocumentApi::
               modify_ee_group_subscription_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/group-data/:ueGroupId/ee-subscriptions/:subsId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataGroupDataEeSubscriptionsSubsId,
       Routes::bind(
           &EventExposureGroupSubscriptionDocumentApi::
               query_ee_group_subscription_handler,
           this));
   Routes::Delete(
       *router,
-      base +
-          "/subscription-data/group-data/:ueGroupId/ee-subscriptions/:subsId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataGroupDataEeSubscriptionsSubsId,
       Routes::bind(
           &EventExposureGroupSubscriptionDocumentApi::
               remove_ee_group_subscriptions_handler,
           this));
   Routes::Put(
       *router,
-      base +
-          "/subscription-data/group-data/:ueGroupId/ee-subscriptions/:subsId",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataGroupDataEeSubscriptionsSubsId,
       Routes::bind(
           &EventExposureGroupSubscriptionDocumentApi::
               update_ee_group_subscriptions_handler,

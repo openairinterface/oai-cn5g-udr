@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file udr_event.cpp
- \brief
- \author
- \company: eurecom
- \date 2022
- \email: contact@openairinterface.org
- */
-
 #include "udr_event.hpp"
 using namespace oai::udr::app;
 

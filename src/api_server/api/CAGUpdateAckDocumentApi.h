@@ -58,8 +58,6 @@ class CAGUpdateAckDocumentApi {
   virtual ~CAGUpdateAckDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

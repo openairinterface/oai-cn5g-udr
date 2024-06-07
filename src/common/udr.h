@@ -23,7 +23,6 @@
 #define FILE_UDR_SEEN
 
 #include <string>
-#include <vector>
 
 #define HEART_BEAT_TIMER 10
 #define NRF_REGISTRATION_RETRY_TIMER 5
@@ -31,18 +30,8 @@
 #define MAX_FIRST_CONNECTION_RETRY 100
 #define MAX_CONNECTION_RETRY 3
 
-#define NF_CURL_TIMEOUT_MS 1000L
-#define MAX_CURL_RETRY 3
-#define TIME_INTERVAL_CURL_RETRY 1000  // in microsecond
-#define MAX_NF_REGISTER_RETRY 3
-#define TIME_INTERVAL_NF_REGISTER_RETRY 5  // in seconds
-
 #define _unused(x) ((void) (x))
 
-#define NNRF_NFM_BASE "/nnrf-nfm/"
-#define UDR_NF_REGISTER_URL "/nf-instances/"
-
-#define NUDR_DR_BASE "/nudr-dr/"
 #define NUDR_DR_AUTH_STATUS "authentication-status"
 #define NUDR_DR_AUTH_SUBS "authentication-subscription"
 #define NUDR_DR_AMF_XGPP_ACCESS "amf-3gpp-access"
@@ -52,19 +41,27 @@
 #define NUDR_DR_SMF_REG "smf-registrations"
 #define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
 
-#define NUDR_CUSTOMIZED_API_BASE "/nudr-oai/"
-#define NUDR_CUSTOMIZED_API_CONFIGURATION_URL "/configuration"
-
 typedef enum db_type_s {
   DB_TYPE_UNKNOWN   = 0,
   DB_TYPE_MYSQL     = 1,
   DB_TYPE_CASSANDRA = 2,
-  DB_TYPE_MONGO     = 3
+  DB_TYPE_MONGODB   = 3
 } db_type_t;
 
-static const std::vector<std::string> db_type_e2str = {
-    "Unknown", "MySQL", "Cassandra", "Mongo"};
-
-constexpr auto DEFAULT_SBI_API_VERSION = "v1";
+static std::string db_type_to_string(db_type_t db_type) {
+  switch (db_type) {
+    case db_type_t::DB_TYPE_UNKNOWN:
+      return "Unknown";
+    case db_type_t::DB_TYPE_MYSQL:
+      return "MySQL";
+    case db_type_t::DB_TYPE_CASSANDRA:
+      return "Cassandra";
+    case db_type_t::DB_TYPE_MONGODB:
+      return "MongoDb";
+    default:
+      return "Unknown";
+  }
+  return "Unknown";
+}
 
 #endif

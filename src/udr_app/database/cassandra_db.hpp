@@ -19,14 +19,6 @@
  *      contact@openairinterface.org
  */
 
-/*! \file cassandra_db.hpp
- \brief
- \author
- \company Eurecom
- \date 2022
- \email: contact@openairinterface.org
- */
-
 #ifndef CASSANDRA_DB_HPP
 #define CASSANDRA_DB_HPP
 

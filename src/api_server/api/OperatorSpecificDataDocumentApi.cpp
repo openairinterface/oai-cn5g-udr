@@ -35,6 +35,7 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -42,6 +43,7 @@ namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
 using namespace oai::udr::model;
+using namespace oai::udr::api;
 
 OperatorSpecificDataDocumentApi::OperatorSpecificDataDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -57,23 +59,26 @@ void OperatorSpecificDataDocumentApi::setupRoutes() {
 
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/policy-data/ues/:ueId/operator-specific-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataPolicyDataUesOperatorSpecificData,
       Routes::bind(
           &OperatorSpecificDataDocumentApi::read_operator_specific_data_handler,
           this));
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/policy-data/ues/:ueId/operator-specific-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataPolicyDataUesOperatorSpecificData,
       Routes::bind(
           &OperatorSpecificDataDocumentApi::
               replace_operator_specific_data_handler,
           this));
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/policy-data/ues/:ueId/operator-specific-data",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::
+              UdrDrPathSubscriptionDataPolicyDataUesOperatorSpecificData,
       Routes::bind(
           &OperatorSpecificDataDocumentApi::
               update_operator_specific_data_handler,

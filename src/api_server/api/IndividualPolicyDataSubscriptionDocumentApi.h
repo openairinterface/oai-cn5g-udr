@@ -60,8 +60,6 @@ class IndividualPolicyDataSubscriptionDocumentApi {
   virtual ~IndividualPolicyDataSubscriptionDocumentApi() {}
   void init();
 
-  const std::string base = "/nudr-dr/";
-
  private:
   void setupRoutes();
 

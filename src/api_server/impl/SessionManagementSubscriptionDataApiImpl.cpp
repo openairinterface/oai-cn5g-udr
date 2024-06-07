@@ -36,6 +36,7 @@
 #include "logger.hpp"
 #include "udr_app.hpp"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
@@ -43,6 +44,7 @@ namespace oai::udr::api {
 
 using namespace oai::udr::model;
 using namespace oai::model::common;
+using namespace oai::udr::api;
 
 SessionManagementSubscriptionDataApiImpl::
     SessionManagementSubscriptionDataApiImpl(
@@ -119,13 +121,15 @@ void SessionManagementSubscriptionDataApiImpl::create_sm_data(
   Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   if ((code == Pistache::Http::Code::Created) or
       (code == Pistache::Http::Code::Ok)) {
+    std::string location_format_str = {};
+    udr_sbi_helper::get_fmt_format_form(
+        sbi_helper::UdrDrPathSubscriptionDataProvisionedDataSmData,
+        location_format_str);
     // Location?
     std::string location =
-        "http://" + m_address + base + udr_cfg.nudr.api_version +
-        fmt::format(
-            "/subscription-data/{}/{}/provisioned-data/sm-data", ueId,
-            servingPlmnId) +
-        "/" + std::to_string(resource_id);
+        "http://" + m_address + udr_sbi_helper::UdrDataRepositoryServiceBase +
+        fmt::format(location_format_str, ueId, servingPlmnId) + "/" +
+        std::to_string(resource_id);
 
     response.headers().add<Pistache::Http::Header::Location>(
         location);  // Location header
@@ -158,12 +162,15 @@ void SessionManagementSubscriptionDataApiImpl::put_sm_data(
   code = static_cast<Pistache::Http::Code>(http_code);
   Logger::udr_server().debug("HTTP Response code %d.\n", (int) code);
   if (code == Pistache::Http::Code::Created) {
+    std::string location_format_str = {};
+    udr_sbi_helper::get_fmt_format_form(
+        sbi_helper::UdrDrPathSubscriptionDataProvisionedDataSmData,
+        location_format_str);
+    // Location
     std::string location =
-        "http://" + m_address + base + udr_cfg.nudr.api_version +
-        fmt::format(
-            "/subscription-data/{}/{}/provisioned-data/sm-data", ueId,
-            servingPlmnId) +
-        "/" + std::to_string(resource_id);
+        "http://" + m_address + udr_sbi_helper::UdrDataRepositoryServiceBase +
+        fmt::format(location_format_str, ueId, servingPlmnId) + "/" +
+        std::to_string(resource_id);
 
     response.headers().add<Pistache::Http::Header::Location>(
         location);  // Location header

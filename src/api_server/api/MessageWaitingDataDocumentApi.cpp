@@ -35,12 +35,14 @@
 
 #include "Helpers.h"
 #include "udr_config.hpp"
+#include "udr_sbi_helper.hpp"
 
 extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
 using namespace oai::model::common::helpers;
+using namespace oai::udr::api;
 
 MessageWaitingDataDocumentApi::MessageWaitingDataDocumentApi(
     std::shared_ptr<Pistache::Rest::Router> rtr) {
@@ -56,29 +58,29 @@ void MessageWaitingDataDocumentApi::setupRoutes() {
 
   Routes::Put(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/mwd",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataMwd,
       Routes::bind(
           &MessageWaitingDataDocumentApi::create_message_waiting_data_handler,
           this));
   Routes::Delete(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/mwd",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataMwd,
       Routes::bind(
           &MessageWaitingDataDocumentApi::delete_message_waiting_data_handler,
           this));
   Routes::Patch(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/mwd",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataMwd,
       Routes::bind(
           &MessageWaitingDataDocumentApi::modify_message_waiting_data_handler,
           this));
   Routes::Get(
       *router,
-      base + udr_cfg.nudr.api_version +
-          "/subscription-data/:ueId/context-data/mwd",
+      udr_sbi_helper::UdrDataRepositoryServiceBase +
+          udr_sbi_helper::UdrDrPathSubscriptionDataContextDataMwd,
       Routes::bind(
           &MessageWaitingDataDocumentApi::query_message_waiting_data_handler,
           this));
