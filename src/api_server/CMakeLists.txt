@@ -23,7 +23,6 @@ set(UDR_API_SERVER_DIR "${SRC_TOP_DIR}/api_server")
 
 include_directories(${UDR_API_SERVER_DIR}/api)
 include_directories(${UDR_API_SERVER_DIR}/impl)
-include_directories(${UDR_API_SERVER_DIR}/model)
 include_directories(${UDR_API_SERVER_DIR}/)
 include_directories(${SRC_TOP_DIR}/udr_app)
 include_directories(${SRC_TOP_DIR}/udr_app/database)
@@ -33,14 +32,15 @@ include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/common)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udr)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
-include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/common_model/common_model.cmake)
-include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/nrf/nrf_model.cmake)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/bstr)
+
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udr/udr.cmake)
 
 file(GLOB UDR_API_SERVER_src_files
     ${UDR_API_SERVER_DIR}/udr-api-server.cpp
     ${UDR_API_SERVER_DIR}/udr-http2-server.cpp
-    ${UDR_API_SERVER_DIR}/model/*.cpp
     ${UDR_API_SERVER_DIR}/api/*.cpp
     ${UDR_API_SERVER_DIR}/impl/*.cpp
 )
