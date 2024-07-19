@@ -144,8 +144,8 @@ int main(int argc, char** argv) {
   // HTTP Client
   uint8_t http_version = udr_cfg.use_http2 ? 2 : 1;
   http_client_inst     = oai::http::http_client::create_instance(
-      Logger::udr_nrf(), oai::common::sbi::kNfDefaultHttpRequestTimeout,
-      udr_cfg.nudr.if_name, http_version);
+      Logger::udr_nrf(), udr_cfg.http_request_timeout, udr_cfg.nudr.if_name,
+      http_version);
 
   // UDR application layer
   udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);

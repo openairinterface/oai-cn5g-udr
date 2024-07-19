@@ -52,6 +52,7 @@ class udr_config {
   oai::common::sbi::nf_addr_t nrf_addr;
   bool register_nrf;
   bool use_http2;
+  uint32_t http_request_timeout;
   db_conf_t db_conf;
   db_type_t db_type;
 };
