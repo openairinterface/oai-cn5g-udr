@@ -173,6 +173,7 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
   cfg.udr_name                   = udr_local->get_udr_name();
   cfg.log_level                  = spdlog::level::from_str(log_level());
   cfg.register_nrf               = register_nrf();
+  cfg.http_request_timeout       = get_http_request_timeout();
 
   if (get_http_version() == 2) cfg.use_http2 = true;
 
@@ -183,7 +184,6 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
     cfg.db_conf.user    = get_database_config().get_user();
     cfg.db_conf.pass    = get_database_config().get_pass();
     cfg.db_conf.db_name = get_database_config().get_database_name();
-    // cfg.mysql.       = get_database_config().get_random();
     cfg.db_conf.connection_timeout =
         get_database_config().get_connection_timeout();
 

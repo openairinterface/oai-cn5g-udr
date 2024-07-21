@@ -20,6 +20,7 @@
 
 #include "udr_config.hpp"
 
+#include "config.hpp"
 #include "logger.hpp"
 
 namespace oai::udr::config {
@@ -32,6 +33,8 @@ udr_config::udr_config()
   use_http2        = false;
   register_nrf     = false;
   log_level        = spdlog::level::debug;
+  http_request_timeout =
+      oai::config::NF_CONFIG_HTTP_REQUEST_TIMEOUT_DEFAULT_VALUE;
 }
 
 //------------------------------------------------------------------------------
