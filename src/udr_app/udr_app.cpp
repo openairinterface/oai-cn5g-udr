@@ -54,8 +54,6 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
   } else {
     db_connector = std::make_shared<mongo_db>(ev);
   }
-
-  Logger::udr_app().startup("Started");
 }
 
 //------------------------------------------------------------------------------
@@ -67,6 +65,11 @@ udr_app::~udr_app() {
 
 //------------------------------------------------------------------------------
 bool udr_app::start() {
+  if (!db_connector) {
+    Logger::udr_app().warn("Could not start UDR App");
+    return false;
+  }
+
   if (!db_connector->initialize()) {
     Logger::udr_app().error("Error when initializing a connection with DB");
     return false;

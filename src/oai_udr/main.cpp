@@ -163,19 +163,6 @@ int main(int argc, char** argv) {
   udr_nrf_inst = new udr_nrf(ev);
   std::thread udr_nrf_manager(&udr_nrf::start, udr_nrf_inst);
 
-  // PID file
-  std::string pid_file_name =
-      oai::utils::get_exe_absolute_path(udr_cfg.pid_dir, udr_cfg.instance);
-  if (!is_pid_file_lock_success(pid_file_name.c_str())) {
-    Logger::system().error("Lock PID file %s failed\n", pid_file_name.c_str());
-    exit(-EDEADLK);
-  }
-
-  FILE* fp             = NULL;
-  std::string filename = fmt::format("/tmp/udr_{}.status", getpid());
-  fp                   = fopen(filename.c_str(), "w+");
-  fprintf(fp, "STARTED\n");
-
   if (!udr_cfg.use_http2) {
     // UDR Pistache API server (HTTP1)
     Pistache::Address addr(
@@ -199,8 +186,6 @@ int main(int argc, char** argv) {
   task_manager_thread.join();
   udr_nrf_manager.join();
 
-  fflush(fp);
-  fclose(fp);
   pause();
   return 0;
 }
