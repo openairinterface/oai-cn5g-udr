@@ -1,5 +1,21 @@
 # RELEASE NOTES: #
 
+## v2.1.0 -- August 2024 ##
+
+* Features
+  - Add NRF connection handling mechanism
+  - Use HTTP Request Timeout parameter from Conf file
+* Fixes
+  - Fix HTTP/2 server shutdown
+  - Fix duplicated HTTP/1 route
+  - Fix: remove PID section in main
+* Tech Debt
+  - Stopping support for RHEL8/Rocky8 in favor of RHEL9/Rocky9
+  - Remove NRF dependency from UDR
+  - Move UDR SBI models to common src git submodule
+  - HTTP client cpr library refactoring effort
+  - Code cleanup
+
 ## v2.0.1 -- January 2024 ##
 
 * Tech debt
