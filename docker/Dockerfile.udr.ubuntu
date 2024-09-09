@@ -35,6 +35,7 @@ FROM $BASE_IMAGE as oai-udr-base
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/Paris
 ENV IS_DOCKERFILE=1
+ARG ENABLE_LTTNG=false
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes \
@@ -69,7 +70,16 @@ FROM oai-udr-base as oai-udr-builder
 COPY . /openair-udr
 # Building UDR
 WORKDIR /openair-udr/build/scripts
-RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
+RUN  if [ "$ENABLE_LTTNG" = "true" ]; then DEBIAN_FRONTEND=noninteractive apt-get install --yes \
+        lttng-modules-dkms \
+        liblttng-ust-dev \
+        lttng-tools && \
+        ldconfig && \
+        ./build_udr --clean --Verbose --build-type Release --jobs --lttng; \
+    else \
+        ldconfig && \
+        ./build_udr --clean --Verbose --build-type Release --jobs; \
+    fi && \
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
 
@@ -81,6 +91,7 @@ FROM mikefarah/yq:latest as yq-source
 FROM $BASE_IMAGE as oai-udr
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Europe/Paris
+ARG ENABLE_LTTNG=false
 # We install some debug tools for the moment in addition of mandatory libraries
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade --yes && \
@@ -117,6 +128,8 @@ RUN apt-get update && \
 # Ubuntu 20 --> boost71
 # Ubuntu 22 --> boost74
       libboost-thread1.7?.0 \
+# lttng
+  && if [ "$ENABLE_LTTNG" = "true" ]; then DEBIAN_FRONTEND=noninteractive apt-get install --yes liblttng-ust-dev; fi \
   && rm -rf /var/lib/apt/lists/*
 
 # Copying executable and generated libraries

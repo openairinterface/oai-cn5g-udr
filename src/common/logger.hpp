@@ -16,7 +16,10 @@
  * limitations under the License.
  *-------------------------------------------------------------------------------
  * For more information about the OpenAirInterface (OAI) Software Alliance:
- *      contact@openairinterface.org
+ *      contact@openairinterface.o  static void set_lttng(bool isLttngActive) {
+    oai::logger::logger_registry::set_lttng_is_active(isLttngActive);
+  }
+rg
  */
 
 #pragma once
@@ -54,6 +57,10 @@ class Logger : public oai::logger::logger_common {
   }
   static bool should_log(spdlog::level::level_enum level) {
     return oai::logger::logger_registry::should_log(level);
+  }
+
+  static void set_lttng(bool isLttngActive) {
+    oai::logger::logger_registry::set_lttng_is_active(isLttngActive);
   }
 
   static const oai::logger::printf_logger& config() {
