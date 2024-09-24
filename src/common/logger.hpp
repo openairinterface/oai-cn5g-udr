@@ -16,10 +16,7 @@
  * limitations under the License.
  *-------------------------------------------------------------------------------
  * For more information about the OpenAirInterface (OAI) Software Alliance:
- *      contact@openairinterface.o  static void set_lttng(bool isLttngActive) {
-    oai::logger::logger_registry::set_lttng_is_active(isLttngActive);
-  }
-rg
+ *      contact@openairinterface.org
  */
 
 #pragma once
