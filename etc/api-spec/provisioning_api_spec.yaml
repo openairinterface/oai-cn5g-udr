@@ -1,0 +1,228 @@
+## Note: This OpenAPI spec refers to several 3GPP specs
+## The easiest is to pull this repository: https://forge.3gpp.org/rep/all/5G_APIs
+## And put this file in the same folder, it will fix all the missing references
+
+openapi: 3.0.1
+info:
+  title: OAI UDR provisioning API
+  version: 0.9.0
+paths:
+  /nudr-dr/v1/subscription-data/{ueId}/authentication-data/authentication-subscription:
+    # This is a simplified version from TS29505_Nudm_Subscription_Data.yaml
+    get:
+      summary: Retrieves the authentication subscription data of a UE
+      tags:
+        - Authentication Data (Document)
+      parameters:
+        - name: ueId
+          in: path
+          description: UE id
+          required: true
+          schema:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Supi'
+      responses:
+        '200':
+          description: Authentication Data
+          content:
+            application/json:
+              schema:
+                $ref: 'TS29505_Subscription_Data.yaml#/components/schemas/AuthenticationSubscription'
+        '400':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/400'
+        '404':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/404'
+        '500':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/500'
+    put:
+      summary: Creates or updates a new authentication subscription
+      tags:
+        - Authentication Data (Document)
+      parameters:
+        - name: ueId
+          in: path
+          description: UE id
+          required: true
+          schema:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Supi'
+      requestBody:
+        description: Authentication Data to create or update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'TS29505_Subscription_Data.yaml#/components/schemas/AuthenticationSubscription'
+      responses:
+        '201':
+          description: Authentication Data created successfully
+          content:
+            application/json:
+              schema:
+                $ref: 'TS29505_Subscription_Data.yaml#/components/schemas/AuthenticationSubscription'
+        '400':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/400'
+        '404':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/404'
+        '500':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/500'
+    delete:
+      summary: Creates or updates a new authentication subscription
+      tags:
+        - Authentication Data (Document)
+      parameters:
+        - name: ueId
+          in: path
+          description: UE id
+          required: true
+          schema:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Supi'
+      responses:
+        '204':
+          description: Authentication Data deleted successfully
+        '400':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/400'
+        '404':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/404'
+        '500':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/500'
+
+  /nudr-dr/v1/subscription-data/{ueId}/{servingPlmnId}/provisioned-data/sm-data:
+    # This is a simplified version from TS29505_Subscription_Data.yaml
+    get:
+      summary: Creates a new subscription data document
+      tags:
+        - SM Subscription Data (Document)
+      parameters:
+        - name: ueId
+          in: path
+          description: UE id
+          required: true
+          schema:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+        - name: servingPlmnId
+          in: path
+          description: PLMN ID
+          required: true
+          schema:
+            $ref: 'TS29505_Subscription_Data.yaml#/components/schemas/VarPlmnId'
+        - name: single-nssai
+          in: query
+          content:
+            application/json:
+              schema:
+                $ref: TS29505_Subscription_Data.yaml#/components/schemas/VarSnssai'
+          description: single NSSAI
+          required: false
+        - name: dnn
+          in: query
+          description: DNN
+          required: false
+          schema:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/Dnn'
+      responses:
+        '200':
+          description: Retrieves the Session Management Subscription of a UE
+          content: # This is a simplified version compared to the standard
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/SessionManagementSubscriptionData'
+                minItems: 1
+        '400':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/400'
+        '404':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/404'
+        '500':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/500'
+    put:
+      summary: Updates a new subscription data document and creates a new one if not existing
+      tags:
+        - SM Subscription Data (Document)
+      parameters:
+        - name: ueId
+          in: path
+          description: UE id
+          required: true
+          schema:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+        - name: servingPlmnId
+          in: path
+          description: PLMN ID
+          required: true
+          schema:
+            $ref: 'TS29505_Subscription_Data.yaml#/components/schemas/VarPlmnId'
+      requestBody:
+        description: Authentication Data to create or update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/SessionManagementSubscriptionData'
+      responses:
+        '204':
+          description:  Authentication Data updated successfully
+        '400':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/400'
+        '404':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/404'
+        '500':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/500'
+    post:
+      summary: Creates a new subscription data document
+      tags:
+        - SM Subscription Data (Document)
+      parameters:
+        - name: ueId
+          in: path
+          description: UE id
+          required: true
+          schema:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+        - name: servingPlmnId
+          in: path
+          description: PLMN ID
+          required: true
+          schema:
+            $ref: 'TS29505_Subscription_Data.yaml#/components/schemas/VarPlmnId'
+      requestBody:
+        description: Authentication Data to create or update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'TS29503_Nudm_SDM.yaml#/components/schemas/SessionManagementSubscriptionData'
+      responses:
+        '204':
+          description:  Authentication Data created successfully
+        '400':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/400'
+        '404':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/404'
+        '500':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/500'
+    delete:
+      summary: Delete a subscription data document
+      tags:
+        - SM Subscription Data (Document)
+      parameters:
+        - name: ueId
+          in: path
+          description: UE id
+          required: true
+          schema:
+            $ref: 'TS29571_CommonData.yaml#/components/schemas/VarUeId'
+        - name: servingPlmnId
+          in: path
+          description: PLMN ID
+          required: true
+          schema:
+            $ref: 'TS29505_Subscription_Data.yaml#/components/schemas/VarPlmnId'
+      responses:
+        '204':
+          description:  Authentication Data deleted successfully
+        '400':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/400'
+        '404':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/404'
+        '500':
+          $ref: 'TS29571_CommonData.yaml#/components/responses/500'
