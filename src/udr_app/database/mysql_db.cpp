@@ -2242,8 +2242,10 @@ bool mysql_db::query_sm_data(
                   std::to_string(snssai.value().getSst());
 
     if (!snssai.value().getSd().empty()) {
-      option_str += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
-                    snssai.value().getSd() + "'";
+      snssai.value().parse_sd_int_with_hex();  // SD string with lowercase
+      std::string sd_str_hex = snssai.value().getSd();
+      option_str += " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+                    "0x" + sd_str_hex + "\") ";
     }
   }
 
