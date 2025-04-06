@@ -2246,10 +2246,11 @@ bool mysql_db::query_sm_data(
       tmp.parse_sd_int_with_hex();  // SD string with lowercase
       std::string sd_str_hex = tmp.getSd();
       option_str +=
-          " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))='"
-          "0x" +
-          sd_str_hex + "' OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))='" +
-          sd_str_hex + "'";
+          " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+          "JSON_QUOTE(\"0x" +
+          sd_str_hex +
+          "\") OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))=JSON_QUOTE(\"" +
+          sd_str_hex + "\"))";
     }
   }
 
