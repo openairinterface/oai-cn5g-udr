@@ -2241,11 +2241,14 @@ bool mysql_db::query_sm_data(
     option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                   std::to_string(snssai.value().getSst());
 
-    if (!snssai.value().getSd().empty()) {
+    if (snssai.value().sdIsSet()) {
       snssai.value().parse_sd_int_with_hex();  // SD string with lowercase
       std::string sd_str_hex = snssai.value().getSd();
-      option_str += " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
-                    "0x" + sd_str_hex + "\") ";
+      option_str +=
+          " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))='"
+          "0x" +
+          sd_str_hex + "' OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))='" +
+          sd_str_hex + "'";
     }
   }
 
