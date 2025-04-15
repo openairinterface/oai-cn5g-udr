@@ -1945,9 +1945,16 @@ bool mysql_db::create_sm_data(
   std::string nssai_query = " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                             std::to_string(single_nssai.getSst());
 
-  if (!single_nssai.getSd().empty()) {
-    nssai_query += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
-                   single_nssai.getSd() + "'";
+  if (snssai.value().sdIsSet()) {
+    Snssai tmp = snssai.value();
+    tmp.parse_sd_int_with_hex();  // SD string with lowercase
+    std::string sd_str_hex = tmp.getSd();
+    nssai_query +=
+        " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+        "JSON_QUOTE(\"0x" +
+        sd_str_hex +
+        "\") OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))=JSON_QUOTE(\"" +
+        sd_str_hex + "\"))";
   }
 
   std::string query =
@@ -2123,9 +2130,16 @@ bool mysql_db::update_sm_data(
   std::string nssai_query = " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                             std::to_string(single_nssai.getSst());
 
-  if (!single_nssai.getSd().empty()) {
-    nssai_query += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
-                   single_nssai.getSd() + "'";
+  if (snssai.value().sdIsSet()) {
+    Snssai tmp = snssai.value();
+    tmp.parse_sd_int_with_hex();  // SD string with lowercase
+    std::string sd_str_hex = tmp.getSd();
+    nssai_query +=
+        " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+        "JSON_QUOTE(\"0x" +
+        sd_str_hex +
+        "\") OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))=JSON_QUOTE(\"" +
+        sd_str_hex + "\"))";
   }
 
   query = "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" +
@@ -2533,9 +2547,16 @@ bool mysql_db::delete_sm_data(
     option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                   std::to_string(snssai.value().getSst());
 
-    if (!snssai.value().getSd().empty()) {
-      option_str += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
-                    snssai.value().getSd() + "'";
+    if (snssai.value().sdIsSet()) {
+      Snssai tmp = snssai.value();
+      tmp.parse_sd_int_with_hex();  // SD string with lowercase
+      std::string sd_str_hex = tmp.getSd();
+      option_str +=
+          " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+          "JSON_QUOTE(\"0x" +
+          sd_str_hex +
+          "\") OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))=JSON_QUOTE(\"" +
+          sd_str_hex + "\"))";
     }
   }
 
