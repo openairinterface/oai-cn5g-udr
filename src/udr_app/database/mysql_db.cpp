@@ -2309,8 +2309,8 @@ bool mysql_db::query_sm_data(
       if (boost::iequals("singleNssai", fields[i]) && row[i] != nullptr) {
         Snssai single_nssai = {};
         nlohmann::json::parse(row[i]).get_to(single_nssai);
-        single_nssai.parse_sd_int_with_hex();  // overwrites SD string with
-                                               // lowercase HEX
+        // TODO: single_nssai.parse_sd_int_with_hex();  // overwrites SD string
+        // with lowercase HEX
         session_management_subscription_data.setSingleNssai(single_nssai);
       } else if (
           boost::iequals("dnnConfigurations", fields[i]) && row[i] != nullptr) {
