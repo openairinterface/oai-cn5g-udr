@@ -95,10 +95,6 @@ class mysql_db : public database_wrapper<mysql_db> {
   void get_snssai_from_key(
       oai::model::common::Snssai& snssai, const uint32_t& key);
 
-  bool get_supi(
-      const std::string& supi_full_format, std::string& supi,
-      std::string& prefix);
-
   bool insert_authentication_subscription(
       const std::string& id,
       const oai::udr::model::AuthenticationSubscription&
