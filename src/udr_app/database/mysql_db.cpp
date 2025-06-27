@@ -211,37 +211,12 @@ void mysql_db::get_snssai_from_key(
 }
 
 //------------------------------------------------------------------------------
-bool mysql_db::get_supi(
-    const std::string& supi_full_format, std::string& supi,
-    std::string& prefix) {
-  std::string supi_str    = {};
-  std::string supi_prefix = {};
-  std::size_t pos         = supi_full_format.find("-");
-  if (pos != std::string::npos) {
-    std::string prefix_tmp = supi_full_format.substr(0, pos);
-    if (prefix_tmp.compare("imsi") == 0) {
-      supi   = supi_full_format.substr(pos + 1);
-      prefix = prefix_tmp;
-    } else {
-      return false;
-    }
-  } else {
-    supi = supi_full_format;
-  }
-  return true;
-}
-
-//------------------------------------------------------------------------------
 bool mysql_db::insert_authentication_subscription(
-    const std::string& supi_full_format,
+    const std::string& ue_id,
     const AuthenticationSubscription& auth_subscription,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res          = nullptr;
   MYSQL_ROW row           = {};
@@ -344,13 +319,9 @@ bool mysql_db::insert_authentication_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::delete_authentication_subscription(
-    const std::string& supi_full_format, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   const std::string query =
       "DELETE FROM AuthenticationSubscription WHERE ueid='" + ue_id + "'";
@@ -375,13 +346,9 @@ bool mysql_db::delete_authentication_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_authentication_subscription(
-    const std::string& supi_full_format, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   Logger::udr_db().info(
       "[UE Id %s] Query Authentication Subscription", ue_id.c_str());
@@ -484,14 +451,10 @@ bool mysql_db::query_authentication_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::update_authentication_subscription(
-    const std::string& supi_full_format,
-    const std::vector<PatchItem>& patchItem, nlohmann::json& json_data) {
+    const std::string& ue_id, const std::vector<PatchItem>& patchItem,
+    nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res = nullptr;
   MYSQL_ROW row  = {};
@@ -572,14 +535,10 @@ bool mysql_db::update_authentication_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_am_data(
-    const std::string& supi_full_format, const std::string& serving_plmn_id,
+    const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
@@ -883,15 +842,11 @@ bool mysql_db::query_am_data(
 
 //------------------------------------------------------------------------------
 bool mysql_db::create_amf_context_3gpp(
-    const std::string& supi_full_format,
+    const std::string& ue_id,
     Amf3GppAccessRegistration& amf3GppAccessRegistration,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res = nullptr;
   MYSQL_ROW row  = {};
@@ -1133,13 +1088,9 @@ bool mysql_db::create_amf_context_3gpp(
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_amf_context_3gpp(
-    const std::string& supi_full_format, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res                                      = nullptr;
   MYSQL_ROW row                                       = {};
@@ -1293,14 +1244,10 @@ bool mysql_db::query_amf_context_3gpp(
 
 //------------------------------------------------------------------------------
 bool mysql_db::mysql_db::insert_authentication_status(
-    const std::string& supi_full_format, const AuthEvent& authEvent,
+    const std::string& ue_id, const AuthEvent& authEvent,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res = nullptr;
   MYSQL_ROW row  = {};
@@ -1381,13 +1328,9 @@ bool mysql_db::mysql_db::insert_authentication_status(
 
 //------------------------------------------------------------------------------
 bool mysql_db::mysql_db::delete_authentication_status(
-    const std::string& supi_full_format, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   const std::string query =
       "DELETE FROM AuthenticationStatus WHERE ueid='" + ue_id + "'";
@@ -1407,13 +1350,9 @@ bool mysql_db::mysql_db::delete_authentication_status(
 
 //------------------------------------------------------------------------------
 bool mysql_db::mysql_db::query_authentication_status(
-    const std::string& supi_full_format, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res                 = nullptr;
   MYSQL_ROW row                  = {};
@@ -1482,14 +1421,10 @@ bool mysql_db::mysql_db::query_authentication_status(
 
 //------------------------------------------------------------------------------
 bool mysql_db::mysql_db::query_sdm_subscription(
-    const std::string& supi_full_format, const std::string& subs_id,
+    const std::string& ue_id, const std::string& subs_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res                   = nullptr;
   MYSQL_ROW row                    = {};
@@ -1590,14 +1525,10 @@ bool mysql_db::mysql_db::query_sdm_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::mysql_db::delete_sdm_subscription(
-    const std::string& supi_full_format, const std::string& subs_id,
+    const std::string& ue_id, const std::string& subs_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res                = nullptr;
   ProblemDetails problemdetails = {};
@@ -1652,14 +1583,10 @@ bool mysql_db::mysql_db::delete_sdm_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::update_sdm_subscription(
-    const std::string& supi_full_format, const std::string& subs_id,
+    const std::string& ue_id, const std::string& subs_id,
     SdmSubscription& sdmSubscription, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res = nullptr;
   MYSQL_ROW row  = {};
@@ -1770,14 +1697,10 @@ bool mysql_db::update_sdm_subscription(
 
 //------------------------------------------------------------------------------
 bool mysql_db::create_sdm_subscriptions(
-    const std::string& supi_full_format, SdmSubscription& sdmSubscription,
+    const std::string& ue_id, SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res   = nullptr;
   MYSQL_ROW row    = {};
@@ -1886,13 +1809,9 @@ bool mysql_db::create_sdm_subscriptions(
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_sdm_subscriptions(
-    const std::string& supi_full_format, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
@@ -2012,15 +1931,11 @@ bool mysql_db::query_sdm_subscriptions(
 
 //------------------------------------------------------------------------------
 bool mysql_db::create_sm_data(
-    const std::string& supi_full_format, const std::string& serving_plmn_id,
+    const std::string& ue_id, const std::string& serving_plmn_id,
     SessionManagementSubscriptionData& sm_subscription,
     nlohmann::json& json_data, uint32_t& resource_id) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res          = nullptr;
   MYSQL_ROW row           = {};
@@ -2196,15 +2111,11 @@ bool mysql_db::create_sm_data(
 
 //------------------------------------------------------------------------------
 bool mysql_db::update_sm_data(
-    const std::string& supi_full_format, const std::string& serving_plmn_id,
+    const std::string& ue_id, const std::string& serving_plmn_id,
     SessionManagementSubscriptionData& subscription_data,
     nlohmann::json& json_data, uint32_t& resource_id) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res                = nullptr;
   MYSQL_ROW row                 = {};
@@ -2319,15 +2230,11 @@ bool mysql_db::update_sm_data(
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_sm_data(
-    const std::string& supi_full_format, const std::string& serving_plmn_id,
+    const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data, const std::optional<Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
@@ -2626,14 +2533,10 @@ bool mysql_db::query_sm_data(nlohmann::json& json_data) {
 
 //------------------------------------------------------------------------------
 bool mysql_db::delete_sm_data(
-    const std::string& supi_full_format, const std::string& serving_plmn_id,
+    const std::string& ue_id, const std::string& serving_plmn_id,
     const std::optional<Snssai>& snssai) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   std::string option_str = {};
 
@@ -2675,14 +2578,10 @@ bool mysql_db::delete_sm_data(
 
 //------------------------------------------------------------------------------
 bool mysql_db::insert_smf_context_non_3gpp(
-    const std::string& supi_full_format, const int32_t& pdu_session_id,
+    const std::string& ue_id, const int32_t& pdu_session_id,
     const SmfRegistration& smfRegistration, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res    = nullptr;
   MYSQL_ROW row     = {};
@@ -2836,14 +2735,10 @@ bool mysql_db::insert_smf_context_non_3gpp(
 
 //------------------------------------------------------------------------------
 bool mysql_db::delete_smf_context(
-    const std::string& supi_full_format, const int32_t& pdu_session_id,
+    const std::string& ue_id, const int32_t& pdu_session_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   const std::string query =
       "DELETE FROM SmfRegistrations WHERE ueid='" + ue_id +
@@ -2866,14 +2761,10 @@ bool mysql_db::delete_smf_context(
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_smf_registration(
-    const std::string& supi_full_format, const int32_t& pdu_session_id,
+    const std::string& ue_id, const int32_t& pdu_session_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res                  = nullptr;
   MYSQL_ROW row                   = {};
@@ -2989,13 +2880,9 @@ bool mysql_db::query_smf_registration(
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_smf_reg_list(
-    const std::string& supi_full_format, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
@@ -3122,14 +3009,10 @@ bool mysql_db::query_smf_reg_list(
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_smf_select_data(
-    const std::string& supi_full_format, const std::string& serving_plmn_id,
+    const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
-
-  std::string ue_id  = {};
-  std::string prefix = {};
-  if (!get_supi(supi_full_format, ue_id, prefix)) return false;
 
   MYSQL_RES* res                                            = nullptr;
   MYSQL_ROW row                                             = {};
