@@ -190,6 +190,7 @@ pipeline {
                   sh "docker rmi ${PrivateRegistryURL}/oai-udr:${udr_tag} || true"
                   sh "docker pull ${PrivateRegistryURL}/oai-udr:${udr_tag}"
                   sh "docker image inspect ${PrivateRegistryURL}/oai-udr:${udr_tag} | jq '.[0] | {RepoTags, Labels: .Config.Labels, DockerVersion}' >> archives/udr_ubuntu_image_build.log 2>&1"
+                  sh "docker images ${PrivateRegistryURL}/oai-udr:${udr_tag} >> archives/udr_ubuntu_image_build.log 2>&1"
                   // Run the trivy scan only if the boolean variable runTrivyScan is True
                   if (runTrivyScan) {
                        sh "docker rmi oai-udr:${shortenShaOne} || true"
