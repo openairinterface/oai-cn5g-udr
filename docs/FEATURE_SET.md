@@ -32,7 +32,7 @@
 
 # 3. OAI UDR Feature List #
 
-Based on document **3GPP TS 23.501 V16.0.0 §6.2.11**.
+Based on document **3GPP TS 23.501 V16.14.0 §6.2.11**.
 
 | **ID** | **Classification**                                      | **Status**         | **Comments**  |
 | ------ | ------------------------------------------------------- | ------------------ |---------------|
@@ -40,4 +40,5 @@ Based on document **3GPP TS 23.501 V16.0.0 §6.2.11**.
 | 2      | Storage and retrieval of policy data by the PCF         | :x:                |               |
 | 3      | Storage and retrieval of structured data for exposure   | :x:                |               |
 | 4      | Application data                                        | :x:                |               |
+| 5      | Storage and retrieval of NF Group ID                    | :x:                |               |
       
