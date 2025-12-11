@@ -36,13 +36,9 @@ ENV IS_DOCKERFILE=1
 # Copy the entitlements
 COPY ./etc-pki-entitlement /etc/pki/entitlement
 
-# Copy the subscription manager configurations
-COPY ./rhsm-conf /etc/rhsm
-COPY ./rhsm-ca /etc/rhsm/ca
-
 RUN rm -f /etc/rhsm-host && \
     subscription-manager repos --enable codeready-builder-for-rhel-9-x86_64-rpms && \
-    dnf update -y && \
+    dnf update -y --allowerasing --skip-broken --nobest && \
     # here just to display the current version
     cat /etc/os-release && \
     dnf install -y \
@@ -93,8 +89,7 @@ RUN sed -i -e "s@-lmysqlclient@-L/usr/lib64/mysql -lmysqlclient@" ../../src/oai_
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr && \
     # Remove entitlements and Subscription Manager configs
-    rm -rf /etc/pki/entitlement && \
-    rm -rf /etc/rhsm
+    rm -rf /etc/pki/entitlement
 
 FROM mikefarah/yq:latest as yq-source
 
@@ -108,9 +103,7 @@ ENV TZ=Europe/Paris
 # Copy the entitlements
 COPY ./etc-pki-entitlement /etc/pki/entitlement
 # Copy the subscription manager configurations
-COPY ./rhsm-conf /etc/rhsm
-COPY ./rhsm-ca /etc/rhsm/ca
-
+COPY --from=oai-udr-builder /etc/rhsm /etc/rhsm
 # We install some debug tools for the moment in addition of mandatory libraries
 RUN rm -f /etc/rhsm-host && \
     microdnf update -y && \

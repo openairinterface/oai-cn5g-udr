@@ -28,12 +28,11 @@
 
 static const std::string CONFIG      = "config";
 static const std::string UDR_APP     = "udr_app";
-static const std::string SYSTEM      = "system";
 static const std::string UDR_SVR_LOG = "udr_server";
 static const std::string UDR_NRF     = "udr_nrf";
 static const std::string UDR_DB      = "udr_db";
 
-class Logger {
+class Logger : public oai::logger::logger_common {
  public:
   static void init(
       const std::string& name, const bool log_stdout, const bool log_rot_file) {
@@ -43,8 +42,6 @@ class Logger {
         name, CONFIG, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, UDR_APP, log_stdout, log_rot_file);
-    oai::logger::logger_registry::register_logger(
-        name, SYSTEM, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, UDR_SVR_LOG, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
@@ -59,14 +56,15 @@ class Logger {
     return oai::logger::logger_registry::should_log(level);
   }
 
+  static void set_lttng(bool isLttngActive) {
+    oai::logger::logger_registry::set_lttng_is_active(isLttngActive);
+  }
+
   static const oai::logger::printf_logger& config() {
     return oai::logger::logger_registry::get_logger(CONFIG);
   }
   static const oai::logger::printf_logger& udr_app() {
     return oai::logger::logger_registry::get_logger(UDR_APP);
-  }
-  static const oai::logger::printf_logger& system() {
-    return oai::logger::logger_registry::get_logger(SYSTEM);
   }
   static const oai::logger::printf_logger& udr_server() {
     return oai::logger::logger_registry::get_logger(UDR_SVR_LOG);

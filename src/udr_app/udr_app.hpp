@@ -395,10 +395,13 @@ class udr_app {
    */
   bool handle_update_configuration(nlohmann::json& config_info, uint32_t& code);
 
+  bool get_supi(
+      const std::string& supi_full_format, std::string& supi,
+      std::string& prefix);
+
  private:
   udr_event& event_sub;
   std::shared_ptr<database_wrapper_abstraction> db_connector;
-  // std::shared_ptr<database_wrapper> db_connector_test;
 };
 }  // namespace app
 }  // namespace udr

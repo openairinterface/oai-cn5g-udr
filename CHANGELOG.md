@@ -1,5 +1,17 @@
 # RELEASE NOTES: #
 
+## v2.2.0 -- December 2025 ##
+
+* Fixes
+  - Use SUPI as UE identity
+  - Use MySQL query with lowercase in Json
+  - Fix MySQL query to work with SD with/without 0x prefix
+  - Update LTTNG to v0.15.0 to avoid building issue
+* Tech Debt
+  - Add support for Ubuntu 24.04
+  - Add support for RHEL 10, update container images to UBI 10
+  - Fix build issue in non-containerized environment
+
 ## v2.1.0 -- August 2024 ##
 
 * Features

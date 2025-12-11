@@ -212,7 +212,8 @@ void mysql_db::get_snssai_from_key(
 
 //------------------------------------------------------------------------------
 bool mysql_db::insert_authentication_subscription(
-    const std::string& id, const AuthenticationSubscription& auth_subscription,
+    const std::string& ue_id,
+    const AuthenticationSubscription& auth_subscription,
     nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -222,22 +223,22 @@ bool mysql_db::insert_authentication_subscription(
   nlohmann::json json_tmp = {};
 
   std::string query =
-      "SELECT * FROM AuthenticationSubscription WHERE ueid='" + id + "'";
+      "SELECT * FROM AuthenticationSubscription WHERE ueid='" + ue_id + "'";
   Logger::udr_db().info(
-      "[UE Id %s] MySQL Query: %s", id.c_str(), query.c_str());
+      "[UE Id %s] MySQL Query: %s", ue_id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size()) != 0) {
     Logger::udr_db().error(
         "[UE Id %s] Failed when executing mysql_real_query with SQL Query: %s",
-        id.c_str(), query.c_str());
+        ue_id.c_str(), query.c_str());
     return false;
   }
 
   res = mysql_store_result(&mysql_connector);
   if (res == nullptr) {
     Logger::udr_db().error(
-        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", id.c_str(),
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
         query.c_str());
     return false;
   }
@@ -249,16 +250,16 @@ bool mysql_db::insert_authentication_subscription(
     Logger::udr_db().debug(
         "[UE Id %s] AuthenticationSubscription existed, update with new "
         "values!",
-        id.c_str());
+        ue_id.c_str());
     // Update accordingly
     mysql_free_result(res);
     query = "UPDATE AuthenticationSubscription SET authenticationMethod='" +
             auth_subscription.getAuthenticationMethod() + "'";
-    where_condition = " WHERE ueid='" + id + "'";
+    where_condition = " WHERE ueid='" + ue_id + "'";
   } else {
     // Insert/create new record
     mysql_free_result(res);
-    query = "INSERT INTO AuthenticationSubscription SET ueid='" + id + "'" +
+    query = "INSERT INTO AuthenticationSubscription SET ueid='" + ue_id + "'" +
             ",authenticationMethod='" +
             auth_subscription.getAuthenticationMethod() + "'";
   }
@@ -298,12 +299,12 @@ bool mysql_db::insert_authentication_subscription(
 
   query += where_condition;
   Logger::udr_db().info(
-      "[UE Id %s] MySQL Query: %s", id.c_str(), query.c_str());
+      "[UE Id %s] MySQL Query: %s", ue_id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_db().error(
-        "[UE Id %s] mysql_real_query failure！ SQL Query %s", id.c_str(),
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
         query.c_str());
     return false;
   }
@@ -311,27 +312,27 @@ bool mysql_db::insert_authentication_subscription(
   to_json(json_data, auth_subscription);
 
   Logger::udr_db().debug(
-      "[UE Id %s] AuthenticationSubscription: %s", id.c_str(),
+      "[UE Id %s] AuthenticationSubscription: %s", ue_id.c_str(),
       json_data.dump().c_str());
   return true;
 }
 
 //------------------------------------------------------------------------------
 bool mysql_db::delete_authentication_subscription(
-    const std::string& id, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
   const std::string query =
-      "DELETE FROM AuthenticationSubscription WHERE ueid='" + id + "'";
+      "DELETE FROM AuthenticationSubscription WHERE ueid='" + ue_id + "'";
 
   Logger::udr_db().debug(
-      "[UE Id %s] MySQL Query %s: ", id.c_str(), query.c_str());
+      "[UE Id %s] MySQL Query %s: ", ue_id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size())) {
     Logger::udr_db().error(
-        "[UE Id %s] mysql_real_query failure！ SQL Query %s", id.c_str(),
+        "[UE Id %s] mysql_real_query failure！ SQL Query %s", ue_id.c_str(),
         query.c_str());
     return false;
   }
@@ -339,18 +340,18 @@ bool mysql_db::delete_authentication_subscription(
   Logger::udr_db().debug(
       "[UE Id %s] Deleted AuthenticationSubscription (with UE ID %s) "
       "successfully",
-      id.c_str());
+      ue_id.c_str());
   return true;
 }
 
 //------------------------------------------------------------------------------
 bool mysql_db::query_authentication_subscription(
-    const std::string& id, nlohmann::json& json_data) {
+    const std::string& ue_id, nlohmann::json& json_data) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
 
   Logger::udr_db().info(
-      "[UE Id %s] Query Authentication Subscription", id.c_str());
+      "[UE Id %s] Query Authentication Subscription", ue_id.c_str());
   MYSQL_RES* res     = nullptr;
   MYSQL_ROW row      = {};
   MYSQL_FIELD* field = nullptr;
@@ -359,15 +360,15 @@ bool mysql_db::query_authentication_subscription(
 
   AuthenticationSubscription authentication_subscription = {};
   const std::string query =
-      "SELECT * FROM AuthenticationSubscription WHERE ueid='" + id + "'";
+      "SELECT * FROM AuthenticationSubscription WHERE ueid='" + ue_id + "'";
   Logger::udr_db().info(
-      "[UE Id %s] MySQL Query: %s", id.c_str(), query.c_str());
+      "[UE Id %s] MySQL Query: %s", ue_id.c_str(), query.c_str());
 
   if (mysql_real_query(
           &mysql_connector, query.c_str(), (unsigned long) query.size()) != 0) {
     Logger::udr_db().error(
         "[UE Id %s] Failed when executing mysql_real_query with SQL Query: %s",
-        id.c_str(), query.c_str());
+        ue_id.c_str(), query.c_str());
     return false;
   }
 
@@ -375,7 +376,7 @@ bool mysql_db::query_authentication_subscription(
 
   if (res == nullptr) {
     Logger::udr_db().error(
-        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", id.c_str(),
+        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id.c_str(),
         query.c_str());
     return false;
   }
@@ -385,7 +386,7 @@ bool mysql_db::query_authentication_subscription(
   if (row != nullptr) {
     for (int i = 0; (field = mysql_fetch_field(res)); i++) {
       Logger::udr_db().debug(
-          "[UE Id %s] Row [%d]: %s ", id.c_str(), i, field->name);
+          "[UE Id %s] Row [%d]: %s ", ue_id.c_str(), i, field->name);
       if (boost::iequals("authenticationMethod", field->name)) {
         authentication_subscription.setAuthenticationMethod(row[i]);
       } else if (
@@ -440,7 +441,7 @@ bool mysql_db::query_authentication_subscription(
   } else {
     Logger::udr_db().error(
         "[UE Id %s] AuthenticationSubscription no data！ SQL Query: %s",
-        id.c_str(), query.c_str());
+        ue_id.c_str(), query.c_str());
     result = false;
   }
 
@@ -1945,10 +1946,14 @@ bool mysql_db::create_sm_data(
   std::string nssai_query = " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                             std::to_string(single_nssai.getSst());
 
-  if (!single_nssai.getSd().empty()) {
-    nssai_query += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
-                   single_nssai.getSd() + "'";
-  }
+  single_nssai.parse_sd_int_with_hex();  // SD string with lowercase
+  std::string sd_str_hex = single_nssai.getSd();
+  nssai_query +=
+      " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+      "JSON_QUOTE(\"0x" +
+      sd_str_hex +
+      "\") OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))=JSON_QUOTE(\"" +
+      sd_str_hex + "\"))";
 
   std::string query =
       "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" + ue_id +
@@ -2123,10 +2128,14 @@ bool mysql_db::update_sm_data(
   std::string nssai_query = " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                             std::to_string(single_nssai.getSst());
 
-  if (!single_nssai.getSd().empty()) {
-    nssai_query += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
-                   single_nssai.getSd() + "'";
-  }
+  single_nssai.parse_sd_int_with_hex();  // SD string with lowercase
+  std::string sd_str_hex = single_nssai.getSd();
+  nssai_query +=
+      " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+      "JSON_QUOTE(\"0x" +
+      sd_str_hex +
+      "\") OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))=JSON_QUOTE(\"" +
+      sd_str_hex + "\"))";
 
   query = "SELECT * FROM SessionManagementSubscriptionData WHERE ueid='" +
           ue_id + "'" + "AND servingPlmnid='" + serving_plmn_id + "'" +
@@ -2241,9 +2250,16 @@ bool mysql_db::query_sm_data(
     option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                   std::to_string(snssai.value().getSst());
 
-    if (!snssai.value().getSd().empty()) {
-      option_str += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
-                    snssai.value().getSd() + "'";
+    if (snssai.value().sdIsSet()) {
+      Snssai tmp = snssai.value();
+      tmp.parse_sd_int_with_hex();  // SD string with lowercase
+      std::string sd_str_hex = tmp.getSd();
+      option_str +=
+          " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+          "JSON_QUOTE(\"0x" +
+          sd_str_hex +
+          "\") OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))=JSON_QUOTE(\"" +
+          sd_str_hex + "\"))";
     }
   }
 
@@ -2294,6 +2310,8 @@ bool mysql_db::query_sm_data(
       if (boost::iequals("singleNssai", fields[i]) && row[i] != nullptr) {
         Snssai single_nssai = {};
         nlohmann::json::parse(row[i]).get_to(single_nssai);
+        // TODO: single_nssai.parse_sd_int_with_hex();  // overwrites SD string
+        // with lowercase HEX
         session_management_subscription_data.setSingleNssai(single_nssai);
       } else if (
           boost::iequals("dnnConfigurations", fields[i]) && row[i] != nullptr) {
@@ -2526,9 +2544,16 @@ bool mysql_db::delete_sm_data(
     option_str += " AND JSON_EXTRACT(singleNssai, \"$.sst\")=" +
                   std::to_string(snssai.value().getSst());
 
-    if (!snssai.value().getSd().empty()) {
-      option_str += " AND JSON_EXTRACT(singleNssai, \"$.sd\")='" +
-                    snssai.value().getSd() + "'";
+    if (snssai.value().sdIsSet()) {
+      Snssai tmp = snssai.value();
+      tmp.parse_sd_int_with_hex();  // SD string with lowercase
+      std::string sd_str_hex = tmp.getSd();
+      option_str +=
+          " AND ( LOWER(JSON_EXTRACT(singleNssai, \"$.sd\"))="
+          "JSON_QUOTE(\"0x" +
+          sd_str_hex +
+          "\") OR LOWER (JSON_EXTRACT(singleNssai, \"$.sd\"))=JSON_QUOTE(\"" +
+          sd_str_hex + "\"))";
     }
   }
 
