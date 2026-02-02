@@ -29,7 +29,7 @@
 # BUILDER IMAGE
 #---------------------------------------------------------------------
 
-FROM registry.access.redhat.com/ubi9/ubi:latest AS oai-udr-builder
+FROM registry.redhat.io/ubi9/ubi:latest AS oai-udr-builder
 
 ENV IS_DOCKERFILE=1
 
@@ -96,7 +96,7 @@ FROM mikefarah/yq:latest as yq-source
 #---------------------------------------------------------------------
 # TARGET IMAGE
 #---------------------------------------------------------------------
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest as oai-udr
+FROM registry.redhat.io/ubi9/ubi-minimal:latest as oai-udr
 ENV TZ=Europe/Paris
 # We install some debug tools for the moment in addition of mandatory libraries
 
