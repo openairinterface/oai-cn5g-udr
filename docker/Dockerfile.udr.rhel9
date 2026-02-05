@@ -29,7 +29,7 @@
 # BUILDER IMAGE
 #---------------------------------------------------------------------
 
-FROM registry.access.redhat.com/ubi9/ubi:latest AS oai-udr-builder
+FROM registry.redhat.io/ubi9/ubi:latest AS oai-udr-builder
 
 ENV IS_DOCKERFILE=1
 
@@ -50,6 +50,15 @@ RUN rm -f /etc/rhsm-host && \
         file && \
     echo "/usr/local/lib" > /etc/ld.so.conf.d/local-lib.conf && \
     echo "/usr/local/lib64" >> /etc/ld.so.conf.d/local-lib.conf
+
+ARG YQ_VERSION=v4.47.1
+RUN case $(uname -m) in \
+        x86_64)  YQ_BIN="yq_linux_amd64" ;; \
+        aarch64) YQ_BIN="yq_linux_arm64" ;; \
+        *) echo "Unsupported arch"; exit 1 ;; \
+    esac && \
+    wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/${YQ_BIN} -O /usr/local/bin/yq && \
+    chmod +x /usr/local/bin/yq
 
 # 2024/05/24 : problem w/ cmake version 3.26.5-2
 # Installing 2 versions on the system (3.20.2) and picking oldest one
@@ -91,12 +100,11 @@ RUN sed -i -e "s@-lmysqlclient@-L/usr/lib64/mysql -lmysqlclient@" ../../src/oai_
     # Remove entitlements and Subscription Manager configs
     rm -rf /etc/pki/entitlement
 
-FROM mikefarah/yq:latest as yq-source
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
 #---------------------------------------------------------------------
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest as oai-udr
+FROM registry.redhat.io/ubi9/ubi-minimal:latest as oai-udr
 ENV TZ=Europe/Paris
 # We install some debug tools for the moment in addition of mandatory libraries
 
@@ -136,7 +144,9 @@ COPY --from=oai-udr-builder \
     /openair-udr/scripts/healthcheck.sh \
     /wait-for-it/wait-for-it.sh \
     ./
-COPY --from=yq-source /usr/bin/yq /usr/bin
+
+COPY --from=oai-udr-builder /usr/local/bin/yq /usr/bin/yq
+
 
 COPY --from=oai-udr-builder \
 # Copying only the packages built from source
