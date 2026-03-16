@@ -41,6 +41,34 @@
 #define NUDR_DR_SMF_REG "smf-registrations"
 #define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
 
+// Database collection/table names and labels
+constexpr auto DATABASE_AUTHENTICATION_SUBSCRIPTION =
+    "AuthenticationSubscription";
+constexpr auto DATABASE_AUTHENTICATION_SUBSCRIPTION_LABEL =
+    "Authentication Subscription";
+constexpr auto DATABASE_AMF_3GPP_ACCESS_REGISTRATION =
+    "Amf3GppAccessRegistration";
+constexpr auto DATABASE_AMF_3GPP_ACCESS_REGISTRATION_LABEL =
+    "AMF 3GPP Access Registration";
+constexpr auto DATABASE_ACCESS_AND_MOBILITY_SUBSCRIPTION_DATA =
+    "AccessAndMobilitySubscriptionData";
+constexpr auto DATABASE_ACCESS_AND_MOBILITY_SUBSCRIPTION_DATA_LABEL =
+    "Access and Mobility Subscription Data";
+constexpr auto DATABASE_SDM_SUBSCRIPTIONS       = "SdmSubscriptions";
+constexpr auto DATABASE_SDM_SUBSCRIPTIONS_LABEL = "SDM Subscriptions";
+constexpr auto DATABASE_SESSION_MANAGEMENT_SUBSCRIPTION_DATA =
+    "SessionManagementSubscriptionData";
+constexpr auto DATABASE_SESSION_MANAGEMENT_SUBSCRIPTION_DATA_LABEL =
+    "Session Management Subscription Data";
+constexpr auto DATABASE_SMF_REGISTRATIONS           = "SmfRegistrations";
+constexpr auto DATABASE_SMF_REGISTRATIONS_LABEL     = "SMF Registrations";
+constexpr auto DATABASE_AUTHENTICATION_STATUS       = "AuthenticationStatus";
+constexpr auto DATABASE_AUTHENTICATION_STATUS_LABEL = "Authentication Status";
+constexpr auto DATABASE_SMF_SELECTION_SUBSCRIPTION_DATA =
+    "SmfSelectionSubscriptionData";
+constexpr auto DATABASE_SMF_SELECTION_SUBSCRIPTION_DATA_LABEL =
+    "SMF Selection Subscription Data";
+
 typedef enum db_type_s {
   DB_TYPE_UNKNOWN   = 0,
   DB_TYPE_MYSQL     = 1,
