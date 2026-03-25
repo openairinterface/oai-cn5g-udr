@@ -158,7 +158,6 @@ RUN ldconfig && \
 
 WORKDIR /openair-udr/etc
 COPY --from=oai-udr-builder \
-    /openair-udr/etc/udr.conf \
     /openair-udr/etc/config.yaml ./
 
 WORKDIR /openair-udr
