@@ -31,7 +31,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::app;
 
 class AmfSubscriptionInfoDocumentApiImpl
@@ -48,7 +48,7 @@ class AmfSubscriptionInfoDocumentApiImpl
 
   void modify_amf_subscription_info(
       const std::string& ueId, const std::string& subsId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };

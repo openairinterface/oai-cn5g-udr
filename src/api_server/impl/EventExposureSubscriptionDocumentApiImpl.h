@@ -47,7 +47,7 @@ class EventExposureSubscriptionDocumentApiImpl
 
   void modify_eesubscription(
       const std::string& ueId, const std::string& subsId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void queryee_subscription(
@@ -58,7 +58,7 @@ class EventExposureSubscriptionDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void update_eesubscriptions(
       const std::string& ueId, const std::string& subsId,
-      const oai::udr::model::EeSubscription& eeSubscription,
+      const oai::_3gpp::model::EeSubscription& eeSubscription,
       Pistache::Http::ResponseWriter& response);
 };
 

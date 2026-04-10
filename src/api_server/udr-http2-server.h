@@ -31,14 +31,14 @@ class udr_http2_server {
 
   void create_amf_context_3gpp_handler(
       const std::string& ue_id,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      oai::_3gpp::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
       const response& response);
 
   void query_amf_context_3gpp_handler(
       const std::string& ue_id, const response& response);
 
   void create_authentication_status_handler(
-      const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+      const std::string& ue_id, const oai::_3gpp::model::AuthEvent& authEvent,
       const response& response);
 
   void delete_authentication_status_handler(
@@ -49,7 +49,7 @@ class udr_http2_server {
 
   void modify_authentication_subscription_handler(
       const std::string& ue_id,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const response& response);
 
   void read_authentication_subscription_handler(
@@ -57,7 +57,7 @@ class udr_http2_server {
 
   void create_authentication_subscription_handler(
       const std::string& ue_id,
-      const oai::udr::model::AuthenticationSubscription&
+      const oai::_3gpp::model::AuthenticationSubscription&
           authentication_subscription,
       const response& response);
 
@@ -74,17 +74,17 @@ class udr_http2_server {
 
   void modify_sdm_subscription_handler(
       const std::string& ue_id, const std::string& subs_id,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       const response& response);
 
   void update_sdm_subscription_handler(
       const std::string& ue_id, const std::string& subs_id,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       const response& response);
 
   void create_sdm_subscriptions_handler(
       const std::string& ue_id,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       const response& response);
 
   void query_sdm_subscriptions_handler(
@@ -93,29 +93,29 @@ class udr_http2_server {
   void query_sm_data_handler(
       const std::string& ue_id, const std::string& serving_plmn_id,
       const response& response,
-      std::optional<oai::model::common::Snssai>& snssai,
+      std::optional<oai::_3gpp::model::Snssai>& snssai,
       std::optional<std::string>& dnn);
 
   void query_sm_data_handler(const response& response);
 
   void create_sm_data_handler(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      oai::udr::model::SessionManagementSubscriptionData& subscription_data,
+      oai::_3gpp::model::SessionManagementSubscriptionData& subscription_data,
       const response& response);
 
   void update_sm_data_handler(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      oai::udr::model::SessionManagementSubscriptionData& subscription_data,
+      oai::_3gpp::model::SessionManagementSubscriptionData& subscription_data,
       const response& response);
 
   void delete_sm_data_handler(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      std::optional<oai::model::common::Snssai>& snssai,
+      std::optional<oai::_3gpp::model::Snssai>& snssai,
       const response& response);
 
   void create_smf_context_non_3gpp_handler(
       const std::string& ue_id, const int32_t& pdu_session_id,
-      const oai::udr::model::SmfRegistration& smfRegistration,
+      const oai::_3gpp::model::SmfRegistration& smfRegistration,
       const response& response);
 
   void delete_smf_context_handler(

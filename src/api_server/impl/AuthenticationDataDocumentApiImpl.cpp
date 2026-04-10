@@ -24,7 +24,7 @@ namespace oai {
 namespace udr {
 namespace api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 AuthenticationDataDocumentApiImpl::AuthenticationDataDocumentApiImpl(
     const std::shared_ptr<Pistache::Rest::Router>& rtr, udr_app* udr_app_inst,

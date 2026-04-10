@@ -3,9 +3,11 @@
 cmake_minimum_required (VERSION 3.0.2)
 project(oai-cn)
 
+enable_testing()
+
 # Override options for UDR
 set (  PACKAGE_NAME                    "UDR" )
-set (  STATIC_LINKING                   False )
+set (  STATIC_LINKING                  False )
 #############################################
 # Base directories, compatible with legacy OAI building
 ################################################
@@ -18,6 +20,7 @@ set (SRC_TOP_DIR     $ENV{OPENAIRCN_DIR}/src)
 ################################################
 set (  NF_TARGET                        udr )
 set (  MOUNTED_COMMON                   common-src)
+
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../src/oai_udr/CMakeLists.txt)
 

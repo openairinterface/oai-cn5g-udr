@@ -47,7 +47,7 @@ class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl
 
   void get_nidd_au_data(
       const std::string& ueId,
-      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
+      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::string>& mtcProviderInformation,
       const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
