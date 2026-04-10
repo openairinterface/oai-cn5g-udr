@@ -73,7 +73,7 @@ class AMF3GPPAccessRegistrationDocumentApi {
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void amf_context3gpp(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 
@@ -87,7 +87,7 @@ class AMF3GPPAccessRegistrationDocumentApi {
   /// <param name="amf3GppAccessRegistration"> (optional)</param>
   virtual void create_amf_context3gpp(
       const std::string& ueId,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      oai::_3gpp::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>

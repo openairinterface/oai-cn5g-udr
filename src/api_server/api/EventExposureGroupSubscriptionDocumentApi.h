@@ -78,7 +78,7 @@ class EventExposureGroupSubscriptionDocumentApi {
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify_ee_group_subscription(
       const std::string& ueGroupId, const std::string& subsId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 
@@ -117,7 +117,7 @@ class EventExposureGroupSubscriptionDocumentApi {
   /// <param name="eeSubscription"> (optional)</param>
   virtual void update_ee_group_subscriptions(
       const std::string& ueGroupId, const std::string& subsId,
-      const oai::udr::model::EeSubscription& eeSubscription,
+      const oai::_3gpp::model::EeSubscription& eeSubscription,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

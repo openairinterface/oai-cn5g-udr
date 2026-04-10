@@ -20,7 +20,7 @@ class cassandra_db : public database_wrapper<cassandra_db> {
 
   bool insert_authentication_subscription(
       const std::string& id,
-      const oai::udr::model::AuthenticationSubscription&
+      const oai::_3gpp::model::AuthenticationSubscription&
           authentication_subscription,
       nlohmann::json& json_data);
 
@@ -32,7 +32,7 @@ class cassandra_db : public database_wrapper<cassandra_db> {
 
   bool update_authentication_subscription(
       const std::string& id,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       nlohmann::json& json_data);
 
   bool query_am_data(
@@ -41,14 +41,14 @@ class cassandra_db : public database_wrapper<cassandra_db> {
 
   bool create_amf_context_3gpp(
       const std::string& ue_id,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      oai::_3gpp::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
       nlohmann::json& json_data);
 
   bool query_amf_context_3gpp(
       const std::string& ue_id, nlohmann::json& json_data);
 
   bool insert_authentication_status(
-      const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+      const std::string& ue_id, const oai::_3gpp::model::AuthEvent& authEvent,
       nlohmann::json& json_data);
 
   bool delete_authentication_status(
@@ -67,12 +67,12 @@ class cassandra_db : public database_wrapper<cassandra_db> {
 
   bool update_sdm_subscription(
       const std::string& ue_id, const std::string& subs_id,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       nlohmann::json& json_data);
 
   bool create_sdm_subscriptions(
       const std::string& ue_id,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       nlohmann::json& json_data);
 
   bool query_sdm_subscriptions(
@@ -81,28 +81,28 @@ class cassandra_db : public database_wrapper<cassandra_db> {
   bool query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data,
-      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
       const std::optional<std::string>& dnn);
 
   bool create_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      oai::udr::model::SessionManagementSubscriptionData& sm_subscription,
+      oai::_3gpp::model::SessionManagementSubscriptionData& sm_subscription,
       nlohmann::json& json_data, uint32_t& resource_id);
 
   bool update_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      oai::_3gpp::model::SessionManagementSubscriptionData& subscriptionData,
       nlohmann::json& json_data, uint32_t& resource_id);
 
   bool delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      const std::optional<oai::model::common::Snssai>& snssai);
+      const std::optional<oai::_3gpp::model::Snssai>& snssai);
 
   bool query_sm_data(nlohmann::json& json_data);
 
   bool insert_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,
-      const oai::udr::model::SmfRegistration& smfRegistration,
+      const oai::_3gpp::model::SmfRegistration& smfRegistration,
       nlohmann::json& json_data);
 
   bool delete_smf_context(

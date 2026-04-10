@@ -20,7 +20,7 @@
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 AMF3GPPAccessRegistrationDocumentApiImpl::
     AMF3GPPAccessRegistrationDocumentApiImpl(
@@ -32,7 +32,7 @@ AMF3GPPAccessRegistrationDocumentApiImpl::
 
 void AMF3GPPAccessRegistrationDocumentApiImpl::amf_context3gpp(
     const std::string& ueId,
-    const std::vector<oai::model::common::PatchItem>& patchItem,
+    const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   // TODO: verify

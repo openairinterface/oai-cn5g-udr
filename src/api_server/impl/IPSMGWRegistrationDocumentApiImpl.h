@@ -54,7 +54,7 @@ class IPSMGWRegistrationDocumentApiImpl
       const std::string& ueId, Pistache::Http::ResponseWriter& response);
   void modify_ip_sm_gw_context(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response);
   void query_ip_sm_gw_context(
       const std::string& ueId,

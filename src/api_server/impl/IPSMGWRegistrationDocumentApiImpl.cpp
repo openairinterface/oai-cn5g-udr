@@ -21,7 +21,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 IPSMGWRegistrationDocumentApiImpl::IPSMGWRegistrationDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr,
@@ -43,7 +43,7 @@ void IPSMGWRegistrationDocumentApiImpl::delete_ip_sm_gw_context(
 }
 void IPSMGWRegistrationDocumentApiImpl::modify_ip_sm_gw_context(
     const std::string& ueId,
-    const std::vector<oai::model::common::PatchItem>& patchItem,
+    const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

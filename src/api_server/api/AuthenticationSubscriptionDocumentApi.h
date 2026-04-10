@@ -70,7 +70,7 @@ class AuthenticationSubscriptionDocumentApi {
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify_authentication_subscription(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
   virtual void read_authentication_subscription(

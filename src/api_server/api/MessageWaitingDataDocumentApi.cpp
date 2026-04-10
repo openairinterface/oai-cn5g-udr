@@ -24,7 +24,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
+using namespace oai::_3gpp::model::helpers;
 using namespace oai::udr::api;
 
 MessageWaitingDataDocumentApi::MessageWaitingDataDocumentApi(
@@ -88,7 +88,7 @@ void MessageWaitingDataDocumentApi::create_message_waiting_data_handler(
 
   // Getting the body param
 
-  oai::udr::model::MessageWaitingData messageWaitingData;
+  oai::_3gpp::model::MessageWaitingData messageWaitingData;
 
   try {
     nlohmann::json::parse(request.body()).get_to(messageWaitingData);
@@ -144,7 +144,7 @@ void MessageWaitingDataDocumentApi::modify_message_waiting_data_handler(
   auto ueId = request.param(":ueId").as<std::string>();
 
   // Getting the body param
-  std::vector<oai::model::common::PatchItem> patchItem;
+  std::vector<oai::_3gpp::model::PatchItem> patchItem;
 
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);

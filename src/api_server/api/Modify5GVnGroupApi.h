@@ -66,7 +66,7 @@ class Modify5GVnGroupApi {
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modify5_g_vn_group(
       const std::string& externalGroupId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };

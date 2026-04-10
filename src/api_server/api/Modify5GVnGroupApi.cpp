@@ -24,7 +24,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
+using namespace oai::_3gpp::model::helpers;
 using namespace oai::udr::api;
 
 Modify5GVnGroupApi::Modify5GVnGroupApi(
@@ -63,7 +63,7 @@ void Modify5GVnGroupApi::modify5_g_vn_group_handler(
   auto externalGroupId = request.param(":externalGroupId").as<std::string>();
 
   // Getting the body param
-  std::vector<oai::model::common::PatchItem> patchItem;
+  std::vector<oai::_3gpp::model::PatchItem> patchItem;
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");

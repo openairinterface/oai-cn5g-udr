@@ -47,8 +47,7 @@ class InfluenceDataStoreApiImpl : public oai::udr::api::InfluenceDataStoreApi {
   void read_influence_data(
       const Pistache::Optional<std::vector<std::string>>& influenceIds,
       const Pistache::Optional<std::vector<std::string>>& dnns,
-      const Pistache::Optional<std::vector<oai::model::common::Snssai>>&
-          snssais,
+      const Pistache::Optional<std::vector<oai::_3gpp::model::Snssai>>& snssais,
       const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
       const Pistache::Optional<std::vector<std::string>>& supis,
       const Pistache::Optional<std::string>& suppFeat,

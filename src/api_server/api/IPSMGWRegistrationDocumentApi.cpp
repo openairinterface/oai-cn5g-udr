@@ -24,8 +24,8 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model::helpers;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::api;
 
 IPSMGWRegistrationDocumentApi::IPSMGWRegistrationDocumentApi(
@@ -145,7 +145,7 @@ void IPSMGWRegistrationDocumentApi::modify_ip_sm_gw_context_handler(
   auto ueId = request.param(":ueId").as<std::string>();
 
   // Getting the body param
-  std::vector<oai::model::common::PatchItem> patchItem;
+  std::vector<oai::_3gpp::model::PatchItem> patchItem;
 
   try {
     nlohmann::json::parse(request.body()).get_to(patchItem);

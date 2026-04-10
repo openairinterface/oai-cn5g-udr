@@ -73,7 +73,7 @@ class MessageWaitingDataDocumentApi {
   /// <param name="messageWaitingData"> (optional)</param>
   virtual void create_message_waiting_data(
       const std::string& ueId,
-      const oai::udr::model::MessageWaitingData& messageWaitingData,
+      const oai::_3gpp::model::MessageWaitingData& messageWaitingData,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
@@ -96,7 +96,7 @@ class MessageWaitingDataDocumentApi {
   /// <param name="patchItem"></param>
   virtual void modify_message_waiting_data(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>

@@ -17,8 +17,8 @@
 #include "udr_config.hpp"
 
 using namespace oai::udr::app;
-using namespace oai::udr::model;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::config;
 using namespace boost::placeholders;
 
@@ -153,7 +153,7 @@ bool mysql_db::check_connection_status() {
 
 //------------------------------------------------------------------------------
 bool mysql_db::get_key_from_snssai(
-    const oai::model::common::Snssai& snssai, uint32_t& key) {
+    const oai::_3gpp::model::Snssai& snssai, uint32_t& key) {
   uint8_t sst        = 0;
   uint32_t sd        = 0;
   sst                = snssai.getSst() & 0x000000ff;
@@ -184,7 +184,7 @@ bool mysql_db::get_key_from_snssai(
 
 //------------------------------------------------------------------------------
 void mysql_db::get_snssai_from_key(
-    oai::model::common::Snssai& snssai, const uint32_t& key) {
+    oai::_3gpp::model::Snssai& snssai, const uint32_t& key) {
   uint8_t sst = 0;
   uint32_t sd = 0;
   sst         = key & 0x000000ff;
@@ -228,6 +228,22 @@ bool mysql_db::insert_authentication_subscription(
   std::string where_condition = {};
   row                         = mysql_fetch_row(res);
 
+  nlohmann::json authentication_method_json =
+      auth_subscription.getAuthenticationMethod();
+  std::string authentication_method_str =
+      authentication_method_json.is_string() ?
+          authentication_method_json.get<std::string>() :
+          authentication_method_json.dump();
+
+  std::string n5gc_auth_method_str = {};
+  if (auth_subscription.n5gcAuthMethodIsSet()) {
+    nlohmann::json n5gc_auth_method_json =
+        auth_subscription.getN5gcAuthMethod();
+    n5gc_auth_method_str = n5gc_auth_method_json.is_string() ?
+                               n5gc_auth_method_json.get<std::string>() :
+                               n5gc_auth_method_json.dump();
+  }
+
   if (row != nullptr) {
     Logger::udr_db().debug(
         "[UE Id %s] %s existed, update with new "
@@ -236,15 +252,14 @@ bool mysql_db::insert_authentication_subscription(
     // Update accordingly
     mysql_free_result(res);
     query = "UPDATE " + std::string(DATABASE_AUTHENTICATION_SUBSCRIPTION) +
-            " SET authenticationMethod='" +
-            auth_subscription.getAuthenticationMethod() + "'";
+            " SET authenticationMethod='" + authentication_method_str + "'";
     where_condition = " WHERE ueid='" + ue_id + "'";
   } else {
     // Insert/create new record
     mysql_free_result(res);
     query = "INSERT INTO " + std::string(DATABASE_AUTHENTICATION_SUBSCRIPTION) +
             " SET ueid='" + ue_id + "'" + ",authenticationMethod='" +
-            auth_subscription.getAuthenticationMethod() + "'";
+            authentication_method_str + "'";
   }
 
   query +=
@@ -269,7 +284,7 @@ bool mysql_db::insert_authentication_subscription(
            ",encTopcKey='" + auth_subscription.getEncTopcKey() + "'" :
            "") +
       (auth_subscription.n5gcAuthMethodIsSet() ?
-           ",n5gcAuthMethod='" + auth_subscription.getN5gcAuthMethod() + "'" :
+           ",n5gcAuthMethod='" + n5gc_auth_method_str + "'" :
            "") +
       (auth_subscription.supiIsSet() ?
            ",supi='" + auth_subscription.getSupi() + "'" :
@@ -366,7 +381,11 @@ bool mysql_db::query_authentication_subscription(
     for (int i = 0; (field = mysql_fetch_field(res)); i++) {
       Logger::udr_db().debug("[UE Id %s] Row [%d]: %s ", ue_id, i, field->name);
       if (boost::iequals("authenticationMethod", field->name)) {
-        authentication_subscription.setAuthenticationMethod(row[i]);
+        AuthMethod authentication_method;
+        nlohmann::json authentication_method_json = row[i];
+        authentication_method_json.get_to(authentication_method);
+        authentication_subscription.setAuthenticationMethod(
+            authentication_method);
       } else if (
           boost::iequals("encPermanentKey", field->name) && row[i] != nullptr) {
         authentication_subscription.setEncPermanentKey(row[i]);
@@ -401,7 +420,10 @@ bool mysql_db::query_authentication_subscription(
           authentication_subscription.setVectorGenerationInHss(false);
       } else if (
           boost::iequals("n5gcAuthMethod", field->name) && row[i] != nullptr) {
-        authentication_subscription.setN5gcAuthMethod(row[i]);
+        AuthMethod n5gc_auth_method;
+        nlohmann::json n5gc_auth_method_json = row[i];
+        n5gc_auth_method_json.get_to(n5gc_auth_method);
+        authentication_subscription.setN5gcAuthMethod(n5gc_auth_method);
       } else if (
           boost::iequals("rgAuthenticationInd", field->name) &&
           row[i] != nullptr) {
@@ -449,10 +471,8 @@ bool mysql_db::update_authentication_subscription(
     if ((patchItem[i].getOp().getEnumValue() ==
          PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE) &&
         patchItem[i].valueIsSet()) {
-      patchItem[i].getValue();
       SequenceNumber sequencenumber;
-      nlohmann::json::parse(patchItem[i].getValue().c_str())
-          .get_to(sequencenumber);
+      patchItem[i].getValue().get_to(sequencenumber);
 
       if (mysql_real_query(
               &mysql_connector, select_Authenticationsubscription.c_str(),
@@ -1117,7 +1137,7 @@ bool mysql_db::query_amf_context_3gpp(
       } else if (
           boost::iequals("amfServiceNameDereg", field->name) &&
           row[i] != nullptr) {
-        oai::model::nrf::ServiceName amfservicenamedereg;
+        oai::_3gpp::model::ServiceName amfservicenamedereg;
         nlohmann::json::parse(row[i]).get_to(amfservicenamedereg);
         amf3gppaccessregistration.setAmfServiceNameDereg(amfservicenamedereg);
       } else if (
@@ -1127,7 +1147,7 @@ bool mysql_db::query_amf_context_3gpp(
       } else if (
           boost::iequals("amfServiceNamePcscfRest", field->name) &&
           row[i] != nullptr) {
-        oai::model::nrf::ServiceName amfservicenamepcscfrest;
+        oai::_3gpp::model::ServiceName amfservicenamepcscfrest;
         nlohmann::json::parse(row[i]).get_to(amfservicenamepcscfrest);
         amf3gppaccessregistration.setAmfServiceNamePcscfRest(
             amfservicenamepcscfrest);
@@ -1253,12 +1273,17 @@ bool mysql_db::mysql_db::insert_authentication_status(
   }
 
   if (mysql_num_rows(res)) {
+    nlohmann::json auth_type_json = authEvent.getAuthType();
+    std::string auth_type_str     = auth_type_json.is_string() ?
+                                        auth_type_json.get<std::string>() :
+                                        auth_type_json.dump();
+
     query = "UPDATE " + std::string(DATABASE_AUTHENTICATION_STATUS) +
             " SET nfInstanceId='" + authEvent.getNfInstanceId() + "'" +
             ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
-            authEvent.getTimeStamp() + "'" + ",authType='" +
-            authEvent.getAuthType() + "'" + ",servingNetworkName='" +
-            authEvent.getServingNetworkName() + "'" +
+            authEvent.getTimeStamp() + "'" + ",authType='" + auth_type_str +
+            "'" + ",servingNetworkName='" + authEvent.getServingNetworkName() +
+            "'" +
             (authEvent.authRemovalIndIsSet() ?
                  (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1" :
                                                  ",authRemovalInd=0") :
@@ -1267,13 +1292,18 @@ bool mysql_db::mysql_db::insert_authentication_status(
     //        query += ",authType='"+j.dump()+"'";
     query += " WHERE ueid='" + ue_id + "'";
   } else {
+    nlohmann::json auth_type_json = authEvent.getAuthType();
+    std::string auth_type_str     = auth_type_json.is_string() ?
+                                        auth_type_json.get<std::string>() :
+                                        auth_type_json.dump();
+
     query = "INSERT INTO " + std::string(DATABASE_AUTHENTICATION_STATUS) +
             " SET ueid='" + ue_id + "'" + ",nfInstanceId='" +
             authEvent.getNfInstanceId() + "'" +
             ",success=" + (authEvent.isSuccess() ? "1" : "0") + ",timeStamp='" +
-            authEvent.getTimeStamp() + "'" + ",authType='" +
-            authEvent.getAuthType() + "'" + ",servingNetworkName='" +
-            authEvent.getServingNetworkName() + "'" +
+            authEvent.getTimeStamp() + "'" + ",authType='" + auth_type_str +
+            "'" + ",servingNetworkName='" + authEvent.getServingNetworkName() +
+            "'" +
             (authEvent.authRemovalIndIsSet() ?
                  (authEvent.isAuthRemovalInd() ? ",authRemovalInd=1" :
                                                  ",authRemovalInd=0") :
@@ -1366,9 +1396,10 @@ bool mysql_db::mysql_db::query_authentication_status(
       } else if (boost::iequals("timeStamp", field->name)) {
         authenticationstatus.setTimeStamp(row[i]);
       } else if (boost::iequals("authType", field->name)) {
-        //                AuthType authtype;
-        //                nlohmann::json::parse(row[i]).get_to(authtype);
-        authenticationstatus.setAuthType(row[i]);
+        AuthType auth_type;
+        nlohmann::json auth_type_json = row[i];
+        auth_type_json.get_to(auth_type);
+        authenticationstatus.setAuthType(auth_type);
       } else if (boost::iequals("servingNetworkName", field->name)) {
         authenticationstatus.setServingNetworkName(row[i]);
       } else if (
@@ -1443,7 +1474,7 @@ bool mysql_db::mysql_db::query_sdm_subscription(
         SdmSubscriptions.setCallbackReference(row[i]);
       } else if (
           boost::iequals("amfServiceName", field->name) && row[i] != nullptr) {
-        oai::model::nrf::ServiceName amfservicename;
+        oai::_3gpp::model::ServiceName amfservicename;
         nlohmann::json::parse(row[i]).get_to(amfservicename);
         SdmSubscriptions.setAmfServiceName(amfservicename);
       } else if (boost::iequals("monitoredResourceUris", field->name)) {
@@ -1471,7 +1502,7 @@ bool mysql_db::mysql_db::query_sdm_subscription(
         else
           SdmSubscriptions.setImmediateReport(false);
       } else if (boost::iequals("report", field->name) && row[i] != nullptr) {
-        SubscriptionDataSets report;
+        ImmediateReport report;
         nlohmann::json::parse(row[i]).get_to(report);
         SdmSubscriptions.setReport(report);
       } else if (
@@ -1846,7 +1877,7 @@ bool mysql_db::query_sdm_subscriptions(
       } else if (
           boost::iequals("amfServiceName", fields[i].c_str()) &&
           row[i] != nullptr) {
-        oai::model::nrf::ServiceName amfservicename;
+        oai::_3gpp::model::ServiceName amfservicename;
         nlohmann::json::parse(row[i]).get_to(amfservicename);
         sdmsubscriptions.setAmfServiceName(amfservicename);
       } else if (boost::iequals("monitoredResourceUris", fields[i].c_str())) {
@@ -1880,7 +1911,7 @@ bool mysql_db::query_sdm_subscriptions(
           sdmsubscriptions.setImmediateReport(false);
       } else if (
           boost::iequals("report", fields[i].c_str()) && row[i] != nullptr) {
-        SubscriptionDataSets report;
+        ImmediateReport report;
         nlohmann::json::parse(row[i]).get_to(report);
         sdmsubscriptions.setReport(report);
       } else if (

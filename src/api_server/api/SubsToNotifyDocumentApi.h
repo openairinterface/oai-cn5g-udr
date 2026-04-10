@@ -72,7 +72,7 @@ class SubsToNotifyDocumentApi {
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modifysubscription_data_subscription(
       const std::string& subsId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 

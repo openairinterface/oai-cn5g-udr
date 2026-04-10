@@ -16,8 +16,8 @@
 #include "udr_nrf.hpp"
 
 using namespace oai::udr::app;
-using namespace oai::udr::model;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::config;
 
 extern udr_app* udr_app_inst;

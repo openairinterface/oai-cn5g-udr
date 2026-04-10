@@ -46,7 +46,8 @@ class PduSessionManagementDataApiImpl
 
   void create_or_replace_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
-      const oai::udr::model::PduSessionManagementData& pduSessionManagementData,
+      const oai::_3gpp::model::PduSessionManagementData&
+          pduSessionManagementData,
       Pistache::Http::ResponseWriter& response);
   void delete_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
@@ -54,7 +55,7 @@ class PduSessionManagementDataApiImpl
   void query_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
       const Pistache::Optional<std::string>& ipv4Addr,
-      const Pistache::Optional<oai::model::common::Ipv6Prefix>& ipv6Prefix,
+      const Pistache::Optional<oai::_3gpp::model::Ipv6Prefix>& ipv6Prefix,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::vector<std::string>>& fields,
       const Pistache::Optional<std::string>& suppFeat,

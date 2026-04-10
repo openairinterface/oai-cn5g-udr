@@ -24,7 +24,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
+using namespace oai::_3gpp::model::helpers;
 using namespace oai::udr::api;
 
 InfluenceDataStoreApi::InfluenceDataStoreApi(
@@ -71,7 +71,7 @@ void InfluenceDataStoreApi::read_influence_data_handler(
     }
   }
   auto snssaisQuery = request.query().get("snssais");
-  Pistache::Optional<std::vector<oai::model::common::Snssai>> snssais;
+  Pistache::Optional<std::vector<oai::_3gpp::model::Snssai>> snssais;
   if (!snssaisQuery.isEmpty()) {
     //        std::vector<Snssai> valueQuery_instance;
     //        if(fromStringValue(snssaisQuery.get(), valueQuery_instance)){

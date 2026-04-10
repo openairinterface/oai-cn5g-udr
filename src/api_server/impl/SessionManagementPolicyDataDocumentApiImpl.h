@@ -48,7 +48,7 @@ class SessionManagementPolicyDataDocumentApiImpl
 
   void read_session_management_policy_data(
       const std::string& ueId,
-      const Pistache::Optional<oai::model::common::Snssai>& snssai,
+      const Pistache::Optional<oai::_3gpp::model::Snssai>& snssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::vector<std::string>>& fields,
       const Pistache::Optional<std::string>& suppFeat,
