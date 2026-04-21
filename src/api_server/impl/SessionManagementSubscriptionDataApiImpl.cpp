@@ -25,8 +25,8 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::api;
 
 SessionManagementSubscriptionDataApiImpl::
@@ -39,7 +39,7 @@ SessionManagementSubscriptionDataApiImpl::
 
 void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     const std::string& ueId, const std::string& servingPlmnId,
-    const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
+    const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
     const Pistache::Optional<std::string>& dnn,
     const Pistache::Optional<std::vector<std::string>>& fields,
     const Pistache::Optional<std::string>& supportedFeatures,

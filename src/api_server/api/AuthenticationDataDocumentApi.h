@@ -86,7 +86,7 @@ class AuthenticationDataDocumentApi {
   /// <param name="authenticationSubscription"> (optional)</param>
   virtual void create_auth_subs_data(
       const std::string& ueId,
-      const oai::udr::model::AuthenticationSubscription&
+      const oai::_3gpp::model::AuthenticationSubscription&
           authenticationSubscription,
       Pistache::Http::ResponseWriter& response) = 0;
 

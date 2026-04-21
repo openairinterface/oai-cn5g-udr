@@ -24,8 +24,8 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model::helpers;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::api;
 
 QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
@@ -73,7 +73,7 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
 
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
-  Pistache::Optional<oai::model::common::Snssai> singleNssai;
+  Pistache::Optional<oai::_3gpp::model::Snssai> singleNssai;
   if (!singleNssaiQuery.isEmpty()) {
     //        Snssai valueQuery_instance;
     //        if(fromStringValue(singleNssaiQuery.get(), valueQuery_instance)){

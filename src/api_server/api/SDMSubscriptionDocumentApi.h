@@ -77,7 +77,7 @@ class SDMSubscriptionDocumentApi {
   /// target NF (optional, default to &quot;&quot;)</param>
   virtual void modifysdm_subscription(
       const std::string& ueId, const std::string& subsId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 
@@ -116,7 +116,7 @@ class SDMSubscriptionDocumentApi {
   /// <param name="sdmSubscription"> (optional)</param>
   virtual void updatesdmsubscriptions(
       const std::string& ueId, const std::string& subsId,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

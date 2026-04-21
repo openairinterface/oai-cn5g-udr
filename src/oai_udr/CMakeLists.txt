@@ -272,11 +272,12 @@ include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/api_server)
 include_directories(${SRC_TOP_DIR}/api_server/api)
 include_directories(${SRC_TOP_DIR}/api_server/impl)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/bstr)
-include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udr)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model)
 
 add_executable(udr
   ${SRC_TOP_DIR}/oai_udr/main.cpp
@@ -287,7 +288,7 @@ add_executable(udr
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/config/config.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/http/http.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger/logger.cmake)
-include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udr/udr.cmake)
+include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model/udr.cmake)
 include(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/utils.cmake)
 
 IF(STATIC_LINKING)
@@ -298,7 +299,9 @@ IF(STATIC_LINKING)
 ENDIF(STATIC_LINKING)   
 
 target_link_libraries (udr ${ASAN} mongo::mongocxx_shared mongo::bsoncxx_shared
-    -Wl,--start-group UDR UDR_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl yaml-cpp cpr::cpr)
+   -Wl,--start-group UDR UDR_API -lnettle ${NETTLE_LIBRARIES} ${CRYPTO_LIBRARIES} -lnghttp2_asio -lboost_system -lboost_thread -lboost_date_time -lfmt -lspdlog -lssl -lcrypto -lgmp -lmysqlclient -Wl,--end-group pthread m rt config++ boost_system pistache curl yaml-cpp cpr::cpr)
+
+
 
 add_boolean_option(USE_LTTNG  False "Activate the LTTNG tracer, a debugging/monitoring framework" ON)
 if (USE_LTTNG)

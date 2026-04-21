@@ -24,7 +24,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
+using namespace oai::_3gpp::model::helpers;
 using namespace oai::udr::api;
 
 QueryODBDataBySUPIOrGPSIDocumentApi::QueryODBDataBySUPIOrGPSIDocumentApi(

@@ -31,7 +31,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::app;
 
 class IndividualExposureDataSubscriptionDocumentApiImpl

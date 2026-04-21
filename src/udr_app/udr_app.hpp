@@ -60,7 +60,7 @@ class udr_app {
    */
   void handle_create_amf_context_3gpp(
       const std::string& ue_id,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      oai::_3gpp::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
       nlohmann::json& response_data, uint32_t& code);
 
   /*
@@ -84,7 +84,7 @@ class udr_app {
    * @return void
    */
   void handle_create_authentication_status(
-      const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+      const std::string& ue_id, const oai::_3gpp::model::AuthEvent& authEvent,
       nlohmann::json& response_data, uint32_t& code);
 
   /*
@@ -121,7 +121,7 @@ class udr_app {
    */
   void handle_create_authentication_data(
       const std::string& ue_id,
-      const oai::udr::model::AuthenticationSubscription&
+      const oai::_3gpp::model::AuthenticationSubscription&
           authentication_subscription,
       nlohmann::json& response_data, uint32_t& code);
 
@@ -147,7 +147,7 @@ class udr_app {
    */
   void handle_modify_authentication_subscription(
       const std::string& ue_id,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       nlohmann::json& response_data, uint32_t& code);
 
   /*
@@ -197,7 +197,7 @@ class udr_app {
    */
   void handle_update_sdm_subscription(
       const std::string& ue_id, const std::string& subs_id,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       nlohmann::json& response_data, uint32_t& code);
 
   /*
@@ -211,7 +211,7 @@ class udr_app {
    */
   void handle_create_sdm_subscriptions(
       const std::string& ue_id,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       nlohmann::json& response_data, uint32_t& code);
 
   /*
@@ -231,7 +231,7 @@ class udr_app {
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
    * @param [nlohmann::json&] response_data: Response in Json format
-   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [const oai::_3gpp::model::Snssai&] snssai: SNSSAI
    * @param [const std::string&] dnn: DNN
    * @param [uint32_t&] code: HTTP response code
    * @return void
@@ -239,7 +239,7 @@ class udr_app {
   void handle_query_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& response_data, uint32_t& code,
-      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
       const std::optional<std::string>& dnn);
 
   /*
@@ -256,14 +256,14 @@ class udr_app {
    * (SessionManagementSubscriptionDataApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
-   * @param [const oai::udr::model::Snssai&] snssai: SNSSAI
+   * @param [const oai::_3gpp::model::Snssai&] snssai: SNSSAI
    * @param [nlohmann::json&] response_data: Response in Json format
    * @param [uint32_t&] code: HTTP response code
    * @return void
    */
   void handle_delete_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
       nlohmann::json& response_data, uint32_t& code);
 
   /*
@@ -271,7 +271,7 @@ class udr_app {
    * (SessionManagementSubscriptionDataApiImpl)
    * @param [const std::string&] ue_id: User Id (Imsi/supi)
    * @param [const std::string&] serving_plmn_id: Serving PLMN
-   * @param [const oai::udr::model::SessionManagementSubscriptionData&]
+   * @param [const oai::_3gpp::model::SessionManagementSubscriptionData&]
    * subscription_data: SM Subscription
    * @param [nlohmann::json&] response_data: Response in Json format
    * @param [uint32_t&] code: HTTP response code
@@ -280,14 +280,14 @@ class udr_app {
    */
   void handle_create_sm_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
-      oai::udr::model::SessionManagementSubscriptionData& subscription_data,
+      oai::_3gpp::model::SessionManagementSubscriptionData& subscription_data,
       nlohmann::json& response_data, uint32_t& code, uint32_t& resource_id);
   /*
    * Handle a request to update a SessionManagementSubscription
    * (SessionManagementSubscriptionDataApiImpl)
    * @param [const std::string&] ue_id: UE Identity
    * @param [const std::string&] serving_plmn_id: Serving PLMN ID
-   * @param [const oai::udr::model::SessionManagementSubscriptionData&]
+   * @param [const oai::_3gpp::model::SessionManagementSubscriptionData&]
    * subscriptionData: SM Subscription
    * @param [nlohmann::json&] response_data: Response in Json format
    * @param [uint32_t&] code: HTTP response code
@@ -296,7 +296,7 @@ class udr_app {
    */
   void handle_update_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      oai::_3gpp::model::SessionManagementSubscriptionData& subscriptionData,
       nlohmann::json& response_data, uint32_t& code, uint32_t& resource_id);
 
   /*
@@ -310,7 +310,7 @@ class udr_app {
    */
   void handle_create_smf_context_non_3gpp(
       const std::string& ue_id, const int32_t& pdu_session_id,
-      const oai::udr::model::SmfRegistration& smfRegistration,
+      const oai::_3gpp::model::SmfRegistration& smfRegistration,
       nlohmann::json& response_data, uint32_t& code);
 
   /*

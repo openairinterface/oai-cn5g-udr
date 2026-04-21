@@ -24,8 +24,8 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model::helpers;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::api;
 
 PduSessionManagementDataApi::PduSessionManagementDataApi(
@@ -156,7 +156,7 @@ void PduSessionManagementDataApi::query_session_management_data_handler(
     }
   }
   auto ipv6PrefixQuery = request.query().get("ipv6-prefix");
-  Pistache::Optional<oai::model::common::Ipv6Prefix> ipv6Prefix;
+  Pistache::Optional<oai::_3gpp::model::Ipv6Prefix> ipv6Prefix;
   if (!ipv6PrefixQuery.isEmpty()) {
     //        Ipv6Prefix valueQuery_instance;
     //        if(fromStringValue(ipv6PrefixQuery.get(), valueQuery_instance)){

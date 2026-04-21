@@ -54,12 +54,12 @@ class OperatorSpecificDataDocumentApiImpl
   void replace_operator_specific_data(
       const std::string& ueId,
       const std::map<
-          std::string, oai::udr::model::OperatorSpecificDataContainer>&
+          std::string, oai::_3gpp::model::OperatorSpecificDataContainer>&
           requestBody,
       Pistache::Http::ResponseWriter& response);
   void update_operator_specific_data(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response);
 };
 

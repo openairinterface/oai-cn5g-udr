@@ -30,7 +30,7 @@ MessageWaitingDataDocumentApiImpl::MessageWaitingDataDocumentApiImpl(
 
 void MessageWaitingDataDocumentApiImpl::create_message_waiting_data(
     const std::string& ueId,
-    const oai::udr::model::MessageWaitingData& messageWaitingData,
+    const oai::_3gpp::model::MessageWaitingData& messageWaitingData,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
@@ -42,7 +42,7 @@ void MessageWaitingDataDocumentApiImpl::delete_message_waiting_data(
 }
 void MessageWaitingDataDocumentApiImpl::modify_message_waiting_data(
     const std::string& ueId,
-    const std::vector<oai::model::common::PatchItem>& patchItem,
+    const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

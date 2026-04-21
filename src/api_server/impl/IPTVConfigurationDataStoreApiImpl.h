@@ -48,8 +48,7 @@ class IPTVConfigurationDataStoreApiImpl
   void read_iptv_congifuration_data(
       const Pistache::Optional<std::vector<std::string>>& configIds,
       const Pistache::Optional<std::vector<std::string>>& dnns,
-      const Pistache::Optional<std::vector<oai::model::common::Snssai>>&
-          snssais,
+      const Pistache::Optional<std::vector<oai::_3gpp::model::Snssai>>& snssais,
       const Pistache::Optional<std::vector<std::string>>& supis,
       const Pistache::Optional<std::vector<std::string>>& interGroupIds,
       Pistache::Http::ResponseWriter& response);

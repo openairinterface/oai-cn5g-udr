@@ -21,7 +21,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 InfluenceDataSubscriptionsCollectionApiImpl::
     InfluenceDataSubscriptionsCollectionApiImpl(
@@ -41,7 +41,7 @@ void InfluenceDataSubscriptionsCollectionApiImpl::
 void InfluenceDataSubscriptionsCollectionApiImpl::
     read_influence_data_subscriptions(
         const Pistache::Optional<std::string>& dnn,
-        const Pistache::Optional<oai::model::common::Snssai>& snssai,
+        const Pistache::Optional<oai::_3gpp::model::Snssai>& snssai,
         const Pistache::Optional<std::string>& internalGroupId,
         const Pistache::Optional<std::string>& supi,
         Pistache::Http::ResponseWriter& response) {

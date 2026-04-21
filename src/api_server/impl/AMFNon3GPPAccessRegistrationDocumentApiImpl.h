@@ -51,12 +51,12 @@ class AMFNon3GPPAccessRegistrationDocumentApiImpl
 
   void amf_context_non3gpp(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void create_amf_context_non3gpp(
       const std::string& ueId,
-      const oai::udr::model::AmfNon3GppAccessRegistration&
+      const oai::_3gpp::model::AmfNon3GppAccessRegistration&
           amfNon3GppAccessRegistration,
       Pistache::Http::ResponseWriter& response);
   void query_amf_context_non3gpp(
