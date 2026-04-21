@@ -55,7 +55,7 @@ void setUpUnixSignals(std::vector<int> quitSignals) {
 
 using namespace oai::udr::api;
 using namespace oai::udr::config;
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 //------------------------------------------------------------------------------
 void UDRApiServer::init(size_t thr) {

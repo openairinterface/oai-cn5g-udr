@@ -25,7 +25,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
+using namespace oai::_3gpp::model::helpers;
 using namespace oai::udr::api;
 
 SDMSubscriptionDocumentApi::SDMSubscriptionDocumentApi(
@@ -91,7 +91,7 @@ void SDMSubscriptionDocumentApi::modifysdm_subscription_handler(
   auto subsId = request.param(":subsId").as<std::string>();
 
   // Getting the body param
-  std::vector<oai::model::common::PatchItem> patchItem;
+  std::vector<oai::_3gpp::model::PatchItem> patchItem;
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
@@ -191,7 +191,7 @@ void SDMSubscriptionDocumentApi::updatesdmsubscriptions_handler(
 
   // Getting the body param
 
-  oai::udr::model::SdmSubscription sdmSubscription;
+  oai::_3gpp::model::SdmSubscription sdmSubscription;
 
   try {
     nlohmann::json::parse(request.body()).get_to(sdmSubscription);

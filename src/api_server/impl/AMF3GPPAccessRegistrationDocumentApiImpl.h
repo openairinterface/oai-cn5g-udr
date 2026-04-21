@@ -49,12 +49,12 @@ class AMF3GPPAccessRegistrationDocumentApiImpl
 
   void amf_context3gpp(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void create_amf_context3gpp(
       const std::string& ueId,
-      oai::udr::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
+      oai::_3gpp::model::Amf3GppAccessRegistration& amf3GppAccessRegistration,
       Pistache::Http::ResponseWriter& response);
   void query_amf_context3gpp(
       const std::string& ueId,

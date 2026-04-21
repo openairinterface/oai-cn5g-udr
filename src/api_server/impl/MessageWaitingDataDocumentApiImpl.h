@@ -49,13 +49,13 @@ class MessageWaitingDataDocumentApiImpl
 
   void create_message_waiting_data(
       const std::string& ueId,
-      const oai::udr::model::MessageWaitingData& messageWaitingData,
+      const oai::_3gpp::model::MessageWaitingData& messageWaitingData,
       Pistache::Http::ResponseWriter& response);
   void delete_message_waiting_data(
       const std::string& ueId, Pistache::Http::ResponseWriter& response);
   void modify_message_waiting_data(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response);
   void query_message_waiting_data(
       const std::string& ueId,

@@ -36,7 +36,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 class IPSMGWRegistrationDocumentApi {
  public:
@@ -97,7 +97,7 @@ class IPSMGWRegistrationDocumentApi {
   /// <param name="patchItem"></param>
   virtual void modify_ip_sm_gw_context(
       const std::string& ueId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>

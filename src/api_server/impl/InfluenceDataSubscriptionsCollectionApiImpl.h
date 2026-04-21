@@ -46,11 +46,11 @@ class InfluenceDataSubscriptionsCollectionApiImpl
   ~InfluenceDataSubscriptionsCollectionApiImpl() {}
 
   void create_individual_influence_data_subscription(
-      const oai::udr::model::TrafficInfluSub& trafficInfluSub,
+      const oai::_3gpp::model::TrafficInfluSub& trafficInfluSub,
       Pistache::Http::ResponseWriter& response);
   void read_influence_data_subscriptions(
       const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<oai::model::common::Snssai>& snssai,
+      const Pistache::Optional<oai::_3gpp::model::Snssai>& snssai,
       const Pistache::Optional<std::string>& internalGroupId,
       const Pistache::Optional<std::string>& supi,
       Pistache::Http::ResponseWriter& response);

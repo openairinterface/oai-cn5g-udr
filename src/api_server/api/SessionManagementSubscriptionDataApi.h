@@ -89,7 +89,7 @@ class SessionManagementSubscriptionDataApi {
   /// &quot;&quot;)</param>
   virtual void query_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
+      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
       const Pistache::Optional<std::string>& dnn,
       const Pistache::Optional<std::vector<std::string>>& fields,
       const Pistache::Optional<std::string>& supportedFeatures,
@@ -99,15 +99,15 @@ class SessionManagementSubscriptionDataApi {
   virtual void query_sm_data(Pistache::Http::ResponseWriter& response) = 0;
   virtual void create_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      oai::_3gpp::model::SessionManagementSubscriptionData& subscriptionData,
       Pistache::Http::ResponseWriter& response) = 0;
   virtual void put_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      oai::udr::model::SessionManagementSubscriptionData& subscriptionData,
+      oai::_3gpp::model::SessionManagementSubscriptionData& subscriptionData,
       Pistache::Http::ResponseWriter& response) = 0;
   virtual void delete_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<oai::model::common::Snssai>& singleNssai,
+      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

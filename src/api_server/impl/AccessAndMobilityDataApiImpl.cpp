@@ -20,7 +20,7 @@
 #include "udr_app.hpp"
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 AccessAndMobilityDataApiImpl::AccessAndMobilityDataApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr, udr_app* udr_app_inst,

@@ -38,7 +38,8 @@ void OperatorSpecificDataDocumentApiImpl::read_operator_specific_data(
 }
 void OperatorSpecificDataDocumentApiImpl::replace_operator_specific_data(
     const std::string& ueId,
-    const std::map<std::string, oai::udr::model::OperatorSpecificDataContainer>&
+    const std::map<
+        std::string, oai::_3gpp::model::OperatorSpecificDataContainer>&
         requestBody,
     Pistache::Http::ResponseWriter& response) {
   response.send(
@@ -46,7 +47,7 @@ void OperatorSpecificDataDocumentApiImpl::replace_operator_specific_data(
 }
 void OperatorSpecificDataDocumentApiImpl::update_operator_specific_data(
     const std::string& ueId,
-    const std::vector<oai::model::common::PatchItem>& patchItem,
+    const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

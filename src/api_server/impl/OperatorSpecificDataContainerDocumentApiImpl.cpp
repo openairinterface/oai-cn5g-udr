@@ -21,7 +21,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 OperatorSpecificDataContainerDocumentApiImpl::
     OperatorSpecificDataContainerDocumentApiImpl(
@@ -33,7 +33,7 @@ OperatorSpecificDataContainerDocumentApiImpl::
 
 void OperatorSpecificDataContainerDocumentApiImpl::modify_oper_spec_data(
     const std::string& ueId,
-    const std::vector<oai::model::common::PatchItem>& patchItem,
+    const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

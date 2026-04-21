@@ -31,7 +31,7 @@ ProvisionedParameterDataDocumentApiImpl::
 
 void ProvisionedParameterDataDocumentApiImpl::modify_pp_data(
     const std::string& ueId,
-    const std::vector<oai::model::common::PatchItem>& patchItem,
+    const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

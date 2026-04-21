@@ -21,9 +21,9 @@
 #include <boost/algorithm/string.hpp>
 
 using namespace oai::udr::app;
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 using namespace oai::udr::config;
-using namespace oai::model::common;
+using namespace oai::_3gpp::model;
 
 extern udr_config udr_cfg;
 
@@ -161,7 +161,7 @@ void mongo_db::trigger_connection_handling_procedure(uint64_t ms) {
 //------------------------------------------------------------------------------
 bool mongo_db::insert_authentication_subscription(
     const std::string& id,
-    const oai::udr::model::AuthenticationSubscription& auth_subscription,
+    const oai::_3gpp::model::AuthenticationSubscription& auth_subscription,
     nlohmann::json& json_data) {
   ProblemDetails problemDetails = {};
   // Check the connection with DB first
@@ -311,7 +311,7 @@ bool mongo_db::query_authentication_subscription(
 //------------------------------------------------------------------------------
 bool mongo_db::update_authentication_subscription(
     const std::string& ue_id,
-    const std::vector<oai::model::common::PatchItem>& patchItem,
+    const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
     nlohmann::json& json_data) {
   ProblemDetails problemDetails = {};
   Logger::udr_db().info(
@@ -339,9 +339,8 @@ bool mongo_db::update_authentication_subscription(
         if (item.getOp().getEnumValue() ==
                 PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE &&
             item.valueIsSet()) {
-          auto sequenceNumberValue =
-              bsoncxx::from_json(item.getValue().c_str());
-          auto sequenceNumberView = sequenceNumberValue.view();
+          auto sequenceNumberValue = bsoncxx::from_json(item.getValue().dump());
+          auto sequenceNumberView  = sequenceNumberValue.view();
 
           bsoncxx::builder::stream::document updateBuilder{};
           updateBuilder << "$set" << bsoncxx::builder::stream::open_document
@@ -413,7 +412,8 @@ bool mongo_db::query_am_data(
   try {
     auto result = coll.find_one(filter_builder.view());
     if (result) {
-      oai::udr::model::AccessAndMobilitySubscriptionData subscription_data = {};
+      oai::_3gpp::model::AccessAndMobilitySubscriptionData subscription_data =
+          {};
       const bsoncxx::document::view row = result.value().view();
       from_json(
           nlohmann::json::parse(bsoncxx::to_json(row)), subscription_data);
@@ -532,7 +532,8 @@ bool mongo_db::query_amf_context_3gpp(
     auto cursor = collection.find_one(filter_builder.view());
 
     if (cursor) {
-      oai::udr::model::Amf3GppAccessRegistration amf3gppaccessregistration = {};
+      oai::_3gpp::model::Amf3GppAccessRegistration amf3gppaccessregistration =
+          {};
       const bsoncxx::document::view row = cursor.value().view();
       from_json(
           nlohmann::json::parse(bsoncxx::to_json(row)),
@@ -562,7 +563,7 @@ bool mongo_db::query_amf_context_3gpp(
 
 //------------------------------------------------------------------------------
 bool mongo_db::insert_authentication_status(
-    const std::string& ue_id, const oai::udr::model::AuthEvent& authEvent,
+    const std::string& ue_id, const oai::_3gpp::model::AuthEvent& authEvent,
     nlohmann::json& json_data) {
   ProblemDetails problemDetails = {};
   Logger::udr_db().info(
@@ -763,7 +764,9 @@ bool mongo_db::query_sdm_subscription(
         "[UE Id %s] Exception while query %s from MongoDB: %s", ue_id,
         DATABASE_SDM_SUBSCRIPTIONS_LABEL, err.what());
     problemDetails.setCause("INVALID_QUERY_PARAM");
-    problemDetails.setInvalidParams(std::vector<InvalidParam>{{"subsId"}});
+    InvalidParam invalid_param;
+    invalid_param.setParam("subsId");
+    problemDetails.setInvalidParams(std::vector<InvalidParam>{invalid_param});
     to_json(json_data, problemDetails);
     return false;
   }
@@ -771,7 +774,7 @@ bool mongo_db::query_sdm_subscription(
     auto result = coll.find_one(filter.view());
     if (result) {
       auto str_result = bsoncxx::to_json(result->view());
-      oai::udr::model::SdmSubscription sdmSubscriptions = {};
+      oai::_3gpp::model::SdmSubscription sdmSubscriptions = {};
 
       from_json(nlohmann::json::parse(str_result), sdmSubscriptions);
       to_json(json_data, sdmSubscriptions);
@@ -825,7 +828,9 @@ bool mongo_db::delete_sdm_subscription(
         "%s",
         ue_id, DATABASE_SDM_SUBSCRIPTIONS_LABEL, e.what());
     problemDetails.setCause("INVALID_QUERY_PARAM");
-    problemDetails.setInvalidParams(std::vector<InvalidParam>{{"subsId"}});
+    InvalidParam invalid_param;
+    invalid_param.setParam("subsId");
+    problemDetails.setInvalidParams(std::vector<InvalidParam>{invalid_param});
     to_json(json_data, problemDetails);
     return false;
   }
@@ -857,7 +862,7 @@ bool mongo_db::delete_sdm_subscription(
 //------------------------------------------------------------------------------
 bool mongo_db::update_sdm_subscription(
     const std::string& ue_id, const std::string& subs_id,
-    oai::udr::model::SdmSubscription& sdmSubscription,
+    oai::_3gpp::model::SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
   Logger::udr_db().info(
       "[UE Id %s] Update %s with subscription ID %s", ue_id,
@@ -883,7 +888,9 @@ bool mongo_db::update_sdm_subscription(
         "[UE Id %s] Exception while update %s data in MongoDB: %s", ue_id,
         DATABASE_SDM_SUBSCRIPTIONS_LABEL, e.what());
     problemDetails.setCause("INVALID_QUERY_PARAM");
-    problemDetails.setInvalidParams(std::vector<InvalidParam>{{"subsId"}});
+    InvalidParam invalid_param;
+    invalid_param.setParam("subsId");
+    problemDetails.setInvalidParams(std::vector<InvalidParam>{invalid_param});
     to_json(json_data, problemDetails);
     return false;
   }
@@ -936,7 +943,8 @@ bool mongo_db::update_sdm_subscription(
 
 //------------------------------------------------------------------------------
 bool mongo_db::create_sdm_subscriptions(
-    const std::string& ue_id, oai::udr::model::SdmSubscription& sdmSubscription,
+    const std::string& ue_id,
+    oai::_3gpp::model::SdmSubscription& sdmSubscription,
     nlohmann::json& json_data) {
   Logger::udr_db().info(
       "[UE Id %s] Create %s", ue_id, DATABASE_SDM_SUBSCRIPTIONS_LABEL);
@@ -1109,7 +1117,7 @@ bool mongo_db::query_sm_data(nlohmann::json& json_data) {
 bool mongo_db::query_sm_data(
     const std::string& ue_id, const std::string& serving_plmn_id,
     nlohmann::json& json_data,
-    const std::optional<oai::model::common::Snssai>& snssai,
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   ProblemDetails problemDetails = {};
   Logger::udr_db().info(
@@ -1412,7 +1420,7 @@ bool mongo_db::delete_sm_data(
 //------------------------------------------------------------------------------
 bool mongo_db::insert_smf_context_non_3gpp(
     const std::string& ue_id, const int32_t& pdu_session_id,
-    const oai::udr::model::SmfRegistration& smfRegistration,
+    const oai::_3gpp::model::SmfRegistration& smfRegistration,
     nlohmann::json& json_data) {
   ProblemDetails problemDetails = {};
   Logger::udr_db().info(

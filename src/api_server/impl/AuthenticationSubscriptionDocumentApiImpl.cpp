@@ -24,7 +24,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 AuthenticationSubscriptionDocumentApiImpl::
     AuthenticationSubscriptionDocumentApiImpl(
@@ -37,7 +37,7 @@ AuthenticationSubscriptionDocumentApiImpl::
 void AuthenticationSubscriptionDocumentApiImpl::
     modify_authentication_subscription(
         const std::string& ueId,
-        const std::vector<oai::model::common::PatchItem>& patchItem,
+        const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
         const Pistache::Optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};

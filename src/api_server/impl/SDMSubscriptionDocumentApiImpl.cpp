@@ -21,7 +21,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 SDMSubscriptionDocumentApiImpl::SDMSubscriptionDocumentApiImpl(
     std::shared_ptr<Pistache::Rest::Router> rtr,
@@ -32,7 +32,7 @@ SDMSubscriptionDocumentApiImpl::SDMSubscriptionDocumentApiImpl(
 
 void SDMSubscriptionDocumentApiImpl::modifysdm_subscription(
     const std::string& ueId, const std::string& subsId,
-    const std::vector<oai::model::common::PatchItem>& patchItem,
+    const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
     const Pistache::Optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(

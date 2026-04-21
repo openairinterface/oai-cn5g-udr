@@ -32,7 +32,7 @@
 
 namespace oai::udr::api {
 
-using namespace oai::udr::model;
+using namespace oai::_3gpp::model;
 
 class PolicyDataSubscriptionsCollectionApi {
  public:

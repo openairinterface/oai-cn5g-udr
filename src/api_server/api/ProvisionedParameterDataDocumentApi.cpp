@@ -24,7 +24,7 @@ extern oai::udr::config::udr_config udr_cfg;
 
 namespace oai::udr::api {
 
-using namespace oai::model::common::helpers;
+using namespace oai::_3gpp::model::helpers;
 using namespace oai::udr::api;
 
 ProvisionedParameterDataDocumentApi::ProvisionedParameterDataDocumentApi(
@@ -65,7 +65,7 @@ void ProvisionedParameterDataDocumentApi::modify_pp_data_handler(
   auto ueId = request.param(":ueId").as<std::string>();
 
   // Getting the body param
-  std::vector<oai::model::common::PatchItem> patchItem;
+  std::vector<oai::_3gpp::model::PatchItem> patchItem;
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");

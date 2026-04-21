@@ -47,7 +47,7 @@ class SDMSubscriptionDocumentApiImpl
 
   void modifysdm_subscription(
       const std::string& ueId, const std::string& subsId,
-      const std::vector<oai::model::common::PatchItem>& patchItem,
+      const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
       const Pistache::Optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void querysdm_subscription(
@@ -58,7 +58,7 @@ class SDMSubscriptionDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void updatesdmsubscriptions(
       const std::string& ueId, const std::string& subsId,
-      oai::udr::model::SdmSubscription& sdmSubscription,
+      oai::_3gpp::model::SdmSubscription& sdmSubscription,
       Pistache::Http::ResponseWriter& response);
 };
 
