@@ -5,6 +5,8 @@
 #include "mysql_db.hpp"
 
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/find.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <chrono>
 #include <thread>
 
@@ -471,15 +473,22 @@ bool mysql_db::update_authentication_subscription(
     if ((patchItem[i].getOp().getEnumValue() ==
          PatchOperation_anyOf::ePatchOperation_anyOf::REPLACE) &&
         patchItem[i].valueIsSet()) {
-      SequenceNumber sequence_number;
-      nlohmann::json::parse(patchItem[i].getValue().dump())
-          .get_to(sequence_number);
+      std::string patch_item_str = patchItem[i].getValue().dump();
       Logger::udr_db().debug(
-          "[UE Id %s] Patch value: %s", ue_id,
-          patchItem[i].getValue().dump().c_str());
-      Logger::udr_db().debug(
-          "[UE Id %s] Sequence Number: %s", ue_id,
-          sequence_number.getSqn().c_str());
+          "[UE Id %s] Patch value: %s", ue_id, patch_item_str);
+      try {
+        // Remove the character added by dump()/quotation marks for json type
+        auto patch_item_str_len = patch_item_str.length();
+        patch_item_str = patch_item_str.substr(1, patch_item_str_len - 2);
+        boost::algorithm::ireplace_all(patch_item_str, "\\\"", "\"");
+      } catch (const std::exception& e) {
+        Logger::udr_db().error(
+            "[UE Id %s] Error when getting the SequenceNumber from Patch "
+            "message, "
+            "error: %s",
+            ue_id, e.what());
+        return false;
+      }
 
       if (mysql_real_query(
               &mysql_connector, select_Authenticationsubscription.c_str(),
@@ -499,7 +508,7 @@ bool mysql_db::update_authentication_subscription(
       }
       if (mysql_num_rows(res)) {
         query = "UPDATE AuthenticationSubscription SET sequenceNumber='";
-        query += sequence_number.getSqn() + "'";
+        query += patch_item_str + "'";
         query += " WHERE ueid='" + ue_id + "'";
       } else {
         Logger::udr_db().error(
