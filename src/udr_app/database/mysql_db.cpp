@@ -207,9 +207,9 @@ bool mysql_db::insert_authentication_subscription(
   MYSQL_ROW row           = {};
   nlohmann::json json_tmp = {};
 
-  std::string query = "SELECT * FROM" +
+  std::string query = "SELECT * FROM " +
                       std::string(DATABASE_AUTHENTICATION_SUBSCRIPTION) +
-                      "WHERE ueid='" + ue_id + "'";
+                      " WHERE ueid='" + ue_id + "'";
   Logger::udr_db().info("[UE Id %s] MySQL Query: %s", ue_id, query);
 
   if (mysql_real_query(
