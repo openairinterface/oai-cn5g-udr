@@ -1980,7 +1980,7 @@ bool mysql_db::create_sm_data(
   std::string query =
       "SELECT * FROM " +
       std::string(DATABASE_SESSION_MANAGEMENT_SUBSCRIPTION_DATA) +
-      " WHERE ueid='" + ue_id + "'" + "AND servingPlmnid='" + serving_plmn_id +
+      " WHERE ueid='" + ue_id + "' AND servingPlmnid='" + serving_plmn_id +
       "'" + nssai_query;
 
   Logger::udr_db().info("[UE Id %s] MySQL Query: %s", ue_id, query);
@@ -2083,47 +2083,12 @@ bool mysql_db::create_sm_data(
     return false;
   }
 
-  // Get SubscriptionId (used as part of the created resource's URI)
-  // TODO: use LAST_INSERT_ID()
-  // resource_id = mysql_insert_id(&mysql_connector) && 0x00000000ffffffff;
-
-  std::string query_sub_id =
-      "SELECT subscriptionId FROM " +
-      std::string(DATABASE_SESSION_MANAGEMENT_SUBSCRIPTION_DATA) +
-      " WHERE "
-      "ueid='" +
-      ue_id + "'" + "AND servingPlmnid='" + serving_plmn_id + "'" + nssai_query;
-
-  Logger::udr_db().info("[UE Id %s] MySQL Query: %s", ue_id, query);
-  if (mysql_real_query(
-          &mysql_connector, query_sub_id.c_str(),
-          (unsigned long) query_sub_id.size()) != 0) {
-    Logger::udr_db().error(
-        "[UE Id %s] Failed when executing mysql_real_query with SQL Query: %s",
-        ue_id, query_sub_id);
-    return false;
-  }
-
-  res = mysql_store_result(&mysql_connector);
-
-  if (res == nullptr) {
-    Logger::udr_db().error(
-        "[UE Id %s] mysql_store_result failure！ SQL Query: %s", ue_id,
-        query_sub_id);
-    return false;
-  }
-
-  row = mysql_fetch_row(res);
-
-  if (row != nullptr and row[0] != nullptr) {
-    try {
-      resource_id = std::stoi(row[0]);
-    } catch (const std::exception& err) {
-      Logger::udr_db().error("[UE Id %s] Couldn't get SubscriptionId", ue_id);
-      return false;
-    }
-    Logger::udr_db().debug("[UE Id %s] SubscriptionId: %u", ue_id, resource_id);
-  }
+  // Resource ID
+  uint64_t id64 = mysql_insert_id(&mysql_connector);
+  resource_id   = static_cast<uint32_t>(id64);
+  Logger::udr_db().debug(
+      "[UE Id %s] %s resource_id: %lu", ue_id,
+      DATABASE_SESSION_MANAGEMENT_SUBSCRIPTION_DATA_LABEL, resource_id);
 
   to_json(json_data, sm_subscription);
 
@@ -2163,8 +2128,8 @@ bool mysql_db::update_sm_data(
 
   query = "SELECT * FROM " +
           std::string(DATABASE_SESSION_MANAGEMENT_SUBSCRIPTION_DATA) +
-          " WHERE ueid='" + ue_id + "'" + "AND servingPlmnid='" +
-          serving_plmn_id + "'" + nssai_query;
+          " WHERE ueid='" + ue_id + "' AND servingPlmnid='" + serving_plmn_id +
+          "'" + nssai_query;
 
   Logger::udr_db().info("[UE Id %s] MySQL Query: %s", ue_id, query);
 
