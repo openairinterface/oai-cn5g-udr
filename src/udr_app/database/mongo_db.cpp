@@ -1244,13 +1244,16 @@ bool mongo_db::create_sm_data(
     json_data["ueid"]          = ue_id;
     json_data["servingPlmnid"] = serving_plmn_id;
 
-    coll.insert_one(bsoncxx::from_json(json_data.dump()));
+    auto insert_result = coll.insert_one(bsoncxx::from_json(json_data.dump()));
 
-    // TODO: MongoDB does not auto-generate an integer ID like MySQL; consider
-    // adding a unique index on
-    //(ueid, servingPlmnid, singleNssai) and using that as the resource
-    // identifier. For now, return a static resource_id to indicate success
+    // Resource ID
     resource_id = 1;
+    if (insert_result) {
+      resource_id = insert_result->inserted_id().get_int32().value;
+      Logger::udr_db().debug(
+          "[UE Id %s] %s resource_id: %lu", ue_id,
+          DATABASE_SESSION_MANAGEMENT_SUBSCRIPTION_DATA_LABEL, resource_id);
+    }
 
     Logger::udr_db().debug(
         "[UE Id %s] %s inserted in MongoDB: %s", ue_id,
