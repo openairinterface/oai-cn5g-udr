@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -66,7 +66,7 @@ class PFDDataStoreApi {
   /// querying PFD Data resource. (optional, default to
   /// std::vector&lt;std::string&gt;())</param>
   virtual void read_pfd_data(
-      const Pistache::Optional<std::vector<std::string>>& appId,
+      const std::optional<std::vector<std::string>>& appId,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

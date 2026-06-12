@@ -25,7 +25,7 @@
 
 #include <PFDDataStoreApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "PfdDataForAppExt.h"
 #include "udr_app.hpp"
@@ -47,7 +47,7 @@ class PFDDataStoreApiImpl : public oai::udr::api::PFDDataStoreApi {
   ~PFDDataStoreApiImpl() {}
 
   void read_pfd_data(
-      const Pistache::Optional<std::vector<std::string>>& appId,
+      const std::optional<std::vector<std::string>>& appId,
       Pistache::Http::ResponseWriter& response);
 };
 

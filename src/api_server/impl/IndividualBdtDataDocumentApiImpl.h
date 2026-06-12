@@ -25,7 +25,7 @@
 
 #include <IndividualBdtDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "BdtData.h"
 #include "BdtDataPatch.h"
@@ -56,7 +56,7 @@ class IndividualBdtDataDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void read_individual_bdt_data(
       const std::string& bdtReferenceId,
-      const Pistache::Optional<std::string>& suppFeat,
+      const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response);
   void update_individual_bdt_data(
       const std::string& bdtReferenceId, const BdtDataPatch& bdtDataPatch,

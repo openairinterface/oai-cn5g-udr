@@ -32,7 +32,7 @@ NSSAIUpdateAckDocumentApiImpl::NSSAIUpdateAckDocumentApiImpl(
 
 void NSSAIUpdateAckDocumentApiImpl::create_nssai_update_ack(
     const std::string& ueId,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     const NssaiAckData& nssaiAckData,
     Pistache::Http::ResponseWriter& response) {
   response.send(

@@ -68,11 +68,12 @@ void ProvisionedDataDocumentApi::query_provisioned_data_handler(
 
   // Getting the query params
   auto datasetNamesQuery = request.query().get("dataset-names");
-  Pistache::Optional<std::vector<DataSetName>> datasetNames;
-  if (!datasetNamesQuery.isEmpty()) {
+  std::optional<std::vector<DataSetName>> datasetNames;
+  if (datasetNamesQuery.has_value()) {
     //        std::vector<DataSetName> valueQuery_instance;
-    //        if(fromStringValue(datasetNamesQuery.get(), valueQuery_instance)){
-    //            datasetNames = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(datasetNamesQuery.value(),
+    //        valueQuery_instance)){
+    //            datasetNames = std::make_optional(valueQuery_instance);
     //        }
   }
 

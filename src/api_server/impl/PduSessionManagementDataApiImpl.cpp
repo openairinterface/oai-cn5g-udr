@@ -43,11 +43,11 @@ void PduSessionManagementDataApiImpl::delete_session_management_data(
 }
 void PduSessionManagementDataApiImpl::query_session_management_data(
     const std::string& ueId, const int32_t& pduSessionId,
-    const Pistache::Optional<std::string>& ipv4Addr,
-    const Pistache::Optional<oai::_3gpp::model::Ipv6Prefix>& ipv6Prefix,
-    const Pistache::Optional<std::string>& dnn,
-    const Pistache::Optional<std::vector<std::string>>& fields,
-    const Pistache::Optional<std::string>& suppFeat,
+    const std::optional<std::string>& ipv4Addr,
+    const std::optional<oai::_3gpp::model::Ipv6Prefix>& ipv6Prefix,
+    const std::optional<std::string>& dnn,
+    const std::optional<std::vector<std::string>>& fields,
+    const std::optional<std::string>& suppFeat,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

@@ -77,35 +77,35 @@ void SessionManagementPolicyDataDocumentApi::
 
   // Getting the query params
   auto snssaiQuery = request.query().get("snssai");
-  Pistache::Optional<oai::_3gpp::model::Snssai> snssai;
-  if (!snssaiQuery.isEmpty()) {
+  std::optional<oai::_3gpp::model::Snssai> snssai;
+  if (snssaiQuery.has_value()) {
     //        Snssai valueQuery_instance;
-    //        if(fromStringValue(snssaiQuery.get(), valueQuery_instance)){
-    //            snssai = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(snssaiQuery.value(), valueQuery_instance)){
+    //            snssai = std::make_optional(valueQuery_instance);
     //        }
   }
   auto dnnQuery = request.query().get("dnn");
-  Pistache::Optional<std::string> dnn;
-  if (!dnnQuery.isEmpty()) {
+  std::optional<std::string> dnn;
+  if (dnnQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(dnnQuery.get(), valueQuery_instance)) {
-      dnn = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(dnnQuery.value(), valueQuery_instance)) {
+      dnn = std::make_optional(valueQuery_instance);
     }
   }
   auto fieldsQuery = request.query().get("fields");
-  Pistache::Optional<std::vector<std::string>> fields;
-  if (!fieldsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> fields;
+  if (fieldsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(fieldsQuery.get(), valueQuery_instance)) {
-      fields = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(fieldsQuery.value(), valueQuery_instance)) {
+      fields = std::make_optional(valueQuery_instance);
     }
   }
   auto suppFeatQuery = request.query().get("supp-feat");
-  Pistache::Optional<std::string> suppFeat;
-  if (!suppFeatQuery.isEmpty()) {
+  std::optional<std::string> suppFeat;
+  if (suppFeatQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(suppFeatQuery.get(), valueQuery_instance)) {
-      suppFeat = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(suppFeatQuery.value(), valueQuery_instance)) {
+      suppFeat = std::make_optional(valueQuery_instance);
     }
   }
 

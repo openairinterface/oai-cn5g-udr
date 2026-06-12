@@ -25,7 +25,7 @@
 
 #include <AMFNon3GPPAccessRegistrationDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include <vector>
 
@@ -52,7 +52,7 @@ class AMFNon3GPPAccessRegistrationDocumentApiImpl
   void amf_context_non3gpp(
       const std::string& ueId,
       const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void create_amf_context_non3gpp(
       const std::string& ueId,
@@ -61,8 +61,8 @@ class AMFNon3GPPAccessRegistrationDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void query_amf_context_non3gpp(
       const std::string& ueId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

@@ -29,10 +29,10 @@ GroupIdentifiersApiImpl::GroupIdentifiersApiImpl(
     : GroupIdentifiersApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void GroupIdentifiersApiImpl::get_group_identifiers(
-    const Pistache::Optional<std::string>& extGroupId,
-    const Pistache::Optional<std::string>& intGroupId,
-    const Pistache::Optional<bool>& ueIdInd,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& extGroupId,
+    const std::optional<std::string>& intGroupId,
+    const std::optional<bool>& ueIdInd,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

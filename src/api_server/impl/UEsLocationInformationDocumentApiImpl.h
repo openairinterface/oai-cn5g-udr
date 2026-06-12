@@ -25,7 +25,7 @@
 
 #include <UEsLocationInformationDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "LocationInfo.h"
 #include "udr_app.hpp"
@@ -49,7 +49,7 @@ class UEsLocationInformationDocumentApiImpl
 
   void query_ue_location(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

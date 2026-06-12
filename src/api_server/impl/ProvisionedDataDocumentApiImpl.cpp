@@ -32,7 +32,7 @@ ProvisionedDataDocumentApiImpl::ProvisionedDataDocumentApiImpl(
 
 // void ProvisionedDataDocumentApiImpl::query_provisioned_data(const std::string
 // &ueId, const std::string &servingPlmnId, const
-// Pistache::Optional<Set<DataSetName>> &datasetNames,
+// std::optional<Set<DataSetName>> &datasetNames,
 // Pistache::Http::ResponseWriter &response) {
 //    response.send(Pistache::Http::Code::Ok, "This API has not been implemented
 //    yet!\n");
