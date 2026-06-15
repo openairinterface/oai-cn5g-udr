@@ -107,6 +107,7 @@ COPY --from=oai-udr-builder \
     /usr/local/lib64/libbson2.so.2* \
     /lib64/libsnappy.so.1 \
     /lib64/libmongocrypt.so.0 \
+    /lib64/libbson-1.0.so.0 \
     /usr/lib64/
 
 RUN ldconfig && \
