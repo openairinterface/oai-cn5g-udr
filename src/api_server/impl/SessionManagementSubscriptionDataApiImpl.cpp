@@ -39,22 +39,22 @@ SessionManagementSubscriptionDataApiImpl::
 
 void SessionManagementSubscriptionDataApiImpl::query_sm_data(
     const std::string& ueId, const std::string& servingPlmnId,
-    const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
-    const Pistache::Optional<std::string>& dnn,
-    const Pistache::Optional<std::vector<std::string>>& fields,
-    const Pistache::Optional<std::string>& supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    const std::optional<oai::_3gpp::model::Snssai>& singleNssai,
+    const std::optional<std::string>& dnn,
+    const std::optional<std::vector<std::string>>& fields,
+    const std::optional<std::string>& supportedFeatures,
+    const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   // servingPlmnId  pattern: "^[0-9]{5,6}$"
 
   std::optional<Snssai> snssai = std::nullopt;
-  if (!singleNssai.isEmpty()) {
-    snssai = std::optional<Snssai>(singleNssai.get());
+  if (singleNssai.has_value()) {
+    snssai = std::optional<Snssai>(singleNssai.value());
   }
   std::optional<std::string> dnn_str = std::nullopt;
-  if (!dnn.isEmpty()) {
-    dnn_str = std::optional<std::string>(dnn.get());
+  if (dnn.has_value()) {
+    dnn_str = std::optional<std::string>(dnn.value());
   }
 
   nlohmann::json response_data = nlohmann::json::array();
@@ -172,15 +172,15 @@ void SessionManagementSubscriptionDataApiImpl::put_sm_data(
 
 void SessionManagementSubscriptionDataApiImpl::delete_sm_data(
     const std::string& ueId, const std::string& servingPlmnId,
-    const Pistache::Optional<Snssai>& singleNssai,
+    const std::optional<Snssai>& singleNssai,
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
   uint32_t http_code           = 0;
 
   std::optional<Snssai> snssai = std::nullopt;
-  if (!singleNssai.isEmpty()) {
-    snssai = std::optional<Snssai>(singleNssai.get());
+  if (singleNssai.has_value()) {
+    snssai = std::optional<Snssai>(singleNssai.value());
   }
 
   m_udr_app->handle_delete_sm_data(

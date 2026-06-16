@@ -1,5 +1,5 @@
 ################################################################################
-# SPDX-License-Identifier: LicenseRef-CSSL-1.0
+#SPDX - License - Identifier : LicenseRef - CSSL - 1.0
 ################################################################################
 
 set(UDR_API_SERVER_DIR "${SRC_TOP_DIR}/api_server")

@@ -25,7 +25,7 @@
 
 #include <AuthenticationUPUDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "UpuData.h"
 #include "udr_app.hpp"
@@ -49,11 +49,11 @@ class AuthenticationUPUDocumentApiImpl
 
   void create_authentication_upu(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       const UpuData& upuData, Pistache::Http::ResponseWriter& response);
   void query_auth_upu(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

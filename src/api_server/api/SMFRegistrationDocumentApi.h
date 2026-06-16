@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -99,8 +99,8 @@ class SMFRegistrationDocumentApi {
   /// &quot;&quot;)</param>
   virtual void query_smf_registration(
       const std::string& ueId, const int32_t& pduSessionId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

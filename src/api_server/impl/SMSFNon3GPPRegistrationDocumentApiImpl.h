@@ -25,7 +25,7 @@
 
 #include <SMSFNon3GPPRegistrationDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SmsfRegistration.h"
 #include "udr_app.hpp"
@@ -54,8 +54,8 @@ class SMSFNon3GPPRegistrationDocumentApiImpl
       const std::string& ueId, Pistache::Http::ResponseWriter& response);
   void query_smsf_context_non3gpp(
       const std::string& ueId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

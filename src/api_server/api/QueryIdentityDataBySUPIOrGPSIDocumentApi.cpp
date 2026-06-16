@@ -69,11 +69,11 @@ void QueryIdentityDataBySUPIOrGPSIDocumentApi::get_identity_data_handler(
 
   // Getting the query params
   auto appPortIdQuery = request.query().get("app-port-id");
-  Pistache::Optional<AppPortId> appPortId;
-  if (!appPortIdQuery.isEmpty()) {
+  std::optional<AppPortId> appPortId;
+  if (appPortIdQuery.has_value()) {
     //        AppPortId valueQuery_instance;
-    //        if(fromStringValue(appPortIdQuery.get(), valueQuery_instance)){
-    //            appPortId = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(appPortIdQuery.value(), valueQuery_instance)){
+    //            appPortId = std::make_optional(valueQuery_instance);
     //        }
   }
 

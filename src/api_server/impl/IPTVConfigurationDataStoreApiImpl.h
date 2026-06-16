@@ -25,7 +25,7 @@
 
 #include <IPTVConfigurationDataStoreApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "IptvConfigData.h"
 #include "Snssai.h"
@@ -46,11 +46,11 @@ class IPTVConfigurationDataStoreApiImpl
   ~IPTVConfigurationDataStoreApiImpl() {}
 
   void read_iptv_congifuration_data(
-      const Pistache::Optional<std::vector<std::string>>& configIds,
-      const Pistache::Optional<std::vector<std::string>>& dnns,
-      const Pistache::Optional<std::vector<oai::_3gpp::model::Snssai>>& snssais,
-      const Pistache::Optional<std::vector<std::string>>& supis,
-      const Pistache::Optional<std::vector<std::string>>& interGroupIds,
+      const std::optional<std::vector<std::string>>& configIds,
+      const std::optional<std::vector<std::string>>& dnns,
+      const std::optional<std::vector<oai::_3gpp::model::Snssai>>& snssais,
+      const std::optional<std::vector<std::string>>& supis,
+      const std::optional<std::vector<std::string>>& interGroupIds,
       Pistache::Http::ResponseWriter& response);
 };
 

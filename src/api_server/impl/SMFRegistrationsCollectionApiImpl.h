@@ -25,7 +25,7 @@
 
 #include <SMFRegistrationsCollectionApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SmfRegistration.h"
 #include "udr_app.hpp"
@@ -49,7 +49,7 @@ class SMFRegistrationsCollectionApiImpl
 
   void query_smf_reg_list(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

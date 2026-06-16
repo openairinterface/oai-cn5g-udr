@@ -25,7 +25,7 @@
 
 #include <AuthenticationSoRDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SorData.h"
 #include "udr_app.hpp"
@@ -49,11 +49,11 @@ class AuthenticationSoRDocumentApiImpl
 
   void create_authentication_so_r(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       const SorData& sorData, Pistache::Http::ResponseWriter& response);
   void query_auth_so_r(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

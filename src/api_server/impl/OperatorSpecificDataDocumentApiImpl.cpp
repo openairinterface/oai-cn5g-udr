@@ -30,8 +30,8 @@ OperatorSpecificDataDocumentApiImpl::OperatorSpecificDataDocumentApiImpl(
 
 void OperatorSpecificDataDocumentApiImpl::read_operator_specific_data(
     const std::string& ueId,
-    const Pistache::Optional<std::vector<std::string>>& fields,
-    const Pistache::Optional<std::string>& suppFeat,
+    const std::optional<std::vector<std::string>>& fields,
+    const std::optional<std::string>& suppFeat,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

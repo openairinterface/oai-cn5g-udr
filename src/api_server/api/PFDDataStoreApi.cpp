@@ -55,11 +55,11 @@ void PFDDataStoreApi::read_pfd_data_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto appIdQuery = request.query().get("appId");
-  Pistache::Optional<std::vector<std::string>> appId;
-  if (!appIdQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> appId;
+  if (appIdQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(appIdQuery.get(), valueQuery_instance)) {
-      appId = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(appIdQuery.value(), valueQuery_instance)) {
+      appId = std::make_optional(valueQuery_instance);
     }
   }
 

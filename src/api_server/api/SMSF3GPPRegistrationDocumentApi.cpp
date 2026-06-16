@@ -142,19 +142,19 @@ void SMSF3GPPRegistrationDocumentApi::query_smsf_context3gpp_handler(
 
   // Getting the query params
   auto fieldsQuery = request.query().get("fields");
-  Pistache::Optional<std::vector<std::string>> fields;
-  if (!fieldsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> fields;
+  if (fieldsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(fieldsQuery.get(), valueQuery_instance)) {
-      fields = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(fieldsQuery.value(), valueQuery_instance)) {
+      fields = std::make_optional(valueQuery_instance);
     }
   }
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(supportedFeaturesQuery.get(), valueQuery_instance)) {
-      supportedFeatures = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
+      supportedFeatures = std::make_optional(valueQuery_instance);
     }
   }
 

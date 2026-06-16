@@ -25,7 +25,7 @@
 
 #include <ContextDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "ContextDataSetName.h"
 #include "ContextDataSets.h"
@@ -49,7 +49,7 @@ class ContextDataDocumentApiImpl
   ~ContextDataDocumentApiImpl() {}
 
   //    void query_context_data(const std::string &ueId, const
-  //    Pistache::Optional<Set<ContextDataSetName>> &contextDatasetNames,
+  //    std::optional<Set<ContextDataSetName>> &contextDatasetNames,
   //    Pistache::Http::ResponseWriter &response);
 };
 

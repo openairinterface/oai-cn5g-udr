@@ -25,7 +25,7 @@
 
 #include <AuthenticationStatusDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "AuthEvent.h"
 #include "udr_app.hpp"
@@ -55,8 +55,8 @@ class AuthenticationStatusDocumentApiImpl
       const std::string& ueId, Pistache::Http::ResponseWriter& response);
   void query_authentication_status(
       const std::string& ueId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

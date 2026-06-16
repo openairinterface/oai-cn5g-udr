@@ -25,7 +25,7 @@
 
 #include <BdtPolicyDataStoreApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "BdtPolicyData.h"
 #include "udr_app.hpp"
@@ -47,9 +47,9 @@ class BdtPolicyDataStoreApiImpl : public oai::udr::api::BdtPolicyDataStoreApi {
   ~BdtPolicyDataStoreApiImpl() {}
 
   void read_bdt_policy_data(
-      const Pistache::Optional<std::vector<std::string>>& bdtPolicyIds,
-      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
-      const Pistache::Optional<std::vector<std::string>>& supis,
+      const std::optional<std::vector<std::string>>& bdtPolicyIds,
+      const std::optional<std::vector<std::string>>& internalGroupIds,
+      const std::optional<std::vector<std::string>>& supis,
       Pistache::Http::ResponseWriter& response);
 };
 

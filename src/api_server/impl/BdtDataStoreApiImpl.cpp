@@ -29,8 +29,8 @@ BdtDataStoreApiImpl::BdtDataStoreApiImpl(
     : BdtDataStoreApi(rtr), m_udr_app(udr_app_inst), m_address(address) {}
 
 void BdtDataStoreApiImpl::read_bdt_data(
-    const Pistache::Optional<std::vector<std::string>>& bdtRefIds,
-    const Pistache::Optional<std::string>& suppFeat,
+    const std::optional<std::vector<std::string>>& bdtRefIds,
+    const std::optional<std::string>& suppFeat,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

@@ -148,43 +148,43 @@ void PduSessionManagementDataApi::query_session_management_data_handler(
 
   // Getting the query params
   auto ipv4AddrQuery = request.query().get("ipv4-addr");
-  Pistache::Optional<std::string> ipv4Addr;
-  if (!ipv4AddrQuery.isEmpty()) {
+  std::optional<std::string> ipv4Addr;
+  if (ipv4AddrQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(ipv4AddrQuery.get(), valueQuery_instance)) {
-      ipv4Addr = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(ipv4AddrQuery.value(), valueQuery_instance)) {
+      ipv4Addr = std::make_optional(valueQuery_instance);
     }
   }
   auto ipv6PrefixQuery = request.query().get("ipv6-prefix");
-  Pistache::Optional<oai::_3gpp::model::Ipv6Prefix> ipv6Prefix;
-  if (!ipv6PrefixQuery.isEmpty()) {
+  std::optional<oai::_3gpp::model::Ipv6Prefix> ipv6Prefix;
+  if (ipv6PrefixQuery.has_value()) {
     //        Ipv6Prefix valueQuery_instance;
-    //        if(fromStringValue(ipv6PrefixQuery.get(), valueQuery_instance)){
-    //            ipv6Prefix = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(ipv6PrefixQuery.value(), valueQuery_instance)){
+    //            ipv6Prefix = std::make_optional(valueQuery_instance);
     //        }
   }
   auto dnnQuery = request.query().get("dnn");
-  Pistache::Optional<std::string> dnn;
-  if (!dnnQuery.isEmpty()) {
+  std::optional<std::string> dnn;
+  if (dnnQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(dnnQuery.get(), valueQuery_instance)) {
-      dnn = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(dnnQuery.value(), valueQuery_instance)) {
+      dnn = std::make_optional(valueQuery_instance);
     }
   }
   auto fieldsQuery = request.query().get("fields");
-  Pistache::Optional<std::vector<std::string>> fields;
-  if (!fieldsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> fields;
+  if (fieldsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(fieldsQuery.get(), valueQuery_instance)) {
-      fields = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(fieldsQuery.value(), valueQuery_instance)) {
+      fields = std::make_optional(valueQuery_instance);
     }
   }
   auto suppFeatQuery = request.query().get("supp-feat");
-  Pistache::Optional<std::string> suppFeat;
-  if (!suppFeatQuery.isEmpty()) {
+  std::optional<std::string> suppFeat;
+  if (suppFeatQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(suppFeatQuery.get(), valueQuery_instance)) {
-      suppFeat = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(suppFeatQuery.value(), valueQuery_instance)) {
+      suppFeat = std::make_optional(valueQuery_instance);
     }
   }
 

@@ -25,7 +25,7 @@
 
 #include <SubsToNotifyCollectionApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SubscriptionDataSubscriptions.h"
 #include "udr_app.hpp"
@@ -48,14 +48,14 @@ class SubsToNotifyCollectionApiImpl
   ~SubsToNotifyCollectionApiImpl() {}
 
   void query_subs_to_notify(
-      const Pistache::Optional<std::string>& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& ueId,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void remove_multiple_subscription_data_subscriptions(
-      const Pistache::Optional<std::string>& ueId,
-      const Pistache::Optional<std::string>& nfInstanceId,
-      const Pistache::Optional<bool>& deleteAllNfs,
-      const Pistache::Optional<bool>& implicitUnsubscribeIndication,
+      const std::optional<std::string>& ueId,
+      const std::optional<std::string>& nfInstanceId,
+      const std::optional<bool>& deleteAllNfs,
+      const std::optional<bool>& implicitUnsubscribeIndication,
       Pistache::Http::ResponseWriter& response);
   void subscription_data_subscriptions(
       const SubscriptionDataSubscriptions& subscriptionDataSubscriptions,

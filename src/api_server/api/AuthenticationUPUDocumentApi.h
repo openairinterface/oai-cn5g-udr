@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -67,7 +67,7 @@ class AuthenticationUPUDocumentApi {
   /// &quot;&quot;)</param> <param name="upuData"> (optional)</param>
   virtual void create_authentication_upu(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       const UpuData& upuData, Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
@@ -81,7 +81,7 @@ class AuthenticationUPUDocumentApi {
   /// &quot;&quot;)</param>
   virtual void query_auth_upu(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

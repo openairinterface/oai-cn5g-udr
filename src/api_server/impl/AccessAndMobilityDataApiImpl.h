@@ -25,7 +25,7 @@
 
 #include <AccessAndMobilityDataApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "AccessAndMobilityData.h"
 #include "udr_app.hpp"
@@ -53,7 +53,7 @@ class AccessAndMobilityDataApiImpl
   void delete_access_and_mobility_data(
       const std::string& ueId, Pistache::Http::ResponseWriter& response);
   void query_access_and_mobility_data(
-      const std::string& ueId, const Pistache::Optional<std::string>& suppFeat,
+      const std::string& ueId, const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response);
   void update_access_and_mobility_data(
       const std::string& ueId,

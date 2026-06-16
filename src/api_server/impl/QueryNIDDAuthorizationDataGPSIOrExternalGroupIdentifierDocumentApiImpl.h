@@ -25,7 +25,7 @@
 
 #include <QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "AuthorizationData.h"
 #include "Snssai.h"
@@ -47,11 +47,11 @@ class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApiImpl
 
   void get_nidd_au_data(
       const std::string& ueId,
-      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
-      const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<std::string>& mtcProviderInformation,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<oai::_3gpp::model::Snssai>& singleNssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<std::string>& mtcProviderInformation,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
 };
 
