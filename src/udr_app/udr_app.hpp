@@ -382,7 +382,50 @@ class udr_app {
       const std::string& supi_full_format, std::string& supi,
       std::string& prefix);
 
+  /*
+   * Handle a query for AccessAndMobilityPolicyData
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [uint32_t&] code: HTTP response code
+   * @return void
+   */
+  void handle_query_am_policy_data(
+      const std::string& ue_id, nlohmann::json& response_data, uint32_t& code);
+
+  /*
+   * Handle a query for SessionManagementPolicyData
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [uint32_t&] code: HTTP response code
+   * @param [const std::optional<oai::_3gpp::model::Snssai>&] snssai: S-NSSAI
+   * filter
+   * @param [const std::optional<std::string>&] dnn: DNN filter
+   * @return void
+   */
+  void handle_query_sm_policy_data(
+      const std::string& ue_id, nlohmann::json& response_data, uint32_t& code,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn);
+
+  /*
+   * Handle a query for UePolicySet
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [uint32_t&] code: HTTP response code
+   * @return void
+   */
+  void handle_query_ue_policy_set(
+      const std::string& ue_id, nlohmann::json& response_data, uint32_t& code);
+
  private:
+  /*
+   * Remove empty objects, arrays, null values, and empty strings from JSON
+   * response
+   * @param [nlohmann::json&] json_data: JSON data to clean
+   * @return void
+   */
+  void remove_empty_fields(nlohmann::json& json_data);
+
   udr_event& event_sub;
   std::shared_ptr<database_wrapper_abstraction> db_connector;
 };

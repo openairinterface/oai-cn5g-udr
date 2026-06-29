@@ -39,9 +39,27 @@ void UEPolicySetDocumentApiImpl::create_or_replace_ue_policy_set(
 void UEPolicySetDocumentApiImpl::read_ue_policy_set(
     const std::string& ueId, const Pistache::Optional<std::string>& suppFeat,
     Pistache::Http::ResponseWriter& response) {
-  response.send(
-      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
+  Logger::udr_server().info("[UE Id %s] Read UE Policy Set", ueId.c_str());
+
+  nlohmann::json response_data = {};
+  uint32_t http_code           = 0;
+
+  m_udr_app->handle_query_ue_policy_set(ueId, response_data, http_code);
+
+  if (http_code == 200) {
+    response.send(Pistache::Http::Code(http_code), response_data.dump());
+  } else if (http_code == 404) {
+    nlohmann::json problem_details = {};
+    problem_details["title"]       = "Not Found";
+    problem_details["status"]      = http_code;
+    problem_details["detail"]      = "UE Policy Set not found for UE " + ueId;
+    response.send(Pistache::Http::Code(http_code), problem_details.dump());
+  } else {
+    response.send(
+        Pistache::Http::Code::Internal_Server_Error, "Internal error");
+  }
 }
+
 void UEPolicySetDocumentApiImpl::update_ue_policy_set(
     const std::string& ueId, const UePolicySetPatch& uePolicySetPatch,
     Pistache::Http::ResponseWriter& response) {

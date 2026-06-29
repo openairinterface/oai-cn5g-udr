@@ -37,9 +37,40 @@ void SessionManagementPolicyDataDocumentApiImpl::
         const Pistache::Optional<std::vector<std::string>>& fields,
         const Pistache::Optional<std::string>& suppFeat,
         Pistache::Http::ResponseWriter& response) {
-  response.send(
-      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
+  Logger::udr_server().info(
+      "[UE Id %s] Read Session Management Policy Data", ueId.c_str());
+
+  std::optional<oai::_3gpp::model::Snssai> snssai_opt = std::nullopt;
+  std::optional<std::string> dnn_opt                   = std::nullopt;
+
+  if (!snssai.isEmpty()) {
+    snssai_opt = std::make_optional<oai::_3gpp::model::Snssai>(snssai.get());
+  }
+  if (!dnn.isEmpty()) {
+    dnn_opt = std::make_optional<std::string>(dnn.get());
+  }
+
+  nlohmann::json response_data = {};
+  uint32_t http_code           = 0;
+
+  m_udr_app->handle_query_sm_policy_data(
+      ueId, response_data, http_code, snssai_opt, dnn_opt);
+
+  if (http_code == 200) {
+    response.send(Pistache::Http::Code(http_code), response_data.dump());
+  } else if (http_code == 404) {
+    nlohmann::json problem_details = {};
+    problem_details["title"]       = "Not Found";
+    problem_details["status"]      = http_code;
+    problem_details["detail"] =
+        "Session Management Policy Data not found for UE " + ueId;
+    response.send(Pistache::Http::Code(http_code), problem_details.dump());
+  } else {
+    response.send(
+        Pistache::Http::Code::Internal_Server_Error, "Internal error");
+  }
 }
+
 void SessionManagementPolicyDataDocumentApiImpl::
     update_session_management_policy_data(
         const std::string& ueId, const SmPolicyDataPatch& smPolicyDataPatch,

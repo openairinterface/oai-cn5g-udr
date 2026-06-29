@@ -22,6 +22,12 @@ class udr_sbi_helper : public sbi_helper {
       sbi_helper::UdrDataRepositoryBase +
       udr_cfg.nudr.api_version.value_or(kDefaultSbiApiVersion);
 
+  static inline const std::string UdrDataRepositoryServiceBaseV1 =
+      sbi_helper::UdrDataRepositoryBase + "v1";
+
+  static inline const std::string UdrDataRepositoryServiceBaseV2 =
+      sbi_helper::UdrDataRepositoryBase + "v2";
+
   static inline const std::string UdrConfigurationServiceBase =
       sbi_helper::UdrConfBase +
       udr_cfg.nudr.api_version.value_or(kDefaultSbiApiVersion);

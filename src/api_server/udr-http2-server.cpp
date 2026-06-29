@@ -4,6 +4,7 @@
 
 #include "udr-http2-server.h"
 
+#include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/future.hpp>
@@ -12,6 +13,7 @@
 #include <string>
 
 #include "3gpp_29.500.h"
+#include "conversions.hpp"
 #include "logger.hpp"
 #include "string.hpp"
 #include "udr.h"
@@ -32,242 +34,351 @@ void udr_http2_server::start() {
 
   Logger::udr_server().info("HTTP2 server being started ");
 
-  server.handle(
-      udr_sbi_helper::UdrDataRepositoryServiceBase + "/",
-      [&](const request& request, const response& response) {
-        request.on_data([&](const uint8_t* data, std::size_t len) {
-          std::string msg((char*) data, len);
+  // Lambda function for handling data repository requests
+  auto handle_data_repository = [&](const request& request,
+                                    const response& response) {
+    request.on_data([&](const uint8_t* data, std::size_t len) {
+      std::string msg((char*) data, len);
 
-          try {
-            std::vector<std::string> split_q;
-            boost::split(split_q, request.uri().path, boost::is_any_of("/"));
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_AUTH_SUBS) == 0) {
-              std::string ueId = split_q[split_q.size() - 3].c_str();
-              // GET
-              if (request.method().compare("GET") == 0 && len == 0) {
-                this->read_authentication_subscription_handler(ueId, response);
-              }
-              // PATCH
-              if (request.method().compare("PATCH") == 0 && len > 0) {
-                std::vector<oai::_3gpp::model::PatchItem> patchItem;
-                // Parse Body
-                nlohmann::json::parse(msg.c_str()).get_to(patchItem);
-                this->modify_authentication_subscription_handler(
-                    ueId, patchItem, response);
-              }
-              // PUT
-              if (request.method().compare("PUT") == 0 && len > 0) {
-                // Parse Body
-                AuthenticationSubscription authentication_subscription = {};
-                nlohmann::json::parse(msg.c_str())
-                    .get_to(authentication_subscription);
-                this->create_authentication_subscription_handler(
-                    ueId, authentication_subscription, response);
-              }
-              // DELETE
-              if (request.method().compare("DELETE") == 0 && len == 0) {
-                this->delete_authentication_subscription_handler(
-                    ueId, response);
-              }
-            }
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_AUTH_STATUS) == 0) {
-              std::string ueId = split_q[split_q.size() - 3].c_str();
-
-              if (request.method().compare("GET") == 0 && len == 0) {
-                this->query_authentication_status_handler(ueId, response);
-              }
-              if (request.method().compare("PUT") == 0 && len > 0) {
-                AuthEvent authEvent;
-                nlohmann::json::parse(msg.c_str()).get_to(authEvent);
-                this->create_authentication_status_handler(
-                    ueId, authEvent, response);
-              }
-              if (request.method().compare("DELETE") == 0 && len == 0) {
-                this->delete_authentication_status_handler(ueId, response);
-              }
-            }
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_AMF_XGPP_ACCESS) ==
-                0) {
-              std::string ueId = split_q[split_q.size() - 3].c_str();
-              if (request.method().compare("PUT") == 0 && len > 0) {
-                Amf3GppAccessRegistration amf3GppAccessRegistration;
-                nlohmann::json::parse(msg.c_str())
-                    .get_to(amf3GppAccessRegistration);
-                this->create_amf_context_3gpp_handler(
-                    ueId, amf3GppAccessRegistration, response);
-              }
-              if (request.method().compare("GET") == 0 && len == 0) {
-                this->query_amf_context_3gpp_handler(ueId, response);
-              }
-              if (request.method().compare("PATCH") == 0 && len > 0) {
-                // ToDo
-              }
-            }
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_AM_DATA) == 0) {
-              if (request.method().compare("GET") == 0 && len == 0) {
-                std::string ueId = split_q[split_q.size() - 3].c_str();
-                std::string qs   = request.uri().raw_query;
-                Logger::udr_server().debug("QueryString: %s", qs.c_str());
-                std::string servingPlmnId =
-                    oai::utils::get_query_param(qs, "servingPlmnId");
-                this->query_am_data_handler(ueId, servingPlmnId, response);
-              }
-            }
-            if (split_q[split_q.size() - 2].compare(NUDR_DR_SDM_SUBS) == 0) {
-              std::string ueId   = split_q[split_q.size() - 4].c_str();
-              std::string subsId = split_q[split_q.size() - 1].c_str();
-              SdmSubscription sdmSubscription;
-              if (request.method().compare("GET") == 0 && len == 0) {
-                this->query_sdm_subscription_handler(ueId, subsId, response);
-              }
-              if (request.method().compare("PATCH") == 0 && len > 0) {
-                nlohmann::json::parse(msg.c_str()).get_to(sdmSubscription);
-                this->modify_sdm_subscription_handler(
-                    ueId, subsId, sdmSubscription, response);
-              }
-              if (request.method().compare("DELETE") == 0 && len == 0) {
-                this->remove_sdm_subscription_handler(ueId, subsId, response);
-              }
-              if (request.method().compare("PUT") == 0 && len > 0) {
-                nlohmann::json::parse(msg.c_str()).get_to(sdmSubscription);
-                this->update_sdm_subscription_handler(
-                    ueId, subsId, sdmSubscription, response);
-              }
-            }
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_SDM_SUBS) == 0) {
-              std::string ueId = split_q[split_q.size() - 3].c_str();
-              if (request.method().compare("POST") == 0 && len > 0) {
-                SdmSubscription sdmSubscription;
-                nlohmann::json::parse(msg.c_str()).get_to(sdmSubscription);
-                this->create_sdm_subscriptions_handler(
-                    ueId, sdmSubscription, response);
-              }
-              if (request.method().compare("GET") == 0 && len == 0) {
-                this->query_sdm_subscriptions_handler(ueId, response);
-              }
-            }
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_SM_DATA) == 0) {
-              if (request.method().compare("GET") == 0 && len == 0) {
-                if (split_q.size() > 6) {  // GET
-                  std::optional<oai::_3gpp::model::Snssai> singleNssaiOpt =
-                      std::nullopt;
-                  std::optional<std::string> dnnOpt = std::nullopt;
-                  std::string ueId = split_q[split_q.size() - 4].c_str();
-                  std::string servingPlmnId =
-                      split_q[split_q.size() - 3].c_str();
-                  std::string qs = request.uri().raw_query;
-                  Logger::udr_server().debug("QueryString: %s", qs.c_str());
-
-                  // std::string servingPlmnId =
-                  // oai::utils::get_query_param(qs, "servingPlmnId");
-                  std::string dnn = oai::utils::get_query_param(qs, "dnn");
-                  std::string snssai =
-                      oai::utils::get_query_param(qs, "single-nssai");
-                  if (!snssai.empty()) {
-                    oai::_3gpp::model::Snssai singleNssai = {};
-                    nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
-                    singleNssaiOpt =
-                        std::make_optional<oai::_3gpp::model::Snssai>(
-                            singleNssai);
-                  }
-                  if (!dnn.empty()) {
-                    dnnOpt = std::make_optional<std::string>(dnn);
-                  }
-
-                  this->query_sm_data_handler(
-                      ueId, servingPlmnId, response, singleNssaiOpt, dnnOpt);
-                } else {
-                  // GET ALL
-                  this->query_sm_data_handler(response);
-                }
-              }
-              // POST
-              if (request.method().compare("POST") == 0 && len > 0) {
-                oai::_3gpp::model::Snssai singleNssai = {};
-                std::string ueId          = split_q[split_q.size() - 4].c_str();
-                std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
-
-                SessionManagementSubscriptionData subscriptionData;
-                nlohmann::json::parse(msg.c_str()).get_to(subscriptionData);
-                this->create_sm_data_handler(
-                    ueId, servingPlmnId, subscriptionData, response);
-              }
-              // PUT
-              if (request.method().compare("PUT") == 0 && len > 0) {
-                oai::_3gpp::model::Snssai singleNssai = {};
-                std::string ueId          = split_q[split_q.size() - 4].c_str();
-                std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
-                SessionManagementSubscriptionData subscriptionData;
-                nlohmann::json::parse(msg.c_str()).get_to(subscriptionData);
-                this->update_sm_data_handler(
-                    ueId, servingPlmnId, subscriptionData, response);
-              }
-              // DELETE
-              if (request.method().compare("DELETE") == 0 && len == 0) {
-                std::optional<oai::_3gpp::model::Snssai> singleNssaiOpt =
-                    std::nullopt;
-                std::string ueId          = split_q[split_q.size() - 4].c_str();
-                std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
-                std::string qs            = request.uri().raw_query;
-                std::string snssai =
-                    oai::utils::get_query_param(qs, "single-nssai");
-                if (!snssai.empty()) {
-                  oai::_3gpp::model::Snssai singleNssai = {};
-                  nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
-                  singleNssaiOpt =
-                      std::make_optional<oai::_3gpp::model::Snssai>(
-                          singleNssai);
-                }
-
-                this->delete_sm_data_handler(
-                    ueId, servingPlmnId, singleNssaiOpt, response);
-              }
-            }
-            if (split_q[split_q.size() - 2].compare(NUDR_DR_SMF_REG) == 0) {
-              std::string ueId  = split_q[split_q.size() - 4].c_str();
-              int32_t pduSessId = atoi(split_q[split_q.size() - 1].c_str());
-              if (request.method().compare("GET") == 0 && len == 0) {
-                this->query_smf_registration_handler(ueId, pduSessId, response);
-              }
-              if (request.method().compare("PUT") == 0 && len > 0) {
-                SmfRegistration smfRegistration;
-                nlohmann::json::parse(msg.c_str()).get_to(smfRegistration);
-                this->create_smf_context_non_3gpp_handler(
-                    ueId, pduSessId, smfRegistration, response);
-              }
-              if (request.method().compare("DELETE") == 0 && len == 0) {
-                this->delete_smf_context_handler(ueId, pduSessId, response);
-              }
-            }
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_SMF_REG) == 0) {
-              std::string ueId  = split_q[split_q.size() - 3].c_str();
-              int32_t pduSessId = atoi(split_q[split_q.size() - 1].c_str());
-              if (request.method().compare("GET") == 0 && len == 0) {
-                this->query_smf_reg_list_handler(ueId, response);
-              }
-            }
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_SMF_SELECT) == 0) {
-              std::string ueId  = split_q[split_q.size() - 3].c_str();
-              int32_t pduSessId = atoi(split_q[split_q.size() - 1].c_str());
-              if (request.method().compare("GET") == 0 && len == 0) {
-                std::string qs = request.uri().raw_query;
-                Logger::udr_server().debug("QueryString: %s", qs.c_str());
-
-                std::string servingPlmnId =
-                    oai::utils::get_query_param(qs, "servingPlmnId");
-                this->query_smf_select_data_handler(
-                    ueId, servingPlmnId, response);
-              }
-            }
-          } catch (std::exception& e) {
-            Logger::udr_server().warn("Invalid request (error: %s)!", e.what());
-            response.write_head(
-                oai::common::sbi::http_status_code::BAD_REQUEST);
-            response.end();
-            return;
+      try {
+        std::vector<std::string> split_q;
+        boost::split(split_q, request.uri().path, boost::is_any_of("/"));
+        if (split_q[split_q.size() - 1].compare(NUDR_DR_AUTH_SUBS) == 0) {
+          std::string ueId = split_q[split_q.size() - 3].c_str();
+          // GET
+          if (request.method().compare("GET") == 0 && len == 0) {
+            this->read_authentication_subscription_handler(ueId, response);
           }
-        });
-      });
+          // PATCH
+          if (request.method().compare("PATCH") == 0 && len > 0) {
+            std::vector<oai::_3gpp::model::PatchItem> patchItem;
+            // Parse Body
+            nlohmann::json::parse(msg.c_str()).get_to(patchItem);
+            this->modify_authentication_subscription_handler(
+                ueId, patchItem, response);
+          }
+          // PUT
+          if (request.method().compare("PUT") == 0 && len > 0) {
+            // Parse Body
+            AuthenticationSubscription authentication_subscription = {};
+            nlohmann::json::parse(msg.c_str())
+                .get_to(authentication_subscription);
+            this->create_authentication_subscription_handler(
+                ueId, authentication_subscription, response);
+          }
+          // DELETE
+          if (request.method().compare("DELETE") == 0 && len == 0) {
+            this->delete_authentication_subscription_handler(ueId, response);
+          }
+        }
+        if (split_q[split_q.size() - 1].compare(NUDR_DR_AUTH_STATUS) == 0) {
+          std::string ueId = split_q[split_q.size() - 3].c_str();
+
+          if (request.method().compare("GET") == 0 && len == 0) {
+            this->query_authentication_status_handler(ueId, response);
+          }
+          if (request.method().compare("PUT") == 0 && len > 0) {
+            AuthEvent authEvent;
+            nlohmann::json::parse(msg.c_str()).get_to(authEvent);
+            this->create_authentication_status_handler(
+                ueId, authEvent, response);
+          }
+          if (request.method().compare("DELETE") == 0 && len == 0) {
+            this->delete_authentication_status_handler(ueId, response);
+          }
+        }
+        if (split_q[split_q.size() - 1].compare(NUDR_DR_AMF_XGPP_ACCESS) == 0) {
+          std::string ueId = split_q[split_q.size() - 3].c_str();
+          if (request.method().compare("PUT") == 0 && len > 0) {
+            Amf3GppAccessRegistration amf3GppAccessRegistration;
+            nlohmann::json::parse(msg.c_str())
+                .get_to(amf3GppAccessRegistration);
+            this->create_amf_context_3gpp_handler(
+                ueId, amf3GppAccessRegistration, response);
+          }
+          if (request.method().compare("GET") == 0 && len == 0) {
+            this->query_amf_context_3gpp_handler(ueId, response);
+          }
+          if (request.method().compare("PATCH") == 0 && len > 0) {
+            // ToDo
+          }
+        }
+        if (split_q[split_q.size() - 1].compare(NUDR_DR_AM_DATA) == 0) {
+          if (request.method().compare("GET") == 0 && len == 0) {
+            // Check if this is policy-data or subscription-data path
+            bool is_policy_data = false;
+            for (const auto& segment : split_q) {
+              if (segment == "policy-data") {
+                is_policy_data = true;
+                break;
+              }
+            }
+
+            if (is_policy_data) {
+              // Path: /policy-data/ues/{ueId}/am-data
+              std::string ueId = split_q[split_q.size() - 2].c_str();
+              std::string qs   = request.uri().raw_query;
+              Logger::udr_server().debug("QueryString: %s", qs.c_str());
+              Logger::udr_server().debug(
+                  "[UE Id %s] Handle Query AM Policy Data", ueId.c_str());
+
+              // Query AM policy data from database
+              nlohmann::json response_data = {};
+              uint32_t http_code           = 0;
+              m_udr_app->handle_query_am_policy_data(
+                  ueId, response_data, http_code);
+
+              header_map h;
+              h.emplace("content-type", header_value{"application/json"});
+              response.write_head(http_code, h);
+              response.end(response_data.dump().c_str());
+              Logger::udr_server().debug(
+                  "HTTP Response code %d (HTTP Version 2).", http_code);
+              return;
+            } else {
+              // Path:
+              // /subscription-data/{ueId}/{servingPlmnId}/provisioned-data/am-data
+              std::string ueId          = split_q[split_q.size() - 4].c_str();
+              std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
+              std::string qs            = request.uri().raw_query;
+              Logger::udr_server().debug("QueryString: %s", qs.c_str());
+              this->query_am_data_handler(ueId, servingPlmnId, response);
+            }
+          }
+        }
+        if (split_q[split_q.size() - 2].compare(NUDR_DR_SDM_SUBS) == 0) {
+          std::string ueId   = split_q[split_q.size() - 4].c_str();
+          std::string subsId = split_q[split_q.size() - 1].c_str();
+          SdmSubscription sdmSubscription;
+          if (request.method().compare("GET") == 0 && len == 0) {
+            this->query_sdm_subscription_handler(ueId, subsId, response);
+          }
+          if (request.method().compare("PATCH") == 0 && len > 0) {
+            nlohmann::json::parse(msg.c_str()).get_to(sdmSubscription);
+            this->modify_sdm_subscription_handler(
+                ueId, subsId, sdmSubscription, response);
+          }
+          if (request.method().compare("DELETE") == 0 && len == 0) {
+            this->remove_sdm_subscription_handler(ueId, subsId, response);
+          }
+          if (request.method().compare("PUT") == 0 && len > 0) {
+            nlohmann::json::parse(msg.c_str()).get_to(sdmSubscription);
+            this->update_sdm_subscription_handler(
+                ueId, subsId, sdmSubscription, response);
+          }
+        }
+        if (split_q[split_q.size() - 1].compare(NUDR_DR_SDM_SUBS) == 0) {
+          std::string ueId = split_q[split_q.size() - 3].c_str();
+          if (request.method().compare("POST") == 0 && len > 0) {
+            SdmSubscription sdmSubscription;
+            nlohmann::json::parse(msg.c_str()).get_to(sdmSubscription);
+            this->create_sdm_subscriptions_handler(
+                ueId, sdmSubscription, response);
+          }
+          if (request.method().compare("GET") == 0 && len == 0) {
+            this->query_sdm_subscriptions_handler(ueId, response);
+          }
+        }
+        if (split_q[split_q.size() - 1].compare(NUDR_DR_SM_DATA) == 0) {
+          // Check if this is policy-data or subscription-data path
+          bool is_policy_data = false;
+          for (const auto& segment : split_q) {
+            if (segment == "policy-data") {
+              is_policy_data = true;
+              break;
+            }
+          }
+
+          if (is_policy_data) {
+            // Path: /policy-data/ues/{ueId}/sm-data
+            if (request.method().compare("GET") == 0 && len == 0) {
+              std::string ueId = split_q[split_q.size() - 2].c_str();
+              std::string qs   = request.uri().raw_query;
+              Logger::udr_server().debug("QueryString: %s", qs.c_str());
+              Logger::udr_server().debug(
+                  "[UE Id %s] Handle Query SM Policy Data", ueId.c_str());
+
+              // Parse query parameters (dnn, snssai)
+              std::optional<oai::_3gpp::model::Snssai> singleNssaiOpt =
+                  std::nullopt;
+              std::optional<std::string> dnnOpt = std::nullopt;
+
+              std::string dnn    = oai::utils::get_query_param(qs, "dnn");
+              std::string snssai = oai::utils::get_query_param(qs, "snssai");
+              if (!snssai.empty()) {
+                // URL-decode the snssai parameter before parsing as JSON
+                std::string decoded_snssai =
+                    oai::utils::conv::url_decode(snssai);
+                oai::_3gpp::model::Snssai singleNssai = {};
+                nlohmann::json::parse(decoded_snssai.c_str())
+                    .get_to(singleNssai);
+                // Normalize sd to lowercase (database stores lowercase)
+                if (singleNssai.sdIsSet()) {
+                  std::string sd = singleNssai.getSd();
+                  std::transform(sd.begin(), sd.end(), sd.begin(), ::tolower);
+                  singleNssai.setSd(sd);
+                }
+                singleNssaiOpt =
+                    std::make_optional<oai::_3gpp::model::Snssai>(singleNssai);
+              }
+              if (!dnn.empty()) {
+                dnnOpt = std::make_optional<std::string>(dnn);
+              }
+
+              // Query SM policy data from database
+              nlohmann::json response_data = {};
+              uint32_t http_code           = 0;
+              m_udr_app->handle_query_sm_policy_data(
+                  ueId, response_data, http_code, singleNssaiOpt, dnnOpt);
+
+              header_map h;
+              h.emplace("content-type", header_value{"application/json"});
+              response.write_head(http_code, h);
+              response.end(response_data.dump().c_str());
+              Logger::udr_server().debug(
+                  "HTTP Response code %d (HTTP Version 2).", http_code);
+              return;
+            }
+          } else if (request.method().compare("GET") == 0 && len == 0) {
+            // Path:
+            // /subscription-data/{ueId}/{servingPlmnId}/provisioned-data/sm-data
+            if (split_q.size() > 6) {  // GET
+              std::optional<oai::_3gpp::model::Snssai> singleNssaiOpt =
+                  std::nullopt;
+              std::optional<std::string> dnnOpt = std::nullopt;
+              std::string ueId          = split_q[split_q.size() - 4].c_str();
+              std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
+              std::string qs            = request.uri().raw_query;
+              Logger::udr_server().debug("QueryString: %s", qs.c_str());
+
+              // std::string servingPlmnId =
+              // oai::utils::get_query_param(qs, "servingPlmnId");
+              std::string dnn = oai::utils::get_query_param(qs, "dnn");
+              std::string snssai =
+                  oai::utils::get_query_param(qs, "single-nssai");
+              if (!snssai.empty()) {
+                // URL-decode the snssai parameter before parsing as JSON
+                std::string decoded_snssai =
+                    oai::utils::conv::url_decode(snssai);
+                oai::_3gpp::model::Snssai singleNssai = {};
+                nlohmann::json::parse(decoded_snssai.c_str())
+                    .get_to(singleNssai);
+                // Normalize sd to lowercase (database stores lowercase)
+                if (singleNssai.sdIsSet()) {
+                  std::string sd = singleNssai.getSd();
+                  std::transform(sd.begin(), sd.end(), sd.begin(), ::tolower);
+                  singleNssai.setSd(sd);
+                }
+                singleNssaiOpt =
+                    std::make_optional<oai::_3gpp::model::Snssai>(singleNssai);
+              }
+              if (!dnn.empty()) {
+                dnnOpt = std::make_optional<std::string>(dnn);
+              }
+
+              this->query_sm_data_handler(
+                  ueId, servingPlmnId, response, singleNssaiOpt, dnnOpt);
+            } else {
+              // GET ALL
+              this->query_sm_data_handler(response);
+            }
+          }
+          // POST
+          if (!is_policy_data && request.method().compare("POST") == 0 &&
+              len > 0) {
+            oai::_3gpp::model::Snssai singleNssai = {};
+            std::string ueId          = split_q[split_q.size() - 4].c_str();
+            std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
+
+            SessionManagementSubscriptionData subscriptionData;
+            nlohmann::json::parse(msg.c_str()).get_to(subscriptionData);
+            this->create_sm_data_handler(
+                ueId, servingPlmnId, subscriptionData, response);
+          }
+          // PUT
+          if (!is_policy_data && request.method().compare("PUT") == 0 &&
+              len > 0) {
+            oai::_3gpp::model::Snssai singleNssai = {};
+            std::string ueId          = split_q[split_q.size() - 4].c_str();
+            std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
+            SessionManagementSubscriptionData subscriptionData;
+            nlohmann::json::parse(msg.c_str()).get_to(subscriptionData);
+            this->update_sm_data_handler(
+                ueId, servingPlmnId, subscriptionData, response);
+          }
+          // DELETE
+          if (!is_policy_data && request.method().compare("DELETE") == 0 &&
+              len == 0) {
+            std::optional<oai::_3gpp::model::Snssai> singleNssaiOpt =
+                std::nullopt;
+            std::string ueId          = split_q[split_q.size() - 4].c_str();
+            std::string servingPlmnId = split_q[split_q.size() - 3].c_str();
+            std::string qs            = request.uri().raw_query;
+            std::string snssai =
+                oai::utils::get_query_param(qs, "single-nssai");
+            if (!snssai.empty()) {
+              oai::_3gpp::model::Snssai singleNssai = {};
+              nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
+              singleNssaiOpt =
+                  std::make_optional<oai::_3gpp::model::Snssai>(singleNssai);
+            }
+
+            this->delete_sm_data_handler(
+                ueId, servingPlmnId, singleNssaiOpt, response);
+          }
+        }
+        if (split_q[split_q.size() - 2].compare(NUDR_DR_SMF_REG) == 0) {
+          std::string ueId  = split_q[split_q.size() - 4].c_str();
+          int32_t pduSessId = atoi(split_q[split_q.size() - 1].c_str());
+          if (request.method().compare("GET") == 0 && len == 0) {
+            this->query_smf_registration_handler(ueId, pduSessId, response);
+          }
+          if (request.method().compare("PUT") == 0 && len > 0) {
+            SmfRegistration smfRegistration;
+            nlohmann::json::parse(msg.c_str()).get_to(smfRegistration);
+            this->create_smf_context_non_3gpp_handler(
+                ueId, pduSessId, smfRegistration, response);
+          }
+          if (request.method().compare("DELETE") == 0 && len == 0) {
+            this->delete_smf_context_handler(ueId, pduSessId, response);
+          }
+        }
+        if (split_q[split_q.size() - 1].compare(NUDR_DR_SMF_REG) == 0) {
+          std::string ueId  = split_q[split_q.size() - 3].c_str();
+          int32_t pduSessId = atoi(split_q[split_q.size() - 1].c_str());
+          if (request.method().compare("GET") == 0 && len == 0) {
+            this->query_smf_reg_list_handler(ueId, response);
+          }
+        }
+        if (split_q[split_q.size() - 1].compare(NUDR_DR_SMF_SELECT) == 0) {
+          std::string ueId  = split_q[split_q.size() - 3].c_str();
+          int32_t pduSessId = atoi(split_q[split_q.size() - 1].c_str());
+          if (request.method().compare("GET") == 0 && len == 0) {
+            std::string qs = request.uri().raw_query;
+            Logger::udr_server().debug("QueryString: %s", qs.c_str());
+
+            std::string servingPlmnId =
+                oai::utils::get_query_param(qs, "servingPlmnId");
+            this->query_smf_select_data_handler(ueId, servingPlmnId, response);
+          }
+        }
+      } catch (std::exception& e) {
+        Logger::udr_server().warn("Invalid request (error: %s)!", e.what());
+        response.write_head(oai::common::sbi::http_status_code::BAD_REQUEST);
+        response.end();
+        return;
+      }
+    });
+  };
+
+  // Register handlers for both v1 and v2 API versions
+  server.handle(
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV1 + "/",
+      handle_data_repository);
+
+  server.handle(
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV2 + "/",
+      handle_data_repository);
 
   // Configuration APIs
   server.handle(
@@ -320,6 +431,7 @@ void udr_http2_server::query_am_data_handler(
   nlohmann::json response_data = {};
   uint32_t http_code           = 0;
   header_map h;
+  h.emplace("content-type", header_value{"application/json"});
 
   m_udr_app->handle_query_am_data(
       ue_id, serving_plmn_id, response_data, http_code);
@@ -583,10 +695,12 @@ void udr_http2_server::query_sm_data_handler(
   m_udr_app->handle_query_sm_data(
       ue_id, serving_plmn_id, response_data, http_code, snssai, dnn);
 
+  std::string response_body = response_data.dump();
   Logger::udr_server().debug(
-      "HTTP Response code %d (HTTP Version 2).\n", http_code);
+      "[UE Id %s] HTTP Response code %d, Body: %s", ue_id.c_str(), http_code,
+      response_body.c_str());
   response.write_head(http_code, h);
-  response.end(response_data.dump().c_str());
+  response.end(response_body.c_str());
 }
 
 //------------------------------------------------------------------------------
