@@ -21,6 +21,7 @@
 #define NUDR_DR_AM_DATA "am-data"
 #define NUDR_DR_SDM_SUBS "sdm-subscriptions"
 #define NUDR_DR_SM_DATA "sm-data"
+#define NUDR_DR_UE_POLICY_SET "ue-policy-set"
 #define NUDR_DR_SMF_REG "smf-registrations"
 #define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
 

@@ -43,8 +43,7 @@ void SponsorConnectivityDataDocumentApi::setupRoutes() {
   Routes::Get(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::
-              UdrDrPathSubscriptionDataSponsorConnectivityDataSponsorId,
+          udr_sbi_helper::UdrDrPathPolicyDataSponsorConnectivityDataSponsorId,
       Routes::bind(
           &SponsorConnectivityDataDocumentApi::
               read_sponsor_connectivity_data_handler,

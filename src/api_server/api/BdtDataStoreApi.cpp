@@ -42,7 +42,7 @@ void BdtDataStoreApi::setupRoutes() {
   Routes::Get(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataPolicyDataBdtData,
+          udr_sbi_helper::UdrDrPathPolicyDataBdtData,
       Routes::bind(&BdtDataStoreApi::read_bdt_data_handler, this));
 
   // Default handler, called when a route is not found

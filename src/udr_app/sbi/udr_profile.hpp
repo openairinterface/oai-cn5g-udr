@@ -29,7 +29,8 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
         fqdn(),
         ipv4_addresses(),
         priority(0),
-        capacity(0) {
+        capacity(0),
+        nf_service_port(80) {
     nf_instance_name = {};
     nf_status        = {};
   }
@@ -42,7 +43,8 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
         ipv4_addresses(),
         priority(0),
         capacity(0),
-        nf_type("NF_TYPE_UNKNOWN") {
+        nf_type("NF_TYPE_UNKNOWN"),
+        nf_service_port(80) {
     nf_instance_name = {};
     nf_status        = {};
   }
@@ -277,6 +279,22 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
   void get_udr_info(oai::common::sbi::udr_info_t& s) const;
 
   /*
+   * Add NF service to the list of services
+   * @param [const std::string &] service_instance_id: service instance ID
+   * @param [const std::string &] service_name: service name
+   * @return void
+   */
+  void add_nf_service(
+      const std::string& service_instance_id, const std::string& service_name);
+
+  /*
+   * Set NF service port
+   * @param [const uint16_t] p: port number
+   * @return void
+   */
+  void set_nf_service_port(const uint16_t p);
+
+  /*
    * Print related-information for NF profile
    * @param void
    * @return void:
@@ -317,6 +335,8 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
   uint16_t priority;
   uint16_t capacity;
   oai::common::sbi::udr_info_t udr_info;
+  std::vector<std::string> nf_services;  // List of NF service names
+  uint16_t nf_service_port;              // Port for NF services
 };
 
 }  // namespace app

@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: MIT
+#
+# Minimal stack for exercising the UDR policy-data GET endpoints with
+# test_policy_data.py -- MySQL seeded with the policy-data schema/samples,
+# plus the UDR itself. Not a full core deployment: no NRF/AMF/SMF/etc, and
+# NRF registration is disabled in conf/config.yaml. Modelled on the
+# mysql/oai-udr services of oai-cn5g-fed's docker-compose-basic-nrf-qos.yaml,
+# trimmed to just what these endpoints need.
+#
+# Usage:
+#   docker compose -f ci-scripts/tests/docker-compose.yaml up -d
+#   docker compose -f ci-scripts/tests/docker-compose.yaml ps
+#   ./test_policy_data.py suite
+#   docker compose -f ci-scripts/tests/docker-compose.yaml down -v
+
+services:
+  mysql:
+    container_name: udr-test-mysql
+    image: mysql:9.6.0
+    environment:
+      - TZ=Europe/Paris
+      - MYSQL_DATABASE=oai_db
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_ROOT_PASSWORD=linux
+    volumes:
+      - ../../build/scripts/oai_db_v2.sql:/docker-entrypoint-initdb.d/01-oai_db_v2.sql:ro
+      - ../../build/scripts/oai_db_policy_data.sql:/docker-entrypoint-initdb.d/02-oai_db_policy_data.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-utest", "-ptest"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - udr-test
+
+  oai-udr:
+    container_name: udr-test-udr
+    image: phinetech/oai-udr:fix-ueid-v1.28-09
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./conf/config.yaml:/openair-udr/etc/config.yaml:ro
+    environment:
+      - TZ=Europe/Paris
+    ports:
+      - "8080:8080"
+    networks:
+      - udr-test
+
+networks:
+  udr-test:
+    driver: bridge
