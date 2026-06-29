@@ -165,7 +165,7 @@ class mongo_db : public database_wrapper<mongo_db> {
 
   bool query_sm_policy_data(
       const std::string& ue_id, nlohmann::json& json_data,
-      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
       const std::optional<std::string>& dnn) {
     return false;
   }

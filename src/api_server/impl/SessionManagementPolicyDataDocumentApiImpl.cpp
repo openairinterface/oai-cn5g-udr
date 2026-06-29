@@ -40,11 +40,11 @@ void SessionManagementPolicyDataDocumentApiImpl::
   Logger::udr_server().info(
       "[UE Id %s] Read Session Management Policy Data", ueId.c_str());
 
-  std::optional<oai::model::common::Snssai> snssai_opt = std::nullopt;
+  std::optional<oai::_3gpp::model::Snssai> snssai_opt = std::nullopt;
   std::optional<std::string> dnn_opt                   = std::nullopt;
 
   if (!snssai.isEmpty()) {
-    snssai_opt = std::make_optional<oai::model::common::Snssai>(snssai.get());
+    snssai_opt = std::make_optional<oai::_3gpp::model::Snssai>(snssai.get());
   }
   if (!dnn.isEmpty()) {
     dnn_opt = std::make_optional<std::string>(dnn.get());
