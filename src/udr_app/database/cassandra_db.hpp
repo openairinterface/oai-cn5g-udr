@@ -119,6 +119,23 @@ class cassandra_db : public database_wrapper<cassandra_db> {
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data);
 
+  bool query_am_policy_data(
+      const std::string& ue_id, nlohmann::json& json_data) {
+    return false;
+  }
+
+  bool query_sm_policy_data(
+      const std::string& ue_id, nlohmann::json& json_data,
+      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<std::string>& dnn) {
+    return false;
+  }
+
+  bool query_ue_policy_set(
+      const std::string& ue_id, nlohmann::json& json_data) {
+    return false;
+  }
+
  private:
   // cassandra_connector;
 };

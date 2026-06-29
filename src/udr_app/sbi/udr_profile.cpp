@@ -9,8 +9,12 @@
 
 #include "logger.hpp"
 #include "string.hpp"
+#include "udr_config.hpp"
 
 using namespace oai::udr::app;
+using namespace oai::udr::config;
+
+extern udr_config udr_cfg;
 
 //------------------------------------------------------------------------------
 void udr_profile::set_nf_instance_id(const std::string& instance_id) {
@@ -161,6 +165,17 @@ void udr_profile::get_udr_info(oai::common::sbi::udr_info_t& s) const {
 }
 
 //------------------------------------------------------------------------------
+void udr_profile::add_nf_service(
+    const std::string& service_instance_id, const std::string& service_name) {
+  nf_services.push_back(service_name);
+}
+
+//------------------------------------------------------------------------------
+void udr_profile::set_nf_service_port(const uint16_t p) {
+  nf_service_port = p;
+}
+
+//------------------------------------------------------------------------------
 void udr_profile::display() const {
   Logger::udr_app().debug("- NF instance info");
   Logger::udr_app().debug("    Instance ID: %s", nf_instance_id.c_str());
@@ -239,6 +254,43 @@ void udr_profile::to_json(nlohmann::json& data) const {
 
   data["priority"] = priority;
   data["capacity"] = capacity;
+
+  // NF Services
+  if (!nf_services.empty()) {
+    data["nfServices"] = nlohmann::json::array();
+    for (const auto& service_name : nf_services) {
+      nlohmann::json service       = {};
+      service["serviceInstanceId"] = service_name;
+      service["serviceName"]       = service_name;
+
+      // Add version information
+      std::string api_version = udr_cfg.nudr.api_version.value_or(
+          oai::common::sbi::kDefaultSbiApiVersion);
+      std::string full_version =
+          api_version.substr(1) + ".0.0";  // e.g., "v2" -> "2.0.0"
+
+      nlohmann::json version     = {};
+      version["apiVersionInUri"] = api_version;
+      version["apiFullVersion"]  = full_version;
+      service["versions"]        = nlohmann::json::array();
+      service["versions"].push_back(version);
+
+      service["scheme"]          = "http";
+      service["nfServiceStatus"] = "REGISTERED";
+
+      // Add IP endpoint
+      nlohmann::json ipEndPoint = {};
+      if (!ipv4_addresses.empty()) {
+        ipEndPoint["ipv4Address"] = inet_ntoa(ipv4_addresses[0]);
+      }
+      ipEndPoint["port"]      = nf_service_port;
+      ipEndPoint["transport"] = "TCP";
+      service["ipEndPoints"]  = nlohmann::json::array();
+      service["ipEndPoints"].push_back(ipEndPoint);
+
+      data["nfServices"].push_back(service);
+    }
+  }
 
   // UDR Info
   data["udrInfo"]["groupId"]                        = udr_info.groupid;
