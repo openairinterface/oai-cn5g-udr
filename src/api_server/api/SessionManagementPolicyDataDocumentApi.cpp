@@ -39,18 +39,36 @@ void SessionManagementPolicyDataDocumentApi::init() {
 void SessionManagementPolicyDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
+  // Register routes for both v1 and v2
   Routes::Get(
       *router,
-      udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesSmData,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV1 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesSmData,
       Routes::bind(
           &SessionManagementPolicyDataDocumentApi::
               read_session_management_policy_data_handler,
           this));
+  Routes::Get(
+      *router,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV2 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesSmData,
+      Routes::bind(
+          &SessionManagementPolicyDataDocumentApi::
+              read_session_management_policy_data_handler,
+          this));
+
   Routes::Patch(
       *router,
-      udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesSmData,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV1 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesSmData,
+      Routes::bind(
+          &SessionManagementPolicyDataDocumentApi::
+              update_session_management_policy_data_handler,
+          this));
+  Routes::Patch(
+      *router,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV2 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesSmData,
       Routes::bind(
           &SessionManagementPolicyDataDocumentApi::
               update_session_management_policy_data_handler,

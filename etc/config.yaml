@@ -197,4 +197,4 @@ nssf:
   slice_config_path: /openair-nssf/etc/nssf_slice_config.yaml
 
 udr:
-  udr_name: oai-udr  
+  udr_name: oai-udr

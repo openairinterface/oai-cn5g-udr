@@ -339,6 +339,38 @@ class database_wrapper_abstraction {
   virtual bool query_smf_select_data(
       const std::string& ue_id, const std::string& serving_plmn_id,
       nlohmann::json& json_data) = 0;
+
+  /*
+   * Query Access and Mobility Policy Data
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] json_data: Data in Json format
+   * @return true if successful, otherwise return false
+   */
+  virtual bool query_am_policy_data(
+      const std::string& ue_id, nlohmann::json& json_data) = 0;
+
+  /*
+   * Query Session Management Policy Data
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] json_data: Data in Json format
+   * @param [const std::optional<oai::model::common::Snssai>&] snssai: S-NSSAI
+   * filter
+   * @param [const std::optional<std::string>&] dnn: DNN filter
+   * @return true if successful, otherwise return false
+   */
+  virtual bool query_sm_policy_data(
+      const std::string& ue_id, nlohmann::json& json_data,
+      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<std::string>& dnn) = 0;
+
+  /*
+   * Query UE Policy Set
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] json_data: Data in Json format
+   * @return true if successful, otherwise return false
+   */
+  virtual bool query_ue_policy_set(
+      const std::string& ue_id, nlohmann::json& json_data) = 0;
 };
 }  // namespace oai::udr::app
 
