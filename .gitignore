@@ -39,10 +39,14 @@ archives
 src/oai_rules_result*
 test_results_oai_smf.html
 
-#build 
+#build
 build/ext
 
 build/udr/build
 build/log
 udr.conf.dev
 udr.entrypoint.sh
+
+# IDE files
+.vscode/
+.idea/

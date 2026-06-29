@@ -34,8 +34,27 @@ AccessAndMobilityPolicyDataDocumentApiImpl::
 void AccessAndMobilityPolicyDataDocumentApiImpl::
     read_access_and_mobility_policy_data(
         const std::string& ueId, Pistache::Http::ResponseWriter& response) {
-  response.send(
-      Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
+  Logger::udr_server().info(
+      "[UE Id %s] Read Access and Mobility Policy Data", ueId.c_str());
+
+  nlohmann::json response_data = {};
+  uint32_t http_code           = 0;
+
+  m_udr_app->handle_query_am_policy_data(ueId, response_data, http_code);
+
+  if (http_code == 200) {
+    response.send(Pistache::Http::Code(http_code), response_data.dump());
+  } else if (http_code == 404) {
+    nlohmann::json problem_details = {};
+    problem_details["title"]       = "Not Found";
+    problem_details["status"]      = http_code;
+    problem_details["detail"] =
+        "Access and Mobility Policy Data not found for UE " + ueId;
+    response.send(Pistache::Http::Code(http_code), problem_details.dump());
+  } else {
+    response.send(
+        Pistache::Http::Code::Internal_Server_Error, "Internal error");
+  }
 }
 
 }  // namespace oai::udr::api

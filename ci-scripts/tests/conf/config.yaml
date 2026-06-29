@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: MIT
+#
+# Minimal UDR config for ci-scripts/tests/docker-compose.yaml.
+# Only the sections udr_config_yaml.cpp actually reads for the UDR NF:
+# log_level, register_nf, http_version, nfs (udr [+ default nrf]), database, udr.
+# NRF registration is disabled since this stack has no NRF -- the policy-data
+# endpoints under test don't need service discovery.
+
+log_level:
+  general: debug
+
+register_nf:
+  general: no
+
+http_version: 2
+
+nfs:
+  udr:
+    host: oai-udr
+    sbi:
+      port: 8080
+      api_version: v1
+      interface_name: eth0
+
+database:
+  host: mysql
+  user: test
+  type: mysql
+  password: test
+  database_name: oai_db
+  generate_random: true
+  connection_timeout: 300
+
+udr:
+  udr_name: oai-udr
