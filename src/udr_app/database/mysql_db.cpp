@@ -3145,7 +3145,7 @@ bool mysql_db::query_am_policy_data(
 
     // Validate and normalize response using OpenAPI model
     try {
-      oai::udr::model::AmPolicyData am_policy_model;
+      oai::_3gpp::model::AmPolicyData am_policy_model;
       from_json(policy_data, am_policy_model);
 
       // Serialize back to JSON - this ensures proper formatting per OpenAPI
@@ -3182,7 +3182,7 @@ bool mysql_db::query_am_policy_data(
 //------------------------------------------------------------------------------
 bool mysql_db::query_sm_policy_data(
     const std::string& ue_id, nlohmann::json& json_data,
-    const std::optional<oai::model::common::Snssai>& snssai,
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   // Check the connection with DB first
   if (!check_connection_status()) return false;
@@ -3343,7 +3343,7 @@ bool mysql_db::query_sm_policy_data(
 
     // Validate and normalize response using OpenAPI model
     try {
-      oai::udr::model::SmPolicyData sm_policy_model;
+      oai::_3gpp::model::SmPolicyData sm_policy_model;
       from_json(json_data, sm_policy_model);
 
       // Serialize back to JSON - this ensures proper formatting per OpenAPI
@@ -3457,7 +3457,7 @@ bool mysql_db::query_ue_policy_set(
 
     // Validate and normalize response using OpenAPI model
     try {
-      oai::udr::model::UePolicySet ue_policy_model;
+      oai::_3gpp::model::UePolicySet ue_policy_model;
       from_json(policy_set, ue_policy_model);
 
       // Serialize back to JSON - this ensures proper formatting per OpenAPI

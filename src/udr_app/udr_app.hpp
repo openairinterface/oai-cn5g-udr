@@ -397,14 +397,14 @@ class udr_app {
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] response_data: Response in Json format
    * @param [uint32_t&] code: HTTP response code
-   * @param [const std::optional<oai::model::common::Snssai>&] snssai: S-NSSAI
+   * @param [const std::optional<oai::_3gpp::model::Snssai>&] snssai: S-NSSAI
    * filter
    * @param [const std::optional<std::string>&] dnn: DNN filter
    * @return void
    */
   void handle_query_sm_policy_data(
       const std::string& ue_id, nlohmann::json& response_data, uint32_t& code,
-      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
       const std::optional<std::string>& dnn);
 
   /*

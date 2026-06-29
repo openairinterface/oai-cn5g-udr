@@ -126,7 +126,7 @@ class cassandra_db : public database_wrapper<cassandra_db> {
 
   bool query_sm_policy_data(
       const std::string& ue_id, nlohmann::json& json_data,
-      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
       const std::optional<std::string>& dnn) {
     return false;
   }

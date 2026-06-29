@@ -353,14 +353,14 @@ class database_wrapper_abstraction {
    * Query Session Management Policy Data
    * @param [const std::string&] ue_id: UE Identity
    * @param [nlohmann::json&] json_data: Data in Json format
-   * @param [const std::optional<oai::model::common::Snssai>&] snssai: S-NSSAI
+   * @param [const std::optional<oai::_3gpp::model::Snssai>&] snssai: S-NSSAI
    * filter
    * @param [const std::optional<std::string>&] dnn: DNN filter
    * @return true if successful, otherwise return false
    */
   virtual bool query_sm_policy_data(
       const std::string& ue_id, nlohmann::json& json_data,
-      const std::optional<oai::model::common::Snssai>& snssai,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
       const std::optional<std::string>& dnn) = 0;
 
   /*

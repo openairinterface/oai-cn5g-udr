@@ -855,7 +855,7 @@ void udr_app::handle_query_am_policy_data(
 //------------------------------------------------------------------------------
 void udr_app::handle_query_sm_policy_data(
     const std::string& ue_id, nlohmann::json& response_data, uint32_t& code,
-    const std::optional<oai::model::common::Snssai>& snssai,
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
     const std::optional<std::string>& dnn) {
   Logger::udr_app().info(
       "[UE Id %s] Retrieve the session management policy data", ue_id.c_str());
