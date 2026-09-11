@@ -27,7 +27,7 @@ namespace app {
 class udr_app {
  public:
   explicit udr_app(const std::string& config_file, udr_event& ev);
-  udr_app(udr_app const&) = delete;
+  udr_app(udr_app const&)        = delete;
   void operator=(udr_app const&) = delete;
 
   virtual ~udr_app();
