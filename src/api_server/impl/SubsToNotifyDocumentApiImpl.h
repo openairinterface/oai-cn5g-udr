@@ -25,7 +25,7 @@
 
 #include <SubsToNotifyDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include <vector>
 
@@ -49,7 +49,7 @@ class SubsToNotifyDocumentApiImpl
   void modifysubscription_data_subscription(
       const std::string& subsId,
       const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void query_subscription_data_subscriptions(
       const std::string& subsId, Pistache::Http::ResponseWriter& response);

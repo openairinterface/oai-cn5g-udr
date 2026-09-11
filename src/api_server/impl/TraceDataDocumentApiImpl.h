@@ -25,7 +25,7 @@
 
 #include <TraceDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "TraceData.h"
 #include "udr_app.hpp"
@@ -48,8 +48,8 @@ class TraceDataDocumentApiImpl : public oai::udr::api::TraceDataDocumentApi {
 
   void query_trace_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
 };
 

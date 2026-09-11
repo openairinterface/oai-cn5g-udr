@@ -25,7 +25,7 @@
 
 #include <Class5GVNGroupsInternalDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "5GVnGroupConfiguration.h"
 #include "udr_app.hpp"
@@ -48,7 +48,7 @@ class Class5GVNGroupsInternalDocumentApiImpl
   ~Class5GVNGroupsInternalDocumentApiImpl() {}
 
   void query5_g_vn_group_internal(
-      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
+      const std::optional<std::vector<std::string>>& internalGroupIds,
       Pistache::Http::ResponseWriter& response);
 };
 

@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "EeSubscription.h"
@@ -78,7 +78,7 @@ class EventExposureSubscriptionDocumentApi {
   virtual void modify_eesubscription(
       const std::string& ueId, const std::string& subsId,
       const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>

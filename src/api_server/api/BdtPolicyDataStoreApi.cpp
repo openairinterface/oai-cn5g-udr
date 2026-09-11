@@ -56,27 +56,27 @@ void BdtPolicyDataStoreApi::read_bdt_policy_data_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto bdtPolicyIdsQuery = request.query().get("bdt-policy-ids");
-  Pistache::Optional<std::vector<std::string>> bdtPolicyIds;
-  if (!bdtPolicyIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> bdtPolicyIds;
+  if (bdtPolicyIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(bdtPolicyIdsQuery.get(), valueQuery_instance)) {
-      bdtPolicyIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(bdtPolicyIdsQuery.value(), valueQuery_instance)) {
+      bdtPolicyIds = std::make_optional(valueQuery_instance);
     }
   }
   auto internalGroupIdsQuery = request.query().get("internal-group-ids");
-  Pistache::Optional<std::vector<std::string>> internalGroupIds;
-  if (!internalGroupIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> internalGroupIds;
+  if (internalGroupIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(internalGroupIdsQuery.get(), valueQuery_instance)) {
-      internalGroupIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(internalGroupIdsQuery.value(), valueQuery_instance)) {
+      internalGroupIds = std::make_optional(valueQuery_instance);
     }
   }
   auto supisQuery = request.query().get("supis");
-  Pistache::Optional<std::vector<std::string>> supis;
-  if (!supisQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> supis;
+  if (supisQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(supisQuery.get(), valueQuery_instance)) {
-      supis = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supisQuery.value(), valueQuery_instance)) {
+      supis = std::make_optional(valueQuery_instance);
     }
   }
 

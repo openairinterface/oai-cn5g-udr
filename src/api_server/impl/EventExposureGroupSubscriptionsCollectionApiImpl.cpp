@@ -41,7 +41,7 @@ void EventExposureGroupSubscriptionsCollectionApiImpl::
 void EventExposureGroupSubscriptionsCollectionApiImpl::
     query_ee_group_subscriptions(
         const std::string& ueGroupId,
-        const Pistache::Optional<std::string>& supportedFeatures,
+        const std::optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

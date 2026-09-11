@@ -25,7 +25,7 @@
 
 #include <IndividualAppliedBDTPolicyDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "BdtPolicyData.h"
 #include "BdtPolicyDataPatch.h"

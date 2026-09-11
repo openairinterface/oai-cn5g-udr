@@ -95,35 +95,35 @@ void InfluenceDataSubscriptionsCollectionApi::
         Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto dnnQuery = request.query().get("dnn");
-  Pistache::Optional<std::string> dnn;
-  if (!dnnQuery.isEmpty()) {
+  std::optional<std::string> dnn;
+  if (dnnQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(dnnQuery.get(), valueQuery_instance)) {
-      dnn = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(dnnQuery.value(), valueQuery_instance)) {
+      dnn = std::make_optional(valueQuery_instance);
     }
   }
   auto snssaiQuery = request.query().get("snssai");
-  Pistache::Optional<oai::_3gpp::model::Snssai> snssai;
-  if (!snssaiQuery.isEmpty()) {
+  std::optional<oai::_3gpp::model::Snssai> snssai;
+  if (snssaiQuery.has_value()) {
     //        Snssai valueQuery_instance;
-    //        if(fromStringValue(snssaiQuery.get(), valueQuery_instance)){
-    //            snssai = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(snssaiQuery.value(), valueQuery_instance)){
+    //            snssai = std::make_optional(valueQuery_instance);
     //        }
   }
   auto internalGroupIdQuery = request.query().get("internal-Group-Id");
-  Pistache::Optional<std::string> internalGroupId;
-  if (!internalGroupIdQuery.isEmpty()) {
+  std::optional<std::string> internalGroupId;
+  if (internalGroupIdQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(internalGroupIdQuery.get(), valueQuery_instance)) {
-      internalGroupId = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(internalGroupIdQuery.value(), valueQuery_instance)) {
+      internalGroupId = std::make_optional(valueQuery_instance);
     }
   }
   auto supiQuery = request.query().get("supi");
-  Pistache::Optional<std::string> supi;
-  if (!supiQuery.isEmpty()) {
+  std::optional<std::string> supi;
+  if (supiQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(supiQuery.get(), valueQuery_instance)) {
-      supi = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supiQuery.value(), valueQuery_instance)) {
+      supi = std::make_optional(valueQuery_instance);
     }
   }
 

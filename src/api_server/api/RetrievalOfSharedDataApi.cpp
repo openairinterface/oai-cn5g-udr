@@ -57,19 +57,19 @@ void RetrievalOfSharedDataApi::get_shared_data_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto sharedDataIdsQuery = request.query().get("shared-data-ids");
-  Pistache::Optional<std::vector<std::string>> sharedDataIds;
-  if (!sharedDataIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> sharedDataIds;
+  if (sharedDataIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(sharedDataIdsQuery.get(), valueQuery_instance)) {
-      sharedDataIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(sharedDataIdsQuery.value(), valueQuery_instance)) {
+      sharedDataIds = std::make_optional(valueQuery_instance);
     }
   }
   auto supportedFeaturesQuery = request.query().get("supportedFeatures");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(supportedFeaturesQuery.get(), valueQuery_instance)) {
-      supportedFeatures = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
+      supportedFeatures = std::make_optional(valueQuery_instance);
     }
   }
 

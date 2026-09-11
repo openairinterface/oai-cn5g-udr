@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -70,11 +70,11 @@ class IPTVConfigurationDataStoreApi {
   /// element identifies a group of users. (optional, default to
   /// std::vector&lt;std::string&gt;())</param>
   virtual void read_iptv_congifuration_data(
-      const Pistache::Optional<std::vector<std::string>>& configIds,
-      const Pistache::Optional<std::vector<std::string>>& dnns,
-      const Pistache::Optional<std::vector<oai::_3gpp::model::Snssai>>& snssais,
-      const Pistache::Optional<std::vector<std::string>>& supis,
-      const Pistache::Optional<std::vector<std::string>>& interGroupIds,
+      const std::optional<std::vector<std::string>>& configIds,
+      const std::optional<std::vector<std::string>>& dnns,
+      const std::optional<std::vector<oai::_3gpp::model::Snssai>>& snssais,
+      const std::optional<std::vector<std::string>>& supis,
+      const std::optional<std::vector<std::string>>& interGroupIds,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

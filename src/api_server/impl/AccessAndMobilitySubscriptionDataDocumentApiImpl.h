@@ -25,7 +25,7 @@
 
 #include <AccessAndMobilitySubscriptionDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "AccessAndMobilitySubscriptionData.h"
 #include "udr_app.hpp"
@@ -48,10 +48,10 @@ class AccessAndMobilitySubscriptionDataDocumentApiImpl
 
   void query_am_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
 };
 

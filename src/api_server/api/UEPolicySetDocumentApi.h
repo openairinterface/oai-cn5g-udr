@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -83,7 +83,7 @@ class UEPolicySetDocumentApi {
   /// <param name="suppFeat">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void read_ue_policy_set(
-      const std::string& ueId, const Pistache::Optional<std::string>& suppFeat,
+      const std::string& ueId, const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>

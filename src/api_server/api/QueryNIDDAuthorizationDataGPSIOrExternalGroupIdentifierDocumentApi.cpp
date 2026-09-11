@@ -73,29 +73,30 @@ void QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi::
 
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
-  Pistache::Optional<oai::_3gpp::model::Snssai> singleNssai;
-  if (!singleNssaiQuery.isEmpty()) {
+  std::optional<oai::_3gpp::model::Snssai> singleNssai;
+  if (singleNssaiQuery.has_value()) {
     //        Snssai valueQuery_instance;
-    //        if(fromStringValue(singleNssaiQuery.get(), valueQuery_instance)){
-    //            singleNssai = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(singleNssaiQuery.value(),
+    //        valueQuery_instance)){
+    //            singleNssai = std::make_optional(valueQuery_instance);
     //        }
   }
   auto dnnQuery = request.query().get("dnn");
-  Pistache::Optional<std::string> dnn;
-  if (!dnnQuery.isEmpty()) {
+  std::optional<std::string> dnn;
+  if (dnnQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(dnnQuery.get(), valueQuery_instance)) {
-      dnn = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(dnnQuery.value(), valueQuery_instance)) {
+      dnn = std::make_optional(valueQuery_instance);
     }
   }
   auto mtcProviderInformationQuery =
       request.query().get("mtc-provider-information");
-  Pistache::Optional<std::string> mtcProviderInformation;
-  if (!mtcProviderInformationQuery.isEmpty()) {
+  std::optional<std::string> mtcProviderInformation;
+  if (mtcProviderInformationQuery.has_value()) {
     std::string valueQuery_instance;
     if (fromStringValue(
-            mtcProviderInformationQuery.get(), valueQuery_instance)) {
-      mtcProviderInformation = Pistache::Some(valueQuery_instance);
+            mtcProviderInformationQuery.value(), valueQuery_instance)) {
+      mtcProviderInformation = std::make_optional(valueQuery_instance);
     }
   }
 

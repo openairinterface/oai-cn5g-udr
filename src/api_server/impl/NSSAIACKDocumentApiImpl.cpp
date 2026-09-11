@@ -30,7 +30,7 @@ NSSAIACKDocumentApiImpl::NSSAIACKDocumentApiImpl(
 
 void NSSAIACKDocumentApiImpl::query_nssai_ack(
     const std::string& ueId,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
