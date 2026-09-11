@@ -87,19 +87,19 @@ void OperatorSpecificDataDocumentApi::read_operator_specific_data_handler(
 
   // Getting the query params
   auto fieldsQuery = request.query().get("fields");
-  Pistache::Optional<std::vector<std::string>> fields;
-  if (!fieldsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> fields;
+  if (fieldsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(fieldsQuery.get(), valueQuery_instance)) {
-      fields = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(fieldsQuery.value(), valueQuery_instance)) {
+      fields = std::make_optional(valueQuery_instance);
     }
   }
   auto suppFeatQuery = request.query().get("supp-feat");
-  Pistache::Optional<std::string> suppFeat;
-  if (!suppFeatQuery.isEmpty()) {
+  std::optional<std::string> suppFeat;
+  if (suppFeatQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(suppFeatQuery.get(), valueQuery_instance)) {
-      suppFeat = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(suppFeatQuery.value(), valueQuery_instance)) {
+      suppFeat = std::make_optional(valueQuery_instance);
     }
   }
 

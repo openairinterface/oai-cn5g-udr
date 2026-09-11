@@ -39,7 +39,7 @@ void ApplicationDataSubscriptionsCollectionApiImpl::
 }
 void ApplicationDataSubscriptionsCollectionApiImpl::
     read_application_data_change_subscriptions(
-        const Pistache::Optional<DataFilter>& dataFilter,
+        const std::optional<DataFilter>& dataFilter,
         Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

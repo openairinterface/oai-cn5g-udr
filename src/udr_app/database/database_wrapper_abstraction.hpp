@@ -22,8 +22,8 @@ namespace oai::udr::app {
 
 class database_wrapper_abstraction {
  public:
-  database_wrapper_abstraction(){};
-  virtual ~database_wrapper_abstraction(){};
+  database_wrapper_abstraction() {};
+  virtual ~database_wrapper_abstraction() {};
   // virtual std::unique_ptr<database_wrapper_abstraction> clone() const = 0;
 
   /*

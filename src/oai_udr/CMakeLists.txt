@@ -4,6 +4,9 @@
 
 cmake_minimum_required (VERSION 3.0.2)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 ###########################################
 # macros to define options as there is numerous options in oai
 ################################################
@@ -236,7 +239,6 @@ add_boolean_option( LOG_OAI                         False    "Thread safe loggin
 pkg_search_module(CONFIG REQUIRED libconfig++)
 include_directories(${CONFIG_INCLUDE_DIRS})
 
-set(THREADS_PREFER_PTHREAD_FLAG ON)
 #find_package(Threads REQUIRED)
 
 ###################################

@@ -73,19 +73,19 @@ void SubsToNotifyCollectionApi::query_subs_to_notify_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto ueIdQuery = request.query().get("ue-id");
-  Pistache::Optional<std::string> ueId;
-  if (!ueIdQuery.isEmpty()) {
+  std::optional<std::string> ueId;
+  if (ueIdQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(ueIdQuery.get(), valueQuery_instance)) {
-      ueId = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(ueIdQuery.value(), valueQuery_instance)) {
+      ueId = std::make_optional(valueQuery_instance);
     }
   }
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(supportedFeaturesQuery.get(), valueQuery_instance)) {
-      supportedFeatures = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
+      supportedFeatures = std::make_optional(valueQuery_instance);
     }
   }
 
@@ -110,37 +110,37 @@ void SubsToNotifyCollectionApi::
         Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto ueIdQuery = request.query().get("ue-id");
-  Pistache::Optional<std::string> ueId;
-  if (!ueIdQuery.isEmpty()) {
+  std::optional<std::string> ueId;
+  if (ueIdQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(ueIdQuery.get(), valueQuery_instance)) {
-      ueId = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(ueIdQuery.value(), valueQuery_instance)) {
+      ueId = std::make_optional(valueQuery_instance);
     }
   }
   auto nfInstanceIdQuery = request.query().get("nf-instance-id");
-  Pistache::Optional<std::string> nfInstanceId;
-  if (!nfInstanceIdQuery.isEmpty()) {
+  std::optional<std::string> nfInstanceId;
+  if (nfInstanceIdQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(nfInstanceIdQuery.get(), valueQuery_instance)) {
-      nfInstanceId = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(nfInstanceIdQuery.value(), valueQuery_instance)) {
+      nfInstanceId = std::make_optional(valueQuery_instance);
     }
   }
   auto deleteAllNfsQuery = request.query().get("delete-all-nfs");
-  Pistache::Optional<bool> deleteAllNfs;
-  if (!deleteAllNfsQuery.isEmpty()) {
+  std::optional<bool> deleteAllNfs;
+  if (deleteAllNfsQuery.has_value()) {
     bool valueQuery_instance;
-    if (fromStringValue(deleteAllNfsQuery.get(), valueQuery_instance)) {
-      deleteAllNfs = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(deleteAllNfsQuery.value(), valueQuery_instance)) {
+      deleteAllNfs = std::make_optional(valueQuery_instance);
     }
   }
   auto implicitUnsubscribeIndicationQuery =
       request.query().get("implicit-unsubscribe-indication");
-  Pistache::Optional<bool> implicitUnsubscribeIndication;
-  if (!implicitUnsubscribeIndicationQuery.isEmpty()) {
+  std::optional<bool> implicitUnsubscribeIndication;
+  if (implicitUnsubscribeIndicationQuery.has_value()) {
     bool valueQuery_instance;
     if (fromStringValue(
-            implicitUnsubscribeIndicationQuery.get(), valueQuery_instance)) {
-      implicitUnsubscribeIndication = Pistache::Some(valueQuery_instance);
+            implicitUnsubscribeIndicationQuery.value(), valueQuery_instance)) {
+      implicitUnsubscribeIndication = std::make_optional(valueQuery_instance);
     }
   }
 

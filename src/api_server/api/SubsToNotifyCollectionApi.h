@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -69,8 +69,8 @@ class SubsToNotifyCollectionApi {
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void query_subs_to_notify(
-      const Pistache::Optional<std::string>& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& ueId,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
@@ -86,10 +86,10 @@ class SubsToNotifyCollectionApi {
   /// name="implicitUnsubscribeIndication">Implicit Unsubscribe Indication
   /// (optional, default to false)</param>
   virtual void remove_multiple_subscription_data_subscriptions(
-      const Pistache::Optional<std::string>& ueId,
-      const Pistache::Optional<std::string>& nfInstanceId,
-      const Pistache::Optional<bool>& deleteAllNfs,
-      const Pistache::Optional<bool>& implicitUnsubscribeIndication,
+      const std::optional<std::string>& ueId,
+      const std::optional<std::string>& nfInstanceId,
+      const std::optional<bool>& deleteAllNfs,
+      const std::optional<bool>& implicitUnsubscribeIndication,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>

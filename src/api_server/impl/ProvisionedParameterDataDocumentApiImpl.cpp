@@ -32,7 +32,7 @@ ProvisionedParameterDataDocumentApiImpl::
 void ProvisionedParameterDataDocumentApiImpl::modify_pp_data(
     const std::string& ueId,
     const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

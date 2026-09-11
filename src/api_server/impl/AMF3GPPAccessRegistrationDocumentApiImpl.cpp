@@ -33,7 +33,7 @@ AMF3GPPAccessRegistrationDocumentApiImpl::
 void AMF3GPPAccessRegistrationDocumentApiImpl::amf_context3gpp(
     const std::string& ueId,
     const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   // TODO: verify
   nlohmann::json j, j1;
@@ -66,8 +66,8 @@ void AMF3GPPAccessRegistrationDocumentApiImpl::create_amf_context3gpp(
 }
 void AMF3GPPAccessRegistrationDocumentApiImpl::query_amf_context3gpp(
     const std::string& ueId,
-    const Pistache::Optional<std::vector<std::string>>& fields,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::vector<std::string>>& fields,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};

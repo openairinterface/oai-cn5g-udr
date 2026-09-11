@@ -61,11 +61,11 @@ void Class5GVNGroupsInternalDocumentApi::query5_g_vn_group_internal_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto internalGroupIdsQuery = request.query().get("internal-group-ids");
-  Pistache::Optional<std::vector<std::string>> internalGroupIds;
-  if (!internalGroupIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> internalGroupIds;
+  if (internalGroupIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(internalGroupIdsQuery.get(), valueQuery_instance)) {
-      internalGroupIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(internalGroupIdsQuery.value(), valueQuery_instance)) {
+      internalGroupIds = std::make_optional(valueQuery_instance);
     }
   }
 

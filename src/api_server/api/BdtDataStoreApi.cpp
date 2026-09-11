@@ -55,19 +55,19 @@ void BdtDataStoreApi::read_bdt_data_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto bdtRefIdsQuery = request.query().get("bdt-ref-ids");
-  Pistache::Optional<std::vector<std::string>> bdtRefIds;
-  if (!bdtRefIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> bdtRefIds;
+  if (bdtRefIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(bdtRefIdsQuery.get(), valueQuery_instance)) {
-      bdtRefIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(bdtRefIdsQuery.value(), valueQuery_instance)) {
+      bdtRefIds = std::make_optional(valueQuery_instance);
     }
   }
   auto suppFeatQuery = request.query().get("supp-feat");
-  Pistache::Optional<std::string> suppFeat;
-  if (!suppFeatQuery.isEmpty()) {
+  std::optional<std::string> suppFeat;
+  if (suppFeatQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(suppFeatQuery.get(), valueQuery_instance)) {
-      suppFeat = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(suppFeatQuery.value(), valueQuery_instance)) {
+      suppFeat = std::make_optional(valueQuery_instance);
     }
   }
 

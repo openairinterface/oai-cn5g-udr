@@ -4,8 +4,8 @@
 
 #---------------------------------------------------------------------
 #
-# Dockerfile for the Open-Air-Interface UDR service
-#   Valid for Valid for Rocky Linux 9.+
+# Dockerfile for the OpenAirInterface UDR service
+#   Valid for CentOS Stream 10
 #
 #---------------------------------------------------------------------
 
@@ -13,14 +13,17 @@
 # BUILDER IMAGE
 #---------------------------------------------------------------------
 
-FROM docker.io/rockylinux:9 AS oai-udr-builder
+FROM quay.io/centos/centos:stream10 AS oai-udr-builder
 
 ENV IS_DOCKERFILE=1
 
-RUN dnf install 'dnf-command(config-manager)' -y && \
-    dnf install epel-release -y && crb enable && \
+# meson and ninja-build come from CRB; libconfig-devel, libidn-devel and the
+# mongo libraries come from EPEL. The other build_udr dependencies are in
+# BaseOS/AppStream.
+RUN dnf config-manager --set-enabled crb && \
+    dnf install epel-release -y && \
     dnf update -y && \
-    # here just to display the current version
+    # Log the exact OS release used for the build.
     cat /etc/os-release && \
     dnf install -y \
         psmisc \
@@ -29,88 +32,89 @@ RUN dnf install 'dnf-command(config-manager)' -y && \
         libasan \
         wget \
         file && \
+    # Libraries built from source are installed under /usr/local, which is not
+    # on the default loader path on EL. This is also needed for the ldd check.
     echo "/usr/local/lib" > /etc/ld.so.conf.d/local-lib.conf && \
     echo "/usr/local/lib64" >> /etc/ld.so.conf.d/local-lib.conf
 
-# Some GIT configuration command quite useful
+# Git configuration
 RUN git config --global https.postBuffer 123289600 && \
     git config --global http.sslverify false
 
-# Copying source code
+# Copy source code
 WORKDIR /openair-udr
 COPY . /openair-udr
 
-# wait for it
-WORKDIR /
-RUN git clone https://github.com/vishnubob/wait-for-it.git
-
-# Installing and Building UDR
+# Install and Build UDR
 WORKDIR /openair-udr/build/scripts
 RUN ./build_udr --install-deps --force
-# Patching the CMakefile to link mysqlclient
-RUN sed -i -e "s@-lmysqlclient@-L/usr/lib64/mysql -lmysqlclient@" ../../src/oai_udr/CMakeLists.txt && \
-    ./build_udr --clean --Verbose --build-type Release --jobs && \
+RUN ./build_udr --clean --Verbose --build-type Release --jobs && \
     ldd /openair-udr/build/udr/build/udr && \
     mv /openair-udr/build/udr/build/udr /openair-udr/build/udr/build/oai_udr
 
-FROM mikefarah/yq:latest as yq-source
+FROM mikefarah/yq:latest AS yq-source
 
 #---------------------------------------------------------------------
 # TARGET IMAGE
 #---------------------------------------------------------------------
-FROM docker.io/rockylinux:9-minimal as oai-udr
+FROM quay.io/centos/centos:stream10-minimal AS oai-udr
 ENV TZ=Europe/Paris
 
-# We install some debug tools for the moment in addition of mandatory libraries
-RUN microdnf update -y && \
+# The mongo libraries come from EPEL; the rest are in BaseOS/AppStream.
+RUN microdnf install -y epel-release && \
+    microdnf update -y && \
     microdnf install -y \
-# Debug Tools that are not mandatory
+# Timezone data, and debugging/networking utilities
       tzdata \
       procps-ng \
       psmisc \
       net-tools \
       iputils \
       tcpdump \
-# Mandatory packages for the NF to run
-#      libasan \
+# Runtime dependencies of oai_udr
       libicu \
       boost \
-      utf8proc \
       libevent \
-      findutils \
-      libconfig && \
+      nettle \
+      gmp \
+      libconfig \
+      mariadb-connector-c \
+      utf8proc \
+      libbson \
+      mongo-c-driver-libs \
+      libmongocrypt \
+      snappy \
+      findutils && \
     microdnf clean all -y && \
     rm -rf /var/cache/yum /var/cache/dnf
 
-# Copying executable and generated libraries
+# Copy executable and generated libraries
 WORKDIR /openair-udr/bin
 COPY --from=oai-udr-builder \
     /openair-udr/build/udr/build/oai_udr \
     /openair-udr/scripts/healthcheck.sh \
-    /wait-for-it/wait-for-it.sh \
     ./
 COPY --from=yq-source /usr/bin/yq /usr/bin
 
+# Only the libraries built from source; the rest come from the packages above.
+# pistache (meson) and nghttp2 (autotools) install into lib, the CMake-built
+# spdlog, fmt, yaml-cpp, cpr, mongocxx and bsoncxx into lib64.
 COPY --from=oai-udr-builder \
-# Copying only the packages built from source
-    /usr/local/lib64/libpistache.so.0 \
-    /usr/local/lib/libnghttp2_asio.so \
+    /usr/local/lib/libpistache.so.0.4* \
+    /usr/local/lib/libnghttp2.so.14 \
     /usr/local/lib/libnghttp2_asio.so.1 \
-    /usr/local/lib64/libspdlog.so \
-    /usr/local/lib64/libfmt.so \
-    /usr/local/lib64/libyaml-cpp.so.0.* \
+    /usr/local/lib64/libspdlog.so.1.17 \
+    /usr/local/lib64/libfmt.so.9 \
+    /usr/local/lib64/libyaml-cpp.so.0.8 \
     /usr/local/lib64/libcpr.so.1 \
-    /usr/local/lib64/libmongocxx.so._noabi \
-    /usr/local/lib64/libbsoncxx.so._noabi \
-    /usr/lib64/mysql/libmysqlclient.so.21 \
-    /lib64/libmongoc-1.0.so.0 \
-    /lib64/libbson-1.0.so.0 \
-    /lib64/libsnappy.so.1 \
-    /lib64/libmongocrypt.so.0 \
+    /usr/local/lib64/libmongocxx1.so.1 \
+    /usr/local/lib64/libbsoncxx1.so.1 \
     /usr/lib64/
 
 RUN ldconfig && \
-    ldd /openair-udr/bin/oai_udr
+    ldd /openair-udr/bin/oai_udr && \
+    # ldd exits 0 even when a library is missing, so check its output
+    ! ldd /openair-udr/bin/oai_udr | grep -q 'not found'
 
 WORKDIR /openair-udr/etc
 COPY --from=oai-udr-builder \
@@ -118,9 +122,10 @@ COPY --from=oai-udr-builder \
 
 WORKDIR /openair-udr
 
-# expose ports
+# Expose ports
 EXPOSE 80/tcp
-# healthcheck
+
+# Configure healthcheck
 HEALTHCHECK --interval=10s \
             --timeout=15s \
             --retries=6 \

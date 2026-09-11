@@ -25,7 +25,7 @@
 
 #include <EventExposureGroupSubscriptionsCollectionApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "EeSubscription.h"
 #include "udr_app.hpp"
@@ -52,7 +52,7 @@ class EventExposureGroupSubscriptionsCollectionApiImpl
       Pistache::Http::ResponseWriter& response);
   void query_ee_group_subscriptions(
       const std::string& ueGroupId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

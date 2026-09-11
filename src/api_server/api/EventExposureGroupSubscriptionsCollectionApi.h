@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -80,7 +80,7 @@ class EventExposureGroupSubscriptionsCollectionApi {
   /// &quot;&quot;)</param>
   virtual void query_ee_group_subscriptions(
       const std::string& ueGroupId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

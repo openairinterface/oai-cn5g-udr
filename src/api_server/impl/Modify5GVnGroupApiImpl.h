@@ -25,7 +25,7 @@
 
 #include <Modify5GVnGroupApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include <vector>
 
@@ -49,7 +49,7 @@ class Modify5GVnGroupApiImpl : public oai::udr::api::Modify5GVnGroupApi {
   void modify5_g_vn_group(
       const std::string& externalGroupId,
       const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

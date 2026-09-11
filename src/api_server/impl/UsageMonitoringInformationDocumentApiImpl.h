@@ -25,7 +25,7 @@
 
 #include <UsageMonitoringInformationDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "UsageMonData.h"
 #include "udr_app.hpp"
@@ -56,7 +56,7 @@ class UsageMonitoringInformationDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void read_usage_monitoring_information(
       const std::string& ueId, const std::string& usageMonId,
-      const Pistache::Optional<std::string>& suppFeat,
+      const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response);
 };
 
