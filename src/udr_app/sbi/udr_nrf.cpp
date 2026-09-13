@@ -61,7 +61,7 @@ void udr_nrf::generate_udr_profile() {
   udr_nf_profile.set_nf_heartBeat_timer(50);
   udr_nf_profile.set_nf_priority(1);
   udr_nf_profile.set_nf_capacity(100);
-  // udr_nf_profile.set_fqdn(udr_cfg.fqdn);
+  udr_nf_profile.set_nf_fqdn(udr_cfg.udr_name);
   udr_nf_profile.add_nf_ipv4_addresses(udr_cfg.nudr.addr4);
 
   // UDR info (Hardcoded for now)
