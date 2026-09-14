@@ -63,6 +63,7 @@ ENV TZ=Europe/Paris
 # The mongo libraries come from EPEL; the rest are in BaseOS/AppStream.
 RUN microdnf install -y epel-release && \
     microdnf update -y && \
+    microdnf clean all && \
     microdnf install -y \
 # Timezone data, and debugging/networking utilities
       tzdata \
