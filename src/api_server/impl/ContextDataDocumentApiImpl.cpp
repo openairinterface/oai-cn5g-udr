@@ -31,7 +31,7 @@ ContextDataDocumentApiImpl::ContextDataDocumentApiImpl(
       m_address(address) {}
 
 // void ContextDataDocumentApiImpl::query_context_data(const std::string &ueId,
-// const Pistache::Optional<Set<ContextDataSetName>> &contextDatasetNames,
+// const std::optional<Set<ContextDataSetName>> &contextDatasetNames,
 // Pistache::Http::ResponseWriter &response) {
 //    response.send(Pistache::Http::Code::Ok, "This API has not been implemented
 //    yet!\n");

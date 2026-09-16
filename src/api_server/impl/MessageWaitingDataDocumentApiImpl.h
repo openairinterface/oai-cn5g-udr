@@ -25,7 +25,7 @@
 
 #include <MessageWaitingDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include <vector>
 
@@ -59,8 +59,8 @@ class MessageWaitingDataDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void query_message_waiting_data(
       const std::string& ueId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

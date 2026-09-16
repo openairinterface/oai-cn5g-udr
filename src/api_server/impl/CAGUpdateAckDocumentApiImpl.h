@@ -25,7 +25,7 @@
 
 #include <CAGUpdateAckDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "CagAckData.h"
 #include "udr_app.hpp"
@@ -49,7 +49,7 @@ class CAGUpdateAckDocumentApiImpl
 
   void create_cag_update_ack(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       const CagAckData& cagAckData, Pistache::Http::ResponseWriter& response);
 };
 

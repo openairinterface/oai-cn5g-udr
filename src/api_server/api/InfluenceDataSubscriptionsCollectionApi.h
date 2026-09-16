@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -80,10 +80,10 @@ class InfluenceDataSubscriptionsCollectionApi {
   /// group of users. (optional, default to &quot;&quot;)</param> <param
   /// name="supi">Identifies a user. (optional, default to &quot;&quot;)</param>
   virtual void read_influence_data_subscriptions(
-      const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<oai::_3gpp::model::Snssai>& snssai,
-      const Pistache::Optional<std::string>& internalGroupId,
-      const Pistache::Optional<std::string>& supi,
+      const std::optional<std::string>& dnn,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
+      const std::optional<std::string>& internalGroupId,
+      const std::optional<std::string>& supi,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

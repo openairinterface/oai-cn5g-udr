@@ -25,7 +25,7 @@
 
 #include <GroupIdentifiersApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "GroupIdentifiers.h"
 #include "udr_app.hpp"
@@ -47,10 +47,10 @@ class GroupIdentifiersApiImpl : public oai::udr::api::GroupIdentifiersApi {
   ~GroupIdentifiersApiImpl() {}
 
   void get_group_identifiers(
-      const Pistache::Optional<std::string>& extGroupId,
-      const Pistache::Optional<std::string>& intGroupId,
-      const Pistache::Optional<bool>& ueIdInd,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& extGroupId,
+      const std::optional<std::string>& intGroupId,
+      const std::optional<bool>& ueIdInd,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

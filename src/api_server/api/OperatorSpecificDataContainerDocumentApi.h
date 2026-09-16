@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -72,7 +72,7 @@ class OperatorSpecificDataContainerDocumentApi {
   virtual void modify_oper_spec_data(
       const std::string& ueId,
       const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
@@ -92,10 +92,10 @@ class OperatorSpecificDataContainerDocumentApi {
   /// &quot;&quot;)</param>
   virtual void query_oper_spec_data(
       const std::string& ueId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

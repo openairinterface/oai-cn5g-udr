@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -99,7 +99,7 @@ class UsageMonitoringInformationDocumentApi {
   /// &quot;&quot;)</param>
   virtual void read_usage_monitoring_information(
       const std::string& ueId, const std::string& usageMonId,
-      const Pistache::Optional<std::string>& suppFeat,
+      const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

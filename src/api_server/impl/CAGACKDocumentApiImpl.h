@@ -25,7 +25,7 @@
 
 #include <CAGACKDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "CagAckData.h"
 #include "udr_app.hpp"
@@ -48,7 +48,7 @@ class CAGACKDocumentApiImpl : public oai::udr::api::CAGACKDocumentApi {
 
   void query_cag_ack(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

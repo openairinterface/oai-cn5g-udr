@@ -32,10 +32,10 @@ SessionManagementPolicyDataDocumentApiImpl::
 void SessionManagementPolicyDataDocumentApiImpl::
     read_session_management_policy_data(
         const std::string& ueId,
-        const Pistache::Optional<oai::_3gpp::model::Snssai>& snssai,
-        const Pistache::Optional<std::string>& dnn,
-        const Pistache::Optional<std::vector<std::string>>& fields,
-        const Pistache::Optional<std::string>& suppFeat,
+        const std::optional<oai::_3gpp::model::Snssai>& snssai,
+        const std::optional<std::string>& dnn,
+        const std::optional<std::vector<std::string>>& fields,
+        const std::optional<std::string>& suppFeat,
         Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

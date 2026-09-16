@@ -25,7 +25,7 @@ class udr_nrf {
   // timer_id_t timer_udr_heartbeat;
 
   udr_nrf(udr_event& ev);
-  udr_nrf(udr_nrf const&) = delete;
+  udr_nrf(udr_nrf const&)        = delete;
   void operator=(udr_nrf const&) = delete;
 
   void start();

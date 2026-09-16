@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -71,11 +71,11 @@ class AuthenticationSubscriptionDocumentApi {
   virtual void modify_authentication_subscription(
       const std::string& ueId,
       const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
   virtual void read_authentication_subscription(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

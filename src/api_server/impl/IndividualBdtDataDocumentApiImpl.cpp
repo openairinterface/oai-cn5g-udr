@@ -44,7 +44,7 @@ void IndividualBdtDataDocumentApiImpl::delete_individual_bdt_data(
 }
 void IndividualBdtDataDocumentApiImpl::read_individual_bdt_data(
     const std::string& bdtReferenceId,
-    const Pistache::Optional<std::string>& suppFeat,
+    const std::optional<std::string>& suppFeat,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

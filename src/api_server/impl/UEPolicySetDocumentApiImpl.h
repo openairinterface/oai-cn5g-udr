@@ -25,7 +25,7 @@
 
 #include <UEPolicySetDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "UePolicySet.h"
 #include "UePolicySetPatch.h"
@@ -52,7 +52,7 @@ class UEPolicySetDocumentApiImpl
       const std::string& ueId, const UePolicySet& uePolicySet,
       Pistache::Http::ResponseWriter& response);
   void read_ue_policy_set(
-      const std::string& ueId, const Pistache::Optional<std::string>& suppFeat,
+      const std::string& ueId, const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response);
   void update_ue_policy_set(
       const std::string& ueId, const UePolicySetPatch& uePolicySetPatch,

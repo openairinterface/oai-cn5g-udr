@@ -43,8 +43,8 @@ void SMSF3GPPRegistrationDocumentApiImpl::delete_smsf_context3gpp(
 }
 void SMSF3GPPRegistrationDocumentApiImpl::query_smsf_context3gpp(
     const std::string& ueId,
-    const Pistache::Optional<std::vector<std::string>>& fields,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::vector<std::string>>& fields,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

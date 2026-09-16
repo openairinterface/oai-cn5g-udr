@@ -33,10 +33,10 @@ SMFSelectionSubscriptionDataDocumentApiImpl::
 
 void SMFSelectionSubscriptionDataDocumentApiImpl::query_smf_select_data(
     const std::string& ueId, const std::string& servingPlmnId,
-    const Pistache::Optional<std::vector<std::string>>& fields,
-    const Pistache::Optional<std::string>& supportedFeatures,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    const std::optional<std::vector<std::string>>& fields,
+    const std::optional<std::string>& supportedFeatures,
+    const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};

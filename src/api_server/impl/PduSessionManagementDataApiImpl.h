@@ -25,7 +25,7 @@
 
 #include <PduSessionManagementDataApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "Ipv6Prefix.h"
 #include "PduSessionManagementData.h"
@@ -54,11 +54,11 @@ class PduSessionManagementDataApiImpl
       Pistache::Http::ResponseWriter& response);
   void query_session_management_data(
       const std::string& ueId, const int32_t& pduSessionId,
-      const Pistache::Optional<std::string>& ipv4Addr,
-      const Pistache::Optional<oai::_3gpp::model::Ipv6Prefix>& ipv6Prefix,
-      const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& suppFeat,
+      const std::optional<std::string>& ipv4Addr,
+      const std::optional<oai::_3gpp::model::Ipv6Prefix>& ipv6Prefix,
+      const std::optional<std::string>& dnn,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response);
 };
 

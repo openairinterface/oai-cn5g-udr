@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -61,7 +61,7 @@ class Class5GVNGroupsInternalDocumentApi {
   /// </remarks>
   /// <param name="internalGroupIds">List of Internal Group IDs</param>
   virtual void query5_g_vn_group_internal(
-      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
+      const std::optional<std::vector<std::string>>& internalGroupIds,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

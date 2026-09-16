@@ -48,7 +48,7 @@ void SDMSubscriptionsCollectionApiImpl::create_sdm_subscriptions(
 }
 void SDMSubscriptionsCollectionApiImpl::querysdmsubscriptions(
     const std::string& ueId,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};

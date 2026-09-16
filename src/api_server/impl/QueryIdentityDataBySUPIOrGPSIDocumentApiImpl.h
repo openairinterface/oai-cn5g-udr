@@ -25,7 +25,7 @@
 
 #include <QueryIdentityDataBySUPIOrGPSIDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "AppPortId.h"
 #include "IdentityData.h"
@@ -49,9 +49,9 @@ class QueryIdentityDataBySUPIOrGPSIDocumentApiImpl
   ~QueryIdentityDataBySUPIOrGPSIDocumentApiImpl() {}
 
   void get_identity_data(
-      const std::string& ueId, const Pistache::Optional<AppPortId>& appPortId,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::string& ueId, const std::optional<AppPortId>& appPortId,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
 };
 

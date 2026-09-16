@@ -25,7 +25,7 @@
 
 #include <BdtDataStoreApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "BdtData.h"
 #include "udr_app.hpp"
@@ -47,8 +47,8 @@ class BdtDataStoreApiImpl : public oai::udr::api::BdtDataStoreApi {
   ~BdtDataStoreApiImpl() {}
 
   void read_bdt_data(
-      const Pistache::Optional<std::vector<std::string>>& bdtRefIds,
-      const Pistache::Optional<std::string>& suppFeat,
+      const std::optional<std::vector<std::string>>& bdtRefIds,
+      const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response);
 };
 

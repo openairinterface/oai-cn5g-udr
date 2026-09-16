@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -71,11 +71,11 @@ class QueryNIDDAuthorizationDataGPSIOrExternalGroupIdentifierDocumentApi {
   /// RFC 7232, 3.3 (optional, default to &quot;&quot;)</param>
   virtual void get_nidd_au_data(
       const std::string& ueId,
-      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
-      const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<std::string>& mtcProviderInformation,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<oai::_3gpp::model::Snssai>& singleNssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<std::string>& mtcProviderInformation,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

@@ -65,12 +65,12 @@ void ContextDataDocumentApi::query_context_data_handler(
 
   // Getting the query params
   auto contextDatasetNamesQuery = request.query().get("context-dataset-names");
-  Pistache::Optional<std::vector<ContextDataSetName>> contextDatasetNames;
-  if (!contextDatasetNamesQuery.isEmpty()) {
+  std::optional<std::vector<ContextDataSetName>> contextDatasetNames;
+  if (contextDatasetNamesQuery.has_value()) {
     //        std::vector<ContextDataSetName> valueQuery_instance;
-    //        if(fromStringValue(contextDatasetNamesQuery.get(),
+    //        if(fromStringValue(contextDatasetNamesQuery.value(),
     //        valueQuery_instance)){
-    //            contextDatasetNames = Pistache::Some(valueQuery_instance);
+    //            contextDatasetNames = std::make_optional(valueQuery_instance);
     //        }
   }
 

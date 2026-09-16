@@ -39,7 +39,7 @@ void EventExposureSubscriptionsCollectionApiImpl::create_ee_subscriptions(
 }
 void EventExposureSubscriptionsCollectionApiImpl::queryeesubscriptions(
     const std::string& ueId,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

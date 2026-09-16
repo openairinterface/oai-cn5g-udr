@@ -64,8 +64,8 @@ void SMFRegistrationDocumentApiImpl::delete_smf_context(
 }
 void SMFRegistrationDocumentApiImpl::query_smf_registration(
     const std::string& ueId, const int32_t& pduSessionId,
-    const Pistache::Optional<std::vector<std::string>>& fields,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::vector<std::string>>& fields,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};

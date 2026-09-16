@@ -25,7 +25,7 @@
 
 #include <InfluenceDataStoreApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "Snssai.h"
 #include "TrafficInfluData.h"
@@ -45,12 +45,12 @@ class InfluenceDataStoreApiImpl : public oai::udr::api::InfluenceDataStoreApi {
   ~InfluenceDataStoreApiImpl() {}
 
   void read_influence_data(
-      const Pistache::Optional<std::vector<std::string>>& influenceIds,
-      const Pistache::Optional<std::vector<std::string>>& dnns,
-      const Pistache::Optional<std::vector<oai::_3gpp::model::Snssai>>& snssais,
-      const Pistache::Optional<std::vector<std::string>>& internalGroupIds,
-      const Pistache::Optional<std::vector<std::string>>& supis,
-      const Pistache::Optional<std::string>& suppFeat,
+      const std::optional<std::vector<std::string>>& influenceIds,
+      const std::optional<std::vector<std::string>>& dnns,
+      const std::optional<std::vector<oai::_3gpp::model::Snssai>>& snssais,
+      const std::optional<std::vector<std::string>>& internalGroupIds,
+      const std::optional<std::vector<std::string>>& supis,
+      const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response);
 };
 

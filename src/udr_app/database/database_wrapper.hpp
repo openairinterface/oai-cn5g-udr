@@ -17,8 +17,8 @@ namespace oai::udr::app {
 template<class DerivedT>
 class database_wrapper : public database_wrapper_abstraction {
  public:
-  database_wrapper(){};
-  virtual ~database_wrapper(){};
+  database_wrapper() {};
+  virtual ~database_wrapper() {};
 
   /*std::unique_ptr<database_wrapper_abstraction> clone() const override {
           return std::make_unique<DerivedT>(static_cast<DerivedT

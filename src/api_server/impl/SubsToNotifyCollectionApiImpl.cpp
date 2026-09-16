@@ -31,18 +31,18 @@ SubsToNotifyCollectionApiImpl::SubsToNotifyCollectionApiImpl(
       m_address(address) {}
 
 void SubsToNotifyCollectionApiImpl::query_subs_to_notify(
-    const Pistache::Optional<std::string>& ueId,
-    const Pistache::Optional<std::string>& supportedFeatures,
+    const std::optional<std::string>& ueId,
+    const std::optional<std::string>& supportedFeatures,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void SubsToNotifyCollectionApiImpl::
     remove_multiple_subscription_data_subscriptions(
-        const Pistache::Optional<std::string>& ueId,
-        const Pistache::Optional<std::string>& nfInstanceId,
-        const Pistache::Optional<bool>& deleteAllNfs,
-        const Pistache::Optional<bool>& implicitUnsubscribeIndication,
+        const std::optional<std::string>& ueId,
+        const std::optional<std::string>& nfInstanceId,
+        const std::optional<bool>& deleteAllNfs,
+        const std::optional<bool>& implicitUnsubscribeIndication,
         Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

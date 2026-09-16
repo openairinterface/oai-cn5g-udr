@@ -57,11 +57,11 @@ void Class5GVNGroupsStoreApi::query5_g_vn_group_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto gpsisQuery = request.query().get("gpsis");
-  Pistache::Optional<std::vector<std::string>> gpsis;
-  if (!gpsisQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> gpsis;
+  if (gpsisQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(gpsisQuery.get(), valueQuery_instance)) {
-      gpsis = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(gpsisQuery.value(), valueQuery_instance)) {
+      gpsis = std::make_optional(valueQuery_instance);
     }
   }
 

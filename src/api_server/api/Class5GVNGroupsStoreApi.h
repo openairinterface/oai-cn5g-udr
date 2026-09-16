@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -62,7 +62,7 @@ class Class5GVNGroupsStoreApi {
   /// <param name="gpsis">List of GPSIs (optional, default to
   /// std::vector&lt;std::string&gt;())</param>
   virtual void query5_g_vn_group(
-      const Pistache::Optional<std::vector<std::string>>& gpsis,
+      const std::optional<std::vector<std::string>>& gpsis,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

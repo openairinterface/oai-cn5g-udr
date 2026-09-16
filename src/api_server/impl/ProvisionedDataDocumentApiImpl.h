@@ -25,7 +25,7 @@
 
 #include <ProvisionedDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "DataSetName.h"
 #include "ProvisionedDataSets.h"
@@ -49,7 +49,7 @@ class ProvisionedDataDocumentApiImpl
   ~ProvisionedDataDocumentApiImpl() {}
 
   //   void query_provisioned_data(const std::string &ueId, const std::string
-  //   &servingPlmnId, const Pistache::Optional<Set<DataSetName>> &datasetNames,
+  //   &servingPlmnId, const std::optional<Set<DataSetName>> &datasetNames,
   //   Pistache::Http::ResponseWriter &response);
 };
 

@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "ApplicationDataSubs.h"
@@ -77,7 +77,7 @@ class ApplicationDataSubscriptionsCollectionApi {
   /// <param name="dataFilter">The data filter for the query. (optional, default
   /// to DataFilter())</param>
   virtual void read_application_data_change_subscriptions(
-      const Pistache::Optional<DataFilter>& dataFilter,
+      const std::optional<DataFilter>& dataFilter,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

@@ -102,42 +102,42 @@ void SessionManagementSubscriptionDataApi::query_sm_data_handler(
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
 
-  Pistache::Optional<oai::_3gpp::model::Snssai> singleNssai;
-  if (!singleNssaiQuery.isEmpty()) {
+  std::optional<oai::_3gpp::model::Snssai> singleNssai;
+  if (singleNssaiQuery.has_value()) {
     Logger::udr_server().debug(
-        "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
+        "singleNssaiQuery: %s", singleNssaiQuery.value().c_str());
     oai::_3gpp::model::Snssai valueQuery_instance;
-    if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
+    if (fromStringValue(singleNssaiQuery.value(), valueQuery_instance)) {
       Logger::udr_server().debug(
           "SNSSAI SST %d, SD %s", valueQuery_instance.getSst(),
           valueQuery_instance.getSd().c_str());
-      singleNssai = Pistache::Some(valueQuery_instance);
+      singleNssai = std::make_optional(valueQuery_instance);
     }
   }
   auto dnnQuery = request.query().get("dnn");
-  Pistache::Optional<std::string> dnn;
-  if (!dnnQuery.isEmpty()) {
-    Logger::udr_server().debug("dnnQuery: %s", dnnQuery.get().c_str());
+  std::optional<std::string> dnn;
+  if (dnnQuery.has_value()) {
+    Logger::udr_server().debug("dnnQuery: %s", dnnQuery.value().c_str());
     std::string valueQuery_instance;
-    if (fromStringValue(dnnQuery.get(), valueQuery_instance)) {
+    if (fromStringValue(dnnQuery.value(), valueQuery_instance)) {
       Logger::udr_server().debug("DNN: %s", valueQuery_instance.c_str());
-      dnn = Pistache::Some(valueQuery_instance);
+      dnn = std::make_optional(valueQuery_instance);
     }
   }
   auto fieldsQuery = request.query().get("fields");
-  Pistache::Optional<std::vector<std::string>> fields;
-  if (!fieldsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> fields;
+  if (fieldsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(fieldsQuery.get(), valueQuery_instance)) {
-      fields = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(fieldsQuery.value(), valueQuery_instance)) {
+      fields = std::make_optional(valueQuery_instance);
     }
   }
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(supportedFeaturesQuery.get(), valueQuery_instance)) {
-      supportedFeatures = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
+      supportedFeatures = std::make_optional(valueQuery_instance);
     }
   }
 
@@ -268,16 +268,16 @@ void SessionManagementSubscriptionDataApi::delete_sm_data_handler(
   // Getting the query params
   auto singleNssaiQuery = request.query().get("single-nssai");
 
-  Pistache::Optional<oai::_3gpp::model::Snssai> singleNssai;
-  if (!singleNssaiQuery.isEmpty()) {
+  std::optional<oai::_3gpp::model::Snssai> singleNssai;
+  if (singleNssaiQuery.has_value()) {
     Logger::udr_server().debug(
-        "singleNssaiQuery: %s", singleNssaiQuery.get().c_str());
+        "singleNssaiQuery: %s", singleNssaiQuery.value().c_str());
     oai::_3gpp::model::Snssai valueQuery_instance;
-    if (fromStringValue(singleNssaiQuery.get(), valueQuery_instance)) {
+    if (fromStringValue(singleNssaiQuery.value(), valueQuery_instance)) {
       Logger::udr_server().debug(
           "SNSSAI SST %d, SD %s", valueQuery_instance.getSst(),
           valueQuery_instance.getSd().c_str());
-      singleNssai = Pistache::Some(valueQuery_instance);
+      singleNssai = std::make_optional(valueQuery_instance);
     }
   }
 

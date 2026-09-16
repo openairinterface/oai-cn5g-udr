@@ -25,7 +25,7 @@
 
 #include <Class5GVNGroupsStoreApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "5GVnGroupConfiguration.h"
 #include "udr_app.hpp"
@@ -48,7 +48,7 @@ class Class5GVNGroupsStoreApiImpl
   ~Class5GVNGroupsStoreApiImpl() {}
 
   void query5_g_vn_group(
-      const Pistache::Optional<std::vector<std::string>>& gpsis,
+      const std::optional<std::vector<std::string>>& gpsis,
       Pistache::Http::ResponseWriter& response);
 };
 

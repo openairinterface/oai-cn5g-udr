@@ -16,8 +16,8 @@ namespace oai::udr::app {
 class task_manager;
 class udr_event {
  public:
-  udr_event(){};
-  udr_event(udr_event const&) = delete;
+  udr_event() {};
+  udr_event(udr_event const&)      = delete;
   void operator=(udr_event const&) = delete;
 
   static udr_event& get_instance() {

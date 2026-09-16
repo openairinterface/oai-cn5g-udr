@@ -56,35 +56,35 @@ void GroupIdentifiersApi::get_group_identifiers_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto extGroupIdQuery = request.query().get("ext-group-id");
-  Pistache::Optional<std::string> extGroupId;
-  if (!extGroupIdQuery.isEmpty()) {
+  std::optional<std::string> extGroupId;
+  if (extGroupIdQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(extGroupIdQuery.get(), valueQuery_instance)) {
-      extGroupId = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(extGroupIdQuery.value(), valueQuery_instance)) {
+      extGroupId = std::make_optional(valueQuery_instance);
     }
   }
   auto intGroupIdQuery = request.query().get("int-group-id");
-  Pistache::Optional<std::string> intGroupId;
-  if (!intGroupIdQuery.isEmpty()) {
+  std::optional<std::string> intGroupId;
+  if (intGroupIdQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(intGroupIdQuery.get(), valueQuery_instance)) {
-      intGroupId = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(intGroupIdQuery.value(), valueQuery_instance)) {
+      intGroupId = std::make_optional(valueQuery_instance);
     }
   }
   auto ueIdIndQuery = request.query().get("ue-id-ind");
-  Pistache::Optional<bool> ueIdInd;
-  if (!ueIdIndQuery.isEmpty()) {
+  std::optional<bool> ueIdInd;
+  if (ueIdIndQuery.has_value()) {
     bool valueQuery_instance;
-    if (fromStringValue(ueIdIndQuery.get(), valueQuery_instance)) {
-      ueIdInd = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(ueIdIndQuery.value(), valueQuery_instance)) {
+      ueIdInd = std::make_optional(valueQuery_instance);
     }
   }
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(supportedFeaturesQuery.get(), valueQuery_instance)) {
-      supportedFeatures = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
+      supportedFeatures = std::make_optional(valueQuery_instance);
     }
   }
 

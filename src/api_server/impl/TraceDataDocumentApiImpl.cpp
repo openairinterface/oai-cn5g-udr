@@ -30,8 +30,8 @@ TraceDataDocumentApiImpl::TraceDataDocumentApiImpl(
 
 void TraceDataDocumentApiImpl::query_trace_data(
     const std::string& ueId, const std::string& servingPlmnId,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

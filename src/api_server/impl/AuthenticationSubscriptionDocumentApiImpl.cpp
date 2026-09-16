@@ -38,7 +38,7 @@ void AuthenticationSubscriptionDocumentApiImpl::
     modify_authentication_subscription(
         const std::string& ueId,
         const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-        const Pistache::Optional<std::string>& supportedFeatures,
+        const std::optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};
@@ -58,7 +58,7 @@ void AuthenticationSubscriptionDocumentApiImpl::
 void AuthenticationSubscriptionDocumentApiImpl::
     read_authentication_subscription(
         const std::string& ueId,
-        const Pistache::Optional<std::string>& supportedFeatures,
+        const std::optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   nlohmann::json response_data = {};
   Pistache::Http::Code code    = {};

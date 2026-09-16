@@ -37,7 +37,7 @@ void UEPolicySetDocumentApiImpl::create_or_replace_ue_policy_set(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");
 }
 void UEPolicySetDocumentApiImpl::read_ue_policy_set(
-    const std::string& ueId, const Pistache::Optional<std::string>& suppFeat,
+    const std::string& ueId, const std::optional<std::string>& suppFeat,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

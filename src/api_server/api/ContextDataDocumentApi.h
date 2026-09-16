@@ -24,12 +24,12 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "ContextDataSetName.h"
 #include "ContextDataSets.h"
-//#include "Set.h"
+// #include "Set.h"
 #include <string>
 
 namespace oai::udr::api {
@@ -63,7 +63,7 @@ class ContextDataDocumentApi {
   /// <param name="ueId">UE id</param>
   /// <param name="contextDatasetNames">List of context dataset names</param>
   //    virtual void query_context_data(const std::string &ueId, const
-  //    Pistache::Optional<Set<ContextDataSetName>> &contextDatasetNames,
+  //    std::optional<Set<ContextDataSetName>> &contextDatasetNames,
   //    Pistache::Http::ResponseWriter &response) = 0;
 };
 

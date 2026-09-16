@@ -25,7 +25,7 @@
 
 #include <SMFRegistrationDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SmfRegistration.h"
 #include "udr_app.hpp"
@@ -56,8 +56,8 @@ class SMFRegistrationDocumentApiImpl
       Pistache::Http::ResponseWriter& response);
   void query_smf_registration(
       const std::string& ueId, const int32_t& pduSessionId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

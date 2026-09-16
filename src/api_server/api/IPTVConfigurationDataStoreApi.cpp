@@ -60,43 +60,43 @@ void IPTVConfigurationDataStoreApi::read_iptv_congifuration_data_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto configIdsQuery = request.query().get("config-ids");
-  Pistache::Optional<std::vector<std::string>> configIds;
-  if (!configIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> configIds;
+  if (configIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(configIdsQuery.get(), valueQuery_instance)) {
-      configIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(configIdsQuery.value(), valueQuery_instance)) {
+      configIds = std::make_optional(valueQuery_instance);
     }
   }
   auto dnnsQuery = request.query().get("dnns");
-  Pistache::Optional<std::vector<std::string>> dnns;
-  if (!dnnsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> dnns;
+  if (dnnsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(dnnsQuery.get(), valueQuery_instance)) {
-      dnns = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(dnnsQuery.value(), valueQuery_instance)) {
+      dnns = std::make_optional(valueQuery_instance);
     }
   }
   auto snssaisQuery = request.query().get("snssais");
-  Pistache::Optional<std::vector<Snssai>> snssais;
-  if (!snssaisQuery.isEmpty()) {
+  std::optional<std::vector<Snssai>> snssais;
+  if (snssaisQuery.has_value()) {
     //        std::vector<Snssai> valueQuery_instance;
-    //        if(fromStringValue(snssaisQuery.get(), valueQuery_instance)){
-    //            snssais = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(snssaisQuery.value(), valueQuery_instance)){
+    //            snssais = std::make_optional(valueQuery_instance);
     //        }
   }
   auto supisQuery = request.query().get("supis");
-  Pistache::Optional<std::vector<std::string>> supis;
-  if (!supisQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> supis;
+  if (supisQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(supisQuery.get(), valueQuery_instance)) {
-      supis = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supisQuery.value(), valueQuery_instance)) {
+      supis = std::make_optional(valueQuery_instance);
     }
   }
   auto interGroupIdsQuery = request.query().get("inter-group-ids");
-  Pistache::Optional<std::vector<std::string>> interGroupIds;
-  if (!interGroupIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> interGroupIds;
+  if (interGroupIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(interGroupIdsQuery.get(), valueQuery_instance)) {
-      interGroupIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(interGroupIdsQuery.value(), valueQuery_instance)) {
+      interGroupIds = std::make_optional(valueQuery_instance);
     }
   }
 

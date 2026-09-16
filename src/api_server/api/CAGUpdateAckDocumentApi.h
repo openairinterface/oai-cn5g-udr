@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -64,7 +64,7 @@ class CAGUpdateAckDocumentApi {
   /// &quot;&quot;)</param> <param name="cagAckData"> (optional)</param>
   virtual void create_cag_update_ack(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       const CagAckData& cagAckData,
       Pistache::Http::ResponseWriter& response) = 0;
 };

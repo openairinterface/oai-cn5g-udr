@@ -25,7 +25,7 @@
 
 #include <Query5GVnGroupConfigurationDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "5GVnGroupConfiguration.h"
 #include "udr_app.hpp"

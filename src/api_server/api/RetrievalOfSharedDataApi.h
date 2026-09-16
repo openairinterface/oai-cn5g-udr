@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "ProblemDetails.h"
@@ -63,8 +63,8 @@ class RetrievalOfSharedDataApi {
   /// <param name="sharedDataIds">List of shared data ids</param>
   /// <param name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
-  //    virtual void get_shared_data(const Pistache::Optional<Set<std::string>>
-  //    &sharedDataIds, const Pistache::Optional<std::string>
+  //    virtual void get_shared_data(const std::optional<Set<std::string>>
+  //    &sharedDataIds, const std::optional<std::string>
   //    &supportedFeatures, Pistache::Http::ResponseWriter &response) = 0;
 };
 

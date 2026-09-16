@@ -25,7 +25,7 @@
 
 #include <EventExposureDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "EeProfileData.h"
 #include "udr_app.hpp"
@@ -49,8 +49,8 @@ class EventExposureDataDocumentApiImpl
 
   void query_ee_data(
       const std::string& ueId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

@@ -25,7 +25,7 @@
 
 #include <SDMSubscriptionsCollectionApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SdmSubscription.h"
 #include "udr_app.hpp"
@@ -52,7 +52,7 @@ class SDMSubscriptionsCollectionApiImpl
       Pistache::Http::ResponseWriter& response);
   void querysdmsubscriptions(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

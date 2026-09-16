@@ -32,9 +32,9 @@ QueryIdentityDataBySUPIOrGPSIDocumentApiImpl::
       m_address(address) {}
 
 void QueryIdentityDataBySUPIOrGPSIDocumentApiImpl::get_identity_data(
-    const std::string& ueId, const Pistache::Optional<AppPortId>& appPortId,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-    const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+    const std::string& ueId, const std::optional<AppPortId>& appPortId,
+    const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+    const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
     Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

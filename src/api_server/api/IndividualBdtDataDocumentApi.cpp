@@ -150,11 +150,11 @@ void IndividualBdtDataDocumentApi::read_individual_bdt_data_handler(
 
   // Getting the query params
   auto suppFeatQuery = request.query().get("supp-feat");
-  Pistache::Optional<std::string> suppFeat;
-  if (!suppFeatQuery.isEmpty()) {
+  std::optional<std::string> suppFeat;
+  if (suppFeatQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(suppFeatQuery.get(), valueQuery_instance)) {
-      suppFeat = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(suppFeatQuery.value(), valueQuery_instance)) {
+      suppFeat = std::make_optional(valueQuery_instance);
     }
   }
 

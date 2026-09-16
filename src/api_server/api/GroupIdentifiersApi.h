@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -67,10 +67,10 @@ class GroupIdentifiersApi {
   /// name="supportedFeatures">Supported Features (optional, default to
   /// &quot;&quot;)</param>
   virtual void get_group_identifiers(
-      const Pistache::Optional<std::string>& extGroupId,
-      const Pistache::Optional<std::string>& intGroupId,
-      const Pistache::Optional<bool>& ueIdInd,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& extGroupId,
+      const std::optional<std::string>& intGroupId,
+      const std::optional<bool>& ueIdInd,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

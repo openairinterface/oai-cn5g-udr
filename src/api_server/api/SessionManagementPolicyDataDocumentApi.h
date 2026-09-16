@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -74,10 +74,10 @@ class SessionManagementPolicyDataDocumentApi {
   /// Features (optional, default to &quot;&quot;)</param>
   virtual void read_session_management_policy_data(
       const std::string& ueId,
-      const Pistache::Optional<oai::_3gpp::model::Snssai>& snssai,
-      const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& suppFeat,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& suppFeat,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>

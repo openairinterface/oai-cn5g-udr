@@ -25,7 +25,7 @@
 
 #include <NSSAIACKDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "NssaiAckData.h"
 #include "udr_app.hpp"
@@ -48,7 +48,7 @@ class NSSAIACKDocumentApiImpl : public oai::udr::api::NSSAIACKDocumentApi {
 
   void query_nssai_ack(
       const std::string& ueId,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
 };
 

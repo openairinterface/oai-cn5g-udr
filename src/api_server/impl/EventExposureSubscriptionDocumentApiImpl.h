@@ -28,7 +28,7 @@
 #include "udr_app.hpp"
 #include <EventExposureSubscriptionDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <vector>
 
 namespace oai::udr::api {
@@ -48,7 +48,7 @@ class EventExposureSubscriptionDocumentApiImpl
   void modify_eesubscription(
       const std::string& ueId, const std::string& subsId,
       const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response);
   void queryee_subscription(
       const std::string& ueId, const std::string& subsId,

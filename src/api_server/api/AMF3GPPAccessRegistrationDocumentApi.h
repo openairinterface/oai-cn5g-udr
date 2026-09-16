@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include <string>
@@ -74,7 +74,7 @@ class AMF3GPPAccessRegistrationDocumentApi {
   virtual void amf_context3gpp(
       const std::string& ueId,
       const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 
   /// <summary>
@@ -103,8 +103,8 @@ class AMF3GPPAccessRegistrationDocumentApi {
   /// &quot;&quot;)</param>
   virtual void query_amf_context3gpp(
       const std::string& ueId,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
       Pistache::Http::ResponseWriter& response) = 0;
 };
 

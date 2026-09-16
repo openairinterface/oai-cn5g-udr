@@ -35,7 +35,7 @@ void EventExposureGroupSubscriptionDocumentApiImpl::
     modify_ee_group_subscription(
         const std::string& ueGroupId, const std::string& subsId,
         const std::vector<oai::_3gpp::model::PatchItem>& patchItem,
-        const Pistache::Optional<std::string>& supportedFeatures,
+        const std::optional<std::string>& supportedFeatures,
         Pistache::Http::ResponseWriter& response) {
   response.send(
       Pistache::Http::Code::Ok, "This API has not been implemented yet!\n");

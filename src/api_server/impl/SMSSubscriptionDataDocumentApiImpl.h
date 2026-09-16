@@ -25,7 +25,7 @@
 
 #include <SMSSubscriptionDataDocumentApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SmsSubscriptionData.h"
 #include "udr_app.hpp"
@@ -49,9 +49,9 @@ class SMSSubscriptionDataDocumentApiImpl
 
   void query_sms_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<std::string>& supportedFeatures,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
 };
 

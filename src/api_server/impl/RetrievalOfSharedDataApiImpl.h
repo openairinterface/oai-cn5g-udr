@@ -25,7 +25,7 @@
 
 #include <RetrievalOfSharedDataApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SharedData.h"
 #include "udr_app.hpp"
@@ -47,8 +47,8 @@ class RetrievalOfSharedDataApiImpl
       std::string address);
   ~RetrievalOfSharedDataApiImpl() {}
 
-  //    void get_shared_data(const Pistache::Optional<Set<std::string>>
-  //    &sharedDataIds, const Pistache::Optional<std::string>
+  //    void get_shared_data(const std::optional<Set<std::string>>
+  //    &sharedDataIds, const std::optional<std::string>
   //    &supportedFeatures, Pistache::Http::ResponseWriter &response);
 };
 

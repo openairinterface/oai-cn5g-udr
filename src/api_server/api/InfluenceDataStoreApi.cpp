@@ -55,51 +55,51 @@ void InfluenceDataStoreApi::read_influence_data_handler(
     Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto influenceIdsQuery = request.query().get("influence-Ids");
-  Pistache::Optional<std::vector<std::string>> influenceIds;
-  if (!influenceIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> influenceIds;
+  if (influenceIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(influenceIdsQuery.get(), valueQuery_instance)) {
-      influenceIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(influenceIdsQuery.value(), valueQuery_instance)) {
+      influenceIds = std::make_optional(valueQuery_instance);
     }
   }
   auto dnnsQuery = request.query().get("dnns");
-  Pistache::Optional<std::vector<std::string>> dnns;
-  if (!dnnsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> dnns;
+  if (dnnsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(dnnsQuery.get(), valueQuery_instance)) {
-      dnns = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(dnnsQuery.value(), valueQuery_instance)) {
+      dnns = std::make_optional(valueQuery_instance);
     }
   }
   auto snssaisQuery = request.query().get("snssais");
-  Pistache::Optional<std::vector<oai::_3gpp::model::Snssai>> snssais;
-  if (!snssaisQuery.isEmpty()) {
+  std::optional<std::vector<oai::_3gpp::model::Snssai>> snssais;
+  if (snssaisQuery.has_value()) {
     //        std::vector<Snssai> valueQuery_instance;
-    //        if(fromStringValue(snssaisQuery.get(), valueQuery_instance)){
-    //            snssais = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(snssaisQuery.value(), valueQuery_instance)){
+    //            snssais = std::make_optional(valueQuery_instance);
     //        }
   }
   auto internalGroupIdsQuery = request.query().get("internal-Group-Ids");
-  Pistache::Optional<std::vector<std::string>> internalGroupIds;
-  if (!internalGroupIdsQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> internalGroupIds;
+  if (internalGroupIdsQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(internalGroupIdsQuery.get(), valueQuery_instance)) {
-      internalGroupIds = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(internalGroupIdsQuery.value(), valueQuery_instance)) {
+      internalGroupIds = std::make_optional(valueQuery_instance);
     }
   }
   auto supisQuery = request.query().get("supis");
-  Pistache::Optional<std::vector<std::string>> supis;
-  if (!supisQuery.isEmpty()) {
+  std::optional<std::vector<std::string>> supis;
+  if (supisQuery.has_value()) {
     std::vector<std::string> valueQuery_instance;
-    if (fromStringValue(supisQuery.get(), valueQuery_instance)) {
-      supis = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supisQuery.value(), valueQuery_instance)) {
+      supis = std::make_optional(valueQuery_instance);
     }
   }
   auto suppFeatQuery = request.query().get("supp-feat");
-  Pistache::Optional<std::string> suppFeat;
-  if (!suppFeatQuery.isEmpty()) {
+  std::optional<std::string> suppFeat;
+  if (suppFeatQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(suppFeatQuery.get(), valueQuery_instance)) {
-      suppFeat = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(suppFeatQuery.value(), valueQuery_instance)) {
+      suppFeat = std::make_optional(valueQuery_instance);
     }
   }
 

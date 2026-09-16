@@ -25,7 +25,7 @@
 
 #include <SessionManagementSubscriptionDataApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "SessionManagementSubscriptionData.h"
 #include "Snssai.h"
@@ -47,12 +47,12 @@ class SessionManagementSubscriptionDataApiImpl
 
   void query_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
-      const Pistache::Optional<std::string>& dnn,
-      const Pistache::Optional<std::vector<std::string>>& fields,
-      const Pistache::Optional<std::string>& supportedFeatures,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifNoneMatch,
-      const Pistache::Optional<Pistache::Http::Header::Raw>& ifModifiedSince,
+      const std::optional<oai::_3gpp::model::Snssai>& singleNssai,
+      const std::optional<std::string>& dnn,
+      const std::optional<std::vector<std::string>>& fields,
+      const std::optional<std::string>& supportedFeatures,
+      const std::optional<Pistache::Http::Header::Raw>& ifNoneMatch,
+      const std::optional<Pistache::Http::Header::Raw>& ifModifiedSince,
       Pistache::Http::ResponseWriter& response);
   void query_sm_data(Pistache::Http::ResponseWriter& response);
   void create_sm_data(
@@ -65,7 +65,7 @@ class SessionManagementSubscriptionDataApiImpl
       Pistache::Http::ResponseWriter& response);
   void delete_sm_data(
       const std::string& ueId, const std::string& servingPlmnId,
-      const Pistache::Optional<oai::_3gpp::model::Snssai>& singleNssai,
+      const std::optional<oai::_3gpp::model::Snssai>& singleNssai,
       Pistache::Http::ResponseWriter& response);
 };
 

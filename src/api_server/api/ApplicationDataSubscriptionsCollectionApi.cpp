@@ -96,11 +96,11 @@ void ApplicationDataSubscriptionsCollectionApi::
         Pistache::Http::ResponseWriter response) {
   // Getting the query params
   auto dataFilterQuery = request.query().get("data-filter");
-  Pistache::Optional<DataFilter> dataFilter;
-  if (!dataFilterQuery.isEmpty()) {
+  std::optional<DataFilter> dataFilter;
+  if (dataFilterQuery.has_value()) {
     //       DataFilter valueQuery_instance;
-    //        if(fromStringValue(dataFilterQuery.get(), valueQuery_instance)){
-    //            dataFilter = Pistache::Some(valueQuery_instance);
+    //        if(fromStringValue(dataFilterQuery.value(), valueQuery_instance)){
+    //            dataFilter = std::make_optional(valueQuery_instance);
     //        }
   }
 

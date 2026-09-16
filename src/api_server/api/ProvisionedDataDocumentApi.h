@@ -24,7 +24,7 @@
 
 #include <pistache/http.h>
 #include <pistache/http_headers.h>
-#include <pistache/optional.h>
+#include <optional>
 #include <pistache/router.h>
 
 #include "DataSetName.h"
@@ -64,7 +64,7 @@ class ProvisionedDataDocumentApi {
   /// <param name="datasetNames">List of dataset names (optional, default to
   /// std::vector&lt;DataSetName&gt;())</param>
   //    virtual void query_provisioned_data(const std::string &ueId, const
-  //    std::string &servingPlmnId, const Pistache::Optional<Set<DataSetName>>
+  //    std::string &servingPlmnId, const std::optional<Set<DataSetName>>
   //    &datasetNames, Pistache::Http::ResponseWriter &response) = 0;
 };
 

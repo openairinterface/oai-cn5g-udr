@@ -74,11 +74,11 @@ void AmfSubscriptionInfoDocumentApi::modify_amf_subscription_info_handler(
 
   // Getting the query params
   auto supportedFeaturesQuery = request.query().get("supported-features");
-  Pistache::Optional<std::string> supportedFeatures;
-  if (!supportedFeaturesQuery.isEmpty()) {
+  std::optional<std::string> supportedFeatures;
+  if (supportedFeaturesQuery.has_value()) {
     std::string valueQuery_instance;
-    if (fromStringValue(supportedFeaturesQuery.get(), valueQuery_instance)) {
-      supportedFeatures = Pistache::Some(valueQuery_instance);
+    if (fromStringValue(supportedFeaturesQuery.value(), valueQuery_instance)) {
+      supportedFeatures = std::make_optional(valueQuery_instance);
     }
   }
 

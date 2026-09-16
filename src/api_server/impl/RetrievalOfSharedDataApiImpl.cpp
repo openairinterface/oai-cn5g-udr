@@ -31,8 +31,8 @@ RetrievalOfSharedDataApiImpl::RetrievalOfSharedDataApiImpl(
       m_address(address) {}
 
 // void RetrievalOfSharedDataApiImpl::get_shared_data(const
-// Pistache::Optional<Set<std::string>> &sharedDataIds, const
-// Pistache::Optional<std::string> &supportedFeatures,
+// std::optional<Set<std::string>> &sharedDataIds, const
+// std::optional<std::string> &supportedFeatures,
 // Pistache::Http::ResponseWriter &response) {
 //    response.send(Pistache::Http::Code::Ok, "This API has not been implemented
 //    yet!\n");

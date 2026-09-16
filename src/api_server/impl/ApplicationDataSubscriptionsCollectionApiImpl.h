@@ -25,7 +25,7 @@
 
 #include <ApplicationDataSubscriptionsCollectionApi.h>
 #include <pistache/http.h>
-#include <pistache/optional.h>
+#include <optional>
 
 #include "ApplicationDataSubs.h"
 #include "DataFilter.h"
@@ -52,7 +52,7 @@ class ApplicationDataSubscriptionsCollectionApiImpl
       const ApplicationDataSubs& applicationDataSubs,
       Pistache::Http::ResponseWriter& response);
   void read_application_data_change_subscriptions(
-      const Pistache::Optional<DataFilter>& dataFilter,
+      const std::optional<DataFilter>& dataFilter,
       Pistache::Http::ResponseWriter& response);
 };
 
