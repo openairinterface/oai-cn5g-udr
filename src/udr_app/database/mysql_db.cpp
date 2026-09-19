@@ -1820,6 +1820,7 @@ bool mysql_db::create_sdm_subscriptions(
     return false;
   }
 
+  sdmSubscription.setSubscriptionId(std::to_string(mysql_insert_id(&mysql_connector)));
   to_json(j, sdmSubscription);
   json_data = j;
 
@@ -3007,6 +3008,7 @@ bool mysql_db::query_smf_select_data(
   MYSQL_FIELD* field                                        = nullptr;
   nlohmann::json j                                          = {};
   SmfSelectionSubscriptionData smfselectionsubscriptiondata = {};
+  nlohmann::json subscribed_snssai_infos;
   const std::string query =
       "SELECT * FROM " + std::string(DATABASE_SMF_SELECTION_SUBSCRIPTION_DATA) +
       " WHERE ueid='" + ue_id + "' AND servingPlmnid='" + serving_plmn_id + "'";
@@ -3035,10 +3037,14 @@ bool mysql_db::query_smf_select_data(
       } else if (
           boost::iequals("subscribedSnssaiInfos", field->name) &&
           row[i] != nullptr) {
-        std ::map<std ::string, SnssaiInfo> subscribedsnssaiinfos;
-        nlohmann::json::parse(row[i]).get_to(subscribedsnssaiinfos);
-        smfselectionsubscriptiondata.setSubscribedSnssaiInfos(
-            subscribedsnssaiinfos);
+        // The generated common SnssaiInfo is the NSSF type (nsiIds),
+        // whereas TS 29.503 requires dnnInfos here. Preserve the UDM JSON
+        // instead of silently discarding DNN authorization information.
+        subscribed_snssai_infos = nlohmann::json::parse(row[i]);
+        if (!subscribed_snssai_infos.is_object()) {
+          mysql_free_result(res);
+          return false;
+        }
       } else if (
           boost::iequals("sharedSnssaiInfosId", field->name) &&
           row[i] != nullptr) {
@@ -3046,6 +3052,7 @@ bool mysql_db::query_smf_select_data(
       }
     }
     to_json(j, smfselectionsubscriptiondata);
+    if (!subscribed_snssai_infos.is_null()) j["subscribedSnssaiInfos"] = subscribed_snssai_infos;
     json_data = j;
 
     Logger::udr_db().debug(
@@ -3055,6 +3062,8 @@ bool mysql_db::query_smf_select_data(
     Logger::udr_db().error(
         "[UE Id %s] %s no data！SQL Query: %s", ue_id,
         DATABASE_SMF_SELECTION_SUBSCRIPTION_DATA_LABEL, query);
+    mysql_free_result(res);
+    return false;
   }
 
   mysql_free_result(res);

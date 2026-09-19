@@ -105,11 +105,19 @@ void udr_http2_server::start() {
             }
             if (split_q[split_q.size() - 1].compare(NUDR_DR_AM_DATA) == 0) {
               if (request.method().compare("GET") == 0 && len == 0) {
-                std::string ueId = split_q[split_q.size() - 3].c_str();
-                std::string qs   = request.uri().raw_query;
-                Logger::udr_server().debug("QueryString: %s", qs.c_str());
-                std::string servingPlmnId =
-                    oai::utils::get_query_param(qs, "servingPlmnId");
+                // Both identifiers are path parameters, as in the HTTP/1 API:
+                // /subscription-data/{ueId}/{servingPlmnId}/provisioned-data/am-data
+                if (split_q.size() < 8 ||
+                    split_q[split_q.size() - 5] != "subscription-data" ||
+                    split_q[split_q.size() - 2] != "provisioned-data" ||
+                    split_q[split_q.size() - 4].empty() ||
+                    split_q[split_q.size() - 3].empty()) {
+                  response.write_head(400);
+                  response.end();
+                  return;
+                }
+                const auto& ueId = split_q[split_q.size() - 4];
+                const auto& servingPlmnId = split_q[split_q.size() - 3];
                 this->query_am_data_handler(ueId, servingPlmnId, response);
               }
             }
@@ -246,17 +254,15 @@ void udr_http2_server::start() {
                 this->query_smf_reg_list_handler(ueId, response);
               }
             }
-            if (split_q[split_q.size() - 1].compare(NUDR_DR_SMF_SELECT) == 0) {
-              std::string ueId  = split_q[split_q.size() - 3].c_str();
-              int32_t pduSessId = atoi(split_q[split_q.size() - 1].c_str());
-              if (request.method().compare("GET") == 0 && len == 0) {
-                std::string qs = request.uri().raw_query;
-                Logger::udr_server().debug("QueryString: %s", qs.c_str());
-
-                std::string servingPlmnId =
-                    oai::utils::get_query_param(qs, "servingPlmnId");
+            if (split_q.back() == NUDR_DR_SMF_SELECT) {
+              if (split_q.size() < 8 || split_q[split_q.size() - 2] != "provisioned-data") {
+                response.write_head(oai::common::sbi::http_status_code::BAD_REQUEST);
+                response.end();
+                return;
+              }
+              if (request.method() == "GET" && len == 0) {
                 this->query_smf_select_data_handler(
-                    ueId, servingPlmnId, response);
+                    split_q[split_q.size() - 4], split_q[split_q.size() - 3], response);
               }
             }
           } catch (std::exception& e) {
