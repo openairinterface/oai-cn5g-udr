@@ -192,6 +192,9 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
         get_nf(NRF_CONFIG_NAME)->get_sbi().get_api_version();
     cfg.nrf_addr.uri_root = get_nf(oai::config::NRF_CONFIG_NAME)->get_url();
   }
+  if (get_nf(oai::config::UDR_CONFIG_NAME)) {
+    cfg.udr_name = get_nf(UDR_CONFIG_NAME)->get_host();
+  }
 }
 
 //------------------------------------------------------------------------------

@@ -127,12 +127,12 @@ void udr_profile::add_snssai(const snssai_t& s) {
 }
 
 //------------------------------------------------------------------------------
-void udr_profile::set_fqdn(const std::string& fqdN) {
+void udr_profile::set_nf_fqdn(const std::string& fqdN) {
   fqdn = fqdN;
 }
 
 //------------------------------------------------------------------------------
-std::string udr_profile::get_fqdn() const {
+std::string udr_profile::get_nf_fqdn() const {
   return fqdn;
 }
 
