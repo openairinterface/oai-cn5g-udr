@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Tests for the UDR policy-data GET endpoints [3GPP TS 29.519]:
+"""Tests for the UDR endpoints a PCF uses during AM/SM policy creation
+[3GPP TS 29.519]:
 
-    GET /nudr-dr/{version}/policy-data/ues/{ueId}/am-data
-    GET /nudr-dr/{version}/policy-data/ues/{ueId}/sm-data
-    GET /nudr-dr/{version}/policy-data/ues/{ueId}/ue-policy-set
+    GET    /nudr-dr/{version}/policy-data/ues/{ueId}/am-data
+    GET    /nudr-dr/{version}/policy-data/ues/{ueId}/sm-data
+    GET    /nudr-dr/{version}/policy-data/ues/{ueId}/ue-policy-set
+    GET    /nudr-dr/{version}/application-data/influenceData
+    POST   /nudr-dr/{version}/application-data/influenceData/subs-to-notify
+    DELETE /nudr-dr/{version}/application-data/influenceData/subs-to-notify/{subscriptionId}
 
-Only these three are backed by real logic in this branch. With
-`http_version: 2` the UDR serves requests from udr-http2-server.cpp, which
-routes nothing else under policy-data (no PUT/PATCH/DELETE, no
+With `http_version: 2` the UDR serves requests from udr-http2-server.cpp,
+which routes nothing else under policy-data (no PUT/PATCH/DELETE, no
 sponsor-connectivity-data, bdt-data or usage-monitoring-information); the
-Pistache *ApiImpl.cpp stubs for those only answer over HTTP/1.1. So no
-lifecycle (create/patch/delete) coverage exists for policy-data yet.
+Pistache *ApiImpl.cpp stubs for those only answer over HTTP/1.1. The UDR has
+no Traffic Influence Data store yet, so the influenceData GET always returns
+an empty array and subscriptions live in memory only.
 
 The UDR's HTTP/2 server speaks h2c *with prior knowledge* (cleartext HTTP/2,
 no TLS/ALPN, no Upgrade dance). Neither package `requests` (HTTP/1.1 only) nor
@@ -33,12 +37,18 @@ Configuration (environment variables):
     SNSSAI_SST        Slice SST present in the seeded SM data   (default: 222)
     SNSSAI_SD         Slice SD (hex) present in the seeded data (default: 00007b)
     DNN               DNN present in the seeded SM data         (default: default)
+    NOTIF_URI         notificationUri sent when subscribing to influence data
+                      (default: http://127.0.0.1:8081/influence-data-notify; the
+                      UDR never calls it since there is no data to change)
 
 Usage:
     ./test_policy_data.py suite
     ./test_policy_data.py am-data <ueId> [--version v2] [--expect-status 404]
     ./test_policy_data.py sm-data <ueId> [--version v1] [--snssai '{"sst":222,"sd":"00007b"}'] [--dnn default]
     ./test_policy_data.py ue-policy-set <ueId> [--version v1]
+    ./test_policy_data.py influence-data [--version v2]
+    ./test_policy_data.py influence-data-subscribe [--version v2]
+    ./test_policy_data.py influence-data-unsubscribe <subscriptionId> [--version v2] [--expect-status 404]
 
 Every subcommand exits 0 if all its assertions passed, 1 otherwise.
 `suite` is the CI entrypoint: it runs every scenario below and reports one
@@ -78,6 +88,7 @@ UE_ID_UNKNOWN = os.environ.get("UE_ID_UNKNOWN", "999999999999999")
 SNSSAI_SST = int(os.environ.get("SNSSAI_SST", "222"))
 SNSSAI_SD = os.environ.get("SNSSAI_SD", "00007b")
 DNN = os.environ.get("DNN", "default")
+NOTIF_URI = os.environ.get("NOTIF_URI", "http://127.0.0.1:8081/influence-data-notify")
 
 REQUEST_TIMEOUT = float(os.environ.get("REQUEST_TIMEOUT", "10"))
 
@@ -123,8 +134,11 @@ class Response:
             return None
 
 
-def curl_request(method: str, path: str, params: dict | None = None) -> Response:
-    """Issue one GET to http://UDR_HOST:UDR_PORT + path over HTTP/2 prior-knowledge.
+def curl_request(
+    method: str, path: str, params: dict | None = None, body: dict | None = None
+) -> Response:
+    """Issue one request to http://UDR_HOST:UDR_PORT + path over HTTP/2
+    prior-knowledge. `body`, if given, is sent as JSON.
 
     Returns a Response with the parsed status code, headers (lower-cased
     names), and raw body text.
@@ -150,10 +164,10 @@ def curl_request(method: str, path: str, params: dict | None = None) -> Response
         str(REQUEST_TIMEOUT),
         "--connect-timeout",
         "5",
-        "-w",
-        f"\n{_STATUS_MARKER}%{{http_code}}\n",
-        url,
     ]
+    if body is not None:
+        argv += ["-H", "Content-Type: application/json", "-d", json.dumps(body)]
+    argv += ["-w", f"\n{_STATUS_MARKER}%{{http_code}}\n", url]
 
     full_argv = ["docker", "exec", UDR_CONTAINER] + argv if UDR_CONTAINER else argv
 
@@ -259,14 +273,18 @@ def _check_problem_details(report: TestReport, resp: Response) -> None:
 
 
 def _safe_request(
-    report: TestReport, method: str, path: str, params: dict | None = None
+    report: TestReport,
+    method: str,
+    path: str,
+    params: dict | None = None,
+    body: dict | None = None,
 ) -> Response:
     """curl_request(), but a transport failure (timeout, connection reset,
     server hang) becomes one failed check instead of an exception that would
     abort the whole suite -- a single unresponsive endpoint shouldn't hide
     results for every other scenario."""
     try:
-        return curl_request(method, path, params)
+        return curl_request(method, path, params, body)
     except RuntimeError as exc:
         report.check(f"{method} {path} completed", False, str(exc))
         return Response(status=-1)
@@ -441,6 +459,146 @@ def get_ue_policy_set(
 
 
 # ===========================================================================
+# Traffic Influence Data -- /application-data/influenceData [TS 29.519]
+# ===========================================================================
+
+
+def _influence_data_path(version: str) -> str:
+    return f"/nudr-dr/{version}/application-data/influenceData"
+
+
+def influence_data_query_params() -> dict:
+    """The query the free5gc PCF sends while creating an SM policy."""
+    return {
+        "dnns": DNN,
+        "snssais": json.dumps([_snssai()], separators=(",", ":")),
+        "supis": f"imsi-{UE_IDS_STANDARD[0]}",
+    }
+
+
+def influence_data_subscription_body() -> dict:
+    """A TrafficInfluSub like the one the free5gc PCF sends after the query."""
+    return {
+        "dnns": [DNN],
+        "snssais": [_snssai()],
+        "supis": [f"imsi-{UE_IDS_STANDARD[0]}"],
+        "notificationUri": NOTIF_URI,
+    }
+
+
+def get_influence_data(
+    version: str = "v1",
+    report: TestReport | None = None,
+    expect_status: int = 200,
+) -> Response:
+    own_report = report or TestReport(f"get_influence_data[{version}]")
+    resp = _safe_request(
+        own_report, "GET", _influence_data_path(version), influence_data_query_params()
+    )
+    if resp.status == -1:
+        if report is None:
+            own_report.summary()
+        return resp
+
+    own_report.check_eq(
+        f"[{version}] GET influenceData returns {expect_status}",
+        expect_status,
+        resp.status,
+    )
+    if expect_status == 200:
+        # The free5gc PCF only accepts a 200 with a JSON array here; anything
+        # else leaves it dereferencing a nil response.
+        own_report.check_in(
+            "Content-Type is application/json",
+            "application/json",
+            resp.header("content-type") or "",
+        )
+        # No Traffic Influence Data is seeded (or stored) by the UDR.
+        own_report.check_eq("response is an empty JSON array", [], resp.json())
+
+    if report is None:
+        own_report.summary()
+    return resp
+
+
+def create_influence_data_subscription(
+    version: str = "v1",
+    report: TestReport | None = None,
+    body: dict | None = None,
+    expect_status: int = 201,
+) -> tuple[str | None, Response]:
+    """POST a TrafficInfluSub. Returns (subscription_id, Response); the id is
+    None unless the UDR returned a Location header."""
+    own_report = report or TestReport(f"create_influence_data_subscription[{version}]")
+    body = body if body is not None else influence_data_subscription_body()
+    collection = _influence_data_path(version) + "/subs-to-notify"
+    resp = _safe_request(own_report, "POST", collection, body=body)
+    if resp.status == -1:
+        if report is None:
+            own_report.summary()
+        return None, resp
+
+    own_report.check_eq(
+        f"[{version}] POST influenceData/subs-to-notify returns {expect_status}",
+        expect_status,
+        resp.status,
+    )
+
+    subscription_id = None
+    if expect_status == 201:
+        location = resp.header("location") or ""
+        own_report.check("Location header is present", bool(location), f"got: {location!r}")
+        if location:
+            subscription_id = location.rstrip("/").rsplit("/", 1)[-1]
+            own_report.check_eq(
+                "Location points at the new subscription",
+                f"{collection}/{subscription_id}",
+                urllib.parse.urlparse(location).path,
+            )
+        data = resp.json()
+        own_report.check_eq(
+            "response echoes the notificationUri",
+            body.get("notificationUri"),
+            data.get("notificationUri") if isinstance(data, dict) else None,
+        )
+
+    if report is None:
+        own_report.summary()
+    return subscription_id, resp
+
+
+def delete_influence_data_subscription(
+    subscription_id: str,
+    version: str = "v1",
+    report: TestReport | None = None,
+    expect_status: int = 204,
+) -> Response:
+    own_report = report or TestReport(f"delete_influence_data_subscription[{version}]")
+    resp = _safe_request(
+        own_report,
+        "DELETE",
+        f"{_influence_data_path(version)}/subs-to-notify/{subscription_id}",
+    )
+    if resp.status == -1:
+        if report is None:
+            own_report.summary()
+        return resp
+
+    own_report.check_eq(
+        f"[{version}] DELETE influenceData/subs-to-notify/{subscription_id} "
+        f"returns {expect_status}",
+        expect_status,
+        resp.status,
+    )
+    if expect_status != 204:
+        _check_problem_details(own_report, resp)
+
+    if report is None:
+        own_report.summary()
+    return resp
+
+
+# ===========================================================================
 # CONNECTIVITY
 # ===========================================================================
 
@@ -455,7 +613,7 @@ def check_connectivity() -> bool:
 
 
 # ===========================================================================
-# SUITE -- every GET scenario, across configured API versions (CI entrypoint)
+# SUITE -- every scenario, across configured API versions (CI entrypoint)
 # ===========================================================================
 
 
@@ -504,6 +662,23 @@ def run_suite() -> bool:
         overall.merge(step)
         step.summary()
 
+        step = TestReport(f"influence-data [{version}]")
+        get_influence_data(version, step)
+        subscription_id, _ = create_influence_data_subscription(version, step)
+        # notificationUri is mandatory in TrafficInfluSub.
+        create_influence_data_subscription(
+            version, step, body={"dnns": [DNN]}, expect_status=400
+        )
+        if subscription_id:
+            delete_influence_data_subscription(subscription_id, version, step)
+            delete_influence_data_subscription(
+                subscription_id, version, step, expect_status=404
+            )
+        else:
+            step.check("POST returned a subscription id to delete", False)
+        overall.merge(step)
+        step.summary()
+
     print()
     return overall.summary()
 
@@ -536,6 +711,24 @@ def main() -> int:
     p_ups.add_argument("--version", default="v1")
     p_ups.add_argument("--expect-status", type=int, default=200)
 
+    p_idg = sub.add_parser("influence-data", help="GET application-data/influenceData")
+    p_idg.add_argument("--version", default="v1")
+    p_idg.add_argument("--expect-status", type=int, default=200)
+
+    p_ids = sub.add_parser(
+        "influence-data-subscribe",
+        help="POST application-data/influenceData/subs-to-notify",
+    )
+    p_ids.add_argument("--version", default="v1")
+
+    p_idu = sub.add_parser(
+        "influence-data-unsubscribe",
+        help="DELETE application-data/influenceData/subs-to-notify/{subscriptionId}",
+    )
+    p_idu.add_argument("subscription_id")
+    p_idu.add_argument("--version", default="v1")
+    p_idu.add_argument("--expect-status", type=int, default=204)
+
     sub.add_parser("suite", help="run every scenario in sequence (CI entrypoint)")
 
     args = parser.parse_args()
@@ -562,6 +755,25 @@ def main() -> int:
         report = TestReport("get_ue_policy_set")
         get_ue_policy_set(
             args.ue_id, args.version, report, expect_status=args.expect_status
+        )
+        return 0 if report.summary() else 1
+
+    if args.command == "influence-data":
+        report = TestReport("get_influence_data")
+        get_influence_data(args.version, report, expect_status=args.expect_status)
+        return 0 if report.summary() else 1
+
+    if args.command == "influence-data-subscribe":
+        report = TestReport("create_influence_data_subscription")
+        subscription_id, _ = create_influence_data_subscription(args.version, report)
+        if subscription_id:
+            print(f"subscription_id: {subscription_id}", file=sys.stderr)
+        return 0 if report.summary() else 1
+
+    if args.command == "influence-data-unsubscribe":
+        report = TestReport("delete_influence_data_subscription")
+        delete_influence_data_subscription(
+            args.subscription_id, args.version, report, expect_status=args.expect_status
         )
         return 0 if report.summary() else 1
 

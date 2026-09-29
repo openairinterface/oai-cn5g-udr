@@ -22,6 +22,9 @@
 #define NUDR_DR_SDM_SUBS "sdm-subscriptions"
 #define NUDR_DR_SM_DATA "sm-data"
 #define NUDR_DR_UE_POLICY_SET "ue-policy-set"
+#define NUDR_DR_APPLICATION_DATA "application-data"
+#define NUDR_DR_INFLUENCE_DATA "influenceData"
+#define NUDR_DR_SUBS_TO_NOTIFY "subs-to-notify"
 #define NUDR_DR_SMF_REG "smf-registrations"
 #define NUDR_DR_SMF_SELECT "smf-selection-subscription-data"
 
