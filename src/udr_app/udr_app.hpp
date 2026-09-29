@@ -8,6 +8,8 @@
 #include <mysql/mysql.h>
 #include <pistache/http.h>
 
+#include <map>
+#include <mutex>
 #include <nlohmann/json.hpp>
 #include <string>
 
@@ -17,6 +19,7 @@
 #include "PatchItem.h"
 #include "SdmSubscription.h"
 #include "SmfRegistration.h"
+#include "TrafficInfluSub.h"
 #include "database_wrapper.hpp"
 #include "udr_event.hpp"
 
@@ -27,7 +30,7 @@ namespace app {
 class udr_app {
  public:
   explicit udr_app(const std::string& config_file, udr_event& ev);
-  udr_app(udr_app const&)        = delete;
+  udr_app(udr_app const&) = delete;
   void operator=(udr_app const&) = delete;
 
   virtual ~udr_app();
@@ -382,9 +385,69 @@ class udr_app {
       const std::string& supi_full_format, std::string& supi,
       std::string& prefix);
 
+  /*
+   * Handle a query for AccessAndMobilityPolicyData
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [uint32_t&] code: HTTP response code
+   * @return void
+   */
+  void handle_query_am_policy_data(
+      const std::string& ue_id, nlohmann::json& response_data, uint32_t& code);
+
+  /*
+   * Handle a query for SessionManagementPolicyData
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [uint32_t&] code: HTTP response code
+   * @param [const std::optional<oai::_3gpp::model::Snssai>&] snssai: S-NSSAI
+   * filter
+   * @param [const std::optional<std::string>&] dnn: DNN filter
+   * @return void
+   */
+  void handle_query_sm_policy_data(
+      const std::string& ue_id, nlohmann::json& response_data, uint32_t& code,
+      const std::optional<oai::_3gpp::model::Snssai>& snssai,
+      const std::optional<std::string>& dnn);
+
+  /*
+   * Handle a query for UePolicySet
+   * @param [const std::string&] ue_id: UE Identity
+   * @param [nlohmann::json&] response_data: Response in Json format
+   * @param [uint32_t&] code: HTTP response code
+   * @return void
+   */
+  void handle_query_ue_policy_set(
+      const std::string& ue_id, nlohmann::json& response_data, uint32_t& code);
+
+  // No Traffic Influence Data store yet: always an empty array [TS 29.519].
+  void handle_query_influence_data(
+      nlohmann::json& response_data, uint32_t& code);
+
+  void handle_create_influence_data_subscription(
+      const oai::_3gpp::model::TrafficInfluSub& subscription,
+      nlohmann::json& response_data, uint32_t& code,
+      std::string& subscription_id);
+
+  void handle_delete_influence_data_subscription(
+      const std::string& subscription_id, uint32_t& code);
+
  private:
+  /*
+   * Remove empty objects, arrays, null values, and empty strings from JSON
+   * response
+   * @param [nlohmann::json&] json_data: JSON data to clean
+   * @return void
+   */
+  void remove_empty_fields(nlohmann::json& json_data);
+
   udr_event& event_sub;
   std::shared_ptr<database_wrapper_abstraction> db_connector;
+
+  std::mutex m_influence_data_subscriptions_mutex;
+  std::map<std::string, oai::_3gpp::model::TrafficInfluSub>
+      m_influence_data_subscriptions;
+  uint64_t m_next_influence_data_subscription_id = 1;
 };
 }  // namespace app
 }  // namespace udr
