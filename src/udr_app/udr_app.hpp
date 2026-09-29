@@ -8,6 +8,8 @@
 #include <mysql/mysql.h>
 #include <pistache/http.h>
 
+#include <map>
+#include <mutex>
 #include <nlohmann/json.hpp>
 #include <string>
 
@@ -17,6 +19,7 @@
 #include "PatchItem.h"
 #include "SdmSubscription.h"
 #include "SmfRegistration.h"
+#include "TrafficInfluSub.h"
 #include "database_wrapper.hpp"
 #include "udr_event.hpp"
 
@@ -417,6 +420,18 @@ class udr_app {
   void handle_query_ue_policy_set(
       const std::string& ue_id, nlohmann::json& response_data, uint32_t& code);
 
+  // No Traffic Influence Data store yet: always an empty array [TS 29.519].
+  void handle_query_influence_data(
+      nlohmann::json& response_data, uint32_t& code);
+
+  void handle_create_influence_data_subscription(
+      const oai::_3gpp::model::TrafficInfluSub& subscription,
+      nlohmann::json& response_data, uint32_t& code,
+      std::string& subscription_id);
+
+  void handle_delete_influence_data_subscription(
+      const std::string& subscription_id, uint32_t& code);
+
  private:
   /*
    * Remove empty objects, arrays, null values, and empty strings from JSON
@@ -428,6 +443,11 @@ class udr_app {
 
   udr_event& event_sub;
   std::shared_ptr<database_wrapper_abstraction> db_connector;
+
+  std::mutex m_influence_data_subscriptions_mutex;
+  std::map<std::string, oai::_3gpp::model::TrafficInfluSub>
+      m_influence_data_subscriptions;
+  uint64_t m_next_influence_data_subscription_id = 1;
 };
 }  // namespace app
 }  // namespace udr
