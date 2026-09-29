@@ -921,3 +921,45 @@ void udr_app::handle_query_ue_policy_set(
   }
   return;
 }
+
+//------------------------------------------------------------------------------
+void udr_app::handle_query_influence_data(
+    nlohmann::json& response_data, uint32_t& code) {
+  Logger::udr_app().info("Retrieve the Traffic Influence Data");
+  response_data = nlohmann::json::array();
+  code          = oai::common::sbi::http_status_code::OK;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_create_influence_data_subscription(
+    const oai::_3gpp::model::TrafficInfluSub& subscription,
+    nlohmann::json& response_data, uint32_t& code,
+    std::string& subscription_id) {
+  {
+    std::lock_guard<std::mutex> lock(m_influence_data_subscriptions_mutex);
+    subscription_id = std::to_string(m_next_influence_data_subscription_id++);
+    m_influence_data_subscriptions[subscription_id] = subscription;
+  }
+  to_json(response_data, subscription);
+  code = oai::common::sbi::http_status_code::CREATED;
+  Logger::udr_app().info(
+      "Created Traffic Influence Data subscription %s (notification URI %s)",
+      subscription_id.c_str(), subscription.getNotificationUri().c_str());
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_delete_influence_data_subscription(
+    const std::string& subscription_id, uint32_t& code) {
+  std::lock_guard<std::mutex> lock(m_influence_data_subscriptions_mutex);
+  if (m_influence_data_subscriptions.erase(subscription_id) == 0) {
+    Logger::udr_app().warn(
+        "Traffic Influence Data subscription %s not found",
+        subscription_id.c_str());
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
+    return;
+  }
+  Logger::udr_app().info(
+      "Deleted Traffic Influence Data subscription %s",
+      subscription_id.c_str());
+  code = oai::common::sbi::http_status_code::NO_CONTENT;
+}

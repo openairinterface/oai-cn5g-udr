@@ -40,21 +40,11 @@ void SessionManagementPolicyDataDocumentApiImpl::
   Logger::udr_server().info(
       "[UE Id %s] Read Session Management Policy Data", ueId.c_str());
 
-  std::optional<oai::_3gpp::model::Snssai> snssai_opt = std::nullopt;
-  std::optional<std::string> dnn_opt                  = std::nullopt;
-
-  if (!snssai.isEmpty()) {
-    snssai_opt = std::make_optional<oai::_3gpp::model::Snssai>(snssai.get());
-  }
-  if (!dnn.isEmpty()) {
-    dnn_opt = std::make_optional<std::string>(dnn.get());
-  }
-
   nlohmann::json response_data = {};
   uint32_t http_code           = 0;
 
   m_udr_app->handle_query_sm_policy_data(
-      ueId, response_data, http_code, snssai_opt, dnn_opt);
+      ueId, response_data, http_code, snssai, dnn);
 
   if (http_code == 200) {
     response.send(Pistache::Http::Code(http_code), response_data.dump());

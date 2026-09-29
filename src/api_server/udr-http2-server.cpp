@@ -29,33 +29,39 @@ using namespace oai::udr::api;
 extern udr_config udr_cfg;
 
 namespace {
-// Mirrors the Pistache *PolicyData*ApiImpl handlers: data on 200, a
-// ProblemDetails body [TS 29.500 §5.2.7.2] otherwise. udr_app leaves
-// response_data untouched on failure, so dumping it would send "null".
-void send_policy_data_response(
-    const response& response, uint32_t http_code,
-    const nlohmann::json& response_data, const std::string& not_found_detail) {
-  header_map h;
-  if (http_code == oai::common::sbi::http_status_code::OK) {
-    h.emplace("content-type", header_value{"application/json"});
-    response.write_head(http_code, h);
-    response.end(response_data.dump());
-    return;
-  }
-
+// ProblemDetails body [TS 29.500 §5.2.7.2].
+void send_problem_details(
+    const response& response, uint32_t http_code, const std::string& title,
+    const std::string& detail) {
   nlohmann::json problem_details = nlohmann::json::object();
-  if (http_code == oai::common::sbi::http_status_code::NOT_FOUND) {
-    problem_details["title"]  = "Not Found";
-    problem_details["detail"] = not_found_detail;
-  } else {
-    http_code = oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR;
-    problem_details["title"] = "Internal Server Error";
-  }
-  problem_details["status"] = http_code;
+  problem_details["title"]       = title;
+  problem_details["status"]      = http_code;
+  if (!detail.empty()) problem_details["detail"] = detail;
 
+  header_map h;
   h.emplace("content-type", header_value{"application/problem+json"});
   response.write_head(http_code, h);
   response.end(problem_details.dump());
+}
+
+// Mirrors the Pistache *PolicyData*ApiImpl handlers: data on 200, a
+// ProblemDetails body otherwise. udr_app leaves response_data untouched on
+// failure, so dumping it would send "null".
+void send_policy_data_response(
+    const response& response, uint32_t http_code,
+    const nlohmann::json& response_data, const std::string& not_found_detail) {
+  if (http_code == oai::common::sbi::http_status_code::OK) {
+    header_map h;
+    h.emplace("content-type", header_value{"application/json"});
+    response.write_head(http_code, h);
+    response.end(response_data.dump());
+  } else if (http_code == oai::common::sbi::http_status_code::NOT_FOUND) {
+    send_problem_details(response, http_code, "Not Found", not_found_detail);
+  } else {
+    send_problem_details(
+        response, oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR,
+        "Internal Server Error", "");
+  }
 }
 }  // namespace
 
@@ -375,6 +381,73 @@ void udr_http2_server::start() {
                 "HTTP Response code %d (HTTP Version 2).", http_code);
             return;
           }
+        }
+        const std::size_t n = split_q.size();
+        // Path: /application-data/influenceData
+        if (n >= 5 && split_q[n - 1].compare(NUDR_DR_INFLUENCE_DATA) == 0 &&
+            split_q[n - 2].compare(NUDR_DR_APPLICATION_DATA) == 0 &&
+            request.method().compare("GET") == 0 && len == 0) {
+          nlohmann::json response_data = {};
+          uint32_t http_code           = 0;
+          m_udr_app->handle_query_influence_data(response_data, http_code);
+
+          header_map h;
+          h.emplace("content-type", header_value{"application/json"});
+          response.write_head(http_code, h);
+          response.end(response_data.dump());
+          Logger::udr_server().debug(
+              "HTTP Response code %d (HTTP Version 2).", http_code);
+          return;
+        }
+        // Path: /application-data/influenceData/subs-to-notify
+        if (n >= 6 && split_q[n - 1].compare(NUDR_DR_SUBS_TO_NOTIFY) == 0 &&
+            split_q[n - 2].compare(NUDR_DR_INFLUENCE_DATA) == 0 &&
+            split_q[n - 3].compare(NUDR_DR_APPLICATION_DATA) == 0 &&
+            request.method().compare("POST") == 0 && len > 0) {
+          TrafficInfluSub subscription = {};
+          nlohmann::json::parse(msg).get_to(subscription);
+
+          nlohmann::json response_data = {};
+          uint32_t http_code           = 0;
+          std::string subscription_id  = {};
+          m_udr_app->handle_create_influence_data_subscription(
+              subscription, response_data, http_code, subscription_id);
+
+          const auto& uri = request.uri();
+          header_map h;
+          h.emplace("content-type", header_value{"application/json"});
+          h.emplace(
+              "location", header_value{
+                              uri.scheme + "://" + uri.host + uri.path + "/" +
+                              subscription_id});
+          response.write_head(http_code, h);
+          response.end(response_data.dump());
+          Logger::udr_server().debug(
+              "HTTP Response code %d (HTTP Version 2).", http_code);
+          return;
+        }
+        // Path: /application-data/influenceData/subs-to-notify/{subscriptionId}
+        if (n >= 7 && split_q[n - 2].compare(NUDR_DR_SUBS_TO_NOTIFY) == 0 &&
+            split_q[n - 3].compare(NUDR_DR_INFLUENCE_DATA) == 0 &&
+            split_q[n - 4].compare(NUDR_DR_APPLICATION_DATA) == 0 &&
+            request.method().compare("DELETE") == 0 && len == 0) {
+          const std::string subscription_id = split_q[n - 1];
+          uint32_t http_code                = 0;
+          m_udr_app->handle_delete_influence_data_subscription(
+              subscription_id, http_code);
+
+          if (http_code == oai::common::sbi::http_status_code::NO_CONTENT) {
+            response.write_head(http_code);
+            response.end();
+          } else {
+            send_problem_details(
+                response, http_code, "Not Found",
+                "Traffic Influence Data subscription " + subscription_id +
+                    " not found");
+          }
+          Logger::udr_server().debug(
+              "HTTP Response code %d (HTTP Version 2).", http_code);
+          return;
         }
         if (split_q[split_q.size() - 2].compare(NUDR_DR_SMF_REG) == 0) {
           std::string ueId  = split_q[split_q.size() - 4].c_str();
