@@ -13,141 +13,44 @@
 using namespace oai::udr::app;
 
 //------------------------------------------------------------------------------
-void udr_profile::set_nf_instance_id(const std::string& instance_id) {
-  nf_instance_id = instance_id;
+udr_profile::udr_profile() : oai::sba::nf_profile(), udr_info() {
+  nf_type = "UDR";
 }
 
 //------------------------------------------------------------------------------
-void udr_profile::get_nf_instance_id(std::string& instance_id) const {
-  instance_id = nf_instance_id;
+udr_profile::udr_profile(const std::string& id)
+    : oai::sba::nf_profile(id), udr_info() {
+  nf_type = "UDR";
 }
 
 //------------------------------------------------------------------------------
-std::string udr_profile::get_nf_instance_id() const {
-  return nf_instance_id;
+udr_profile::udr_profile(const udr_profile& other)
+    : oai::sba::nf_profile(), udr_info() {
+  *this = other;
 }
 
 //------------------------------------------------------------------------------
-void udr_profile::set_nf_instance_name(const std::string& instance_name) {
-  nf_instance_name = instance_name;
-}
+udr_profile& udr_profile::operator=(const udr_profile& other) {
+  if (this == &other) return *this;
 
-//------------------------------------------------------------------------------
-void udr_profile::get_nf_instance_name(std::string& instance_name) const {
-  instance_name = nf_instance_name;
-}
-
-//------------------------------------------------------------------------------
-std::string udr_profile::get_nf_instance_name() const {
-  return nf_instance_name;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::set_nf_type(const std::string& type) {
-  nf_type = type;
-}
-
-//------------------------------------------------------------------------------
-std::string udr_profile::get_nf_type() const {
-  return nf_type;
-}
-//------------------------------------------------------------------------------
-void udr_profile::set_nf_status(const std::string& status) {
-  nf_status = status;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::get_nf_status(std::string& status) const {
-  status = nf_status;
-}
-
-//------------------------------------------------------------------------------
-std::string udr_profile::get_nf_status() const {
-  return nf_status;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::set_nf_heartBeat_timer(const int32_t& timer) {
-  heartBeat_timer = timer;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::get_nf_heartBeat_timer(int32_t& timer) const {
-  timer = heartBeat_timer;
-}
-
-//------------------------------------------------------------------------------
-int32_t udr_profile::get_nf_heartBeat_timer() const {
-  return heartBeat_timer;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::set_nf_priority(const uint16_t& p) {
-  priority = p;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::get_nf_priority(uint16_t& p) const {
-  p = priority;
-}
-
-//------------------------------------------------------------------------------
-uint16_t udr_profile::get_nf_priority() const {
-  return priority;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::set_nf_capacity(const uint16_t& c) {
-  capacity = c;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::get_nf_capacity(uint16_t& c) const {
-  c = capacity;
-}
-
-//------------------------------------------------------------------------------
-uint16_t udr_profile::get_nf_capacity() const {
-  return capacity;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::set_nf_snssais(const std::vector<snssai_t>& s) {
-  snssais = s;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::get_nf_snssais(std::vector<snssai_t>& s) const {
-  s = snssais;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::add_snssai(const snssai_t& s) {
-  snssais.push_back(s);
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::set_nf_fqdn(const std::string& fqdN) {
-  fqdn = fqdN;
-}
-
-//------------------------------------------------------------------------------
-std::string udr_profile::get_nf_fqdn() const {
-  return fqdn;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::set_nf_ipv4_addresses(const std::vector<struct in_addr>& a) {
-  ipv4_addresses = a;
-}
-
-//------------------------------------------------------------------------------
-void udr_profile::add_nf_ipv4_addresses(const struct in_addr& a) {
-  ipv4_addresses.push_back(a);
-}
-//------------------------------------------------------------------------------
-void udr_profile::get_nf_ipv4_addresses(std::vector<struct in_addr>& a) const {
-  a = ipv4_addresses;
+  nf_instance_id   = other.nf_instance_id;
+  nf_instance_name = other.nf_instance_name;
+  nf_type          = other.nf_type;
+  nf_status        = other.nf_status;
+  heartBeat_timer  = other.heartBeat_timer;
+  plmn_list        = other.plmn_list;
+  snssais          = other.snssais;
+  fqdn             = other.fqdn;
+  ipv4_addresses   = other.ipv4_addresses;
+  ipv6_addresses   = other.ipv6_addresses;
+  priority         = other.priority;
+  capacity         = other.capacity;
+  json_data        = other.json_data;
+  nf_services      = other.nf_services;
+  custom_info      = other.custom_info;
+  is_updated       = other.is_updated;
+  udr_info         = other.udr_info;
+  return *this;
 }
 
 //------------------------------------------------------------------------------
@@ -161,31 +64,8 @@ void udr_profile::get_udr_info(oai::common::sbi::udr_info_t& s) const {
 }
 
 //------------------------------------------------------------------------------
-void udr_profile::display() const {
-  Logger::udr_app().debug("- NF instance info");
-  Logger::udr_app().debug("    Instance ID: %s", nf_instance_id.c_str());
-  Logger::udr_app().debug("    Instance name: %s", nf_instance_name.c_str());
-  Logger::udr_app().debug("    Instance type: %s", nf_type.c_str());
-  Logger::udr_app().debug("    Instance fqdn: %s", fqdn.c_str());
-  Logger::udr_app().debug("    Status: %s", nf_status.c_str());
-  Logger::udr_app().debug("    HeartBeat timer: %d", heartBeat_timer);
-  Logger::udr_app().debug("    Priority: %d", priority);
-  Logger::udr_app().debug("    Capacity: %d", capacity);
-  // SNSSAIs
-  if (snssais.size() > 0) {
-    Logger::udr_app().debug("    SNSSAI:");
-  }
-  for (auto s : snssais) {
-    Logger::udr_app().debug("        SST, SD: %d, %s", s.sst, s.sd.c_str());
-  }
-
-  // IPv4 Addresses
-  if (ipv4_addresses.size() > 0) {
-    Logger::udr_app().debug("    IPv4 Addr:");
-  }
-  for (auto address : ipv4_addresses) {
-    Logger::udr_app().debug("        %s", inet_ntoa(address));
-  }
+void udr_profile::display() {
+  oai::sba::nf_profile::display();
 
   Logger::udr_app().debug("\tUDR Info");
   Logger::udr_app().debug("\t\tGroupId: %s", udr_info.groupid.c_str());
@@ -216,29 +96,14 @@ void udr_profile::display() const {
 
 //------------------------------------------------------------------------------
 void udr_profile::to_json(nlohmann::json& data) const {
-  data["nfInstanceId"]   = nf_instance_id;
-  data["nfInstanceName"] = nf_instance_name;
-  data["nfType"]         = nf_type;
-  data["nfStatus"]       = nf_status;
-  data["heartBeatTimer"] = heartBeat_timer;
-  // SNSSAIs
-  data["sNssais"] = nlohmann::json::array();
-  for (auto s : snssais) {
-    nlohmann::json tmp = {};
-    tmp["sst"]         = s.sst;
-    tmp["sd"]          = s.sd;
-    data["sNssais"].push_back(tmp);
-  }
-  data["fqdn"] = fqdn;
-  // ipv4_addresses
-  data["ipv4Addresses"] = nlohmann::json::array();
-  for (auto address : ipv4_addresses) {
-    nlohmann::json tmp = inet_ntoa(address);
-    data["ipv4Addresses"].push_back(tmp);
-  }
+  oai::sba::nf_profile::to_json(data);
 
-  data["priority"] = priority;
-  data["capacity"] = capacity;
+  // Preserve the UDR registration payload produced before using the common
+  // NF profile implementation.
+  data.erase("json_data");
+  data.erase("nfServices");
+  if (snssais.empty()) data["sNssais"] = nlohmann::json::array();
+  data["fqdn"] = fqdn;
 
   // UDR Info
   data["udrInfo"]["groupId"]                        = udr_info.groupid;
@@ -277,6 +142,10 @@ void udr_profile::to_json(nlohmann::json& data) const {
 
 //------------------------------------------------------------------------------
 void udr_profile::from_json(const nlohmann::json& data) {
+  snssais.clear();
+  ipv4_addresses.clear();
+  udr_info = {};
+
   if (data.find("nfInstanceId") != data.end()) {
     nf_instance_id = data["nfInstanceId"].get<std::string>();
   }
@@ -306,22 +175,20 @@ void udr_profile::from_json(const nlohmann::json& data) {
     }
   }
 
-  if (data.find("ipv4Addresses") != data.end()) {
-    nlohmann::json addresses = data["ipv4Addresses"];
+  if (data.find("fqdn") != data.end()) {
+    fqdn = data["fqdn"].get<std::string>();
+  }
 
-    for (auto it : addresses) {
-      struct in_addr addr4 = {};
-      std::string address  = it.get<std::string>();
-      unsigned char buf_in_addr[sizeof(struct in_addr)];
-      if (inet_pton(AF_INET, oai::utils::trim(address).c_str(), buf_in_addr) ==
-          1) {
-        memcpy(&addr4, buf_in_addr, sizeof(struct in_addr));
-      } else {
+  if (data.find("ipv4Addresses") != data.end()) {
+    for (const auto& item : data["ipv4Addresses"]) {
+      struct in_addr address = {};
+      auto value             = item.get<std::string>();
+      if (inet_pton(AF_INET, oai::utils::trim(value).c_str(), &address) != 1) {
         Logger::udr_app().warn(
-            "Address conversion: Bad value %s",
-            oai::utils::trim(address).c_str());
+            "Address conversion: Bad value %s", oai::utils::trim(value));
+        continue;
       }
-      add_nf_ipv4_addresses(addr4);
+      ipv4_addresses.push_back(address);
     }
   }
 

@@ -29,12 +29,13 @@
 #include "options.hpp"
 #include "pid_file.hpp"
 #include "sbi_helper.hpp"
+#include "task_manager.hpp"
 #include "udr-api-server.h"
 #include "udr-http2-server.h"
 #include "udr_app.hpp"
 #include "udr_config.hpp"
 #include "udr_config_yaml.hpp"
-#include "udr_nrf.hpp"
+#include "udr_client.hpp"
 
 using namespace oai::config;
 using namespace oai::udr::app;
@@ -42,14 +43,14 @@ using namespace oai::udr::config;
 using namespace oai::utils;
 
 udr_config udr_cfg;
-udr_app* udr_app_inst                                    = nullptr;
-udr_nrf* udr_nrf_inst                                    = nullptr;
-UDRApiServer* http_server1                               = nullptr;
-udr_http2_server* http_server2                           = nullptr;
-task_manager* tm_inst                                    = nullptr;
+std::unique_ptr<udr_app> udr_app_inst                    = nullptr;
+std::unique_ptr<udr_client> udr_client_inst              = nullptr;
+std::unique_ptr<UDRApiServer> http_server1               = nullptr;
+std::unique_ptr<udr_http2_server> http_server2           = nullptr;
+std::unique_ptr<oai::sba::task_manager> tm_inst          = nullptr;
 std::shared_ptr<oai::http::http_client> http_client_inst = nullptr;
-std::unique_ptr<udr_config_yaml> udr_cfg_yaml;
-std::unique_ptr<lttng_configuration> lttng_config_yaml;
+std::unique_ptr<udr_config_yaml> udr_cfg_yaml            = nullptr;
+std::unique_ptr<lttng_configuration> lttng_config_yaml   = nullptr;
 //------------------------------------------------------------------------------
 void my_app_signal_handler(int s) {
   auto shutdown_start = std::chrono::system_clock::now();
@@ -61,8 +62,8 @@ void my_app_signal_handler(int s) {
 
   // Stop on-going tasks
   Logger::system().debug("First stop the nrf inst");
-  if (udr_nrf_inst) {
-    udr_nrf_inst->stop();
+  if (udr_client_inst) {
+    udr_client_inst->stop();
   }
 
   Logger::system().debug("Then stop the http servers");
@@ -80,25 +81,16 @@ void my_app_signal_handler(int s) {
 
   Logger::system().debug("Freeing Allocated memory...");
   // Delete instances
-  if (http_server1) {
-    delete http_server1;
-    http_server1 = nullptr;
-  }
-  if (http_server2) {
-    delete http_server2;
-    http_server2 = nullptr;
-  }
+  http_server1.reset();
+  http_server2.reset();
 
-  if (tm_inst) {
-    delete tm_inst;
-    tm_inst = nullptr;
-  }
+  tm_inst.reset();
   Logger::system().debug("Stopped the UDR Task Manager.");
 
-  if (udr_app_inst) {
-    delete udr_app_inst;
-    udr_app_inst = nullptr;
-  }
+  udr_client_inst.reset();
+  Logger::system().debug("UDR client memory done");
+
+  udr_app_inst.reset();
   Logger::system().debug("UDR APP memory done");
 
   Logger::system().debug("Freeing allocated memory done");
@@ -148,7 +140,7 @@ int main(int argc, char** argv) {
   std::signal(SIGINT, my_app_signal_handler);
 
   // Event subsystem
-  udr_event ev;
+  auto ev = std::make_shared<udr_event>();
 
   // Config
   Logger::system().debug("Parsing the configuration file, file type YAML.");
@@ -166,11 +158,11 @@ int main(int argc, char** argv) {
   // HTTP Client
   uint8_t http_version = udr_cfg.use_http2 ? 2 : 1;
   http_client_inst     = oai::http::http_client::create_instance(
-      Logger::udr_nrf(), udr_cfg.http_request_timeout, udr_cfg.nudr.if_name,
+      Logger::udr_client(), udr_cfg.http_request_timeout, udr_cfg.nudr.if_name,
       http_version);
 
   // UDR application layer
-  udr_app_inst = new udr_app(Options::getlibconfigConfig(), ev);
+  udr_app_inst = std::make_unique<udr_app>(Options::getlibconfigConfig(), *ev);
   if (!udr_app_inst->start()) {
     udr_app_inst->stop();
     Logger::system().error("Could not start UDR APP, exiting.");
@@ -178,12 +170,12 @@ int main(int argc, char** argv) {
   }
 
   // Task Manager
-  tm_inst = new task_manager(ev);
-  std::thread task_manager_thread(&task_manager::run, tm_inst);
+  tm_inst = std::make_unique<oai::sba::task_manager>(ev);
+  std::thread task_manager_thread(&oai::sba::task_manager::run, tm_inst.get());
 
   // UDR NRF
-  udr_nrf_inst = new udr_nrf(ev);
-  std::thread udr_nrf_manager(&udr_nrf::start, udr_nrf_inst);
+  udr_client_inst = std::make_unique<udr_client>(ev, http_client_inst);
+  std::thread udr_client_manager(&udr_client::start, udr_client_inst.get());
 
   if (!udr_cfg.use_http2) {
     // UDR Pistache API server (HTTP1)
@@ -191,22 +183,23 @@ int main(int argc, char** argv) {
         std::string(inet_ntoa(*((struct in_addr*) &udr_cfg.nudr.addr4))),
         Pistache::Port(udr_cfg.nudr.port));
 
-    http_server1 = new UDRApiServer(addr, udr_app_inst);
+    http_server1 = std::make_unique<UDRApiServer>(addr, udr_app_inst.get());
     http_server1->init(2);
-    std::thread udr_http1_manager(&UDRApiServer::start, http_server1);
+    std::thread udr_http1_manager(&UDRApiServer::start, http_server1.get());
     udr_http1_manager.join();
   } else {
     // UDR NGHTTP API server (HTTP2)
-    http_server2 = new udr_http2_server(
-        conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr.port, udr_app_inst);
-    std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
+    http_server2 = std::make_unique<udr_http2_server>(
+        conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr.port,
+        udr_app_inst.get());
+    std::thread udr_http2_manager(&udr_http2_server::start, http_server2.get());
     udr_http2_manager.join();
   }
 
   Logger::system().info("Initiation Done!");
 
   task_manager_thread.join();
-  udr_nrf_manager.join();
+  udr_client_manager.join();
 
   pause();
   return 0;

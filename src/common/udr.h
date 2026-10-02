@@ -5,8 +5,6 @@
 #ifndef FILE_UDR_SEEN
 #define FILE_UDR_SEEN
 
-#include <string>
-
 #define HEART_BEAT_TIMER 10
 #define NRF_REGISTRATION_RETRY_TIMER 5
 
@@ -52,27 +50,6 @@ constexpr auto DATABASE_SMF_SELECTION_SUBSCRIPTION_DATA =
 constexpr auto DATABASE_SMF_SELECTION_SUBSCRIPTION_DATA_LABEL =
     "SMF Selection Subscription Data";
 
-typedef enum db_type_s {
-  DB_TYPE_UNKNOWN   = 0,
-  DB_TYPE_MYSQL     = 1,
-  DB_TYPE_CASSANDRA = 2,
-  DB_TYPE_MONGODB   = 3
-} db_type_t;
-
-static std::string db_type_to_string(db_type_t db_type) {
-  switch (db_type) {
-    case db_type_t::DB_TYPE_UNKNOWN:
-      return "Unknown";
-    case db_type_t::DB_TYPE_MYSQL:
-      return "MySQL";
-    case db_type_t::DB_TYPE_CASSANDRA:
-      return "Cassandra";
-    case db_type_t::DB_TYPE_MONGODB:
-      return "MongoDb";
-    default:
-      return "Unknown";
-  }
-  return "Unknown";
-}
+typedef enum db_type_s { DB_TYPE_MYSQL = 1, DB_TYPE_MONGODB = 2 } db_type_t;
 
 #endif

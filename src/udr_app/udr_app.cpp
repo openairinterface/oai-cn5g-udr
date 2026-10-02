@@ -7,20 +7,17 @@
 #include "3gpp_29.500.h"
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AuthenticationSubscription.h"
-#include "cassandra_db.hpp"
 #include "logger.hpp"
 #include "mongo_db.hpp"
 #include "mysql_db.hpp"
 #include "udr_config.hpp"
 #include "udr_config_yaml.hpp"
-#include "udr_nrf.hpp"
 
 using namespace oai::udr::app;
 using namespace oai::_3gpp::model;
 using namespace oai::_3gpp::model;
 using namespace oai::udr::config;
 
-extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
 extern std::unique_ptr<oai::config::udr_config_yaml> udr_cfg_yaml;
 
@@ -30,9 +27,7 @@ udr_app::udr_app(const std::string& config_file, udr_event& ev)
   Logger::udr_app().startup("Starting...");
 
   // Use the appropriate DB connector to initialize the connection to the DB
-  if (udr_cfg.db_type == DB_TYPE_CASSANDRA) {
-    db_connector = std::make_shared<cassandra_db>();
-  } else if (udr_cfg.db_type == DB_TYPE_MYSQL) {
+  if (udr_cfg.db_type == DB_TYPE_MYSQL) {
     db_connector = std::make_shared<mysql_db>(ev);
   } else {
     db_connector = std::make_shared<mongo_db>(ev);

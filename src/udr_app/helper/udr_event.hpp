@@ -8,13 +8,11 @@
 #include <boost/signals2.hpp>
 namespace bs2 = boost::signals2;
 
-#include "task_manager.hpp"
+#include "nf_event.hpp"
 #include "udr.h"
-#include "udr_event_sig.hpp"
 
 namespace oai::udr::app {
-class task_manager;
-class udr_event {
+class udr_event : public oai::sba::nf_event {
  public:
   udr_event() {};
   udr_event(udr_event const&)      = delete;
@@ -27,19 +25,7 @@ class udr_event {
 
   // class register/handle event
   friend class udr_app;
-  friend class udr_nrf;
-  friend class task_manager;
-
-  //------------------------------------------------------------------------------
-  /*
-   * Subscribe to the task tick event
-   * @param [const task_sig_t::slot_type &] sig
-   * @param [uint64_t] period: interval between two events
-   * @param [uint64_t] start:
-   * @return void
-   */
-  bs2::connection subscribe_task_nf_heartbeat(
-      const task_sig_t::slot_type& sig, uint64_t period, uint64_t start = 0);
+  friend class udr_client;
 
   /*
    * Subscribe to the task db connection reset event
@@ -51,10 +37,6 @@ class udr_event {
   // bs2::connection subscribe_task_db_connection_reset(
   //    const db_connection_sig_t::slot_type& sig, uint64_t period,
   //    uint64_t start = 0);
-
- private:
-  task_sig_t task_tick;
-  // db_connection_sig_t db_connection_sig;
 };
 }  // namespace oai::udr::app
 #endif
