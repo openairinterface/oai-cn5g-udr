@@ -174,9 +174,6 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
     if (boost::iequals(get_database_config().get_database_type(), "mysql")) {
       cfg.db_type = DB_TYPE_MYSQL;
     } else if (boost::iequals(
-                   get_database_config().get_database_type(), "cassandra")) {
-      cfg.db_type = DB_TYPE_CASSANDRA;
-    } else if (boost::iequals(
                    get_database_config().get_database_type(), "mongodb")) {
       cfg.db_type = DB_TYPE_MONGODB;
     }
