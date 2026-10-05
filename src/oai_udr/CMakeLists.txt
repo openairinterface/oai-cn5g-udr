@@ -279,6 +279,7 @@ include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/bstr)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/sba)
 
 add_executable(udr
   ${SRC_TOP_DIR}/oai_udr/main.cpp
