@@ -43,32 +43,28 @@ void IndividualBdtDataDocumentApi::setupRoutes() {
   Routes::Put(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::
-              UdrDrPathSubscriptionDataPolicyDataBdtDataBdtReferenceId,
+          udr_sbi_helper::UdrDrPathPolicyDataBdtDataBdtReferenceId,
       Routes::bind(
           &IndividualBdtDataDocumentApi::create_individual_bdt_data_handler,
           this));
   Routes::Delete(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::
-              UdrDrPathSubscriptionDataPolicyDataBdtDataBdtReferenceId,
+          udr_sbi_helper::UdrDrPathPolicyDataBdtDataBdtReferenceId,
       Routes::bind(
           &IndividualBdtDataDocumentApi::delete_individual_bdt_data_handler,
           this));
   Routes::Get(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::
-              UdrDrPathSubscriptionDataPolicyDataBdtDataBdtReferenceId,
+          udr_sbi_helper::UdrDrPathPolicyDataBdtDataBdtReferenceId,
       Routes::bind(
           &IndividualBdtDataDocumentApi::read_individual_bdt_data_handler,
           this));
   Routes::Patch(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::
-              UdrDrPathSubscriptionDataPolicyDataBdtDataBdtReferenceId,
+          udr_sbi_helper::UdrDrPathPolicyDataBdtDataBdtReferenceId,
       Routes::bind(
           &IndividualBdtDataDocumentApi::update_individual_bdt_data_handler,
           this));

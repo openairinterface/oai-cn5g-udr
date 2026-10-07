@@ -40,10 +40,20 @@ void AccessAndMobilityPolicyDataDocumentApi::init() {
 void AccessAndMobilityPolicyDataDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
+  // Register routes for both v1 and v2 to support backward compatibility
   Routes::Get(
       *router,
-      udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesAmData,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV1 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesAmData,
+      Routes::bind(
+          &AccessAndMobilityPolicyDataDocumentApi::
+              read_access_and_mobility_policy_data_handler,
+          this));
+
+  Routes::Get(
+      *router,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV2 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesAmData,
       Routes::bind(
           &AccessAndMobilityPolicyDataDocumentApi::
               read_access_and_mobility_policy_data_handler,
