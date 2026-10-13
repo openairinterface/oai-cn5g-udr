@@ -270,7 +270,33 @@ void udr_http2_server::start() {
       });
 
   // Configuration APIs
-  server.handle(
+  // The configuration service is served on the dedicated OAM interface when
+  // enabled, on this server otherwise
+  if (!udr_cfg.oam_enabled) {
+    register_configuration_api(server);
+  }
+
+  running_server = true;
+  if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
+    Logger::udr_server().debug("HTTP2 server status: %s", ec.message());
+  }
+  running_server = false;
+  Logger::udr_server().info("HTTP2 server fully stopped");
+}
+
+//------------------------------------------------------------------------------
+void udr_http2_server::stop() {
+  server.stop();
+  while (running_server) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
+  Logger::udr_server().info("HTTP2 server should be fully stopped");
+  std::this_thread::sleep_for(std::chrono::milliseconds(50));
+}
+
+//------------------------------------------------------------------------------
+void udr_http2_server::register_configuration_api(http2& srv) {
+  srv.handle(
       udr_sbi_helper::UdrConfigurationServiceBase +
           udr_sbi_helper::UdrConfPathConfiguration,
       [&](const request& request, const response& response) {
@@ -294,23 +320,6 @@ void udr_http2_server::start() {
           }
         });
       });
-
-  running_server = true;
-  if (server.listen_and_serve(ec, m_address, std::to_string(m_port))) {
-    Logger::udr_server().debug("HTTP2 server status: %s", ec.message());
-  }
-  running_server = false;
-  Logger::udr_server().info("HTTP2 server fully stopped");
-}
-
-//------------------------------------------------------------------------------
-void udr_http2_server::stop() {
-  server.stop();
-  while (running_server) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  }
-  Logger::udr_server().info("HTTP2 server should be fully stopped");
-  std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
 //------------------------------------------------------------------------------

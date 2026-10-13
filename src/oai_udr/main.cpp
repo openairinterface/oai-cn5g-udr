@@ -26,6 +26,7 @@
 #include "conversions.hpp"
 #include "http_client.hpp"
 #include "logger.hpp"
+#include "oam_server.hpp"
 #include "options.hpp"
 #include "pid_file.hpp"
 #include "sbi_helper.hpp"
@@ -46,6 +47,7 @@ udr_app* udr_app_inst                                    = nullptr;
 udr_nrf* udr_nrf_inst                                    = nullptr;
 UDRApiServer* http_server1                               = nullptr;
 udr_http2_server* http_server2                           = nullptr;
+oai::oam::oam_server* oam_api_server                     = nullptr;
 task_manager* tm_inst                                    = nullptr;
 std::shared_ptr<oai::http::http_client> http_client_inst = nullptr;
 std::unique_ptr<udr_config_yaml> udr_cfg_yaml;
@@ -72,6 +74,9 @@ void my_app_signal_handler(int s) {
   if (http_server2) {
     http_server2->stop();
   }
+  if (oam_api_server) {
+    oam_api_server->stop();
+  }
   Logger::system().debug("HTTP servers are shutdown");
 
   if (udr_app_inst) {
@@ -87,6 +92,10 @@ void my_app_signal_handler(int s) {
   if (http_server2) {
     delete http_server2;
     http_server2 = nullptr;
+  }
+  if (oam_api_server) {
+    delete oam_api_server;
+    oam_api_server = nullptr;
   }
 
   if (tm_inst) {
@@ -199,7 +208,20 @@ int main(int argc, char** argv) {
     // UDR NGHTTP API server (HTTP2)
     http_server2 = new udr_http2_server(
         conv::toString(udr_cfg.nudr.addr4), udr_cfg.nudr.port, udr_app_inst);
+    // Dedicated OAM server serving the configuration service when enabled
+    std::thread oam_http2_manager;
+    if (udr_cfg.oam_enabled) {
+      oam_api_server = new oai::oam::oam_server(
+          conv::toString(udr_cfg.oam.addr4), udr_cfg.oam.port,
+          Logger::udr_server());
+      http_server2->register_configuration_api(oam_api_server->get_server());
+      oam_http2_manager =
+          std::thread(&oai::oam::oam_server::start, oam_api_server);
+    }
     std::thread udr_http2_manager(&udr_http2_server::start, http_server2);
+    if (oam_http2_manager.joinable()) {
+      oam_http2_manager.join();
+    }
     udr_http2_manager.join();
   }
 
