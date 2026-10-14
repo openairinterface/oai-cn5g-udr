@@ -138,6 +138,8 @@ class udr_http2_server {
   void update_configuration_handler(
       nlohmann::json& configuration_info, const response& response);
 
+  void register_configuration_api(http2& srv);
+
   void stop();
 
  private:

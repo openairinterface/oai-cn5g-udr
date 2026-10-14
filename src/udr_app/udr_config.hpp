@@ -32,6 +32,8 @@ class udr_config {
   std::string udr_name;
   spdlog::level::level_enum log_level;
   oai::common::sbi::interface_cfg_t nudr;
+  bool oam_enabled;
+  oai::common::sbi::interface_cfg_t oam;
   oai::common::sbi::nf_addr_t nrf_addr;
   bool register_nrf;
   bool use_http2;

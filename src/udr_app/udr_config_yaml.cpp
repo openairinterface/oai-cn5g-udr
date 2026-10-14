@@ -187,6 +187,13 @@ void udr_config_yaml::to_udr_config(oai::udr::config::udr_config& cfg) {
   cfg.nudr.addr4       = local().get_sbi().get_addr4();
   cfg.nudr.if_name     = local().get_sbi().get_if_name();
 
+  cfg.oam_enabled = local().get_oam().is_enabled();
+  if (cfg.oam_enabled) {
+    cfg.oam.port    = local().get_oam().get_port();
+    cfg.oam.addr4   = local().get_oam().get_addr4();
+    cfg.oam.if_name = local().get_oam().get_if_name();
+  }
+
   if (get_nf(oai::config::NRF_CONFIG_NAME)) {
     cfg.nrf_addr.api_version =
         get_nf(NRF_CONFIG_NAME)->get_sbi().get_api_version();
