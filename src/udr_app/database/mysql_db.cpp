@@ -6,19 +6,24 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/find.hpp>
+#include <algorithm>
 #include <boost/algorithm/string/replace.hpp>
+#include <cctype>
 #include <chrono>
 #include <iomanip>
+#include <optional>
 #include <sstream>
 #include <thread>
 
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AmPolicyData.h"
 #include "AuthenticationSubscription.h"
+#include "ChargingInformation.h"
 #include "PatchOperation_anyOf.h"
 #include "ProblemDetails.h"
 #include "SdmSubscription.h"
 #include "SmPolicyData.h"
+#include "Snssai.h"
 #include "UePolicySet.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
@@ -30,6 +35,148 @@ using namespace oai::udr::config;
 using namespace boost::placeholders;
 
 extern udr_config udr_cfg;
+
+namespace {
+
+// SD "FFFFFF" means no SD value [TS 23.003 §28.4.2]. The Snssai model also
+// uses it as the default when "sd" is absent.
+bool has_sd(const Snssai& snssai) {
+  return snssai.sdIsSet() && !boost::iequals(snssai.getSd(), SD_DEFAULT_VALUE);
+}
+
+// Map-key form of an S-NSSAI [TS 29.571, Snssai]: decimal SST, followed by "-"
+// and the 6-digit hexadecimal SD when there is one, e.g. "222-00007b".
+std::string snssai_map_key(const Snssai& snssai) {
+  std::string key = std::to_string(snssai.getSst());
+  if (has_sd(snssai)) {
+    key += "-" + boost::algorithm::to_lower_copy(snssai.getSd());
+  }
+  return key;
+}
+
+// Drops an "sd" that only says "no SD": TS 29.571 requires the IE to be absent.
+void remove_default_sd(nlohmann::json& snssai) {
+  if (snssai.is_object() && snssai.contains("sd") && snssai["sd"].is_string() &&
+      boost::iequals(snssai["sd"].get<std::string>(), SD_DEFAULT_VALUE)) {
+    snssai.erase("sd");
+  }
+}
+
+// Re-keys smPolicySnssaiData by each entry's own S-NSSAI, so the response uses
+// the standard key form whatever key the database stores (the sample data uses
+// the JSON-encoded S-NSSAI).
+nlohmann::json rekey_sm_policy_snssai_data(
+    const nlohmann::json& snssai_data, const std::string& ue_id) {
+  nlohmann::json rekeyed = nlohmann::json::object();
+  for (const auto& item : snssai_data.items()) {
+    try {
+      Snssai snssai = {};
+      from_json(
+          item.value().contains("snssai") ? item.value().at("snssai") :
+                                            nlohmann::json::parse(item.key()),
+          snssai);
+      rekeyed[snssai_map_key(snssai)] = item.value();
+    } catch (const std::exception& e) {
+      Logger::udr_db().warn(
+          "[UE Id %s] Cannot derive the S-NSSAI of smPolicySnssaiData entry "
+          "'%s' (%s), keeping its key",
+          ue_id.c_str(), item.key().c_str(), e.what());
+      rekeyed[item.key()] = item.value();
+    }
+  }
+  return rekeyed;
+}
+
+// Keeps the requested S-NSSAI and/or DNN. With a DNN filter, each slice keeps
+// only that DNN, and slices without it are removed.
+nlohmann::json filter_sm_policy_snssai_data(
+    const nlohmann::json& snssai_data, const std::optional<Snssai>& snssai,
+    const std::optional<std::string>& dnn) {
+  const std::string wanted_key = snssai ? snssai_map_key(*snssai) : "";
+  nlohmann::json filtered      = nlohmann::json::object();
+  for (const auto& item : snssai_data.items()) {
+    if (snssai && item.key() != wanted_key) continue;
+    nlohmann::json entry = item.value();
+    if (dnn) {
+      if (!entry.contains("smPolicyDnnData") ||
+          !entry["smPolicyDnnData"].contains(*dnn)) {
+        continue;
+      }
+      nlohmann::json dnn_data  = entry["smPolicyDnnData"][*dnn];
+      entry["smPolicyDnnData"] = nlohmann::json{{*dnn, dnn_data}};
+    }
+    filtered[item.key()] = entry;
+  }
+  return filtered;
+}
+
+// Validates an AmPolicyData attribute [TS 29.519] that the common-src
+// AmPolicyData model (praInfos and subscCats only) doesn't carry. Returns the
+// value to send, or std::nullopt with a reason.
+std::optional<nlohmann::json> validate_am_policy_field(
+    const std::string& name, const nlohmann::json& value, std::string& error) {
+  if (name == "chfInfo") {
+    try {
+      ChargingInformation chf_info = {};
+      from_json(value, chf_info);
+      nlohmann::json validated;
+      to_json(validated, chf_info);
+      return validated;
+    } catch (const std::exception& e) {
+      error = e.what();
+      return std::nullopt;
+    }
+  }
+  if (name == "subscSpendingLimits") {
+    if (value.is_boolean()) return value;
+    error = "not a boolean";
+    return std::nullopt;
+  }
+  if (name == "spendLimInfo") {
+    // map(PolicyCounterInfo), minProperties 1 [TS 29.594]
+    bool valid = value.is_object() && !value.empty();
+    for (const auto& item : value.items()) {
+      const auto& counter = item.value();
+      valid               = valid && counter.is_object() &&
+              counter.contains("policyCounterId") &&
+              counter["policyCounterId"].is_string() &&
+              counter.contains("currentStatus") &&
+              counter["currentStatus"].is_string();
+    }
+    if (valid) return value;
+    error = "expected a non-empty map of PolicyCounterInfo";
+    return std::nullopt;
+  }
+  if (name == "restriStatus") {
+    // array(RestrictedStatus), minItems 1
+    bool valid = value.is_array() && !value.empty();
+    for (const auto& status : value) {
+      valid = valid && status.is_object() && status.contains("exceptionId") &&
+              status["exceptionId"].is_string() &&
+              status.contains("timeStamp") && status["timeStamp"].is_string();
+    }
+    if (valid) return value;
+    error = "expected a non-empty array of RestrictedStatus";
+    return std::nullopt;
+  }
+  if (name == "suppFeat") {
+    // SupportedFeatures: ^[A-Fa-f0-9]*$
+    if (value.is_string()) {
+      const auto& s = value.get_ref<const std::string&>();
+      if (std::all_of(s.begin(), s.end(), [](unsigned char c) {
+            return std::isxdigit(c);
+          })) {
+        return value;
+      }
+    }
+    error = "not a hexadecimal SupportedFeatures string";
+    return std::nullopt;
+  }
+  error = "not an AmPolicyData attribute";
+  return std::nullopt;
+}
+
+}  // namespace
 
 //------------------------------------------------------------------------------
 mysql_db::mysql_db(udr_event& ev)
@@ -3152,6 +3299,24 @@ bool mysql_db::query_am_policy_data(
       // spec
       nlohmann::json validated_json;
       to_json(validated_json, am_policy_model);
+
+      // The model only carries praInfos and subscCats; validate the other
+      // stored attributes here so the round-trip doesn't drop them.
+      for (const char* name :
+           {"chfInfo", "subscSpendingLimits", "spendLimInfo", "restriStatus",
+            "suppFeat"}) {
+        if (!policy_data.contains(name)) continue;
+        std::string error = {};
+        if (auto value =
+                validate_am_policy_field(name, policy_data[name], error)) {
+          validated_json[name] = *value;
+        } else {
+          Logger::udr_db().error(
+              "[UE Id %s] Invalid AmPolicyData %s in the database (%s), "
+              "leaving it out",
+              ue_id.c_str(), name, error.c_str());
+        }
+      }
       json_data = validated_json;
 
       Logger::udr_db().debug(
@@ -3258,88 +3423,27 @@ bool mysql_db::query_sm_policy_data(
       }
     }
 
-    // Transform smPolicySnssaiData keys from JSON format to standard hex format
-    // Database stores: "{\"sst\":222,\"sd\":\"00007b\"}"
-    // API requires: "de00007b" (SST as 2-digit hex + SD as 6-digit hex)
     if (policy_data.contains("smPolicySnssaiData")) {
-      nlohmann::json transformed_snssai_data = nlohmann::json::object();
-      for (auto& [key, value] : policy_data["smPolicySnssaiData"].items()) {
-        try {
-          // Parse the JSON string key to get SST and SD values
-          nlohmann::json key_json = nlohmann::json::parse(key);
-          int sst                 = key_json["sst"];
-          std::string sd          = key_json.value("sd", "");
-
-          // Convert to standard format: SST (2-digit hex) + SD (6-digit hex)
-          std::stringstream ss;
-          ss << std::setfill('0') << std::setw(2) << std::hex << sst;
-          if (!sd.empty()) {
-            ss << sd;
-          }
-          std::string standard_key = ss.str();
-
-          transformed_snssai_data[standard_key] = value;
-        } catch (const std::exception& e) {
-          Logger::udr_db().warn(
-              "[UE Id %s] Failed to transform snssai key '%s': %s, keeping "
-              "original",
-              ue_id.c_str(), key.c_str(), e.what());
-          transformed_snssai_data[key] = value;
-        }
+      policy_data["smPolicySnssaiData"] =
+          rekey_sm_policy_snssai_data(policy_data["smPolicySnssaiData"], ue_id);
+      if (snssai || dnn) {
+        policy_data["smPolicySnssaiData"] = filter_sm_policy_snssai_data(
+            policy_data["smPolicySnssaiData"], snssai, dnn);
       }
-      policy_data["smPolicySnssaiData"] = transformed_snssai_data;
     }
 
-    // Apply optional filters in C++ code
-    if (snssai.has_value() || dnn.has_value()) {
-      nlohmann::json filtered_data = policy_data;
-
-      // Filter smPolicySnssaiData by snssai if provided
-      if (snssai.has_value() && policy_data.contains("smPolicySnssaiData")) {
-        // Convert filter snssai to hex format to match transformed keys
-        int sst        = snssai.value().getSst();
-        std::string sd = snssai.value().sdIsSet() ? snssai.value().getSd() : "";
-
-        std::stringstream ss;
-        ss << std::setfill('0') << std::setw(2) << std::hex << sst;
-        if (!sd.empty()) {
-          ss << sd;
-        }
-        std::string filter_key = ss.str();
-
-        Logger::udr_db().debug(
-            "[UE Id %s] Filtering by snssai hex key: %s", ue_id.c_str(),
-            filter_key.c_str());
-
-        nlohmann::json filtered_snssai_data = nlohmann::json::object();
-        for (auto& [key, value] : policy_data["smPolicySnssaiData"].items()) {
-          // Compare hex string keys directly
-          if (key == filter_key) {
-            // Further filter by dnn if provided
-            if (dnn.has_value() && value.contains("smPolicyDnnData")) {
-              nlohmann::json filtered_dnn_data = nlohmann::json::object();
-              for (auto& [dnn_key, dnn_value] :
-                   value["smPolicyDnnData"].items()) {
-                if (dnn_key == dnn.value()) {
-                  filtered_dnn_data[dnn_key] = dnn_value;
-                }
-              }
-              if (!filtered_dnn_data.empty()) {
-                value["smPolicyDnnData"]  = filtered_dnn_data;
-                filtered_snssai_data[key] = value;
-              }
-            } else {
-              filtered_snssai_data[key] = value;
-            }
-          }
-        }
-        filtered_data["smPolicySnssaiData"] = filtered_snssai_data;
-      }
-
-      json_data = filtered_data;
-    } else {
-      json_data = policy_data;
+    // smPolicySnssaiData is mandatory with at least one entry [TS 29.519], so
+    // a filter that matches nothing leaves no SM policy data to return.
+    if (!policy_data.contains("smPolicySnssaiData") ||
+        policy_data["smPolicySnssaiData"].empty()) {
+      Logger::udr_db().info(
+          "[UE Id %s] No SessionManagementPolicyData matches the requested "
+          "S-NSSAI/DNN",
+          ue_id.c_str());
+      mysql_free_result(res);
+      return false;
     }
+    json_data = policy_data;
 
     // Validate and normalize response using OpenAPI model
     try {
@@ -3360,6 +3464,12 @@ bool mysql_db::query_sm_policy_data(
           "[UE Id %s] Failed to validate SmPolicyData model: %s", ue_id.c_str(),
           e.what());
       // Continue with raw JSON if model validation fails
+    }
+
+    // The Snssai model writes "sd": "FFFFFF" for a slice without an SD.
+    for (auto& item : json_data["smPolicySnssaiData"].items()) {
+      auto& entry = item.value();
+      if (entry.contains("snssai")) remove_default_sd(entry["snssai"]);
     }
 
     Logger::udr_db().debug(

@@ -41,10 +41,13 @@ Configuration (environment variables):
                       (default: http://127.0.0.1:8081/influence-data-notify; the
                       UDR never calls it since there is no data to change)
 
+The suite also uses the UEs seeded by database/oai_db_policy_data_tests.sql
+(several slices and DNNs, every AM attribute, a UE policy set).
+
 Usage:
     ./test_policy_data.py suite
     ./test_policy_data.py am-data <ueId> [--version v2] [--expect-status 404]
-    ./test_policy_data.py sm-data <ueId> [--version v1] [--snssai '{"sst":222,"sd":"00007b"}'] [--dnn default]
+    ./test_policy_data.py sm-data <ueId> [--version v1] [--snssai '{"sst":222,"sd":"00007b"}'] [--dnn internet]
     ./test_policy_data.py ue-policy-set <ueId> [--version v1]
     ./test_policy_data.py influence-data [--version v2]
     ./test_policy_data.py influence-data-subscribe [--version v2]
@@ -60,6 +63,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import urllib.parse
@@ -84,11 +88,49 @@ UE_IDS_PREMIUM = os.environ.get(
 ).split(",")
 UE_ID_UNKNOWN = os.environ.get("UE_ID_UNKNOWN", "999999999999999")
 
-# SNSSAI from sample data: sst=222 (0xde), sd=00007b -> hex key "de00007b"
+# SNSSAI and DNN of the sample SM policy data (map key "222-00007b")
 SNSSAI_SST = int(os.environ.get("SNSSAI_SST", "222"))
 SNSSAI_SD = os.environ.get("SNSSAI_SD", "00007b")
 DNN = os.environ.get("DNN", "default")
 NOTIF_URI = os.environ.get("NOTIF_URI", "http://127.0.0.1:8081/influence-data-notify")
+
+# UEs seeded by database/oai_db_policy_data_tests.sql
+UE_ID_MULTI_SLICE = "208950000000040"
+MULTI_SLICE_DATA = {  # map key -> DNNs
+    "222-00007b": {"default", "internet"},
+    "1": {"internet"},
+    "1-00000a": {"ims"},
+}
+UE_ID_AM_ALL_FIELDS = "208950000000041"
+AM_ALL_FIELDS = {
+    "praInfos": {"1": {"praId": "1", "presenceState": "IN_AREA"}},
+    "subscCats": ["gold"],
+    "chfInfo": {
+        "primaryChfAddress": "http://chf1.example.org:8080",
+        "secondaryChfAddress": "http://chf2.example.org:8080",
+    },
+    "subscSpendingLimits": True,
+    "spendLimInfo": {"pc1": {"policyCounterId": "pc1", "currentStatus": "active"}},
+    "restriStatus": [
+        {"exceptionId": "UNEXPECTED_UE_LOCATION", "timeStamp": "2026-01-01T00:00:00Z"}
+    ],
+    "suppFeat": "3",
+}
+UE_ID_POLICY_SET = "208950000000031"
+UE_POLICY_SET = {
+    "subscCats": ["standard"],
+    "upsis": ["20895-1"],
+    "andspInd": True,
+    "pei": "imeisv-4370816125816151",
+    "allowedRouteSelDescs": {
+        "20895": {
+            "servingPlmn": {"mcc": "208", "mnc": "95"},
+            "snssaiRouteSelDescs": [
+                {"snssai": {"sst": 222, "sd": "00007b"}, "dnnRouteSelDescs": [{"dnn": "default"}]}
+            ],
+        }
+    },
+}
 
 REQUEST_TIMEOUT = float(os.environ.get("REQUEST_TIMEOUT", "10"))
 
@@ -107,8 +149,15 @@ def _snssai_json(snssai: dict) -> str:
     return json.dumps(snssai, separators=(",", ":"))
 
 
-def _snssai_hex_key() -> str:
-    return f"{SNSSAI_SST:02x}{SNSSAI_SD}" if SNSSAI_SD else f"{SNSSAI_SST:02x}"
+SNSSAI_KEY_PATTERN = re.compile(r"^[0-9]{1,3}(-[0-9a-f]{6})?$")
+
+
+def snssai_map_key(snssai: dict) -> str:
+    """S-NSSAI as a map key [TS 29.571, Snssai]: decimal SST, then "-" and the
+    6-digit hex SD when there is one, e.g. "222-00007b". SD "ffffff" means no
+    SD [TS 23.003 §28.4.2]."""
+    sd = str(snssai.get("sd", "")).lower()
+    return f"{snssai['sst']}-{sd}" if sd and sd != "ffffff" else str(snssai["sst"])
 
 
 # ===========================================================================
@@ -300,6 +349,7 @@ def get_am_data(
     version: str = "v1",
     report: TestReport | None = None,
     expect_status: int = 200,
+    expect_fields: dict | None = None,
 ) -> Response:
     own_report = report or TestReport(f"get_am_data[{version}]")
     resp = _safe_request(
@@ -323,6 +373,8 @@ def get_am_data(
         )
         if isinstance(data, dict):
             own_report.check_in("response has 'subscCats'", "subscCats", data)
+            for name, value in (expect_fields or {}).items():
+                own_report.check_eq(f"'{name}' is returned as stored", value, data.get(name))
     else:
         _check_problem_details(own_report, resp)
 
@@ -341,14 +393,18 @@ def get_sm_data(
     version: str = "v1",
     report: TestReport | None = None,
     expect_status: int = 200,
-    snssai: dict | None = None,
+    snssai: dict | str | None = None,
     dnn: str | None = None,
+    expect: dict[str, set[str]] | None = None,
 ) -> Response:
+    """`snssai` is a dict (sent as JSON) or a raw string (sent as-is, e.g. to
+    test malformed input). `expect` maps each slice key the response must
+    contain, and nothing else, to its exact set of DNNs."""
     own_report = report or TestReport(f"get_sm_data[{version}]")
 
     params: dict[str, str] = {}
     if snssai is not None:
-        params["snssai"] = _snssai_json(snssai)
+        params["snssai"] = snssai if isinstance(snssai, str) else _snssai_json(snssai)
     if dnn is not None:
         params["dnn"] = dnn
 
@@ -363,13 +419,12 @@ def get_sm_data(
             own_report.summary()
         return resp
 
-    filter_desc = ""
-    if snssai is not None and dnn is not None:
-        filter_desc = " filtered by SNSSAI+DNN"
-    elif snssai is not None:
-        filter_desc = " filtered by SNSSAI"
-    elif dnn is not None:
-        filter_desc = f" filtered by DNN '{dnn}'"
+    filters = []
+    if snssai is not None:
+        filters.append(f"snssai={params['snssai']}")
+    if dnn is not None:
+        filters.append(f"dnn={dnn}")
+    filter_desc = f" ({', '.join(filters)})" if filters else ""
 
     own_report.check_eq(
         f"[{version}] GET sm-data for UE {ue_id}{filter_desc} returns {expect_status}",
@@ -383,28 +438,43 @@ def get_sm_data(
             "response is a JSON object", isinstance(data, dict), f"got: {data!r}"
         )
         sm_snssai_data = data.get("smPolicySnssaiData", {}) if isinstance(data, dict) else {}
-        own_report.check_in(
-            "response has 'smPolicySnssaiData'",
-            "smPolicySnssaiData",
-            data if isinstance(data, dict) else {},
-        )
-
-        non_hex_keys = [k for k in sm_snssai_data if k.startswith("{")]
         own_report.check(
-            "smPolicySnssaiData keys are hex-encoded (not raw JSON)",
-            not non_hex_keys,
-            f"non-hex keys: {non_hex_keys}",
+            "smPolicySnssaiData is present and non-empty",
+            isinstance(sm_snssai_data, dict) and bool(sm_snssai_data),
+            f"got: {sm_snssai_data!r}",
         )
 
-        if snssai is not None:
-            hex_key = _snssai_hex_key()
-            own_report.check_in(
-                f"smPolicySnssaiData contains SNSSAI hex key '{hex_key}'",
-                hex_key,
-                sm_snssai_data,
-            )
+        bad_keys = [k for k in sm_snssai_data if not SNSSAI_KEY_PATTERN.match(k)]
+        own_report.check(
+            "smPolicySnssaiData keys use the TS 29.571 form (e.g. 222-00007b)",
+            not bad_keys,
+            f"non-standard keys: {bad_keys}",
+        )
+        mismatched = {
+            k: v.get("snssai")
+            for k, v in sm_snssai_data.items()
+            if not isinstance(v.get("snssai"), dict) or snssai_map_key(v["snssai"]) != k
+        }
+        own_report.check(
+            "each key matches its entry's snssai", not mismatched, f"got: {mismatched}"
+        )
+        default_sd = [
+            k for k, v in sm_snssai_data.items()
+            if str((v.get("snssai") or {}).get("sd", "")).lower() == "ffffff"
+        ]
+        own_report.check(
+            "no snssai carries the 'no SD' value ffffff",
+            not default_sd,
+            f"in: {default_sd}",
+        )
 
-        if dnn is not None:
+        if expect is not None:
+            got = {
+                k: set((v.get("smPolicyDnnData") or {}).keys())
+                for k, v in sm_snssai_data.items()
+            }
+            own_report.check_eq("returned slices and DNNs", expect, got)
+        elif dnn is not None:
             bad_dnns = [
                 d
                 for entry in sm_snssai_data.values()
@@ -416,7 +486,7 @@ def get_sm_data(
                 not bad_dnns,
                 f"unexpected DNNs: {bad_dnns}",
             )
-    else:
+    elif expect_status == 404:
         _check_problem_details(own_report, resp)
 
     if report is None:
@@ -434,6 +504,7 @@ def get_ue_policy_set(
     version: str = "v1",
     report: TestReport | None = None,
     expect_status: int = 200,
+    expect_fields: dict | None = None,
 ) -> Response:
     own_report = report or TestReport(f"get_ue_policy_set[{version}]")
     resp = _safe_request(
@@ -450,7 +521,15 @@ def get_ue_policy_set(
         resp.status,
     )
 
-    if expect_status != 200:
+    if expect_status == 200:
+        data = resp.json()
+        own_report.check(
+            "response is a JSON object", isinstance(data, dict), f"got: {data!r}"
+        )
+        if isinstance(data, dict):
+            for name, value in (expect_fields or {}).items():
+                own_report.check_eq(f"'{name}' is returned as stored", value, data.get(name))
+    else:
         _check_problem_details(own_report, resp)
 
     if report is None:
@@ -641,23 +720,55 @@ def run_suite() -> bool:
         for ue_id in UE_IDS_STANDARD + UE_IDS_PREMIUM:
             get_am_data(ue_id, version, step)
         get_am_data(UE_ID_UNKNOWN, version, step, expect_status=404)
+        get_am_data(UE_ID_AM_ALL_FIELDS, version, step, expect_fields=AM_ALL_FIELDS)
         overall.merge(step)
         step.summary()
 
         step = TestReport(f"sm-data [{version}]")
+        # Sample data: one slice with one DNN
         ue_id = UE_IDS_STANDARD[0]
-        get_sm_data(ue_id, version, step)
-        get_sm_data(ue_id, version, step, snssai=_snssai())
-        get_sm_data(ue_id, version, step, dnn=DNN)
-        get_sm_data(ue_id, version, step, snssai=_snssai(), dnn=DNN)
+        sample = {snssai_map_key(_snssai()): {DNN}}
+        get_sm_data(ue_id, version, step, expect=sample)
+        get_sm_data(ue_id, version, step, snssai=_snssai(), expect=sample)
+        get_sm_data(ue_id, version, step, dnn=DNN, expect=sample)
+        get_sm_data(ue_id, version, step, snssai=_snssai(), dnn=DNN, expect=sample)
         get_sm_data(UE_ID_UNKNOWN, version, step, expect_status=404)
+
+        # Test fixture: three slices, one without SD, several DNNs
+        ue_id = UE_ID_MULTI_SLICE
+        get_sm_data(ue_id, version, step, expect=MULTI_SLICE_DATA)
+        get_sm_data(
+            ue_id, version, step, snssai={"sst": 222, "sd": "00007b"},
+            expect={"222-00007b": {"default", "internet"}},
+        )
+        get_sm_data(ue_id, version, step, snssai={"sst": 1}, expect={"1": {"internet"}})
+        get_sm_data(  # upper-case SD in the query
+            ue_id, version, step, snssai={"sst": 1, "sd": "00000A"},
+            expect={"1-00000a": {"ims"}},
+        )
+        get_sm_data(  # DNN only: other DNNs and slices without it are removed
+            ue_id, version, step, dnn="internet",
+            expect={"222-00007b": {"internet"}, "1": {"internet"}},
+        )
+        get_sm_data(
+            ue_id, version, step, snssai={"sst": 222, "sd": "00007b"}, dnn="internet",
+            expect={"222-00007b": {"internet"}},
+        )
+        # Filters that match nothing: smPolicySnssaiData can't be empty
+        get_sm_data(ue_id, version, step, snssai={"sst": 2}, expect_status=404)
+        get_sm_data(ue_id, version, step, dnn="unknown-dnn", expect_status=404)
+        get_sm_data(
+            ue_id, version, step, snssai={"sst": 222, "sd": "00007b"}, dnn="ims",
+            expect_status=404,
+        )
+        get_sm_data(ue_id, version, step, snssai="not-json", expect_status=400)
         overall.merge(step)
         step.summary()
 
         step = TestReport(f"ue-policy-set [{version}]")
-        # oai_db_policy_data.sql creates the UePolicySet table but seeds no
-        # rows into it, so even a known UE has no policy set provisioned yet.
-        get_ue_policy_set(UE_IDS_STANDARD[0], version, step, expect_status=404)
+        get_ue_policy_set(UE_ID_POLICY_SET, version, step, expect_fields=UE_POLICY_SET)
+        # Has AM/SM policy data but no UE policy set
+        get_ue_policy_set(UE_IDS_STANDARD[1], version, step, expect_status=404)
         get_ue_policy_set(UE_ID_UNKNOWN, version, step, expect_status=404)
         overall.merge(step)
         step.summary()
