@@ -61,6 +61,8 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
     nf_instance_name = s.nf_instance_name;
     nf_status        = s.nf_status;
     udr_info         = s.udr_info;
+    nf_services      = s.nf_services;
+    nf_service_port  = s.nf_service_port;
     return *this;
   }
   // udr_profile(udr_profile &b) = delete;
@@ -335,8 +337,12 @@ class udr_profile : public std::enable_shared_from_this<udr_profile> {
   uint16_t priority;
   uint16_t capacity;
   oai::common::sbi::udr_info_t udr_info;
-  std::vector<std::string> nf_services;  // List of NF service names
-  uint16_t nf_service_port;              // Port for NF services
+  struct nf_service_t {
+    std::string instance_id;
+    std::string name;
+  };
+  std::vector<nf_service_t> nf_services;
+  uint16_t nf_service_port;  // Port for NF services
 };
 
 }  // namespace app
