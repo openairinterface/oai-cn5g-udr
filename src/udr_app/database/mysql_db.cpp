@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <optional>
 #include <sstream>
+#include <string_view>
 #include <thread>
 
 #include "AccessAndMobilitySubscriptionData.h"
@@ -3274,7 +3275,7 @@ bool mysql_db::query_am_policy_data(
         }
         // Handle integer fields - Updated for AccessAndMobilityPolicyData
         else if (field_name == "subscSpendingLimits") {
-          policy_data[field_name] = (std::stoi(row[i]) == 1);
+          policy_data[field_name] = (std::string_view(row[i]) == "1");
         }
         // Handle string fields (skip empty strings)
         else if (field_name == "suppFeat") {
@@ -3332,7 +3333,8 @@ bool mysql_db::query_am_policy_data(
 
     Logger::udr_db().debug(
         "[UE Id %s] AccessAndMobilityPolicyData GET: %s", ue_id.c_str(),
-        json_data.dump().c_str());
+        json_data.dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
   } else {
     Logger::udr_db().info(
         "[UE Id %s] AccessAndMobilityPolicyData not found", ue_id.c_str());
@@ -3474,7 +3476,8 @@ bool mysql_db::query_sm_policy_data(
 
     Logger::udr_db().debug(
         "[UE Id %s] SessionManagementPolicyData GET: %s", ue_id.c_str(),
-        json_data.dump().c_str());
+        json_data.dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
   } else {
     Logger::udr_db().info(
         "[UE Id %s] SessionManagementPolicyData not found", ue_id.c_str());
@@ -3545,9 +3548,7 @@ bool mysql_db::query_ue_policy_set(
           }
         }
         // Handle string fields (skip empty strings)
-        else if (
-            field_name == "policySetId" || field_name == "pei" ||
-            field_name == "suppFeat") {
+        else if (field_name == "pei" || field_name == "suppFeat") {
           std::string value = row[i];
           if (!value.empty()) {
             policy_set[field_name] = value;
@@ -3555,7 +3556,7 @@ bool mysql_db::query_ue_policy_set(
         }
         // Handle boolean fields
         else if (field_name == "andspInd") {
-          policy_set[field_name] = (std::stoi(row[i]) == 1);
+          policy_set[field_name] = (std::string_view(row[i]) == "1");
         }
         // Skip ueid field (not part of response)
         else if (field_name != "ueid") {
@@ -3587,7 +3588,8 @@ bool mysql_db::query_ue_policy_set(
 
     Logger::udr_db().debug(
         "[UE Id %s] UePolicySet GET: %s", ue_id.c_str(),
-        json_data.dump().c_str());
+        json_data.dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
   } else {
     Logger::udr_db().info("[UE Id %s] UePolicySet not found", ue_id.c_str());
     mysql_free_result(res);

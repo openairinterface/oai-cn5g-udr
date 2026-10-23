@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #
 # Minimal stack for exercising the UDR policy-data GET endpoints with
-# test_policy_data.py -- MySQL seeded with the policy-data schema/samples,
+# test_policy_data.py -- MySQL seeded with the policy-data schema and the test data,
 # plus the UDR itself. Not a full core deployment: no NRF/AMF/SMF/etc, and
 # NRF registration is disabled in conf/config.yaml. Modelled on the
 # mysql/oai-udr services of oai-cn5g-fed's docker-compose-basic-nrf-qos.yaml,

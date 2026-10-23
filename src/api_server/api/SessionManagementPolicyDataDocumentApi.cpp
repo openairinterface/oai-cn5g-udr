@@ -97,10 +97,22 @@ void SessionManagementPolicyDataDocumentApi::
   auto snssaiQuery = request.query().get("snssai");
   std::optional<oai::_3gpp::model::Snssai> snssai;
   if (snssaiQuery.has_value()) {
-    //        Snssai valueQuery_instance;
-    //        if(fromStringValue(snssaiQuery.value(), valueQuery_instance)){
-    //            snssai = std::make_optional(valueQuery_instance);
-    //        }
+    // JSON-encoded Snssai [TS 29.519 §5.2.5.3.1], as on the HTTP/2 path
+    oai::_3gpp::model::Snssai valueQuery_instance = {};
+    std::string error                             = {};
+    if (!udr_sbi_helper::parse_snssai_query(
+            snssaiQuery.value(), valueQuery_instance, error)) {
+      nlohmann::json problem_details = {};
+      problem_details["title"]       = "Bad Request";
+      problem_details["status"]      = 400;
+      problem_details["detail"]      = "Invalid snssai query parameter";
+      problem_details["cause"]       = "OPTIONAL_QUERY_PARAM_INCORRECT";
+      response.headers().add<Pistache::Http::Header::ContentType>(
+          Pistache::Http::Mime::MediaType("application/problem+json"));
+      response.send(Pistache::Http::Code::Bad_Request, problem_details.dump());
+      return;
+    }
+    snssai = valueQuery_instance;
   }
   auto dnnQuery = request.query().get("dnn");
   std::optional<std::string> dnn;

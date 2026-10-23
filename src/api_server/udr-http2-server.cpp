@@ -56,7 +56,8 @@ void send_policy_data_response(
     header_map h;
     h.emplace("content-type", header_value{"application/json"});
     response.write_head(http_code, h);
-    response.end(response_data.dump());
+    response.end(response_data.dump(
+        -1, ' ', false, nlohmann::json::error_handler_t::replace));
   } else if (http_code == oai::common::sbi::http_status_code::NOT_FOUND) {
     send_problem_details(response, http_code, "Not Found", not_found_detail);
   } else {
@@ -64,6 +65,21 @@ void send_policy_data_response(
         response, oai::common::sbi::http_status_code::INTERNAL_SERVER_ERROR,
         "Internal Server Error", "");
   }
+}
+
+// Parses an S-NSSAI query parameter, or answers 400
+// OPTIONAL_QUERY_PARAM_INCORRECT and returns false.
+bool parse_snssai_query_or_reject(
+    const response& response, const std::string& name, const std::string& value,
+    oai::_3gpp::model::Snssai& snssai) {
+  std::string error = {};
+  if (udr_sbi_helper::parse_snssai_query(value, snssai, error)) return true;
+  Logger::udr_server().warn(
+      "Invalid %s query parameter: %s", name.c_str(), error.c_str());
+  send_problem_details(
+      response, oai::common::sbi::http_status_code::BAD_REQUEST, "Bad Request",
+      "Invalid " + name + " query parameter", "OPTIONAL_QUERY_PARAM_INCORRECT");
+  return false;
 }
 
 // 405 with the Allow header [TS 29.500 §5.2.7.2], so that a method the
@@ -282,20 +298,12 @@ void udr_http2_server::start() {
               std::string dnn    = oai::utils::get_query_param(qs, "dnn");
               std::string snssai = oai::utils::get_query_param(qs, "snssai");
               if (!snssai.empty()) {
-                // URL-decode the snssai parameter before parsing as JSON
-                std::string decoded_snssai =
-                    oai::utils::conv::url_decode(snssai);
                 oai::_3gpp::model::Snssai singleNssai = {};
-                nlohmann::json::parse(decoded_snssai.c_str())
-                    .get_to(singleNssai);
-                // Normalize sd to lowercase (database stores lowercase)
-                if (singleNssai.sdIsSet()) {
-                  std::string sd = singleNssai.getSd();
-                  std::transform(sd.begin(), sd.end(), sd.begin(), ::tolower);
-                  singleNssai.setSd(sd);
+                if (!parse_snssai_query_or_reject(
+                        response, "snssai", snssai, singleNssai)) {
+                  return;
                 }
-                singleNssaiOpt =
-                    std::make_optional<oai::_3gpp::model::Snssai>(singleNssai);
+                singleNssaiOpt = singleNssai;
               }
               if (!dnn.empty()) {
                 dnnOpt = std::make_optional<std::string>(dnn);
@@ -335,20 +343,12 @@ void udr_http2_server::start() {
               std::string snssai =
                   oai::utils::get_query_param(qs, "single-nssai");
               if (!snssai.empty()) {
-                // URL-decode the snssai parameter before parsing as JSON
-                std::string decoded_snssai =
-                    oai::utils::conv::url_decode(snssai);
                 oai::_3gpp::model::Snssai singleNssai = {};
-                nlohmann::json::parse(decoded_snssai.c_str())
-                    .get_to(singleNssai);
-                // Normalize sd to lowercase (database stores lowercase)
-                if (singleNssai.sdIsSet()) {
-                  std::string sd = singleNssai.getSd();
-                  std::transform(sd.begin(), sd.end(), sd.begin(), ::tolower);
-                  singleNssai.setSd(sd);
+                if (!parse_snssai_query_or_reject(
+                        response, "single-nssai", snssai, singleNssai)) {
+                  return;
                 }
-                singleNssaiOpt =
-                    std::make_optional<oai::_3gpp::model::Snssai>(singleNssai);
+                singleNssaiOpt = singleNssai;
               }
               if (!dnn.empty()) {
                 dnnOpt = std::make_optional<std::string>(dnn);
@@ -396,9 +396,11 @@ void udr_http2_server::start() {
                 oai::utils::get_query_param(qs, "single-nssai");
             if (!snssai.empty()) {
               oai::_3gpp::model::Snssai singleNssai = {};
-              nlohmann::json::parse(snssai.c_str()).get_to(singleNssai);
-              singleNssaiOpt =
-                  std::make_optional<oai::_3gpp::model::Snssai>(singleNssai);
+              if (!parse_snssai_query_or_reject(
+                      response, "single-nssai", snssai, singleNssai)) {
+                return;
+              }
+              singleNssaiOpt = singleNssai;
             }
 
             this->delete_sm_data_handler(

@@ -10,6 +10,10 @@
     POST   /nudr-dr/{version}/application-data/influenceData/subs-to-notify
     DELETE /nudr-dr/{version}/application-data/influenceData/subs-to-notify/{subscriptionId}
 
+The suite also checks how the HTTP/2 server handles request bodies: 413 above
+64 KiB, and a body split across DATA frames, sent to
+POST /nudr-dr/{version}/subscription-data/{ueId}/context-data/sdm-subscriptions.
+
 With `http_version: 2` the UDR serves requests from udr-http2-server.cpp,
 which routes nothing else under policy-data (no PUT/PATCH/DELETE, no
 sponsor-connectivity-data, bdt-data or usage-monitoring-information); the
@@ -31,8 +35,8 @@ Configuration (environment variables):
                       (for topologies where the test driver isn't on the UDR's
                       Docker network). If unset, curl runs directly.
     API_VERSIONS      Comma-separated API versions to exercise  (default: v1,v2)
-    UE_IDS_STANDARD   Comma-separated standard-tier SUPIs       (default from oai_db_policy_data.sql)
-    UE_IDS_PREMIUM    Comma-separated premium-tier SUPIs        (default from oai_db_policy_data.sql)
+    UE_IDS_STANDARD   Comma-separated standard-tier SUPIs       (default from the sample data)
+    UE_IDS_PREMIUM    Comma-separated premium-tier SUPIs        (default from the sample data)
     UE_ID_UNKNOWN     A SUPI not present in the seeded DB       (default: 999999999999999)
     SNSSAI_SST        Slice SST present in the seeded SM data   (default: 222)
     SNSSAI_SD         Slice SD (hex) present in the seeded data (default: 00007b)
@@ -41,8 +45,9 @@ Configuration (environment variables):
                       (default: http://127.0.0.1:8081/influence-data-notify; the
                       UDR never calls it since there is no data to change)
 
-The suite also uses the UEs seeded by database/oai_db_policy_data_tests.sql
-(several slices and DNNs, every AM attribute, a UE policy set).
+All test data is seeded by database/oai_db_policy_data_tests.sql: the sample
+data, plus UEs with several slices and DNNs, every AM attribute and a UE
+policy set.
 
 Usage:
     ./test_policy_data.py suite
@@ -79,7 +84,7 @@ UDR_CONTAINER = os.environ.get("UDR_CONTAINER", "")
 
 API_VERSIONS = [v for v in os.environ.get("API_VERSIONS", "v1,v2").split(",") if v]
 
-# Sample UE IDs seeded by build/scripts/oai_db_policy_data.sql
+# Sample UE IDs seeded by database/oai_db_policy_data_tests.sql
 UE_IDS_STANDARD = os.environ.get(
     "UE_IDS_STANDARD", "208950000000031,208950000000032"
 ).split(",")
@@ -486,8 +491,17 @@ def get_sm_data(
                 not bad_dnns,
                 f"unexpected DNNs: {bad_dnns}",
             )
-    elif expect_status == 404:
+    else:
         _check_problem_details(own_report, resp)
+        if expect_status == 400:
+            # snssai is optional, so a bad value is OPTIONAL_QUERY_PARAM_INCORRECT
+            # [TS 29.500 Table 5.2.7.2-1]
+            body = resp.json()
+            own_report.check_eq(
+                "ProblemDetails cause is OPTIONAL_QUERY_PARAM_INCORRECT",
+                "OPTIONAL_QUERY_PARAM_INCORRECT",
+                body.get("cause") if isinstance(body, dict) else None,
+            )
 
     if report is None:
         own_report.summary()
@@ -678,6 +692,74 @@ def delete_influence_data_subscription(
 
 
 # ===========================================================================
+# Request handling -- 405 for other methods, 413 for oversized bodies, and
+# bodies split across DATA frames
+# ===========================================================================
+
+
+def check_method_not_allowed(
+    path: str, allow: str, version: str, report: TestReport
+) -> Response:
+    """A method the resource doesn't support gets 405 with an Allow header."""
+    method = "GET" if allow != "GET" else "DELETE"
+    resp = _safe_request(report, method, path)
+    if resp.status == -1:
+        return resp
+    report.check_eq(f"[{version}] {method} {path} returns 405", 405, resp.status)
+    report.check_eq("Allow header lists the supported method", allow, resp.header("allow"))
+    _check_problem_details(report, resp)
+    return resp
+
+
+def check_body_too_large(version: str, report: TestReport) -> Response:
+    """A request body over the UDR's 64 KiB limit gets 413."""
+    body = influence_data_subscription_body()
+    body["supportedFeatures"] = "0" * (70 * 1024)
+    resp = _safe_request(
+        report, "POST", _influence_data_path(version) + "/subs-to-notify", body=body
+    )
+    if resp.status == -1:
+        return resp
+    report.check_eq(f"[{version}] POST with a 70 KiB body returns 413", 413, resp.status)
+    _check_problem_details(report, resp)
+    return resp
+
+
+def check_body_across_frames(version: str, report: TestReport) -> Response:
+    """A body over 16 KiB, the default HTTP/2 frame size, arrives in several
+    DATA frames and must be parsed once, whole. Uses an SDM subscription, one
+    of the subscription-data routes that take a body."""
+    ue_id = UE_IDS_STANDARD[0]
+    uris = [f"/nudr-dr/{version}/subscription-data/{ue_id}/{i}" for i in range(500)]
+    body = {
+        "nfInstanceId": "00000000-0000-0000-0000-000000000001",
+        "callbackReference": NOTIF_URI,
+        "monitoredResourceUris": uris,
+    }
+    resp = _safe_request(
+        report,
+        "POST",
+        f"/nudr-dr/{version}/subscription-data/imsi-{ue_id}/context-data/sdm-subscriptions",
+        body=body,
+    )
+    if resp.status == -1:
+        return resp
+    size_kib = len(json.dumps(body)) // 1024
+    report.check_eq(
+        f"[{version}] POST with a {size_kib} KiB body over several DATA frames returns 201",
+        201,
+        resp.status,
+    )
+    data = resp.json()
+    report.check_eq(
+        "every monitoredResourceUri was parsed",
+        len(uris),
+        len(data.get("monitoredResourceUris", [])) if isinstance(data, dict) else None,
+    )
+    return resp
+
+
+# ===========================================================================
 # CONNECTIVITY
 # ===========================================================================
 
@@ -709,7 +791,7 @@ def run_suite() -> bool:
         print(
             f"\nERROR: Cannot connect to UDR at http://{UDR_HOST}:{UDR_PORT}\n"
             f"Make sure the UDR is running and the DB is seeded with "
-            f"oai_db_policy_data.sql.",
+            f"oai_db_policy_data.sql and database/oai_db_policy_data_tests.sql.",
             file=sys.stderr,
         )
         return False
@@ -721,6 +803,13 @@ def run_suite() -> bool:
             get_am_data(ue_id, version, step)
         get_am_data(UE_ID_UNKNOWN, version, step, expect_status=404)
         get_am_data(UE_ID_AM_ALL_FIELDS, version, step, expect_fields=AM_ALL_FIELDS)
+        # Only an IMSI of 5-15 digits reaches the database
+        get_am_data(f"imsi-{UE_IDS_STANDARD[0]}x", version, step, expect_status=404)
+        get_am_data("imsi-2089500%27x", version, step, expect_status=404)
+        check_method_not_allowed(
+            f"/nudr-dr/{version}/policy-data/ues/{UE_IDS_STANDARD[0]}/am-data", "GET",
+            version, step,
+        )
         overall.merge(step)
         step.summary()
 
@@ -761,7 +850,15 @@ def run_suite() -> bool:
             ue_id, version, step, snssai={"sst": 222, "sd": "00007b"}, dnn="ims",
             expect_status=404,
         )
+        # Malformed or invalid S-NSSAIs: 400 OPTIONAL_QUERY_PARAM_INCORRECT
         get_sm_data(ue_id, version, step, snssai="not-json", expect_status=400)
+        get_sm_data(ue_id, version, step, snssai={"sst": 999}, expect_status=400)
+        get_sm_data(
+            ue_id, version, step, snssai={"sst": 1, "sd": "zzzzzz"}, expect_status=400
+        )
+        get_sm_data(
+            ue_id, version, step, snssai={"sst": 1, "sd": "1234567"}, expect_status=400
+        )
         overall.merge(step)
         step.summary()
 
@@ -787,6 +884,15 @@ def run_suite() -> bool:
             )
         else:
             step.check("POST returned a subscription id to delete", False)
+        check_method_not_allowed(
+            _influence_data_path(version) + "/subs-to-notify", "POST", version, step
+        )
+        overall.merge(step)
+        step.summary()
+
+        step = TestReport(f"request bodies [{version}]")
+        check_body_too_large(version, step)
+        check_body_across_frames(version, step)
         overall.merge(step)
         step.summary()
 

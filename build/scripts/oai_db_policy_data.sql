@@ -13,6 +13,9 @@
 -- data for UEs during registration, PDU session establishment, and policy
 -- updates.
 --
+-- It creates the tables only. Sample and test data for the policy-data
+-- endpoints is in ci-scripts/tests/database/oai_db_policy_data_tests.sql.
+--
 -- ARCHITECTURE NOTES:
 -- - Tables are structured to match 3GPP data models defined in TS 29.519
 -- - JSON columns store complex nested structures (NSSAI, AMBR, QoS profiles)
@@ -161,58 +164,6 @@ CREATE TABLE IF NOT EXISTS `SessionManagementPolicyData` (
 -- --------------------------------------------------------
 
 -- ============================================================================
--- SAMPLE DATA
--- ============================================================================
---
--- The following INSERT statements provide sample policy data for testing and
--- development. These entries match UE identifiers (SUPIs) from the existing
--- AuthenticationSubscription and AccessAndMobilitySubscriptionData tables in
--- oai_db_v2.sql.
---
--- UE ID RANGES:
--- - 208950000000031-035: Test UEs with slice sst=222, sd=00007B
--- - 208950000000125-129: Test UEs with slice sst=1, sd=000001
---
--- PRODUCTION DEPLOYMENT:
--- Replace these samples with actual subscriber policy data from your
--- operator's provisioning system. Policy data should align with:
--- - Subscription tier (premium/standard/basic)
--- - Enterprise vs consumer subscribers
--- - Geographic/regulatory restrictions
--- - Service agreements (SLA, QoS commitments)
---
--- --------------------------------------------------------
-
---
--- Sample data for `AccessAndMobilityPolicyData`
---
--- NOTES:
--- - praInfos: Presence reporting areas for location tracking (NULL = not configured)
--- - subscCats: Subscription categories for policy selection (NULL = no special categories)
--- - chfInfo: Charging function addresses (NULL = use default CHF from PCF config)
--- - subscSpendingLimits: Spending limit control disabled (0) for test users
--- - spendLimInfo: Policy counter status (NULL = no active counters)
--- - restriStatus: Restricted access status (NULL = no restrictions)
--- - suppFeat: Supported features negotiated with PCF (NULL = no feature negotiation)
---
--- All sample entries use NULL for policy attributes, meaning default PCF behavior
--- applies. In production, populate these fields based on subscriber policy profile.
---
-INSERT INTO `AccessAndMobilityPolicyData` (`ueid`, `praInfos`, `subscCats`, `chfInfo`, `subscSpendingLimits`, `spendLimInfo`, `restriStatus`, `suppFeat`) VALUES
-('208950000000031', '{}', '["standard"]', '{}', 0, '{}', '[]', ''),
-('208950000000032', '{}', '["standard"]', '{}', 0, '{}', '[]', ''),
-('208950000000033', '{}', '["standard"]', '{}', 0, '{}', '[]', ''),
-('208950000000034', '{}', '["standard"]', '{}', 0, '{}', '[]', ''),
-('208950000000035', '{}', '["standard"]', '{}', 0, '{}', '[]', ''),
-('208950000000125', '{}', '["premium"]', '{}', 0, '{}', '[]', ''),
-('208950000000126', '{}', '["premium"]', '{}', 0, '{}', '[]', ''),
-('208950000000127', '{}', '["premium"]', '{}', 0, '{}', '[]', ''),
-('208950000000128', '{}', '["premium"]', '{}', 0, '{}', '[]', ''),
-('208950000000129', '{}', '["premium"]', '{}', 0, '{}', '[]', '');
-
--- --------------------------------------------------------
-
--- ============================================================================
 -- Table: UePolicySet
 -- ============================================================================
 --
@@ -230,17 +181,16 @@ INSERT INTO `AccessAndMobilityPolicyData` (`ueid`, `praInfos`, `subscCats`, `chf
 -- - Application-specific policies: QoS/routing rules per OS, device type, or app
 --
 -- STRUCTURE RATIONALE:
--- - Composite PRIMARY KEY (ueid, policySetId): Allows multiple policy sets per UE
---   (e.g., "default", "enterprise", "roaming"). Most UEs use "default".
+-- - PRIMARY KEY (ueid): one UE policy set per UE, since
+--   GET /policy-data/ues/{ueId}/ue-policy-set returns a single UePolicySet
 -- - JSON fields store complex policy structures defined in TS 29.512/29.514
--- - policySetId defaults to "default" for standard single-policy-set deployments
 -- - praInfos (Presence Reporting Area): JSON array of geographic area definitions
 -- - uePolicySections: Application-specific routing/QoS rules (matches TS 29.512)
 --
 -- USAGE FLOW:
 -- 1. PCF queries: GET /nudr-dr/v2/policy-data/ues/{ueId}/ue-policy-set
 -- 2. UDR executes: SELECT * FROM UePolicySet WHERE ueid='...'
--- 3. Returns policy set(s) with URSP rules, allowed route descriptors, etc.
+-- 3. Returns the policy set with URSP rules, allowed route descriptors, etc.
 -- 4. PCF provisions URSP to UE via NAS signaling (through AMF)
 -- 5. UE uses URSP to select which PDU session/DNN to use for each application
 --
@@ -252,7 +202,7 @@ INSERT INTO `AccessAndMobilityPolicyData` (`ueid`, `praInfos`, `subscCats`, `chf
 --
 -- KEY FIELDS:
 -- - uePolicySections: Array of policy rules with traffic descriptors and DNN selection
--- - allowedRouteSelDescriptors: Permitted routing options (URSP enforcement)
+-- - allowedRouteSelDescs: Permitted routing options (URSP enforcement)
 -- - praInfos: List of geographic areas for location-based policy triggers
 -- - andspInd: Boolean indicating ANDSP policy is active (access network selection)
 -- - osIds: Operating system identifiers for OS-specific policies (iOS, Android, etc.)
@@ -265,53 +215,17 @@ INSERT INTO `AccessAndMobilityPolicyData` (`ueid`, `praInfos`, `subscCats`, `chf
 
 CREATE TABLE IF NOT EXISTS `UePolicySet` (
   `ueid` varchar(20) NOT NULL COMMENT 'UE identifier (SUPI/GPSI)',
-  `policySetId` varchar(50) NOT NULL DEFAULT 'default' COMMENT 'UE Policy Set identifier',
   `praInfos` json DEFAULT NULL COMMENT 'map(PresenceInfo): Presence Reporting Area information. Key is praId.',
   `subscCats` json DEFAULT NULL COMMENT 'array(string): Subscription categories.',
-  `uePolicySections` json DEFAULT NULL COMMENT 'map(UePolicySection): UE policy sections with traffic descriptors. Key is policySetId.',
+  `uePolicySections` json DEFAULT NULL COMMENT 'map(UePolicySection): UE policy sections with traffic descriptors. Key is the UPSI.',
   `upsis` json DEFAULT NULL COMMENT 'array(string): UE Policy Section Identifiers.',
   `allowedRouteSelDescs` json DEFAULT NULL COMMENT 'map(PlmnRouteSelectionDescriptor): Allowed route selection descriptors. Key is plmnId.',
   `andspInd` tinyint(1) DEFAULT NULL COMMENT 'boolean: ANDSP (Access Network Discovery and Selection Policy) indicator.',
   `pei` varchar(50) DEFAULT NULL COMMENT 'string: Permanent Equipment Identifier (IMEI).',
   `osIds` json DEFAULT NULL COMMENT 'array(string): Operating System identifiers for OS-specific policies.',
   `suppFeat` varchar(50) DEFAULT NULL COMMENT 'SupportedFeatures: Negotiated features from NF consumer request.',
-  PRIMARY KEY (`ueid`,`policySetId`)
+  PRIMARY KEY (`ueid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='UE Policy Set per TS 29.519';
-
--- --------------------------------------------------------
-
---
--- Sample data for `SessionManagementPolicyData`
---
--- NOTES:
--- - smPolicyData: Complete SmPolicyData JSON structure per TS 29.519 Table 5.4.2.5-1
--- - smPolicySnssaiData: Map with S-NSSAI as key, SmPolicySnssaiData as value
--- - Each SmPolicySnssaiData contains:
---   * snssai: The slice identifier {sst, sd}
---   * smPolicyDnnData: Map with DNN as key, SmPolicyDnnData as value
---     - SmPolicyDnnData contains all per-DNN policy attributes (27 fields from Table 5.4.2.15-1)
--- - Sample entries use minimal policy data (most optional fields omitted)
--- - In production, populate based on subscriber policy profile and SLA
---
--- STRUCTURE:
--- The nested map hierarchy matches the 3GPP standard:
---   SmPolicyData
---   ├── smPolicySnssaiData (map, key = S-NSSAI string)
---   │   └── SmPolicySnssaiData
---   │       ├── snssai: {sst, sd}
---   │       └── smPolicyDnnData (map, key = DNN string)
---   │           └── SmPolicyDnnData: {dnn, subscCats, gbrUl, gbrDl, ...}
---   ├── umDataLimits (map, optional)
---   ├── umData (map, optional)
---   └── suppFeat (string, conditional)
---
-
-INSERT INTO `SessionManagementPolicyData` (`ueid`, `smPolicySnssaiData`, `umDataLimits`, `umData`, `suppFeat`) VALUES
-('208950000000031', '{"{\\"sst\\":222,\\"sd\\":\\"00007b\\"}":{"snssai":{"sst":222,"sd":"00007b"},"smPolicyDnnData":{"default":{"dnn":"default","subscCats":["standard"],"gbrUl":"50Mbps","gbrDl":"100Mbps","5qi":9,"arp":{"priorityLevel":8,"preemptCap":"NOT_PREEMPT","preemptVuln":"NOT_PREEMPTABLE"}}},"ueSliceMbr":{"uplink":"1Gbps","downlink":"2Gbps"}}}', '{}', '{}', ''),
-('208950000000032', '{"{\\"sst\\":222,\\"sd\\":\\"00007b\\"}":{"snssai":{"sst":222,"sd":"00007b"},"smPolicyDnnData":{"default":{"dnn":"default","subscCats":["standard"],"gbrUl":"50Mbps","gbrDl":"100Mbps","5qi":9,"arp":{"priorityLevel":8,"preemptCap":"NOT_PREEMPT","preemptVuln":"NOT_PREEMPTABLE"}}},"ueSliceMbr":{"uplink":"1Gbps","downlink":"2Gbps"}}}', '{}', '{}', ''),
-('208950000000033', '{"{\\"sst\\":222,\\"sd\\":\\"00007b\\"}":{"snssai":{"sst":222,"sd":"00007b"},"smPolicyDnnData":{"default":{"dnn":"default","subscCats":["standard"],"gbrUl":"50Mbps","gbrDl":"100Mbps","5qi":9,"arp":{"priorityLevel":8,"preemptCap":"NOT_PREEMPT","preemptVuln":"NOT_PREEMPTABLE"}}},"ueSliceMbr":{"uplink":"1Gbps","downlink":"2Gbps"}}}', '{}', '{}', ''),
-('208950000000034', '{"{\\"sst\\":222,\\"sd\\":\\"00007b\\"}":{"snssai":{"sst":222,"sd":"00007b"},"smPolicyDnnData":{"default":{"dnn":"default","subscCats":["standard"],"gbrUl":"50Mbps","gbrDl":"100Mbps","5qi":9,"arp":{"priorityLevel":8,"preemptCap":"NOT_PREEMPT","preemptVuln":"NOT_PREEMPTABLE"}}},"ueSliceMbr":{"uplink":"1Gbps","downlink":"2Gbps"}}}', '{}', '{}', ''),
-('208950000000035', '{"{\\"sst\\":222,\\"sd\\":\\"00007b\\"}":{"snssai":{"sst":222,"sd":"00007b"},"smPolicyDnnData":{"default":{"dnn":"default","subscCats":["standard"],"gbrUl":"50Mbps","gbrDl":"100Mbps","5qi":9,"arp":{"priorityLevel":8,"preemptCap":"NOT_PREEMPT","preemptVuln":"NOT_PREEMPTABLE"}}},"ueSliceMbr":{"uplink":"1Gbps","downlink":"2Gbps"}}}', '{}', '{}', '');
 
 COMMIT;
 

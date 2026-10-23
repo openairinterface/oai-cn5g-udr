@@ -4,6 +4,9 @@
 
 #include "udr_app.hpp"
 
+#include <algorithm>
+#include <cctype>
+
 #include "3gpp_29.500.h"
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AuthenticationSubscription.h"
@@ -28,6 +31,15 @@ namespace {
 // Upper bound on stored Traffic Influence Data subscriptions, so that peers
 // cannot grow UDR memory without limit.
 constexpr std::size_t kMaxInfluenceDataSubscriptions = 1024;
+
+// The policy-data queries put the ueId into SQL, so accept only an IMSI
+// (5-15 digits) there.
+bool is_valid_imsi(const std::string& imsi) {
+  return imsi.size() >= 5 && imsi.size() <= 15 &&
+         std::all_of(imsi.begin(), imsi.end(), [](unsigned char c) {
+           return std::isdigit(c) != 0;
+         });
+}
 }  // namespace
 
 //------------------------------------------------------------------------------
@@ -836,20 +848,20 @@ void udr_app::handle_query_am_policy_data(
 
   std::string imsi   = {};
   std::string prefix = {};
-  if (!get_supi(ue_id, imsi, prefix)) {
+  if (!get_supi(ue_id, imsi, prefix) || !is_valid_imsi(imsi)) {
     code = 404;
     return;
   }
 
   if (db_connector->query_am_policy_data(imsi, response_data)) {
     code = 200;
-    // Add ueId to response as per API spec
-    response_data["ueId"] = ue_id;
     // Remove empty objects and null values from response
     remove_empty_fields(response_data);
     Logger::udr_app().info(
         "[UE Id %s] AccessAndMobilityPolicyData: %s", ue_id.c_str(),
-        response_data.dump().c_str());
+        response_data
+            .dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
   } else {
     code = 404;
     Logger::udr_app().warn(
@@ -868,7 +880,7 @@ void udr_app::handle_query_sm_policy_data(
 
   std::string imsi   = {};
   std::string prefix = {};
-  if (!get_supi(ue_id, imsi, prefix)) {
+  if (!get_supi(ue_id, imsi, prefix) || !is_valid_imsi(imsi)) {
     code = 404;
     return;
   }
@@ -879,7 +891,9 @@ void udr_app::handle_query_sm_policy_data(
     remove_empty_fields(response_data);
     Logger::udr_app().info(
         "[UE Id %s] SessionManagementPolicyData: %s", ue_id.c_str(),
-        response_data.dump().c_str());
+        response_data
+            .dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
   } else {
     code = 404;
     Logger::udr_app().warn(
@@ -896,31 +910,19 @@ void udr_app::handle_query_ue_policy_set(
 
   std::string imsi   = {};
   std::string prefix = {};
-  if (!get_supi(ue_id, imsi, prefix)) {
+  if (!get_supi(ue_id, imsi, prefix) || !is_valid_imsi(imsi)) {
     code = 404;
     return;
   }
 
   if (db_connector->query_ue_policy_set(imsi, response_data)) {
     code = 200;
-
-    // Remove empty objects and null values from response
-    std::vector<std::string> keys_to_remove;
-    for (auto it = response_data.begin(); it != response_data.end(); ++it) {
-      if (it.value().is_null() ||
-          (it.value().is_object() && it.value().empty()) ||
-          (it.value().is_array() && it.value().empty()) ||
-          (it.value().is_string() && it.value().get<std::string>().empty())) {
-        keys_to_remove.push_back(it.key());
-      }
-    }
-    for (const auto& key : keys_to_remove) {
-      response_data.erase(key);
-    }
-
+    remove_empty_fields(response_data);
     Logger::udr_app().info(
         "[UE Id %s] UePolicySet: %s", ue_id.c_str(),
-        response_data.dump().c_str());
+        response_data
+            .dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
   } else {
     code = 404;
     Logger::udr_app().warn("[UE Id %s] UePolicySet not found", ue_id.c_str());
