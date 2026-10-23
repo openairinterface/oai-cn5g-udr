@@ -24,6 +24,12 @@ extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
 extern std::unique_ptr<oai::config::udr_config_yaml> udr_cfg_yaml;
 
+namespace {
+// Upper bound on stored Traffic Influence Data subscriptions, so that peers
+// cannot grow UDR memory without limit.
+constexpr std::size_t kMaxInfluenceDataSubscriptions = 1024;
+}  // namespace
+
 //------------------------------------------------------------------------------
 udr_app::udr_app(const std::string& config_file, udr_event& ev)
     : event_sub(ev) {
@@ -937,6 +943,13 @@ void udr_app::handle_create_influence_data_subscription(
     std::string& subscription_id) {
   {
     std::lock_guard<std::mutex> lock(m_influence_data_subscriptions_mutex);
+    if (m_influence_data_subscriptions.size() >=
+        kMaxInfluenceDataSubscriptions) {
+      Logger::udr_app().warn(
+          "Traffic Influence Data subscription limit reached");
+      code = oai::common::sbi::http_status_code::SERVICE_UNAVAILABLE;
+      return;
+    }
     subscription_id = std::to_string(m_next_influence_data_subscription_id++);
     m_influence_data_subscriptions[subscription_id] = subscription;
   }
