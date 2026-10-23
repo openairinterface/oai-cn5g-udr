@@ -126,8 +126,7 @@ void udr_http2_server::start() {
             "Payload Too Large", "");
         return;
       }
-      std::string msg((char*) data, len);
-      if (len > 0) body->append(msg);
+      if (len > 0) body->append(reinterpret_cast<const char*>(data), len);
 
       try {
         std::vector<std::string> split_q;
@@ -508,7 +507,8 @@ void udr_http2_server::start() {
             send_problem_details(
                 response, http_code, "Not Found",
                 "Traffic Influence Data subscription " + subscription_id +
-                    " not found");
+                    " not found",
+                "SUBSCRIPTION_NOT_FOUND");
           }
           Logger::udr_server().debug(
               "HTTP Response code %d (HTTP Version 2).", http_code);

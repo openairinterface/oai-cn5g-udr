@@ -41,7 +41,7 @@ class udr_sbi_helper : public sbi_helper {
   // fails Snssai validation (SST 0-255, SD of 6 hexadecimal digits). The model
   // also normalizes the SD to lower case.
   static bool parse_snssai_query(
-      std::string value, oai::_3gpp::model::Snssai& snssai,
+      const std::string& value, oai::_3gpp::model::Snssai& snssai,
       std::string& error) {
     try {
       nlohmann::json::parse(oai::utils::conv::url_decode(value)).get_to(snssai);

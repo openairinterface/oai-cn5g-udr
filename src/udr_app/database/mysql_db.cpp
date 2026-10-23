@@ -3327,8 +3327,9 @@ bool mysql_db::query_am_policy_data(
       Logger::udr_db().error(
           "[UE Id %s] Failed to validate AmPolicyData model: %s", ue_id.c_str(),
           e.what());
-      // Continue with raw JSON if model validation fails
-      json_data = policy_data;
+      // Do not send unvalidated data to the consumer.
+      mysql_free_result(res);
+      return false;
     }
 
     Logger::udr_db().debug(
@@ -3465,7 +3466,9 @@ bool mysql_db::query_sm_policy_data(
       Logger::udr_db().error(
           "[UE Id %s] Failed to validate SmPolicyData model: %s", ue_id.c_str(),
           e.what());
-      // Continue with raw JSON if model validation fails
+      // Do not send unvalidated data to the consumer.
+      mysql_free_result(res);
+      return false;
     }
 
     // The Snssai model writes "sd": "FFFFFF" for a slice without an SD.
@@ -3582,8 +3585,9 @@ bool mysql_db::query_ue_policy_set(
       Logger::udr_db().error(
           "[UE Id %s] Failed to validate UePolicySet model: %s", ue_id.c_str(),
           e.what());
-      // Continue with raw JSON if model validation fails
-      json_data = policy_set;
+      // Do not send unvalidated data to the consumer.
+      mysql_free_result(res);
+      return false;
     }
 
     Logger::udr_db().debug(
