@@ -115,7 +115,7 @@ In-scope examples include:
   service triggered by malformed or unexpected SBI (HTTP/1.1, HTTP/2, JSON)
   requests, or by malformed YAML in the configuration file parsed at startup.
 - Injection into the database layer. Values taken from SBI request paths, query
-  parameters, and bodies reach the MySQL, MongoDB, and Cassandra backends in
+  parameters, and bodies reach the MySQL and MongoDB backends in
   [src/udr_app/database/](./src/udr_app/database), so SQL or NoSQL injection
   that reads, modifies, or deletes data beyond the requested resource is in
   scope.

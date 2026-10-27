@@ -12,7 +12,7 @@
 static const std::string CONFIG      = "config";
 static const std::string UDR_APP     = "udr_app";
 static const std::string UDR_SVR_LOG = "udr_server";
-static const std::string UDR_NRF     = "udr_nrf";
+static const std::string UDR_CLIENT  = "udr_client";
 static const std::string UDR_DB      = "udr_db";
 
 class Logger : public oai::logger::logger_common {
@@ -28,7 +28,7 @@ class Logger : public oai::logger::logger_common {
     oai::logger::logger_registry::register_logger(
         name, UDR_SVR_LOG, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
-        name, UDR_NRF, log_stdout, log_rot_file);
+        name, UDR_CLIENT, log_stdout, log_rot_file);
     oai::logger::logger_registry::register_logger(
         name, UDR_DB, log_stdout, log_rot_file);
   }
@@ -52,8 +52,8 @@ class Logger : public oai::logger::logger_common {
   static const oai::logger::printf_logger& udr_server() {
     return oai::logger::logger_registry::get_logger(UDR_SVR_LOG);
   }
-  static const oai::logger::printf_logger& udr_nrf() {
-    return oai::logger::logger_registry::get_logger(UDR_NRF);
+  static const oai::logger::printf_logger& udr_client() {
+    return oai::logger::logger_registry::get_logger(UDR_CLIENT);
   }
   static const oai::logger::printf_logger& udr_db() {
     return oai::logger::logger_registry::get_logger(UDR_DB);

@@ -267,8 +267,7 @@ add_definitions("-DPACKAGE_NAME=\"UDR\"")
 
 include_directories(${SRC_TOP_DIR}/udr_app)
 include_directories(${SRC_TOP_DIR}/udr_app/database)
-include_directories(${SRC_TOP_DIR}/udr_app/event_handling)
-include_directories(${SRC_TOP_DIR}/udr_app/sbi)
+include_directories(${SRC_TOP_DIR}/udr_app/helper)
 include_directories(${SRC_TOP_DIR}/oai_udr)
 include_directories(${SRC_TOP_DIR}/common)
 include_directories(${SRC_TOP_DIR}/api_server)
@@ -280,6 +279,7 @@ include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/logger)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/utils/bstr)
 include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/model)
+include_directories(${SRC_TOP_DIR}/${MOUNTED_COMMON}/sba)
 
 add_executable(udr
   ${SRC_TOP_DIR}/oai_udr/main.cpp
