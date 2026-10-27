@@ -4,6 +4,9 @@
 
 #include "udr_app.hpp"
 
+#include <algorithm>
+#include <cctype>
+
 #include "3gpp_29.500.h"
 #include "AccessAndMobilitySubscriptionData.h"
 #include "AuthenticationSubscription.h"
@@ -23,6 +26,21 @@ using namespace oai::udr::config;
 extern udr_app* udr_app_inst;
 extern udr_config udr_cfg;
 extern std::unique_ptr<oai::config::udr_config_yaml> udr_cfg_yaml;
+
+namespace {
+// Upper bound on stored Traffic Influence Data subscriptions, so that peers
+// cannot grow UDR memory without limit.
+constexpr std::size_t kMaxInfluenceDataSubscriptions = 1024;
+
+// The policy-data queries put the ueId into SQL, so accept only an IMSI
+// (5-15 digits) there.
+bool is_valid_imsi(const std::string& imsi) {
+  return imsi.size() >= 5 && imsi.size() <= 15 &&
+         std::all_of(imsi.begin(), imsi.end(), [](unsigned char c) {
+           return std::isdigit(c) != 0;
+         });
+}
+}  // namespace
 
 //------------------------------------------------------------------------------
 udr_app::udr_app(const std::string& config_file, udr_event& ev)
@@ -70,6 +88,24 @@ bool udr_app::start() {
 void udr_app::stop() {
   // Close DB connection
   if (db_connector) db_connector->close_connection();
+}
+
+//------------------------------------------------------------------------------
+void udr_app::remove_empty_fields(nlohmann::json& json_data) {
+  if (!json_data.is_object()) return;
+
+  std::vector<std::string> keys_to_remove;
+  for (auto it = json_data.begin(); it != json_data.end(); ++it) {
+    if (it.value().is_null() ||
+        (it.value().is_object() && it.value().empty()) ||
+        (it.value().is_array() && it.value().empty()) ||
+        (it.value().is_string() && it.value().get<std::string>().empty())) {
+      keys_to_remove.push_back(it.key());
+    }
+  }
+  for (const auto& key : keys_to_remove) {
+    json_data.erase(key);
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -802,4 +838,143 @@ bool udr_app::get_supi(
     supi = supi_full_format;
   }
   return true;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_query_am_policy_data(
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
+  Logger::udr_app().info(
+      "[UE Id %s] Retrieve the access and mobility policy data", ue_id.c_str());
+
+  std::string imsi   = {};
+  std::string prefix = {};
+  if (!get_supi(ue_id, imsi, prefix) || !is_valid_imsi(imsi)) {
+    code = 404;
+    return;
+  }
+
+  if (db_connector->query_am_policy_data(imsi, response_data)) {
+    code = 200;
+    // Remove empty objects and null values from response
+    remove_empty_fields(response_data);
+    Logger::udr_app().info(
+        "[UE Id %s] AccessAndMobilityPolicyData: %s", ue_id.c_str(),
+        response_data
+            .dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
+  } else {
+    code = 404;
+    Logger::udr_app().warn(
+        "[UE Id %s] AccessAndMobilityPolicyData not found", ue_id.c_str());
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_query_sm_policy_data(
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code,
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
+    const std::optional<std::string>& dnn) {
+  Logger::udr_app().info(
+      "[UE Id %s] Retrieve the session management policy data", ue_id.c_str());
+
+  std::string imsi   = {};
+  std::string prefix = {};
+  if (!get_supi(ue_id, imsi, prefix) || !is_valid_imsi(imsi)) {
+    code = 404;
+    return;
+  }
+
+  if (db_connector->query_sm_policy_data(imsi, response_data, snssai, dnn)) {
+    code = 200;
+    // Remove empty objects and null values from response
+    remove_empty_fields(response_data);
+    Logger::udr_app().info(
+        "[UE Id %s] SessionManagementPolicyData: %s", ue_id.c_str(),
+        response_data
+            .dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
+  } else {
+    code = 404;
+    Logger::udr_app().warn(
+        "[UE Id %s] SessionManagementPolicyData not found", ue_id.c_str());
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_query_ue_policy_set(
+    const std::string& ue_id, nlohmann::json& response_data, uint32_t& code) {
+  Logger::udr_app().info(
+      "[UE Id %s] Retrieve the UE policy set", ue_id.c_str());
+
+  std::string imsi   = {};
+  std::string prefix = {};
+  if (!get_supi(ue_id, imsi, prefix) || !is_valid_imsi(imsi)) {
+    code = 404;
+    return;
+  }
+
+  if (db_connector->query_ue_policy_set(imsi, response_data)) {
+    code = 200;
+    remove_empty_fields(response_data);
+    Logger::udr_app().info(
+        "[UE Id %s] UePolicySet: %s", ue_id.c_str(),
+        response_data
+            .dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
+  } else {
+    code = 404;
+    Logger::udr_app().warn("[UE Id %s] UePolicySet not found", ue_id.c_str());
+  }
+  return;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_query_influence_data(
+    nlohmann::json& response_data, uint32_t& code) {
+  Logger::udr_app().info("Retrieve the Traffic Influence Data");
+  response_data = nlohmann::json::array();
+  code          = oai::common::sbi::http_status_code::OK;
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_create_influence_data_subscription(
+    const oai::_3gpp::model::TrafficInfluSub& subscription,
+    nlohmann::json& response_data, uint32_t& code,
+    std::string& subscription_id) {
+  {
+    std::lock_guard<std::mutex> lock(m_influence_data_subscriptions_mutex);
+    if (m_influence_data_subscriptions.size() >=
+        kMaxInfluenceDataSubscriptions) {
+      Logger::udr_app().warn(
+          "Traffic Influence Data subscription limit reached");
+      code = oai::common::sbi::http_status_code::SERVICE_UNAVAILABLE;
+      return;
+    }
+    subscription_id = std::to_string(m_next_influence_data_subscription_id++);
+    m_influence_data_subscriptions[subscription_id] = subscription;
+  }
+  to_json(response_data, subscription);
+  code = oai::common::sbi::http_status_code::CREATED;
+  Logger::udr_app().info(
+      "Created Traffic Influence Data subscription %s (notification URI %s)",
+      subscription_id.c_str(), subscription.getNotificationUri().c_str());
+}
+
+//------------------------------------------------------------------------------
+void udr_app::handle_delete_influence_data_subscription(
+    const std::string& subscription_id, uint32_t& code) {
+  std::lock_guard<std::mutex> lock(m_influence_data_subscriptions_mutex);
+  if (m_influence_data_subscriptions.erase(subscription_id) == 0) {
+    Logger::udr_app().warn(
+        "Traffic Influence Data subscription %s not found",
+        subscription_id.c_str());
+    code = oai::common::sbi::http_status_code::NOT_FOUND;
+    return;
+  }
+  Logger::udr_app().info(
+      "Deleted Traffic Influence Data subscription %s",
+      subscription_id.c_str());
+  code = oai::common::sbi::http_status_code::NO_CONTENT;
 }

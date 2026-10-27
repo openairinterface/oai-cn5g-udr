@@ -89,6 +89,10 @@ void udr_nrf::generate_udr_profile() {
   // ToDo:- Add remaining fields
   // UDR info item end
 
+  // Add NF Services
+  udr_nf_profile.set_nf_service_port(udr_cfg.nudr.port);
+  udr_nf_profile.add_nf_service("nudr-dr", "nudr-dr");
+
   udr_nf_profile.display();
 }
 //---------------------------------------------------------------------------------------------

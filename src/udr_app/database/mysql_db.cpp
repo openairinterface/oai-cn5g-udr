@@ -6,15 +6,26 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/find.hpp>
+#include <algorithm>
 #include <boost/algorithm/string/replace.hpp>
+#include <cctype>
 #include <chrono>
+#include <iomanip>
+#include <optional>
+#include <sstream>
+#include <string_view>
 #include <thread>
 
 #include "AccessAndMobilitySubscriptionData.h"
+#include "AmPolicyData.h"
 #include "AuthenticationSubscription.h"
+#include "ChargingInformation.h"
 #include "PatchOperation_anyOf.h"
 #include "ProblemDetails.h"
 #include "SdmSubscription.h"
+#include "SmPolicyData.h"
+#include "Snssai.h"
+#include "UePolicySet.h"
 #include "logger.hpp"
 #include "udr_config.hpp"
 
@@ -25,6 +36,148 @@ using namespace oai::udr::config;
 using namespace boost::placeholders;
 
 extern udr_config udr_cfg;
+
+namespace {
+
+// SD "FFFFFF" means no SD value [TS 23.003 §28.4.2]. The Snssai model also
+// uses it as the default when "sd" is absent.
+bool has_sd(const Snssai& snssai) {
+  return snssai.sdIsSet() && !boost::iequals(snssai.getSd(), SD_DEFAULT_VALUE);
+}
+
+// Map-key form of an S-NSSAI [TS 29.571, Snssai]: decimal SST, followed by "-"
+// and the 6-digit hexadecimal SD when there is one, e.g. "222-00007b".
+std::string snssai_map_key(const Snssai& snssai) {
+  std::string key = std::to_string(snssai.getSst());
+  if (has_sd(snssai)) {
+    key += "-" + boost::algorithm::to_lower_copy(snssai.getSd());
+  }
+  return key;
+}
+
+// Drops an "sd" that only says "no SD": TS 29.571 requires the IE to be absent.
+void remove_default_sd(nlohmann::json& snssai) {
+  if (snssai.is_object() && snssai.contains("sd") && snssai["sd"].is_string() &&
+      boost::iequals(snssai["sd"].get<std::string>(), SD_DEFAULT_VALUE)) {
+    snssai.erase("sd");
+  }
+}
+
+// Re-keys smPolicySnssaiData by each entry's own S-NSSAI, so the response uses
+// the standard key form whatever key the database stores (the sample data uses
+// the JSON-encoded S-NSSAI).
+nlohmann::json rekey_sm_policy_snssai_data(
+    const nlohmann::json& snssai_data, const std::string& ue_id) {
+  nlohmann::json rekeyed = nlohmann::json::object();
+  for (const auto& item : snssai_data.items()) {
+    try {
+      Snssai snssai = {};
+      from_json(
+          item.value().contains("snssai") ? item.value().at("snssai") :
+                                            nlohmann::json::parse(item.key()),
+          snssai);
+      rekeyed[snssai_map_key(snssai)] = item.value();
+    } catch (const std::exception& e) {
+      Logger::udr_db().warn(
+          "[UE Id %s] Cannot derive the S-NSSAI of smPolicySnssaiData entry "
+          "'%s' (%s), keeping its key",
+          ue_id.c_str(), item.key().c_str(), e.what());
+      rekeyed[item.key()] = item.value();
+    }
+  }
+  return rekeyed;
+}
+
+// Keeps the requested S-NSSAI and/or DNN. With a DNN filter, each slice keeps
+// only that DNN, and slices without it are removed.
+nlohmann::json filter_sm_policy_snssai_data(
+    const nlohmann::json& snssai_data, const std::optional<Snssai>& snssai,
+    const std::optional<std::string>& dnn) {
+  const std::string wanted_key = snssai ? snssai_map_key(*snssai) : "";
+  nlohmann::json filtered      = nlohmann::json::object();
+  for (const auto& item : snssai_data.items()) {
+    if (snssai && item.key() != wanted_key) continue;
+    nlohmann::json entry = item.value();
+    if (dnn) {
+      if (!entry.contains("smPolicyDnnData") ||
+          !entry["smPolicyDnnData"].contains(*dnn)) {
+        continue;
+      }
+      nlohmann::json dnn_data  = entry["smPolicyDnnData"][*dnn];
+      entry["smPolicyDnnData"] = nlohmann::json{{*dnn, dnn_data}};
+    }
+    filtered[item.key()] = entry;
+  }
+  return filtered;
+}
+
+// Validates an AmPolicyData attribute [TS 29.519] that the common-src
+// AmPolicyData model (praInfos and subscCats only) doesn't carry. Returns the
+// value to send, or std::nullopt with a reason.
+std::optional<nlohmann::json> validate_am_policy_field(
+    const std::string& name, const nlohmann::json& value, std::string& error) {
+  if (name == "chfInfo") {
+    try {
+      ChargingInformation chf_info = {};
+      from_json(value, chf_info);
+      nlohmann::json validated;
+      to_json(validated, chf_info);
+      return validated;
+    } catch (const std::exception& e) {
+      error = e.what();
+      return std::nullopt;
+    }
+  }
+  if (name == "subscSpendingLimits") {
+    if (value.is_boolean()) return value;
+    error = "not a boolean";
+    return std::nullopt;
+  }
+  if (name == "spendLimInfo") {
+    // map(PolicyCounterInfo), minProperties 1 [TS 29.594]
+    bool valid = value.is_object() && !value.empty();
+    for (const auto& item : value.items()) {
+      const auto& counter = item.value();
+      valid               = valid && counter.is_object() &&
+              counter.contains("policyCounterId") &&
+              counter["policyCounterId"].is_string() &&
+              counter.contains("currentStatus") &&
+              counter["currentStatus"].is_string();
+    }
+    if (valid) return value;
+    error = "expected a non-empty map of PolicyCounterInfo";
+    return std::nullopt;
+  }
+  if (name == "restriStatus") {
+    // array(RestrictedStatus), minItems 1
+    bool valid = value.is_array() && !value.empty();
+    for (const auto& status : value) {
+      valid = valid && status.is_object() && status.contains("exceptionId") &&
+              status["exceptionId"].is_string() &&
+              status.contains("timeStamp") && status["timeStamp"].is_string();
+    }
+    if (valid) return value;
+    error = "expected a non-empty array of RestrictedStatus";
+    return std::nullopt;
+  }
+  if (name == "suppFeat") {
+    // SupportedFeatures: ^[A-Fa-f0-9]*$
+    if (value.is_string()) {
+      const auto& s = value.get_ref<const std::string&>();
+      if (std::all_of(s.begin(), s.end(), [](unsigned char c) {
+            return std::isxdigit(c);
+          })) {
+        return value;
+      }
+    }
+    error = "not a hexadecimal SupportedFeatures string";
+    return std::nullopt;
+  }
+  error = "not an AmPolicyData attribute";
+  return std::nullopt;
+}
+
+}  // namespace
 
 //------------------------------------------------------------------------------
 mysql_db::mysql_db(udr_event& ev)
@@ -3055,6 +3208,396 @@ bool mysql_db::query_smf_select_data(
     Logger::udr_db().error(
         "[UE Id %s] %s no data！SQL Query: %s", ue_id,
         DATABASE_SMF_SELECTION_SUBSCRIPTION_DATA_LABEL, query);
+  }
+
+  mysql_free_result(res);
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool mysql_db::query_am_policy_data(
+    const std::string& ue_id, nlohmann::json& json_data) {
+  // Check the connection with DB first
+  if (!check_connection_status()) return false;
+
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
+
+  Logger::udr_db().debug(
+      "[UE Id %s] Handle Query AM Policy Data", ue_id.c_str());
+
+  const std::string query =
+      "SELECT * from AccessAndMobilityPolicyData WHERE ueid='" + ue_id + "'";
+
+  Logger::udr_db().debug(
+      "[UE Id %s] SQL Query: %s", ue_id.c_str(), query.c_str());
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_db().error(
+        "[UE Id %s] mysql_real_query failure！", ue_id.c_str());
+    return false;
+  }
+
+  res = mysql_store_result(&mysql_connector);
+  if (res == nullptr) {
+    Logger::udr_db().error(
+        "[UE Id %s] mysql_store_result failure！", ue_id.c_str());
+    return false;
+  }
+
+  row = mysql_fetch_row(res);
+
+  if (row != nullptr) {
+    nlohmann::json policy_data = nlohmann::json::object();
+
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+      if (row[i] != nullptr && strlen(row[i]) > 0) {
+        std::string field_name = field->name;
+
+        // Handle JSON fields - Updated to match AccessAndMobilityPolicyData
+        // schema
+        if (field_name == "praInfos" || field_name == "subscCats" ||
+            field_name == "chfInfo" || field_name == "spendLimInfo" ||
+            field_name == "restriStatus") {
+          try {
+            nlohmann::json parsed_value = nlohmann::json::parse(row[i]);
+            // Only add non-empty JSON objects/arrays (skip empty {} or [])
+            if (!parsed_value.empty()) {
+              policy_data[field_name] = parsed_value;
+            }
+          } catch (const std::exception& e) {
+            Logger::udr_db().warn(
+                "[UE Id %s] Failed to parse JSON field %s: %s", ue_id.c_str(),
+                field_name.c_str(), e.what());
+          }
+        }
+        // Handle integer fields - Updated for AccessAndMobilityPolicyData
+        else if (field_name == "subscSpendingLimits") {
+          policy_data[field_name] = (std::string_view(row[i]) == "1");
+        }
+        // Handle string fields (skip empty strings)
+        else if (field_name == "suppFeat") {
+          std::string value = row[i];
+          if (!value.empty()) {
+            policy_data[field_name] = value;
+          }
+        }
+        // Skip ueid field (not part of response)
+        else if (field_name != "ueid") {
+          policy_data[field_name] = row[i];
+        }
+      }
+    }
+
+    // Validate and normalize response using OpenAPI model
+    try {
+      oai::_3gpp::model::AmPolicyData am_policy_model;
+      from_json(policy_data, am_policy_model);
+
+      // Serialize back to JSON - this ensures proper formatting per OpenAPI
+      // spec
+      nlohmann::json validated_json;
+      to_json(validated_json, am_policy_model);
+
+      // The model only carries praInfos and subscCats; validate the other
+      // stored attributes here so the round-trip doesn't drop them.
+      for (const char* name :
+           {"chfInfo", "subscSpendingLimits", "spendLimInfo", "restriStatus",
+            "suppFeat"}) {
+        if (!policy_data.contains(name)) continue;
+        std::string error = {};
+        if (auto value =
+                validate_am_policy_field(name, policy_data[name], error)) {
+          validated_json[name] = *value;
+        } else {
+          Logger::udr_db().error(
+              "[UE Id %s] Invalid AmPolicyData %s in the database (%s), "
+              "leaving it out",
+              ue_id.c_str(), name, error.c_str());
+        }
+      }
+      json_data = validated_json;
+
+      Logger::udr_db().debug(
+          "[UE Id %s] AccessAndMobilityPolicyData validated and serialized",
+          ue_id.c_str());
+    } catch (const std::exception& e) {
+      Logger::udr_db().error(
+          "[UE Id %s] Failed to validate AmPolicyData model: %s", ue_id.c_str(),
+          e.what());
+      // Do not send unvalidated data to the consumer.
+      mysql_free_result(res);
+      return false;
+    }
+
+    Logger::udr_db().debug(
+        "[UE Id %s] AccessAndMobilityPolicyData GET: %s", ue_id.c_str(),
+        json_data.dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
+  } else {
+    Logger::udr_db().info(
+        "[UE Id %s] AccessAndMobilityPolicyData not found", ue_id.c_str());
+    mysql_free_result(res);
+    return false;
+  }
+
+  mysql_free_result(res);
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool mysql_db::query_sm_policy_data(
+    const std::string& ue_id, nlohmann::json& json_data,
+    const std::optional<oai::_3gpp::model::Snssai>& snssai,
+    const std::optional<std::string>& dnn) {
+  // Check the connection with DB first
+  if (!check_connection_status()) return false;
+
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
+
+  Logger::udr_db().debug(
+      "[UE Id %s] Handle Query SM Policy Data", ue_id.c_str());
+
+  // Build query - No filters needed for separate column approach
+  std::string query =
+      "SELECT smPolicySnssaiData, umDataLimits, umData, suppFeat from "
+      "SessionManagementPolicyData WHERE ueid='" +
+      ue_id + "'";
+
+  // Note: dnn and snssai filtering will be applied in C++ after retrieving data
+  // since they are nested within the JSON structure
+
+  Logger::udr_db().debug(
+      "[UE Id %s] SQL Query: %s", ue_id.c_str(), query.c_str());
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_db().error(
+        "[UE Id %s] mysql_real_query failure！", ue_id.c_str());
+    return false;
+  }
+
+  res = mysql_store_result(&mysql_connector);
+  if (res == nullptr) {
+    Logger::udr_db().error(
+        "[UE Id %s] mysql_store_result failure！", ue_id.c_str());
+    return false;
+  }
+
+  row = mysql_fetch_row(res);
+
+  if (row != nullptr) {
+    nlohmann::json policy_data = nlohmann::json::object();
+
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+      if (row[i] != nullptr && strlen(row[i]) > 0) {
+        std::string field_name = field->name;
+
+        // Handle all fields as JSON except suppFeat (string)
+        if (field_name == "smPolicySnssaiData" ||
+            field_name == "umDataLimits" || field_name == "umData") {
+          try {
+            nlohmann::json parsed_value = nlohmann::json::parse(row[i]);
+            // Only add non-empty JSON objects/arrays (skip empty {} or [])
+            if (!parsed_value.empty()) {
+              policy_data[field_name] = parsed_value;
+            }
+          } catch (const std::exception& e) {
+            Logger::udr_db().warn(
+                "[UE Id %s] Failed to parse JSON field %s: %s", ue_id.c_str(),
+                field_name.c_str(), e.what());
+          }
+        }
+        // Handle string fields (skip empty strings)
+        else if (field_name == "suppFeat") {
+          std::string value = row[i];
+          if (!value.empty()) {
+            policy_data[field_name] = value;
+          }
+        }
+        // Skip ueid field (not part of response)
+        else if (field_name != "ueid") {
+          policy_data[field_name] = row[i];
+        }
+      }
+    }
+
+    if (policy_data.contains("smPolicySnssaiData")) {
+      policy_data["smPolicySnssaiData"] =
+          rekey_sm_policy_snssai_data(policy_data["smPolicySnssaiData"], ue_id);
+      if (snssai || dnn) {
+        policy_data["smPolicySnssaiData"] = filter_sm_policy_snssai_data(
+            policy_data["smPolicySnssaiData"], snssai, dnn);
+      }
+    }
+
+    // smPolicySnssaiData is mandatory with at least one entry [TS 29.519], so
+    // a filter that matches nothing leaves no SM policy data to return.
+    if (!policy_data.contains("smPolicySnssaiData") ||
+        policy_data["smPolicySnssaiData"].empty()) {
+      Logger::udr_db().info(
+          "[UE Id %s] No SessionManagementPolicyData matches the requested "
+          "S-NSSAI/DNN",
+          ue_id.c_str());
+      mysql_free_result(res);
+      return false;
+    }
+    json_data = policy_data;
+
+    // Validate and normalize response using OpenAPI model
+    try {
+      oai::_3gpp::model::SmPolicyData sm_policy_model;
+      from_json(json_data, sm_policy_model);
+
+      // Serialize back to JSON - this ensures proper formatting per OpenAPI
+      // spec
+      nlohmann::json validated_json;
+      to_json(validated_json, sm_policy_model);
+      json_data = validated_json;
+
+      Logger::udr_db().debug(
+          "[UE Id %s] SessionManagementPolicyData validated and serialized",
+          ue_id.c_str());
+    } catch (const std::exception& e) {
+      Logger::udr_db().error(
+          "[UE Id %s] Failed to validate SmPolicyData model: %s", ue_id.c_str(),
+          e.what());
+      // Do not send unvalidated data to the consumer.
+      mysql_free_result(res);
+      return false;
+    }
+
+    // The Snssai model writes "sd": "FFFFFF" for a slice without an SD.
+    for (auto& item : json_data["smPolicySnssaiData"].items()) {
+      auto& entry = item.value();
+      if (entry.contains("snssai")) remove_default_sd(entry["snssai"]);
+    }
+
+    Logger::udr_db().debug(
+        "[UE Id %s] SessionManagementPolicyData GET: %s", ue_id.c_str(),
+        json_data.dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
+  } else {
+    Logger::udr_db().info(
+        "[UE Id %s] SessionManagementPolicyData not found", ue_id.c_str());
+    mysql_free_result(res);
+    return false;
+  }
+
+  mysql_free_result(res);
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool mysql_db::query_ue_policy_set(
+    const std::string& ue_id, nlohmann::json& json_data) {
+  // Check the connection with DB first
+  if (!check_connection_status()) return false;
+
+  MYSQL_RES* res     = nullptr;
+  MYSQL_ROW row      = {};
+  MYSQL_FIELD* field = nullptr;
+
+  Logger::udr_db().debug(
+      "[UE Id %s] Handle Query UE Policy Set", ue_id.c_str());
+
+  const std::string query =
+      "SELECT * from UePolicySet WHERE ueid='" + ue_id + "'";
+
+  Logger::udr_db().debug(
+      "[UE Id %s] SQL Query: %s", ue_id.c_str(), query.c_str());
+
+  if (mysql_real_query(
+          &mysql_connector, query.c_str(), (unsigned long) query.size())) {
+    Logger::udr_db().error(
+        "[UE Id %s] mysql_real_query failure！", ue_id.c_str());
+    return false;
+  }
+
+  res = mysql_store_result(&mysql_connector);
+  if (res == nullptr) {
+    Logger::udr_db().error(
+        "[UE Id %s] mysql_store_result failure！", ue_id.c_str());
+    return false;
+  }
+
+  row = mysql_fetch_row(res);
+
+  if (row != nullptr) {
+    nlohmann::json policy_set = nlohmann::json::object();
+
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+      if (row[i] != nullptr && strlen(row[i]) > 0) {
+        std::string field_name = field->name;
+
+        // Handle JSON fields
+        if (field_name == "praInfos" || field_name == "subscCats" ||
+            field_name == "uePolicySections" || field_name == "upsis" ||
+            field_name == "allowedRouteSelDescs" || field_name == "osIds") {
+          try {
+            nlohmann::json parsed_value = nlohmann::json::parse(row[i]);
+            // Only add non-empty JSON objects/arrays (skip empty {} or [])
+            if (!parsed_value.empty()) {
+              policy_set[field_name] = parsed_value;
+            }
+          } catch (const std::exception& e) {
+            Logger::udr_db().warn(
+                "[UE Id %s] Failed to parse JSON field %s: %s", ue_id.c_str(),
+                field_name.c_str(), e.what());
+          }
+        }
+        // Handle string fields (skip empty strings)
+        else if (field_name == "pei" || field_name == "suppFeat") {
+          std::string value = row[i];
+          if (!value.empty()) {
+            policy_set[field_name] = value;
+          }
+        }
+        // Handle boolean fields
+        else if (field_name == "andspInd") {
+          policy_set[field_name] = (std::string_view(row[i]) == "1");
+        }
+        // Skip ueid field (not part of response)
+        else if (field_name != "ueid") {
+          policy_set[field_name] = row[i];
+        }
+      }
+    }
+
+    // Validate and normalize response using OpenAPI model
+    try {
+      oai::_3gpp::model::UePolicySet ue_policy_model;
+      from_json(policy_set, ue_policy_model);
+
+      // Serialize back to JSON - this ensures proper formatting per OpenAPI
+      // spec
+      nlohmann::json validated_json;
+      to_json(validated_json, ue_policy_model);
+      json_data = validated_json;
+
+      Logger::udr_db().debug(
+          "[UE Id %s] UePolicySet validated and serialized", ue_id.c_str());
+    } catch (const std::exception& e) {
+      Logger::udr_db().error(
+          "[UE Id %s] Failed to validate UePolicySet model: %s", ue_id.c_str(),
+          e.what());
+      // Do not send unvalidated data to the consumer.
+      mysql_free_result(res);
+      return false;
+    }
+
+    Logger::udr_db().debug(
+        "[UE Id %s] UePolicySet GET: %s", ue_id.c_str(),
+        json_data.dump(-1, ' ', false, nlohmann::json::error_handler_t::replace)
+            .c_str());
+  } else {
+    Logger::udr_db().info("[UE Id %s] UePolicySet not found", ue_id.c_str());
+    mysql_free_result(res);
+    return false;
   }
 
   mysql_free_result(res);

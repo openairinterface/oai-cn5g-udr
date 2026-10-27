@@ -161,6 +161,17 @@ void udr_profile::get_udr_info(oai::common::sbi::udr_info_t& s) const {
 }
 
 //------------------------------------------------------------------------------
+void udr_profile::add_nf_service(
+    const std::string& service_instance_id, const std::string& service_name) {
+  nf_services.push_back({service_instance_id, service_name});
+}
+
+//------------------------------------------------------------------------------
+void udr_profile::set_nf_service_port(const uint16_t p) {
+  nf_service_port = p;
+}
+
+//------------------------------------------------------------------------------
 void udr_profile::display() const {
   Logger::udr_app().debug("- NF instance info");
   Logger::udr_app().debug("    Instance ID: %s", nf_instance_id.c_str());
@@ -239,6 +250,44 @@ void udr_profile::to_json(nlohmann::json& data) const {
 
   data["priority"] = priority;
   data["capacity"] = capacity;
+
+  // NF Services
+  if (!nf_services.empty()) {
+    data["nfServices"] = nlohmann::json::array();
+    for (const auto& nf_service : nf_services) {
+      nlohmann::json service       = {};
+      service["serviceInstanceId"] = nf_service.instance_id;
+      service["serviceName"]       = nf_service.name;
+
+      // Advertise the URI versions the HTTP servers answer on, v2 first as
+      // the canonical one [TS 29.504 §6.1.1]. apiFullVersion is the OpenAPI
+      // version (TS 29.504 V17 Nudr_DR: 2.2.12), not derived from the URI.
+      service["versions"] = nlohmann::json::array();
+      for (const auto& [in_uri, full] :
+           {std::pair<const char*, const char*>{"v2", "2.2.12"},
+            std::pair<const char*, const char*>{"v1", "1.0.0"}}) {
+        nlohmann::json version     = {};
+        version["apiVersionInUri"] = in_uri;
+        version["apiFullVersion"]  = full;
+        service["versions"].push_back(version);
+      }
+
+      service["scheme"]          = "http";
+      service["nfServiceStatus"] = "REGISTERED";
+
+      // Add IP endpoint
+      nlohmann::json ipEndPoint = {};
+      if (!ipv4_addresses.empty()) {
+        ipEndPoint["ipv4Address"] = inet_ntoa(ipv4_addresses[0]);
+      }
+      ipEndPoint["port"]      = nf_service_port;
+      ipEndPoint["transport"] = "TCP";
+      service["ipEndPoints"]  = nlohmann::json::array();
+      service["ipEndPoints"].push_back(ipEndPoint);
+
+      data["nfServices"].push_back(service);
+    }
+  }
 
   // UDR Info
   data["udrInfo"]["groupId"]                        = udr_info.groupid;

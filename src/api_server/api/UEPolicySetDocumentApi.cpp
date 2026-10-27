@@ -40,22 +40,43 @@ void UEPolicySetDocumentApi::init() {
 void UEPolicySetDocumentApi::setupRoutes() {
   using namespace Pistache::Rest;
 
+  // Register routes for both v1 and v2
   Routes::Put(
       *router,
-      udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesUePolicySet,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV1 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesUePolicySet,
       Routes::bind(
           &UEPolicySetDocumentApi::create_or_replace_ue_policy_set_handler,
           this));
+  Routes::Put(
+      *router,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV2 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesUePolicySet,
+      Routes::bind(
+          &UEPolicySetDocumentApi::create_or_replace_ue_policy_set_handler,
+          this));
+
   Routes::Get(
       *router,
-      udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesUePolicySet,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV1 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesUePolicySet,
       Routes::bind(&UEPolicySetDocumentApi::read_ue_policy_set_handler, this));
+  Routes::Get(
+      *router,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV2 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesUePolicySet,
+      Routes::bind(&UEPolicySetDocumentApi::read_ue_policy_set_handler, this));
+
   Routes::Patch(
       *router,
-      udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesUePolicySet,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV1 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesUePolicySet,
+      Routes::bind(
+          &UEPolicySetDocumentApi::update_ue_policy_set_handler, this));
+  Routes::Patch(
+      *router,
+      udr_sbi_helper::UdrDataRepositoryServiceBaseV2 +
+          udr_sbi_helper::UdrDrPathPolicyDataUesUePolicySet,
       Routes::bind(
           &UEPolicySetDocumentApi::update_ue_policy_set_handler, this));
 

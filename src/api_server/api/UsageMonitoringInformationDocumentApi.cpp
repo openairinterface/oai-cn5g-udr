@@ -43,7 +43,7 @@ void UsageMonitoringInformationDocumentApi::setupRoutes() {
   Routes::Put(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesSmDataUsageMonId,
+          udr_sbi_helper::UdrDrPathPolicyDataUesSmDataUsageMonId,
       Routes::bind(
           &UsageMonitoringInformationDocumentApi::
               create_usage_monitoring_resource_handler,
@@ -51,7 +51,7 @@ void UsageMonitoringInformationDocumentApi::setupRoutes() {
   Routes::Delete(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesSmDataUsageMonId,
+          udr_sbi_helper::UdrDrPathPolicyDataUesSmDataUsageMonId,
       Routes::bind(
           &UsageMonitoringInformationDocumentApi::
               delete_usage_monitoring_information_handler,
@@ -59,7 +59,7 @@ void UsageMonitoringInformationDocumentApi::setupRoutes() {
   Routes::Get(
       *router,
       udr_sbi_helper::UdrDataRepositoryServiceBase +
-          udr_sbi_helper::UdrDrPathSubscriptionDataUesSmDataUsageMonId,
+          udr_sbi_helper::UdrDrPathPolicyDataUesSmDataUsageMonId,
       Routes::bind(
           &UsageMonitoringInformationDocumentApi::
               read_usage_monitoring_information_handler,
