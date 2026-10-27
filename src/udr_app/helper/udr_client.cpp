@@ -17,7 +17,7 @@ extern oai::udr::config::udr_config udr_cfg;
 //------------------------------------------------------------------------------
 udr_client::udr_client(
     const std::shared_ptr<udr_event>& ev,
-    const std::shared_ptr<oai::sba::sbi_http_client>& client_inst)
+    const std::shared_ptr<oai::sba::http_client>& client_inst)
     : oai::sba::nf_service(ev, client_inst) {
   generate_udr_profile();
 }
@@ -100,7 +100,7 @@ uint64_t udr_client::nrf_registration_retry_seconds() const {
 
 //------------------------------------------------------------------------------
 void udr_client::on_registration_outcome(
-    bool success, const oai::sba::sbi_http_response& resp) {
+    bool success, const oai::sba::response& resp) {
   if (success) {
     Logger::udr_client().info(
         "NF registration procedure successful (status %d)", resp.status_code);

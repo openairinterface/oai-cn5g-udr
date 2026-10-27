@@ -15,7 +15,7 @@ class udr_client : public oai::sba::nf_service {
  public:
   udr_client(
       const std::shared_ptr<udr_event>& ev,
-      const std::shared_ptr<oai::sba::sbi_http_client>& client_inst);
+      const std::shared_ptr<oai::sba::http_client>& client_inst);
   udr_client(udr_client const&)     = delete;
   ~udr_client() override            = default;
   void operator=(udr_client const&) = delete;
@@ -32,7 +32,7 @@ class udr_client : public oai::sba::nf_service {
   bool nrf_registration_enabled() const override;
   uint64_t nrf_registration_retry_seconds() const override;
   void on_registration_outcome(
-      bool success, const oai::sba::sbi_http_response& resp) override;
+      bool success, const oai::sba::response& resp) override;
 
  private:
   udr_profile udr_nf_profile;
